@@ -35,6 +35,9 @@ public struct LemonadeTextStyle: Sendable {
     /// in the library, and asking a `UIFont` for its `lineHeight` is a CoreText lookup roughly
     /// three orders of magnitude more expensive than a stored-property load. Every input is a
     /// stored `let`, so the answer cannot change for a given style.
+    ///
+    /// This is the gap at the unscaled font size. Use ``lineSpacing(for:)`` to hold the design's
+    /// line-height ratio once Dynamic Type has grown the glyphs.
     public let lineSpacing: CGFloat
 
     /// Fallback line height ratio for Figtree font (used on platforms without UIKit).
@@ -122,7 +125,85 @@ public struct LemonadeTextStyle: Sendable {
         Self.resolvedUIFont(name: fontName, size: fontSize)
     }
 #endif
+
+    /// Returns the line spacing needed to hold this style's `lineHeight` ratio once Dynamic Type has
+    /// scaled the font.
+    ///
+    /// ``lineSpacing`` is a fixed number of points derived from the unscaled font. SwiftUI's
+    /// `.lineSpacing` adds that gap verbatim, so as the glyphs grow the gap stays put and lines
+    /// close in on each other. At `AX5` a `bodyMediumRegular` paragraph renders at a 1.31 line-height
+    /// ratio instead of the 1.50 the design asks for.
+    ///
+    /// Font metrics scale linearly with point size, so the whole correction is the growth factor of
+    /// the font itself:
+    ///
+    /// ```
+    /// spacing(scaled) = scaledFontSize / fontSize * (lineHeight - naturalLineHeight)
+    ///                 = growth * lineSpacing
+    /// ```
+    ///
+    /// At the default content size the growth factor is 1 and this returns ``lineSpacing`` unchanged.
+    public func lineSpacing(for dynamicTypeSize: DynamicTypeSize) -> CGFloat {
+#if canImport(UIKit)
+        let metrics = UIFontMetrics(forTextStyle: relativeTextStyle.uiKitTextStyle)
+        let traits = UITraitCollection(
+            preferredContentSizeCategory: dynamicTypeSize.uiKitContentSizeCategory
+        )
+        let scaledFontSize = metrics.scaledValue(for: fontSize, compatibleWith: traits)
+        guard fontSize > 0 else {
+            return lineSpacing
+        }
+        return lineSpacing * (scaledFontSize / fontSize)
+#else
+        // No Dynamic Type off UIKit, so the unscaled gap is already correct.
+        return lineSpacing
+#endif
+    }
 }
+
+#if canImport(UIKit)
+extension Font.TextStyle {
+    /// SwiftUI's `Font.TextStyle` and UIKit's `UIFont.TextStyle` name the same Dynamic Type curves
+    /// but do not bridge, and `UIFontMetrics` only takes the UIKit one.
+    internal var uiKitTextStyle: UIFont.TextStyle {
+        switch self {
+        case .largeTitle: return .largeTitle
+        case .title: return .title1
+        case .title2: return .title2
+        case .title3: return .title3
+        case .headline: return .headline
+        case .subheadline: return .subheadline
+        case .body: return .body
+        case .callout: return .callout
+        case .footnote: return .footnote
+        case .caption: return .caption1
+        case .caption2: return .caption2
+        @unknown default: return .body
+        }
+    }
+}
+
+extension DynamicTypeSize {
+    /// `UIFontMetrics` measures against a trait collection, which wants the UIKit category.
+    internal var uiKitContentSizeCategory: UIContentSizeCategory {
+        switch self {
+        case .xSmall: return .extraSmall
+        case .small: return .small
+        case .medium: return .medium
+        case .large: return .large
+        case .xLarge: return .extraLarge
+        case .xxLarge: return .extraExtraLarge
+        case .xxxLarge: return .extraExtraExtraLarge
+        case .accessibility1: return .accessibilityMedium
+        case .accessibility2: return .accessibilityLarge
+        case .accessibility3: return .accessibilityExtraLarge
+        case .accessibility4: return .accessibilityExtraExtraLarge
+        case .accessibility5: return .accessibilityExtraExtraExtraLarge
+        @unknown default: return .large
+        }
+    }
+}
+#endif
 
 /// Protocol defining all available text styles in the Lemonade Design System.
 public protocol LemonadeTypographyProtocol {
