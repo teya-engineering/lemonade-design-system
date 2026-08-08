@@ -76,6 +76,9 @@ public extension LemonadeUi {
 // MARK: - Internal Text View
 
 private struct LemonadeTextView: View {
+    /// The family is resolved per environment so a subtree can be drawn in another face.
+    @Environment(\.lemonadeFontFamily) private var fontFamily
+
     let text: String
     let fontSize: CGFloat?
     let textStyle: LemonadeTextStyle?
@@ -136,7 +139,7 @@ private struct LemonadeTextView: View {
                 .multilineTextAlignment(textAlign)
                 .lineLimit(maxLines)
                 .truncationMode(overflow)
-                .lineSpacing(textStyle?.lineSpacing ?? 0)
+                .lineSpacing(textStyle?.lineSpacing(in: fontFamily) ?? 0)
                 .tracking(textStyle?.letterSpacing ?? 0)
                 .frame(minHeight: textStyle?.lineHeight)
         } else {
@@ -146,7 +149,7 @@ private struct LemonadeTextView: View {
                 .multilineTextAlignment(textAlign)
                 .lineLimit(maxLines)
                 .truncationMode(overflow)
-                .lineSpacing(textStyle?.lineSpacing ?? 0)
+                .lineSpacing(textStyle?.lineSpacing(in: fontFamily) ?? 0)
                 .frame(minHeight: textStyle?.lineHeight)
         }
     }
@@ -166,13 +169,14 @@ private struct LemonadeTextView: View {
             return .body
         }
 
-        // Only a caller-supplied size override has to build a font here; the style already
-        // carries the one it resolves to, so the common path is a stored-property load.
-        if let fontSize = fontSize {
-            return .custom(LemonadeTypography.fontFamily, size: fontSize).weight(style.fontWeight)
+        // A caller-supplied `fontSize` overrides the size but not the face. With neither that nor a
+        // swapped family, the style's stored font is a plain property load.
+        guard fontSize != nil || fontFamily != .figtree else {
+            return style.weightedFont
         }
 
-        return style.weightedFont
+        let size = fontSize ?? style.fontSize
+        return .custom(fontFamily.fontName(for: style.fontWeight), size: size, relativeTo: .body)
     }
 }
 
@@ -244,6 +248,9 @@ public extension LemonadeUi {
 // MARK: - Internal Attributed Text View
 
 private struct LemonadeAttributedTextView: View {
+    /// See the note on `LemonadeTextView`.
+    @Environment(\.lemonadeFontFamily) private var fontFamily
+
     let text: AttributedString
     let textStyle: LemonadeTextStyle?
     let font: Font?
@@ -299,7 +306,7 @@ private struct LemonadeAttributedTextView: View {
                 .multilineTextAlignment(textAlign)
                 .lineLimit(maxLines)
                 .truncationMode(overflow)
-                .lineSpacing(textStyle?.lineSpacing ?? 0)
+                .lineSpacing(textStyle?.lineSpacing(in: fontFamily) ?? 0)
                 .tracking(textStyle?.letterSpacing ?? 0)
                 .frame(minHeight: textStyle?.lineHeight)
         } else {
@@ -309,7 +316,7 @@ private struct LemonadeAttributedTextView: View {
                 .multilineTextAlignment(textAlign)
                 .lineLimit(maxLines)
                 .truncationMode(overflow)
-                .lineSpacing(textStyle?.lineSpacing ?? 0)
+                .lineSpacing(textStyle?.lineSpacing(in: fontFamily) ?? 0)
                 .frame(minHeight: textStyle?.lineHeight)
         }
     }
@@ -323,7 +330,7 @@ private struct LemonadeAttributedTextView: View {
             return .body
         }
 
-        return style.font
+        return style.font(in: fontFamily)
     }
 }
 
@@ -371,19 +378,22 @@ public enum LemonadeMarkdown {
         .bold, .strikeThrough, .semiBold, .underline, .italic
     ]
 
-    func toAttributes(baseFontSize: CGFloat) -> AttributeContainer {
+    func toAttributes(
+        baseFontSize: CGFloat,
+        family: LemonadeFontFamily
+    ) -> AttributeContainer {
         var container = AttributeContainer()
         switch self {
         case .semiBold:
-            container.font = .custom("Figtree-SemiBold", size: baseFontSize, relativeTo: .body)
+            container.font = .custom(family.semibold, size: baseFontSize, relativeTo: .body)
         case .bold:
-            container.font = .custom("Figtree-SemiBold", size: baseFontSize, relativeTo: .body).bold()
+            container.font = .custom(family.semibold, size: baseFontSize, relativeTo: .body).bold()
         case .underline:
             container.underlineStyle = .single
         case .strikeThrough:
             container.strikethroughStyle = .single
         case .italic:
-            container.font = .custom("Figtree-Regular", size: baseFontSize, relativeTo: .body).italic()
+            container.font = .custom(family.regular, size: baseFontSize, relativeTo: .body).italic()
         }
         return container
     }
@@ -406,12 +416,13 @@ public extension String {
     ///   (semiBold, bold, italic). Defaults to the body medium regular font size.
     /// - Returns: An `AttributedString` with markers removed and corresponding styles applied.
     func toLemonadeMarkdown(
-        baseFontSize: CGFloat = LemonadeTypography.shared.bodyMediumRegular.fontSize
+        baseFontSize: CGFloat = LemonadeTypography.shared.bodyMediumRegular.fontSize,
+        family: LemonadeFontFamily = .figtree
     ) -> AttributedString {
         let colorMap = resolveContentColorMap()
         let state = MarkdownParseState()
         state.parseColorTags(source: self, colorMap: colorMap)
-        state.parseStyleMarkers(source: self, baseFontSize: baseFontSize)
+        state.parseStyleMarkers(source: self, baseFontSize: baseFontSize, family: family)
         return state.buildAttributedString(source: self)
     }
 }
@@ -482,7 +493,7 @@ private class MarkdownParseState {
         }
     }
 
-    func parseStyleMarkers(source: String, baseFontSize: CGFloat) {
+    func parseStyleMarkers(source: String, baseFontSize: CGFloat, family: LemonadeFontFamily) {
         let nsSource = source as NSString
         let sortedMarkdowns = LemonadeMarkdown.values.sorted { $0.key.count > $1.key.count }
 
@@ -521,7 +532,7 @@ private class MarkdownParseState {
 
                 spanStarts.append(contentStart)
                 spanEnds.append(closeRange.location)
-                spanAttributes.append(markdown.toAttributes(baseFontSize: baseFontSize))
+                spanAttributes.append(markdown.toAttributes(baseFontSize: baseFontSize, family: family))
 
                 searchFrom = closeRange.location + key.count
             }
