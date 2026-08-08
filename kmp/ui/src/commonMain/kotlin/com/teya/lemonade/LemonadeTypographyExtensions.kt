@@ -1,7 +1,9 @@
 package com.teya.lemonade
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -35,6 +37,28 @@ public val lemonadeFontFamily: FontFamily
     }
 
 /**
+ * The font family every Lemonade text style resolves through.
+ *
+ * Defaults to [lemonadeFontFamily] (Figtree). Provide another to render the design system in a
+ * different typeface — the type scale, weights and line heights are unchanged, only the faces they
+ * are drawn with:
+ *
+ * ```kotlin
+ * LemonadeTheme(fontFamily = myBrandFontFamily) {
+ *     // every Lemonade component below draws in the brand face
+ * }
+ * ```
+ *
+ * The tokens carry metrics only — size, line height, weight, letter spacing — and never a family,
+ * so swapping this changes the faces without touching the scale.
+ *
+ * Note that the design system's line heights were drawn against Figtree's metrics. A face with a
+ * very different ascender/descender ratio will sit differently inside them.
+ */
+public val LocalFontFamily: ProvidableCompositionLocal<FontFamily?> =
+    staticCompositionLocalOf { null }
+
+/**
  * Converts a [LemonadeTextStyle] to a Compose [TextStyle] using an already-resolved [fontFamily].
  */
 @InternalLemonadeApi
@@ -63,7 +87,8 @@ public fun LemonadeTextStyle.toTextStyle(fontFamily: FontFamily): TextStyle {
 @OptIn(InternalLemonadeApi::class)
 public val LemonadeTextStyle.textStyle: TextStyle
     @Composable get() {
-        val fontFamily = lemonadeFontFamily
+        val fontFamily = LocalFontFamily.current
+            ?: lemonadeFontFamily
         return remember(this, fontFamily) {
             toTextStyle(fontFamily)
         }
