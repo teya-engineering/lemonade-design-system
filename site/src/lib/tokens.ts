@@ -210,6 +210,58 @@ export interface ShadowSet {
 
 const SHADOW_ORDER = ['xsmall', 'small', 'medium', 'large', 'xlarge'];
 
+/** The five properties every shadow level must resolve. No defaults — a
+ *  partial export must fail loudly rather than render a plausible-looking
+ *  but wrong shadow. */
+const REQUIRED_SHADOW_PROPERTIES = ['offset-x', 'offset-y', 'blur', 'spread', 'color'];
+
+/**
+ * Pure composition step, split out from `shadowSets()` so the fail-loud
+ * validation below can be exercised directly in tests without needing a
+ * malformed `shadow.json` on disk (the real export is well-formed, so it
+ * can never trigger these throws itself).
+ */
+export function composeShadowSizes(
+	parts: Map<string, Map<string, Map<string, number | string>>>,
+): ShadowSet[] {
+	const unknownSizes = [...parts.keys()].filter((size) => !SHADOW_ORDER.includes(size));
+	if (unknownSizes.length > 0) {
+		throw new Error(
+			`shadow.json contains size(s) not in SHADOW_ORDER: ${unknownSizes.join(', ')}. ` +
+				'Update SHADOW_ORDER in tokens.ts to include the new size(s).',
+		);
+	}
+
+	return SHADOW_ORDER.filter((size) => parts.has(size)).map((size) => {
+		const levels = [...parts.get(size)!.entries()]
+			.sort(([a], [b]) => a.localeCompare(b))
+			.map(([level, props]) => {
+				for (const property of REQUIRED_SHADOW_PROPERTIES) {
+					if (!props.has(property)) {
+						throw new Error(
+							`shadow.json is missing "${property}" for "${size}" ${level}. ` +
+								'Every shadow level needs all five properties (offset-x, ' +
+								'offset-y, blur, spread, color) — check for a partial export.',
+						);
+					}
+				}
+				return {
+					offsetX: Number(props.get('offset-x')),
+					offsetY: Number(props.get('offset-y')),
+					blur: Number(props.get('blur')),
+					spread: Number(props.get('spread')),
+					color: String(props.get('color')),
+				};
+			});
+
+		const css = levels
+			.map((l) => `${l.offsetX}px ${l.offsetY}px ${l.blur}px ${l.spread}px ${l.color}`)
+			.join(', ');
+
+		return { name: size, levels, css };
+	});
+}
+
 export function shadowSets(): ShadowSet[] {
 	const collection = load('shadow.json');
 	const mode = soleModeId(collection);
@@ -231,21 +283,5 @@ export function shadowSets(): ShadowSet[] {
 		levels.get(level)!.set(property, value);
 	}
 
-	return SHADOW_ORDER.filter((size) => parts.has(size)).map((size) => {
-		const levels = [...parts.get(size)!.entries()]
-			.sort(([a], [b]) => a.localeCompare(b))
-			.map(([, props]) => ({
-				offsetX: Number(props.get('offset-x') ?? 0),
-				offsetY: Number(props.get('offset-y') ?? 0),
-				blur: Number(props.get('blur') ?? 0),
-				spread: Number(props.get('spread') ?? 0),
-				color: String(props.get('color') ?? '#0000'),
-			}));
-
-		const css = levels
-			.map((l) => `${l.offsetX}px ${l.offsetY}px ${l.blur}px ${l.spread}px ${l.color}`)
-			.join(', ');
-
-		return { name: size, levels, css };
-	});
+	return composeShadowSizes(parts);
 }
