@@ -5,7 +5,7 @@ interface Props {
 	/** Token file in `/tokens`, e.g. "spacing.json". */
 	file: string;
 	/** How to preview the value. */
-	kind?: 'length' | 'radius';
+	kind?: 'length' | 'radius' | 'percent';
 	prefix?: string;
 }
 
@@ -31,13 +31,19 @@ const tokens = scale(file, { prefix });
 						<th scope="row">
 							<code>{token.name}</code>
 						</th>
-						<td class="value">{token.value}px</td>
+						<td class="value">
+							{kind === 'percent' ? `${token.value}%` : `${token.value}px`}
+						</td>
 						<td>
 							{kind === 'radius' ? (
 								<span
 									class="radius-preview"
 									style={`border-radius: ${Math.min(token.value, 32)}px`}
 								/>
+							) : kind === 'percent' ? (
+								<span class="percent-preview">
+									<span class="percent-preview-fill" style={`opacity: ${token.value / 100}`} />
+								</span>
 							) : (
 								<span class="length-preview" style={`inline-size: ${token.value}px`} />
 							)}
@@ -91,6 +97,32 @@ const tokens = scale(file, { prefix });
 		block-size: 2rem;
 		border: 2px solid var(--lemonade-brand);
 		background: color-mix(in srgb, var(--lemonade-brand) 18%, transparent);
+	}
+
+	/* Checkerboard so a low-opacity fill reads as translucent rather than as a
+	   plain lighter colour against the page background. */
+	.percent-preview {
+		display: block;
+		inline-size: 3rem;
+		block-size: 1.5rem;
+		background-image:
+			linear-gradient(45deg, var(--sl-color-gray-6) 25%, transparent 25%),
+			linear-gradient(-45deg, var(--sl-color-gray-6) 25%, transparent 25%),
+			linear-gradient(45deg, transparent 75%, var(--sl-color-gray-6) 75%),
+			linear-gradient(-45deg, transparent 75%, var(--sl-color-gray-6) 75%);
+		background-size: 10px 10px;
+		background-position:
+			0 0,
+			0 5px,
+			5px -5px,
+			-5px 0;
+	}
+
+	.percent-preview-fill {
+		display: block;
+		inline-size: 100%;
+		block-size: 100%;
+		background: var(--lemonade-brand);
 	}
 
 	.none {
