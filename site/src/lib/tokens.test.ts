@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { themeColors, scale, fontSizes } from './tokens';
+import { themeColors, scale, fontSizes, shadowSets } from './tokens';
 
 describe('themeColors', () => {
 	it('reads tokens from the Figma export', () => {
@@ -34,5 +34,23 @@ describe('scale', () => {
 describe('fontSizes', () => {
 	it('returns only font-size tokens', () => {
 		expect(fontSizes().every((t) => !t.name.startsWith('line-height'))).toBe(true);
+	});
+});
+
+describe('shadowSets', () => {
+	it('composes every shadow size', () => {
+		const names = shadowSets().map((s) => s.name);
+		expect(names).toEqual(['xsmall', 'small', 'medium', 'large', 'xlarge']);
+	});
+
+	it('gives xsmall one level and large two', () => {
+		const sets = shadowSets();
+		expect(sets.find((s) => s.name === 'xsmall')!.levels).toHaveLength(1);
+		expect(sets.find((s) => s.name === 'large')!.levels).toHaveLength(2);
+	});
+
+	it('builds a box-shadow value from the parts', () => {
+		const large = shadowSets().find((s) => s.name === 'large')!;
+		expect(large.css).toBe('0px 4px 6px -4px #0000000d, 0px 10px 15px -3px #0000000d');
 	});
 });

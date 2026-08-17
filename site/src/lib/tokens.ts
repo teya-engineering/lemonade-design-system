@@ -192,3 +192,60 @@ export function lineHeights(): TypeToken[] {
 export function fontWeights(): TypeToken[] {
 	return scale('typography.json', { prefix: 'font-weight/' });
 }
+
+export interface ShadowLevel {
+	offsetX: number;
+	offsetY: number;
+	blur: number;
+	spread: number;
+	color: string;
+}
+
+export interface ShadowSet {
+	name: string;
+	levels: ShadowLevel[];
+	/** Ready-to-use CSS box-shadow value. */
+	css: string;
+}
+
+const SHADOW_ORDER = ['xsmall', 'small', 'medium', 'large', 'xlarge'];
+
+export function shadowSets(): ShadowSet[] {
+	const collection = load('shadow.json');
+	const mode = soleModeId(collection);
+
+	// name is shadow/<size>/<level>/sd-<abbr>-lv<n>-<prop>
+	const parts = new Map<string, Map<string, Map<string, number | string>>>();
+	for (const variable of collection.variables) {
+		if (variable.hiddenFromPublishing) continue;
+		const [, size, level, leaf] = variable.name.split('/');
+		if (!size || !level || !leaf) continue;
+
+		const property = leaf.replace(/^sd-[a-z]+-lv\d-/, '');
+		const raw = variable.resolvedValuesByMode[mode]!.resolvedValue;
+		const value = variable.type === 'COLOR' ? toCssColor(raw) : Number(raw);
+
+		if (!parts.has(size)) parts.set(size, new Map());
+		const levels = parts.get(size)!;
+		if (!levels.has(level)) levels.set(level, new Map());
+		levels.get(level)!.set(property, value);
+	}
+
+	return SHADOW_ORDER.filter((size) => parts.has(size)).map((size) => {
+		const levels = [...parts.get(size)!.entries()]
+			.sort(([a], [b]) => a.localeCompare(b))
+			.map(([, props]) => ({
+				offsetX: Number(props.get('offset-x') ?? 0),
+				offsetY: Number(props.get('offset-y') ?? 0),
+				blur: Number(props.get('blur') ?? 0),
+				spread: Number(props.get('spread') ?? 0),
+				color: String(props.get('color') ?? '#0000'),
+			}));
+
+		const css = levels
+			.map((l) => `${l.offsetX}px ${l.offsetY}px ${l.blur}px ${l.spread}px ${l.color}`)
+			.join(', ');
+
+		return { name: size, levels, css };
+	});
+}

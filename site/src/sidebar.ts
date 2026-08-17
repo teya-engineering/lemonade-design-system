@@ -35,6 +35,7 @@ export const sidebar: SidebarGroup[] = [
 			{ label: 'Colour', slug: 'foundations/colour' },
 			{ label: 'Typography', slug: 'foundations/typography' },
 			{ label: 'Space & shape', slug: 'foundations/space-and-shape' },
+			{ label: 'Elevation', slug: 'foundations/elevation' },
 		],
 	},
 ];

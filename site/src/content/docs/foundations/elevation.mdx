@@ -1,0 +1,26 @@
+---
+title: Elevation
+description: The shadow sets that lift Lemonade surfaces off the page.
+---
+
+import ShadowTokens from '../../../components/ShadowTokens.astro';
+
+Shadows are stored decomposed in the Figma export — each size is one or two
+layers, and each layer is four or five separate variables (offset, blur,
+spread, colour). A usable shadow is the composition of every layer at a given
+size. Using one layer alone is not a smaller shadow — it is a broken one.
+
+<ShadowTokens />
+
+## Picking a size
+
+Elevation is ordinal: pick a shadow by how far the surface should sit above
+the page — a card, a menu, a modal — not by how the shadow looks in
+isolation. Reach for the next size up when a surface needs to read as closer
+to the user, not for a shadow that merely looks "stronger."
+
+:::caution[Previews are CSS, not the real renderers]
+The samples above are CSS `box-shadow`. The KMP implementation currently renders
+shadows noticeably darker than the token values describe, so a Compose screen will
+not match this page exactly. SwiftUI matches. Treat these as the intended values.
+:::
