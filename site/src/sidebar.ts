@@ -23,7 +23,12 @@ export const sidebar: SidebarGroup[] = [
 	},
 	{
 		label: 'Standards',
-		items: [{ label: 'Semantic tokens first', slug: 'standards/semantic-tokens' }],
+		items: [
+			{ label: 'Semantic tokens first', slug: 'standards/semantic-tokens' },
+			{ label: 'Theming & dark mode', slug: 'standards/theming' },
+			{ label: 'Layout & rhythm', slug: 'standards/layout-rhythm' },
+			{ label: 'Accessibility', slug: 'standards/accessibility' },
+		],
 	},
 	{
 		label: 'Patterns',
