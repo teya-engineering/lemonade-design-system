@@ -8,9 +8,6 @@ This is how Lemonade expects one to be built.
 
 ## The shape of a field
 
-![A Lemonade text field showing its label, placeholder and support text](../../../assets/patterns/form-field-light.png)
-![A Lemonade text field showing its label, placeholder and support text](../../../assets/patterns/form-field-dark.png)
-
 Every text input in Lemonade is one component with four slots of copy around it, and
 each slot has one job:
 
