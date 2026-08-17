@@ -32,7 +32,12 @@ export const sidebar: SidebarGroup[] = [
 	},
 	{
 		label: 'Patterns',
-		items: [{ label: 'Forms', slug: 'patterns/forms' }],
+		items: [
+			{ label: 'Forms', slug: 'patterns/forms' },
+			{ label: 'Lists', slug: 'patterns/lists' },
+			{ label: 'Empty & loading', slug: 'patterns/empty-and-loading' },
+			{ label: 'Errors & recovery', slug: 'patterns/errors' },
+		],
 	},
 	{
 		label: 'Foundations',
