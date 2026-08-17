@@ -1,0 +1,27 @@
+---
+title: Opacity & borders
+description: Opacity levels and border widths, including the state tokens components use for focus and selection.
+---
+
+import ScaleTokens from '../../../components/ScaleTokens.astro';
+
+## Opacity
+
+Values are percentages. `base/*` tokens are raw levels with no attached meaning — pick
+one because you need "40% see-through," not because of what it is for. `state/*`
+tokens, such as `opacity-disabled`, carry meaning: they encode a specific UI state, so
+reach for the state token instead of the base level it happens to resolve to whenever
+the situation matches.
+
+<ScaleTokens file="opacity.json" />
+
+## Border widths
+
+<ScaleTokens file="border-width.json" />
+
+`state/focus-ring` and `state/border-selected` exist so focus and selection stay
+consistent across components, wherever they show up. Both currently resolve to the same
+2px as `base/border-50`, but that is incidental, not a guarantee — do not replace either
+state token with a raw `base/border-50`. The state tokens are free to diverge from it
+later, and components that referenced them by meaning will pick up the change
+automatically; components that reached for the raw value will not.
