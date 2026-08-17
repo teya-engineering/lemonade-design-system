@@ -1,0 +1,112 @@
+/*
+ * Dresses Starlight in Lemonade's own palette and typeface.
+ *
+ * Every value here comes from `tokens/theme-colors.json`; they are written out
+ * literally rather than generated because Starlight needs them as static CSS
+ * custom properties before any component renders.
+ */
+
+/* Paths include the GitHub Pages project base — plain CSS cannot read
+   import.meta.env.BASE_URL, so the prefix is written out. */
+@font-face {
+	font-family: 'Figtree';
+	src: url('/lemonade-design-system/fonts/Figtree-Regular.ttf') format('truetype');
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Figtree';
+	src: url('/lemonade-design-system/fonts/Figtree-Medium.ttf') format('truetype');
+	font-weight: 500;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Figtree';
+	src: url('/lemonade-design-system/fonts/Figtree-SemiBold.ttf') format('truetype');
+	font-weight: 600;
+	font-display: swap;
+}
+
+/* Dark is Starlight's default theme, so bare :root carries the dark palette. */
+:root {
+	--lemonade-brand: #e1e51a;
+	--lemonade-brand-dim: #c7ca16;
+	--lemonade-accent: #00b8db;
+	--lemonade-surface: #201f1d;
+	--lemonade-surface-subtle: #151513;
+
+	--sl-font: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+	/* Slightly wider than Starlight's 45rem default so the token galleries fit
+	   three columns without pushing prose past a comfortable measure. */
+	--sl-content-width: 52rem;
+
+	--sl-color-accent-low: #46520f;
+	--sl-color-accent: #c7ca16;
+	--sl-color-accent-high: #e1e51a;
+
+	--sl-color-white: #ffffff;
+	--sl-color-gray-1: #ffffffe5;
+	--sl-color-gray-2: #ffffffb8;
+	--sl-color-gray-3: #ffffff99;
+	--sl-color-gray-4: #ffffff80;
+	--sl-color-gray-5: #ffffff33;
+	--sl-color-gray-6: #ffffff1a;
+	--sl-color-gray-7: #ffffff0d;
+	--sl-color-black: #201f1d;
+}
+
+:root[data-theme='light'] {
+	--lemonade-brand: #c7ca16;
+	--lemonade-brand-dim: #6d770d;
+	--lemonade-accent: #0092b8;
+	--lemonade-surface: #ffffff;
+	--lemonade-surface-subtle: #f6f5f3;
+
+	--sl-color-accent-low: #eef0bd;
+	--sl-color-accent: #6d770d;
+	--sl-color-accent-high: #29320c;
+
+	--sl-color-white: #090806;
+	--sl-color-gray-1: #16140e;
+	--sl-color-gray-2: #3f3b33;
+	--sl-color-gray-3: #6b6559;
+	--sl-color-gray-4: #8f8676;
+	--sl-color-gray-5: #d8d4cd;
+	--sl-color-gray-6: #f6f5f3;
+	--sl-color-gray-7: #fbfaf9;
+	--sl-color-black: #ffffff;
+}
+
+/* Theme-paired screenshots.
+   Astro keeps the source filename in the hashed output, so a "-light"/"-dark"
+   naming convention is enough to show the right one. Authors write two ordinary
+   markdown image lines; no component and no MDX required. */
+:root[data-theme='dark'] .sl-markdown-content img[src*='-light.'],
+:root[data-theme='light'] .sl-markdown-content img[src*='-dark.'] {
+	display: none;
+}
+
+/* The brand lime is a surface colour, not a text colour — on the site header it
+   reads as Lemonade rather than as a default Starlight build. */
+.site-title {
+	font-weight: 600;
+	letter-spacing: -0.01em;
+}
+
+.site-title::before {
+	content: '';
+	display: inline-block;
+	inline-size: 0.65rem;
+	block-size: 0.65rem;
+	margin-inline-end: 0.55rem;
+	border-radius: 999px;
+	background: var(--lemonade-brand);
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.02em;
+}

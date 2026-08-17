@@ -1,0 +1,506 @@
+---
+/**
+ * Standalone landing page. Starlight owns every other route; this one is plain
+ * Astro so the layout isn't bound to the docs template.
+ */
+import { themeColors } from '../lib/tokens';
+import '../styles/lemonade.css';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Pulled live from tokens/theme-colors.json — the landing page can't drift from
+// the palette it is advertising.
+const wanted = ['bg-brand', 'bg-accent', 'content-positive', 'content-caution', 'content-critical'];
+const flat = themeColors().flatMap((g) => g.subgroups.flatMap((s) => s.tokens));
+const chips = wanted
+	.map((name) => flat.find((t) => t.name === name))
+	.filter((t): t is NonNullable<typeof t> => Boolean(t));
+
+const platforms = [
+	{
+		name: 'Kotlin Multiplatform',
+		targets: 'Android · iOS · JVM Desktop',
+		blurb: 'Compose Multiplatform components, shipped as five published modules.',
+		href: `${base}/get-started/`,
+		status: 'stable',
+	},
+	{
+		name: 'SwiftUI',
+		targets: 'iOS 15+ · macOS 12+',
+		blurb: 'A native Swift package with the same tokens and the same component vocabulary.',
+		href: `${base}/get-started/`,
+		status: 'stable',
+	},
+	{
+		name: 'Flutter',
+		targets: 'Android · iOS · Web',
+		blurb: 'An earlier implementation, no longer actively maintained.',
+		href: 'https://github.com/saltpay/lemonade-design-system/tree/main/flutter',
+		status: 'unmaintained',
+	},
+];
+
+const sections = [
+	{
+		eyebrow: 'Standards',
+		title: 'The rules of the system',
+		body: 'Semantic tokens before primitives, how theming and dark mode actually work, the accessibility baseline, and when it is fair to reach past the defaults.',
+		href: `${base}/standards/semantic-tokens/`,
+		cta: 'Read the standards',
+	},
+	{
+		eyebrow: 'Patterns',
+		title: 'Solutions worth reusing',
+		body: 'Forms, empty states, loading and error states, list screens — assembled from components, with the reasoning written down and the code alongside.',
+		href: `${base}/patterns/forms/`,
+		cta: 'Browse patterns',
+	},
+	{
+		eyebrow: 'Foundations',
+		title: 'Generated from the source of truth',
+		body: 'Every colour, type size, space and radius on this site is read from the same Figma export the platform code is generated from. It cannot fall out of date.',
+		href: `${base}/foundations/colour/`,
+		cta: 'Open foundations',
+	},
+];
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Lemonade — Teya's design system</title>
+		<meta
+			name="description"
+			content="How to build with Lemonade: the standards behind the system, the patterns worth reusing, and the tokens that hold it together."
+		/>
+		<link rel="icon" href={`${base}/favicon.svg`} />
+	</head>
+	<body>
+		<header class="nav">
+			<a class="wordmark" href={`${base}/`}>
+				<span class="dot"></span>
+				Lemonade
+			</a>
+			<nav>
+				<a href={`${base}/get-started/`}>Get started</a>
+				<a href={`${base}/standards/semantic-tokens/`}>Standards</a>
+				<a href={`${base}/patterns/forms/`}>Patterns</a>
+				<a href={`${base}/foundations/colour/`}>Foundations</a>
+				<a
+					class="external"
+					href="https://github.com/saltpay/lemonade-design-system">GitHub</a
+				>
+			</nav>
+		</header>
+
+		<main>
+			<section class="hero">
+				<p class="eyebrow">Teya Design System</p>
+				<h1>
+					Build it once.<br />
+					<span class="highlight">Build it right.</span>
+				</h1>
+				<p class="lede">
+					Lemonade is the shared language behind Teya's products — production components on
+					Kotlin Multiplatform and SwiftUI, one set of design tokens, and the standards that keep
+					them honest.
+				</p>
+				<div class="actions">
+					<a class="button primary" href={`${base}/get-started/`}>Get started</a>
+					<a class="button ghost" href={`${base}/standards/semantic-tokens/`}>
+						Read the standards
+					</a>
+				</div>
+
+				<ul class="chips" aria-label="A sample of the palette">
+					{
+						chips.map((chip) => (
+							<li>
+								<span class="chip" style={`--light: ${chip.light}; --dark: ${chip.dark}`} />
+								<code>{chip.name}</code>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<section class="band">
+				<h2 class="section-heading">One system, native everywhere</h2>
+				<div class="platforms">
+					{
+						platforms.map((platform) => (
+							<a class="platform" href={platform.href} data-status={platform.status}>
+								<h3>
+									{platform.name}
+									{platform.status === 'unmaintained' && (
+										<span class="tag">Unmaintained</span>
+									)}
+								</h3>
+								<p class="targets">{platform.targets}</p>
+								<p class="blurb">{platform.blurb}</p>
+							</a>
+						))
+					}
+				</div>
+			</section>
+
+			<section class="sections">
+				{
+					sections.map((section) => (
+						<article class="feature">
+							<p class="eyebrow">{section.eyebrow}</p>
+							<h2>{section.title}</h2>
+							<p>{section.body}</p>
+							<a class="link" href={section.href}>
+								{section.cta} <span aria-hidden="true">→</span>
+							</a>
+						</article>
+					))
+				}
+			</section>
+		</main>
+
+		<footer>
+			<p>
+				Maintained by the Teya design systems team ·
+				<a href="https://github.com/saltpay/lemonade-design-system">Source on GitHub</a>
+			</p>
+		</footer>
+
+		<style>
+			:root {
+				--ink: #ffffffe5;
+				--ink-dim: #ffffff99;
+				--ink-faint: #ffffff66;
+				--surface: #151513;
+				--surface-raised: #201f1d;
+				--hairline: #ffffff1a;
+				--hairline-strong: #ffffff33;
+				--brand: #e1e51a;
+				--brand-ink: #29320c;
+				--accent: #00b8db;
+			}
+
+			@media (prefers-color-scheme: light) {
+				:root {
+					--ink: #16140e;
+					--ink-dim: #4a4640;
+					--ink-faint: #8f8676;
+					--surface: #ffffff;
+					--surface-raised: #f6f5f3;
+					--hairline: #756b571a;
+					--hairline-strong: #8f867633;
+					--brand: #e1e51a;
+					--brand-ink: #29320c;
+					--accent: #0092b8;
+				}
+			}
+
+			* {
+				box-sizing: border-box;
+			}
+
+			body {
+				margin: 0;
+				background: var(--surface);
+				color: var(--ink);
+				font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+				-webkit-font-smoothing: antialiased;
+			}
+
+			a {
+				color: inherit;
+				text-decoration: none;
+			}
+
+			.nav {
+				position: sticky;
+				top: 0;
+				z-index: 10;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 2rem;
+				padding: 1rem clamp(1.25rem, 5vw, 4rem);
+				border-bottom: 1px solid var(--hairline);
+				background: color-mix(in srgb, var(--surface) 85%, transparent);
+				backdrop-filter: blur(12px);
+			}
+
+			.wordmark {
+				display: flex;
+				align-items: center;
+				gap: 0.55rem;
+				font-size: 1.0625rem;
+				font-weight: 600;
+				letter-spacing: -0.01em;
+			}
+
+			.dot {
+				inline-size: 0.7rem;
+				block-size: 0.7rem;
+				border-radius: 999px;
+				background: var(--brand);
+			}
+
+			.nav nav {
+				display: flex;
+				gap: 1.5rem;
+				font-size: 0.9375rem;
+				color: var(--ink-dim);
+			}
+
+			.nav nav a:hover {
+				color: var(--ink);
+			}
+
+			main {
+				max-width: 72rem;
+				margin-inline: auto;
+				padding-inline: clamp(1.25rem, 5vw, 4rem);
+			}
+
+			.hero {
+				padding-block: clamp(4rem, 12vw, 8rem) clamp(3rem, 8vw, 5rem);
+				max-width: 46rem;
+			}
+
+			.eyebrow {
+				margin: 0 0 1rem;
+				font-size: 0.8125rem;
+				font-weight: 600;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				color: var(--ink-faint);
+			}
+
+			h1 {
+				margin: 0;
+				font-size: clamp(2.75rem, 7vw, 4.5rem);
+				font-weight: 600;
+				line-height: 1.02;
+				letter-spacing: -0.035em;
+			}
+
+			.highlight {
+				position: relative;
+				white-space: nowrap;
+			}
+
+			.highlight::after {
+				content: '';
+				position: absolute;
+				left: -0.1em;
+				right: -0.1em;
+				bottom: 0.08em;
+				height: 0.32em;
+				background: var(--brand);
+				z-index: -1;
+			}
+
+			.lede {
+				margin: 1.75rem 0 0;
+				max-width: 38rem;
+				font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
+				line-height: 1.6;
+				color: var(--ink-dim);
+			}
+
+			.actions {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.75rem;
+				margin-block-start: 2.25rem;
+			}
+
+			.button {
+				display: inline-flex;
+				align-items: center;
+				padding: 0.7rem 1.35rem;
+				border-radius: 999px;
+				font-size: 0.9375rem;
+				font-weight: 600;
+				transition:
+					transform 0.15s ease,
+					background 0.15s ease;
+			}
+
+			.button:hover {
+				transform: translateY(-1px);
+			}
+
+			.primary {
+				background: var(--brand);
+				color: var(--brand-ink);
+			}
+
+			.ghost {
+				border: 1px solid var(--hairline-strong);
+				color: var(--ink);
+			}
+
+			.ghost:hover {
+				background: var(--surface-raised);
+			}
+
+			.chips {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 1.25rem;
+				margin: 3.5rem 0 0;
+				padding: 0;
+				list-style: none;
+			}
+
+			.chips li {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				font-size: 0.75rem;
+				color: var(--ink-faint);
+			}
+
+			.chip {
+				inline-size: 1.5rem;
+				block-size: 1.5rem;
+				border-radius: 0.4rem;
+				border: 1px solid var(--hairline-strong);
+				background: var(--dark);
+			}
+
+			@media (prefers-color-scheme: light) {
+				.chip {
+					background: var(--light);
+				}
+			}
+
+			.section-heading {
+				margin: 0 0 2rem;
+				font-size: clamp(1.5rem, 3vw, 2rem);
+				font-weight: 600;
+				letter-spacing: -0.025em;
+			}
+
+			.band {
+				padding-block: clamp(3rem, 8vw, 5rem);
+				border-top: 1px solid var(--hairline);
+			}
+
+			.platforms {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+				gap: 1rem;
+			}
+
+			.platform {
+				display: block;
+				padding: 1.5rem;
+				border: 1px solid var(--hairline);
+				border-radius: 1rem;
+				background: var(--surface-raised);
+				transition:
+					border-color 0.15s ease,
+					transform 0.15s ease;
+			}
+
+			.platform:hover {
+				border-color: var(--brand);
+				transform: translateY(-2px);
+			}
+
+			.platform[data-status='unmaintained'] {
+				opacity: 0.62;
+			}
+
+			.platform[data-status='unmaintained']:hover {
+				border-color: var(--hairline-strong);
+			}
+
+			.platform h3 {
+				display: flex;
+				align-items: center;
+				gap: 0.6rem;
+				margin: 0;
+				font-size: 1.125rem;
+				font-weight: 600;
+				letter-spacing: -0.015em;
+			}
+
+			.tag {
+				padding: 0.1rem 0.45rem;
+				border-radius: 999px;
+				border: 1px solid var(--hairline-strong);
+				font-size: 0.625rem;
+				font-weight: 500;
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				color: var(--ink-faint);
+			}
+
+			.targets {
+				margin: 0.4rem 0 0;
+				font-size: 0.8125rem;
+				color: var(--accent);
+			}
+
+			.blurb {
+				margin: 0.9rem 0 0;
+				font-size: 0.9375rem;
+				line-height: 1.55;
+				color: var(--ink-dim);
+			}
+
+			.sections {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+				gap: 3rem 2.5rem;
+				padding-block: clamp(3rem, 8vw, 5rem);
+				border-top: 1px solid var(--hairline);
+			}
+
+			.feature h2 {
+				margin: 0 0 0.75rem;
+				font-size: 1.375rem;
+				font-weight: 600;
+				letter-spacing: -0.02em;
+			}
+
+			.feature p {
+				margin: 0;
+				font-size: 0.9375rem;
+				line-height: 1.6;
+				color: var(--ink-dim);
+			}
+
+			.link {
+				display: inline-block;
+				margin-block-start: 1.1rem;
+				font-size: 0.9375rem;
+				font-weight: 600;
+				color: var(--ink);
+				border-bottom: 2px solid var(--brand);
+				padding-bottom: 0.1rem;
+			}
+
+			footer {
+				padding: 2rem clamp(1.25rem, 5vw, 4rem);
+				border-top: 1px solid var(--hairline);
+				font-size: 0.875rem;
+				color: var(--ink-faint);
+			}
+
+			footer a {
+				color: var(--ink-dim);
+				text-decoration: underline;
+				text-underline-offset: 0.2em;
+			}
+
+			@media (max-width: 40rem) {
+				.nav nav {
+					display: none;
+				}
+			}
+		</style>
+	</body>
+</html>

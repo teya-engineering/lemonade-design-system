@@ -1,0 +1,165 @@
+---
+import { fontSizes, fontWeights, lineHeights } from '../lib/tokens';
+
+const sizes = fontSizes().reverse();
+const weights = fontWeights();
+const heights = lineHeights();
+
+const sample = 'Squeeze the day';
+---
+
+<div class="ramp">
+	{
+		sizes.map((token) => (
+			<div class="row">
+				<p class="specimen" style={`font-size: ${token.value}px`}>
+					{sample}
+				</p>
+				<dl class="meta">
+					<div>
+						<dt>Token</dt>
+						<dd>
+							<code>{token.name}</code>
+						</dd>
+					</div>
+					<div>
+						<dt>Size</dt>
+						<dd>{token.value}px</dd>
+					</div>
+				</dl>
+			</div>
+		))
+	}
+</div>
+
+<h3>Weights</h3>
+<div class="weights">
+	{
+		weights.map((token) => (
+			<div class="weight">
+				<p style={`font-weight: ${token.value}`}>{sample}</p>
+				<p class="caption">
+					<code>{token.name}</code> · {token.value}
+				</p>
+			</div>
+		))
+	}
+</div>
+
+<h3>Line heights</h3>
+<div class="scroller">
+	<table>
+		<thead>
+			<tr>
+				<th scope="col">Token</th>
+				<th scope="col">Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				heights.map((token) => (
+					<tr>
+						<th scope="row">
+							<code>{token.name}</code>
+						</th>
+						<td>{token.value}px</td>
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
+</div>
+
+<style>
+	.ramp {
+		display: flex;
+		flex-direction: column;
+		margin-block: 1.5rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.75rem;
+		overflow: hidden;
+	}
+
+	.row {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1.5rem;
+		padding: 1rem 1.25rem;
+		border-block-end: 1px solid var(--sl-color-gray-6);
+	}
+
+	.row:last-child {
+		border-block-end: 0;
+	}
+
+	.specimen {
+		margin: 0;
+		min-inline-size: 0;
+		overflow: hidden;
+		line-height: 1.15;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		color: var(--sl-color-white);
+	}
+
+	.meta {
+		display: flex;
+		flex: none;
+		gap: 1.25rem;
+		margin: 0;
+	}
+
+	.meta div {
+		display: flex;
+		gap: 0.35rem;
+		font-size: var(--sl-text-xs);
+	}
+
+	.meta dt {
+		color: var(--sl-color-gray-4);
+	}
+
+	.meta dd {
+		margin: 0;
+		font-variant-numeric: tabular-nums;
+		color: var(--sl-color-gray-2);
+	}
+
+	.weights {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+		gap: 1rem;
+		margin-block: 1.5rem;
+	}
+
+	.weight {
+		padding: 1rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.75rem;
+	}
+
+	.weight p {
+		margin: 0;
+		font-size: 1.25rem;
+		color: var(--sl-color-white);
+	}
+
+	.caption {
+		margin-block-start: 0.4rem !important;
+		font-size: var(--sl-text-xs) !important;
+		color: var(--sl-color-gray-3) !important;
+	}
+
+	.scroller {
+		overflow-x: auto;
+	}
+
+	@media (max-width: 50rem) {
+		.row {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.5rem;
+		}
+	}
+</style>

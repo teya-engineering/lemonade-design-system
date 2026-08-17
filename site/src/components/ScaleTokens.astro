@@ -1,0 +1,103 @@
+---
+import { scale } from '../lib/tokens';
+
+interface Props {
+	/** Token file in `/tokens`, e.g. "spacing.json". */
+	file: string;
+	/** How to preview the value. */
+	kind?: 'length' | 'radius';
+	prefix?: string;
+}
+
+const { file, kind = 'length', prefix } = Astro.props;
+const tokens = scale(file, { prefix });
+---
+
+<div class="scroller">
+	<table>
+		<thead>
+			<tr>
+				<th scope="col">Token</th>
+				<th scope="col">Value</th>
+				<th scope="col" class="preview-head">Preview</th>
+				<th scope="col">KMP</th>
+				<th scope="col">SwiftUI</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				tokens.map((token) => (
+					<tr>
+						<th scope="row">
+							<code>{token.name}</code>
+						</th>
+						<td class="value">{token.value}px</td>
+						<td>
+							{kind === 'radius' ? (
+								<span
+									class="radius-preview"
+									style={`border-radius: ${Math.min(token.value, 32)}px`}
+								/>
+							) : (
+								<span class="length-preview" style={`inline-size: ${token.value}px`} />
+							)}
+						</td>
+						<td>{token.android ? <code>{token.android}</code> : <span class="none">—</span>}</td>
+						<td>{token.ios ? <code>{token.ios}</code> : <span class="none">—</span>}</td>
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
+</div>
+
+<style>
+	/* Wide tables scroll inside their own box rather than the page. */
+	.scroller {
+		overflow-x: auto;
+		margin-block: 1.5rem;
+	}
+
+	table {
+		margin: 0;
+	}
+
+	th,
+	td {
+		white-space: nowrap;
+		vertical-align: middle;
+	}
+
+	.value {
+		font-variant-numeric: tabular-nums;
+		color: var(--sl-color-gray-2);
+	}
+
+	.preview-head {
+		inline-size: 40%;
+	}
+
+	.length-preview {
+		display: block;
+		block-size: 1rem;
+		min-inline-size: 1px;
+		border-radius: 2px;
+		background: var(--lemonade-brand);
+	}
+
+	.radius-preview {
+		display: block;
+		inline-size: 3rem;
+		block-size: 2rem;
+		border: 2px solid var(--lemonade-brand);
+		background: color-mix(in srgb, var(--lemonade-brand) 18%, transparent);
+	}
+
+	.none {
+		color: var(--sl-color-gray-4);
+	}
+
+	code {
+		font-size: 0.75rem;
+	}
+</style>

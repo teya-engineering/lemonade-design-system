@@ -1,0 +1,238 @@
+---
+import { themeColors, type ColorGroup } from '../lib/tokens';
+
+interface Props {
+	/** Render a single top-level group, e.g. "Background". Omit for all groups. */
+	group?: string;
+}
+
+const { group } = Astro.props;
+
+const all = themeColors();
+const groups: ColorGroup[] = group ? all.filter((g) => g.label === group) : all;
+
+if (group && groups.length === 0) {
+	throw new Error(
+		`No colour group named "${group}". Available: ${all.map((g) => g.label).join(', ')}`,
+	);
+}
+---
+
+{
+	groups.map((g) => (
+		<section class="token-group">
+			{!group && <h3>{g.label}</h3>}
+			{g.subgroups.map((sub) => (
+				<>
+					{sub.label && <h4 class="subgroup">{sub.label}</h4>}
+					<div class="grid">
+						{sub.tokens.map((token) => (
+							<article class="card">
+								<div class="swatches" aria-hidden="true">
+									<span class="swatch" style={`--fill: ${token.light}`}>
+										<span class="swatch-label">Light</span>
+									</span>
+									<span class="swatch" style={`--fill: ${token.dark}`}>
+										<span class="swatch-label">Dark</span>
+									</span>
+								</div>
+								<div class="body">
+									<p class="name">
+										{token.name}
+										{token.fixed && <span class="pill">fixed</span>}
+									</p>
+									{token.description && <p class="description">{token.description}</p>}
+									{/* Plain spans, not a <dl>: Starlight's markdown styles target
+									    description lists with enough specificity to beat scoped
+									    component CSS, which reintroduces their default indent. */}
+									<div class="values">
+										<span><b>Light</b> {token.light}</span>
+										<span><b>Dark</b> {token.dark}</span>
+									</div>
+									{(token.android || token.ios) && (
+										<ul class="usage">
+											{token.android && (
+												<li>
+													<span class="platform">KMP</span>
+													<code>{token.android}</code>
+												</li>
+											)}
+											{token.ios && (
+												<li>
+													<span class="platform">SwiftUI</span>
+													<code>{token.ios}</code>
+												</li>
+											)}
+										</ul>
+									)}
+								</div>
+							</article>
+						))}
+					</div>
+				</>
+			))}
+		</section>
+	))
+}
+
+<style>
+	.token-group {
+		margin-block: 2rem;
+	}
+
+	.subgroup {
+		margin-block: 1.5rem 0.75rem;
+		font-size: var(--sl-text-lg);
+		color: var(--sl-color-gray-2);
+	}
+
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
+		gap: 1rem;
+	}
+
+	.card {
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.75rem;
+		background: var(--sl-color-black);
+	}
+
+	.swatches {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		height: 4.5rem;
+		/* Checkerboard so that translucent tokens read as translucent. */
+		background-image: conic-gradient(
+			from 90deg at 50% 50%,
+			#0000 25%,
+			#8883 0 50%,
+			#0000 0 75%,
+			#8883 0
+		);
+		background-size: 12px 12px;
+	}
+
+	.swatch {
+		position: relative;
+		display: block;
+		background-color: var(--fill);
+	}
+
+	.swatch:first-child {
+		box-shadow: inset -1px 0 0 var(--sl-color-gray-5);
+	}
+
+	.swatch-label {
+		position: absolute;
+		inset-block-end: 0.25rem;
+		inset-inline-start: 0.4rem;
+		font-size: 0.625rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--sl-color-gray-3);
+		opacity: 0;
+		transition: opacity 0.15s ease;
+	}
+
+	.card:hover .swatch-label {
+		opacity: 1;
+	}
+
+	.body {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		gap: 0.5rem;
+		padding: 0.75rem 0.85rem 0.85rem;
+	}
+
+	.name {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin: 0;
+		font-family: var(--sl-font-mono);
+		font-size: var(--sl-text-sm);
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+
+	.pill {
+		padding: 0.05rem 0.35rem;
+		border-radius: 999px;
+		background: var(--sl-color-gray-6);
+		font-family: var(--sl-font);
+		font-size: 0.625rem;
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--sl-color-gray-2);
+	}
+
+	.description {
+		margin: 0;
+		font-size: var(--sl-text-xs);
+		line-height: 1.5;
+		color: var(--sl-color-gray-3);
+	}
+
+	.values {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 1rem;
+		margin: 0;
+		font-family: var(--sl-font-mono);
+		font-size: 0.6875rem;
+		color: var(--sl-color-gray-2);
+	}
+
+	.values b {
+		margin-inline-end: 0.35rem;
+		font-weight: 400;
+		color: var(--sl-color-gray-4);
+	}
+
+	.usage {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3rem;
+		margin: 0.15rem 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.usage li {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
+		min-width: 0;
+	}
+
+	.platform {
+		flex: none;
+		width: 3.75rem;
+		font-size: 0.625rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--sl-color-gray-4);
+	}
+
+	/* The symbols are long; wrapping keeps them readable where a nowrap box
+	   would silently clip the useful end of the path. */
+	.usage code {
+		flex: 1;
+		min-width: 0;
+		padding: 0.1rem 0.3rem;
+		border-radius: 0.25rem;
+		background: var(--sl-color-gray-6);
+		font-size: 0.6875rem;
+		line-height: 1.45;
+		overflow-wrap: anywhere;
+		color: var(--sl-color-gray-1);
+	}
+</style>
