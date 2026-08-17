@@ -1,7 +1,9 @@
 ---
-import { shadowSets } from '../lib/tokens';
+import { shadowSets, fixedLightSurface } from '../lib/tokens';
 
 const sets = shadowSets();
+// See the `.sample` background comment below for why this is fixed rather than themed.
+const sampleSurface = fixedLightSurface();
 ---
 
 <div class="grid">
@@ -19,7 +21,7 @@ const sets = shadowSets();
 	}
 </div>
 
-<style>
+<style define:vars={{ sampleSurface }}>
 	.grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
@@ -37,7 +39,12 @@ const sets = shadowSets();
 		block-size: 5rem;
 		margin-block-end: 0.6rem;
 		border-radius: 0.75rem;
-		background: var(--sl-color-black);
+		/* Fixed light, not a themed token: these shadows are composed from
+		   literal low-alpha black (see shadow.json) with no dark-theme
+		   counterpart, so the sample needs a surface that stays light in
+		   both themes to remain visible. `bg-always-light` is the design
+		   token reserved for exactly that case. */
+		background: var(--sampleSurface);
 	}
 
 	.name {

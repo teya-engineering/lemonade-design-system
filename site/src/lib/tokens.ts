@@ -10,7 +10,7 @@
  * Reaching outside `site/` requires `vite.server.fs.allow` in astro.config.mjs
  * for the dev server.
  */
-interface RawResolved {
+export interface RawResolved {
 	resolvedValue: number | string | { r: number; g: number; b: number; a?: number };
 	alias: string | null;
 	aliasName?: string;
@@ -151,6 +151,37 @@ export function themeColors(): ColorGroup[] {
 					tokens: tokens.sort((x, y) => x.name.localeCompare(y.name)),
 				})),
 		}));
+}
+
+/**
+ * The theme-colors token reserved for surfaces that must read as light in
+ * either theme (`Background/Fixed/bg-always-light`). Components that need a
+ * guaranteed-light surface — e.g. rendering a shadow sample composed from
+ * literal low-alpha black, which has no dark-theme counterpart — should use
+ * this instead of a raw hex value, so the choice stays traceable to a real
+ * design token rather than a magic constant.
+ */
+/**
+ * Pure lookup step, split out from `fixedLightSurface()` so the fail-loud
+ * validation below can be exercised directly in tests without needing a
+ * malformed `theme-colors.json` on disk (the real export is well-formed, so
+ * it can never trigger this throw itself).
+ */
+export function findFixedLightSurface(
+	variables: Array<{ name: string; resolvedValuesByMode: Record<string, RawResolved> }>,
+	light: string,
+): string {
+	const variable = variables.find((v) => v.name.endsWith('/bg-always-light'));
+	if (!variable) {
+		throw new Error('theme-colors.json is missing the "bg-always-light" token.');
+	}
+	return toCssColor(variable.resolvedValuesByMode[light]!.resolvedValue);
+}
+
+export function fixedLightSurface(): string {
+	const collection = load('theme-colors.json');
+	const light = modeId(collection, 'Light');
+	return findFixedLightSurface(collection.variables, light);
 }
 
 export interface ScaleToken {

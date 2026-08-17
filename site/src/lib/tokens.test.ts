@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { themeColors, scale, fontSizes, shadowSets, composeShadowSizes } from './tokens';
+import {
+	themeColors,
+	scale,
+	fontSizes,
+	shadowSets,
+	composeShadowSizes,
+	fixedLightSurface,
+	findFixedLightSurface,
+} from './tokens';
 
 describe('themeColors', () => {
 	it('reads tokens from the Figma export', () => {
@@ -58,6 +66,31 @@ describe('shadowSets', () => {
 			large: '0px 4px 6px -4px #0000000d, 0px 10px 15px -3px #0000000d',
 			xlarge: '0px 8px 10px -6px #0000000d, 0px 20px 25px -5px #0000000d',
 		});
+	});
+});
+
+describe('fixedLightSurface', () => {
+	it('resolves bg-always-light to white', () => {
+		expect(fixedLightSurface()).toBe('#ffffff');
+	});
+});
+
+describe('findFixedLightSurface', () => {
+	it('resolves the light value of bg-always-light', () => {
+		const variables = [
+			{
+				name: 'Background/Fixed/bg-always-light',
+				resolvedValuesByMode: {
+					light: { resolvedValue: { r: 1, g: 1, b: 1 }, alias: null },
+				},
+			},
+		];
+
+		expect(findFixedLightSurface(variables, 'light')).toBe('#ffffff');
+	});
+
+	it('throws when the token is missing', () => {
+		expect(() => findFixedLightSurface([], 'light')).toThrow(/bg-always-light/);
 	});
 });
 
