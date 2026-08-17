@@ -1,0 +1,44 @@
+---
+title: Colour
+description: Lemonade's semantic colour tokens, read directly from the Figma export that generates the platform code.
+---
+
+import ColorTokens from '../../../components/ColorTokens.astro';
+
+Every colour below is read at build time from `tokens/theme-colors.json` — the same
+file the Kotlin and Swift token converters generate from. When design re-exports the
+Figma collection, this page changes with it. Nobody updates it by hand.
+
+Each token carries its light and dark value, the guidance design wrote in Figma, and
+the symbol to use on each platform. Tokens marked **fixed** resolve to the same value
+in both themes, on purpose — they are for surfaces that must not flip.
+
+:::caution[Reach for these, not the primitives]
+These are the semantic tokens. The primitive palette underneath them
+(`blue/500`, `green-lime/alpha/200`, and so on) exists to define these, not to be used
+in product code. See [Semantic tokens first](/lemonade-design-system/standards/semantic-tokens/).
+:::
+
+## Background
+
+Surfaces, from the page underneath everything to the elevated layers on top of it.
+
+<ColorTokens group="Background" />
+
+## Content
+
+Text and icons. `content-primary` carries body copy, `content-secondary` supporting
+copy, `content-tertiary` the quietest labels.
+
+<ColorTokens group="Content" />
+
+## Border
+
+<ColorTokens group="Border" />
+
+## Interaction
+
+Applied on press, hover and focus. These are layered over a background token rather
+than replacing it.
+
+<ColorTokens group="Interaction" />

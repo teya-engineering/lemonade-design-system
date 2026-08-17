@@ -1,0 +1,22 @@
+---
+title: Typography
+description: The Figtree type ramp, its weights and line heights, generated from the Lemonade token export.
+---
+
+import TypeRamp from '../../../components/TypeRamp.astro';
+
+Lemonade sets everything in **Figtree**. The specimens below are rendered in the real
+typeface, at the real token sizes, read from `tokens/typography.json`.
+
+Sizes are unitless design tokens — each platform maps them to its own unit (`sp` on
+Android, points on iOS), so the same token produces the correct result once the user's
+own text-size preference is applied.
+
+<TypeRamp />
+
+## Choosing a size
+
+Pick by role, not by measurement. If a heading needs to be smaller, the answer is
+usually a different heading level rather than a smaller token — text that steps outside
+the ramp stops scaling with the rest of the interface when someone turns their font
+size up.

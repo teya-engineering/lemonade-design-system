@@ -15,18 +15,21 @@ const sample = 'Squeeze the day';
 				<p class="specimen" style={`font-size: ${token.value}px`}>
 					{sample}
 				</p>
-				<dl class="meta">
-					<div>
-						<dt>Token</dt>
-						<dd>
+				{/* Plain divs/spans, not a <dl>: Starlight's markdown styles target
+				    description lists with enough specificity to beat scoped
+				    component CSS, which reintroduces their default indent. */}
+				<div class="meta">
+					<span class="meta-item">
+						<span class="meta-label">Token</span>
+						<span class="meta-value">
 							<code>{token.name}</code>
-						</dd>
-					</div>
-					<div>
-						<dt>Size</dt>
-						<dd>{token.value}px</dd>
-					</div>
-				</dl>
+						</span>
+					</span>
+					<span class="meta-item">
+						<span class="meta-label">Size</span>
+						<span class="meta-value">{token.value}px</span>
+					</span>
+				</div>
 			</div>
 		))
 	}
@@ -110,17 +113,17 @@ const sample = 'Squeeze the day';
 		margin: 0;
 	}
 
-	.meta div {
+	.meta-item {
 		display: flex;
 		gap: 0.35rem;
 		font-size: var(--sl-text-xs);
 	}
 
-	.meta dt {
+	.meta-label {
 		color: var(--sl-color-gray-4);
 	}
 
-	.meta dd {
+	.meta-value {
 		margin: 0;
 		font-variant-numeric: tabular-nums;
 		color: var(--sl-color-gray-2);

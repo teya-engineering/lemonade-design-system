@@ -1,0 +1,21 @@
+---
+title: Space & shape
+description: The spacing scale and corner radius tokens that give Lemonade its rhythm.
+---
+
+import ScaleTokens from '../../../components/ScaleTokens.astro';
+
+## Spacing
+
+One scale covers padding, gaps and margins. Values step in a way that keeps layouts on
+a shared rhythm — mixing in arbitrary numbers is what makes screens feel subtly
+misaligned next to each other.
+
+<ScaleTokens file="spacing.json" kind="length" />
+
+## Radius
+
+<ScaleTokens file="radius.json" kind="radius" />
+
+`radius-full` is the pill shape — it resolves to a value large enough to fully round
+whatever it is applied to, so it stays a pill at any height.
