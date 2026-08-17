@@ -16,10 +16,7 @@ export default defineConfig({
 			description:
 				"Teya's design system — how to build with it, the standards behind it, and the tokens that hold it together.",
 			customCss: ['./src/styles/lemonade.css'],
-			// errorOnRelativeLinks is off because content pages intentionally use
-			// relative links instead of hard-coding the `/lemonade-design-system`
-			// base path (see the 404 page for the one deliberate exception).
-			plugins: [starlightLinksValidator({ errorOnRelativeLinks: false })],
+			plugins: [starlightLinksValidator()],
 			social: [
 				{
 					icon: 'github',
