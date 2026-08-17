@@ -36,9 +36,17 @@ independently overridable, so a host app can swap in its own values for one axis
 without touching the rest. Left alone, `LemonadeTheme` follows the system setting: light
 or dark based on what the device reports.
 
-`LemonadeTheme` is optional in the sense that nothing crashes without it — components
-fall back to their own defaults if you skip the wrapper. But those defaults aren't
-theme-aware, so skipping it means nothing themes either. Wrap early.
+The wrapper is not optional. Colour has no fallback: skip `LemonadeTheme { }` and the
+first component that reads a colour throws at composition time, because there is no
+default to fall back to. Every other axis — typography, spacing, radius, shapes,
+opacity, border widths, sizes — does have a built-in default and would render fine on
+its own, but that doesn't save you, because colour is the one that's missing and colour
+is what almost every visual component reads. Wrap at the root, always.
+
+On SwiftUI there is no equivalent wrapper to add, and that's by design rather than an
+oversight: colours resolve through Asset Catalog named colours that adapt to the
+system's light/dark appearance automatically, so there's no root token to install before
+a colour is available.
 
 ## Fixed tokens
 

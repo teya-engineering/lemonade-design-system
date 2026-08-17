@@ -39,8 +39,10 @@ fun App() {
 }
 ```
 
-`LemonadeTheme` is optional — components fall back to defaults without it — but without
-it you cannot theme anything, so wrap early.
+`LemonadeTheme` is required, not optional: colour has no fallback, so the first
+component that reads one throws at composition time if you skip the wrapper. Wrap at
+the root before rendering anything. See
+[Theming & dark mode](/lemonade-design-system/standards/theming/) for why.
 
 Components hang off the `LemonadeUi` object, which exists so autocomplete tells you what
 the design system offers and so a reader can see at a glance where a component came from:
