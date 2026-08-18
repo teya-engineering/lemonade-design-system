@@ -2,13 +2,13 @@ name: Documentation Site
 
 on:
   push:
-    branches: [ "master", "main" ]
+    branches: [ "main" ]
     paths:
       - 'site/**'
       - 'tokens/**'
       - '.github/workflows/site.yml'
   pull_request:
-    branches: [ "master", "main" ]
+    branches: [ "main" ]
     paths:
       - 'site/**'
       - 'tokens/**'
@@ -17,14 +17,13 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: site-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    concurrency:
+      group: site-build-${{ github.ref }}
+      cancel-in-progress: true
     defaults:
       run:
         working-directory: site
@@ -60,6 +59,12 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
+    # Never cancel an in-flight deployment: deploy-pages@v4 can't be interrupted
+    # cleanly, and cancelling it mid-run leaves the GitHub Pages deployment
+    # stuck. A second push to main queues behind this instead of cancelling it.
+    concurrency:
+      group: site-deploy
+      cancel-in-progress: false
     permissions:
       pages: write
       id-token: write

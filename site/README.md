@@ -1,49 +1,31 @@
-# Starlight Starter Kit: Basics
+# Lemonade documentation site
 
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
+The docs site for the Lemonade design system: getting started on KMP and SwiftUI, the
+standards behind the components, and the design tokens that hold it together. Built
+with [Astro](https://astro.build) and [Starlight](https://starlight.astro.build).
 
-```
-npm create astro@latest -- --template starlight
-```
+Foundations pages (Colour, Space & shape, Typography, Opacity & borders) are not
+hand-written — they're generated at build time from the Figma exports in `tokens/*.json`
+at the repository root. Edit the token export, not the page, to change what they show.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Requirements
 
-## 🚀 Project Structure
+Node 22 (see `.nvmrc`).
 
-Inside of your Astro + Starlight project, you'll see the following folders and files:
+## Commands
 
-```
-.
-├── public/
-├── src/
-│   ├── assets/
-│   ├── content/
-│   │   └── docs/
-│   └── content.config.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
-```
+Run from this directory (`site/`):
 
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
+| Command          | Action                                          |
+| :--------------- | :----------------------------------------------- |
+| `npm install`    | Install dependencies                              |
+| `npm run dev`    | Start the local dev server at `localhost:4321`    |
+| `npm run build`  | Build the production site to `./dist/`            |
+| `npx vitest run` | Run the unit tests for the token-reading logic    |
 
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
+## Links
 
-Static assets, like favicons, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+Internal content links must be base-absolute (`/lemonade-design-system/...`), not
+relative — the site is hosted under a base path. `npm run build` runs
+`starlight-links-validator` and fails on any dead internal link, so a broken link never
+reaches production.
