@@ -23,8 +23,8 @@ off — and the screen next to it starts to look misaligned, because it is.
 ## Choosing a step
 
 Within a component — around an icon, between a label and its value — reach for
-`spacing200` or `spacing300`. Between related blocks on the same screen, `spacing400` is
-the default. Between distinct sections, step up to `spacing600` or beyond.
+`spacing-200` or `spacing-300`. Between related blocks on the same screen, `spacing-400`
+is the default. Between distinct sections, step up to `spacing-600` or beyond.
 
 When a gap feels like it wants something between two steps, that's the scale telling you
 to step up, not a reason to invent a value. A slightly more generous gap at the next

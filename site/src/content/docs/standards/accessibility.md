@@ -24,16 +24,18 @@ themselves are at fault.
 
 ## Touch targets
 
-Apple's and Android's platform guidelines both set a 44×44pt minimum for anything a
-user taps, and that's the standard Lemonade expects every interactive element to meet —
-the visual size of the control is not the same as its hit area, and the hit area is what
-the guideline is about.
+Apple's Human Interface Guidelines set a 44×44pt minimum for anything a user taps;
+Android's Material guidelines set a 48×48dp minimum. Neither figure converts exactly to
+the other platform's unit, so Lemonade expects every interactive element to clear its
+own platform's minimum — the visual size of the control is not the same as its hit area,
+and the hit area is what each guideline is about.
 
-Lemonade's own components don't all sit at 44pt by default: the smallest icon button
-sizes render well below it. Where a control's visible size is smaller than 44×44pt,
-either choose a larger size or give it a comfortably large hit area so the tap target
-still clears the minimum. A control that looks small but taps like it's 44×44pt is doing
-its job; one that's small in every dimension, including the invisible one, is not.
+Lemonade's own components don't all sit at that minimum by default: the smallest icon
+button sizes render well below it. Where a control's visible size is smaller than its
+platform's minimum, either choose a larger size or give it a comfortably large hit area
+so the tap target still clears it. A control that looks small but taps like it meets the
+minimum is doing its job; one that's small in every dimension, including the invisible
+one, is not.
 
 ## Labels
 

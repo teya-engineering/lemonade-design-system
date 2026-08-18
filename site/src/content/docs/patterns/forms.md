@@ -84,7 +84,7 @@ form, not attached to a field the user cannot fix.
 
 ## Spacing a form
 
-Use `spacing400` between fields and `spacing600` between groups of fields. The gap
+Use `spacing-400` between fields and `spacing-600` between groups of fields. The gap
 between a field and its own support text is part of the component and is not yours to
 adjust — if it looks wrong, that's a component bug worth reporting rather than a padding
 to override.

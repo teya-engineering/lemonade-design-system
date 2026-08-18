@@ -26,13 +26,13 @@ Name the role, and both themes come for free:
 
 ```kotlin
 // Do
-Text(
+LemonadeUi.Text(
     text = "Payment received",
     color = LemonadeTheme.colors.content.contentPositive,
 )
 
 // Don't — this is a light-theme-only decision
-Text(
+LemonadeUi.Text(
     text = "Payment received",
     color = Color(0xFF497D00),
 )
@@ -40,8 +40,7 @@ Text(
 
 ```swift
 // Do
-LemonadeUi.Text("Payment received")
-    .foregroundStyle(theme.colors.content.contentPositive)
+LemonadeUi.Text("Payment received", color: LemonadeTheme.colors.content.contentPositive)
 ```
 
 ## Choosing the right one

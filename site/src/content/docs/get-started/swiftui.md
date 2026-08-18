@@ -10,7 +10,7 @@ them and something is wrong, please correct this page.
 
 Add the package in Xcode via **File → Add Package Dependencies**, pointing at
 `github.com/saltpay/lemonade-design-system`, and pick the most recent
-`lemonade-swiftui-v*` tag.
+`lemonade-swiftui-*` tag (no `v` prefix — e.g. `lemonade-swiftui-0.37.1`).
 
 The same `LemonadeUi` namespace applies:
 
@@ -18,12 +18,12 @@ The same `LemonadeUi` namespace applies:
 import Lemonade
 
 struct MyScreen: View {
-    @State private var isOn = false
+    @State private var checked = false
 
     var body: some View {
         VStack {
             LemonadeUi.Text("Notifications")
-            LemonadeUi.Switch(isOn: $isOn)
+            LemonadeUi.Switch(checked: checked, onCheckedChange: { checked = $0 })
         }
     }
 }

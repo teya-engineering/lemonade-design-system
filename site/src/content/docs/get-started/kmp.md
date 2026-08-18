@@ -3,12 +3,13 @@ title: Kotlin Multiplatform
 description: Add Lemonade to a Kotlin Multiplatform project and render your first component.
 ---
 
-Add the dependency to your version catalog. The latest version is whatever the most
-recent `lemonade-kmp-v*` tag says.
+Add the dependency to your version catalog. The version below is the latest published
+at the time of writing; check the repository's tag list for a `lemonade-kmp-*` tag
+newer than `0.37.1` (tags have no `v` prefix) before you publish.
 
 ```toml
 [versions]
-lemonade = "1.0.0"
+lemonade = "0.37.1"
 
 [libraries]
 lemonade-ui = { module = "com.teya.foundation:lemonade-ui", version.ref = "lemonade" }
