@@ -6,11 +6,10 @@ interface Props {
 	file: string;
 	/** How to preview the value. */
 	kind?: 'length' | 'radius' | 'percent';
-	prefix?: string;
 }
 
-const { file, kind = 'length', prefix } = Astro.props;
-const tokens = scale(file, { prefix });
+const { file, kind = 'length' } = Astro.props;
+const tokens = scale(file);
 ---
 
 <div class="scroller">

@@ -1,17 +1,20 @@
 ---
-import { themeColors, type ColorGroup } from '../lib/tokens';
+import { themeColors, assertAllColorGroupsRendered, type ColorGroup } from '../lib/tokens';
 
 interface Props {
-	/** Render a single top-level group, e.g. "Background". Omit for all groups. */
-	group?: string;
+	/** The top-level group to render, e.g. "Background". */
+	group: string;
 }
 
 const { group } = Astro.props;
 
-const all = themeColors();
-const groups: ColorGroup[] = group ? all.filter((g) => g.label === group) : all;
+// Fails the build if the export has grown a group no page section renders.
+assertAllColorGroupsRendered();
 
-if (group && groups.length === 0) {
+const all = themeColors();
+const groups: ColorGroup[] = all.filter((g) => g.label === group);
+
+if (groups.length === 0) {
 	throw new Error(
 		`No colour group named "${group}". Available: ${all.map((g) => g.label).join(', ')}`,
 	);
@@ -21,7 +24,6 @@ if (group && groups.length === 0) {
 {
 	groups.map((g) => (
 		<section class="token-group">
-			{!group && <h3>{g.label}</h3>}
 			{g.subgroups.map((sub) => (
 				<>
 					{sub.label && <h4 class="subgroup">{sub.label}</h4>}

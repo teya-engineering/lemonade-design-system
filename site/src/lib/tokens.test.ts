@@ -7,6 +7,10 @@ import {
 	composeShadowSizes,
 	fixedLightSurface,
 	findFixedLightSurface,
+	unrenderedColorGroups,
+	assertAllColorGroupsRendered,
+	soleModeId,
+	type RawCollection,
 } from './tokens';
 
 describe('themeColors', () => {
@@ -27,6 +31,38 @@ describe('themeColors', () => {
 		expect(bgDefault!.light).toBe('#ffffff');
 		expect(bgDefault!.dark).toBe('#201f1d');
 	});
+
+	it('carries every published Content token, not just some of them', () => {
+		const content = themeColors().find((g) => g.label === 'Content')!;
+		const contentTokens = content.subgroups.flatMap((s) => s.tokens);
+
+		// Guards against #7: a schema change that silently drops a whole
+		// top-level group would still pass a bare `> 100` check.
+		expect(contentTokens.length).toBe(28);
+		expect(contentTokens.map((t) => t.name)).toContain('content-primary');
+	});
+
+	it('renders every top-level group the export contains', () => {
+		const groups = themeColors().map((g) => g.label).sort();
+
+		expect(groups).toEqual(['Background', 'Border', 'Content', 'Interaction', 'Scoped', 'Shadow']);
+	});
+});
+
+describe('unrenderedColorGroups', () => {
+	it('is empty when every exported group is a rendered one', () => {
+		expect(unrenderedColorGroups(['Background', 'Content'])).toEqual([]);
+	});
+
+	it('flags a group that is not in the rendered set', () => {
+		expect(unrenderedColorGroups(['Background', 'Vault'])).toEqual(['Vault']);
+	});
+});
+
+describe('assertAllColorGroupsRendered', () => {
+	it('does not throw against the real theme-colors.json export', () => {
+		expect(() => assertAllColorGroupsRendered()).not.toThrow();
+	});
 });
 
 describe('scale', () => {
@@ -40,8 +76,39 @@ describe('scale', () => {
 });
 
 describe('fontSizes', () => {
-	it('returns only font-size tokens', () => {
-		expect(fontSizes().every((t) => !t.name.startsWith('line-height'))).toBe(true);
+	it('returns only font-size tokens, leaf-named and in ascending order', () => {
+		const sizes = fontSizes();
+
+		expect(sizes.length).toBe(15);
+		expect(sizes.map((t) => t.name)).toContain('font-size-400');
+		expect(sizes.every((t) => !t.name.startsWith('line-height'))).toBe(true);
+		expect(sizes.map((t) => t.value)).toEqual([...sizes.map((t) => t.value)].sort((a, b) => a - b));
+	});
+});
+
+describe('soleModeId', () => {
+	const collection = (modes: Record<string, string>): RawCollection => ({
+		id: 'c1',
+		name: 'Test collection',
+		modes,
+		variables: [],
+	});
+
+	it('returns the only mode id', () => {
+		expect(soleModeId(collection({ '1:0': 'Value' }))).toBe('1:0');
+	});
+
+	it('throws when a collection has more than one mode', () => {
+		expect(() => soleModeId(collection({ '1:0': 'Value', '2:0': 'Stray' }))).toThrow(
+			/exactly one mode/,
+		);
+		expect(() => soleModeId(collection({ '1:0': 'Value', '2:0': 'Stray' }))).toThrow(
+			/Test collection/,
+		);
+	});
+
+	it('throws when a collection has no modes', () => {
+		expect(() => soleModeId(collection({}))).toThrow(/exactly one mode/);
 	});
 });
 

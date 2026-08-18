@@ -12,8 +12,6 @@
  */
 export interface RawResolved {
 	resolvedValue: number | string | { r: number; g: number; b: number; a?: number };
-	alias: string | null;
-	aliasName?: string;
 }
 
 interface RawVariable {
@@ -26,7 +24,7 @@ interface RawVariable {
 	hiddenFromPublishing: boolean;
 }
 
-interface RawCollection {
+export interface RawCollection {
 	id: string;
 	name: string;
 	modes: Record<string, string>;
@@ -70,9 +68,20 @@ function modeId(collection: RawCollection, name: string): string {
 	return found[0];
 }
 
-/** The single mode of a collection that only has one. */
-function soleModeId(collection: RawCollection): string {
+/**
+ * The single mode of a collection that only has one. Figma re-exports have
+ * carried stray extra modes before (see `theme-colors strip 3932:0`); silently
+ * taking the first key would read one mode's values while claiming to read
+ * the collection's only one, so this fails loud instead.
+ */
+export function soleModeId(collection: RawCollection): string {
 	const ids = Object.keys(collection.modes);
+	if (ids.length !== 1) {
+		throw new Error(
+			`Expected exactly one mode in collection "${collection.name}", found ${ids.length}: ` +
+				`${Object.values(collection.modes).join(', ')}.`,
+		);
+	}
 	return ids[0]!;
 }
 
@@ -154,6 +163,43 @@ export function themeColors(): ColorGroup[] {
 }
 
 /**
+ * Every top-level colour group the Colour page is expected to render, kept in
+ * sync with the `<ColorTokens group="..." />` sections in colour.mdx. Mirrors
+ * SHADOW_ORDER below: a hard-coded expectation the export is checked against,
+ * so a newly exported Figma group fails the build instead of silently never
+ * appearing on the page.
+ */
+const RENDERED_COLOR_GROUPS = ['Background', 'Border', 'Content', 'Interaction', 'Scoped', 'Shadow'];
+
+/**
+ * Pure comparison step, split out from `assertAllColorGroupsRendered()` so it
+ * can be exercised in tests without needing a malformed `theme-colors.json`
+ * on disk (the real export is well-formed, so it can never trigger the throw
+ * itself).
+ */
+export function unrenderedColorGroups(exportedLabels: string[]): string[] {
+	return exportedLabels.filter((label) => !RENDERED_COLOR_GROUPS.includes(label));
+}
+
+/**
+ * Fails the build if `theme-colors.json` contains a top-level group the
+ * Colour page does not render. The project rule is that a token schema
+ * change must fail the build rather than silently empty a page — without
+ * this, a new Figma group ships with a green build and no signal.
+ */
+export function assertAllColorGroupsRendered(): void {
+	const exportedLabels = themeColors().map((g) => g.label);
+	const missing = unrenderedColorGroups(exportedLabels);
+	if (missing.length > 0) {
+		throw new Error(
+			`theme-colors.json contains colour group(s) the Colour page does not render: ` +
+				`${missing.join(', ')}. Add a <ColorTokens group="..."/> section for each in ` +
+				'colour.mdx, and add the group name to RENDERED_COLOR_GROUPS in tokens.ts.',
+		);
+	}
+}
+
+/**
  * The theme-colors token reserved for surfaces that must read as light in
  * either theme (`Background/Fixed/bg-always-light`). Components that need a
  * guaranteed-light surface — e.g. rendering a shadow sample composed from
@@ -186,7 +232,6 @@ export function fixedLightSurface(): string {
 
 export interface ScaleToken {
 	name: string;
-	description: string;
 	value: number;
 	android?: string;
 	ios?: string;
@@ -202,7 +247,6 @@ export function scale(file: string, options: { prefix?: string } = {}): ScaleTok
 		.filter((v) => (options.prefix ? v.name.startsWith(options.prefix) : true))
 		.map((v) => ({
 			name: v.name.split('/').pop()!,
-			description: v.description,
 			value: Number(v.resolvedValuesByMode[mode]!.resolvedValue),
 			android: v.codeSyntax.ANDROID,
 			ios: v.codeSyntax.iOS,
@@ -210,17 +254,15 @@ export function scale(file: string, options: { prefix?: string } = {}): ScaleTok
 		.sort((a, b) => a.value - b.value);
 }
 
-export interface TypeToken extends ScaleToken {}
-
-export function fontSizes(): TypeToken[] {
+export function fontSizes(): ScaleToken[] {
 	return scale('typography.json', { prefix: 'font-size/' });
 }
 
-export function lineHeights(): TypeToken[] {
+export function lineHeights(): ScaleToken[] {
 	return scale('typography.json', { prefix: 'line-height/' });
 }
 
-export function fontWeights(): TypeToken[] {
+export function fontWeights(): ScaleToken[] {
 	return scale('typography.json', { prefix: 'font-weight/' });
 }
 
