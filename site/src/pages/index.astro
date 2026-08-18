@@ -3,18 +3,18 @@
  * Standalone landing page. Starlight owns every other route; this one is plain
  * Astro so the layout isn't bound to the docs template.
  */
-import { themeColors } from '../lib/tokens';
+import { themeColors, resolveColorTokens } from '../lib/tokens';
 import '../styles/lemonade.css';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-// Pulled live from tokens/theme-colors.json — the landing page can't drift from
-// the palette it is advertising.
-const wanted = ['bg-brand', 'bg-accent', 'content-positive', 'content-caution', 'content-critical'];
+// Pulled live from tokens/theme-colors.json and resolved by name — the build
+// fails loudly (via resolveColorTokens) if any of these is renamed or
+// unpublished, so the chips can never silently drift from the palette they
+// claim to sample.
+const wanted = ['bg-brand', 'content-positive', 'content-caution', 'content-critical'];
 const flat = themeColors().flatMap((g) => g.subgroups.flatMap((s) => s.tokens));
-const chips = wanted
-	.map((name) => flat.find((t) => t.name === name))
-	.filter((t): t is NonNullable<typeof t> => Boolean(t));
+const chips = resolveColorTokens(wanted, flat);
 
 const platforms = [
 	{

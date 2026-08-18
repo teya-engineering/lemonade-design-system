@@ -163,6 +163,28 @@ export function themeColors(): ColorGroup[] {
 }
 
 /**
+ * Resolves a list of leaf token names against an already-flattened token
+ * list, in the order given. Used anywhere (e.g. the landing page's palette
+ * sample) that hard-codes a handful of token names rather than rendering a
+ * whole group — a plain `.find()` per name would silently drop a renamed or
+ * unpublished token and never notice. Matches the project's fail-loud policy
+ * for token schema changes: throws naming every name that did not resolve,
+ * so a rename or a token going `hiddenFromPublishing` fails the build
+ * instead of quietly shrinking the caller's output.
+ */
+export function resolveColorTokens(names: string[], tokens: ColorToken[]): ColorToken[] {
+	const resolved = names.map((name) => tokens.find((t) => t.name === name));
+	const missing = names.filter((_, i) => !resolved[i]);
+	if (missing.length > 0) {
+		throw new Error(
+			`Token(s) not found in theme-colors.json: ${missing.join(', ')}. They may have ` +
+				'been renamed or marked hiddenFromPublishing — update the caller to match.',
+		);
+	}
+	return resolved as ColorToken[];
+}
+
+/**
  * Every top-level colour group the Colour page is expected to render, kept in
  * sync with the `<ColorTokens group="..." />` sections in colour.mdx. Mirrors
  * SHADOW_ORDER below: a hard-coded expectation the export is checked against,
@@ -200,14 +222,13 @@ export function assertAllColorGroupsRendered(): void {
 }
 
 /**
- * The theme-colors token reserved for surfaces that must read as light in
- * either theme (`Background/Fixed/bg-always-light`). Components that need a
- * guaranteed-light surface — e.g. rendering a shadow sample composed from
- * literal low-alpha black, which has no dark-theme counterpart — should use
- * this instead of a raw hex value, so the choice stays traceable to a real
- * design token rather than a magic constant.
- */
-/**
+ * Looks up the theme-colors token reserved for surfaces that must read as
+ * light in either theme (`Background/Fixed/bg-always-light`). Components
+ * that need a guaranteed-light surface — e.g. rendering a shadow sample
+ * composed from literal low-alpha black, which has no dark-theme counterpart
+ * — should use this instead of a raw hex value, so the choice stays
+ * traceable to a real design token rather than a magic constant.
+ *
  * Pure lookup step, split out from `fixedLightSurface()` so the fail-loud
  * validation below can be exercised directly in tests without needing a
  * malformed `theme-colors.json` on disk (the real export is well-formed, so

@@ -9,8 +9,10 @@ import {
 	findFixedLightSurface,
 	unrenderedColorGroups,
 	assertAllColorGroupsRendered,
+	resolveColorTokens,
 	soleModeId,
 	type RawCollection,
+	type ColorToken,
 } from './tokens';
 
 describe('themeColors', () => {
@@ -62,6 +64,43 @@ describe('unrenderedColorGroups', () => {
 describe('assertAllColorGroupsRendered', () => {
 	it('does not throw against the real theme-colors.json export', () => {
 		expect(() => assertAllColorGroupsRendered()).not.toThrow();
+	});
+});
+
+describe('resolveColorTokens', () => {
+	const tokens: ColorToken[] = [
+		{ name: 'bg-brand', path: [], description: '', light: '#fff', dark: '#000', fixed: false },
+		{
+			name: 'content-positive',
+			path: [],
+			description: '',
+			light: '#fff',
+			dark: '#000',
+			fixed: false,
+		},
+	];
+
+	it('resolves every name, in the order given', () => {
+		expect(resolveColorTokens(['content-positive', 'bg-brand'], tokens)).toEqual([
+			tokens[1],
+			tokens[0],
+		]);
+	});
+
+	it('throws naming every token that does not resolve', () => {
+		expect(() =>
+			resolveColorTokens(['bg-brand', 'bg-accent', 'bg-ghost'], tokens),
+		).toThrow(/bg-accent, bg-ghost/);
+	});
+
+	it('does not throw against the real theme-colors.json export for the tokens the landing page uses', () => {
+		const flat = themeColors().flatMap((g) => g.subgroups.flatMap((s) => s.tokens));
+		expect(() =>
+			resolveColorTokens(
+				['bg-brand', 'content-positive', 'content-caution', 'content-critical'],
+				flat,
+			),
+		).not.toThrow();
 	});
 });
 
