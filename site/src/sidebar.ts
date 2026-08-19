@@ -22,6 +22,10 @@ export const sidebar: SidebarGroup[] = [
 		],
 	},
 	{
+		label: 'Prototyping',
+		items: [{ label: 'Prototyping with Lemonade', slug: 'prototyping' }],
+	},
+	{
 		label: 'Standards',
 		items: [
 			{ label: 'Semantic tokens first', slug: 'standards/semantic-tokens' },
