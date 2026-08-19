@@ -278,6 +278,10 @@ ul:where(.astro-ojxuodky) ul {
 	align-items: center;
 }
 
+.sidebar svg:where(.astro-n5k4ipy7) {
+	color: var(--sl-color-gray-4);
+}
+
 /* A page sitting directly under a section heading is a link, not a group
    label. Starlight styles every top-level entry as a heading — larger, bolder,
    in the foreground colour — which would outshout the group labels beside it,
@@ -307,7 +311,7 @@ ul:where(.astro-ojxuodky) ul {
 }
 
 .sidebar ul.top-level > li > details > ul {
-	margin-inline-start: 0.75rem;
+	margin-inline-start: 1.25rem;
 	padding-inline-start: 0.5rem;
 }
 
@@ -334,7 +338,8 @@ summary:where(.astro-ojxuodky):hover, .sidebar a:hover {
 	color: var(--sl-color-gray-2);
 }
 
-.sidebar a[aria-current='page'] {
+.sidebar ul.top-level > li > a[aria-current='page'],
+.sidebar ul.top-level > li > details > ul > li > a[aria-current='page']  {
 	background: var(--lemonade-surface-subtle);
 	color: var(--lemonade-brand-dim);
 }
