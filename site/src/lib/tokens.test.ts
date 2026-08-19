@@ -40,8 +40,16 @@ describe('themeColors', () => {
 
 		// Guards against #7: a schema change that silently drops a whole
 		// top-level group would still pass a bare `> 100` check.
-		expect(contentTokens.length).toBe(28);
-		expect(contentTokens.map((t) => t.name)).toContain('content-primary');
+		//
+		// A floor, not an exact count. Design adds semantic tokens routinely —
+		// PR #326 added four across Content, Background, Border and Interaction —
+		// and pinning the number turns every legitimate addition into a red
+		// build, which trains people to bump the constant without reading it.
+		// The failure this guards against is a group emptying out, not growing.
+		expect(contentTokens.length).toBeGreaterThanOrEqual(28);
+		expect(contentTokens.map((t) => t.name)).toEqual(
+			expect.arrayContaining(['content-primary', 'content-secondary', 'content-tertiary']),
+		);
 	});
 
 	it('renders every top-level group the export contains', () => {
