@@ -27,6 +27,8 @@ export default defineConfig({
 			// The landing page is a standalone Astro page at src/pages/index.astro,
 			// so Starlight owns everything except "/".
 			sidebar,
+			// Adds inert section headings above the groups; see the component.
+			components: { Sidebar: './src/components/Sidebar.astro' },
 		}),
 	],
 });
