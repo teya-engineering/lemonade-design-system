@@ -74,6 +74,14 @@ const sample = 'Squeeze the day';
 </div>
 
 <style>
+	/* The specimens must render in Figtree, not in whatever the site's UI font
+	   happens to be — the page says they are the real typeface, and a type ramp
+	   showing the wrong face is worse than no type ramp. */
+	.ramp,
+	.weights {
+		font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+	}
+
 	.ramp {
 		display: flex;
 		flex-direction: column;
