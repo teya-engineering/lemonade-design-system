@@ -283,8 +283,83 @@ export function lineHeights(): ScaleToken[] {
 	return scale('typography.json', { prefix: 'line-height/' });
 }
 
-export function fontWeights(): ScaleToken[] {
-	return scale('typography.json', { prefix: 'font-weight/' });
+/**
+ * Figma stores a font weight as the typeface's style name, not a number, so
+ * the export says "SemiBold" where CSS wants 600. This map is the only place
+ * that translation lives.
+ *
+ * A style with no entry here fails the build rather than being guessed at or
+ * dropped: a specimen rendered at the wrong weight looks deliberate, so no
+ * one would catch it.
+ */
+const FONT_WEIGHT_SCALE: Record<string, number> = {
+	Thin: 100,
+	ExtraLight: 200,
+	Light: 300,
+	Regular: 400,
+	Medium: 500,
+	SemiBold: 600,
+	Bold: 700,
+	ExtraBold: 800,
+	Black: 900,
+};
+
+export interface WeightToken {
+	/** Leaf token name as exported, e.g. "bold". */
+	name: string;
+	/** The style name Figma and the platforms use, e.g. "Bold". */
+	style: string;
+	/** The CSS numeric weight, e.g. 700. */
+	value: number;
+}
+
+/**
+ * Pure mapping step, split out from `fontWeights()` so the fail-loud
+ * validation can be exercised in tests without needing a malformed
+ * `typography.json` on disk (the real export is well-formed, so it can never
+ * trigger these throws itself).
+ */
+export function composeFontWeights(entries: Array<{ name: string; style: string }>): WeightToken[] {
+	if (entries.length === 0) {
+		throw new Error(
+			'typography.json exported no font-weight tokens. The Typography page builds its ' +
+				'Weights section from them, so an empty list renders an empty section with no ' +
+				'other signal — which is exactly what this throw exists to prevent.',
+		);
+	}
+
+	const unknown = entries.filter((entry) => !(entry.style in FONT_WEIGHT_SCALE));
+	if (unknown.length > 0) {
+		throw new Error(
+			'typography.json uses font-weight style(s) with no CSS equivalent: ' +
+				`${unknown.map((entry) => `${entry.name} = "${entry.style}"`).join(', ')}. ` +
+				'Add them to FONT_WEIGHT_SCALE in tokens.ts.',
+		);
+	}
+
+	return entries
+		.map((entry) => ({ ...entry, value: FONT_WEIGHT_SCALE[entry.style]! }))
+		.sort((a, b) => a.value - b.value);
+}
+
+/**
+ * Font weights are STRING variables, so they cannot go through `scale()`,
+ * which reads FLOATs. That mismatch is why this section rendered empty: the
+ * type filter dropped all four tokens and nothing complained.
+ */
+export function fontWeights(): WeightToken[] {
+	const collection = load('typography.json');
+	const mode = soleModeId(collection);
+
+	return composeFontWeights(
+		collection.variables
+			.filter((v) => !v.hiddenFromPublishing && v.type === 'STRING')
+			.filter((v) => v.name.startsWith('font-weight/'))
+			.map((v) => ({
+				name: v.name.split('/').pop()!,
+				style: String(v.resolvedValuesByMode[mode]!.resolvedValue),
+			})),
+	);
 }
 
 export interface ShadowLevel {

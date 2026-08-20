@@ -3,6 +3,8 @@ import {
 	themeColors,
 	scale,
 	fontSizes,
+	fontWeights,
+	composeFontWeights,
 	shadowSets,
 	composeShadowSizes,
 	fixedLightSurface,
@@ -130,6 +132,64 @@ describe('fontSizes', () => {
 		expect(sizes.map((t) => t.name)).toContain('font-size-400');
 		expect(sizes.every((t) => !t.name.startsWith('line-height'))).toBe(true);
 		expect(sizes.map((t) => t.value)).toEqual([...sizes.map((t) => t.value)].sort((a, b) => a - b));
+	});
+});
+
+describe('fontWeights', () => {
+	// The regression this covers: font weights are STRING variables, and the
+	// generic `scale()` reader keeps only FLOATs. That filter dropped all four
+	// tokens, so the Typography page rendered an empty Weights section and the
+	// build stayed green.
+	it('reads the STRING weight tokens the FLOAT reader drops', () => {
+		const weights = fontWeights();
+
+		expect(weights.length).toBeGreaterThanOrEqual(4);
+		expect(weights.map((t) => t.name)).toEqual(
+			expect.arrayContaining(['regular', 'medium', 'semibold', 'bold']),
+		);
+	});
+
+	it('maps each style name to its CSS numeric weight', () => {
+		const byName = new Map(fontWeights().map((t) => [t.name, t]));
+
+		expect(byName.get('regular')).toMatchObject({ style: 'Regular', value: 400 });
+		expect(byName.get('medium')).toMatchObject({ style: 'Medium', value: 500 });
+		expect(byName.get('semibold')).toMatchObject({ style: 'SemiBold', value: 600 });
+		expect(byName.get('bold')).toMatchObject({ style: 'Bold', value: 700 });
+	});
+
+	it('returns them in ascending weight order', () => {
+		const values = fontWeights().map((t) => t.value);
+
+		expect(values).toEqual([...values].sort((a, b) => a - b));
+	});
+});
+
+describe('composeFontWeights', () => {
+	it('sorts by weight rather than by export order', () => {
+		const weights = composeFontWeights([
+			{ name: 'bold', style: 'Bold' },
+			{ name: 'regular', style: 'Regular' },
+			{ name: 'semibold', style: 'SemiBold' },
+		]);
+
+		expect(weights.map((t) => t.value)).toEqual([400, 600, 700]);
+	});
+
+	it('throws when the export has no weight tokens at all', () => {
+		expect(() => composeFontWeights([])).toThrow(/no font-weight tokens/);
+		expect(() => composeFontWeights([])).toThrow(/Weights section/);
+	});
+
+	it('throws on a style name with no CSS equivalent', () => {
+		const entries = [
+			{ name: 'regular', style: 'Regular' },
+			{ name: 'ultra', style: 'UltraHeavy' },
+		];
+
+		expect(() => composeFontWeights(entries)).toThrow(/ultra/);
+		expect(() => composeFontWeights(entries)).toThrow(/UltraHeavy/);
+		expect(() => composeFontWeights(entries)).toThrow(/FONT_WEIGHT_SCALE/);
 	});
 });
 
