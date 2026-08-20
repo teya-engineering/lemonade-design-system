@@ -1,0 +1,86 @@
+---
+title: Overview
+description: A short introduction to Teya's design system — what it covers, the problem it exists to solve, and where it stops.
+---
+**Lemonade** is the shared language behind Teya's products: a set of production
+components, one set of design tokens, and the standards that keep them honest. It
+ships as two real implementations — Compose Multiplatform and SwiftUI — rather than
+one wrapper stretched over every platform.
+
+## The problem it solves
+
+Without a system, the same decisions get made again and again — by the designer laying
+out a form, then by the engineers building it on two platforms. Which grey, how much
+space above the heading, what disabled looks like. Each answer is reasonable on its
+own; together they drift.
+
+Lemonade settles them once. A designer reaches for a pattern that already works instead
+of redrawing a form from scratch; an engineer gets a component that already knows its
+states. Both spend their effort on whatever is genuinely new about the screen.
+
+Change is the expensive half. A shifted palette or a new control state would otherwise
+be corrected by hand, everywhere, forever. Lemonade's values come from one Figma
+export, so a change lands once and travels.
+
+## What it gives you
+
+**Design tokens**
+
+Colour, typography, spacing, radius, elevation, opacity and border width, exported from Figma and generated into platform code. Every value on this site's [Foundations](/lemonade-design-system/foundations/colour/) pages is read from
+that same export, which is why it cannot quietly fall out of date.
+
+**Components**
+
+Buttons, text fields, selection controls, list items, tabs, notices,
+toasts and tooltips, among others — each already carrying its states, its theming and
+its accessibility behaviour.
+
+**Standards**
+
+The reasoning that makes the pieces fit — [semantic tokens over raw
+values](/lemonade-design-system/standards/semantic-tokens/), how [theming and dark
+mode](/lemonade-design-system/standards/theming/) actually work, the
+[accessibility](/lemonade-design-system/standards/accessibility/) baseline, and the
+[layout rhythm](/lemonade-design-system/standards/layout-rhythm/) everything sits on.
+
+**Patterns**
+
+Whole solutions rather than parts — a
+[form](/lemonade-design-system/patterns/forms/), an
+[empty state](/lemonade-design-system/patterns/empty-and-loading/), an
+[error](/lemonade-design-system/patterns/errors/) — assembled from components with the
+decisions written down.
+
+## Where it runs
+
+
+| Platform                 | Built with            | Targets                   | Status                                          |
+| ------------------------ | --------------------- | ------------------------- | ----------------------------------------------- |
+| **Kotlin Multiplatform** | Compose Multiplatform | Android, iOS, JVM Desktop | Published, five modules                         |
+| **SwiftUI**              | Native SwiftUI        | iOS 15+, macOS 12+        | Published                                       |
+| **Flutter**              | Flutter               | Android, iOS, Web         | An earlier implementation, no longer maintained |
+
+
+The published KMP modules are `core`, `tokens`, `ui`, `expressive` and `calendar`.
+Their public surface is locked by a binary compatibility check, so an upgrade will not
+break your build without someone deciding it should.
+
+## Where it stops
+
+**There is no official web support yet.** Tokens and components exist for the mobile
+and desktop platforms above; a web implementation is planned but not built. If you are
+putting together a web prototype today, start with
+[Prototyping with Lemonade](/lemonade-design-system/prototyping/) — it explains how to
+borrow the values by hand and what you may safely approximate.
+
+**Lemonade is not every screen.** It gives you the vocabulary, not the product. Where
+nothing in the system fits what you are building, that is a gap worth raising with the
+design systems team rather than routing around quietly.
+
+## Start here
+
+- Building on Android, iOS or Desktop → [Kotlin Multiplatform](/lemonade-design-system/get-started/kmp/)
+- Building a native Apple app → [SwiftUI](/lemonade-design-system/get-started/swiftui/)
+- Prototyping on the web → [Prototyping with Lemonade](/lemonade-design-system/prototyping/)
+- Designing rather than building → [Foundations](/lemonade-design-system/foundations/colour/) for the raw values, [Standards](/lemonade-design-system/standards/semantic-tokens/) for the reasoning
+
