@@ -2,6 +2,9 @@
 title: Overview
 description: A short introduction to Teya's design system — what it covers, the problem it exists to solve, and where it stops.
 ---
+
+import { Badge } from '@astrojs/starlight/components';
+
 **Lemonade** is the shared language behind Teya's products: a set of production
 components, one set of design tokens, and the standards that keep them honest. It
 ships as two real implementations — Compose Multiplatform and SwiftUI — rather than
@@ -54,16 +57,19 @@ decisions written down.
 ## Where it runs
 
 
-| Platform                 | Built with            | Targets                   | Status                                          |
-| ------------------------ | --------------------- | ------------------------- | ----------------------------------------------- |
-| **Kotlin Multiplatform** | Compose Multiplatform | Android, iOS, JVM Desktop | Published, five modules                         |
-| **SwiftUI**              | Native SwiftUI        | iOS 15+, macOS 12+        | Published                                       |
-| **Flutter**              | Flutter               | Android, iOS, Web         | An earlier implementation, no longer maintained |
+| Platform                 | Built with            | Targets                   | Status                                         |
+| ------------------------ | --------------------- | ------------------------- | ---------------------------------------------- |
+| **Kotlin Multiplatform** | Compose Multiplatform | Android, iOS, JVM Desktop | <Badge text="Published" variant="success" />   |
+| **SwiftUI**              | Native SwiftUI        | iOS 15+, macOS 12+        | <Badge text="Published" variant="success" />   |
+| **Flutter**              | Flutter               | Android, iOS, Web         | <Badge text="Unmaintained" variant="danger" /> |
 
 
 The published KMP modules are `core`, `tokens`, `ui`, `expressive` and `calendar`.
 Their public surface is locked by a binary compatibility check, so an upgrade will not
 break your build without someone deciding it should.
+
+Flutter was an earlier implementation and is no longer maintained. Nothing new
+should start there.
 
 ## Where it stops
 
