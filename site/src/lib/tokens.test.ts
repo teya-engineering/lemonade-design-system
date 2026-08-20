@@ -5,6 +5,9 @@ import {
 	fontSizes,
 	fontWeights,
 	composeFontWeights,
+	semanticTextStyles,
+	parseTextStyleName,
+	parseTextStyleSource,
 	shadowSets,
 	composeShadowSizes,
 	fixedLightSurface,
@@ -190,6 +193,113 @@ describe('composeFontWeights', () => {
 		expect(() => composeFontWeights(entries)).toThrow(/ultra/);
 		expect(() => composeFontWeights(entries)).toThrow(/UltraHeavy/);
 		expect(() => composeFontWeights(entries)).toThrow(/FONT_WEIGHT_SCALE/);
+	});
+});
+
+describe('semanticTextStyles', () => {
+	it('groups the styles the way the Foundations frame does', () => {
+		expect(semanticTextStyles().map((g) => g.label)).toEqual([
+			'Display',
+			'Heading',
+			'Body',
+			'Overline',
+		]);
+	});
+
+	it('reads every entry in the enum', () => {
+		const count = semanticTextStyles()
+			.flatMap((g) => g.subgroups)
+			.flatMap((s) => s.styles).length;
+
+		// A floor, not an exact count: design adds styles. The failure worth
+		// catching is the parser silently matching nothing.
+		expect(count).toBeGreaterThanOrEqual(30);
+	});
+
+	it('resolves each style against the scale tokens', () => {
+		const body = semanticTextStyles()
+			.find((g) => g.label === 'Body')!
+			.subgroups.flatMap((s) => s.styles);
+		const medium = body.find((s) => s.name === 'BodyMediumRegular');
+
+		expect(medium).toMatchObject({
+			label: 'Body Medium Regular',
+			fontSize: 16,
+			lineHeight: 24,
+			fontWeight: 400,
+			sizeToken: 'font-size-400',
+			lineHeightToken: 'line-height-600',
+			weightToken: 'regular',
+		});
+	});
+
+	it('splits Body by size step and leaves the other groups flat', () => {
+		const groups = new Map(semanticTextStyles().map((g) => [g.label, g]));
+
+		expect(groups.get('Body')!.subgroups.map((s) => s.label)).toEqual([
+			'Body XSmall',
+			'Body Small',
+			'Body Medium',
+			'Body Large',
+			'Body XLarge',
+		]);
+		expect(groups.get('Display')!.subgroups).toHaveLength(1);
+		expect(groups.get('Display')!.subgroups[0]!.label).toBeUndefined();
+	});
+
+	// The enum files the overline style under Body; Figma presents it on its own.
+	it('lifts the overline style out of Body', () => {
+		const groups = new Map(semanticTextStyles().map((g) => [g.label, g]));
+		const overline = groups.get('Overline')!.subgroups.flatMap((s) => s.styles);
+		const body = groups.get('Body')!.subgroups.flatMap((s) => s.styles);
+
+		expect(overline.map((s) => s.name)).toEqual(['BodyXSmallOverline']);
+		expect(overline[0]!.letterSpacing).toBe(1.5);
+		expect(body.some((s) => s.name === 'BodyXSmallOverline')).toBe(false);
+	});
+
+	it('orders each group by size, then by weight', () => {
+		for (const group of semanticTextStyles()) {
+			for (const subgroup of group.subgroups) {
+				const keys = subgroup.styles.map((s) => s.fontSize * 1000 + s.fontWeight);
+				expect(keys).toEqual([...keys].sort((a, b) => a - b));
+			}
+		}
+	});
+});
+
+describe('parseTextStyleName', () => {
+	it('splits names that generic PascalCase splitting gets wrong', () => {
+		expect(parseTextStyleName('BodyMediumSemiBold')).toEqual({
+			group: 'Body',
+			size: 'Medium',
+			weight: 'SemiBold',
+		});
+		expect(parseTextStyleName('Display3XLarge')).toEqual({
+			group: 'Display',
+			size: '3XLarge',
+			weight: '',
+		});
+		expect(parseTextStyleName('HeadingXXSmall')).toEqual({
+			group: 'Heading',
+			size: 'XXSmall',
+			weight: '',
+		});
+	});
+
+	it('throws rather than mislabelling an unknown name', () => {
+		expect(() => parseTextStyleName('CaptionSmall')).toThrow(/STYLE_GROUPS/);
+		expect(() => parseTextStyleName('BodyEnormous')).toThrow(/STYLE_SIZES/);
+		expect(() => parseTextStyleName('BodyMediumUltra')).toThrow(/STYLE_WEIGHTS/);
+	});
+});
+
+describe('parseTextStyleSource', () => {
+	it('throws when the enum shape changes and nothing matches', () => {
+		expect(() => parseTextStyleSource('public enum class LemonadeTypography { }')).toThrow(
+			/No LemonadeTypography entries parsed/,
+		);
+		expect(() => parseTextStyleSource('')).toThrow(/Typography page/);
 	});
 });
 

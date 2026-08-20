@@ -409,6 +409,14 @@ h1#_top,
 	font-size: 1.5rem;
 }
 
+.sl-markdown-content h3:not(:where(.not-content *)) {
+	font-size: 1.25rem;
+}
+
+.sl-markdown-content h4:not(:where(.not-content *)) {
+	font-size: 1rem;
+}
+
 .sl-markdown-content code:not(:where(.not-content *)) {
 	border: 1px solid var(--sl-color-gray-5);
 	border-radius: 0.25rem;

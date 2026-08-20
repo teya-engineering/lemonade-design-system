@@ -454,3 +454,231 @@ export function shadowSets(): ShadowSet[] {
 
 	return composeShadowSizes(parts);
 }
+
+/* ==========================================================================
+   Semantic text styles
+
+   These are the styles product code actually uses — `BodyMediumRegular`, not
+   `font-size-400`. They are not in the Figma variable export: the export
+   carries the scales, and the composite styles that combine them live in
+   Kotlin, in the enum below, which is what both platforms ship.
+
+   So this reads that enum at build time rather than restating it. The numbers
+   still come from `typography.json` — the enum references scale tokens by
+   name and they are resolved here — which means a page cannot disagree with
+   either source.
+   ========================================================================== */
+
+const TEXT_STYLE_SOURCE = '../../../kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeTextStyle.kt';
+
+const textStyleSources = import.meta.glob<string>(
+	'../../../kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeTextStyle.kt',
+	{ eager: true, query: '?raw', import: 'default' },
+);
+
+/** Longest-first, so `XSmall` cannot win against `XXSmall`. */
+const STYLE_SIZES = [
+	'3XLarge',
+	'2XLarge',
+	'XXSmall',
+	'XLarge',
+	'XSmall',
+	'Medium',
+	'Large',
+	'Small',
+];
+
+const STYLE_WEIGHTS = ['Overline', 'Regular', 'SemiBold', 'Medium', 'Bold'];
+
+const STYLE_GROUPS = ['Display', 'Heading', 'Body'];
+
+export interface TextStyle {
+	/** Enum entry name, e.g. "BodyMediumRegular". */
+	name: string;
+	/** Human reading of it, e.g. "Body Medium Regular". */
+	label: string;
+	/** "Display", "Heading", "Body" or "Overline". */
+	group: string;
+	/** Size step within the group, e.g. "Medium". */
+	size: string;
+	fontSize: number;
+	lineHeight: number;
+	fontWeight: number;
+	letterSpacing?: number;
+	/** The scale tokens this style is built from. */
+	sizeToken: string;
+	lineHeightToken: string;
+	weightToken: string;
+}
+
+export interface TextStyleSubgroup {
+	label?: string;
+	styles: TextStyle[];
+}
+
+export interface TextStyleGroup {
+	label: string;
+	subgroups: TextStyleSubgroup[];
+}
+
+/**
+ * Splits an enum entry name into its parts. Generic PascalCase splitting gets
+ * `SemiBold` wrong, so the parts are matched against known vocabularies and an
+ * unrecognised name throws rather than producing a plausible mislabel.
+ */
+export function parseTextStyleName(name: string): { group: string; size: string; weight: string } {
+	const group = STYLE_GROUPS.find((g) => name.startsWith(g));
+	if (!group) {
+		throw new Error(
+			`LemonadeTypography.${name} does not start with a known group ` +
+				`(${STYLE_GROUPS.join(', ')}). Add it to STYLE_GROUPS in tokens.ts.`,
+		);
+	}
+
+	let rest = name.slice(group.length);
+	const size = STYLE_SIZES.find((s) => rest.startsWith(s));
+	if (!size) {
+		throw new Error(
+			`LemonadeTypography.${name} has no known size step after "${group}". ` +
+				`Known: ${STYLE_SIZES.join(', ')}. Add it to STYLE_SIZES in tokens.ts.`,
+		);
+	}
+
+	rest = rest.slice(size.length);
+	// Display and Heading carry no weight suffix; their weight is implied.
+	const weight = rest === '' ? '' : STYLE_WEIGHTS.find((w) => w === rest);
+	if (weight === undefined) {
+		throw new Error(
+			`LemonadeTypography.${name} ends in "${rest}", which is not a known weight. ` +
+				`Known: ${STYLE_WEIGHTS.join(', ')}. Add it to STYLE_WEIGHTS in tokens.ts.`,
+		);
+	}
+
+	return { group, size, weight };
+}
+
+interface RawTextStyle {
+	name: string;
+	sizeToken: string;
+	lineHeightToken: string;
+	weightToken: string;
+	letterSpacing?: number;
+}
+
+/**
+ * Pure parse step, split out so the fail-loud paths can be exercised in tests
+ * without a malformed Kotlin file on disk.
+ */
+export function parseTextStyleSource(source: string): RawTextStyle[] {
+	const entry =
+		/^\s{4}(\w+)\(\s*LemonadeTextStyle\(\s*fontSize = LemonadeFontSizes\.(\w+)\.value,\s*lineHeight = LemonadeLineHeights\.(\w+)\.value,\s*fontWeight = LemonadeFontWeights\.(\w+)\.weight,\s*(?:letterSpacing = (-?[\d.]+)f,\s*)?\),\s*\),/gm;
+
+	const styles: RawTextStyle[] = [];
+	for (const match of source.matchAll(entry)) {
+		styles.push({
+			name: match[1]!,
+			sizeToken: match[2]!,
+			lineHeightToken: match[3]!,
+			weightToken: match[4]!,
+			letterSpacing: match[5] === undefined ? undefined : Number(match[5]),
+		});
+	}
+
+	if (styles.length === 0) {
+		throw new Error(
+			`No LemonadeTypography entries parsed from ${TEXT_STYLE_SOURCE}. The enum's shape ` +
+				'has changed, and the Typography page builds its semantic styles from it, so an ' +
+				'empty list would silently blank that section. Update the parser in tokens.ts.',
+		);
+	}
+
+	return styles;
+}
+
+/** `FontSize600` -> `font-size-600`, `LineHeight1200` -> `line-height-1200`. */
+function scaleTokenName(reference: string): string {
+	return reference
+		.replace(/([a-z])([A-Z])/g, '$1-$2')
+		.replace(/([A-Za-z])(\d)/g, '$1-$2')
+		.toLowerCase();
+}
+
+/**
+ * The semantic text styles, grouped the way the Foundations frame in Figma
+ * presents them: Display, Heading, Body (split by size step) and Overline.
+ */
+export function semanticTextStyles(): TextStyleGroup[] {
+	const path = Object.keys(textStyleSources)[0];
+	if (!path) {
+		throw new Error(
+			`Could not read ${TEXT_STYLE_SOURCE}. The Typography page builds its semantic ` +
+				'styles from that file; if it moved, update the glob in tokens.ts.',
+		);
+	}
+
+	const sizes = new Map(fontSizes().map((t) => [t.name, t.value]));
+	const heights = new Map(lineHeights().map((t) => [t.name, t.value]));
+	const weights = new Map(fontWeights().map((t) => [t.name.toLowerCase(), t.value]));
+
+	const styles = parseTextStyleSource(textStyleSources[path]!).map((raw) => {
+		const { group, size, weight } = parseTextStyleName(raw.name);
+		const sizeToken = scaleTokenName(raw.sizeToken);
+		const lineHeightToken = scaleTokenName(raw.lineHeightToken);
+		const weightToken = raw.weightToken.toLowerCase();
+
+		const fontSize = sizes.get(sizeToken);
+		const lineHeight = heights.get(lineHeightToken);
+		const fontWeight = weights.get(weightToken);
+		const missing = [
+			fontSize === undefined ? sizeToken : null,
+			lineHeight === undefined ? lineHeightToken : null,
+			fontWeight === undefined ? `font-weight/${weightToken}` : null,
+		].filter(Boolean);
+
+		if (missing.length > 0) {
+			throw new Error(
+				`LemonadeTypography.${raw.name} references token(s) that typography.json does ` +
+					`not export: ${missing.join(', ')}. The enum and the export have drifted.`,
+			);
+		}
+
+		return {
+			name: raw.name,
+			label: [group, size, weight].filter(Boolean).join(' '),
+			// Overline is its own group in Figma even though the enum files it under Body.
+			group: weight === 'Overline' ? 'Overline' : group,
+			size,
+			fontSize: fontSize!,
+			lineHeight: lineHeight!,
+			fontWeight: fontWeight!,
+			letterSpacing: raw.letterSpacing,
+			sizeToken,
+			lineHeightToken,
+			weightToken,
+		} satisfies TextStyle;
+	});
+
+	const order = ['Display', 'Heading', 'Body', 'Overline'];
+	const bySize = (a: TextStyle, b: TextStyle) =>
+		a.fontSize - b.fontSize || a.fontWeight - b.fontWeight;
+
+	return order
+		.map((label) => {
+			const inGroup = styles.filter((s) => s.group === label).sort(bySize);
+			if (inGroup.length === 0) return null;
+
+			// Body is the only group deep enough to need a second level; the rest
+			// read better as one grid.
+			if (label !== 'Body') return { label, subgroups: [{ styles: inGroup }] };
+
+			const steps = [...new Set(inGroup.map((s) => s.size))];
+			return {
+				label,
+				subgroups: steps.map((step) => ({
+					label: `Body ${step}`,
+					styles: inGroup.filter((s) => s.size === step),
+				})),
+			};
+		})
+		.filter((g): g is TextStyleGroup => g !== null);
+}
