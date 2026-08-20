@@ -44,6 +44,7 @@ export const sections: SidebarSection[] = [
 		label: 'Get started',
 		entries: [
 			{ label: 'Overview', slug: 'get-started/overview' },
+			{ label: 'Design', slug: 'get-started/design' },
 			{
 				label: 'Engineering',
 				items: [
