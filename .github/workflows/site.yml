@@ -30,6 +30,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          # Starlight derives each page's last-updated date from the newest
+          # commit touching it, and swallows git errors — a shallow clone
+          # would drop every date with no warning.
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4

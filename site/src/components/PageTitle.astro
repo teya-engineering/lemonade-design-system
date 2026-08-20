@@ -1,0 +1,75 @@
+---
+/**
+ * Replaces Starlight's `PageTitle` so the last-updated date sits under the
+ * heading. Starlight's own `LastUpdated` renders it in the page footer, which
+ * is a long way from the thing a reader is deciding: whether this page is
+ * current. That component is overridden to render nothing, so the date
+ * appears once.
+ *
+ * The date comes from `lastUpdated: true` in astro.config.mjs, which reads the
+ * newest commit date for the file. Starlight swallows git errors, so a shallow
+ * clone produces no date and no warning — `.github/workflows/site.yml` sets
+ * `fetch-depth: 0` to keep the history available at build time.
+ */
+const { entry, lastUpdated, lang } = Astro.locals.starlightRoute;
+
+// Must stay '_top'. Starlight's skip link targets it, and so does the
+// `h1#_top` rule in lemonade.css. It is Starlight's PAGE_TITLE_ID, which the
+// package does not export.
+const PAGE_TITLE_ID = '_top';
+---
+
+<h1 id={PAGE_TITLE_ID}>{entry.data.title}</h1>
+
+{
+	lastUpdated && (
+		<p class="last-updated">
+			<svg
+				class="clock"
+				aria-hidden="true"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<circle cx="12" cy="12" r="9" />
+				<path d="M12 7v5l3 2" />
+			</svg>
+			Last updated{' '}
+			<time datetime={lastUpdated.toISOString()}>
+				{lastUpdated.toLocaleDateString(lang, { dateStyle: 'medium', timeZone: 'UTC' })}
+			</time>
+		</p>
+	)
+}
+
+<style>
+	/* Carried over from the component this replaces — without it the title
+	   loses its margin, weight and colour. */
+	h1 {
+		margin-top: 1rem;
+		font-size: var(--sl-text-h1);
+		line-height: var(--sl-line-height-headings);
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+
+	.last-updated {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		margin-top: 0.5rem;
+		margin-bottom: 0;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+
+	.clock {
+		flex: none;
+		inline-size: 1em;
+		block-size: 1em;
+		color: var(--sl-color-gray-4);
+	}
+</style>
