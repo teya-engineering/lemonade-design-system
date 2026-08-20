@@ -1,29 +1,36 @@
 ---
 /**
- * Replaces Starlight's `PageTitle` so the last-updated date sits under the
- * heading. Starlight's own `LastUpdated` renders it in the page footer, which
- * is a long way from the thing a reader is deciding: whether this page is
- * current. That component is overridden to render nothing, so the date
- * appears once.
- *
- * The date comes from `lastUpdated: true` in astro.config.mjs, which reads the
- * newest commit date for the file. Starlight swallows git errors, so a shallow
- * clone produces no date and no warning — `.github/workflows/site.yml` sets
- * `fetch-depth: 0` to keep the history available at build time.
+ * Replaces Starlight's `PageTitle` so the page's provenance sits under the
+ * heading. Starlight renders its last-updated date in the page footer, a long
+ * way from the question a reader is asking — is this current, and who wrote
+ * it? Starlight also knows nothing about authors, so both ends of the history
+ * come from `contributors.ts` rather than from `starlightRoute.lastUpdated`.
  */
-const { entry, lastUpdated, lang } = Astro.locals.starlightRoute;
+import { historyForPage } from '../lib/contributors';
+
+const { entry, lang } = Astro.locals.starlightRoute;
 
 // Must stay '_top'. Starlight's skip link targets it, and so does the
 // `h1#_top` rule in lemonade.css. It is Starlight's PAGE_TITLE_ID, which the
 // package does not export.
 const PAGE_TITLE_ID = '_top';
+
+const history = historyForPage(entry.filePath ?? '');
+const updatedOn = history?.lastEdited.date.toLocaleDateString(lang, {
+	dateStyle: 'medium',
+	timeZone: 'UTC',
+});
+
+// One name reads better than the same name twice, which is what a page with a
+// single author would otherwise show.
+const sameAuthor = history && history.created.name === history.lastEdited.name;
 ---
 
 <h1 id={PAGE_TITLE_ID}>{entry.data.title}</h1>
 
 {
-	lastUpdated && (
-		<p class="last-updated">
+	history && (
+		<p class="page-meta">
 			<svg
 				class="clock"
 				aria-hidden="true"
@@ -37,10 +44,19 @@ const PAGE_TITLE_ID = '_top';
 				<circle cx="12" cy="12" r="9" />
 				<path d="M12 7v5l3 2" />
 			</svg>
-			Last updated{' '}
-			<time datetime={lastUpdated.toISOString()}>
-				{lastUpdated.toLocaleDateString(lang, { dateStyle: 'medium', timeZone: 'UTC' })}
-			</time>
+			<span>
+				Last updated{' '}
+				<time datetime={history.lastEdited.date.toISOString()}>{updatedOn}</time> by{' '}
+				<strong>{history.lastEdited.name}</strong>
+			</span>
+			{!sameAuthor && (
+				<>
+					<span class="divider" aria-hidden="true" />
+					<span>
+						Created by <strong>{history.created.name}</strong>
+					</span>
+				</>
+			)}
 		</p>
 	)
 }
@@ -56,8 +72,9 @@ const PAGE_TITLE_ID = '_top';
 		color: var(--sl-color-white);
 	}
 
-	.last-updated {
+	.page-meta {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		gap: 0.4rem;
 		margin-top: 0.5rem;
@@ -66,10 +83,21 @@ const PAGE_TITLE_ID = '_top';
 		color: var(--sl-color-gray-3);
 	}
 
+	.page-meta strong {
+		font-weight: 500;
+		color: var(--sl-color-gray-2);
+	}
+
 	.clock {
 		flex: none;
 		inline-size: 1em;
 		block-size: 1em;
 		color: var(--sl-color-gray-4);
+	}
+
+	.divider {
+		inline-size: 1px;
+		block-size: 0.9em;
+		background: var(--sl-color-gray-5);
 	}
 </style>
