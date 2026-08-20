@@ -450,6 +450,70 @@ h1#_top,
    Components
    ========================================================================== */
 
+/* Badge.
+   Starlight's badge palette is its own blue/red/green/orange/purple, which are
+   not Lemonade's. The component is themed entirely through custom properties,
+   so pointing those at semantic values is enough — no component override and
+   no !important.
+
+   Each variant follows the pairing the Standards page prescribes: a `-subtle`
+   background carrying the full-strength `content-` colour, never a full-strength
+   background against a full-strength foreground. Starlight has no Lemonade
+   equivalent for `tip`, so it takes the neutral voice.
+
+   Values are written out literally, as everywhere else in this file, because
+   Starlight needs them as static custom properties before any component
+   renders. The token each one comes from is named beside it. */
+:root {
+	--sl-badge-default-bg: #e1e51a0d; /* bg-brand-subtle */
+	--sl-badge-default-border: #e1e51a0d; /* bg-brand-subtle — no border-brand-subtle token exists */
+	--sl-badge-default-text: #c7ca16; /* content-brand */
+
+	--sl-badge-success-bg: #7ccf001a; /* bg-positive-subtle */
+	--sl-badge-success-border: #7ccf001a; /* border-positive-subtle */
+	--sl-badge-success-text: #7ccf00; /* content-positive */
+
+	--sl-badge-caution-bg: #fe9a001a; /* bg-caution-subtle */
+	--sl-badge-caution-border: #ff69001a; /* border-caution-subtle */
+	--sl-badge-caution-text: #fe9a00; /* content-caution */
+
+	--sl-badge-danger-bg: #f73c481a; /* bg-critical-subtle */
+	--sl-badge-danger-border: #f73c481a; /* border-critical-subtle */
+	--sl-badge-danger-text: #f73c48; /* content-critical */
+
+	--sl-badge-note-bg: #2b7fff1a; /* bg-info-subtle */
+	--sl-badge-note-border: #2b7fff1a; /* border-info-subtle */
+	--sl-badge-note-text: #51a2ff; /* content-info */
+
+	--sl-badge-tip-bg: #ffffff1a; /* bg-neutral-subtle */
+	--sl-badge-tip-border: #ffffff1a; /* border-neutral-low */
+	--sl-badge-tip-text: #ffffffe5; /* content-neutral */
+}
+
+/* Only the values that actually differ by theme. Most subtle backgrounds are
+   alpha tints of the same hue and resolve identically in both. */
+:root[data-theme='light'] {
+	--sl-badge-default-bg: #e1e51a4d; /* bg-brand-subtle */
+	--sl-badge-default-border: #e1e51a4d; /* bg-brand-subtle */
+	--sl-badge-default-text: #6d770d; /* content-brand */
+
+	--sl-badge-success-text: #497d00; /* content-positive */
+	--sl-badge-caution-text: #bb4d00; /* content-caution */
+	--sl-badge-danger-text: #e41e2b; /* content-critical */
+	--sl-badge-note-text: #1447e6; /* content-info */
+
+	--sl-badge-tip-bg: #756b571a; /* bg-neutral-subtle */
+	--sl-badge-tip-border: #756b571a; /* border-neutral-low */
+	--sl-badge-tip-text: #090806ec; /* content-neutral */
+}
+
+/* Starlight sets badges in the mono face, which reads as a code chip. A tag is
+   interface, not code. */
+.sl-badge {
+	font-family: var(--sl-font);
+	font-weight: 500;
+}
+
 /* Asides: Starlight marks them with an inline-start rule; Lemonade uses a
    filled rounded card instead. */
 .starlight-aside {
