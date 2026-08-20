@@ -63,8 +63,17 @@ export const sections: SidebarSection[] = [
 				items: [
 					{ label: 'Semantic tokens first', slug: 'standards/semantic-tokens' },
 					{ label: 'Theming & dark mode', slug: 'standards/theming' },
-					{ label: 'Layout & rhythm', slug: 'standards/layout-rhythm' },
 					{ label: 'Accessibility', slug: 'standards/accessibility' },
+				],
+			},
+			{
+				label: 'Layout',
+				items: [
+					{ label: 'Layout & rhythm', slug: 'layout/rhythm' },
+					{ label: 'Container margins', slug: 'layout/container-margins' },
+					{ label: 'Block gaps', slug: 'layout/block-gaps' },
+					{ label: 'Cards and containers', slug: 'layout/cards-and-containers' },
+					{ label: 'Lists', slug: 'layout/lists' },
 				],
 			},
 			{
