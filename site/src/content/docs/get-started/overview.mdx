@@ -2,7 +2,6 @@
 title: Overview
 description: A short introduction to Teya's design system — what it covers, the problem it exists to solve, and where it stops.
 ---
-
 import { Badge } from '@astrojs/starlight/components';
 
 **Lemonade** is the shared language behind Teya's products: a set of production
@@ -27,18 +26,20 @@ export, so a change lands once and travels.
 
 ## What it gives you
 
-**Design tokens**
+#### Design tokens
 
-Colour, typography, spacing, radius, elevation, opacity and border width, exported from Figma and generated into platform code. Every value on this site's [Foundations](/lemonade-design-system/foundations/colour/) pages is read from
-that same export, which is why it cannot quietly fall out of date.
+The named design decisions the system is built from — a colour, a text size, a unit of
+space. You use the name rather than the value, so what you write carries its meaning,
+adapts to light and dark, and keeps working when the value changes. They are listed in
+[Foundations](/lemonade-design-system/foundations/colour/).
 
-**Components**
+#### Components
 
 Buttons, text fields, selection controls, list items, tabs, notices,
 toasts and tooltips, among others — each already carrying its states, its theming and
 its accessibility behaviour.
 
-**Standards**
+#### Standards
 
 The reasoning that makes the pieces fit — [semantic tokens over raw
 values](/lemonade-design-system/standards/semantic-tokens/), how [theming and dark
@@ -46,7 +47,7 @@ mode](/lemonade-design-system/standards/theming/) actually work, the
 [accessibility](/lemonade-design-system/standards/accessibility/) baseline, and the
 [layout rhythm](/lemonade-design-system/standards/layout-rhythm/) everything sits on.
 
-**Patterns**
+#### Patterns
 
 Whole solutions rather than parts — a
 [form](/lemonade-design-system/patterns/forms/), an
@@ -56,30 +57,33 @@ decisions written down.
 
 ## Where it runs
 
-
 | Platform                 | Built with            | Targets                   | Status                                         |
 | ------------------------ | --------------------- | ------------------------- | ---------------------------------------------- |
 | **Kotlin Multiplatform** | Compose Multiplatform | Android, iOS, JVM Desktop | <Badge text="Published" variant="success" />   |
 | **SwiftUI**              | Native SwiftUI        | iOS 15+, macOS 12+        | <Badge text="Published" variant="success" />   |
 | **Flutter**              | Flutter               | Android, iOS, Web         | <Badge text="Unmaintained" variant="danger" /> |
 
-
 The published KMP modules are `core`, `tokens`, `ui`, `expressive` and `calendar`.
 Their public surface is locked by a binary compatibility check, so an upgrade will not
 break your build without someone deciding it should.
 
-Flutter was an earlier implementation and is no longer maintained. Nothing new
-should start there.
+:::note[Flutter support]
+Flutter was an earlier implementation and is no longer maintained. Nothing new should start there.
+:::
 
 ## Where it stops
 
-**There is no official web support yet.** Tokens and components exist for the mobile
+#### There is no official web support yet
+
+Tokens and components exist for the mobile
 and desktop platforms above; a web implementation is planned but not built. If you are
 putting together a web prototype today, start with
 [Prototyping with Lemonade](/lemonade-design-system/prototyping/) — it explains how to
 borrow the values by hand and what you may safely approximate.
 
-**Lemonade is not every screen.** It gives you the vocabulary, not the product. Where
+#### Lemonade is not every screen
+
+It gives you the vocabulary, not the product. Where
 nothing in the system fits what you are building, that is a gap worth raising with the
 design systems team rather than routing around quietly.
 
