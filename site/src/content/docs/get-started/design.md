@@ -16,10 +16,10 @@ Four published libraries, split by what they hold rather than by who uses them.
 
 | Library           | What it holds                                                                                                          |
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| **Components**    | The components — buttons, inputs, cards, list items, top bars and the rest, with their variants and states.            |
-| **Foundations**   | The semantic tokens and the scales behind them: colour, typography, spacing, radius, elevation, opacity, border width. |
-| **Icons**         | The icon set.                                                                                                          |
-| **Global Colors** | The raw colour ramps — `green-lime/500`, `blue/alpha/200` and their neighbours.                                        |
+| [**Components**][fig-components]    | The components — buttons, inputs, cards, list items, top bars and the rest, with their variants and states.            |
+| [**Foundations**][fig-foundations]   | The semantic tokens and the scales behind them: colour, typography, spacing, radius, elevation, opacity, border width. |
+| [**Icons**][fig-icons]         | The icon set.                                                                                                          |
+| [**Global Colors**][fig-global-colors] | The raw colour ramps — `green-lime/500`, `blue/alpha/200` and their neighbours.                                        |
 
 
 The split between the last two is the one worth understanding.
@@ -57,3 +57,7 @@ lists, empty states and errors already assembled, with the decisions written dow
 - **Web prototypes** — [Prototyping with Lemonade](/lemonade-design-system/prototyping/)
 explains what to do until official web support lands.
 
+[fig-components]: https://www.figma.com/design/91S16rhVrl5wivqV66fNjm/%F0%9F%8D%8B-Lemonade-DS---Components
+[fig-foundations]: https://www.figma.com/design/mmSKfenwtw1xujWwXvs9wJ/%F0%9F%94%B7-Lemonade-DS---Foundations
+[fig-icons]: https://www.figma.com/design/f7zokCdnayXejxc2y7r1Qt/%F0%9F%8E%B2-Lemonade-DS---Icons
+[fig-global-colors]: https://www.figma.com/design/zVaShjKRQi4OmCgNgQ5QhK/%F0%9F%8E%A8-Lemonade-Global-Colors
