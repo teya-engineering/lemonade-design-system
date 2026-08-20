@@ -339,11 +339,10 @@ ul:where(.astro-ojxuodky) ul {
 
 summary:where(.astro-ojxuodky):hover, .sidebar a:hover {
 	background: var(--lemonade-surface-subtle);
-	color: var(--sl-color-gray-2);
 }
 
 .sidebar ul.top-level > li > a[aria-current='page'],
-.sidebar ul.top-level > li > details > ul > li > a[aria-current='page']  {
+.sidebar ul.top-level > li > details > ul > li > a[aria-current='page'] {
 	background: var(--lemonade-surface-subtle);
 	color: var(--lemonade-brand-dim);
 }
@@ -365,7 +364,7 @@ summary:where(.astro-ojxuodky):hover, .sidebar a:hover {
 		border-inline-start: 0;
 	}
 
-	right-sidebar-container:where(.astro-abfeecmu) {
+	.right-sidebar-container:where(.astro-abfeecmu) {
 		order: 2;
 		position: relative;
 		width: max(
@@ -567,8 +566,12 @@ h1#_top,
 }
 
 .starlight-aside--note {
-	--sl-color-asides-text-accent: #1447e6;
-	background-color: #2b7fff1a;
+	--sl-color-asides-text-accent: #51a2ff; /* content-info */
+	background-color: #2b7fff1a; /* bg-info-subtle, same in both themes */
+}
+
+:root[data-theme='light'] .starlight-aside--note {
+	--sl-color-asides-text-accent: #1447e6; /* content-info */
 }
 
 .expressive-code pre {
