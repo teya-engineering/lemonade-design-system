@@ -566,6 +566,11 @@ h1#_top,
 	line-height: 1.5rem;
 }
 
+.starlight-aside--note {
+	--sl-color-asides-text-accent: #1447e6;
+	background-color: #2b7fff1a;
+}
+
 .expressive-code pre {
 	border-radius: 0.75rem;
 }
