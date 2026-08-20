@@ -43,9 +43,8 @@
 	font-weight: 100 900;
 	font-display: swap;
 	unicode-range:
-		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-		U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
-		U+2215, U+FEFF, U+FFFD;
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
@@ -55,9 +54,9 @@
 	font-weight: 100 900;
 	font-display: swap;
 	unicode-range:
-		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
-		U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
-		U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+		U+A720-A7FF;
 }
 
 @font-face {
@@ -67,9 +66,8 @@
 	font-weight: 100 900;
 	font-display: swap;
 	unicode-range:
-		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-		U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
-		U+2215, U+FEFF, U+FFFD;
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
@@ -79,9 +77,9 @@
 	font-weight: 100 900;
 	font-display: swap;
 	unicode-range:
-		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
-		U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
-		U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+		U+A720-A7FF;
 }
 
 @font-face {
@@ -91,9 +89,8 @@
 	font-weight: 300 900;
 	font-display: swap;
 	unicode-range:
-		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-		U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
-		U+2215, U+FEFF, U+FFFD;
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
@@ -103,9 +100,9 @@
 	font-weight: 300 900;
 	font-display: swap;
 	unicode-range:
-		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
-		U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
-		U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+		U+A720-A7FF;
 }
 
 @font-face {
@@ -115,9 +112,8 @@
 	font-weight: 300 900;
 	font-display: swap;
 	unicode-range:
-		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-		U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
-		U+2215, U+FEFF, U+FFFD;
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
@@ -127,9 +123,9 @@
 	font-weight: 300 900;
 	font-display: swap;
 	unicode-range:
-		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
-		U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
-		U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+		U+A720-A7FF;
 }
 
 /* ==========================================================================
@@ -237,7 +233,7 @@ h3 {
    ========================================================================== */
 
 .sidebar {
-	--lemonade-sidebar-pad-inline: .75rem;
+	--lemonade-sidebar-pad-inline: 0.75rem;
 }
 
 .sidebar-pane:where(.astro-gqpr5s5a) {
@@ -330,14 +326,16 @@ ul:where(.astro-ojxuodky) ul {
 	font-weight: 500;
 }
 
-.sidebar a, summary:where(.astro-ojxuodky) {
+.sidebar a,
+summary:where(.astro-ojxuodky) {
 	display: flex;
 	align-items: center;
 	min-height: 2rem;
 	border-radius: 0.5rem;
 }
 
-summary:where(.astro-ojxuodky):hover, .sidebar a:hover {
+summary:where(.astro-ojxuodky):hover,
+.sidebar a:hover {
 	background: var(--lemonade-surface-subtle);
 }
 
@@ -470,13 +468,27 @@ h1#_top,
 }
 
 .sl-markdown-content
-	:not(h1, h2, h3, .sl-heading-wrapper.level-h1, .sl-heading-wrapper.level-h2, .sl-heading-wrapper.level-h3)
+	:not(
+		h1,
+		h2,
+		h3,
+		.sl-heading-wrapper.level-h1,
+		.sl-heading-wrapper.level-h2,
+		.sl-heading-wrapper.level-h3
+	)
 	+ :is(.sl-heading-wrapper.level-h1, .sl-heading-wrapper.level-h2, .sl-heading-wrapper.level-h3) {
 	margin-top: 2.5rem;
 }
 
 .sl-markdown-content
-	:not(h4, h5, h6, .sl-heading-wrapper.level-h4, .sl-heading-wrapper.level-h5, .sl-heading-wrapper.level-h6)
+	:not(
+		h4,
+		h5,
+		h6,
+		.sl-heading-wrapper.level-h4,
+		.sl-heading-wrapper.level-h5,
+		.sl-heading-wrapper.level-h6
+	)
 	+ :is(.sl-heading-wrapper.level-h4, .sl-heading-wrapper.level-h5, .sl-heading-wrapper.level-h6) {
 	margin-top: 1.5rem;
 }

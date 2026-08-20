@@ -58,7 +58,9 @@ describe('themeColors', () => {
 	});
 
 	it('renders every top-level group the export contains', () => {
-		const groups = themeColors().map((g) => g.label).sort();
+		const groups = themeColors()
+			.map((g) => g.label)
+			.sort();
 
 		expect(groups).toEqual(['Background', 'Border', 'Content', 'Interaction', 'Scoped', 'Shadow']);
 	});
@@ -101,9 +103,9 @@ describe('resolveColorTokens', () => {
 	});
 
 	it('throws naming every token that does not resolve', () => {
-		expect(() =>
-			resolveColorTokens(['bg-brand', 'bg-accent', 'bg-ghost'], tokens),
-		).toThrow(/bg-accent, bg-ghost/);
+		expect(() => resolveColorTokens(['bg-brand', 'bg-accent', 'bg-ghost'], tokens)).toThrow(
+			/bg-accent, bg-ghost/,
+		);
 	});
 
 	it('does not throw against the real theme-colors.json export for the tokens the landing page uses', () => {

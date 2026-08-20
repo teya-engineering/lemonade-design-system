@@ -7,13 +7,13 @@ Sections group related content, and the gap between them is what tells a reader 
 one group ends and the next begins. Getting these four values right does most of the
 work of making a screen legible.
 
-| Gap between | Value | Token |
-|---|---|---|
-| Sections | 32px | `spacing-800` |
-| Cards | 16px | `spacing-400` |
-| Medium elements — list items | 12px | `spacing-300` |
-| Small elements — tags, chips | 8px | `spacing-200` |
-| Stacked text | none | — |
+| Gap between                  | Value | Token         |
+| ---------------------------- | ----- | ------------- |
+| Sections                     | 32px  | `spacing-800` |
+| Cards                        | 16px  | `spacing-400` |
+| Medium elements — list items | 12px  | `spacing-300` |
+| Small elements — tags, chips | 8px   | `spacing-200` |
+| Stacked text                 | none  | —             |
 
 The pattern behind the numbers: **the more self-contained the things you are separating,
 the larger the gap.** A section is a whole idea, a chip is a fragment of one.

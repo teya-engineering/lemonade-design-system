@@ -11,13 +11,13 @@ This is how Lemonade expects one to be built.
 Every text input in Lemonade is one component with four slots of copy around it, and
 each slot has one job:
 
-| Slot | Job | When to use it |
-|------|-----|----------------|
-| `label` | Names the field | Always. A placeholder is not a label. |
-| `optionalIndicator` | Marks a field as not required | When most fields on the form *are* required |
-| `placeholderText` | Shows the expected format | When format is genuinely ambiguous |
-| `supportText` | Explains why you're asking | When the reason isn't obvious |
-| `errorMessage` | Says what to fix | Only with `error = true` |
+| Slot                | Job                           | When to use it                              |
+| ------------------- | ----------------------------- | ------------------------------------------- |
+| `label`             | Names the field               | Always. A placeholder is not a label.       |
+| `optionalIndicator` | Marks a field as not required | When most fields on the form _are_ required |
+| `placeholderText`   | Shows the expected format     | When format is genuinely ambiguous          |
+| `supportText`       | Explains why you're asking    | When the reason isn't obvious               |
+| `errorMessage`      | Says what to fix              | Only with `error = true`                    |
 
 ```kotlin
 LemonadeUi.TextField(
@@ -63,7 +63,7 @@ have finished being right.
 
 - **On blur** — the field has lost focus and the user has finished their thought
 - **On submit** — everything gets re-checked, and focus moves to the first field in error
-- **While typing** — only to *clear* an error that has already been shown
+- **While typing** — only to _clear_ an error that has already been shown
 
 That last one matters. Once a field is in error, correcting it should return it to
 normal immediately; making the user blur the field again to be told they've fixed it is

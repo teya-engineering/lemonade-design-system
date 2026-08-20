@@ -191,7 +191,14 @@ export function resolveColorTokens(names: string[], tokens: ColorToken[]): Color
  * so a newly exported Figma group fails the build instead of silently never
  * appearing on the page.
  */
-const RENDERED_COLOR_GROUPS = ['Background', 'Border', 'Content', 'Interaction', 'Scoped', 'Shadow'];
+const RENDERED_COLOR_GROUPS = [
+	'Background',
+	'Border',
+	'Content',
+	'Interaction',
+	'Scoped',
+	'Shadow',
+];
 
 /**
  * Pure comparison step, split out from `assertAllColorGroupsRendered()` so it
@@ -469,7 +476,8 @@ export function shadowSets(): ShadowSet[] {
    either source.
    ========================================================================== */
 
-const TEXT_STYLE_SOURCE = '../../../kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeTextStyle.kt';
+const TEXT_STYLE_SOURCE =
+	'../../../kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeTextStyle.kt';
 
 const textStyleSources = import.meta.glob<string>(
 	'../../../kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeTextStyle.kt',

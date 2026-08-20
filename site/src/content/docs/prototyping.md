@@ -38,7 +38,7 @@ to something generic and stops looking like Teya, so load it first:
 Paste this at the start of a prototyping session. It carries the visual foundations and the
 behaviour rules that matter most.
 
-````text
+```text
 We're building a WEB PROTOTYPE for Teya, styled with the Lemonade design system.
 
 IMPORTANT CONSTRAINT
@@ -97,7 +97,7 @@ BEHAVIOUR RULES — these hold regardless of platform:
 - Support light and dark using the pairs above.
 
 Ask me before inventing any colour, size, spacing or radius not listed here.
-````
+```
 
 That last line is deliberate: it makes the tool stop and check rather than confidently
 improvise a value that is nearly right. Drop it if you find it slows you down.

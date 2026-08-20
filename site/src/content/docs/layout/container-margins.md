@@ -13,19 +13,19 @@ All content must be **visually** spaced 16px from the device's or the container'
 Readability, comfort and consistency across screens all follow from it.
 
 :::note
-"Visually" means the content *itself* respects the margin, not necessarily the outer
+"Visually" means the content _itself_ respects the margin, not necessarily the outer
 container. If a component includes an invisible container, wrapper, or interactive
 layer, you have to account for that internal padding when you position it.
 :::
 
 That distinction is the whole subject. A frame whose edge sits at 16px is not the same
-as content that *looks* 16px in — and the reader only ever sees the second one.
+as content that _looks_ 16px in — and the reader only ever sees the second one.
 
 ### At the device edge
 
-| | |
-|---|---|
-| **Do** | Position content visually 16px from the edge of the device. |
+|           |                                                                       |
+| --------- | --------------------------------------------------------------------- |
+| **Do**    | Position content visually 16px from the edge of the device.           |
 | **Don't** | Position content visually more than 16px from the edge of the device. |
 
 ### At a container edge
@@ -33,9 +33,9 @@ as content that *looks* 16px in — and the reader only ever sees the second one
 For content inside a large visible container such as a card, use the same value for the
 vertical padding as for the horizontal.
 
-| | |
-|---|---|
-| **Do** | Keep the same visual padding on all sides. |
+|           |                                                   |
+| --------- | ------------------------------------------------- |
+| **Do**    | Keep the same visual padding on all sides.        |
 | **Don't** | Use different visual paddings on different sides. |
 
 :::note
@@ -66,9 +66,9 @@ leaves the row misaligned with everything above and below it.
 For content inside a visual container — a card, say — that already has its own padding,
 do not add margin values on top.
 
-| | |
-|---|---|
-| **Do** | Position content visually 16px from the parent container's edge, aligned with the other content in that container. |
+|           |                                                                                                                     |
+| --------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Do**    | Position content visually 16px from the parent container's edge, aligned with the other content in that container.  |
 | **Don't** | Push content further than 16px from a container with visible boundaries, or misalign it from the content beside it. |
 
 ## Related

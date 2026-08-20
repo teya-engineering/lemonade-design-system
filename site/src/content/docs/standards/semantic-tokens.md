@@ -11,7 +11,7 @@ Always reach for the semantic layer.
 
 ## Why it matters
 
-A primitive says what a colour *is*. A semantic token says what it is *for*. That
+A primitive says what a colour _is_. A semantic token says what it is _for_. That
 difference is what lets one codebase render correctly in light and dark, survive a
 palette change, and stay legible when someone turns contrast up.
 
@@ -47,13 +47,13 @@ LemonadeUi.Text("Payment received", color: LemonadeTheme.colors.content.contentP
 
 Work down the name. The first segment is the property you're setting:
 
-| Prefix | Sets | Example |
-|--------|------|---------|
-| `bg-` | A surface fill | `bg-critical-subtle` |
-| `content-` | Text and icons | `content-secondary` |
-| `border-` | A stroke | `border-neutral-low` |
+| Prefix     | Sets           | Example              |
+| ---------- | -------------- | -------------------- |
+| `bg-`      | A surface fill | `bg-critical-subtle` |
+| `content-` | Text and icons | `content-secondary`  |
+| `border-`  | A stroke       | `border-neutral-low` |
 
-The middle is the *voice* — `positive`, `caution`, `critical`, `info`, `neutral`,
+The middle is the _voice_ — `positive`, `caution`, `critical`, `info`, `neutral`,
 `brand` — and it should match the meaning of what you're building, not the colour you
 had in mind. A destructive action is `critical` because it is destructive, not because
 it happens to be red.

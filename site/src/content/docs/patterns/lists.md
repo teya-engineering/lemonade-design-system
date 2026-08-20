@@ -12,13 +12,13 @@ when they're the same height.
 
 Both platforms ship the same five:
 
-| Component | What the row does |
-|-----------|--------------------|
-| `ListItem` | The general-purpose row — a label, optional support text, leading/trailing slots, an optional tap action and chevron. The default choice when nothing more specific fits. |
-| `ActionListItem` | The same shape as `ListItem`, with an optional line *above* the label (`topLabel`) and a slot below the support text. Reach for it when a row needs more text stacked than label-plus-support-text. |
-| `ResourceListItem` | A label-value pair built for a resource's info — a required leading slot, a value in the trailing position, and an optional tag or badge (`addonSlot`) underneath the value. |
-| `ContentListItem` | Display-only label-value pairs, horizontal or vertical. It has no click handler at all — use it for read-only data like "Account holder — John Doe", not for anything tappable. |
-| `SelectListItem` | Selection, and only selection. See below. |
+| Component          | What the row does                                                                                                                                                                                   |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ListItem`         | The general-purpose row — a label, optional support text, leading/trailing slots, an optional tap action and chevron. The default choice when nothing more specific fits.                           |
+| `ActionListItem`   | The same shape as `ListItem`, with an optional line _above_ the label (`topLabel`) and a slot below the support text. Reach for it when a row needs more text stacked than label-plus-support-text. |
+| `ResourceListItem` | A label-value pair built for a resource's info — a required leading slot, a value in the trailing position, and an optional tag or badge (`addonSlot`) underneath the value.                        |
+| `ContentListItem`  | Display-only label-value pairs, horizontal or vertical. It has no click handler at all — use it for read-only data like "Account holder — John Doe", not for anything tappable.                     |
+| `SelectListItem`   | Selection, and only selection. See below.                                                                                                                                                           |
 
 Pick by what the row does, not by which one happens to render closest to the mock. A row
 that shows a balance and lets you tap through to a statement is a `ResourceListItem`

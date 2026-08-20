@@ -36,10 +36,10 @@ is yours to set.
 Wrap them in a container with **16px (`spacing-400`) on all sides**, and put **16px**
 between items.
 
-| | |
-|---|---|
-| **Do** | Wrap static items in a container with an even 16px margin on all sides, and 16px between items. |
-| **Don't** | Leave the spacings looking uneven or unbalanced across the four directions. |
+|           |                                                                                                 |
+| --------- | ----------------------------------------------------------------------------------------------- |
+| **Do**    | Wrap static items in a container with an even 16px margin on all sides, and 16px between items. |
+| **Don't** | Leave the spacings looking uneven or unbalanced across the four directions.                     |
 
 :::note
 You will sometimes need to compensate optically — a value that is mathematically equal

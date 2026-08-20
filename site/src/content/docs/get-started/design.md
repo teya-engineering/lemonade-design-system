@@ -2,6 +2,7 @@
 title: Design
 description: How Lemonade is set up in Figma — the libraries, what each one holds, and how to enable them in a file.
 ---
+
 Lemonade is designed in **Figma**. The libraries there are not a picture of the system;
 they are the system's other half. The values in them are exported and generated into
 the platform code, so a token you pick in Figma is the same token an engineer writes.
@@ -13,14 +14,12 @@ solutions — is linked at the bottom.
 
 Four published libraries, split by what they hold rather than by who uses them.
 
-
-| Library           | What it holds                                                                                                          |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| [**Components**][fig-components]    | The components — buttons, inputs, cards, list items, top bars and the rest, with their variants and states.            |
-| [**Foundations**][fig-foundations]   | The semantic tokens and the scales behind them: colour, typography, spacing, radius, elevation, opacity, border width. |
-| [**Icons**][fig-icons]         | The icon set.                                                                                                          |
+| Library                                | What it holds                                                                                                          |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| [**Components**][fig-components]       | The components — buttons, inputs, cards, list items, top bars and the rest, with their variants and states.            |
+| [**Foundations**][fig-foundations]     | The semantic tokens and the scales behind them: colour, typography, spacing, radius, elevation, opacity, border width. |
+| [**Icons**][fig-icons]                 | The icon set.                                                                                                          |
 | [**Global Colors**][fig-global-colors] | The raw colour ramps — `green-lime/500`, `blue/alpha/200` and their neighbours.                                        |
-
 
 The split between the last two is the one worth understanding.
 **Global Colors is the primitive layer** — every ramp, unopinionated about meaning.
@@ -48,14 +47,14 @@ rest of the time.
 ## Where to go next
 
 - **The values** — [Foundations](/lemonade-design-system/foundations/colour/) has every
-colour, type style, space and radius, with the name to use on each platform.
+  colour, type style, space and radius, with the name to use on each platform.
 - **The reasoning** — [Standards](/lemonade-design-system/standards/semantic-tokens/)
-covers semantic tokens, theming and dark mode, layout rhythm and the accessibility
-baseline.
+  covers semantic tokens, theming and dark mode, layout rhythm and the accessibility
+  baseline.
 - **Whole solutions** — [Patterns](/lemonade-design-system/patterns/forms/) shows forms,
-lists, empty states and errors already assembled, with the decisions written down.
+  lists, empty states and errors already assembled, with the decisions written down.
 - **Web prototypes** — [Prototyping with Lemonade](/lemonade-design-system/prototyping/)
-explains what to do until official web support lands.
+  explains what to do until official web support lands.
 
 [fig-components]: https://www.figma.com/design/91S16rhVrl5wivqV66fNjm/%F0%9F%8D%8B-Lemonade-DS---Components
 [fig-foundations]: https://www.figma.com/design/mmSKfenwtw1xujWwXvs9wJ/%F0%9F%94%B7-Lemonade-DS---Foundations
