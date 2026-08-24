@@ -1,0 +1,11 @@
+/* Lets a no-build page use a themed icon: <span class="lmnd-icon" style="--lmnd-icon: url(...)">.
+   An <img> renders an opaque document CSS cannot reach into, so it cannot inherit
+   currentColor; masking can. */
+.lmnd-icon {
+  display: inline-block;
+  width: var(--lmnd-size-500);
+  height: var(--lmnd-size-500);
+  background-color: currentColor;
+  -webkit-mask: var(--lmnd-icon) center / contain no-repeat;
+  mask: var(--lmnd-icon) center / contain no-repeat;
+}
