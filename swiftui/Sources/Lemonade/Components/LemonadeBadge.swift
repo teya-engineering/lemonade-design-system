@@ -45,6 +45,16 @@ public enum LemonadeBadgeSize {
         case .small: return LemonadeTheme.sizes.size400
         }
     }
+
+    /// The Apple text style whose Dynamic Type curve the badge label follows. The badge sets its
+    /// own font from a size token rather than a `LemonadeTextStyle`, so the curve is named here
+    /// to match Apple's own sizes: 10pt is `.caption2`, 12pt is `.caption`.
+    var relativeTextStyle: Font.TextStyle {
+        switch self {
+        case .xSmall: return .caption2
+        case .small: return .caption
+        }
+    }
 }
 
 // MARK: - Badge Component
@@ -101,7 +111,13 @@ private struct LemonadeBadgeView: View {
 
     var body: some View {
         SwiftUI.Text(text)
-            .font(.custom(LemonadeTypography.fontFamily, size: size.fontSize).weight(.semibold))
+            .font(
+                .custom(
+                    LemonadeTypography.fontFamily,
+                    size: size.fontSize,
+                    relativeTo: size.relativeTextStyle
+                ).weight(.semibold)
+            )
             .foregroundStyle(LemonadeTheme.colors.content.contentOnBrandHigh)
             .lineLimit(1)
             .padding(.horizontal, size.textHorizontalPadding)
