@@ -2,7 +2,10 @@ export const iconConfig = {
   multipass: true,
   plugins: [
     { name: 'preset-default', params: { overrides: { removeViewBox: false } } },
-    // currentColor was set deliberately in Task 8; svgo must not "simplify" it away.
+    // svgo never rewrites an existing `currentColor` (it is not in its colour tables), so the
+    // Task 8 recolouring is safe by default -- this is NOT what protects it. The param is pinned
+    // to its default only to stop anyone flipping it to `true`, which would convert every colour
+    // INTO currentColor and destroy the flag/brand-logo artwork.
     { name: 'convertColors', params: { currentColor: false } },
   ],
 }
