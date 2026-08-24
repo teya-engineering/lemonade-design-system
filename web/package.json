@@ -23,7 +23,7 @@
   },
   "publishConfig": { "access": "public" },
   "scripts": {
-    "build": "node build/build-fonts.mjs && tsup",
+    "build": "node build/build-fonts.mjs && node build/optimize-svg.mjs && tsup",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "storybook": "storybook dev -p 6006",
