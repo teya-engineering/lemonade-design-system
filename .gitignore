@@ -184,6 +184,5 @@ web/node_modules/
 web/dist/
 web/storybook-static/
 web/*.tgz
-web/styles/fonts.css
 
 *storybook.log

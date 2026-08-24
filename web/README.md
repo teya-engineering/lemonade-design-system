@@ -12,8 +12,15 @@ npm install @teya/lemonade-ds
 
 ```js
 import '@teya/lemonade-ds/tokens.css'      // custom properties only — safe anywhere
-import '@teya/lemonade-ds/fonts.css'       // Figtree, self-hosted
 import '@teya/lemonade-ds/typography.css'  // .lmnd-text-* classes
+import '@teya/lemonade-ds/fonts.css'       // Figtree, self-hosted (opt-in)
+```
+
+Or take the first two together, and add fonts if you want the bundled typeface:
+
+```js
+import '@teya/lemonade-ds/styles.css'      // tokens + typography
+import '@teya/lemonade-ds/fonts.css'
 ```
 
 ```html
@@ -28,17 +35,33 @@ existing app — including a Material UI one — without affecting current compo
 | Import | Contents |
 |---|---|
 | `@teya/lemonade-ds` | Typed tokens, text styles and asset manifests |
+| `@teya/lemonade-ds/styles.css` | Barrel: tokens + typography |
+| `@teya/lemonade-ds/fonts.css` | Figtree `@font-face` declarations |
+| `@teya/lemonade-ds/icon.css` | The `.lmnd-icon` mask utility |
 | `@teya/lemonade-ds/lemonade.css` | Everything in one self-contained file, for prototypes |
 | `@teya/lemonade-ds/llms.txt` | Token reference for AI tools |
 | `@teya/lemonade-ds/icons/*.svg` | 283 icons, `currentColor` |
 | `@teya/lemonade-ds/flags/*.svg` | 265 flags |
 | `@teya/lemonade-ds/brand-logos/*.svg` | 39 brand logos |
 
-Tokens are generated from `tokens/*.tokens.json` by `scripts/web-*.main.kts`.
-Do not edit anything under `web/styles/` or `web/src/*.generated.ts` by hand.
+## Repository layout — generated vs built
 
-> **`npm run build` rewrites `web/assets/**` in place** (the SVG optimizer step) and
-> those files are committed. Do not commit changes it makes there. If
-> `web/assets/**` shows up dirty after a build, regenerate it from the source of
-> truth instead: `"$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/web-svg-converter.main.kts`,
-> then confirm `git status --porcelain -- web/assets` is empty before committing.
+Two different kinds of output live here, and the distinction matters:
+
+| | Where | Committed? | Written by |
+|---|---|---|---|
+| **Generated** | `styles/*.css`, `src/*.generated.ts`, `assets/**`, `llms.txt`, `tokens.json` | **yes** | `scripts/web-*.main.kts` (Kotlin) |
+| **Built** | `dist/**` — bundled JS, type declarations, `fonts.css`, optimized `assets/**` | no (gitignored) | `npm run build` |
+
+Generated files are committed on purpose: `token_drift.yml` regenerates them and fails
+if the tree differs, which is what stops a Figma export landing without the platform
+code that matches it. **Do not hand-edit them** — change the converter and regenerate.
+
+`npm run build` writes only into `dist/`. It never modifies the committed sources, so a
+build never leaves your working tree dirty.
+
+Regenerate the committed output with:
+
+```sh
+.claude/skills/generate-tokens/scripts/run-converters.sh --all
+```

@@ -39,6 +39,6 @@ jobs:
           npm install /tmp/teya-lemonade-ds-*.tgz
           node -e "const {tokens}=require('@teya/lemonade-ds'); if(tokens.spacing.spacing200!==8) throw new Error('bad token value')"
           test -f node_modules/@teya/lemonade-ds/styles/tokens.css
-          test -f node_modules/@teya/lemonade-ds/styles/fonts.css
+          test -f node_modules/@teya/lemonade-ds/dist/fonts.css
           test -f node_modules/@teya/lemonade-ds/llms.txt
-          test -f node_modules/@teya/lemonade-ds/assets/icons/airplane.svg
+          test -f node_modules/@teya/lemonade-ds/dist/assets/icons/airplane.svg

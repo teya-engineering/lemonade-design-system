@@ -197,17 +197,36 @@ the whole pipeline.
 {
   ".":                  "./dist/index.js",           // tokens, textStyles, iconNames
   "./tokens.css":       "./styles/tokens.css",       // --lmnd-* only, zero selectors
-  "./fonts.css":        "./styles/fonts.css",
   "./typography.css":   "./styles/typography.css",
-  "./styles.css":       "./styles/styles.css",       // barrel of the three above
+  "./icon.css":         "./styles/icon.css",         // .lmnd-icon mask utility
+  "./styles.css":       "./styles/styles.css",       // barrel: tokens + typography
   "./lemonade.css":     "./styles/lemonade.css",     // self-contained, pasteable
   "./llms.txt":         "./llms.txt",                // AI token reference
-  "./tokens.json":      "./dist/tokens.json",        // non-JS consumers
-  "./icons/*":          "./assets/icons/*",
-  "./flags/*":          "./assets/flags/*",
-  "./brand-logos/*":    "./assets/brand-logos/*"
+  "./tokens.json":      "./tokens.json",             // non-JS consumers
+  "./fonts.css":        "./dist/fonts.css",          // BUILT
+  "./icons/*":          "./dist/assets/icons/*",     // BUILT (svgo-optimized)
+  "./flags/*":          "./dist/assets/flags/*",     // BUILT
+  "./brand-logos/*":    "./dist/assets/brand-logos/*"// BUILT
 }
 ```
+
+**Generated vs built — the rule the paths above follow.** Two kinds of output live in
+`web/`, and conflating them is what made an earlier draft of this spec incoherent:
+
+| | Location | Committed? | Written by |
+|---|---|---|---|
+| **Generated** | `styles/*.css`, `src/*.generated.ts`, `assets/**`, `llms.txt`, `tokens.json` | **yes** | `scripts/web-*.main.kts` |
+| **Built** | `dist/**` — bundled JS, declarations, `fonts.css`, optimized `assets/**` | no | `npm run build` |
+
+Generated output is committed precisely so `token_drift.yml` can diff it; putting it in
+a gitignored `dist/` would delete the drift guarantee that justifies §4.1's whole
+argument. Built output goes to `dist/` and nowhere else, so a build never modifies a
+committed file and never leaves the working tree dirty.
+
+The published tarball ships `dist/assets/**` (optimized) and **not** `assets/**`
+(the unoptimized converter output), which stays in the repo for drift-checking only.
+The `styles.css` barrel deliberately omits `fonts.css`: fonts are build output, so a
+barrel importing them would reference a file absent from a source checkout.
 
 React is not a dependency of any kind in v0. When components land they become
 `./react`, with React as an optional peer dependency.

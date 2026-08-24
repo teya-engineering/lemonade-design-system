@@ -18,7 +18,6 @@
   "files": [
     "dist",
     "styles",
-    "assets",
     "llms.txt",
     "tokens.json",
     "LICENSE"
@@ -37,14 +36,14 @@
     "./tokens.css": "./styles/tokens.css",
     "./typography.css": "./styles/typography.css",
     "./icon.css": "./styles/icon.css",
-    "./fonts.css": "./styles/fonts.css",
+    "./fonts.css": "./dist/fonts.css",
     "./styles.css": "./styles/styles.css",
     "./lemonade.css": "./styles/lemonade.css",
     "./llms.txt": "./llms.txt",
     "./tokens.json": "./tokens.json",
-    "./icons/*": "./assets/icons/*",
-    "./flags/*": "./assets/flags/*",
-    "./brand-logos/*": "./assets/brand-logos/*"
+    "./icons/*": "./dist/assets/icons/*",
+    "./flags/*": "./dist/assets/flags/*",
+    "./brand-logos/*": "./dist/assets/brand-logos/*"
   },
   "publishConfig": {
     "access": "public"
