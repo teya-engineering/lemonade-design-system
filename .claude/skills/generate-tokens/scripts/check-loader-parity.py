@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Fail if the three token loaders' shared DTCG helpers have diverged.
+"""Fail if the four token loaders' shared DTCG helpers have diverged.
 
-`scripts/{kmp,swiftui,flutter}-resource-file-loading.main.kts` each carry a copy
+`scripts/{kmp,swiftui,flutter,web}-resource-file-loading.main.kts` each carry a copy
 of the same DTCG parsing block. The duplication is deliberate — every converter
 `@file:Import`s exactly one platform loader, and a shared module would rewire the
 import graph of 20+ scripts — but nothing otherwise keeps the copies in step.
@@ -98,7 +98,7 @@ def main():
                 f"EXPECTED_PARTIAL with the reason.")
 
     for fn in sorted(every):
-        print(f"  ok    {fn}() identical across all three")
+        print(f"  ok    {fn}() identical across all four")
 
     if problems:
         print("\nFAIL: the loaders' DTCG blocks have diverged.\n", file=sys.stderr)
@@ -108,7 +108,7 @@ def main():
               "platform. Reconcile the copies before merging.", file=sys.stderr)
         return 1
 
-    print(f"\nPASS: {len(every)} shared DTCG functions identical across all three loaders.")
+    print(f"\nPASS: {len(every)} shared DTCG functions identical across all four loaders.")
     return 0
 
 

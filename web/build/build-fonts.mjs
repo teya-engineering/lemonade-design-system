@@ -9,12 +9,14 @@ const SOURCE = join(__dirname, '../../swiftui/Sources/Lemonade/Resources/Fonts')
 const OUT_DIR = join(__dirname, '../dist/fonts')
 const STYLES_DIR = join(__dirname, '../styles')
 
-// Only the three weights the native platforms ship. font-weight 700 maps to SemiBold,
-// which is what SwiftUI already does internally.
+// Only the three weights the native platforms ship. --lmnd-font-weight-bold is 700,
+// which is what SwiftUI already maps to SemiBold internally. The SemiBold face
+// declares the range 600 700 so a 700 request resolves to this real face instead of
+// the browser applying synthetic bold on top of the 600 face.
 const WEIGHTS = [
-  { file: 'Figtree-Regular.ttf', weight: 400 },
-  { file: 'Figtree-Medium.ttf', weight: 500 },
-  { file: 'Figtree-SemiBold.ttf', weight: 600 },
+  { file: 'Figtree-Regular.ttf', weight: '400' },
+  { file: 'Figtree-Medium.ttf', weight: '500' },
+  { file: 'Figtree-SemiBold.ttf', weight: '600 700' },
 ]
 
 await mkdir(OUT_DIR, { recursive: true })

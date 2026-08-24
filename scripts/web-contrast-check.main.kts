@@ -63,15 +63,25 @@ fun resolveOpaque(colour: Rgba, under: Rgba): Rgba =
 
 val AA_TEXT = 4.5
 
+// Tolerance for float noise between runs (rounding in the Figma export, colour-space
+// conversion, etc). A measured ratio more than this far below the recorded one is
+// treated as a real regression, not noise.
+val RATCHET_TOLERANCE = 0.05
+
 val NEUTRAL_FOREGROUNDS = listOf("content-primary", "content-secondary", "content-tertiary")
 val NEUTRAL_SURFACES = listOf("bg-default", "bg-subtle", "bg-elevated", "bg-elevated-high")
+
+/** Parses "4.07:1" -> 4.07. */
+fun parseRatio(recorded: String): Double = recorded.substringBefore(":").toDouble()
 
 fun main() {
     val files = tokenFiles("theme-colors.")
     requireModes(files, "Light", "Dark")
     val allowlist = JSONArray(File("web/contrast-allowlist.json").readText())
         .let { array -> (0 until array.length()).map { array.getJSONObject(it) } }
-        .associate { "${it.getString("theme")}|${it.getString("pair")}" to it.getString("reason") }
+        .associate {
+            "${it.getString("theme")}|${it.getString("pair")}" to parseRatio(it.getString("ratio"))
+        }
 
     val failures = mutableListOf<String>()
     val ratios = mutableListOf<String>()
@@ -100,8 +110,20 @@ fun main() {
                 val fg = resolveOpaque(rawFg, bg)
                 val ratio = contrastRatio(fg, bg)
                 val pair = "$fgName on $bgName"
+                val key = "$theme|$pair"
                 ratios.add("$theme  %.2f:1  %s".format(ratio, pair))
-                if (ratio < AA_TEXT && "$theme|$pair" !in allowlist) {
+                val recorded = allowlist[key]
+                if (recorded != null) {
+                    // Ratchet: an allowlisted pair may not get *worse* than the ratio recorded
+                    // the day it was allowlisted. It is free to improve without updating the
+                    // entry — only a regression beyond the float-noise tolerance fails.
+                    if (ratio < recorded - RATCHET_TOLERANCE) {
+                        failures.add(
+                            "$theme  %.2f:1  %s  (REGRESSION — allowlist records %.2f:1; ".format(ratio, pair, recorded) +
+                                "update the entry in web/contrast-allowlist.json or revert the regression)",
+                        )
+                    }
+                } else if (ratio < AA_TEXT) {
                     failures.add("$theme  %.2f:1  %s  (needs %.1f)".format(ratio, pair, AA_TEXT))
                 }
             }

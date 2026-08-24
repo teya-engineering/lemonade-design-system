@@ -237,7 +237,7 @@ fun shadowVars(): List<CssVar> {
                 pxValue(part.getValue("offset-y")),
                 pxValue(part.getValue("blur")),
                 pxValue(part.getValue("spread")),
-                "var(--lmnd-color-shadow-default)",
+                "var(${cssVar("color", "shadow-default")})",
             ).joinToString(" ")
         }
         CssVar("--lmnd-shadow-$size", layers.joinToString(", "))

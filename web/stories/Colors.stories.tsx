@@ -1,14 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useEffect, useState } from 'react'
 
-const GROUPS = ['content', 'bg', 'border'] as const
+const GROUP_PATTERN = /^--lmnd-color-([a-z]+)-/
 
-function useTokenNames(prefix: string) {
-  const [names, setNames] = useState<string[]>([])
+function useColorGroups() {
+  const [groups, setGroups] = useState<Record<string, string[]>>({})
   useEffect(() => {
     // Read the custom properties actually declared on :root, so the gallery lists
-    // whatever the converter emitted — no second copy of the token list.
-    const found = new Set<string>()
+    // whatever the converter emitted, grouped by their own naming — no hardcoded
+    // group list to drift out of sync (e.g. missing `shadow` if it were listed by hand).
+    const found = new Map<string, Set<string>>()
     for (const sheet of Array.from(document.styleSheets)) {
       let rules: CSSRuleList
       try {
@@ -19,13 +20,21 @@ function useTokenNames(prefix: string) {
       for (const rule of Array.from(rules)) {
         if (!(rule instanceof CSSStyleRule)) continue
         for (const prop of Array.from(rule.style)) {
-          if (prop.startsWith(`--lmnd-color-${prefix}-`)) found.add(prop)
+          const match = GROUP_PATTERN.exec(prop)
+          if (!match) continue
+          const group = match[1]
+          if (!found.has(group)) found.set(group, new Set())
+          found.get(group)?.add(prop)
         }
       }
     }
-    setNames([...found].sort())
-  }, [prefix])
-  return names
+    const result: Record<string, string[]> = {}
+    for (const [group, names] of found) {
+      result[group] = [...names].sort()
+    }
+    setGroups(result)
+  }, [])
+  return groups
 }
 
 function Swatch({ name }: { name: string }) {
@@ -55,17 +64,21 @@ const meta: Meta = { title: 'Foundations/Colors' }
 export default meta
 
 export const All: StoryObj = {
-  render: () => (
-    <div style={{ display: 'grid', gap: 'var(--lmnd-spacing-200)' }}>
-      {GROUPS.map((group) => (
-        <Group key={group} prefix={group} />
-      ))}
-    </div>
-  ),
+  render: () => {
+    const groups = useColorGroups()
+    return (
+      <div style={{ display: 'grid', gap: 'var(--lmnd-spacing-200)' }}>
+        {Object.keys(groups)
+          .sort()
+          .map((group) => (
+            <Group key={group} prefix={group} names={groups[group]} />
+          ))}
+      </div>
+    )
+  },
 }
 
-function Group({ prefix }: { prefix: string }) {
-  const names = useTokenNames(prefix)
+function Group({ prefix, names }: { prefix: string; names: string[] }) {
   return (
     <section>
       <h2 className="lmnd-text-heading-small" style={{ color: 'var(--lmnd-color-content-primary)' }}>

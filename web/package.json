@@ -9,6 +9,9 @@
     "directory": "web"
   },
   "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "sideEffects": [
     "*.css"
   ],
@@ -17,13 +20,19 @@
     "styles",
     "assets",
     "llms.txt",
-    "tokens.json"
+    "tokens.json",
+    "LICENSE"
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./tokens.css": "./styles/tokens.css",
     "./typography.css": "./styles/typography.css",
