@@ -29,11 +29,19 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawOutline
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.Measurable
+import androidx.compose.ui.layout.MeasureResult
+import androidx.compose.ui.layout.MeasureScope
+import androidx.compose.ui.layout.MultiContentMeasurePolicy
+import androidx.compose.ui.layout.Placeable
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
@@ -950,32 +958,188 @@ private fun CoreListItem(
                     }
                 }
             } else {
-                // Default: the trailing slot keeps its width; the content column truncates to fit.
-                Row(
+                // Default: the trailing slot keeps its width and the content yields — until
+                // yielding would squeeze the content narrower than its own longest word, at which
+                // point the row reflows and the trailing content drops underneath.
+                ListItemAdaptiveRow(
+                    hasTrailingContent = trailingSlot != null || navigationIndicator,
+                    trailingVerticalAlignment = trailingVerticalAlignment,
+                    contentAlpha = contentAlpha,
+                    contentSlot = contentSlot,
                     modifier = Modifier.weight(weight = 1f),
-                    verticalAlignment = trailingVerticalAlignment,
-                ) {
-                    Column(
-                        content = contentSlot,
-                        modifier = Modifier
-                            .weight(weight = 1f)
-                            .then(other = contentAlpha),
-                    )
-
-                    if (trailingSlot != null || navigationIndicator) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            ListItemTrailingContent(
-                                trailingSlot = trailingSlot,
-                                navigationIndicator = navigationIndicator,
-                                enabled = enabled,
-                            )
-                        }
-                    }
-                }
+                    trailingContent = {
+                        ListItemTrailingContent(
+                            trailingSlot = trailingSlot,
+                            navigationIndicator = navigationIndicator,
+                            enabled = enabled,
+                        )
+                    },
+                )
             }
         }
+    }
+}
+
+/**
+ * Lays the content column and the trailing slot side by side, dropping the trailing slot onto its
+ * own line when they no longer both fit.
+ *
+ * A plain [Row] cannot express this. Its unweighted children measure first at their intrinsic
+ * width, so a wide trailing slot — a [LemonadeUi.Tag] carrying a short sentence, say — takes what it
+ * wants and the weighted content column is left with whatever remains. That remainder can fall below
+ * the width of a single word, and the label then wraps mid-word and eventually one character per
+ * line. It reproduces on a phone at the largest Display size with the largest font size: the two
+ * multiply, taking a 411dp screen down to 284dp while the text roughly doubles.
+ *
+ * The reflow decision is measured, never keyed off `fontScale` — the same scale means different
+ * things at different densities, and it was the pair together that broke, so neither number alone
+ * would have predicted it.
+ *
+ * The floor is the content's own minimum intrinsic width, which for a column of text is its longest
+ * unbreakable word. That is not a tuned constant: it is exactly the width below which the text stops
+ * degrading gracefully and starts breaking inside words.
+ */
+@Composable
+private fun ListItemAdaptiveRow(
+    hasTrailingContent: Boolean,
+    trailingVerticalAlignment: Alignment.Vertical,
+    contentAlpha: Modifier,
+    contentSlot: @Composable ColumnScope.() -> Unit,
+    trailingContent: @Composable RowScope.() -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val horizontalGap = LocalSpaces.current.spacing300
+    val verticalGap = LocalSpaces.current.spacing100
+    val density = LocalDensity.current
+    val horizontalGapPx = with(density) { horizontalGap.roundToPx() }
+    val verticalGapPx = with(density) { verticalGap.roundToPx() }
+
+    Layout(
+        contents = listOf(
+            {
+                Column(
+                    content = contentSlot,
+                    modifier = contentAlpha,
+                )
+            },
+            {
+                if (hasTrailingContent) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        content = trailingContent,
+                    )
+                }
+            },
+        ),
+        modifier = modifier,
+        measurePolicy = AdaptiveRowMeasurePolicy(
+            horizontalGapPx = horizontalGapPx,
+            verticalGapPx = verticalGapPx,
+            alignment = trailingVerticalAlignment,
+        ),
+    )
+}
+
+/**
+ * Measures the content and trailing slot, then places them side by side or stacked.
+ *
+ * A policy object rather than a lambda so the decision reads on its own, away from the composable
+ * that declares the structure.
+ */
+private class AdaptiveRowMeasurePolicy(
+    private val horizontalGapPx: Int,
+    private val verticalGapPx: Int,
+    private val alignment: Alignment.Vertical,
+) : MultiContentMeasurePolicy {
+    override fun MeasureScope.measure(
+        measurables: List<List<Measurable>>,
+        constraints: Constraints,
+    ): MeasureResult {
+        val contentMeasurable = measurables[0].first()
+
+        // An intrinsic query arrives with an unbounded width — `Row(IntrinsicSize.Min)` asking for
+        // our height is the case that found this. There is infinite room by definition, so the
+        // reflow question is moot, and the subtraction below would overflow what Constraints packs.
+        val boundedWidth = constraints.hasBoundedWidth
+
+        val trailing = measurables[1].firstOrNull()?.measure(
+            if (boundedWidth) Constraints(maxWidth = constraints.maxWidth) else Constraints(),
+        )
+
+        val leftover = constraints.maxWidth - (trailing?.width ?: 0) - horizontalGapPx
+        // Non-null exactly when the row has to reflow: a bounded width, something to move, and less
+        // room left over than the content's longest word.
+        val overflowingTrailing = trailing?.takeIf {
+            boundedWidth &&
+                leftover < contentMeasurable.minIntrinsicWidth(height = constraints.maxHeight)
+        }
+
+        val content = contentMeasurable.measure(
+            if (boundedWidth && overflowingTrailing == null) {
+                constraints.copy(minWidth = 0, maxWidth = leftover.coerceAtLeast(0))
+            } else {
+                constraints.copy(minWidth = 0)
+            },
+        )
+
+        val rowWidth = when {
+            boundedWidth -> constraints.maxWidth
+            trailing == null -> content.width
+            else -> content.width + horizontalGapPx + trailing.width
+        }
+
+        return if (overflowingTrailing != null) {
+            placeStacked(
+                content = content,
+                trailing = overflowingTrailing,
+                rowWidth = rowWidth,
+                verticalGapPx = verticalGapPx,
+            )
+        } else {
+            placeSideBySide(
+                content = content,
+                trailing = trailing,
+                rowWidth = rowWidth,
+                alignment = alignment,
+            )
+        }
+    }
+}
+
+/**
+ * Trailing slot on its own line, start-aligned under the content — stacked, it reads as a
+ * continuation of the row rather than something pushed to the far edge.
+ */
+private fun MeasureScope.placeStacked(
+    content: Placeable,
+    trailing: Placeable,
+    rowWidth: Int,
+    verticalGapPx: Int,
+): MeasureResult {
+    val height = content.height + verticalGapPx + trailing.height
+    return layout(width = rowWidth, height = height) {
+        content.place(x = 0, y = 0)
+        trailing.place(x = 0, y = content.height + verticalGapPx)
+    }
+}
+
+/** Content at the start, trailing pinned to the end — the arrangement a plain `Row` would give. */
+private fun MeasureScope.placeSideBySide(
+    content: Placeable,
+    trailing: Placeable?,
+    rowWidth: Int,
+    alignment: Alignment.Vertical,
+): MeasureResult {
+    val height = maxOf(content.height, trailing?.height ?: 0)
+    return layout(width = rowWidth, height = height) {
+        content.place(
+            x = 0,
+            y = alignment.align(size = content.height, space = height),
+        )
+        trailing?.place(
+            x = rowWidth - trailing.width,
+            y = alignment.align(size = trailing.height, space = height),
+        )
     }
 }
 

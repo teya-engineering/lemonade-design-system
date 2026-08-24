@@ -21,7 +21,8 @@ internal fun ActionListItemDisplay() {
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
                 header = CardHeaderConfig(
                     title = "priority: Trailing (default)",
-                    subtitle = "Trailing keeps its full width; the label truncates to fit.",
+                    subtitle = "Trailing keeps its full width; the label yields — down to its " +
+                        "longest word, after which the row reflows instead. See the next card.",
                 ),
             ) {
                 LemonadeUi.ListItem(
@@ -35,6 +36,35 @@ internal fun ActionListItemDisplay() {
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
+                    },
+                )
+            }
+        }
+
+        // ListItem - narrow row reflow. Needs both accessibility settings raised to trigger on a
+        // phone: Display size shrinks the screen in dp, font size grows the text, and it takes the
+        // two together to squeeze the label past its longest word.
+        item(key = "narrow-reflow") {
+            LemonadeUi.Card(
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
+                header = CardHeaderConfig(
+                    title = "Narrow rows reflow",
+                    subtitle = "Raise BOTH Display size and Font size to their largest " +
+                        "(Settings › Display › Display size and text). The tag drops onto its " +
+                        "own line rather than crushing the label to one letter per line.",
+                ),
+            ) {
+                LemonadeUi.ListItem(
+                    label = "Ellina Test",
+                    leadingSlot = {
+                        LemonadeUi.Icon(
+                            icon = LemonadeIcons.Bell,
+                            contentDescription = null,
+                            size = LemonadeAssetSize.Medium,
+                        )
+                    },
+                    trailingSlot = {
+                        LemonadeUi.Tag(label = "Ready to review", voice = TagVoice.Warning)
                     },
                 )
             }
