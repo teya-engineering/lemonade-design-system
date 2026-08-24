@@ -84,6 +84,29 @@ internal fun ActionListItemDisplay() {
             }
         }
 
+        // ListItem - Layout Priority (priority = Both)
+        LemonadeUi.Card(
+            header = CardHeaderConfig(
+                title = "priority: Both",
+                subtitle = "Neither side wins — the width splits 50/50 and both truncate together.",
+            ),
+        ) {
+            LemonadeUi.ListItem(
+                label = "Beneficiary account holder",
+                priority = LemonadeListItemPriority.Both,
+                labelMaxLines = 1,
+                labelOverflow = TextOverflow.Ellipsis,
+                trailingSlot = {
+                    LemonadeUi.Text(
+                        text = "International Holdings Ltd Partnership",
+                        textStyle = LemonadeTheme.typography.bodyMediumMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                },
+            )
+        }
+
         // ActionListItem - Truncation
         item(key = "truncation") {
             LemonadeUi.Card(

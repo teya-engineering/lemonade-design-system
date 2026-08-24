@@ -827,6 +827,7 @@ public final class com/teya/lemonade/core/LemonadeLineHeights : java/lang/Enum {
 }
 
 public final class com/teya/lemonade/core/LemonadeListItemPriority : java/lang/Enum {
+	public static final field Both Lcom/teya/lemonade/core/LemonadeListItemPriority;
 	public static final field Label Lcom/teya/lemonade/core/LemonadeListItemPriority;
 	public static final field Trailing Lcom/teya/lemonade/core/LemonadeListItemPriority;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;

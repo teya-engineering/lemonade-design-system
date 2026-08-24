@@ -909,6 +909,7 @@ final enum class com.teya.lemonade.core/LemonadeLineHeights : kotlin/Enum<com.te
 }
 
 final enum class com.teya.lemonade.core/LemonadeListItemPriority : kotlin/Enum<com.teya.lemonade.core/LemonadeListItemPriority> { // com.teya.lemonade.core/LemonadeListItemPriority|null[0]
+    enum entry Both // com.teya.lemonade.core/LemonadeListItemPriority.Both|null[0]
     enum entry Label // com.teya.lemonade.core/LemonadeListItemPriority.Label|null[0]
     enum entry Trailing // com.teya.lemonade.core/LemonadeListItemPriority.Trailing|null[0]
 

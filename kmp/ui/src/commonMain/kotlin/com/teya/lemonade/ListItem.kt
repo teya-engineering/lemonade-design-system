@@ -606,7 +606,8 @@ public fun LemonadeUi.ListItem(
  * @param supportTextOverflow - [TextOverflow] strategy applied to the [supportText] when it exceeds
  *  [supportTextMaxLines]. Defaults to [TextOverflow.Clip].
  * @param priority - [LemonadeListItemPriority] deciding which slot claims layout space first when
- *  the label and trailing slots compete for width. Defaults to [LemonadeListItemPriority.Trailing].
+ *  the label and trailing slots compete for width. Use [LemonadeListItemPriority.Both] to split the
+ *  width evenly. Defaults to [LemonadeListItemPriority.Trailing].
  */
 @Composable
 public fun LemonadeUi.ListItem(
@@ -795,7 +796,8 @@ public fun LemonadeUi.ListItem(
  * @param leadingVerticalAlignment - Vertical alignment of the leading slot against the
  *  content slot. Defaults to [Alignment.Top].
  * @param priority - [LemonadeListItemPriority] deciding which slot claims layout space first when
- *  the content and trailing slots compete for width. Defaults to [LemonadeListItemPriority.Trailing].
+ *  the content and trailing slots compete for width. Use [LemonadeListItemPriority.Both] to split the
+ *  width evenly. Defaults to [LemonadeListItemPriority.Trailing].
  */
 @Composable
 public fun LemonadeUi.ListItem(
@@ -910,25 +912,91 @@ private fun CoreListItem(
                 Modifier
             }
 
-            if (priority == LemonadeListItemPriority.Label) {
-                // Content keeps its width; the trailing slot yields and truncates. The content is
-                // capped so the trailing slot always retains a readable floor instead of vanishing —
-                // but only when there is trailing content to keep visible.
-                val hasTrailingContent = trailingSlot != null || navigationIndicator
-                BoxWithConstraints(modifier = Modifier.weight(weight = 1f)) {
-                    val trailingFloor = LocalSizes.current.size2000
-                    val gap = LocalSpaces.current.spacing300
-                    val contentMaxWidth = if (hasTrailingContent) {
-                        (maxWidth - trailingFloor - gap).coerceAtLeast(0.dp)
-                    } else {
-                        maxWidth
-                    }
+            val hasTrailingContent = trailingSlot != null || navigationIndicator
+            val slotFloor = LocalSizes.current.size2000
+            val gap = LocalSpaces.current.spacing300
 
-                    Row(verticalAlignment = trailingVerticalAlignment) {
+            when (priority) {
+                LemonadeListItemPriority.Label -> {
+                    // Content keeps its width; the trailing slot yields and truncates. The content is
+                    // capped so the trailing slot always retains a readable floor instead of vanishing —
+                    // but only when there is trailing content to keep visible.
+                    BoxWithConstraints(modifier = Modifier.weight(weight = 1f)) {
+                        val contentMaxWidth = if (hasTrailingContent) {
+                            (maxWidth - slotFloor - gap).coerceAtLeast(0.dp)
+                        } else {
+                            maxWidth
+                        }
+
+                        Row(verticalAlignment = trailingVerticalAlignment) {
+                            Column(
+                                content = contentSlot,
+                                modifier = Modifier
+                                    .widthIn(max = contentMaxWidth)
+                                    .then(other = contentAlpha),
+                            )
+
+                            if (hasTrailingContent) {
+                                Row(
+                                    horizontalArrangement = Arrangement.End,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .weight(weight = 1f)
+                                        .padding(start = gap),
+                                ) {
+                                    ListItemTrailingContent(
+                                        trailingSlot = trailingSlot,
+                                        navigationIndicator = navigationIndicator,
+                                        enabled = enabled,
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                LemonadeListItemPriority.Trailing -> {
+                    // Default: the trailing slot keeps its width; the content column yields and
+                    // truncates. The trailing slot is capped so the content always retains a readable
+                    // floor instead of collapsing to a bare ellipsis.
+                    BoxWithConstraints(modifier = Modifier.weight(weight = 1f)) {
+                        val trailingMaxWidth = (maxWidth - slotFloor).coerceAtLeast(0.dp)
+
+                        Row(verticalAlignment = trailingVerticalAlignment) {
+                            Column(
+                                content = contentSlot,
+                                modifier = Modifier
+                                    .weight(weight = 1f)
+                                    .then(other = contentAlpha),
+                            )
+
+                            if (hasTrailingContent) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.widthIn(max = trailingMaxWidth),
+                                ) {
+                                    ListItemTrailingContent(
+                                        trailingSlot = trailingSlot,
+                                        navigationIndicator = navigationIndicator,
+                                        enabled = enabled,
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                LemonadeListItemPriority.Both -> {
+                    // Neither slot is prioritized: split the available width evenly so the content
+                    // and trailing slots each occupy half and truncate together.
+                    Row(
+                        modifier = Modifier.weight(weight = 1f),
+                        verticalAlignment = trailingVerticalAlignment,
+                    ) {
                         Column(
                             content = contentSlot,
                             modifier = Modifier
-                                .widthIn(max = contentMaxWidth)
+                                .weight(weight = 1f)
                                 .then(other = contentAlpha),
                         )
 
@@ -946,31 +1014,6 @@ private fun CoreListItem(
                                     enabled = enabled,
                                 )
                             }
-                        }
-                    }
-                }
-            } else {
-                // Default: the trailing slot keeps its width; the content column truncates to fit.
-                Row(
-                    modifier = Modifier.weight(weight = 1f),
-                    verticalAlignment = trailingVerticalAlignment,
-                ) {
-                    Column(
-                        content = contentSlot,
-                        modifier = Modifier
-                            .weight(weight = 1f)
-                            .then(other = contentAlpha),
-                    )
-
-                    if (trailingSlot != null || navigationIndicator) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            ListItemTrailingContent(
-                                trailingSlot = trailingSlot,
-                                navigationIndicator = navigationIndicator,
-                                enabled = enabled,
-                            )
                         }
                     }
                 }
