@@ -77,11 +77,21 @@ private struct LemonadeIconView: View {
     let size: LemonadeUiIconSize
     let tint: Color
 
+    @Environment(\.lemonadeIconScaling) private var scalesWithText
+    @LemonadeScale private var scale: LemonadeScaleFactors
+
+    /// The rendered size. An icon paired with a label follows the reader's Dynamic Type setting
+    /// the way that label does, because a fixed size shrinks against a scaled label and breaks
+    /// the pair. The component opts in, since a larger icon needs a container that can carry it.
+    private var renderedSize: CGFloat {
+        scalesWithText ? size.value * scale.content : size.value
+    }
+
     var body: some View {
         icon.image
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(width: size.value, height: size.value)
+            .frame(width: renderedSize, height: renderedSize)
             .foregroundStyle(tint)
             .accessibilityLabel(contentDescription ?? "")
             .accessibilityHidden(contentDescription == nil)

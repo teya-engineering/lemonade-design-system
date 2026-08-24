@@ -378,10 +378,14 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
 
     @Environment(\.lemonadeButtonFullShape) private var isFullShape
     @State private var isPressed = false
+    @LemonadeScale private var scale: LemonadeScaleFactors
 
     private var cornerRadius: CGFloat {
-        isFullShape ? LemonadeTheme.radius.radiusFull : size.contentData.cornerRadius
+        isFullShape ? LemonadeTheme.radius.radiusFull : size.contentData.cornerRadius * scale.container
     }
+
+    /// Whether the reader asked for text larger than the size the tokens were drawn for.
+    private var growsWithText: Bool { scale.content > 1 }
 
     var body: some View {
         let colors = resolveButtonColors(variant: variant, type: type)
@@ -424,8 +428,8 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
                     }
                     Spacer(minLength: 0)
                 }
-                .padding(.vertical, size.contentData.verticalPadding)
-                .padding(.horizontal, size.contentData.horizontalPadding)
+                .padding(.vertical, size.contentData.verticalPadding * scale.container)
+                .padding(.horizontal, size.contentData.horizontalPadding * scale.container)
                 .if(expandContents) { view in
                     view.frame(maxWidth: .infinity)
                 }
@@ -434,8 +438,19 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
                     trailingSlot(colors)
                 }
             }
-            .frame(height: size.contentData.requiredHeight)
-            .frame(minWidth: size.contentData.minWidth)
+            // The height is fixed at the default text size and a floor above it.
+            //
+            // A fixed height is also what holds the label to a single line: given no room to
+            // wrap, the label truncates instead. That is the treatment every button in the
+            // library ships with today, so keep it while the reader is at the size the tokens
+            // were drawn for. Once the reader asks for larger text, the same fixed height leaves
+            // the label to overflow the fill, which is drawn at the height of the frame, so let
+            // the button grow with it.
+            .frame(
+                minHeight: size.contentData.requiredHeight * scale.container,
+                maxHeight: growsWithText ? nil : size.contentData.requiredHeight * scale.container
+            )
+            .frame(minWidth: size.contentData.minWidth * scale.container)
             .background(buttonShape.fill(colors.backgroundColor.opacity(disabledFillScale)))
             // Keep the rounded hit target the removed .clipShape used to provide, without
             // reintroducing its offscreen pass.
@@ -486,37 +501,77 @@ private struct LemonadeButtonView: View {
             loading: loading,
             expandContents: false,
             contentSlot: { colors in
-                AnyView(HStack(spacing: 0) {
-                    if let leadingIcon = leadingIcon {
-                        LemonadeUi.Icon(
-                            icon: leadingIcon,
-                            contentDescription: nil,
-                            size: .medium,
-                            tint: colors.contentColor
-                        )
-                    }
-
-                    LemonadeUi.Text(
-                        label,
+                AnyView(
+                    LemonadeButtonLabelContent(
+                        label: label,
+                        leadingIcon: leadingIcon,
+                        trailingIcon: trailingIcon,
                         textStyle: size.contentData.textStyle,
-                        color: colors.contentColor
+                        colors: colors
                     )
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, LemonadeTheme.spaces.spacing200)
-
-                    if let trailingIcon = trailingIcon {
-                        LemonadeUi.Icon(
-                            icon: trailingIcon,
-                            contentDescription: nil,
-                            size: .medium,
-                            tint: colors.contentColor
-                        )
-                    }
-                })
+                )
             },
             leadingSlot: nil as ((LemonadeButtonColors) -> EmptyView)?,
             trailingSlot: nil as ((LemonadeButtonColors) -> EmptyView)?
         )
+    }
+}
+
+// MARK: - Internal Button Label Content
+
+/// The icon-and-label row of a labeled button.
+private struct LemonadeButtonLabelContent: View {
+    let label: String
+    let leadingIcon: LemonadeIcon?
+    let trailingIcon: LemonadeIcon?
+    let textStyle: LemonadeTextStyle
+    let colors: LemonadeButtonColors
+
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @LemonadeScale private var scale: LemonadeScaleFactors
+
+    var body: some View {
+        // At the accessibility text sizes an icon beside the label leaves the label too little
+        // width to render: the row asks for more than the button has, and the label is what gives
+        // way. Stacking the icons over the label hands the whole width back to the text, which is
+        // the treatment the Human Interface Guidelines ask for at these sizes.
+        Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(spacing: LemonadeTheme.spaces.spacing200 * scale.container) {
+                    icon(leadingIcon)
+                    text
+                    icon(trailingIcon)
+                }
+            } else {
+                HStack(spacing: 0) {
+                    icon(leadingIcon)
+                    text.padding(.horizontal, LemonadeTheme.spaces.spacing200 * scale.container)
+                    icon(trailingIcon)
+                }
+            }
+        }
+        .environment(\.lemonadeIconScaling, true)
+    }
+
+    private var text: some View {
+        LemonadeUi.Text(
+            label,
+            textStyle: textStyle,
+            color: colors.contentColor
+        )
+        .multilineTextAlignment(.center)
+    }
+
+    @ViewBuilder
+    private func icon(_ icon: LemonadeIcon?) -> some View {
+        if let icon = icon {
+            LemonadeUi.Icon(
+                icon: icon,
+                contentDescription: nil,
+                size: .medium,
+                tint: colors.contentColor
+            )
+        }
     }
 }
 
@@ -533,6 +588,8 @@ private struct LemonadeSlotButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
     let expandContents: Bool
     let leadingSlot: ((LemonadeButtonColors) -> LeadingSlot)?
     let trailingSlot: ((LemonadeButtonColors) -> TrailingSlot)?
+
+    @LemonadeScale private var scale: LemonadeScaleFactors
 
     var body: some View {
         LemonadeCoreButtonView(
@@ -552,7 +609,7 @@ private struct LemonadeSlotButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
                         color: colors.contentColor
                     )
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, LemonadeTheme.spaces.spacing200)
+                    .padding(.horizontal, LemonadeTheme.spaces.spacing200 * scale.container)
                 )
             },
             leadingSlot: leadingSlot,

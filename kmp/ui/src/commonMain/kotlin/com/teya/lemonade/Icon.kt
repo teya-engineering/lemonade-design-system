@@ -10,8 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 
@@ -51,17 +54,38 @@ public fun LemonadeUi.Icon(
         painter = rememberAssetPainter(resource = icon.drawableResource),
         contentDescription = contentDescription,
         tint = tint,
-        size = size,
+        size = size.dp,
         modifier = modifier,
     )
 }
+
+/** An icon whose rendered size tracks the reader's text size, for icons beside sp-sized text. */
+@Composable
+internal fun LemonadeUi.TextTrackedIcon(
+    icon: LemonadeIcons,
+    contentDescription: String?,
+    size: LemonadeAssetSize = LemonadeAssetSize.Medium,
+    tint: Color = LocalColors.current.content.contentPrimary,
+    modifier: Modifier = Modifier,
+) {
+    CoreIcon(
+        painter = rememberAssetPainter(resource = icon.drawableResource),
+        contentDescription = contentDescription,
+        tint = tint,
+        size = LocalDensity.current.textTrackedSize(base = size.dp),
+        modifier = modifier,
+    )
+}
+
+/** The size an sp value numerically equal to [base] resolves to at the current text size. */
+internal fun Density.textTrackedSize(base: Dp): Dp = base.value.sp.toDp()
 
 @Composable
 private fun CoreIcon(
     painter: Painter,
     contentDescription: String?,
     tint: Color,
-    size: LemonadeAssetSize,
+    size: Dp,
     modifier: Modifier = Modifier,
 ) {
     Image(
@@ -70,7 +94,7 @@ private fun CoreIcon(
         colorFilter = ColorFilter
             .tint(color = tint)
             .takeIf { tint != Color.Unspecified },
-        modifier = modifier.requiredSize(size = size.dp),
+        modifier = modifier.requiredSize(size = size),
     )
 }
 

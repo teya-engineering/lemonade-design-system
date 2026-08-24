@@ -6,11 +6,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -23,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
@@ -85,35 +89,13 @@ public fun LemonadeUi.Button(
         trailingSlot = null,
         expandContents = false,
         contentSlot = {
-            if (loading) {
-                LemonadeUi.Spinner(
-                    tint = colors.contentColor,
-                )
-            } else {
-                if (leadingIcon != null) {
-                    LemonadeUi.Icon(
-                        icon = leadingIcon,
-                        tint = colors.contentColor,
-                        contentDescription = null,
-                    )
-                }
-
-                LemonadeUi.Text(
-                    text = label,
-                    textStyle = size.contentData.textStyle,
-                    color = colors.contentColor,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing200),
-                )
-
-                if (trailingIcon != null) {
-                    LemonadeUi.Icon(
-                        icon = trailingIcon,
-                        tint = colors.contentColor,
-                        contentDescription = null,
-                    )
-                }
-            }
+            ButtonAdaptiveContent(
+                label = label,
+                textStyle = size.contentData.textStyle,
+                contentColor = colors.contentColor,
+                leadingIcon = leadingIcon,
+                trailingIcon = trailingIcon,
+            )
         },
     )
 }
@@ -167,19 +149,15 @@ public fun LemonadeUi.Button(
         trailingSlot = trailingSlot.takeIf { !loading },
         expandContents = expandContents,
         contentSlot = {
-            if (loading) {
-                LemonadeUi.Spinner(
-                    tint = colors.contentColor,
-                )
-            } else {
-                LemonadeUi.Text(
-                    text = label,
-                    textStyle = size.contentData.textStyle,
-                    color = colors.contentColor,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing200),
-                )
-            }
+            LemonadeUi.Text(
+                text = label,
+                textStyle = size.contentData.textStyle,
+                color = colors.contentColor,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing200),
+            )
         },
     )
 }
@@ -420,12 +398,18 @@ private fun CoreButton(
     } else {
         Modifier
     }
+    val slotHeightModifier = if (leadingSlot != null || trailingSlot != null) {
+        Modifier.height(intrinsicSize = IntrinsicSize.Min)
+    } else {
+        Modifier
+    }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
             .defaultMinSize(minWidth = size.contentData.minWidth)
-            .requiredHeight(height = size.contentData.requiredHeight)
+            .requiredHeightIn(min = size.contentData.requiredHeight)
+            .then(other = slotHeightModifier)
             .clip(shape = size.contentData.shape)
             .then(other = disabledModifier)
             .clickable(
@@ -437,10 +421,8 @@ private fun CoreButton(
             ).background(color = animatedBackgroundColor),
         content = {
             leadingSlot?.invoke(this, colors)
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-                content = contentSlot,
+            Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .then(
                         other = if (expandContents) {
@@ -452,7 +434,19 @@ private fun CoreButton(
                         vertical = size.contentData.verticalPadding,
                         horizontal = size.contentData.horizontalPadding,
                     ),
-            )
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    content = contentSlot,
+                    modifier = Modifier.alpha(alpha = if (loading) 0f else 1f),
+                )
+                if (loading) {
+                    LemonadeUi.Spinner(
+                        tint = colors.contentColor,
+                    )
+                }
+            }
             trailingSlot?.invoke(this, colors)
         },
     )
