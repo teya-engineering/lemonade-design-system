@@ -3,11 +3,12 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "jsx": "react-jsx",
     "strict": true,
     "declaration": true,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
     "noEmit": true
   },
-  "include": ["src", "tests"]
+  "include": ["src", "tests", "stories", ".storybook"]
 }

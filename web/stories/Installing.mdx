@@ -1,0 +1,99 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Guides/Installing" />
+
+# Installing
+
+Lemonade for web ships as `@teya/lemonade-ds` — plain CSS custom properties, a
+typography stylesheet, an icon mask utility, and framework-agnostic TypeScript
+manifests. There is no React (or Vue, or Angular) runtime in the package: nothing
+here requires a particular framework, which is why this whole gallery is a
+documentation tool rather than a component library.
+
+## Install
+
+```bash
+npm install @teya/lemonade-ds
+```
+
+## Import the stylesheets
+
+Import once, at the root of your app.
+
+```ts
+import '@teya/lemonade-ds/tokens.css'
+import '@teya/lemonade-ds/typography.css'
+```
+
+- **`tokens.css`** — every design token as a CSS custom property: spacing, radius,
+  size, opacity, border-width, shadow, and the full semantic colour palette (light
+  and dark).
+- **`typography.css`** — the `.lmnd-text-*` classes shown in the
+  [Typography](/docs/foundations-typography--docs) gallery.
+- **`icon.css`** — only needed if you render icons with the `.lmnd-icon` mask class
+  shown in the [Icons](/docs/foundations-icons--docs) gallery. Skip it if you inline
+  SVGs yourself.
+- **`fonts.css`** — the self-hosted Figtree `@font-face` declarations, if you want
+  Lemonade to serve the typeface instead of loading it from Google Fonts yourself.
+- **`styles.css`** — a convenience bundle that just `@import`s `tokens.css`,
+  `fonts.css` and `typography.css`, for projects that want everything in one line.
+- **`lemonade.css`** — the same bundle, pre-flattened (no `@import`s), for pasting
+  straight into a `<style>` block when your setup can't resolve package imports at
+  all.
+
+Every custom property is namespaced `--lmnd-*`, so it is safe to import alongside
+another design system's tokens without a collision.
+
+## Set the theme
+
+Light is the default. Dark applies automatically from the OS colour scheme, or you
+can force a theme explicitly by setting `data-lmnd-theme` on any element — typically
+`<html>`:
+
+```html
+<html data-lmnd-theme="dark">
+```
+
+```ts
+document.documentElement.setAttribute('data-lmnd-theme', 'dark')
+```
+
+This is exactly what the theme toggle in this Storybook's toolbar does — flip it on
+any gallery page and watch every swatch, shadow and text sample re-resolve through
+CSS with no JavaScript re-render required in your own app.
+
+## Using tokens
+
+Every token is also available as a plain TypeScript value, for places CSS can't
+reach — inline styles computed in JS, canvas drawing, native `<Text>` props, etc.
+
+```ts
+import { tokens, iconNames, textStyles } from '@teya/lemonade-ds'
+
+tokens.spacing.spacing400 // 16 (a raw pixel number, not a rem string)
+```
+
+Prefer the CSS custom property (`var(--lmnd-spacing-400)`) wherever you can — it's
+the one that stays theme-aware and re-resolves on toggle. Reach for the TS export
+only where a `var()` genuinely can't go.
+
+## Icons, flags and brand logos
+
+SVGs ship as static assets, plus a manifest of valid names so you get autocomplete
+and can validate a name at build time:
+
+```ts
+import { iconNames } from '@teya/lemonade-ds'
+// iconNames: readonly ["airplane", "appearance-dark-mode", ...] — 283 total
+```
+
+Render one with the `.lmnd-icon` mask class so it inherits `currentColor` and follows
+the theme, the same way the [Icons](/docs/foundations-icons--docs) gallery does:
+
+```html
+<span class="lmnd-icon" style="--lmnd-icon: url('/node_modules/@teya/lemonade-ds/assets/icons/airplane.svg')"></span>
+```
+
+In practice you'll usually resolve that URL through your bundler (e.g.
+`new URL('@teya/lemonade-ds/icons/airplane.svg', import.meta.url)`) rather than a
+hardcoded `node_modules` path.

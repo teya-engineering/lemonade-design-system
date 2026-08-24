@@ -3,12 +3,28 @@
   "version": "0.1.0",
   "description": "Design tokens, typography and icons for Teya's Lemonade design system",
   "license": "Apache-2.0",
-  "repository": { "type": "git", "url": "https://github.com/saltpay/lemonade-design-system.git", "directory": "web" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saltpay/lemonade-design-system.git",
+    "directory": "web"
+  },
   "type": "module",
-  "sideEffects": ["*.css"],
-  "files": ["dist", "styles", "assets", "llms.txt", "tokens.json"],
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist",
+    "styles",
+    "assets",
+    "llms.txt",
+    "tokens.json"
+  ],
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js", "require": "./dist/index.cjs" },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
     "./tokens.css": "./styles/tokens.css",
     "./typography.css": "./styles/typography.css",
     "./icon.css": "./styles/icon.css",
@@ -21,7 +37,9 @@
     "./flags/*": "./assets/flags/*",
     "./brand-logos/*": "./assets/brand-logos/*"
   },
-  "publishConfig": { "access": "public" },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "node build/build-fonts.mjs && node build/optimize-svg.mjs && tsup",
     "test": "vitest run",
@@ -30,11 +48,25 @@
     "build-storybook": "storybook build"
   },
   "devDependencies": {
+    "@storybook/addon-essentials": "^8.6.18",
+    "@storybook/addon-interactions": "^8.6.18",
+    "@storybook/addon-themes": "^8.6.18",
+    "@storybook/blocks": "^8.6.18",
+    "@storybook/react": "^8.6.18",
+    "@storybook/react-vite": "^8.6.18",
+    "@storybook/test": "^8.6.18",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "storybook": "^8.6.18",
     "svgo": "^3.3.2",
     "tsup": "^8.3.0",
     "typescript": "^5.6.0",
     "vitest": "^2.1.0",
     "wawoff2": "^2.0.1"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  }
 }

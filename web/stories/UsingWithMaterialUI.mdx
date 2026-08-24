@@ -1,0 +1,83 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Guides/Using with Material UI" />
+
+# Using with Material UI
+
+Lemonade for web ships **no MUI adapter** in v0, and this page documents the pattern
+rather than a package you can install. Here's why, and what to do instead.
+
+## The pattern: point MUI's palette at the CSS variables
+
+`createTheme` accepts a plain string for most palette values, and a CSS custom
+property reference is a plain string as far as MUI's types are concerned. So the
+straightforward move is to point the palette straight at Lemonade's tokens:
+
+```ts
+createTheme({
+  palette: {
+    background: { default: 'var(--lmnd-color-bg-default)' },
+    text: { primary: 'var(--lmnd-color-content-primary)' },
+  },
+})
+```
+
+The payoff is real: the theme object never has to be rebuilt when the theme
+toggles. Flipping `data-lmnd-theme` on `<html>` re-resolves every `var()` through
+CSS, and every MUI component reading `theme.palette.background.default` picks up
+the new value automatically, with zero JS re-render.
+
+## The caveat: derived states break this
+
+MUI doesn't only *read* palette colours — in a lot of places it *computes* new ones
+from them, using `alpha()`, `lighten()` and `darken()` to derive hover, focus and
+disabled states from a base colour. Those functions parse a colour value into
+channels and do arithmetic on it. They cannot parse `var(--lmnd-color-bg-brand)` —
+it's an opaque string to them, not a colour, so the derivation either throws or
+silently produces garbage at runtime.
+
+This is exactly the class of problem where a half-built adapter is worse than none:
+it would work for the palette fields MUI reads directly, then fail unpredictably
+the moment a component needed a hover or disabled variant, and the failure mode is
+a broken colour deep inside MUI's internals rather than a clear error at your call
+site. Debugging that from the consuming app's side, with no visibility into
+Lemonade's internals, is a support burden neither side wants.
+
+**So: for any palette field MUI derives states from — `primary`, `secondary`,
+`error`, `warning`, `info`, `success`, and anything you pass through
+`alpha`/`lighten`/`darken` yourself — pass a literal colour instead of a `var()`
+reference.**
+
+Note that colours are CSS-only in this release — the `tokens` TS export covers
+spacing, radius, size, border-width and opacity, but not the semantic colour
+palette, so there is no ready-made `tokens.colors.bgBrand` to import. In practice
+that means resolving the literal yourself, either once at startup:
+
+```ts
+const bgBrand = getComputedStyle(document.documentElement)
+  .getPropertyValue('--lmnd-color-bg-brand')
+  .trim()
+
+createTheme({
+  palette: {
+    primary: { main: bgBrand }, // a resolved literal, not var(--lmnd-color-bg-brand)
+  },
+})
+```
+
+or by copying the value straight out of `tokens.css` for the fields you need. Either
+way, these specific fields stop being theme-aware for free — if you support both
+light and dark, re-resolve them (and rebuild the affected part of the theme, or swap
+between two precomputed themes) when `data-lmnd-theme` changes, the same way you'd
+handle any other MUI dark-mode setup.
+
+## Summary
+
+| Palette field | Use |
+| --- | --- |
+| Anything MUI reads directly (`background.default`, `text.primary`, most one-off colour props) | `var(--lmnd-color-*)` — stays theme-aware automatically |
+| Anything MUI derives hover/disabled/etc. from (`primary`, `secondary`, `error`, `warning`, `info`, `success`) | a resolved literal (there's no TS colour export yet) — re-resolve on toggle |
+
+If your app needs more than a handful of derived fields, that's a signal you may
+want a small mapping layer of your own rather than reaching for a Lemonade adapter
+that doesn't exist yet.
