@@ -1,0 +1,41 @@
+name: Web CI
+
+on:
+  pull_request:
+    paths:
+      - 'web/**'
+      - '.github/workflows/web_ci.yml'
+
+concurrency:
+  group: web-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web:
+    name: Build, test and pack
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: web/.nvmrc
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm run build-storybook
+      # Proves the published tarball is installable — the gate before any publish.
+      - name: Pack and install into a scratch project
+        run: |
+          npm pack --pack-destination /tmp
+          mkdir -p /tmp/consumer && cd /tmp/consumer
+          npm init -y >/dev/null
+          npm install /tmp/teya-lemonade-ds-*.tgz
+          node -e "const {tokens}=require('@teya/lemonade-ds'); if(tokens.spacing.spacing200!==8) throw new Error('bad token value')"
+          test -f node_modules/@teya/lemonade-ds/styles/tokens.css

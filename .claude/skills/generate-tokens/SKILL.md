@@ -17,10 +17,10 @@ files and (over)write the generated source for each platform. This skill runs th
 right converters for whatever token files changed.
 
 **Flutter is intentionally excluded.** The repo ships `flutter-*` converters too,
-but this skill targets **KMP + SwiftUI only** — do not run the Flutter converters
-or commit changes under `flutter/`. If Flutter is ever brought back into scope,
-re-add its converters to `converters_for()` in `run-converters.sh` and the table
-below.
+but this skill targets **KMP + SwiftUI + web only** — do not run the Flutter
+converters or commit changes under `flutter/`. If Flutter is ever brought back into
+scope, re-add its converters to `converters_for()` in `run-converters.sh` and the
+table below.
 
 ## TL;DR
 
