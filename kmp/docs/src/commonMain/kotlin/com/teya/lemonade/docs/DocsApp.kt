@@ -18,10 +18,12 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.LemonadeTheme
 import com.teya.lemonade.LemonadeUi
 import com.teya.lemonade.Text
+import com.teya.lemonade.docs.content.DocBlocks
+import com.teya.lemonade.docs.pages.pageFor
 import com.teya.lemonade.docs.theme.DocStyledTheme
 import com.teya.lemonade.docs.theme.rememberDocStyleHandler
 
-private val ContentMaxWidth = 720.dp
+private val ContentMaxWidth = 760.dp
 
 @Composable
 internal fun DocsApp(router: DocRouter) {
@@ -42,23 +44,42 @@ internal fun DocsApp(router: DocRouter) {
                     .verticalScroll(rememberScrollState()),
                 contentAlignment = Alignment.TopCenter,
             ) {
-                Column(
-                    modifier = Modifier
-                        .widthIn(max = ContentMaxWidth)
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = LemonadeTheme.spaces.spacing400,
-                            vertical = LemonadeTheme.spaces.spacing800,
-                        ),
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing600),
-                ) {
-                    LemonadeUi.Text(
-                        text = router.current.label,
-                        textStyle = LemonadeTheme.typography.displaySmall,
-                        color = LemonadeTheme.colors.content.contentPrimary,
-                    )
-                }
+                DocContent(router = router)
             }
+        }
+    }
+}
+
+@Composable
+private fun DocContent(router: DocRouter) {
+    val route = router.current
+    val page = pageFor(route)
+    Column(
+        modifier = Modifier
+            .widthIn(max = ContentMaxWidth)
+            .fillMaxWidth()
+            .padding(
+                horizontal = LemonadeTheme.spaces.spacing600,
+                vertical = LemonadeTheme.spaces.spacing800,
+            ),
+        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+    ) {
+        LemonadeUi.Text(
+            text = page?.title ?: route.label,
+            textStyle = LemonadeTheme.typography.displaySmall,
+            color = LemonadeTheme.colors.content.contentPrimary,
+        )
+        if (page != null) {
+            LemonadeUi.Text(
+                text = page.description,
+                textStyle = LemonadeTheme.typography.bodyLargeRegular,
+                color = LemonadeTheme.colors.content.contentSecondary,
+            )
+            DocBlocks(
+                blocks = page.blocks,
+                router = router,
+                modifier = Modifier.padding(top = LemonadeTheme.spaces.spacing400),
+            )
         }
     }
 }
