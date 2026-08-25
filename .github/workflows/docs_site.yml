@@ -1,0 +1,92 @@
+name: Documentation Site
+
+# Builds the Compose for Web documentation site and deploys it to GitHub Pages.
+#
+# Triggering on tokens/** is deliberate: the Foundations pages read a catalog
+# generated from the Figma export, so a token re-export redeploys the site.
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'kmp/**'
+      - 'tokens/**'
+      - '.github/workflows/docs_site.yml'
+      - '.github/actions/setup-gradle/**'
+      - '!**/*.md'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'kmp/**'
+      - 'tokens/**'
+      - '.github/workflows/docs_site.yml'
+      - '.github/actions/setup-gradle/**'
+      - '!**/*.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: docs-site-build-${{ github.ref }}
+      cancel-in-progress: true
+    env:
+      GRADLE_OPTS: -Xmx3g
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Gradle
+        uses: ./.github/actions/setup-gradle
+
+      - name: Build the wasm distribution
+        run: ./gradlew :docs:wasmJsBrowserDistribution --no-daemon -Dorg.gradle.jvmargs="-Xmx3g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+        working-directory: ./kmp
+
+      - name: Report payload size
+        run: |
+          cd kmp/docs/build/dist/wasmJs/productionExecutable
+          echo "### Documentation site payload" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| File | Raw | Gzipped |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---:|---:|" >> "$GITHUB_STEP_SUMMARY"
+          for file in *.wasm *.js; do
+            [ -f "$file" ] || continue
+            raw=$(du -h "$file" | cut -f1)
+            gz=$(gzip -c9 "$file" | wc -c | awk '{printf "%.1fM", $1/1048576}')
+            echo "| $file | $raw | $gz |" >> "$GITHUB_STEP_SUMMARY"
+          done
+
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: kmp/docs/build/dist/wasmJs/productionExecutable
+
+  deploy:
+    name: Deploy
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Never cancel an in-flight deployment. deploy-pages cannot be interrupted
+    # cleanly, and cancelling mid-run leaves the Pages deployment stuck; a second
+    # push queues behind this one instead.
+    concurrency:
+      group: docs-site-deploy
+      cancel-in-progress: false
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
