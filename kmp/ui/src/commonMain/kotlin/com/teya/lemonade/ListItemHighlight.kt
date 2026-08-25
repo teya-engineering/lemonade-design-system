@@ -22,6 +22,7 @@ import androidx.compose.ui.node.currentValueOf
 import androidx.compose.ui.node.invalidateDraw
 import androidx.compose.ui.unit.LayoutDirection
 import com.teya.lemonade.core.LemonadeListItemVoice
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 /** The default spring of `animateColorAsState`, which the highlight previously animated with. */
@@ -48,6 +49,8 @@ private class ListItemHighlightNode(
     private val hoverInteractions = mutableListOf<HoverInteraction.Enter>()
 
     private var highlightFraction: Animatable<Float, AnimationVector1D>? = null
+    private var highlightTarget = 0f
+    private var animationJob: Job? = null
 
     private var cachedOutline: Outline? = null
     private var cachedSize: Size = Size.Unspecified
@@ -74,6 +77,8 @@ private class ListItemHighlightNode(
         pressInteractions.clear()
         hoverInteractions.clear()
         highlightFraction = null
+        highlightTarget = 0f
+        animationJob = null
         cachedOutline = null
         cachedSize = Size.Unspecified
         cachedLayoutDirection = null
@@ -83,18 +88,16 @@ private class ListItemHighlightNode(
     private fun animateHighlight() {
         val active = pressInteractions.isNotEmpty() || hoverInteractions.isNotEmpty()
         val target = if (active) 1f else 0f
-        val animatable = highlightFraction
-            ?: if (active) {
-                Animatable(initialValue = 0f).also { created ->
-                    highlightFraction = created
-                }
-            } else {
-                return
-            }
-        if (animatable.targetValue == target) {
+        if (target == highlightTarget) {
             return
         }
-        coroutineScope.launch {
+        highlightTarget = target
+        val animatable = highlightFraction
+            ?: Animatable(initialValue = 0f).also { created ->
+                highlightFraction = created
+            }
+        animationJob?.cancel()
+        animationJob = coroutineScope.launch {
             animatable.animateTo(
                 targetValue = target,
                 animationSpec = HighlightAnimationSpec,
