@@ -1,6 +1,6 @@
 # Lemonade Design System - Kotlin Multiplatform
 
-A shared **Kotlin Multiplatform** library for UI components, styling, and theming — enabling consistent user experiences across Android, iOS, and JVM Desktop.
+A shared **Kotlin Multiplatform** library for UI components, styling, and theming — enabling consistent user experiences across Android, iOS, JVM Desktop and the browser.
 
 ---
 
@@ -40,6 +40,7 @@ By the end of this guide, you will have:
 | Android | Mobile |
 | iOS | Mobile |
 | JVM | Desktop |
+| Wasm | Browser |
 
 ---
 

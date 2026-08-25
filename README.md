@@ -17,6 +17,15 @@ A multi-platform design system providing production-ready UI components, theming
 
 ---
 
+## Documentation
+
+The guidance site — how to build with Lemonade, the standards behind it, and the token
+reference generated from the Figma export — is at
+<https://saltpay.github.io/lemonade-design-system/>. It is built with Lemonade itself,
+compiled to the browser; the source is in [`kmp/docs`](./kmp/docs).
+
+---
+
 ## Overview
 
 Lemonade Design System is a comprehensive, multi-platform solution that enables teams to build consistent, high-quality user interfaces. It provides:
@@ -32,7 +41,7 @@ Lemonade Design System is a comprehensive, multi-platform solution that enables 
 
 | Platform | Targets | Documentation |
 |----------|---------|---------------|
-| **Kotlin Multiplatform** | Android, iOS, JVM Desktop | [KMP Documentation](./kmp/README.md) |
+| **Kotlin Multiplatform** | Android, iOS, JVM Desktop, Browser (wasm) | [KMP Documentation](./kmp/README.md) |
 | **Flutter** | Android, iOS, Web | [Flutter Documentation](./flutter/README.md) |
 | **SwiftUI** | iOS 15+, macOS 12+ | [SwiftUI Documentation](./swiftui/README.md) |
 
