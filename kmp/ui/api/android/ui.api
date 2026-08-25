@@ -408,7 +408,8 @@ public final class com/teya/lemonade/LemonadeTheme {
 }
 
 public final class com/teya/lemonade/LemonadeThemeKt {
-	public static final fun LemonadeTheme (Lcom/teya/lemonade/LemonadeSemanticColors;Lcom/teya/lemonade/LemonadeTypographyProvider;Lcom/teya/lemonade/LemonadeRadiusValues;Lcom/teya/lemonade/LemonadeShapes;Lcom/teya/lemonade/LemonadeOpacity;Lcom/teya/lemonade/LemonadeSpaceValues;Lcom/teya/lemonade/LemonadeBorderWidth;Lcom/teya/lemonade/LemonadeSizeValues;Lcom/teya/lemonade/LemonadeEffects;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LemonadeTheme (Lcom/teya/lemonade/LemonadeSemanticColors;Lcom/teya/lemonade/LemonadeTypographyProvider;Lcom/teya/lemonade/LemonadeRadiusValues;Lcom/teya/lemonade/LemonadeShapes;Lcom/teya/lemonade/LemonadeOpacity;Lcom/teya/lemonade/LemonadeSpaceValues;Lcom/teya/lemonade/LemonadeBorderWidth;Lcom/teya/lemonade/LemonadeSizeValues;Lcom/teya/lemonade/LemonadeEffects;Landroidx/compose/ui/text/font/FontFamily;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
+	public static final synthetic fun LemonadeTheme (Lcom/teya/lemonade/LemonadeSemanticColors;Lcom/teya/lemonade/LemonadeTypographyProvider;Lcom/teya/lemonade/LemonadeRadiusValues;Lcom/teya/lemonade/LemonadeShapes;Lcom/teya/lemonade/LemonadeOpacity;Lcom/teya/lemonade/LemonadeSpaceValues;Lcom/teya/lemonade/LemonadeBorderWidth;Lcom/teya/lemonade/LemonadeSizeValues;Lcom/teya/lemonade/LemonadeEffects;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/teya/lemonade/LemonadeToastState {
@@ -468,6 +469,7 @@ public final class com/teya/lemonade/LemonadeTypefacesKt {
 
 public final class com/teya/lemonade/LemonadeTypographyExtensionsKt {
 	public static final fun getLemonadeFontFamily (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/text/font/FontFamily;
+	public static final fun getLocalFontFamily ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getTextStyle (Lcom/teya/lemonade/core/LemonadeTextStyle;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/text/TextStyle;
 	public static final fun getTextStyle (Lcom/teya/lemonade/core/LemonadeTypography;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/text/TextStyle;
 }
