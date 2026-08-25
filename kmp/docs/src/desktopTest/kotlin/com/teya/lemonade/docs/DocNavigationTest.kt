@@ -1,5 +1,7 @@
 package com.teya.lemonade.docs
 
+import com.teya.lemonade.docs.pages.docPages
+import com.teya.lemonade.docs.pages.pageFor
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -21,6 +23,29 @@ class DocNavigationTest {
         assertTrue(
             orphans.isEmpty(),
             "Routes missing from the sidebar: ${orphans.map { route -> route.path }}",
+        )
+    }
+
+    @Test
+    fun `every route has a page`() {
+        val missing = DocRoute.entries.filter { route ->
+            pageFor(route) == null
+        }
+        assertTrue(
+            missing.isEmpty(),
+            "Routes with no page: ${missing.map { route -> route.path }}",
+        )
+    }
+
+    @Test
+    fun `no page claims a route twice`() {
+        val routes = docPages.map { page ->
+            page.route
+        }
+        assertEquals(
+            routes.size,
+            routes.toSet().size,
+            "Two pages declare the same route; one silently wins the lookup.",
         )
     }
 
