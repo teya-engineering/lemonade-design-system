@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
@@ -103,6 +104,8 @@ public fun LemonadeUi.Button(
                     textStyle = size.contentData.textStyle,
                     color = colors.contentColor,
                     textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing200),
                 )
 
@@ -177,6 +180,8 @@ public fun LemonadeUi.Button(
                     textStyle = size.contentData.textStyle,
                     color = colors.contentColor,
                     textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing200),
                 )
             }
