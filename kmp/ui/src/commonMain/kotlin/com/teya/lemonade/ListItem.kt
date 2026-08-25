@@ -866,11 +866,7 @@ private fun singleLineLeadingAlignment(
         Alignment.Top
     }
 
-/**
- * The text stack shared by the string-based overloads: optional top label, the label itself, the
- * optional support text and the optional [slotContent] below them. Inline, so it adds no
- * restartable scope on top of the content slot it is called from.
- */
+/** The text stack shared by the string-based overloads. */
 @Composable
 private inline fun ColumnScope.ListItemTextContent(
     label: String,
@@ -979,9 +975,6 @@ private fun CoreListItem(
 
         val hasTrailingContent = trailingSlot != null || navigationIndicator
         if (!hasTrailingContent) {
-            // With nothing trailing there is no width contention, so the content column sits
-            // directly in the row. A filling weight reproduces the Trailing-priority forced
-            // width; Label priority lets the column wrap inside the remaining space.
             Column(
                 content = contentSlot,
                 modifier = Modifier
@@ -1018,21 +1011,7 @@ private fun CoreListItem(
     }
 }
 
-/**
- * Measures the list-item body — the content column and the trailing content — without the
- * subcomposition a `BoxWithConstraints` would cost per row. Exactly two measurables: the content
- * at index 0 and the trailing content at index 1.
- *
- * [LemonadeListItemPriority.Trailing] measures the trailing content at its natural width and
- * forces the content to exactly the remainder, matching the former weighted content column.
- * [LemonadeListItemPriority.Label] caps the content so the trailing content always retains a
- * [trailingFloor] of readable space, then lets the trailing content wrap into what is left after
- * [trailingGap]; the trailing content is placed end-anchored either way.
- *
- * Children's alignment lines propagate through placement, and the default derived intrinsics
- * re-run this measurement — which also gives Label-priority rows working intrinsic sizes, where
- * the previous subcomposition threw on intrinsic measurement.
- */
+/** Measures the list-item body: the content column at index 0 and the trailing content at index 1. */
 private data class ListItemBodyMeasurePolicy(
     private val priority: LemonadeListItemPriority,
     private val trailingAlignment: Alignment.Vertical,
@@ -1154,10 +1133,7 @@ private fun RowScope.ListItemTrailingContent(
     }
 }
 
-/**
- * The outer treatment of a list-item row: the optional divider below it and the gutter padding
- * around it. Pure modifiers, so a row composes no wrapper node for either.
- */
+/** The outer treatment of a list-item row: the gutter padding and the optional divider below it. */
 @Composable
 private fun Modifier.listItemSafeArea(showDivider: Boolean): Modifier {
     val withDivider = if (showDivider) {
@@ -1168,11 +1144,7 @@ private fun Modifier.listItemSafeArea(showDivider: Boolean): Modifier {
     return withDivider.padding(all = LocalSpaces.current.spacing100)
 }
 
-/**
- * Draws the row divider the way [LemonadeUi.HorizontalDivider] renders its solid variant — same
- * thickness, colour and horizontal insets — while reserving the divider's height with padding so
- * the row's total height matches the former divider sibling.
- */
+/** Draws the solid [LemonadeUi.HorizontalDivider] line, reserving its height with bottom padding. */
 @Composable
 private fun Modifier.listItemDivider(): Modifier {
     val thickness = LocalBorderWidths.current.base.border25

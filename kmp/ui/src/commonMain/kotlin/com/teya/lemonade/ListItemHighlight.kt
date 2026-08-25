@@ -24,27 +24,10 @@ import androidx.compose.ui.unit.LayoutDirection
 import com.teya.lemonade.core.LemonadeListItemVoice
 import kotlinx.coroutines.launch
 
-/**
- * Matches the default spring of `animateColorAsState`, which the highlight previously used. The
- * node animates a 0..1 fraction and scales the theme colour's alpha at draw time; for a same-RGB
- * alpha fade this is trajectory-identical to animating the [Color] itself, since springs act on
- * each vector dimension independently.
- */
+/** The default spring of `animateColorAsState`, which the highlight previously animated with. */
 private val HighlightAnimationSpec: SpringSpec<Float> = spring()
 
-/**
- * Press/hover indication for interactive list items.
- *
- * The highlight is painted directly in the draw phase, reading the theme colour and shape at draw
- * time (not composition time) and using the row's rounded [Shape] outline instead of a
- * [androidx.compose.ui.draw.clip] graphics layer. While a row is idle or scrolling the fraction is
- * zero, so the row draws nothing and pays no clip/background cost. There is no platform ripple;
- * press feedback is the animated fill, mirroring the iOS `ListItemButtonStyle`.
- *
- * Interaction tracking lives inside the indication [Modifier.Node] rather than in composition, so
- * pressing or hovering a row never recomposes it — the animation only invalidates draw. Rows that
- * are never touched allocate no animation state at all.
- */
+/** Press/hover fill indication for interactive list items, handled entirely in the draw phase. */
 internal data class ListItemHighlightIndication(
     private val voice: LemonadeListItemVoice,
 ) : IndicationNodeFactory {

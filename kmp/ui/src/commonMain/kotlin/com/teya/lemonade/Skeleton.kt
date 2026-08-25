@@ -218,9 +218,6 @@ private fun CoreSkeleton(
     val skeletonSize = size.toSkeletonSizeDimensions(variant = variant)
     val variantData = variant.variantData
 
-    // The gradient brush and the resolved corner radius are cached per size; each shimmer frame
-    // only pans the cached shader by translating the canvas while offsetting the rounded rect
-    // back, which samples the gradient over exactly the span the former per-frame brush covered.
     Box(
         modifier = modifier
             .height(height = skeletonSize.height)

@@ -290,13 +290,7 @@ private fun CoreSymbolContainer(
     }
 }
 
-/**
- * The container's fill, border and size. The fill is drawn with the shape directly instead of
- * clipping the container, so a symbol costs no clip layer; [clipContent] opts back into the clip
- * for the variants whose content genuinely overflows the container (fill-scaled images and
- * arbitrary content slots). [Modifier.border] draws its stroke fully inside the shape either way,
- * so the border geometry is identical in both branches.
- */
+/** The container's fill, border and size; [clipContent] keeps the clip for content that overflows. */
 @Composable
 private fun Modifier.symbolContainerSurface(
     voice: SymbolContainerVoice,
