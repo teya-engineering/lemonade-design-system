@@ -40,9 +40,15 @@ public struct LemonadeTextStyle: Sendable {
         self.fontWeight = fontWeight
         self.letterSpacing = letterSpacing
 
+        let resolvedName = Self.fontName(for: fontWeight)
+        self.fontName = resolvedName
+        self.font = .custom(resolvedName, size: fontSize, relativeTo: .body)
+        self.weightedFont = .custom(LemonadeTypography.fontFamily, size: fontSize)
+            .weight(fontWeight)
+
 #if canImport(UIKit)
         let naturalLineHeight = Self.resolvedUIFont(
-            name: Self.fontName(for: fontWeight),
+            name: resolvedName,
             size: fontSize
         ).lineHeight
 #else
@@ -69,14 +75,18 @@ public struct LemonadeTextStyle: Sendable {
     }
 
     /// The font name based on the weight
-    public var fontName: String {
-        Self.fontName(for: fontWeight)
-    }
+    public let fontName: String
 
-    /// Returns a SwiftUI Font based on this text style
-    public var font: Font {
-        .custom(fontName, size: fontSize, relativeTo: .body)
-    }
+    /// Returns a SwiftUI Font based on this text style.
+    ///
+    /// Stored for the same reason as ``lineSpacing``: it is read from inside `body`, and
+    /// `Font.custom(_:size:relativeTo:)` boxes a new font provider on every call.
+    public let font: Font
+
+    /// The face asked for by the family name plus a weight modifier, which is how the string
+    /// overloads of ``LemonadeUi/Text(_:)`` resolve their font — a different expression from
+    /// ``font``, kept as-is here so this stays a pure caching change. Stored for the same reason.
+    let weightedFont: Font
 
 #if canImport(UIKit)
     /// The single place a text style turns into a concrete face.

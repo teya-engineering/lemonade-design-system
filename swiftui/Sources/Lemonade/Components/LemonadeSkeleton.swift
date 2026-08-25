@@ -102,6 +102,19 @@ private struct SkeletonView: View {
 
     @State private var shimmerOffset: CGFloat = -1
 
+    /// The shimmer ramp, built once rather than per body evaluation.
+    ///
+    /// Only the gradient's start and end points move, so the colour ramp itself is invariant.
+    /// Holding it here is safe for appearance changes: the theme's colours are asset-catalog
+    /// colours that resolve per trait at render time.
+    private static let shimmerRamp = Gradient(
+        colors: [
+            LemonadeTheme.colors.background.bgElevated,
+            LemonadeTheme.colors.background.bgElevatedHigh,
+            LemonadeTheme.colors.background.bgElevated
+        ]
+    )
+
     var body: some View {
         skeletonShape
             .onAppear {
@@ -116,10 +129,8 @@ private struct SkeletonView: View {
 
     @ViewBuilder
     private var skeletonShape: some View {
-        let baseColor = LemonadeTheme.colors.background.bgElevated
-        let highlightColor = LemonadeTheme.colors.background.bgElevatedHigh
         let gradient = LinearGradient(
-            gradient: Gradient(colors: [baseColor, highlightColor, baseColor]),
+            gradient: Self.shimmerRamp,
             startPoint: UnitPoint(x: shimmerOffset - 0.5, y: 0.5),
             endPoint: UnitPoint(x: shimmerOffset + 0.5, y: 0.5)
         )

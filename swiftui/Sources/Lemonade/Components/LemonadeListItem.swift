@@ -382,7 +382,6 @@ struct ListItemSafeArea<Content: View>: View {
                     .padding(.horizontal, LemonadeTheme.spaces.spacing400)
             }
         }
-        .background(Color.clear)
     }
 }
 

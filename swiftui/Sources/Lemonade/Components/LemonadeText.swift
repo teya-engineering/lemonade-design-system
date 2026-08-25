@@ -167,8 +167,13 @@ private struct LemonadeTextView: View {
             return .body
         }
 
-        let size = fontSize ?? style.fontSize
-        return .custom(LemonadeTypography.fontFamily, size: size).weight(style.fontWeight)
+        // Only a caller-supplied size override has to build a font here; the style already
+        // carries the one it resolves to, so the common path is a stored-property load.
+        if let fontSize = fontSize {
+            return .custom(LemonadeTypography.fontFamily, size: fontSize).weight(style.fontWeight)
+        }
+
+        return style.weightedFont
     }
 }
 
@@ -319,7 +324,7 @@ private struct LemonadeAttributedTextView: View {
             return .body
         }
 
-        return .custom(style.fontName, size: style.fontSize, relativeTo: .body)
+        return style.font
     }
 }
 
