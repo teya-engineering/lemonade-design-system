@@ -4,6 +4,10 @@ import com.teya.lemonade.docs.DocRoute
 import com.teya.lemonade.docs.content.DocPage
 
 internal val docPages: List<DocPage> = listOf(
+    overviewPage,
+    designPage,
+    kmpPage,
+    swiftUiPage,
     semanticTokensPage,
     themingPage,
     accessibilityPage,
