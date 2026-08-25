@@ -40,12 +40,12 @@ converters_for() {
   case "$1" in
     primitive-colors.tokens.json) echo "kmp-color-token-converter swiftui-color-token-converter" ;;
     theme-colors.light.tokens.json|theme-colors.dark.tokens.json)
-                                  echo "kmp-theme-token-converter swiftui-theme-token-converter swiftui-color-assets-generator" ;;
-    radius.tokens.json)           echo "kmp-radius-token-converter swiftui-radius-token-converter" ;;
-    spacing.tokens.json)          echo "kmp-spacing-token-converter swiftui-spacing-token-converter" ;;
-    size.tokens.json)             echo "kmp-dimension-token-converter swiftui-size-token-converter" ;;
-    opacity.tokens.json)          echo "kmp-opacity-token-converter swiftui-opacity-token-converter" ;;
-    border-width.tokens.json)     echo "kmp-border-width-token-converter swiftui-border-token-converter" ;;
+                                  echo "kmp-theme-token-converter swiftui-theme-token-converter swiftui-color-assets-generator docs-token-catalog" ;;
+    radius.tokens.json)           echo "kmp-radius-token-converter swiftui-radius-token-converter docs-token-catalog" ;;
+    spacing.tokens.json)          echo "kmp-spacing-token-converter swiftui-spacing-token-converter docs-token-catalog" ;;
+    size.tokens.json)             echo "kmp-dimension-token-converter swiftui-size-token-converter docs-token-catalog" ;;
+    opacity.tokens.json)          echo "kmp-opacity-token-converter swiftui-opacity-token-converter docs-token-catalog" ;;
+    border-width.tokens.json)     echo "kmp-border-width-token-converter swiftui-border-token-converter docs-token-catalog" ;;
     shadow.tokens.json)           echo "kmp-shadow-token-converter swiftui-shadow-token-converter" ;;
     typography.tokens.json)       echo "kmp-typography-token-converter swiftui-typography-token-converter" ;;
     *) echo "" ;;
