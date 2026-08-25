@@ -8,6 +8,7 @@ import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.register
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class LemonadePlugin : Plugin<Project> {
@@ -36,7 +37,7 @@ class LemonadePlugin : Plugin<Project> {
         }
     }
 
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    @OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalWasmDsl::class)
     private fun Project.configureKotlinTargets() {
         extensions.configure<KotlinMultiplatformExtension> {
             jvmToolchain(17)
@@ -50,6 +51,14 @@ class LemonadePlugin : Plugin<Project> {
             iosSimulatorArm64()
 
             jvm("desktop")
+
+            wasmJs {
+                browser {
+                    testTask {
+                        enabled = false
+                    }
+                }
+            }
 
             applyDefaultHierarchyTemplate {
                 common {
