@@ -499,7 +499,8 @@ private struct LemonadeButtonView: View {
                     LemonadeUi.Text(
                         label,
                         textStyle: size.contentData.textStyle,
-                        color: colors.contentColor
+                        color: colors.contentColor,
+                        maxLines: 1
                     )
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, LemonadeTheme.spaces.spacing200)
@@ -549,7 +550,8 @@ private struct LemonadeSlotButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
                     LemonadeUi.Text(
                         label,
                         textStyle: size.contentData.textStyle,
-                        color: colors.contentColor
+                        color: colors.contentColor,
+                        maxLines: 1
                     )
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, LemonadeTheme.spaces.spacing200)
