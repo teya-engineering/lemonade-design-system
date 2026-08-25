@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Lemonade Design System</title>
+    <meta name="description" content="How to build with Lemonade — the standards behind Teya's design system, the patterns worth reusing, and the tokens underneath.">
+    <meta property="og:title" content="Lemonade Design System">
+    <meta property="og:description" content="How to build with Lemonade — the standards behind Teya's design system, the patterns worth reusing, and the tokens underneath.">
+    <meta property="og:type" content="website">
+    <link rel="preload" as="font" type="font/ttf" crossorigin
+          href="composeResources/com.teya.lemonade/font/Figtree-Regular.ttf">
+    <link rel="preload" as="font" type="font/ttf" crossorigin
+          href="composeResources/com.teya.lemonade/font/Figtree-SemiBold.ttf">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            background: #fbfbfa;
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #090806;
+            }
+        }
+
+        #splash {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.625rem;
+            font-size: 0.875rem;
+            letter-spacing: 0.02em;
+            color: #6f6d68;
+        }
+
+        #splash::before {
+            content: "";
+            inline-size: 0.625rem;
+            block-size: 0.625rem;
+            border-radius: 50%;
+            background: #b6f000;
+        }
+    </style>
+</head>
+<body>
+<div id="splash">Loading Lemonade…</div>
+<script src="docs.js"></script>
+</body>
+</html>

@@ -34,6 +34,7 @@ plugins {
 }
 
 include(":composeApp")
+include(":docs")
 include(":core")
 include(":tokens")
 include(":ui")

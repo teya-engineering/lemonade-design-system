@@ -171,7 +171,7 @@ swiftui/fastlane/test_output
 swiftui/Package.resolved
 
 # Claude
-docs/
+/docs/
 .claude/settings.local.json
 kmp/.claude/settings.local.json
 swiftui/.claude/settings.local.json

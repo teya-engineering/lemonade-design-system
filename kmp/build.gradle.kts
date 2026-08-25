@@ -17,8 +17,9 @@ plugins {
 
 apiValidation {
     // Validate only the publishable modules. composeApp is the sample app and
-    // not published, so its API surface is irrelevant for consumers.
-    ignoredProjects += listOf("composeApp")
+    // docs is the documentation site; neither is published, so their API
+    // surface is irrelevant for consumers.
+    ignoredProjects += listOf("composeApp", "docs")
 
     @OptIn(kotlinx.validation.ExperimentalBCVApi::class)
     klib {
