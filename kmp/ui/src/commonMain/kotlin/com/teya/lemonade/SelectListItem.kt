@@ -75,6 +75,10 @@ import com.teya.lemonade.core.SelectListItemVariant
  *  Defaults to [Int.MAX_VALUE] (no limit).
  * @param supportTextOverflow - [TextOverflow] strategy applied to the [supportText] when it exceeds
  *  [supportTextMaxLines]. Defaults to [TextOverflow.Clip].
+ * @param leadingVerticalAlignment - Vertical alignment of [leadingSlot] within the row. Defaults to
+ *  [Alignment.Top], which keeps a leading icon level with the label's first line when the support
+ *  text wraps. Pass [Alignment.CenterVertically] for a leading slot that should sit centred against
+ *  the whole row instead — a large icon beside two lines of text, for example.
  */
 @Composable
 public fun LemonadeUi.SelectListItem(
@@ -96,6 +100,7 @@ public fun LemonadeUi.SelectListItem(
     labelOverflow: TextOverflow = TextOverflow.Clip,
     supportTextMaxLines: Int = Int.MAX_VALUE,
     supportTextOverflow: TextOverflow = TextOverflow.Clip,
+    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
 ) {
     SelectionHapticEffect(selected = checked)
 
@@ -119,6 +124,7 @@ public fun LemonadeUi.SelectListItem(
                 labelOverflow = labelOverflow,
                 supportTextMaxLines = supportTextMaxLines,
                 supportTextOverflow = supportTextOverflow,
+                leadingVerticalAlignment = leadingVerticalAlignment,
             )
         }
 
@@ -139,9 +145,64 @@ public fun LemonadeUi.SelectListItem(
                 labelOverflow = labelOverflow,
                 supportTextMaxLines = supportTextMaxLines,
                 supportTextOverflow = supportTextOverflow,
+                leadingVerticalAlignment = leadingVerticalAlignment,
             )
         }
     }
+}
+
+@Deprecated(
+    message = "Use the overload with leadingVerticalAlignment.",
+    replaceWith = ReplaceWith(
+        expression = "SelectListItem(label, type, checked, onItemClicked, modifier, variant, " +
+            "isLoading, enabled, interactionSource, showDivider, supportText, leadingSlot, " +
+            "trailingSlot, slotContent, labelMaxLines, labelOverflow, supportTextMaxLines, " +
+            "supportTextOverflow, Alignment.Top)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.SelectListItem(
+    label: String,
+    type: SelectListItemType,
+    checked: Boolean,
+    onItemClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+    variant: SelectListItemVariant = SelectListItemVariant.Plain,
+    isLoading: Boolean = false,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showDivider: Boolean = false,
+    supportText: String? = null,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+    labelMaxLines: Int = Int.MAX_VALUE,
+    labelOverflow: TextOverflow = TextOverflow.Clip,
+    supportTextMaxLines: Int = Int.MAX_VALUE,
+    supportTextOverflow: TextOverflow = TextOverflow.Clip,
+) {
+    LemonadeUi.SelectListItem(
+        label = label,
+        type = type,
+        checked = checked,
+        onItemClicked = onItemClicked,
+        modifier = modifier,
+        variant = variant,
+        isLoading = isLoading,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        showDivider = showDivider,
+        supportText = supportText,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        slotContent = slotContent,
+        labelMaxLines = labelMaxLines,
+        labelOverflow = labelOverflow,
+        supportTextMaxLines = supportTextMaxLines,
+        supportTextOverflow = supportTextOverflow,
+        leadingVerticalAlignment = Alignment.Top,
+    )
 }
 
 @Deprecated(
@@ -326,6 +387,7 @@ private fun PlainSelectListItem(
     labelOverflow: TextOverflow,
     supportTextMaxLines: Int,
     supportTextOverflow: TextOverflow,
+    leadingVerticalAlignment: Alignment.Vertical,
 ) {
     LemonadeUi.ListItem(
         modifier = modifier,
@@ -347,6 +409,7 @@ private fun PlainSelectListItem(
             )
         },
         enabled = enabled,
+        leadingVerticalAlignment = leadingVerticalAlignment,
         leadingSlot = leadingSlot,
         trailingSlot = {
             Row(
@@ -388,6 +451,7 @@ private fun OutlinedSelectListItem(
     labelOverflow: TextOverflow,
     supportTextMaxLines: Int,
     supportTextOverflow: TextOverflow,
+    leadingVerticalAlignment: Alignment.Vertical,
 ) {
     val colors = LocalColors.current
     val spaces = LocalSpaces.current
@@ -447,6 +511,7 @@ private fun OutlinedSelectListItem(
         if (leadingSlot != null) {
             Row(
                 modifier = Modifier
+                    .align(alignment = leadingVerticalAlignment)
                     .modifyIf(predicate = !enabled) {
                         alpha(alpha = opacities.state.opacityDisabled)
                     }.padding(end = spaces.spacing300),

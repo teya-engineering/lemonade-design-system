@@ -34,6 +34,10 @@ public extension LemonadeUi {
     ///   - labelOverflow: Truncation mode applied to the label when it exceeds `labelMaxLines`. Defaults to `.tail`.
     ///   - supportTextMaxLines: Maximum number of lines for the support text before it truncates. Defaults to `nil` (no limit).
     ///   - supportTextOverflow: Truncation mode applied to the support text when it exceeds `supportTextMaxLines`. Defaults to `.tail`.
+    ///   - leadingAlignment: Vertical alignment of the leading slot within the row. Pass `nil`
+    ///     (the default) to keep `ListItem`'s behaviour, which centres a single-line row and
+    ///     top-aligns one whose text wraps. Pass `.center` for a leading slot that should sit
+    ///     centred against the whole row regardless.
     ///   - leadingSlot: Content to be placed in leading position
     ///   - trailingSlot: Content to be placed before the selection control
     ///   - slotContent: Optional slot rendered below the support text, inside the label column.
@@ -55,6 +59,7 @@ public extension LemonadeUi {
         labelOverflow: Text.TruncationMode = .tail,
         supportTextMaxLines: Int? = nil,
         supportTextOverflow: Text.TruncationMode = .tail,
+        leadingAlignment: VerticalAlignment? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
         @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
@@ -74,6 +79,7 @@ public extension LemonadeUi {
                 labelOverflow: labelOverflow,
                 supportTextMaxLines: supportTextMaxLines,
                 supportTextOverflow: supportTextOverflow,
+                leadingAlignment: leadingAlignment,
                 leadingSlot: leadingSlot,
                 trailingSlot: trailingSlot,
                 slotContent: slotContent
@@ -90,6 +96,7 @@ public extension LemonadeUi {
                 labelOverflow: labelOverflow,
                 supportTextMaxLines: supportTextMaxLines,
                 supportTextOverflow: supportTextOverflow,
+                leadingAlignment: leadingAlignment,
                 leadingSlot: leadingSlot,
                 trailingSlot: trailingSlot,
                 slotContent: slotContent
@@ -113,6 +120,7 @@ public extension LemonadeUi {
         labelOverflow: Text.TruncationMode = .tail,
         supportTextMaxLines: Int? = nil,
         supportTextOverflow: Text.TruncationMode = .tail,
+        leadingAlignment: VerticalAlignment? = nil,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
         @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
     ) -> some View {
@@ -130,6 +138,7 @@ public extension LemonadeUi {
             labelOverflow: labelOverflow,
             supportTextMaxLines: supportTextMaxLines,
             supportTextOverflow: supportTextOverflow,
+            leadingAlignment: leadingAlignment,
             leadingSlot: { EmptyView() },
             trailingSlot: trailingSlot,
             slotContent: slotContent
@@ -152,6 +161,7 @@ public extension LemonadeUi {
         labelOverflow: Text.TruncationMode = .tail,
         supportTextMaxLines: Int? = nil,
         supportTextOverflow: Text.TruncationMode = .tail,
+        leadingAlignment: VerticalAlignment? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
     ) -> some View {
@@ -169,6 +179,7 @@ public extension LemonadeUi {
             labelOverflow: labelOverflow,
             supportTextMaxLines: supportTextMaxLines,
             supportTextOverflow: supportTextOverflow,
+            leadingAlignment: leadingAlignment,
             leadingSlot: leadingSlot,
             trailingSlot: { EmptyView() },
             slotContent: slotContent
@@ -191,6 +202,7 @@ public extension LemonadeUi {
         labelOverflow: Text.TruncationMode = .tail,
         supportTextMaxLines: Int? = nil,
         supportTextOverflow: Text.TruncationMode = .tail,
+        leadingAlignment: VerticalAlignment? = nil,
         @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
     ) -> some View {
         SelectListItem(
@@ -207,6 +219,7 @@ public extension LemonadeUi {
             labelOverflow: labelOverflow,
             supportTextMaxLines: supportTextMaxLines,
             supportTextOverflow: supportTextOverflow,
+            leadingAlignment: leadingAlignment,
             leadingSlot: { EmptyView() },
             trailingSlot: { EmptyView() },
             slotContent: slotContent
@@ -276,6 +289,7 @@ private struct PlainSelectListItem<LeadingContent: View, TrailingContent: View, 
     let labelOverflow: Text.TruncationMode
     let supportTextMaxLines: Int?
     let supportTextOverflow: Text.TruncationMode
+    let leadingAlignment: VerticalAlignment?
     let leadingSlot: () -> LeadingContent
     let trailingSlot: () -> TrailingContent
     let slotContent: () -> SlotContent
@@ -288,6 +302,7 @@ private struct PlainSelectListItem<LeadingContent: View, TrailingContent: View, 
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
+            leadingAlignment: leadingAlignment,
             labelMaxLines: labelMaxLines,
             labelOverflow: labelOverflow,
             supportTextMaxLines: supportTextMaxLines,
@@ -329,6 +344,7 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
     let labelOverflow: Text.TruncationMode
     let supportTextMaxLines: Int?
     let supportTextOverflow: Text.TruncationMode
+    let leadingAlignment: VerticalAlignment?
     let leadingSlot: () -> LeadingContent
     let trailingSlot: () -> TrailingContent
     let slotContent: () -> SlotContent
@@ -356,7 +372,7 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
     }
 
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(alignment: leadingAlignment ?? .center, spacing: 0) {
             if LeadingContent.self != EmptyView.self {
                 leadingSlot()
                     .opacity(contentOpacity)
