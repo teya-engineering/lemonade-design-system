@@ -21,6 +21,9 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -79,13 +82,35 @@ public class LemonadeTimePickerState internal constructor(
     /** The selected minute, in the 0..59 range. */
     @OptIn(ExperimentalMaterial3Api::class)
     public val minute: Int get() = delegate.minute
+
+    internal companion object {
+        /**
+         * Persists the merchant's selection across configuration changes. Rotation is the case
+         * that matters: it is what moves the dial to Material's side-by-side layout, so a time
+         * chosen in portrait has to survive the turn to landscape.
+         */
+        fun saver(): Saver<LemonadeTimePickerState, Any> =
+            listSaver(
+                save = { state ->
+                    listOf(state.hour, state.minute, state.is24Hour)
+                },
+                restore = { saved ->
+                    LemonadeTimePickerState(
+                        initialHour = saved[0] as Int,
+                        initialMinute = saved[1] as Int,
+                        is24Hour = saved[2] as Boolean,
+                    )
+                },
+            )
+    }
 }
 
 /**
  * Creates and remembers a [LemonadeTimePickerState].
  *
  * The state is re-created whenever any argument changes, so hoisting it above a dialog and passing
- * a freshly loaded time re-seeds the picker without any extra plumbing.
+ * a freshly loaded time re-seeds the picker without any extra plumbing. The selection otherwise
+ * survives configuration changes, so rotating the phone mid-edit keeps the time already chosen.
  *
  * @param initialHour The initially selected hour, in the 0..23 range.
  * @param initialMinute The initially selected minute, in the 0..59 range.
@@ -98,7 +123,12 @@ public fun rememberLemonadeTimePickerState(
     initialMinute: Int,
     is24Hour: Boolean,
 ): LemonadeTimePickerState =
-    remember(initialHour, initialMinute, is24Hour) {
+    rememberSaveable(
+        initialHour,
+        initialMinute,
+        is24Hour,
+        saver = LemonadeTimePickerState.saver(),
+    ) {
         LemonadeTimePickerState(
             initialHour = initialHour,
             initialMinute = initialMinute,
@@ -169,6 +199,11 @@ public fun LemonadeUi.TimePicker(
  *   rather than falling back to Material's purple.
  * - The "Hour" and "Minute" labels below the fields are Material's, and Material localizes them
  *   from its own resources; nothing here can restyle or re-word them.
+ * - Material drops a typed value that falls outside 0..23 or 0..59 rather than reporting it: the
+ *   field shows the out-of-range text and Material's own error beneath it, while [hour] and
+ *   [minute] keep the last value that was in range. Material exposes no validity flag to read, so
+ *   a caller that commits on a button press commits that last valid time. Seed the state from
+ *   whatever the merchant confirmed rather than from the field.
  *
  * @param state Configuration state created via [rememberLemonadeTimePickerState]. Observe
  * [LemonadeTimePickerState.hour] and [LemonadeTimePickerState.minute] to react to the selection.
