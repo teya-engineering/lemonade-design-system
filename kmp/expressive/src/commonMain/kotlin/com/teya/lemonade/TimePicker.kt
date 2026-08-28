@@ -284,8 +284,8 @@ public fun LemonadeUi.TimeInput(
  * @param onConfirm Called with the chosen hour (0..23) and minute (0..59) when the merchant
  * confirms.
  * @param initialDisplayMode Which of the two the dialog opens on. The merchant can switch freely
- * afterwards, so this only seeds the first frame; passing a new value re-seeds it. Defaults to
- * [LemonadeTimePickerDisplayMode.Dial].
+ * while it is open, and every fresh opening starts here again rather than wherever the last one
+ * was left. Defaults to [LemonadeTimePickerDisplayMode.Dial].
  * @see LemonadeUi.Dialog The underlying dialog.
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -303,7 +303,12 @@ public fun LemonadeUi.TimePickerDialog(
     onConfirm: (hour: Int, minute: Int) -> Unit,
     initialDisplayMode: LemonadeTimePickerDisplayMode = LemonadeTimePickerDisplayMode.Dial,
 ) {
-    var displayMode by remember(initialDisplayMode) { mutableStateOf(initialDisplayMode) }
+    // Keyed on expanded as well: this composable stays in the tree while the dialog is hidden, so
+    // without it a merchant who switched to the typed fields would find them again on every later
+    // opening, and initialDisplayMode would only ever apply once.
+    var displayMode by remember(expanded, initialDisplayMode) {
+        mutableStateOf(initialDisplayMode)
+    }
 
     // Material reads the window from LocalWindowInfo and asks for its side-by-side layout on a
     // short or wide window — a landscape phone or a tablet. The dial picks that up on its own; the
