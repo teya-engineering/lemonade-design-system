@@ -24,6 +24,10 @@ import androidx.compose.ui.window.DialogProperties
  *   and [dismissOnBackPress]).
  * @param dismissOnClickOutside Whether tapping outside the dialog dismisses it. Defaults to `true`.
  * @param dismissOnBackPress Whether pressing the back button dismisses the dialog. Defaults to `true`.
+ * @param wide Whether the dialog may grow past the platform's default dialog width. Defaults to
+ *   `false`, which is the right choice for the text-and-buttons dialogs the platform width was
+ *   sized for. Pass `true` for content that genuinely needs the room, such as a side-by-side
+ *   picker on a landscape phone or a tablet.
  * @param content A composable lambda that defines the dialog's content.
  *
  * ## Usage Example
@@ -67,6 +71,7 @@ public fun LemonadeUi.Dialog(
     onDismissRequest: () -> Unit,
     dismissOnClickOutside: Boolean = true,
     dismissOnBackPress: Boolean = true,
+    wide: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     val mirrorSystemBars = systemBarsMirror()
@@ -77,6 +82,7 @@ public fun LemonadeUi.Dialog(
             properties = DialogProperties(
                 dismissOnClickOutside = dismissOnClickOutside,
                 dismissOnBackPress = dismissOnBackPress,
+                usePlatformDefaultWidth = !wide,
             ),
         ) {
             mirrorSystemBars()
@@ -89,4 +95,30 @@ public fun LemonadeUi.Dialog(
             )
         }
     }
+}
+
+/**
+ * Binary-compatibility shim for the signature that shipped before [wide] was added. Kept so the
+ * released symbol survives; see the binary-compatibility skill.
+ */
+@Deprecated(
+    message = "Binary compatibility only.",
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.Dialog(
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+    dismissOnClickOutside: Boolean = true,
+    dismissOnBackPress: Boolean = true,
+    content: @Composable () -> Unit,
+) {
+    Dialog(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest,
+        dismissOnClickOutside = dismissOnClickOutside,
+        dismissOnBackPress = dismissOnBackPress,
+        wide = false,
+        content = content,
+    )
 }

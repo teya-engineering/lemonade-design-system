@@ -266,9 +266,17 @@ public fun LemonadeUi.TimePickerDialog(
 ) {
     var displayMode by remember(initialDisplayMode) { mutableStateOf(initialDisplayMode) }
 
+    // Material reads the window from LocalWindowInfo and asks for its side-by-side layout on a
+    // short or wide window — a landscape phone or a tablet. The dial honours that, and the dialog
+    // drops the platform's default width so the wider layout has room instead of being clipped.
+    val layoutType = TimePickerDefaults.layoutType()
+    val isHorizontal = layoutType == TimePickerLayoutType.Horizontal &&
+        displayMode == LemonadeTimePickerDisplayMode.Dial
+
     LemonadeUi.Dialog(
         expanded = expanded,
         onDismissRequest = onDismissRequest,
+        wide = isHorizontal,
     ) {
         Column(
             modifier = Modifier
@@ -294,14 +302,11 @@ public fun LemonadeUi.TimePickerDialog(
             }
 
             when (displayMode) {
-                // Material picks its side-by-side layout on a short or wide window, which is always
-                // wider than this dialog and clips the dial. The dialog pins the stacked layout and
-                // scrolls instead, so a landscape phone loses no part of the clock face.
                 LemonadeTimePickerDisplayMode.Dial -> LemonadeTimePickerTheme {
                     TimePicker(
                         state = state.delegate,
                         colors = lemonadeTimePickerColors(),
-                        layoutType = TimePickerLayoutType.Vertical,
+                        layoutType = layoutType,
                     )
                 }
 

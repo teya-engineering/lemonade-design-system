@@ -51,7 +51,8 @@ public final class com/teya/lemonade/ComposableSingletons$OverlaySystemBarsKt {
 }
 
 public final class com/teya/lemonade/DialogKt {
-	public static final fun Dialog (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;ZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final synthetic fun Dialog (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;ZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun Dialog (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;ZZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/teya/lemonade/DropdownKt {
