@@ -30,9 +30,13 @@ import androidx.compose.ui.window.DialogProperties
  *   platform's default dialog width. Defaults to `false`, which is the right choice for the
  *   text-and-buttons dialogs that width was sized for, and keeps every dialog a familiar size.
  *   Pass `true` for content that carries a width of its own, such as a side-by-side picker on a
- *   landscape phone or a tablet. The content then decides in both directions: content narrower
- *   than the platform width yields a narrower dialog, and content wider than it yields a wider
- *   one, up to the window.
+ *   landscape phone or a tablet — the content must have a width of its own rather than filling
+ *   whatever it is given.
+ *
+ *   The content decides only between 280.dp and 560.dp: [BasicAlertDialog] clamps to that range
+ *   whatever this is set to. Anything narrower is padded out to 280.dp, and anything wider is
+ *   clipped at 560.dp rather than growing, so content approaching that ceiling has little room
+ *   left for a larger font scale or a longer translation.
  * @param content A composable lambda that defines the dialog's content.
  *
  * ## Usage Example
