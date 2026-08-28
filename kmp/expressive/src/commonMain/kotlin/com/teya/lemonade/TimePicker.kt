@@ -116,14 +116,26 @@ public class LemonadeTimePickerState internal constructor(
  * @param initialMinute The initially selected minute, in the 0..59 range.
  * @param is24Hour Whether the picker uses a 24-hour clock — supplied by the caller, never read
  * from the platform.
+ * @throws IllegalArgumentException if [initialHour] or [initialMinute] falls outside its range —
+ * worth knowing for a caller that rounds a time before passing it, since rounding minutes up can
+ * land on 60.
  */
 @Composable
 public fun rememberLemonadeTimePickerState(
     initialHour: Int,
     initialMinute: Int,
     is24Hour: Boolean,
-): LemonadeTimePickerState =
-    rememberSaveable(
+): LemonadeTimePickerState {
+    require(
+        value = initialHour in 0..23,
+        lazyMessage = { "initialHour must be in 0..23, was $initialHour" },
+    )
+    require(
+        value = initialMinute in 0..59,
+        lazyMessage = { "initialMinute must be in 0..59, was $initialMinute" },
+    )
+
+    return rememberSaveable(
         initialHour,
         initialMinute,
         is24Hour,
@@ -135,6 +147,7 @@ public fun rememberLemonadeTimePickerState(
             is24Hour = is24Hour,
         )
     }
+}
 
 /**
  * A clock-dial time picker following the Lemonade Design System.
