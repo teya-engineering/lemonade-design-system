@@ -46,8 +46,13 @@ public fun LemonadeExpressiveTheme(
     }
 }
 
+/**
+ * Maps the Lemonade type scale onto Material's. Internal rather than private so components that
+ * scope their own Material theme — [LemonadeUi.TimeInput] and friends — pin the same mapping
+ * instead of restating it.
+ */
 @Composable
-private fun lemonadeExpressiveTypography(): Typography {
+internal fun lemonadeExpressiveTypography(): Typography {
     val typography = LemonadeTheme.typography
     return Typography(
         displayLarge = typography.displayLarge.textStyle,

@@ -46,6 +46,7 @@ import com.teya.lemonade.TagDisplay
 import com.teya.lemonade.TextDisplay
 import com.teya.lemonade.TextFieldDisplay
 import com.teya.lemonade.TileDisplay
+import com.teya.lemonade.TimePickerDisplay
 import com.teya.lemonade.ToastDisplay
 import com.teya.lemonade.TooltipDisplay
 
@@ -96,6 +97,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.BottomTabBar to { _ -> BottomTabBarDisplay() },
     Displays.DatePicker to { _ -> DatePickerDisplay() },
     Displays.InlineCalendar to { _ -> InlineCalendarDisplay() },
+    Displays.TimePicker to { _ -> TimePickerDisplay() },
     Displays.Notice to { _ -> NoticeDisplay() },
     Displays.Toast to { _ -> ToastDisplay() },
     Displays.Tooltip to { _ -> TooltipDisplay() },

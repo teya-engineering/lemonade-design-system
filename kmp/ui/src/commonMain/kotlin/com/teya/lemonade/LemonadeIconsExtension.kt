@@ -187,6 +187,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.Inbox -> LemonadeRes.drawable.gen_inbox
         LemonadeIcons.Incognito -> LemonadeRes.drawable.gen_incognito
         LemonadeIcons.Key -> LemonadeRes.drawable.gen_key
+        LemonadeIcons.Keyboard -> LemonadeRes.drawable.gen_keyboard
         LemonadeIcons.Laptop -> LemonadeRes.drawable.gen_laptop
         LemonadeIcons.Lightbulb -> LemonadeRes.drawable.gen_lightbulb
         LemonadeIcons.Lightning -> LemonadeRes.drawable.gen_lightning

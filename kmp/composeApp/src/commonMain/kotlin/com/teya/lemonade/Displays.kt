@@ -213,6 +213,11 @@ internal interface Displays {
     }
 
     @Serializable
+    data object TimePicker : Displays {
+        override val label: String = "TimePicker"
+    }
+
+    @Serializable
     data object Notice : Displays {
         override val label: String = "Notice"
     }

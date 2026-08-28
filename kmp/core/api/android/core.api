@@ -684,6 +684,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field Inbox Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Incognito Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Key Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field Keyboard Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Laptop Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Lightbulb Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Lightning Lcom/teya/lemonade/core/LemonadeIcons;

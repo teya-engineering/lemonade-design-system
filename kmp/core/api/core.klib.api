@@ -759,6 +759,7 @@ final enum class com.teya.lemonade.core/LemonadeIcons : com.teya.lemonade.core/L
     enum entry Inbox // com.teya.lemonade.core/LemonadeIcons.Inbox|null[0]
     enum entry Incognito // com.teya.lemonade.core/LemonadeIcons.Incognito|null[0]
     enum entry Key // com.teya.lemonade.core/LemonadeIcons.Key|null[0]
+    enum entry Keyboard // com.teya.lemonade.core/LemonadeIcons.Keyboard|null[0]
     enum entry Laptop // com.teya.lemonade.core/LemonadeIcons.Laptop|null[0]
     enum entry Lightbulb // com.teya.lemonade.core/LemonadeIcons.Lightbulb|null[0]
     enum entry Lightning // com.teya.lemonade.core/LemonadeIcons.Lightning|null[0]

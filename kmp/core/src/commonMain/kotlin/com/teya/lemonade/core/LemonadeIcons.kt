@@ -186,6 +186,7 @@ public enum class LemonadeIcons : LemonadeAsset {
     Inbox,
     Incognito,
     Key,
+    Keyboard,
     Laptop,
     Lightbulb,
     Lightning,

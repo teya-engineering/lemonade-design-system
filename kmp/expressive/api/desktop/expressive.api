@@ -67,3 +67,25 @@ public final class com/teya/lemonade/LemonadeExpressiveThemeKt {
 	public static final fun LemonadeExpressiveTheme (Lcom/teya/lemonade/LemonadeSemanticColors;Lcom/teya/lemonade/LemonadeTypographyProvider;Lcom/teya/lemonade/LemonadeRadiusValues;Lcom/teya/lemonade/LemonadeShapes;Lcom/teya/lemonade/LemonadeOpacity;Lcom/teya/lemonade/LemonadeSpaceValues;Lcom/teya/lemonade/LemonadeBorderWidth;Lcom/teya/lemonade/LemonadeSizeValues;Lcom/teya/lemonade/LemonadeEffects;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/teya/lemonade/LemonadeTimePickerDisplayMode : java/lang/Enum {
+	public static final field Dial Lcom/teya/lemonade/LemonadeTimePickerDisplayMode;
+	public static final field Input Lcom/teya/lemonade/LemonadeTimePickerDisplayMode;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/LemonadeTimePickerDisplayMode;
+	public static fun values ()[Lcom/teya/lemonade/LemonadeTimePickerDisplayMode;
+}
+
+public final class com/teya/lemonade/LemonadeTimePickerState {
+	public static final field $stable I
+	public final fun getHour ()I
+	public final fun getMinute ()I
+	public final fun is24Hour ()Z
+}
+
+public final class com/teya/lemonade/TimePickerKt {
+	public static final fun TimeInput (Lcom/teya/lemonade/LemonadeUi;Lcom/teya/lemonade/LemonadeTimePickerState;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun TimePicker (Lcom/teya/lemonade/LemonadeUi;Lcom/teya/lemonade/LemonadeTimePickerState;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun TimePickerDialog (Lcom/teya/lemonade/LemonadeUi;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/teya/lemonade/LemonadeTimePickerState;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;Lcom/teya/lemonade/LemonadeTimePickerDisplayMode;Landroidx/compose/runtime/Composer;III)V
+	public static final fun rememberLemonadeTimePickerState (IIZLandroidx/compose/runtime/Composer;I)Lcom/teya/lemonade/LemonadeTimePickerState;
+}
+

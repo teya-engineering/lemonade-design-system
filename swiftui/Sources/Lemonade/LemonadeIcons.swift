@@ -190,6 +190,7 @@ public enum LemonadeIcon: String, CaseIterable {
     case inbox = "inbox"
     case incognito = "incognito"
     case key = "key"
+    case keyboard = "keyboard"
     case laptop = "laptop"
     case lightbulb = "lightbulb"
     case lightning = "lightning"

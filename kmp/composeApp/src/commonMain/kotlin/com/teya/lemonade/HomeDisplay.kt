@@ -175,6 +175,7 @@ internal object DisplayRegistry {
                 Displays.Switch,
                 Displays.DatePicker,
                 Displays.InlineCalendar,
+                Displays.TimePicker,
             ),
         ),
         DisplayData(
