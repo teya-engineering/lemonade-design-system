@@ -1,6 +1,8 @@
 package com.teya.lemonade
 
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,8 +31,8 @@ import androidx.compose.ui.window.DialogProperties
  *   text-and-buttons dialogs that width was sized for, and keeps every dialog a familiar size.
  *   Pass `true` for content that carries a width of its own, such as a side-by-side picker on a
  *   landscape phone or a tablet. The content then decides in both directions: content narrower
- *   than the platform width yields a narrower dialog, and content that merely fills whatever it
- *   is given yields one as wide as the window.
+ *   than the platform width yields a narrower dialog, and content wider than it yields a wider
+ *   one, up to the window.
  * @param content A composable lambda that defines the dialog's content.
  *
  * ## Usage Example
@@ -90,9 +92,15 @@ public fun LemonadeUi.Dialog(
         ) {
             mirrorSystemBars()
             Surface(
-                // A platform-width dialog fills what it is granted. One sized by its content must
-                // not fill, or it stretches to the screen edges and the content decides nothing.
-                modifier = if (sizeToContent) Modifier else Modifier.fillMaxWidth(),
+                // A platform-width dialog fills what it is granted. One sized by its content is
+                // measured at its widest child instead — filling here, or leaving the width
+                // unconstrained, would stretch it to the screen edges and the content would decide
+                // nothing. Callers keep filling the width they are given either way.
+                modifier = if (sizeToContent) {
+                    Modifier.width(intrinsicSize = IntrinsicSize.Max)
+                } else {
+                    Modifier.fillMaxWidth()
+                },
                 shape = RoundedCornerShape(size = LemonadeTheme.radius.radius400),
                 color = LemonadeTheme.colors.background.bgDefault,
                 tonalElevation = 0.dp,

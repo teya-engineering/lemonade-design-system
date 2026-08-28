@@ -2,11 +2,9 @@ package com.teya.lemonade
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -61,7 +59,7 @@ public enum class LemonadeTimePickerDisplayMode {
 public class LemonadeTimePickerState internal constructor(
     initialHour: Int,
     initialMinute: Int,
-    public val is24Hour: Boolean,
+    is24Hour: Boolean,
 ) {
     @OptIn(ExperimentalMaterial3Api::class)
     internal val delegate: TimePickerState = TimePickerState(
@@ -69,6 +67,10 @@ public class LemonadeTimePickerState internal constructor(
         initialMinute = initialMinute,
         is24Hour = is24Hour,
     )
+
+    /** Whether the picker uses a 24-hour clock, as passed at construction. */
+    @OptIn(ExperimentalMaterial3Api::class)
+    public val is24Hour: Boolean get() = delegate.is24hour
 
     /** The selected hour, always in the 0..23 range even when [is24Hour] is `false`. */
     @OptIn(ExperimentalMaterial3Api::class)
@@ -230,9 +232,9 @@ public fun LemonadeUi.TimeInput(
  *   survives the switch.
  * - Every label is a plain [String]: the Lemonade Design System carries no copy of its own, so the
  *   caller resolves and localizes them.
- * - The dial is pinned to Material's stacked layout and the content scrolls. Material otherwise
- *   switches to a side-by-side layout on a short or wide window, which is wider than this dialog
- *   and clips the clock face.
+ * - On a short or wide window — a landscape phone or a tablet — Material lays the dial out
+ *   side by side with the selected time, and the dialog takes the width that layout needs rather
+ *   than the platform's default dialog width, which would clip the clock face.
  *
  * @param expanded Whether the dialog is currently visible. When `false`, nothing is composed.
  * @param title Heading shown above the picker, already localized.
@@ -269,10 +271,9 @@ public fun LemonadeUi.TimePickerDialog(
     var displayMode by remember(initialDisplayMode) { mutableStateOf(initialDisplayMode) }
 
     // Material reads the window from LocalWindowInfo and asks for its side-by-side layout on a
-    // short or wide window — a landscape phone or a tablet. The dial honours that, and the dialog
-    // takes the width of the picker rather than the platform's, which would clip the wider layout.
-    val layoutType = TimePickerDefaults.layoutType()
-    val isHorizontal = layoutType == TimePickerLayoutType.Horizontal &&
+    // short or wide window — a landscape phone or a tablet. The dial picks that up on its own; the
+    // dialog only needs to know so it can take the width that layout needs.
+    val isHorizontal = TimePickerDefaults.layoutType() == TimePickerLayoutType.Horizontal &&
         displayMode == LemonadeTimePickerDisplayMode.Dial
 
     LemonadeUi.Dialog(
@@ -282,34 +283,22 @@ public fun LemonadeUi.TimePickerDialog(
     ) {
         Column(
             modifier = Modifier
-                // When the dialog is sized by its content, the column has to carry a width of its
-                // own — filling here would hand the dialog the whole screen. Intrinsic max is the
-                // widest child, so the title and button rows still span the picker beneath them.
-                .then(
-                    if (isHorizontal) {
-                        Modifier.width(intrinsicSize = IntrinsicSize.Max)
-                    } else {
-                        Modifier.fillMaxWidth()
-                    },
-                ).verticalScroll(rememberScrollState()),
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
         ) {
-            Row(
+            LemonadeUi.Text(
+                text = title,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
                         start = LemonadeTheme.spaces.spacing500,
                         top = LemonadeTheme.spaces.spacing500,
                         end = LemonadeTheme.spaces.spacing500,
-                        bottom = LemonadeTheme.spaces.spacing0,
                     ),
-            ) {
-                LemonadeUi.Text(
-                    text = title,
-                    textStyle = LemonadeTheme.typography.bodySmallSemiBold,
-                )
-            }
+                textStyle = LemonadeTheme.typography.bodySmallSemiBold,
+            )
 
             val pickerModifier = Modifier.padding(
                 horizontal = LemonadeTheme.spaces.spacing600,
@@ -317,14 +306,10 @@ public fun LemonadeUi.TimePickerDialog(
             )
 
             when (displayMode) {
-                LemonadeTimePickerDisplayMode.Dial -> LemonadeTimePickerTheme {
-                    TimePicker(
-                        state = state.delegate,
-                        modifier = pickerModifier,
-                        colors = lemonadeTimePickerColors(),
-                        layoutType = layoutType,
-                    )
-                }
+                LemonadeTimePickerDisplayMode.Dial -> LemonadeUi.TimePicker(
+                    state = state,
+                    modifier = pickerModifier,
+                )
 
                 LemonadeTimePickerDisplayMode.Input -> LemonadeUi.TimeInput(
                     state = state,
@@ -346,7 +331,6 @@ public fun LemonadeUi.TimePickerDialog(
                     .fillMaxWidth()
                     .padding(
                         start = LemonadeTheme.spaces.spacing400,
-                        top = LemonadeTheme.spaces.spacing0,
                         end = LemonadeTheme.spaces.spacing400,
                         bottom = LemonadeTheme.spaces.spacing400,
                     ),
@@ -408,15 +392,16 @@ public fun LemonadeUi.TimePickerDialog(
  *   radius200, but the Lemonade fields the picker sits beside ([LemonadeUi.TextField],
  *   [LemonadeUi.PinCode]) are radius400.
  *
- * Every other Material slot is inherited from the surrounding theme.
+ * Every other slot comes from the same Lemonade mapping [LemonadeExpressiveTheme] installs, not
+ * from the surrounding theme, so the picker looks the same under a host that never set Material up.
  */
 @Composable
 private fun LemonadeTimePickerTheme(content: @Composable () -> Unit) {
     MaterialTheme(
-        colorScheme = MaterialTheme.colorScheme.copy(
+        colorScheme = lemonadeExpressiveColorScheme().copy(
             primary = LemonadeTheme.colors.border.borderSelected,
         ),
-        shapes = MaterialTheme.shapes.copy(
+        shapes = lemonadeExpressiveShapes().copy(
             small = RoundedCornerShape(size = LemonadeTheme.radius.radius400),
         ),
         typography = lemonadeExpressiveTypography().copy(

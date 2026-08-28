@@ -49,7 +49,7 @@ public fun LemonadeExpressiveTheme(
 /**
  * Maps the Lemonade type scale onto Material's. Internal rather than private so components that
  * scope their own Material theme — [LemonadeUi.TimeInput] and friends — pin the same mapping
- * instead of restating it.
+ * instead of restating it, and so they stay independent of how the host set Material up.
  */
 @Composable
 internal fun lemonadeExpressiveTypography(): Typography {
@@ -73,9 +73,13 @@ internal fun lemonadeExpressiveTypography(): Typography {
     )
 }
 
+/**
+ * Maps the Lemonade radius scale onto Material's. Internal for the same reason as
+ * [lemonadeExpressiveTypography].
+ */
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun lemonadeExpressiveShapes(): Shapes {
+internal fun lemonadeExpressiveShapes(): Shapes {
     val radius = LemonadeTheme.radius
     return Shapes(
         extraSmall = RoundedCornerShape(radius.radius100),
@@ -87,8 +91,12 @@ private fun lemonadeExpressiveShapes(): Shapes {
     )
 }
 
+/**
+ * Maps the Lemonade colour tokens onto Material's. Internal for the same reason as
+ * [lemonadeExpressiveTypography].
+ */
 @Composable
-private fun lemonadeExpressiveColorScheme(): ColorScheme {
+internal fun lemonadeExpressiveColorScheme(): ColorScheme {
     val colors = LemonadeTheme.colors
     return ColorScheme(
         primary = colors.content.contentBrand,
