@@ -24,10 +24,13 @@ import androidx.compose.ui.window.DialogProperties
  *   and [dismissOnBackPress]).
  * @param dismissOnClickOutside Whether tapping outside the dialog dismisses it. Defaults to `true`.
  * @param dismissOnBackPress Whether pressing the back button dismisses the dialog. Defaults to `true`.
- * @param wide Whether the dialog may grow past the platform's default dialog width. Defaults to
- *   `false`, which is the right choice for the text-and-buttons dialogs the platform width was
- *   sized for. Pass `true` for content that genuinely needs the room, such as a side-by-side
- *   picker on a landscape phone or a tablet.
+ * @param sizeToContent Whether the dialog takes the width of its content rather than the
+ *   platform's default dialog width. Defaults to `false`, which is the right choice for the
+ *   text-and-buttons dialogs that width was sized for, and keeps every dialog a familiar size.
+ *   Pass `true` for content that carries a width of its own, such as a side-by-side picker on a
+ *   landscape phone or a tablet. The content then decides in both directions: content narrower
+ *   than the platform width yields a narrower dialog, and content that merely fills whatever it
+ *   is given yields one as wide as the window.
  * @param content A composable lambda that defines the dialog's content.
  *
  * ## Usage Example
@@ -71,7 +74,7 @@ public fun LemonadeUi.Dialog(
     onDismissRequest: () -> Unit,
     dismissOnClickOutside: Boolean = true,
     dismissOnBackPress: Boolean = true,
-    wide: Boolean = false,
+    sizeToContent: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     val mirrorSystemBars = systemBarsMirror()
@@ -82,12 +85,14 @@ public fun LemonadeUi.Dialog(
             properties = DialogProperties(
                 dismissOnClickOutside = dismissOnClickOutside,
                 dismissOnBackPress = dismissOnBackPress,
-                usePlatformDefaultWidth = !wide,
+                usePlatformDefaultWidth = !sizeToContent,
             ),
         ) {
             mirrorSystemBars()
             Surface(
-                modifier = Modifier.fillMaxWidth(),
+                // A platform-width dialog fills what it is granted. One sized by its content must
+                // not fill, or it stretches to the screen edges and the content decides nothing.
+                modifier = if (sizeToContent) Modifier else Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(size = LemonadeTheme.radius.radius400),
                 color = LemonadeTheme.colors.background.bgDefault,
                 tonalElevation = 0.dp,
@@ -98,8 +103,8 @@ public fun LemonadeUi.Dialog(
 }
 
 /**
- * Binary-compatibility shim for the signature that shipped before [wide] was added. Kept so the
- * released symbol survives; see the binary-compatibility skill.
+ * Binary-compatibility shim for the signature that shipped before [sizeToContent] was added. Kept
+ * so the released symbol survives; see the binary-compatibility skill.
  */
 @Deprecated(
     message = "Binary compatibility only.",
@@ -118,7 +123,7 @@ public fun LemonadeUi.Dialog(
         onDismissRequest = onDismissRequest,
         dismissOnClickOutside = dismissOnClickOutside,
         dismissOnBackPress = dismissOnBackPress,
-        wide = false,
+        sizeToContent = false,
         content = content,
     )
 }
