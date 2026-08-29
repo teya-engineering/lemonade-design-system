@@ -207,8 +207,9 @@ public fun LemonadeUi.TimePicker(
  * - The "Hour" and "Minute" labels below the fields are Material's, and Material localizes them
  *   from its own resources; nothing here can restyle or re-word them.
  * - Material drops a typed value that falls outside 0..23 or 0..59 rather than reporting it: the
- *   field shows the out-of-range text and Material's own error beneath it, while [hour] and
- *   [minute] keep the last value that was in range. Material exposes no validity flag to read, so
+ *   field shows the out-of-range text and Material's own error beneath it, while
+ *   [LemonadeTimePickerState.hour] and [LemonadeTimePickerState.minute] keep the last value that
+ *   was in range. Material exposes no validity flag to read, so
  *   a caller that commits on a button press commits that last valid time. Seed the state from
  *   whatever the merchant confirmed rather than from the field.
  *

@@ -13,7 +13,7 @@ import com.teya.lemonade.core.LemonadeButtonVariant
 
 private const val SAMPLE_HOUR = 9
 private const val SAMPLE_MINUTE = 30
-private const val MINUTES_PAD = 2
+private const val TIME_FIELD_DIGITS = 2
 
 @Composable
 internal fun TimePickerDisplay() {
@@ -144,4 +144,4 @@ private fun TimePickerSection(
 private fun formatTime(
     hour: Int,
     minute: Int,
-): String = "${hour.toString().padStart(MINUTES_PAD, '0')}:${minute.toString().padStart(MINUTES_PAD, '0')}"
+): String = "${hour.toString().padStart(TIME_FIELD_DIGITS, '0')}:${minute.toString().padStart(TIME_FIELD_DIGITS, '0')}"

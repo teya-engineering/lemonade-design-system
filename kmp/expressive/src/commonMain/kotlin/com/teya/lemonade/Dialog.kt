@@ -37,6 +37,10 @@ import androidx.compose.ui.window.DialogProperties
  *   whatever this is set to. Anything narrower is padded out to 280.dp, and anything wider is
  *   clipped at 560.dp rather than growing, so content approaching that ceiling has little room
  *   left for a larger font scale or a longer translation.
+ *
+ *   Sizing to the content means measuring its intrinsic width, which not every layout can answer:
+ *   a `LazyColumn`, `LazyRow` or anything else built on `SubcomposeLayout` throws when asked. Keep
+ *   this `false` for content that scrolls lazily.
  * @param content A composable lambda that defines the dialog's content.
  *
  * ## Usage Example
