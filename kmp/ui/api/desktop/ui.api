@@ -459,6 +459,7 @@ public final class com/teya/lemonade/LemonadeTypographyExtensionsKt {
 	public static final fun getLemonadeFontFamily (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/text/font/FontFamily;
 	public static final fun getTextStyle (Lcom/teya/lemonade/core/LemonadeTextStyle;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/text/TextStyle;
 	public static final fun getTextStyle (Lcom/teya/lemonade/core/LemonadeTypography;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/text/TextStyle;
+	public static final fun toTextStyle (Lcom/teya/lemonade/core/LemonadeTextStyle;Landroidx/compose/ui/text/font/FontFamily;)Landroidx/compose/ui/text/TextStyle;
 }
 
 public final class com/teya/lemonade/LemonadeUi {
