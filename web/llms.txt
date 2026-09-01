@@ -1,0 +1,278 @@
+# Lemonade Design System — web tokens
+
+CSS custom properties for Teya's Lemonade design system.
+Import `@teya/lemonade-ds/tokens.css`, or paste `lemonade.css` into a <style> block.
+Light theme is the default; dark applies automatically from the OS, or explicitly
+with `data-lmnd-theme="dark"` on any element.
+
+Always prefer a semantic token over a literal value.
+
+## Colours
+
+- `var(--lmnd-color-bg-brand)` — Use for primary brand surfaces, such as key actions or highlights.
+- `var(--lmnd-color-bg-brand-elevated)` — Use for brand surfaces with subtle emphasis, such as secondary actions or accents.
+- `var(--lmnd-color-bg-brand-high)` — Use for strong brand emphasis, such as headers, banners, or high-priority surfaces.
+- `var(--lmnd-color-bg-brand-subtle)` — Use for elevated brand surfaces, such as cards or containers with brand emphasis.
+- `var(--lmnd-color-bg-always-dark)` — Use for surfaces that must always appear dark, regardless of theme or mode.
+- `var(--lmnd-color-bg-always-dark-high)` — Use for high-emphasis surfaces that must always appear dark, regardless of theme or mode.
+- `var(--lmnd-color-bg-always-dark-low)` — Use for low-emphasis surfaces that must always appear dark, regardless of theme or mode.
+- `var(--lmnd-color-bg-always-dark-medium)` — Use for medium-emphasis surfaces that must always appear dark, regardless of theme or mode.
+- `var(--lmnd-color-bg-always-light)` — Use for surfaces that must always appear light, regardless of theme or mode.
+- `var(--lmnd-color-bg-always-light-high)` — Use for high-emphasis surfaces that must always appear light, regardless of theme or mode.
+- `var(--lmnd-color-bg-always-light-low)` — Use for low-emphasis surfaces that must always appear light, regardless of theme or mode.
+- `var(--lmnd-color-bg-always-light-medium)` — Use for medium-emphasis surfaces that must always appear light, regardless of theme or mode.
+- `var(--lmnd-color-bg-transparent)` — Use for transparent surfaces or when layering elements.
+- `var(--lmnd-color-bg-transparent-dark)` — Use for transparent dark surfaces or when layering elements over lighter content.
+- `var(--lmnd-color-bg-transparent-light)` — Use for transparent light surfaces or when layering elements over darker content.
+- `var(--lmnd-color-bg-default-inverse)` — Use as the inverse of bg-default, typically for dark backgrounds.
+- `var(--lmnd-color-bg-elevated-inverse)` — Use as the inverse of bg-elevated, for higher elevation on dark backgrounds.
+- `var(--lmnd-color-bg-subtle-inverse)` — Use as the inverse of bg-subtle, for elevated surfaces on dark backgrounds.
+- `var(--lmnd-color-bg-caution)` — Use for cautionary states, such as warnings or potential risks.
+- `var(--lmnd-color-bg-caution-subtle)` — Use for subtle backgrounds indicating caution.
+- `var(--lmnd-color-bg-critical)` — Use for critical states, such as destructive actions or errors.
+- `var(--lmnd-color-bg-critical-subtle)` — Use for subtle backgrounds indicating critical context.
+- `var(--lmnd-color-bg-featured)` — Use for featured states, such as highlighted or promoted content.
+- `var(--lmnd-color-bg-featured-subtle)` — Use for subtle backgrounds indicating featured content.
+- `var(--lmnd-color-bg-info)` — Use for informational states, such as system feedback or neutral alerts.
+- `var(--lmnd-color-bg-info-subtle)` — Use for subtle backgrounds indicating information.
+- `var(--lmnd-color-bg-neutral)` — Use for neutral states that don’t carry positive, caution, or critical meaning.
+- `var(--lmnd-color-bg-neutral-subtle)` — Use for subtle backgrounds without strong semantic meaning.
+- `var(--lmnd-color-bg-positive)` — Use for positive states, such as success messages or confirmations.
+- `var(--lmnd-color-bg-positive-subtle)` — Use for subtle backgrounds indicating positivity or success.
+- `var(--lmnd-color-bg-default)` — Use for the primary background of screens and surfaces.
+- `var(--lmnd-color-bg-elevated)` — Use to create a higher elevation background against bg-default or bg-subtle.
+- `var(--lmnd-color-bg-elevated-high)`
+- `var(--lmnd-color-bg-subtle)` — Use for secondary backgrounds, such as cards, containers, or inputs placed on bg-default.
+- `var(--lmnd-color-border-brand)` — Use for borders that reinforce brand identity or highlight key interactive elements.
+- `var(--lmnd-color-border-on-brand-high)` — Use for strong or high-contrast borders on brand surfaces.
+- `var(--lmnd-color-border-on-brand-low)` — Use for subtle borders placed on brand-coloured surfaces.
+- `var(--lmnd-color-border-on-brand-medium)` — Use for medium-emphasis borders on brand surfaces.
+- `var(--lmnd-color-border-always-dark)` — Use for borders that must always appear dark, regardless of theme or mode.
+- `var(--lmnd-color-border-always-dark-high)` — Use for strong dark borders that require high contrast or clear separation, independent of theme or mode.
+- `var(--lmnd-color-border-always-dark-low)` — Use for subtle dark borders that require minimal emphasis, regardless of theme or mode.
+- `var(--lmnd-color-border-always-dark-medium)` — Use for standard dark borders that need clear visibility in any theme or mode.
+- `var(--lmnd-color-border-always-light)` — Use for borders that must always appear light, regardless of theme or mode.
+- `var(--lmnd-color-border-always-light-high)` — Use for strong light borders that require high contrast or clear separation, independent of theme or mode.
+- `var(--lmnd-color-border-always-light-low)` — Use for subtle light borders that require minimal emphasis, regardless of theme or mode.
+- `var(--lmnd-color-border-always-light-medium)` — Use for standard light borders that need clear visibility in any theme or mode.
+- `var(--lmnd-color-border-brand-inverse)` — Use for brand borders on dark or inverted backgrounds.
+- `var(--lmnd-color-border-neutral-high-inverse)` — Use for standard borders on dark or inverted backgrounds.
+- `var(--lmnd-color-border-neutral-low-inverse)` — Use for subtle borders on dark or inverted backgrounds.
+- `var(--lmnd-color-border-neutral-medium-inverse)` — Use for standard borders on dark or inverted backgrounds.
+- `var(--lmnd-color-border-selected-inverse)` — Use to indicate selection or active state on dark or inverted backgrounds.
+- `var(--lmnd-color-border-caution)` — Use for borders that indicate warnings or potential risks.
+- `var(--lmnd-color-border-caution-subtle)` — Use for subtle borders that signal caution with low emphasis.
+- `var(--lmnd-color-border-critical)` — Use for borders that indicate errors or destructive actions.
+- `var(--lmnd-color-border-critical-subtle)` — Use for subtle borders related to error or destructive contexts.
+- `var(--lmnd-color-border-featured)` — Use for borders that indicate featured or highlighted content.
+- `var(--lmnd-color-border-featured-subtle)` — Use for subtle borders that convey featured or highlighted content.
+- `var(--lmnd-color-border-info)` — Use for borders that indicate informational or neutral states.
+- `var(--lmnd-color-border-info-subtle)` — Use for subtle borders that support informational messages.
+- `var(--lmnd-color-border-positive)` — Use for borders that indicate success or confirmation states.
+- `var(--lmnd-color-border-positive-subtle)` — Use for subtle borders that convey success or positive feedback.
+- `var(--lmnd-color-border-neutral-high)` — Use for high-contrast borders or strong dividers that require clear visual separation.
+- `var(--lmnd-color-border-neutral-low)` — Use for subtle dividers or low-emphasis element boundaries.
+- `var(--lmnd-color-border-neutral-medium)` — Use for standard borders and general element outlines.
+- `var(--lmnd-color-border-selected)` — Use to indicate a selected or active state on components.
+- `var(--lmnd-color-content-brand)` — Use for brand-coloured text or icons to reinforce identity.
+- `var(--lmnd-color-content-brand-high)` — Use for brand-colored text or icons to reinforce identity.
+- `var(--lmnd-color-content-on-brand-high)` — Use for text/icons on high-emphasis brand backgrounds.
+- `var(--lmnd-color-content-on-brand-low)` — Use for text/icons on subtle or low-emphasis brand backgrounds.
+- `var(--lmnd-color-content-always-dark)` — Use for text or icons that must always appear dark, regardless of theme or mode.
+- `var(--lmnd-color-content-always-light)` — Use for text or icons that must always appear light, regardless of theme or mode.
+- `var(--lmnd-color-content-caution-always-on-color)` — A fixed foreground colour for text and icons placed on cautionary backgrounds, ensuring consistent visibility regardless of theme.
+- `var(--lmnd-color-content-critical-always-on-color)` — A fixed foreground colour for text and icons placed on critical or error backgrounds, ensuring consistent visibility regardless of theme.
+- `var(--lmnd-color-content-info-always-on-color)` — A fixed foreground colour for text and icons placed on informative backgrounds, ensuring consistent visibility regardless of theme.
+- `var(--lmnd-color-content-neutral-always-on-color)` — A fixed foreground colour for text and icons placed on neutral backgrounds, ensuring consistent visibility regardless of theme.
+- `var(--lmnd-color-content-positive-always-on-color)` — A fixed foreground colour for text and icons placed on positive or success backgrounds, ensuring consistent visibility regardless of theme.
+- `var(--lmnd-color-content-brand-inverse)` — Use for brand-coloured text/icons on dark backgrounds.
+- `var(--lmnd-color-content-primary-inverse)` — Use as the primary content colour on dark backgrounds.
+- `var(--lmnd-color-content-secondary-inverse)` — Use as the secondary content colour on dark backgrounds.
+- `var(--lmnd-color-content-tertiary-inverse)` — Use as the tertiary content colour on dark backgrounds.
+- `var(--lmnd-color-content-caution-on-color)` — A strong background used to signal warnings or cautionary states that require user attention without implying error.
+- `var(--lmnd-color-content-critical-on-color)` — A strong background used for critical messages, errors, or destructive actions that require high visibility.
+- `var(--lmnd-color-content-featured-on-color)` — A strong background used to highlight featured, premium, or promoted content that needs visual emphasis.
+- `var(--lmnd-color-content-info-on-color)` — A clear background used to present informative messages or neutral system states that guide the user.
+- `var(--lmnd-color-content-neutral-on-color)` — A neutral background used to present default or non-semantic content that carries no positive, caution, or critical meaning.
+- `var(--lmnd-color-content-positive-on-color)` — A strong background used to confirm success, completion, or positive feedback that needs visual emphasis.
+- `var(--lmnd-color-content-caution)` — Use for cautionary text/icons, such as warnings.
+- `var(--lmnd-color-content-critical)` — Use for critical text/icons, such as errors or destructive actions.
+- `var(--lmnd-color-content-featured)` — Use for featured text/icons, such as highlights or promoted content.
+- `var(--lmnd-color-content-info)` — Use for informational text/icons, such as neutral alerts.
+- `var(--lmnd-color-content-neutral)` — Use for neutral or non-semantic text/icons.
+- `var(--lmnd-color-content-positive)` — Use for positive text/icons, such as confirmations.
+- `var(--lmnd-color-content-primary)` — Use for main text, titles, and essential content.
+- `var(--lmnd-color-content-secondary)` — Use for secondary text, such as body copy or supporting content.
+- `var(--lmnd-color-content-tertiary)` — Use for tertiary text, such as metadata, placeholders, or helper text.
+- `var(--lmnd-color-bg-always-dark-high-interactive)` — Use for interactive states on high-emphasis surfaces that must always appear dark, regardless of theme or mode.
+- `var(--lmnd-color-bg-always-dark-low-interactive)` — Use for interactive states on low-emphasis surfaces that must always appear dark, regardless of theme or mode.
+- `var(--lmnd-color-bg-always-dark-medium-interactive)` — Use for interactive states on medium-emphasis surfaces that must always appear dark, regardless of theme or mode.
+- `var(--lmnd-color-bg-always-light-high-interactive)` — Use for interactive states on high-emphasis surfaces that must always appear light, regardless of theme or mode.
+- `var(--lmnd-color-bg-always-light-low-interactive)` — Use for interactive states on low-emphasis surfaces that must always appear light, regardless of theme or mode.
+- `var(--lmnd-color-bg-always-light-medium-interactive)` — Use for interactive states on medium-emphasis surfaces that must always appear light, regardless of theme or mode.
+- `var(--lmnd-color-bg-brand-elevated-interactive)` — Use for interactive states on brand elevated backgrounds.
+- `var(--lmnd-color-bg-brand-high-interactive)` — Use for interactive states on brand backgrounds.
+- `var(--lmnd-color-bg-brand-interactive)` — Use for interactive states on brand backgrounds.
+- `var(--lmnd-color-bg-caution-interactive)` — Use for interactive states in cautionary scenarios.
+- `var(--lmnd-color-bg-caution-subtle-interactive)` — Use for interactive states on subtle caution backgrounds.
+- `var(--lmnd-color-bg-critical-interactive)` — Use for interactive states in critical scenarios.
+- `var(--lmnd-color-bg-critical-subtle-interactive)` — Use for interactive states on subtle critical backgrounds.
+- `var(--lmnd-color-bg-default-interactive)` — Use for interactive states on the default background.
+- `var(--lmnd-color-bg-elevated-high-interactive)` — Use for interactive states on high-emphasis elevated backgrounds.
+- `var(--lmnd-color-bg-elevated-interactive)` — Use for interactive states on elevated backgrounds.
+- `var(--lmnd-color-bg-featured-interactive)` — Use for interactive states in featured scenarios.
+- `var(--lmnd-color-bg-featured-subtle-interactive)` — Use for interactive states on subtle featured backgrounds.
+- `var(--lmnd-color-bg-info-interactive)` — Use for interactive states in informational scenarios.
+- `var(--lmnd-color-bg-info-subtle-interactive)` — Use for interactive states on subtle info backgrounds.
+- `var(--lmnd-color-bg-neutral-interactive)` — Use for interactive states in neutral scenarios.
+- `var(--lmnd-color-bg-neutral-subtle-interactive)` — Use for interactive states on subtle neutral backgrounds.
+- `var(--lmnd-color-bg-positive-interactive)` — Use for interactive states in positive scenarios.
+- `var(--lmnd-color-bg-positive-subtle-interactive)` — Use for interactive states on subtle positive backgrounds.
+- `var(--lmnd-color-bg-subtle-interactive)` — Use for interactive states on subtle neutral backgrounds.
+- `var(--lmnd-color-bg-brand-elevated-pressed)` — Use for pressed/tap feedback on brand elevated surfaces
+- `var(--lmnd-color-bg-brand-high-pressed)` — Use for pressed/tap feedback on high-emphasis brand surfaces
+- `var(--lmnd-color-bg-brand-pressed)` — Use for pressed/tap feedback on brand surfaces
+- `var(--lmnd-color-bg-caution-pressed)` — Use for pressed/tap feedback in caution contexts
+- `var(--lmnd-color-bg-caution-subtle-pressed)` — Use for pressed/tap feedback on subtle caution backgrounds
+- `var(--lmnd-color-bg-critical-pressed)` — Use for pressed/tap feedback in critical contexts
+- `var(--lmnd-color-bg-critical-subtle-pressed)` — Use for pressed/tap feedback on subtle critical backgrounds
+- `var(--lmnd-color-bg-default-pressed)` — Use for pressed/tap feedback on elements over bg-default
+- `var(--lmnd-color-bg-elevated-pressed)` — Use for pressed/tap feedback on elements over bg-elevated
+- `var(--lmnd-color-bg-featured-pressed)` — Use for pressed/tap feedback in featured contexts
+- `var(--lmnd-color-bg-featured-subtle-pressed)` — Use for pressed/tap feedback on subtle featured backgrounds
+- `var(--lmnd-color-bg-info-pressed)` — Use for pressed/tap feedback in info contexts
+- `var(--lmnd-color-bg-info-subtle-pressed)` — Use for pressed/tap feedback on subtle info backgrounds
+- `var(--lmnd-color-bg-neutral-pressed)` — Use for pressed/tap feedback in neutral contexts
+- `var(--lmnd-color-bg-neutral-subtle-pressed)` — Use for pressed/tap feedback on subtle neutral backgrounds
+- `var(--lmnd-color-bg-positive-pressed)` — Use for pressed/tap feedback in positive contexts
+- `var(--lmnd-color-bg-positive-subtle-pressed)` — Use for pressed/tap feedback on subtle positive backgrounds
+- `var(--lmnd-color-bg-subtle-pressed)` — Use for pressed/tap feedback on elements over bg-subtle
+- `var(--lmnd-color-bg-settlement-business-days)` — Use as the background for the Business days settlement frequency.
+- `var(--lmnd-color-bg-settlement-everyday)` — Use as the background for the Everyday settlement frequency.
+- `var(--lmnd-color-bg-settlement-instant)` — Use as the background for the Instant settlement frequency.
+- `var(--lmnd-color-bg-settlement-scheduled)` — Use as the background for the Scheduled settlement frequency.
+- `var(--lmnd-color-content-on-settlement-business-days)` — Use for text and icons on the Business days settlement background.
+- `var(--lmnd-color-content-on-settlement-everyday)` — Use for text and icons on the Everyday settlement background.
+- `var(--lmnd-color-content-on-settlement-instant)` — Use for text and icons on the Instant settlement background.
+- `var(--lmnd-color-content-on-settlement-scheduled)` — Use for text and icons on the Scheduled settlement background.
+- `var(--lmnd-color-shadow-default)`
+
+## Spacing
+
+- `var(--lmnd-spacing-0)` = 0
+- `var(--lmnd-spacing-50)` = 0.125rem
+- `var(--lmnd-spacing-100)` = 0.25rem
+- `var(--lmnd-spacing-200)` = 0.5rem
+- `var(--lmnd-spacing-300)` = 0.75rem
+- `var(--lmnd-spacing-400)` = 1rem
+- `var(--lmnd-spacing-500)` = 1.25rem
+- `var(--lmnd-spacing-600)` = 1.5rem
+- `var(--lmnd-spacing-800)` = 2rem
+- `var(--lmnd-spacing-1000)` = 2.5rem
+- `var(--lmnd-spacing-1200)` = 3rem
+- `var(--lmnd-spacing-1400)` = 3.5rem
+- `var(--lmnd-spacing-1600)` = 4rem
+- `var(--lmnd-spacing-1800)` = 4.5rem
+- `var(--lmnd-spacing-2000)` = 5rem
+
+## Radius
+
+- `var(--lmnd-radius-0)` = 0
+- `var(--lmnd-radius-50)` = 0.125rem
+- `var(--lmnd-radius-100)` = 0.25rem
+- `var(--lmnd-radius-150)` = 0.375rem
+- `var(--lmnd-radius-200)` = 0.5rem
+- `var(--lmnd-radius-250)` = 0.625rem
+- `var(--lmnd-radius-300)` = 0.75rem
+- `var(--lmnd-radius-350)` = 0.875rem
+- `var(--lmnd-radius-400)` = 1rem
+- `var(--lmnd-radius-500)` = 1.25rem
+- `var(--lmnd-radius-600)` = 1.5rem
+- `var(--lmnd-radius-800)` = 2rem
+- `var(--lmnd-radius-900)` = 2.5rem
+- `var(--lmnd-radius-full)` = 62.4375rem
+- `var(--lmnd-radius-container-default)` = 1.5rem
+
+## Size
+
+- `var(--lmnd-size-0)` = 0
+- `var(--lmnd-size-50)` = 0.125rem
+- `var(--lmnd-size-100)` = 0.25rem
+- `var(--lmnd-size-150)` = 0.375rem
+- `var(--lmnd-size-200)` = 0.5rem
+- `var(--lmnd-size-250)` = 0.625rem
+- `var(--lmnd-size-300)` = 0.75rem
+- `var(--lmnd-size-350)` = 0.875rem
+- `var(--lmnd-size-400)` = 1rem
+- `var(--lmnd-size-450)` = 1.125rem
+- `var(--lmnd-size-500)` = 1.25rem
+- `var(--lmnd-size-550)` = 1.375rem
+- `var(--lmnd-size-600)` = 1.5rem
+- `var(--lmnd-size-700)` = 1.75rem
+- `var(--lmnd-size-750)` = 1.875rem
+- `var(--lmnd-size-800)` = 2rem
+- `var(--lmnd-size-900)` = 2.25rem
+- `var(--lmnd-size-1000)` = 2.5rem
+- `var(--lmnd-size-1100)` = 2.75rem
+- `var(--lmnd-size-1200)` = 3rem
+- `var(--lmnd-size-1400)` = 3.5rem
+- `var(--lmnd-size-1600)` = 4rem
+- `var(--lmnd-size-1800)` = 4.5rem
+- `var(--lmnd-size-2000)` = 5rem
+- `var(--lmnd-size-2200)` = 5.5rem
+- `var(--lmnd-size-2400)` = 6rem
+- `var(--lmnd-size-2500)` = 6.25rem
+
+## Border width
+
+- `var(--lmnd-border-width-0)` = 0
+- `var(--lmnd-border-width-25)` = 1px
+- `var(--lmnd-border-width-40)` = 1.5px
+- `var(--lmnd-border-width-50)` = 2px
+- `var(--lmnd-border-width-75)` = 3px
+- `var(--lmnd-border-width-100)` = 4px
+- `var(--lmnd-border-width-selected)` = 2px
+- `var(--lmnd-border-width-focus-ring)` = 2px
+
+## Text styles
+
+Apply as a class, e.g. `<p class="lmnd-text-body-medium-regular">`.
+
+- `.lmnd-text-display-xsmall`
+- `.lmnd-text-display-small`
+- `.lmnd-text-display-medium`
+- `.lmnd-text-display-large`
+- `.lmnd-text-display-xlarge`
+- `.lmnd-text-display-2xlarge`
+- `.lmnd-text-display-3xlarge`
+- `.lmnd-text-heading-xlarge`
+- `.lmnd-text-heading-large`
+- `.lmnd-text-heading-medium`
+- `.lmnd-text-heading-small`
+- `.lmnd-text-heading-xsmall`
+- `.lmnd-text-heading-xxsmall`
+- `.lmnd-text-body-xlarge-regular`
+- `.lmnd-text-body-xlarge-medium`
+- `.lmnd-text-body-xlarge-semibold`
+- `.lmnd-text-body-large-regular`
+- `.lmnd-text-body-large-medium`
+- `.lmnd-text-body-large-semibold`
+- `.lmnd-text-body-medium-regular`
+- `.lmnd-text-body-medium-medium`
+- `.lmnd-text-body-medium-semibold`
+- `.lmnd-text-body-medium-bold`
+- `.lmnd-text-body-small-regular`
+- `.lmnd-text-body-small-medium`
+- `.lmnd-text-body-small-semibold`
+- `.lmnd-text-body-xsmall-regular`
+- `.lmnd-text-body-xsmall-medium`
+- `.lmnd-text-body-xsmall-semibold`
+- `.lmnd-text-body-xsmall-overline`
+
+## Shadows
+
+- `var(--lmnd-shadow-xs)`
+- `var(--lmnd-shadow-sm)`
+- `var(--lmnd-shadow-md)`
+- `var(--lmnd-shadow-lg)`
+- `var(--lmnd-shadow-xl)`

@@ -1,12 +1,6 @@
 # Lemonade Design System — Web
 
-Teya's Lemonade design system for the web, published as `@teya/lemonade-ds`.
-
-## Status
-
-This is the package scaffold. It builds, tests and packs, but exports nothing
-yet — the design tokens, SVG assets and the Storybook gallery arrive in the
-stacked PRs on top of this one.
+Design tokens, typography, fonts and icons for the web.
 
 ## Install
 
@@ -14,15 +8,57 @@ stacked PRs on top of this one.
 npm install @teya/lemonade-ds
 ```
 
-## Develop
+## Use
 
-```sh
-npm ci          # install from the committed lockfile, as CI does
-npm test        # vitest
-npm run typecheck
-npm run build   # tsup -> dist/
+```js
+import '@teya/lemonade-ds/tokens.css'      // custom properties only — safe anywhere
+import '@teya/lemonade-ds/typography.css'  // .lmnd-text-* classes
+import '@teya/lemonade-ds/fonts.css'       // Figtree, self-hosted (opt-in)
 ```
 
-`dist/` is build output and is gitignored. Nothing here is published: the
-release workflow retains `npm publish --dry-run` until the registry and scope
-are settled.
+Or take the first two together, and add fonts if you want the bundled typeface:
+
+```js
+import '@teya/lemonade-ds/styles.css'      // tokens + typography
+import '@teya/lemonade-ds/fonts.css'
+```
+
+```html
+<html data-lmnd-theme="dark">  <!-- explicit; omit to follow the OS -->
+```
+
+`tokens.css` declares custom properties and nothing else — no element selectors — so it
+can be added to an existing app without affecting any current component.
+
+## What is here
+
+| Import | Contents |
+|---|---|
+| `@teya/lemonade-ds` | Typed tokens, text styles and asset manifests |
+| `@teya/lemonade-ds/styles.css` | Barrel: tokens + typography |
+| `@teya/lemonade-ds/fonts.css` | Figtree `@font-face` declarations |
+| `@teya/lemonade-ds/icon.css` | The `.lmnd-icon` mask utility |
+| `@teya/lemonade-ds/lemonade.css` | Everything in one self-contained file, for prototypes |
+| `@teya/lemonade-ds/llms.txt` | Token reference for AI tools |
+
+## Repository layout — generated vs built
+
+Two different kinds of output live here, and the distinction matters:
+
+| | Where | Committed? | Written by |
+|---|---|---|---|
+| **Generated** | `styles/*.css`, `src/*.generated.ts`, `llms.txt`, `tokens.json` | **yes** | `scripts/web-*.main.kts` (Kotlin) |
+| **Built** | `dist/**` — bundled JS, type declarations, `fonts.css`, optimized `assets/**` | no (gitignored) | `npm run build` |
+
+Generated files are committed on purpose: `token_drift.yml` regenerates them and fails
+if the tree differs, which is what stops a Figma export landing without the platform
+code that matches it. **Do not hand-edit them** — change the converter and regenerate.
+
+`npm run build` writes only into `dist/`. It never modifies the committed sources, so a
+build never leaves your working tree dirty.
+
+Regenerate the committed output with:
+
+```sh
+.claude/skills/generate-tokens/scripts/run-converters.sh --all
+```
