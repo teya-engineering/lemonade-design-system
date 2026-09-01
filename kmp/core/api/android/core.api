@@ -719,6 +719,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field MoneyEuro Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field MoneyHandSolid Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field MoneyPounds Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field Moon Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Nfc Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Numpad Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Package Lcom/teya/lemonade/core/LemonadeIcons;
@@ -771,6 +772,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field Store Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field StoreCheck Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Stores Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field Sun Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field SupportChat Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ThumbDown Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ThumbUp Lcom/teya/lemonade/core/LemonadeIcons;

@@ -222,6 +222,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.MoneyEuro -> LemonadeRes.drawable.gen_money_euro
         LemonadeIcons.MoneyHandSolid -> LemonadeRes.drawable.gen_money_hand_solid
         LemonadeIcons.MoneyPounds -> LemonadeRes.drawable.gen_money_pounds
+        LemonadeIcons.Moon -> LemonadeRes.drawable.gen_moon
         LemonadeIcons.Nfc -> LemonadeRes.drawable.gen_nfc
         LemonadeIcons.Numpad -> LemonadeRes.drawable.gen_numpad
         LemonadeIcons.Package -> LemonadeRes.drawable.gen_package
@@ -274,6 +275,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.Store -> LemonadeRes.drawable.gen_store
         LemonadeIcons.StoreCheck -> LemonadeRes.drawable.gen_store_check
         LemonadeIcons.Stores -> LemonadeRes.drawable.gen_stores
+        LemonadeIcons.Sun -> LemonadeRes.drawable.gen_sun
         LemonadeIcons.SupportChat -> LemonadeRes.drawable.gen_support_chat
         LemonadeIcons.ThumbDown -> LemonadeRes.drawable.gen_thumb_down
         LemonadeIcons.ThumbUp -> LemonadeRes.drawable.gen_thumb_up
