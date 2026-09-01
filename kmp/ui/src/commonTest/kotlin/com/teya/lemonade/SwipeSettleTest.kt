@@ -15,13 +15,14 @@ class SwipeSettleTest {
         travel: Float,
         velocity: Float = 0f,
         allowsFullSwipe: Boolean = true,
-    ): SwipeSettleTarget = resolveSwipeSettle(
-        travel = travel,
-        velocity = velocity,
-        revealWidth = revealWidth,
-        rowWidth = rowWidth,
-        allowsFullSwipe = allowsFullSwipe,
-    )
+    ): SwipeSettleTarget =
+        resolveSwipeSettle(
+            travel = travel,
+            velocity = velocity,
+            revealWidth = revealWidth,
+            rowWidth = rowWidth,
+            allowsFullSwipe = allowsFullSwipe,
+        )
 
     @Test
     fun `a drag short of half the reveal settles closed`() {
