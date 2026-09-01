@@ -56,6 +56,7 @@ private enum Demo: String, CaseIterable, Identifiable, Hashable {
     case chip = "Chip"
     case listItem = "ListItem"
     case contentListItem = "ContentListItem"
+    case swipeActionRow = "SwipeActionRow"
     case segmentedControl = "SegmentedControl"
     case boxSelection = "BoxSelection"
 
@@ -113,7 +114,7 @@ private let demoSections: [DemoSection] = [
     ),
     DemoSection(
         title: "Selection & Lists",
-        items: [.chip, .listItem, .contentListItem, .segmentedControl, .boxSelection]
+        items: [.chip, .listItem, .contentListItem, .swipeActionRow, .segmentedControl, .boxSelection]
     ),
     DemoSection(
         title: "Navigation",
@@ -221,6 +222,7 @@ struct HomeView: View {
         case .chip: ChipDisplayView()
         case .listItem: ListItemDisplayView()
         case .contentListItem: ContentListItemDisplayView()
+        case .swipeActionRow: SwipeActionRowDisplayView()
         case .segmentedControl: SegmentedControlDisplayView()
         case .boxSelection: BoxSelectionDisplayView()
         case .link: LinkDisplayView()
