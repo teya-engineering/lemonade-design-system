@@ -183,4 +183,6 @@ flutter/.claude/settings.local.json
 web/node_modules/
 web/dist/
 web/*.tgz
+web/storybook-static/
 
+*storybook.log
