@@ -19,7 +19,6 @@ on:
       - 'web/src/*.generated.ts'
       - 'web/llms.txt'
       - 'web/tokens.json'
-      - 'web/contrast-allowlist.json'
       - 'web/assets/**'
       - '.claude/skills/generate-tokens/**'
       - '.github/workflows/token_drift.yml'
@@ -71,8 +70,6 @@ jobs:
       - name: Text style parity with SwiftUI
         run: '"$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/web-text-style-parity-check.main.kts'
 
-      - name: Contrast check
-        run: '"$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/web-contrast-check.main.kts'
 
       - name: Fail if generated code drifted
         run: |

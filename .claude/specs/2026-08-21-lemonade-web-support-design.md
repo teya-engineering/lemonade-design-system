@@ -468,17 +468,39 @@ brand logos, where path merging can visibly distort artwork.
 
 ## 10. Accessibility validation
 
-`scripts/web-contrast-check.main.kts` walks the semantic pairs — every `content-*` against every
-plausible `bg-*`, and `border-*` where used as a boundary — and asserts **WCAG 2.2
-AA**: 4.5:1 for body text, 3:1 for large text and non-text boundaries.
+**Withdrawn from v0.** A `scripts/web-contrast-check.main.kts` was built, run, and then
+removed before release. Design tokens and the accessibility decisions about them are
+owned by the design team, who run contrast validation at source; a second gate in the
+web repo would check tokens web does not own, on one of four platforms that consume
+them, and would rot the moment nobody in this repo owned it.
 
-It runs for **both light and dark**, and composites alpha correctly. This matters:
-`content-primary` is 92.5% opaque, so comparing hex values alone reports a contrast
-ratio the user never actually sees.
+The measurements it produced are kept below, because they are a real finding and the
+allowlist that recorded them is gone with the script.
 
-Known-failing pairs go in an explicit allowlist with a reason and an owner, so
-exceptions are visible and reviewable rather than silently absent. Storybook shows
-the computed ratio on every swatch.
+### Measured 2026-08-21 — these pairs did not meet WCAG 2.2 AA
+
+Foreground composited over the surface; translucent surfaces (`bg-elevated` α 0.05,
+`bg-elevated-high` α 0.20 light / 0.10 dark) composited over `bg-default` first.
+Computed twice by independent implementations, agreeing to ±0.02.
+
+| Theme | Pair | Measured | Required |
+|---|---|---|---|
+| Light | `content-secondary on bg-default` | **4.07:1** | 4.5:1 |
+| Light | `content-secondary on bg-subtle` | **3.97:1** | 4.5:1 |
+| Light | `content-secondary on bg-elevated` | **3.98:1** | 4.5:1 |
+| Light | `content-secondary on bg-elevated-high` | **3.83:1** | 4.5:1 |
+| Light | `content-tertiary on bg-default` | **2.48:1** | 4.5:1 |
+| Light | `content-tertiary on bg-subtle` | **2.45:1** | 4.5:1 |
+| Light | `content-tertiary on bg-elevated` | **2.45:1** | 4.5:1 |
+| Light | `content-tertiary on bg-elevated-high` | **2.39:1** | 4.5:1 |
+| Dark | `content-tertiary on bg-elevated-high` | **4.34:1** | 4.5:1 |
+
+Dark theme was otherwise clean; every other neutral pairing passed. `content-secondary`
+is described in the token export as *"Use for secondary text, such as body copy or
+supporting content"* — body copy at 4.07:1 does not meet AA.
+
+**This is not a web issue.** The tokens are shared, so Android, iOS and Flutter render
+the same values. Any fix belongs in Figma, not in a platform.
 
 ## 11. Documentation — Storybook
 
@@ -590,8 +612,8 @@ guarantees rather than only tests.
    current components.
 4. Changing a value in Figma, re-exporting, and running `run-converters.sh`
    regenerates web output; skipping it fails CI.
-5. Contrast and typography-parity checks pass, with any exceptions explicitly
-   allowlisted.
+5. The typography-parity check passes, holding web's text styles identical to
+   SwiftUI's. (Contrast validation was withdrawn — see §10.)
 6. Storybook is deployed and a designer or engineer can find any token by browsing.
 7. Pasting `lemonade.css` into a bare HTML page in a Claude artifact renders Lemonade
    colour and type, with Figtree loading from Google Fonts.
