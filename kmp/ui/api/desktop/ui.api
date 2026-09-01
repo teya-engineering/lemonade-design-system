@@ -542,6 +542,30 @@ public final class com/teya/lemonade/SpinnerKt {
 	public static final fun Spinner-cf5BqRc (Lcom/teya/lemonade/LemonadeUi;Lcom/teya/lemonade/core/LemonadeAssetSize;JLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/teya/lemonade/SwipeAction {
+	public static final field $stable I
+	public fun <init> (Lcom/teya/lemonade/core/LemonadeIcons;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lcom/teya/lemonade/core/LemonadeButtonVariant;)V
+	public synthetic fun <init> (Lcom/teya/lemonade/core/LemonadeIcons;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lcom/teya/lemonade/core/LemonadeButtonVariant;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lcom/teya/lemonade/core/LemonadeIcons;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lkotlin/jvm/functions/Function0;
+	public final fun component4 ()Lcom/teya/lemonade/core/LemonadeButtonVariant;
+	public final fun copy (Lcom/teya/lemonade/core/LemonadeIcons;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lcom/teya/lemonade/core/LemonadeButtonVariant;)Lcom/teya/lemonade/SwipeAction;
+	public static synthetic fun copy$default (Lcom/teya/lemonade/SwipeAction;Lcom/teya/lemonade/core/LemonadeIcons;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lcom/teya/lemonade/core/LemonadeButtonVariant;ILjava/lang/Object;)Lcom/teya/lemonade/SwipeAction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContentDescription ()Ljava/lang/String;
+	public final fun getIcon ()Lcom/teya/lemonade/core/LemonadeIcons;
+	public final fun getOnClick ()Lkotlin/jvm/functions/Function0;
+	public final fun getVariant ()Lcom/teya/lemonade/core/LemonadeButtonVariant;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/teya/lemonade/SwipeActionRowKt {
+	public static final fun SwipeActionRow (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/Object;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Ljava/util/List;Landroidx/compose/ui/Modifier;ZZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun SwipeActionRow (Lcom/teya/lemonade/LemonadeUi;Ljava/util/List;Landroidx/compose/ui/Modifier;ZZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/teya/lemonade/SwitchKt {
 	public static final fun Switch (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/String;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 	public static final fun Switch (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function1;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
