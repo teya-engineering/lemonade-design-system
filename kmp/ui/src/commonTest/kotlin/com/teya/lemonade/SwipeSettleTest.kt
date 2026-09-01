@@ -15,6 +15,7 @@ class SwipeSettleTest {
         travel: Float,
         velocity: Float = 0f,
         allowsFullSwipe: Boolean = true,
+        revealWidth: Float = this.revealWidth,
     ): SwipeSettleTarget =
         resolveSwipeSettle(
             travel = travel,
@@ -68,6 +69,43 @@ class SwipeSettleTest {
         assertEquals(
             expected = SwipeSettleTarget.Committed,
             actual = settle(travel = 200f, velocity = -900f),
+        )
+    }
+
+    @Test
+    fun `a drag exactly on half the reveal opens`() {
+        assertEquals(expected = SwipeSettleTarget.Open, actual = settle(travel = revealWidth / 2f))
+    }
+
+    @Test
+    fun `a flick exactly on the fling threshold opens`() {
+        assertEquals(
+            expected = SwipeSettleTarget.Open,
+            actual = settle(travel = 0f, velocity = 400f),
+        )
+    }
+
+    @Test
+    fun `a flick back exactly on the fling threshold closes`() {
+        assertEquals(
+            expected = SwipeSettleTarget.Closed,
+            actual = settle(travel = 55f, velocity = -400f),
+        )
+    }
+
+    @Test
+    fun `travel exactly on half the row commits`() {
+        assertEquals(
+            expected = SwipeSettleTarget.Committed,
+            actual = settle(travel = rowWidth / 2f),
+        )
+    }
+
+    @Test
+    fun `the first frame with nothing measured settles closed`() {
+        assertEquals(
+            expected = SwipeSettleTarget.Closed,
+            actual = settle(travel = 0f, revealWidth = 0f),
         )
     }
 }

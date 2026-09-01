@@ -41,6 +41,10 @@ func resolveSwipeSettle(
     if allowsFullSwipe, travel >= rowWidth * commitFraction {
         return .committed
     }
+    // Nothing to open onto: the strip has not measured yet, or there are no actions.
+    if revealWidth <= 0 {
+        return .closed
+    }
     if velocity >= flingVelocity {
         return .open
     }

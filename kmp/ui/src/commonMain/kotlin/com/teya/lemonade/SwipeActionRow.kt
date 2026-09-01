@@ -89,6 +89,8 @@ internal fun resolveSwipeSettle(
 ): SwipeSettleTarget =
     when {
         allowsFullSwipe && travel >= rowWidth * COMMIT_FRACTION -> SwipeSettleTarget.Committed
+        // Nothing to open onto: the strip has not measured yet, or there are no actions.
+        revealWidth <= 0f -> SwipeSettleTarget.Closed
         velocity >= FLING_VELOCITY -> SwipeSettleTarget.Open
         velocity <= -FLING_VELOCITY -> SwipeSettleTarget.Closed
         travel >= revealWidth / 2f -> SwipeSettleTarget.Open

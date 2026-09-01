@@ -75,7 +75,7 @@ internal fun SwipeActionRowDisplay() {
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
                 header = CardHeaderConfig(
                     title = "Two actions, allowsFullSwipe = false",
-                    subtitle = "Travel past the reveal rubber-bands, and nothing commits.",
+                    subtitle = "Travel past the reveal is capped, and nothing commits.",
                 ),
             ) {
                 LemonadeUi.SwipeActionRow(
