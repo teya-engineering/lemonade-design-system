@@ -1,16 +1,26 @@
-import { readdirSync, existsSync } from 'node:fs';
+import { readdirSync, existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { isGroup, sections, sidebar, slugs } from './sidebar';
 
 const DOCS = new URL('./content/docs/', import.meta.url);
+
+/**
+ * Draft pages are excluded from production builds by Starlight, so the
+ * sidebar cannot link to them and this check must not demand that it does.
+ */
+function isDraft(file: URL): boolean {
+	const frontmatter = readFileSync(file, 'utf-8').split('---')[1] ?? '';
+	return /^draft:\s*true\s*$/m.test(frontmatter);
+}
 
 function contentFiles(dir = DOCS, prefix = ''): string[] {
 	return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
 		if (entry.isDirectory()) {
 			return contentFiles(new URL(`${entry.name}/`, dir), `${prefix}${entry.name}/`);
 		}
-		const slug = `${prefix}${entry.name.replace(/\.mdx?$/, '')}`;
-		return entry.name.endsWith('.md') || entry.name.endsWith('.mdx') ? [slug] : [];
+		if (!entry.name.endsWith('.md') && !entry.name.endsWith('.mdx')) return [];
+		if (isDraft(new URL(entry.name, dir))) return [];
+		return [`${prefix}${entry.name.replace(/\.mdx?$/, '')}`];
 	});
 }
 

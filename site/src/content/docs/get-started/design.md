@@ -51,8 +51,8 @@ rest of the time.
 - **The reasoning** — [Standards](/lemonade-design-system/standards/semantic-tokens/)
   covers semantic tokens, theming and dark mode, layout rhythm and the accessibility
   baseline.
-- **Whole solutions** — [Patterns](/lemonade-design-system/patterns/forms/) shows forms,
-  lists, empty states and errors already assembled, with the decisions written down.
+- **Whole solutions** — [Patterns](/lemonade-design-system/patterns/lists/) shows list
+  screens, empty and loading states already assembled, with the decisions written down.
 - **Web prototypes** — [Prototyping with Lemonade](/lemonade-design-system/prototyping/)
   explains what to do until official web support lands.
 

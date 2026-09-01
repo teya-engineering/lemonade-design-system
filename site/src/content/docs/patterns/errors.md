@@ -1,4 +1,7 @@
 ---
+# Unreviewed: excluded from production builds until this has been
+# checked against how Teya actually builds these screens.
+draft: true
 title: Errors & recovery
 description: Where an error belongs, and how to write one.
 ---

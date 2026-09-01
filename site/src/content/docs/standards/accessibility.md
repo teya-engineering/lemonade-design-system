@@ -42,8 +42,7 @@ one, is not.
 Every interactive control needs an accessible label — something a screen reader can
 announce that says what the control does. A placeholder is not a label: it disappears
 the moment there's content in the field, which is exactly when a screen reader user
-needs it most. See [Forms](/lemonade-design-system/patterns/forms/) for how this plays
-out on a text field specifically.
+needs it most.
 
 Icon-only controls — an icon button with no visible text — always need an explicit label
 describing the action, not the icon. "Favorite", not "heart icon." Without one, a screen

@@ -126,9 +126,7 @@ web prototype exactly as it applies to production:
 - [Semantic tokens first](/lemonade-design-system/standards/semantic-tokens/)
 - [Layout & rhythm](/lemonade-design-system/layout/rhythm/)
 - [Accessibility](/lemonade-design-system/standards/accessibility/)
-- [Forms](/lemonade-design-system/patterns/forms/)
 - [Empty & loading states](/lemonade-design-system/patterns/empty-and-loading/)
-- [Errors & recovery](/lemonade-design-system/patterns/errors/)
 
 ## When web support lands
 

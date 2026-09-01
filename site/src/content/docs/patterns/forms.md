@@ -1,4 +1,7 @@
 ---
+# Unreviewed: excluded from production builds until this has been
+# checked against how Teya actually builds these screens.
+draft: true
 title: Forms
 description: How to assemble a form from Lemonade components — labels, support text, validation timing, and errors.
 ---

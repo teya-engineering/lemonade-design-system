@@ -33,5 +33,5 @@ struct MyScreen: View {
 
 - [Semantic tokens first](/lemonade-design-system/standards/semantic-tokens/) — the one
   rule worth reading before you write any styling
-- [Forms](/lemonade-design-system/patterns/forms/) — the most common screen, done properly
+- [Lists](/lemonade-design-system/patterns/lists/) — a list screen, done properly
 - [Colour](/lemonade-design-system/foundations/colour/) — every token, with its usage
