@@ -66,7 +66,8 @@ import androidx.compose.ui.window.DialogProperties
  *
  * ## Design Notes
  *
- * - The dialog surface uses [LemonadeTheme.radius.radius400] for rounded corners.
+ * - The dialog surface uses [LemonadeTheme.radius] `semantic.radiusContainerDefault` for rounded
+ *   corners.
  * - Background color is [LemonadeTheme.colors.background.bgDefault].
  * - Tonal elevation is set to 0.dp; the dialog relies on Lemonade color tokens for visual hierarchy.
  * - The dialog keeps whichever system bars the host window hides, never shows one the host hides.
@@ -109,7 +110,7 @@ public fun LemonadeUi.Dialog(
                 } else {
                     Modifier.fillMaxWidth()
                 },
-                shape = RoundedCornerShape(size = LemonadeTheme.radius.radius400),
+                shape = RoundedCornerShape(size = LemonadeTheme.radius.semantic.radiusContainerDefault),
                 color = LemonadeTheme.colors.background.bgDefault,
                 tonalElevation = 0.dp,
                 content = content,
