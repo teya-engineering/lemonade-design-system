@@ -86,6 +86,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     @State private var revealWidth: CGFloat = 0
     @State private var rowWidth: CGFloat = 0
     @State private var committed = false
+    @GestureState private var isDragging = false
     @Environment(\.layoutDirection) private var layoutDirection
 
     /// A reveal on the trailing edge travels left in LTR and right in RTL.
@@ -122,7 +123,9 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             .clipped()
             .background(
                 GeometryReader { proxy in
-                    Color.clear.onAppear { rowWidth = proxy.size.width }
+                    Color.clear
+                        .onAppear { rowWidth = proxy.size.width }
+                        .onChange(of: proxy.size.width) { rowWidth = $0 }
                 }
             )
             .gesture(drag)
@@ -135,6 +138,13 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
         }
         .onChange(of: open) { newValue in
             withAnimation(.spring()) { travel = newValue ? revealWidth : 0 }
+        }
+        .onChange(of: isDragging) { dragging in
+            if !dragging, dragOrigin != nil {
+                dragOrigin = nil
+                committed = false
+                withAnimation(.spring()) { travel = open ? revealWidth : 0 }
+            }
         }
     }
 
@@ -157,7 +167,9 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
         .padding(.trailing, LemonadeTheme.spaces.spacing200)
         .background(
             GeometryReader { proxy in
-                Color.clear.onAppear { revealWidth = proxy.size.width }
+                Color.clear
+                    .onAppear { revealWidth = proxy.size.width }
+                    .onChange(of: proxy.size.width) { revealWidth = $0 }
             }
         )
         .modifier(SwipeStripAccessibility())
@@ -165,6 +177,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
 
     private var drag: some Gesture {
         DragGesture(minimumDistance: 10)
+            .updating($isDragging) { _, state, _ in state = true }
             .onChanged { value in
                 guard enabled, !actions.isEmpty else { return }
                 if dragOrigin == nil {
