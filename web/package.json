@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/saltpay/lemonade-design-system.git",
+    "url": "https://github.com/teya-engineering/lemonade-design-system.git",
     "directory": "web"
   },
   "type": "module",
