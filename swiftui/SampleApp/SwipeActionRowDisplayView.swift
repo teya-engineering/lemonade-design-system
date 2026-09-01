@@ -33,7 +33,7 @@ struct SwipeActionRowDisplayView: View {
                             id: account.id,
                             openId: $openId,
                             actions: [
-                                SwipeAction(
+                                LemonadeSwipeAction(
                                     icon: .trash,
                                     contentDescription: "Remove \(account.name)",
                                     onClick: { removed.insert(account.id) }
@@ -64,13 +64,13 @@ struct SwipeActionRowDisplayView: View {
                 LemonadeUi.Card(
                     header: CardHeaderConfig(
                         title: "Two actions, allowsFullSwipe: false",
-                        subtitle: "Travel past the reveal rubber-bands, and nothing commits."
+                        subtitle: "Travel past the reveal is capped, and nothing commits."
                     )
                 ) {
                     LemonadeUi.SwipeActionRow(
                         actions: [
-                            SwipeAction(icon: .trash, contentDescription: "Delete", onClick: { }),
-                            SwipeAction(
+                            LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: { }),
+                            LemonadeSwipeAction(
                                 icon: .pencilLine,
                                 contentDescription: "Edit",
                                 onClick: { },

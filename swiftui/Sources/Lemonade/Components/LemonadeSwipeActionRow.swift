@@ -8,6 +8,10 @@ private let commitFraction: CGFloat = 0.5
 /// Speed, in pt/s, past which a flick decides the settle regardless of how far it travelled.
 private let flingVelocity: CGFloat = 400
 
+/// Growth applied to the first action while a full swipe is committed, taking it from the small
+/// button's 40pt to the 48pt the design asks for.
+private let committedScale: CGFloat = 1.2
+
 /// Where a released drag lands.
 enum SwipeSettleTarget {
     case closed
@@ -46,13 +50,13 @@ func resolveSwipeSettle(
     return travel >= revealWidth / 2 ? .open : .closed
 }
 
-// MARK: - SwipeAction
+// MARK: - LemonadeSwipeAction
 
 /// One action revealed behind a `LemonadeUi.SwipeActionRow`.
 ///
 /// `contentDescription` has no default because it is what publishes the action to VoiceOver, where
 /// the gesture itself is invisible.
-public struct SwipeAction {
+public struct LemonadeSwipeAction {
     let icon: LemonadeIcon
     let contentDescription: String
     let onClick: () -> Void
@@ -74,7 +78,7 @@ public struct SwipeAction {
 // MARK: - Row
 
 struct LemonadeSwipeActionRowView<Content: View>: View {
-    let actions: [SwipeAction]
+    let actions: [LemonadeSwipeAction]
     let enabled: Bool
     let allowsFullSwipe: Bool
     let showDivider: Bool
@@ -82,7 +86,12 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
     @State private var travel: CGFloat = 0
+    /// Where `travel` stood when this drag was claimed. Released by the cancel path, so the next
+    /// drag has to earn the claim again.
     @State private var dragOrigin: CGFloat?
+    /// The same origin, cleared only by `onEnded`, which is what `onEnded` guards on. Keeping the
+    /// two apart is what lets the cancel path snap back without stealing the settle.
+    @State private var settleOrigin: CGFloat?
     @State private var revealWidth: CGFloat = 0
     @State private var rowWidth: CGFloat = 0
     @State private var committed = false
@@ -128,39 +137,53 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                         .onChange(of: proxy.size.width) { rowWidth = $0 }
                 }
             )
-            .gesture(drag)
+            // A disabled row must not compete with the enclosing scroll view for the gesture, so
+            // the mask drops to `.subviews` rather than the gesture checking `enabled` inside.
+            .gesture(drag, including: enabled && !actions.isEmpty ? .all : .subviews)
             .modifier(SwipeAccessibilityActions(actions: actions))
 
             if showDivider {
                 LemonadeUi.HorizontalDivider()
-                    .padding(.horizontal, LemonadeTheme.spaces.spacing100)
+                    .padding(.horizontal, LemonadeTheme.spaces.spacing400)
             }
         }
         .onChange(of: open) { newValue in
             withAnimation(.spring()) { travel = newValue ? revealWidth : 0 }
         }
+        .onChange(of: revealWidth) { newValue in
+            // The strip can measure after the row is already open, or re-measure when `actions`
+            // change, so an open row would otherwise rest at a stale offset. Never under a live
+            // finger, where it would fight the drag.
+            guard open, dragOrigin == nil else { return }
+            withAnimation(.spring()) { travel = newValue }
+        }
         .onChange(of: isDragging) { dragging in
-            if !dragging, dragOrigin != nil {
-                dragOrigin = nil
-                committed = false
-                withAnimation(.spring()) { travel = open ? revealWidth : 0 }
-            }
+            // A cancelled gesture never delivers `onEnded`, so the snap back has to happen here.
+            // Only the claim is released: `settleOrigin` is what `onEnded` guards on, and the
+            // order these two are observed in is not documented.
+            guard !dragging, dragOrigin != nil else { return }
+            dragOrigin = nil
+            committed = false
+            withAnimation(.spring()) { travel = open ? revealWidth : 0 }
         }
     }
 
     private var actionStrip: some View {
         HStack(spacing: LemonadeTheme.spaces.spacing200) {
             ForEach(Array(actions.enumerated()), id: \.offset) { index, action in
+                // The first action is the one a full swipe fires, so it is the one that grows. It
+                // grows by scaling rather than by changing size: a size change re-measures the
+                // strip mid-drag, which rewrites the reveal width the settle is resolved against.
                 LemonadeUi.IconButton(
                     icon: action.icon,
                     contentDescription: action.contentDescription,
                     onClick: action.onClick,
                     variant: action.variant,
                     type: .solid,
-                    // The first action is the one a full swipe fires, so it is the one that grows.
-                    size: committed && index == 0 ? .medium : .small,
+                    size: .small,
                     shape: .circular
                 )
+                .scaleEffect(committed && index == 0 ? committedScale : 1)
             }
         }
         .padding(.leading, LemonadeTheme.spaces.spacing300)
@@ -168,27 +191,39 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
         .background(
             GeometryReader { proxy in
                 Color.clear
-                    .onAppear { revealWidth = proxy.size.width }
-                    .onChange(of: proxy.size.width) { revealWidth = $0 }
+                    .onAppear { revealWidth = measuredRevealWidth(proxy.size.width) }
+                    .onChange(of: proxy.size.width) { revealWidth = measuredRevealWidth($0) }
             }
         )
-        .modifier(SwipeStripAccessibility())
+        // The strip's buttons stay in the accessibility tree even while covered by the row, where
+        // they would announce a destructive action ahead of the row it belongs to. The row's own
+        // custom actions are the accessible path.
+        .accessibilityHidden(true)
+    }
+
+    /// An empty strip still measures its padding, which would open the row onto a bare gap.
+    private func measuredRevealWidth(_ width: CGFloat) -> CGFloat {
+        actions.isEmpty ? 0 : width
+    }
+
+    private func clampedTravel(_ value: CGFloat) -> CGFloat {
+        let ceiling = allowsFullSwipe ? rowWidth : revealWidth
+        return min(max(value, 0), ceiling)
     }
 
     private var drag: some Gesture {
         DragGesture(minimumDistance: 10)
             .updating($isDragging) { _, state, _ in state = true }
             .onChanged { value in
-                guard enabled, !actions.isEmpty else { return }
                 if dragOrigin == nil {
                     // Let a vertical scroll win: start tracking only a predominantly
                     // horizontal drag, and never claim the gesture otherwise.
                     guard abs(value.translation.width) > abs(value.translation.height) else { return }
                     dragOrigin = travel
+                    settleOrigin = travel
                 }
                 guard let origin = dragOrigin else { return }
-                let ceiling = allowsFullSwipe ? rowWidth : revealWidth
-                let next = min(max(origin + value.translation.width * towardsTrailing, 0), ceiling)
+                let next = clampedTravel(origin + value.translation.width * towardsTrailing)
                 let crossed = allowsFullSwipe && next >= rowWidth * commitFraction
                 if crossed != committed {
                     committed = crossed
@@ -197,11 +232,15 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 travel = next
             }
             .onEnded { value in
-                guard dragOrigin != nil else { return }
+                guard let origin = settleOrigin else { return }
+                settleOrigin = nil
                 dragOrigin = nil
                 committed = false
+                // Read the release position off the gesture rather than off `travel`: the cancel
+                // path may already have snapped `travel` back before this ran.
+                let released = clampedTravel(origin + value.translation.width * towardsTrailing)
                 let target = resolveSwipeSettle(
-                    travel: travel,
+                    travel: released,
                     velocity: releaseVelocity(of: value) * towardsTrailing,
                     revealWidth: revealWidth,
                     rowWidth: rowWidth,
@@ -222,11 +261,15 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             }
     }
 
-    /// `DragGesture.Value.velocity` is iOS 17, and this package targets iOS 15. UIKit projects a
-    /// decelerating drag roughly a quarter-second ahead, so the gap between the predicted end and
-    /// the current translation is a quarter of the velocity.
+    /// Speed at release, in pt/s. `DragGesture.Value.velocity` is iOS 17, and this package targets
+    /// iOS 15, so below that UIKit's projection stands in: it runs a decelerating drag roughly a
+    /// quarter-second ahead, which makes the gap between the predicted end and the current
+    /// translation a quarter of the velocity.
     private func releaseVelocity(of value: DragGesture.Value) -> CGFloat {
-        (value.predictedEndTranslation.width - value.translation.width) * 4
+        if #available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *) {
+            return value.velocity.width
+        }
+        return (value.predictedEndTranslation.width - value.translation.width) * 4
     }
 
     private func playCommitHaptic() {
@@ -238,34 +281,15 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
 
 // MARK: - Accessibility
 
-/// VoiceOver reaches the actions through the row on iOS 16+, where `accessibilityActions` exists.
+/// VoiceOver reaches the actions through the row. A `ZStack` is not an accessibility element, so
+/// actions applied to it attach to nothing: combining the children makes the row one element, and
+/// every action then hangs off it as a custom action.
 private struct SwipeAccessibilityActions: ViewModifier {
-    let actions: [SwipeAction]
+    let actions: [LemonadeSwipeAction]
 
-    @ViewBuilder
     func body(content: Content) -> some View {
-        if #available(iOS 16.0, macOS 13.0, *) {
-            content.accessibilityActions {
-                ForEach(Array(actions.enumerated()), id: \.offset) { _, action in
-                    Button(action.contentDescription, action: action.onClick)
-                }
-            }
-        } else {
-            content
-        }
-    }
-}
-
-/// The strip's buttons stay in the accessibility tree even while covered by the row. Wherever the
-/// row publishes custom actions they would be announced twice, so the strip is hidden there — and
-/// left visible below iOS 16, where the buttons are the only accessible path to the action.
-private struct SwipeStripAccessibility: ViewModifier {
-    @ViewBuilder
-    func body(content: Content) -> some View {
-        if #available(iOS 16.0, macOS 13.0, *) {
-            content.accessibilityHidden(true)
-        } else {
-            content
+        actions.reduce(AnyView(content.accessibilityElement(children: .combine))) { view, action in
+            AnyView(view.accessibilityAction(named: Text(action.contentDescription), action.onClick))
         }
     }
 }
@@ -283,7 +307,7 @@ public extension LemonadeUi {
     /// ```swift
     /// LemonadeUi.SwipeActionRow(
     ///     actions: [
-    ///         SwipeAction(icon: .trash, contentDescription: "Remove account", onClick: { })
+    ///         LemonadeSwipeAction(icon: .trash, contentDescription: "Remove account", onClick: { })
     ///     ],
     ///     showDivider: true
     /// ) {
@@ -299,7 +323,7 @@ public extension LemonadeUi {
     ///   - content: the row this wraps
     @ViewBuilder
     static func SwipeActionRow<Content: View>(
-        actions: [SwipeAction],
+        actions: [LemonadeSwipeAction],
         enabled: Bool = true,
         allowsFullSwipe: Bool = true,
         showDivider: Bool = false,
@@ -324,7 +348,7 @@ public extension LemonadeUi {
     static func SwipeActionRow<Content: View>(
         id: AnyHashable,
         openId: Binding<AnyHashable?>,
-        actions: [SwipeAction],
+        actions: [LemonadeSwipeAction],
         enabled: Bool = true,
         allowsFullSwipe: Bool = true,
         showDivider: Bool = false,
@@ -346,7 +370,7 @@ public extension LemonadeUi {
 
 /// Holds its own open state, so a single row needs no ceremony at the call site.
 private struct LemonadeUncontrolledSwipeActionRow<Content: View>: View {
-    let actions: [SwipeAction]
+    let actions: [LemonadeSwipeAction]
     let enabled: Bool
     let allowsFullSwipe: Bool
     let showDivider: Bool
@@ -365,3 +389,66 @@ private struct LemonadeUncontrolledSwipeActionRow<Content: View>: View {
         )
     }
 }
+
+#if DEBUG
+struct LemonadeSwipeActionRow_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack(alignment: .leading, spacing: .space.spacing600) {
+            // One trailing action, full swipe on.
+            LemonadeUi.SwipeActionRow(
+                actions: [
+                    LemonadeSwipeAction(icon: .trash, contentDescription: "Remove", onClick: {})
+                ],
+                showDivider: true
+            ) {
+                LemonadeUi.ActionListItem(
+                    label: "Kathryn Murphy",
+                    supportText: "kathryn.murphy@mail.com",
+                    showNavigationIndicator: true,
+                    showDivider: false,
+                    onItemClicked: {}
+                )
+            }
+
+            // Two actions, no full swipe.
+            LemonadeUi.SwipeActionRow(
+                actions: [
+                    LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: {}),
+                    LemonadeSwipeAction(
+                        icon: .pencilLine,
+                        contentDescription: "Edit",
+                        onClick: {},
+                        variant: .neutral
+                    )
+                ],
+                allowsFullSwipe: false
+            ) {
+                LemonadeUi.ActionListItem(
+                    label: "Two actions",
+                    supportText: "Outermost action first",
+                    showDivider: false,
+                    onItemClicked: {}
+                )
+            }
+
+            // Controlled: one open row at a time.
+            StatefulPreviewWrapper(AnyHashable?.none) { openId in
+                LemonadeUi.SwipeActionRow(
+                    id: "row",
+                    openId: openId,
+                    actions: [
+                        LemonadeSwipeAction(icon: .trash, contentDescription: "Remove", onClick: {})
+                    ]
+                ) {
+                    LemonadeUi.ActionListItem(
+                        label: "Controlled row",
+                        showDivider: false,
+                        onItemClicked: {}
+                    )
+                }
+            }
+        }
+        .frame(maxHeight: .infinity, alignment: .top)
+    }
+}
+#endif
