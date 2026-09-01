@@ -40,17 +40,21 @@
     "./styles.css": "./styles/styles.css",
     "./lemonade.css": "./styles/lemonade.css",
     "./llms.txt": "./llms.txt",
-    "./tokens.json": "./tokens.json"
+    "./tokens.json": "./tokens.json",
+    "./icons/*": "./dist/assets/icons/*",
+    "./flags/*": "./dist/assets/flags/*",
+    "./brand-logos/*": "./dist/assets/brand-logos/*"
   },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "node build/build-fonts.mjs && tsup",
+    "build": "node build/build-fonts.mjs && node build/optimize-svg.mjs && tsup",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "svgo": "^3.3.2",
     "tsup": "^8.3.0",
     "typescript": "^5.6.0",
     "vitest": "^2.1.0",
