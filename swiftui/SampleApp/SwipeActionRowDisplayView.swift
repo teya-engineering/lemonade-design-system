@@ -20,74 +20,76 @@ struct SwipeActionRowDisplayView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: LemonadeTheme.spaces.spacing600) {
-                VStack(alignment: .leading, spacing: .space.spacing400) {
-                    LemonadeUi.Text("One open row at a time", font: .headingXSmall)
-
-                    LemonadeUi.Card {
-                        let visible = sampleAccounts.filter { !removed.contains($0.id) }
-                        ForEach(Array(visible.enumerated()), id: \.element.id) { index, account in
-                            LemonadeUi.SwipeActionRow(
-                                id: account.id,
-                                openId: $openId,
-                                actions: [
-                                    SwipeAction(
-                                        icon: .trash,
-                                        contentDescription: "Remove \(account.name)",
-                                        onClick: { removed.insert(account.id) }
-                                    )
-                                ],
-                                showDivider: index != visible.count - 1
-                            ) {
-                                LemonadeUi.ActionListItem(
-                                    label: account.name,
-                                    supportText: account.email,
-                                    showNavigationIndicator: true,
-                                    // The container draws the divider: an item's own would travel with it.
-                                    showDivider: false,
-                                    onItemClicked: { },
-                                    leadingSlot: {
-                                        LemonadeUi.SymbolContainer(
-                                            text: account.initials,
-                                            voice: .neutral,
-                                            size: .medium,
-                                            shape: .circle
-                                        )
-                                    }
-                                )
-                            }
-                        }
-                    }
-                }
-
-                VStack(alignment: .leading, spacing: .space.spacing400) {
-                    LemonadeUi.Text("Two actions, allowsFullSwipe: false", font: .headingXSmall)
-
-                    LemonadeUi.Card {
+            VStack(spacing: .space.spacing600) {
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(
+                        title: "One open row at a time",
+                        subtitle: "Drag a row left. Dragging across it fires the first action."
+                    )
+                ) {
+                    let visible = sampleAccounts.filter { !removed.contains($0.id) }
+                    ForEach(Array(visible.enumerated()), id: \.element.id) { index, account in
                         LemonadeUi.SwipeActionRow(
+                            id: account.id,
+                            openId: $openId,
                             actions: [
-                                SwipeAction(icon: .trash, contentDescription: "Delete", onClick: { }),
                                 SwipeAction(
-                                    icon: .pencilLine,
-                                    contentDescription: "Edit",
-                                    onClick: { },
-                                    variant: .neutral
+                                    icon: .trash,
+                                    contentDescription: "Remove \(account.name)",
+                                    onClick: { removed.insert(account.id) }
                                 )
                             ],
-                            allowsFullSwipe: false
+                            showDivider: index != visible.count - 1
                         ) {
                             LemonadeUi.ActionListItem(
-                                label: "Two actions",
-                                supportText: "Outermost action first",
-                                // The SwipeActionRow draws the divider: one drawn here would travel with the row.
+                                label: account.name,
+                                supportText: account.email,
+                                showNavigationIndicator: true,
+                                // The container draws the divider: an item's own would travel with it.
                                 showDivider: false,
-                                onItemClicked: { }
+                                onItemClicked: { },
+                                leadingSlot: {
+                                    LemonadeUi.SymbolContainer(
+                                        text: account.initials,
+                                        voice: .neutral,
+                                        size: .medium,
+                                        shape: .circle
+                                    )
+                                }
                             )
                         }
                     }
                 }
+
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(
+                        title: "Two actions, allowsFullSwipe: false",
+                        subtitle: "Travel past the reveal rubber-bands, and nothing commits."
+                    )
+                ) {
+                    LemonadeUi.SwipeActionRow(
+                        actions: [
+                            SwipeAction(icon: .trash, contentDescription: "Delete", onClick: { }),
+                            SwipeAction(
+                                icon: .pencilLine,
+                                contentDescription: "Edit",
+                                onClick: { },
+                                variant: .neutral
+                            )
+                        ],
+                        allowsFullSwipe: false
+                    ) {
+                        LemonadeUi.ActionListItem(
+                            label: "Two actions",
+                            supportText: "Outermost action first",
+                            // The SwipeActionRow draws the divider: one drawn here would travel with the row.
+                            showDivider: false,
+                            onItemClicked: { }
+                        )
+                    }
+                }
             }
-            .padding(LemonadeTheme.spaces.spacing400)
+            .padding(.space.spacing400)
         }
         .navigationTitle("SwipeActionRow")
     }
