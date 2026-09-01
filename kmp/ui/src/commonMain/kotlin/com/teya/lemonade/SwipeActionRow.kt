@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -52,6 +53,12 @@ private const val COMMIT_FRACTION = 0.5f
 
 /** Speed, in px/s, past which a flick decides the settle regardless of how far it travelled. */
 private const val FLING_VELOCITY = 400f
+
+/**
+ * Growth applied to the first action while a full swipe is committed, taking it from the Small
+ * button's 40dp to the 48dp the design asks for.
+ */
+private const val COMMITTED_SCALE = 1.2f
 
 /** Where a released drag lands. */
 internal enum class SwipeSettleTarget {
@@ -121,18 +128,21 @@ private fun SwipeActionStrip(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         actions.forEachIndexed { index, action ->
+            // The first action is the one a full swipe fires, so it is the one that grows. It
+            // grows by scaling rather than by changing size: a size change re-measures the strip
+            // mid-drag, which rewrites the reveal width the settle is resolved against.
+            val scale = if (committed && index == 0) COMMITTED_SCALE else 1f
             LemonadeUi.IconButton(
                 icon = action.icon,
                 contentDescription = action.contentDescription,
                 onClick = action.onClick,
+                modifier = Modifier.graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                },
                 variant = action.variant,
                 type = LemonadeButtonType.Solid,
-                // The first action is the one a full swipe fires, so it is the one that grows.
-                size = if (committed && index == 0) {
-                    LemonadeButtonSize.Medium
-                } else {
-                    LemonadeButtonSize.Small
-                },
+                size = LemonadeButtonSize.Small,
                 shape = LemonadeIconButtonShape.Circular,
             )
         }
@@ -155,15 +165,25 @@ private fun SwipeActionRowCore(
     var revealWidth by remember { mutableFloatStateOf(0f) }
     var rowWidth by remember { mutableFloatStateOf(0f) }
     var committed by remember { mutableStateOf(false) }
+    var dragging by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val haptics = LocalHapticFeedback.current
 
     // A reveal on the trailing edge travels left in LTR and right in RTL.
     val towardsTrailing = if (LocalLayoutDirection.current == LayoutDirection.Rtl) 1f else -1f
 
-    // The caller is the source of truth: another row opening closes this one.
-    LaunchedEffect(open, revealWidth) {
-        if (revealWidth > 0f) travel.animateTo(if (open) revealWidth else 0f, spring())
+    // The caller is the source of truth: another row opening closes this one. Keyed on `open`
+    // alone: a settle animates itself, because it usually writes the value `open` already holds
+    // and this effect would not restart.
+    LaunchedEffect(open) {
+        travel.animateTo(if (open) revealWidth else 0f, spring())
+    }
+
+    // The strip can measure after the row is already open, or re-measure when `actions` change,
+    // so an open row would otherwise rest at a stale offset. Never under a live finger, where it
+    // would fight the drag.
+    LaunchedEffect(revealWidth) {
+        if (open && !dragging) travel.animateTo(revealWidth, spring())
     }
 
     val dragState = rememberDraggableState { delta ->
@@ -190,7 +210,9 @@ private fun SwipeActionRowCore(
                     state = dragState,
                     orientation = Orientation.Horizontal,
                     enabled = enabled && actions.isNotEmpty(),
+                    onDragStarted = { dragging = true },
                     onDragStopped = { velocity ->
+                        dragging = false
                         val target = resolveSwipeSettle(
                             travel = travel.value,
                             velocity = velocity * towardsTrailing,
@@ -199,20 +221,33 @@ private fun SwipeActionRowCore(
                             allowsFullSwipe = allowsFullSwipe,
                         )
                         committed = false
+                        // Every branch animates: settling usually writes the value `open` already
+                        // holds, so nothing else would move the row off where the finger left it.
                         when (target) {
                             SwipeSettleTarget.Committed -> {
                                 onOpenChange(false)
                                 // Before the animation, not after: animateTo suspends until it
                                 // settles, and the action must not wait on a spring.
-                                actions.first().onClick()
+                                actions.firstOrNull()?.onClick()
                                 travel.animateTo(0f, spring())
                             }
 
-                            SwipeSettleTarget.Open -> onOpenChange(true)
-                            SwipeSettleTarget.Closed -> onOpenChange(false)
+                            SwipeSettleTarget.Open -> {
+                                onOpenChange(true)
+                                travel.animateTo(revealWidth, spring())
+                            }
+
+                            SwipeSettleTarget.Closed -> {
+                                onOpenChange(false)
+                                travel.animateTo(0f, spring())
+                            }
                         }
                     },
-                ).semantics {
+                )
+                // Merged, so TalkBack focuses this node instead of the merging node the wrapped
+                // item's own `clickable` creates below it. Unmerged, the container is never
+                // focused and its actions are never announced.
+                .semantics(mergeDescendants = true) {
                     customActions = actions.map { action ->
                         CustomAccessibilityAction(action.contentDescription) {
                             action.onClick()
@@ -224,7 +259,9 @@ private fun SwipeActionRowCore(
             SwipeActionStrip(
                 actions = actions,
                 committed = committed,
-                onSizeChanged = { revealWidth = it.toFloat() },
+                // An empty strip still measures its padding, which would open the row onto a
+                // bare gap.
+                onSizeChanged = { revealWidth = if (actions.isEmpty()) 0f else it.toFloat() },
                 modifier = Modifier.align(Alignment.CenterEnd),
             )
             Box(
@@ -248,19 +285,29 @@ private fun SwipeActionRowCore(
                                 alpha = progress,
                             )
                         }
-                    }.clickable(
-                        enabled = open,
-                        // Closing an open row is not a navigation, and it must not announce as one.
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() },
-                    ) { onOpenChange(false) },
+                    },
             ) {
                 content()
+                // A sibling drawn above the content, not a `clickable` on its parent: Compose
+                // dispatches pointers children-first, so the wrapped item's own `clickable`
+                // consumes the down and a parent would never see it.
+                if (open) {
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            // Closing an open row is not a navigation, and it must not announce
+                            // as one.
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() },
+                            ) { onOpenChange(false) },
+                    )
+                }
             }
         }
         if (showDivider) {
             LemonadeUi.HorizontalDivider(
-                modifier = Modifier.padding(horizontal = LemonadeTheme.spaces.spacing100),
+                modifier = Modifier.padding(horizontal = LemonadeTheme.spaces.spacing400),
             )
         }
     }
