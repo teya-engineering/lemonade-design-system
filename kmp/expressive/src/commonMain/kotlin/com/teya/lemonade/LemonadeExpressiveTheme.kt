@@ -56,7 +56,6 @@ public fun LemonadeExpressiveTheme(
 @Composable
 internal fun lemonadeExpressiveTypography(): Typography {
     val typography = LemonadeTheme.typography
-    // Resolve the family once for all fifteen styles rather than once per `.textStyle` read.
     val fontFamily = lemonadeFontFamily
     return remember(typography, fontFamily) {
         Typography(

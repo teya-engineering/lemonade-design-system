@@ -31,10 +31,6 @@ public val lemonadeFontFamily: FontFamily
 
 /**
  * Converts a [LemonadeTextStyle] to a Compose [TextStyle] using an already-resolved [fontFamily].
- *
- * [lemonadeFontFamily] memoises per call site, so building a set of styles through [textStyle]
- * resolves the family once per style. Read the family once and call this instead when converting
- * several styles together.
  */
 @InternalLemonadeApi
 public fun LemonadeTextStyle.toTextStyle(fontFamily: FontFamily): TextStyle {
