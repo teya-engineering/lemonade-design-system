@@ -1,0 +1,13 @@
+/* Convenience barrel: the stylesheets that are always present.
+ *
+ * fonts.css is deliberately NOT imported here. It is build output (dist/fonts.css)
+ * and does not exist in a source checkout, so importing it would leave this file
+ * referencing something that may not be there. Self-hosted Figtree is opt-in:
+ *
+ *   import '@teya/lemonade-ds/styles.css'
+ *   import '@teya/lemonade-ds/fonts.css'   // add this for the bundled typeface
+ *
+ * icon.css is opt-in too — only needed for the .lmnd-icon mask utility.
+ */
+@import './tokens.css';
+@import './typography.css';

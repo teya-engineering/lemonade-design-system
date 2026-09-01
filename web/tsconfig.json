@@ -7,12 +7,10 @@
     "declaration": true,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
-    "noEmit": true,
-    "resolveJsonModule": true
+    "noEmit": true
   },
   "include": [
     "src",
-    "tests",
-    "package.json"
+    "tests"
   ]
 }

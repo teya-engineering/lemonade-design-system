@@ -36,7 +36,7 @@ jobs:
           mkdir -p /tmp/consumer && cd /tmp/consumer
           npm init -y >/dev/null
           npm install /tmp/teya-lemonade-ds-*.tgz
-          node -e "require('@teya/lemonade-ds')"
-          node --input-type=module -e "import '@teya/lemonade-ds'"
-          test -f node_modules/@teya/lemonade-ds/dist/index.d.ts
-          test -f node_modules/@teya/lemonade-ds/LICENSE
+          node -e "const {tokens}=require('@teya/lemonade-ds'); if(tokens.spacing.spacing200!==8) throw new Error('bad token value')"
+          test -f node_modules/@teya/lemonade-ds/styles/tokens.css
+          test -f node_modules/@teya/lemonade-ds/dist/fonts.css
+          test -f node_modules/@teya/lemonade-ds/llms.txt
