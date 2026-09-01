@@ -5,7 +5,8 @@
     "label": "Compose",
     "language": "kotlin",
     "documentUrlSubstitutions": {
-      "<LEMONADE_COMPONENTS>": "https://www.figma.com/design/91S16rhVrl5wivqV66fNjm/Lemonade-DS---Components"
+      "<LEMONADE_COMPONENTS>": "https://www.figma.com/design/91S16rhVrl5wivqV66fNjm/Lemonade-DS---Components",
+      "<LEMONADE_ICONS>": "https://www.figma.com/design/f7zokCdnayXejxc2y7r1Qt/Lemonade-DS---Icons"
     }
   }
 }
