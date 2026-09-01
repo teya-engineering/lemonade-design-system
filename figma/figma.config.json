@@ -1,0 +1,11 @@
+{
+  "codeConnect": {
+    "parser": "html",
+    "include": ["connect/**/*.figma.ts"],
+    "label": "Compose",
+    "language": "kotlin",
+    "documentUrlSubstitutions": {
+      "<LEMONADE_COMPONENTS>": "https://www.figma.com/design/91S16rhVrl5wivqV66fNjm/Lemonade-DS---Components"
+    }
+  }
+}
