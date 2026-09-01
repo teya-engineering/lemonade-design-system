@@ -27,8 +27,8 @@ import '@teya/lemonade-ds/fonts.css'
 <html data-lmnd-theme="dark">  <!-- explicit; omit to follow the OS -->
 ```
 
-`tokens.css` declares custom properties and nothing else, so it can be added to an
-existing app — including a Material UI one — without affecting current components.
+`tokens.css` declares custom properties and nothing else — no element selectors — so it
+can be added to an existing app without affecting any current component.
 
 ## What is here
 

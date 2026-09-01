@@ -485,15 +485,13 @@ the computed ratio on every swatch.
 - **Foundations** — Colours (151 swatches, light and dark side by side, contrast
   badges), Typography (live ramp), Spacing, Radius, Shadows, Icons (587,
   searchable, click-to-copy).
-- **Guides** — Installing, Theming, Using with Material UI, Migrating from
-  `financial-component-library`.
+- **Guides** — Installing, Theming, Migrating from `financial-component-library`.
 
-"Using with Material UI" is a markdown guide, not shipped code. It documents that
-CSS variables pass straight through MUI's palette:
-
-```ts
-createTheme({ palette: { background: { default: 'var(--lmnd-color-bg-default)' } } })
-```
+A "Using with Material UI" guide was written and then removed before release — MUI
+integration is deferred rather than documented for now. The property it relied on
+still holds and is worth keeping: `tokens.css` contains only custom property
+declarations and zero element selectors, so it cannot disturb an existing app's
+components. Nothing in the package depends on, or is tested against, MUI.
 
 Static build deployed on merge to `main`.
 
