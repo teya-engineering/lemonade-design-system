@@ -48,10 +48,10 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 /** Fraction of the row's width a drag must cross for a full swipe to commit. */
-private const val CommitFraction = 0.5f
+private const val COMMIT_FRACTION = 0.5f
 
 /** Speed, in px/s, past which a flick decides the settle regardless of how far it travelled. */
-private const val FlingVelocity = 400f
+private const val FLING_VELOCITY = 400f
 
 /** Where a released drag lands. */
 internal enum class SwipeSettleTarget {
@@ -63,7 +63,7 @@ internal enum class SwipeSettleTarget {
 /**
  * Resolves where a released drag settles.
  *
- * A commit outranks everything: once the row has crossed [CommitFraction] of its width the gesture
+ * A commit outranks everything: once the row has crossed [COMMIT_FRACTION] of its width the gesture
  * has already been read as a full swipe, and dragging back at speed without crossing the threshold
  * again should not undo it. Otherwise a flick wins over position, so a short fast drag opens.
  *
@@ -81,9 +81,9 @@ internal fun resolveSwipeSettle(
     allowsFullSwipe: Boolean,
 ): SwipeSettleTarget =
     when {
-        allowsFullSwipe && travel >= rowWidth * CommitFraction -> SwipeSettleTarget.Committed
-        velocity >= FlingVelocity -> SwipeSettleTarget.Open
-        velocity <= -FlingVelocity -> SwipeSettleTarget.Closed
+        allowsFullSwipe && travel >= rowWidth * COMMIT_FRACTION -> SwipeSettleTarget.Committed
+        velocity >= FLING_VELOCITY -> SwipeSettleTarget.Open
+        velocity <= -FLING_VELOCITY -> SwipeSettleTarget.Closed
         travel >= revealWidth / 2f -> SwipeSettleTarget.Open
         else -> SwipeSettleTarget.Closed
     }
@@ -169,7 +169,7 @@ private fun SwipeActionRowCore(
     val dragState = rememberDraggableState { delta ->
         val ceiling = if (allowsFullSwipe) rowWidth else revealWidth
         val next = (travel.value + delta * towardsTrailing).coerceIn(0f, ceiling)
-        val crossed = allowsFullSwipe && next >= rowWidth * CommitFraction
+        val crossed = allowsFullSwipe && next >= rowWidth * COMMIT_FRACTION
         if (crossed != committed) {
             committed = crossed
             if (crossed) haptics.performHapticFeedback(HapticFeedbackType.LongPress)
