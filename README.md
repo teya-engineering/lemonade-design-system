@@ -35,6 +35,7 @@ Lemonade ships the same design language to three platforms:
 | **Kotlin Multiplatform** | Android, iOS, JVM Desktop | [KMP Documentation](./kmp/README.md) |
 | **Flutter** | Android, iOS, Web | [Flutter Documentation](./flutter/README.md) |
 | **SwiftUI** | iOS 15+, macOS 12+ | [SwiftUI Documentation](./swiftui/README.md) |
+| **Web** | Design tokens, typography, icons (npm) | [Web Documentation](./web/README.md) |
 
 ### Version Tags
 
@@ -45,6 +46,7 @@ Each platform versions independently, and the version lives only in the tag.
 | KMP | `lemonade-kmp-X.Y.Z` | `lemonade-kmp-0.9.0` |
 | SwiftUI | `lemonade-swiftui-X.Y.Z` | `lemonade-swiftui-0.9.1` |
 | Flutter | `lemonade-flutter-vX.Y.Z` | `lemonade-flutter-v0.8.3` |
+| Web | `lemonade-web-vX.Y.Z` | `lemonade-web-v0.1.0` |
 
 Each SwiftUI release also carries a plain `X.Y.Z` tag at the same commit — that is
 the one Swift Package Manager consumers resolve.
