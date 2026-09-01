@@ -1,17 +1,45 @@
-# Figma Code Connect — Compose
+# Figma Code Connect
 
-Maps Lemonade Figma components to their Compose call sites, so Figma Dev Mode and
-MCP-driven agents emit real `LemonadeUi.*` code instead of raw layer output.
+Maps Lemonade Figma components to their call sites on **both platforms**, so Figma
+Dev Mode and MCP-driven agents emit real `LemonadeUi.*` code instead of raw layer
+output. One Figma component, two labels: `Compose` and `SwiftUI`.
 
 ## Layout
 
 ```
-figma.config.json          label "Compose", language "kotlin"
-icons.manifest.json        Figma icon name -> node id (refreshed from Figma)
-connect/*.figma.ts         one template per component, hand-written
-connect/icons/*.figma.ts   one per icon, GENERATED — do not edit
+figma.config.json                 label "Compose", language "kotlin"
+figma.swiftui.config.json         label "SwiftUI", language "swift"
+icons.manifest.json               Figma icon name -> node id (shared by both)
+connect/*.figma.ts                Compose components, hand-written
+connect/icons/*.figma.ts          Compose icons, GENERATED — do not edit
+connect-swiftui/*.figma.ts        SwiftUI components, hand-written
 scripts/generate-icon-templates.mjs
 ```
+
+Each label is published separately, with its own config:
+
+```bash
+./node_modules/.bin/figma connect publish --config figma.config.json
+./node_modules/.bin/figma connect publish --config figma.swiftui.config.json
+```
+
+**A platform's icons must be published alongside its components.** Figma resolves
+a nested icon by node, and when a label has no template for that node it falls
+back to another label's. A missing SwiftUI icon does not render blank — it
+renders the *Kotlin* snippet inside a Swift call (`icon: LemonadeIcons.Heart` in
+a `LemonadeUi.Tag`).
+
+The SwiftUI icon templates land on a follow-up branch. **Do not publish the
+`SwiftUI` label from this branch alone** — its icons will resolve to Compose's
+Kotlin values. The `Compose` label is unaffected.
+
+Swift rejects a trailing comma in an argument list, so the SwiftUI templates
+compose optional arguments with a **leading** comma. Kotlin permits either, so
+the Compose templates use the more usual trailing form.
+
+`TextField.input` is a `Binding` on SwiftUI, so the snippet emits
+`.constant("…")` — it keeps the designed text visible and compiles as written;
+swap it for real `@State` when wiring the screen up.
 
 ## Icons
 
