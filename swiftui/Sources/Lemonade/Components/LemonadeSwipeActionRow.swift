@@ -32,6 +32,14 @@ private func settle(velocity: CGFloat = 0, over distance: CGFloat = 0) -> Animat
 /// Fraction of the row's width a drag must cross for a full swipe to commit.
 private let commitFraction: CGFloat = 0.5
 
+/// How far a finger travels before the row claims the drag.
+///
+/// Further than a scroll view needs to start scrolling, which is what leaves a vertical drag to it:
+/// `DragGesture` claims a touch on distance in any direction, and the row's own check that the drag
+/// is horizontal comes too late — it stops the row moving, but the scroll has already lost the
+/// touch. Losing the race is the only way to give it back.
+private let claimDistance: CGFloat = 24
+
 /// Deceleration a released row is left to coast on, `UIScrollView`'s normal rate.
 private let decelerationRate: CGFloat = 0.998
 
@@ -233,6 +241,9 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     /// Where `travel` stood when this drag was claimed. Released by the cancel path, so the next
     /// drag has to earn the claim again.
     @State private var dragOrigin: CGFloat?
+    /// How far the finger had already moved by then, which the row does not owe: without it the row
+    /// jumps the whole claim distance the moment it starts following.
+    @State private var claimTranslation: CGFloat = 0
     /// The same origin, cleared only by `onEnded`, which is what `onEnded` guards on. Keeping the
     /// two apart is what lets the cancel path snap back without stealing the settle.
     @State private var settleOrigin: CGFloat?
@@ -324,13 +335,18 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
         }
     }
 
+    /// What the row owes the finger: everything it has moved since the drag was claimed.
+    private func dragged(_ value: DragGesture.Value) -> CGFloat {
+        value.translation.width - claimTranslation
+    }
+
     private func clampedTravel(_ value: CGFloat) -> CGFloat {
         let ceiling = allowsFullSwipe ? rowWidth : revealWidth
         return min(max(value, 0), ceiling)
     }
 
     private var drag: some Gesture {
-        DragGesture(minimumDistance: 10)
+        DragGesture(minimumDistance: claimDistance)
             .updating($isDragging) { _, state, _ in state = true }
             .onChanged { value in
                 if dragOrigin == nil {
@@ -339,9 +355,10 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                     guard abs(value.translation.width) > abs(value.translation.height) else { return }
                     dragOrigin = travel
                     settleOrigin = travel
+                    claimTranslation = value.translation.width
                 }
                 guard let origin = dragOrigin else { return }
-                let next = clampedTravel(origin + value.translation.width * towardsTrailing)
+                let next = clampedTravel(origin + dragged(value) * towardsTrailing)
                 let crossed = allowsFullSwipe && next >= rowWidth * commitFraction
                 if crossed != committed {
                     committed = crossed
@@ -356,7 +373,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 committed = false
                 // Read the release position off the gesture rather than off `travel`: the cancel
                 // path may already have snapped `travel` back before this ran.
-                let released = clampedTravel(origin + value.translation.width * towardsTrailing)
+                let released = clampedTravel(origin + dragged(value) * towardsTrailing)
                 let speed = releaseVelocity(of: value) * towardsTrailing
                 let target = resolveSwipeSettle(
                     travel: released,
