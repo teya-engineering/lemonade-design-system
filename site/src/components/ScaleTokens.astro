@@ -6,10 +6,19 @@ interface Props {
 	file: string;
 	/** How to preview the value. */
 	kind?: 'length' | 'radius' | 'percent';
+	/** Render only one group from the file, e.g. "base/". Omit for all of them. */
+	prefix?: string;
 }
 
-const { file, kind = 'length' } = Astro.props;
-const tokens = scale(file);
+const { file, kind = 'length', prefix } = Astro.props;
+const tokens = scale(file, prefix ? { prefix } : {});
+
+if (tokens.length === 0) {
+	throw new Error(
+		`No tokens in "${file}"${prefix ? ` under "${prefix}"` : ''}. A section that renders ` +
+			'nothing is worse than a build failure — check the group name against the export.',
+	);
+}
 ---
 
 <div class="scroller">
@@ -19,8 +28,6 @@ const tokens = scale(file);
 				<th scope="col">Token</th>
 				<th scope="col">Value</th>
 				<th scope="col" class="preview-head">Preview</th>
-				<th scope="col">KMP</th>
-				<th scope="col">SwiftUI</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -47,9 +54,7 @@ const tokens = scale(file);
 								<span class="length-preview" style={`inline-size: ${token.value}px`} />
 							)}
 						</td>
-						<td>{token.android ? <code>{token.android}</code> : <span class="none">—</span>}</td>
-						<td>{token.ios ? <code>{token.ios}</code> : <span class="none">—</span>}</td>
-					</tr>
+						</tr>
 				))
 			}
 		</tbody>
@@ -122,10 +127,6 @@ const tokens = scale(file);
 		inline-size: 100%;
 		block-size: 100%;
 		background: var(--lemonade-brand);
-	}
-
-	.none {
-		color: var(--sl-color-gray-4);
 	}
 
 	code {
