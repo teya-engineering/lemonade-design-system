@@ -20,6 +20,7 @@ struct SkeletonDisplayView: View {
         }
         .onAppear { isOnScreen = true }
         .onDisappear { isOnScreen = false }
+        .background(.bg.bgSubtle)
         .navigationTitle("Skeleton")
     }
 

@@ -138,6 +138,7 @@ struct SearchFieldDisplayView: View {
             }
             .padding()
         }
+        .background(.bg.bgSubtle)
         .navigationTitle("SearchField")
     }
 

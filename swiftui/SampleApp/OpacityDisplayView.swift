@@ -28,6 +28,7 @@ struct OpacityDisplayView: View {
             }
             .padding()
         }
+        .background(.bg.bgSubtle)
         .navigationTitle("Opacity")
     }
 }

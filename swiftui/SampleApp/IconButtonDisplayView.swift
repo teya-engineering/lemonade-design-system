@@ -155,6 +155,7 @@ struct IconButtonDisplayView: View {
             }
             .padding()
         }
+        .background(.bg.bgSubtle)
         .navigationTitle("IconButton")
     }
 

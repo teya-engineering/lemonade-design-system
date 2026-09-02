@@ -47,6 +47,7 @@ struct PinCodeDisplayView: View {
             }
             .padding()
         }
+        .background(.bg.bgSubtle)
         .navigationTitle("PinCode")
     }
 

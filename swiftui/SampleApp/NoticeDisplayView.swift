@@ -74,6 +74,7 @@ struct NoticeDisplayView: View {
             }
             .padding()
         }
+        .background(.bg.bgSubtle)
         .navigationTitle("Notice")
     }
 

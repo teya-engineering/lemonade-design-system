@@ -123,6 +123,7 @@ struct SelectFieldDisplayView: View {
             }
             .padding(LemonadeTheme.spaces.spacing400)
         }
+        .background(.bg.bgSubtle)
         .navigationTitle("SelectField")
         .confirmationDialog(
             activePicker?.title ?? "",

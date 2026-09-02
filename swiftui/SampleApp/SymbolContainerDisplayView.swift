@@ -54,6 +54,7 @@ struct SymbolContainerDisplayView: View {
             }
             .padding()
         }
+        .background(.bg.bgSubtle)
         .navigationTitle("SymbolContainer")
     }
 

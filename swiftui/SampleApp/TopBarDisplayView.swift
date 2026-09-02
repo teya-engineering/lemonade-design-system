@@ -9,6 +9,7 @@ struct TopBarDisplayView: View {
         List(TopBarDemo.allCases) { demo in
             NavigationLink(demo.title, value: demo)
         }
+        .background(.bg.bgSubtle)
         .navigationTitle("TopBar")
         .navigationDestination(for: TopBarDemo.self) { demo in
             demo.destination

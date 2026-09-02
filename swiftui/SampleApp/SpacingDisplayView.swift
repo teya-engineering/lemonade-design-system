@@ -29,6 +29,7 @@ struct SpacingDisplayView: View {
             }
             .padding()
         }
+        .background(.bg.bgSubtle)
         .navigationTitle("Spacing")
     }
 }

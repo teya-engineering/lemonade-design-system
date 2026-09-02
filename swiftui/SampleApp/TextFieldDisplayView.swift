@@ -230,6 +230,7 @@ struct TextFieldDisplayView: View {
             }
             .padding()
         }
+        .background(.bg.bgSubtle)
         .navigationTitle("TextField")
     }
 

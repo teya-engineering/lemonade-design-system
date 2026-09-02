@@ -28,6 +28,7 @@ struct SizesDisplayView: View {
             }
             .padding()
         }
+        .background(.bg.bgSubtle)
         .navigationTitle("Sizes")
     }
 }

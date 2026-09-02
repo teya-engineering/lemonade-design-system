@@ -127,6 +127,7 @@ struct RadioButtonDisplayView: View {
             }
             .padding()
         }
+        .background(.bg.bgSubtle)
         .navigationTitle("RadioButton")
     }
 

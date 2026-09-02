@@ -20,6 +20,7 @@ struct ChipDisplayView: View {
             .frame(maxWidth: .infinity, alignment: .topLeading)
             .padding()
         }
+        .background(.bg.bgSubtle)
         .navigationTitle("Chip")
     }
 

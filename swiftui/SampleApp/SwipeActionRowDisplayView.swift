@@ -230,6 +230,7 @@ struct SwipeActionRowDisplayView: View {
                 .padding(.space.spacing400)
             }
         }
+        .background(.bg.bgSubtle)
         .navigationTitle("SwipeActionRow")
     }
 }

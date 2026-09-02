@@ -130,6 +130,7 @@ struct CheckboxDisplayView: View {
             }
             .padding()
         }
+        .background(.bg.bgSubtle)
         .navigationTitle("Checkbox")
     }
 
