@@ -327,7 +327,11 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                             .opacity(travel > 0 ? 1 : 0)
                             .padding(LemonadeTheme.spaces.spacing100)
                     )
-                    .offset(x: travel * towardsTrailing)
+                    // Inside the offset, so it travels with the row. Applied outside it the
+                    // overlay would sit on the row's unshifted layout frame — `offset` moves what
+                    // is drawn and hit, not the space the row was given — and cover the actions it
+                    // has just revealed, taking every tap meant for them.
+                    //
                     // Only intercepts taps while open, so a closed row's own button still works.
                     .overlay {
                         if open {
@@ -336,6 +340,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                                 .onTapGesture { open = false }
                         }
                     }
+                    .offset(x: travel * towardsTrailing)
             }
             .clipped()
             .background(
