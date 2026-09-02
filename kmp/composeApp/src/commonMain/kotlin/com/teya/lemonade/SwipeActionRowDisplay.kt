@@ -142,5 +142,132 @@ internal fun SwipeActionRowDisplay() {
                 }
             }
         }
+
+        item(key = "any-variant") {
+            var pinned by remember { mutableStateOf(false) }
+            LemonadeUi.Card(
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
+                header = CardHeaderConfig(
+                    title = "Any icon, any variant",
+                    subtitle = "An action is an icon, a description and a lambda. Nothing here removes the row.",
+                ),
+            ) {
+                LemonadeUi.SwipeActionRow(
+                    actions = listOf(
+                        SwipeAction(
+                            icon = LemonadeIcons.Pin,
+                            contentDescription = "Pin",
+                            onClick = { pinned = !pinned },
+                            variant = LemonadeButtonVariant.Primary,
+                        ),
+                        SwipeAction(
+                            icon = LemonadeIcons.Envelope,
+                            contentDescription = "Mark unread",
+                            onClick = { },
+                            variant = LemonadeButtonVariant.Neutral,
+                        ),
+                    ),
+                    allowsFullSwipe = false,
+                ) {
+                    LemonadeUi.ActionListItem(
+                        label = "Pin or mark unread",
+                        supportText = if (pinned) "Pinned" else "Not pinned",
+                        showDivider = false,
+                        onItemClicked = { },
+                    )
+                }
+            }
+        }
+
+        item(key = "three-actions") {
+            LemonadeUi.Card(
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
+                header = CardHeaderConfig(
+                    title = "Three actions",
+                    subtitle = "Each arrives as the row clears it, outermost first.",
+                ),
+            ) {
+                LemonadeUi.SwipeActionRow(
+                    actions = listOf(
+                        SwipeAction(
+                            icon = LemonadeIcons.Trash,
+                            contentDescription = "Delete",
+                            onClick = { },
+                        ),
+                        SwipeAction(
+                            icon = LemonadeIcons.Pin,
+                            contentDescription = "Pin",
+                            onClick = { },
+                            variant = LemonadeButtonVariant.Primary,
+                        ),
+                        SwipeAction(
+                            icon = LemonadeIcons.Envelope,
+                            contentDescription = "Mark unread",
+                            onClick = { },
+                            variant = LemonadeButtonVariant.Neutral,
+                        ),
+                    ),
+                    allowsFullSwipe = false,
+                ) {
+                    LemonadeUi.ActionListItem(
+                        label = "Three actions",
+                        supportText = "The row opens far enough for all of them",
+                        showDivider = false,
+                        onItemClicked = { },
+                    )
+                }
+            }
+        }
+
+        item(key = "any-row") {
+            LemonadeUi.Card(
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
+                header = CardHeaderConfig(
+                    title = "Wrapping any row",
+                    subtitle = "The content is whatever you pass, not only an ActionListItem.",
+                ),
+            ) {
+                LemonadeUi.SwipeActionRow(
+                    actions = listOf(
+                        SwipeAction(
+                            icon = LemonadeIcons.Trash,
+                            contentDescription = "Delete",
+                            onClick = { },
+                        ),
+                    ),
+                    allowsFullSwipe = false,
+                ) {
+                    LemonadeUi.ContentListItem(label = "Balance", value = "£1,204.00")
+                }
+            }
+        }
+
+        item(key = "disabled") {
+            LemonadeUi.Card(
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
+                header = CardHeaderConfig(
+                    title = "enabled = false",
+                    subtitle = "The drag is left to whatever is scrolling underneath.",
+                ),
+            ) {
+                LemonadeUi.SwipeActionRow(
+                    actions = listOf(
+                        SwipeAction(
+                            icon = LemonadeIcons.Trash,
+                            contentDescription = "Delete",
+                            onClick = { },
+                        ),
+                    ),
+                    enabled = false,
+                ) {
+                    LemonadeUi.ActionListItem(
+                        label = "Disabled",
+                        supportText = "This row does not open",
+                        showDivider = false,
+                        onItemClicked = { },
+                    )
+                }
+            }
+        }
     }
 }

@@ -18,6 +18,7 @@ struct SwipeActionRowDisplayView: View {
     @State private var openId: AnyHashable?
     @State private var removed: Set<String> = []
     @State private var fired = 0
+    @State private var pinned = false
 
     var body: some View {
         ScrollView {
@@ -116,6 +117,107 @@ struct SwipeActionRowDisplayView: View {
                             // Counted rather than removed, so the swipe can be tried again.
                             supportText: fired == 0 ? "Drag across to fire Delete" : "Delete fired \(fired)×",
                             // The SwipeActionRow draws the divider: one drawn here would travel with the row.
+                            showDivider: false,
+                            onItemClicked: { }
+                        )
+                    }
+                }
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(
+                        title: "Any icon, any variant",
+                        subtitle: "An action is an icon, a description and a closure. Nothing here removes the row."
+                    )
+                ) {
+                    LemonadeUi.SwipeActionRow(
+                        actions: [
+                            LemonadeSwipeAction(
+                                icon: .pin,
+                                contentDescription: "Pin",
+                                onClick: { pinned.toggle() },
+                                variant: .primary
+                            ),
+                            LemonadeSwipeAction(
+                                icon: .envelope,
+                                contentDescription: "Mark unread",
+                                onClick: { },
+                                variant: .neutral
+                            )
+                        ],
+                        allowsFullSwipe: false
+                    ) {
+                        LemonadeUi.ActionListItem(
+                            label: "Pin or mark unread",
+                            supportText: pinned ? "Pinned" : "Not pinned",
+                            showDivider: false,
+                            onItemClicked: { }
+                        )
+                    }
+                }
+
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(
+                        title: "Three actions",
+                        subtitle: "Each arrives as the row clears it, outermost first."
+                    )
+                ) {
+                    LemonadeUi.SwipeActionRow(
+                        actions: [
+                            LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: { }),
+                            LemonadeSwipeAction(
+                                icon: .pin,
+                                contentDescription: "Pin",
+                                onClick: { },
+                                variant: .primary
+                            ),
+                            LemonadeSwipeAction(
+                                icon: .envelope,
+                                contentDescription: "Mark unread",
+                                onClick: { },
+                                variant: .neutral
+                            )
+                        ],
+                        allowsFullSwipe: false
+                    ) {
+                        LemonadeUi.ActionListItem(
+                            label: "Three actions",
+                            supportText: "The row opens far enough for all of them",
+                            showDivider: false,
+                            onItemClicked: { }
+                        )
+                    }
+                }
+
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(
+                        title: "Wrapping any row",
+                        subtitle: "The content is whatever you pass, not only an ActionListItem."
+                    )
+                ) {
+                    LemonadeUi.SwipeActionRow(
+                        actions: [
+                            LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: { })
+                        ],
+                        allowsFullSwipe: false
+                    ) {
+                        LemonadeUi.ContentListItem(label: "Balance", value: "£1,204.00")
+                    }
+                }
+
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(
+                        title: "enabled: false",
+                        subtitle: "The drag is left to whatever is scrolling underneath."
+                    )
+                ) {
+                    LemonadeUi.SwipeActionRow(
+                        actions: [
+                            LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: { })
+                        ],
+                        enabled: false
+                    ) {
+                        LemonadeUi.ActionListItem(
+                            label: "Disabled",
+                            supportText: "This row does not open",
                             showDivider: false,
                             onItemClicked: { }
                         )
