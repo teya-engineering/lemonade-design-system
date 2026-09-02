@@ -75,9 +75,10 @@ import androidx.compose.ui.window.DialogProperties
  * - The dialog surface uses [LemonadeTheme.radius] `semantic.radiusContainerDefault` for rounded
  *   corners.
  * - Background color is [LemonadeTheme.colors.background.bgDefault].
- * - The dialog keeps at least `spacing600` (24.dp) between itself and each window edge. On a
- *   window narrower than roughly 328.dp the margin shrinks, because [BasicAlertDialog]'s own
- *   280.dp minimum width wins over it.
+ * - The dialog keeps `spacing600` (24.dp) between itself and each window edge wherever the window
+ *   is wide enough to allow it. Below roughly 328.dp of window it is not: [BasicAlertDialog]'s own
+ *   280.dp minimum width outranks the margin, and the dialog stays 280.dp wide with whatever is
+ *   left over as its margin.
  * - Tonal elevation is set to 0.dp; the dialog relies on Lemonade color tokens for visual hierarchy.
  * - The dialog keeps whichever system bars the host window hides, never shows one the host hides.
  * - For overlay components with a unified visibility API, see also [LemonadeUi.Dropdown] and
