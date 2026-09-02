@@ -1,6 +1,7 @@
 package com.teya.lemonade
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,10 +12,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.window.Dialog
 import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonVariant
-import com.teya.lemonade.core.LemonadeCardPadding
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.SymbolContainerShape
 import com.teya.lemonade.core.SymbolContainerSize
@@ -25,15 +24,18 @@ private fun RemovalConfirmation(
     onDelete: () -> Unit,
     onCancel: () -> Unit,
 ) {
-    Dialog(onDismissRequest = onCancel) {
-        LemonadeUi.Card(contentPadding = LemonadeCardPadding.Medium) {
+    LemonadeUi.Dialog(expanded = true, onDismissRequest = onCancel) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(LemonadeTheme.spaces.spacing400),
+        ) {
             LemonadeUi.Text(
                 text = "This will be deleted and you will not be able to recover it.",
             )
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = LemonadeTheme.spaces.spacing400),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(
                     space = LemonadeTheme.spaces.spacing200,
                     alignment = Alignment.End,
@@ -109,7 +111,7 @@ private fun SwipeActionRowDisplayContent() {
                             SwipeAction(
                                 icon = LemonadeIcons.Trash,
                                 contentDescription = "Remove ${account.name}",
-                                onClick = { removed = removed + account.id },
+                                onClick = { pendingRemoval = account },
                             ),
                         ),
                         showDivider = index != visible.lastIndex,
