@@ -10,90 +10,119 @@
  * Reaching outside `site/` requires `vite.server.fs.allow` in astro.config.mjs
  * for the dev server.
  */
-export interface RawResolved {
-	resolvedValue: number | string | { r: number; g: number; b: number; a?: number };
-}
-
-interface RawVariable {
-	id: string;
+/**
+ * A single token, normalised out of the Figma native export.
+ *
+ * That export is DTCG-shaped: a nested object per collection, keyed by token
+ * name, with `$value`/`$type` on the leaves and Figma's own metadata under
+ * `$extensions`. Modes are no longer inside one file — light and dark are
+ * separate files that name themselves via `com.figma.modeName`.
+ */
+export interface RawVariable {
+	/** Slash-delimited path, e.g. "Background/Voice/bg-critical". */
 	name: string;
 	description: string;
 	type: 'COLOR' | 'FLOAT' | 'STRING';
-	resolvedValuesByMode: Record<string, RawResolved>;
+	value: number | string | RawColor;
 	codeSyntax: { ANDROID?: string; iOS?: string };
 	hiddenFromPublishing: boolean;
+	/** The primitive this token points at, e.g. "neutral-alpha-900". */
+	alias?: string;
 }
 
-export interface RawCollection {
-	id: string;
-	name: string;
-	modes: Record<string, string>;
-	variables: RawVariable[];
+export interface RawColor {
+	hex: string;
+	alpha: number;
 }
 
-const exports = import.meta.glob<RawCollection>('../../../tokens/*.json', {
+interface RawLeaf {
+	$type?: string;
+	$value?: unknown;
+	$description?: string;
+	$extensions?: Record<string, unknown>;
+}
+
+const TOKEN_TYPES: Record<string, RawVariable['type']> = {
+	color: 'COLOR',
+	number: 'FLOAT',
+	string: 'STRING',
+};
+
+const exports = import.meta.glob<Record<string, unknown>>('../../../tokens/*.tokens.json', {
 	eager: true,
 	import: 'default',
 });
 
-/** Keyed by bare filename, e.g. "spacing.json". */
-const collections = new Map<string, RawCollection>(
-	Object.entries(exports).map(([path, collection]) => [path.split('/').pop()!, collection]),
+/** Keyed by bare filename, e.g. "spacing.tokens.json". */
+const files = new Map<string, Record<string, unknown>>(
+	Object.entries(exports).map(([path, contents]) => [path.split('/').pop()!, contents]),
 );
 
-function load(file: string): RawCollection {
-	const collection = collections.get(file);
-	if (!collection) {
-		throw new Error(
-			`No token export named "${file}". Available: ${[...collections.keys()].join(', ')}`,
-		);
-	}
-	return collection;
-}
-
 /**
- * Figma re-exports have been known to carry stray modes, so modes are looked up
- * by their human name rather than by a hard-coded id.
+ * Pure walk of one export's tree into a flat list. Split out from `load()` so
+ * the shape can be exercised in tests without a file on disk.
  */
-function modeId(collection: RawCollection, name: string): string {
-	const found = Object.entries(collection.modes).find(
-		([, label]) => label.toLowerCase() === name.toLowerCase(),
-	);
-	if (!found) {
-		throw new Error(
-			`Mode "${name}" not found in collection "${collection.name}". ` +
-				`Available: ${Object.values(collection.modes).join(', ')}`,
-		);
-	}
-	return found[0];
+export function flattenTokens(tree: Record<string, unknown>): RawVariable[] {
+	const out: RawVariable[] = [];
+
+	const visit = (node: unknown, path: string[]): void => {
+		if (typeof node !== 'object' || node === null) return;
+		const leaf = node as RawLeaf;
+
+		if ('$value' in leaf) {
+			const extensions = (leaf.$extensions ?? {}) as Record<string, never>;
+			const type = TOKEN_TYPES[leaf.$type ?? ''];
+			if (!type) {
+				throw new Error(
+					`Token "${path.join('/')}" has unsupported $type "${leaf.$type}". ` +
+						`Known: ${Object.keys(TOKEN_TYPES).join(', ')}.`,
+				);
+			}
+			const raw = leaf.$value as Record<string, unknown>;
+			const alias = extensions['com.figma.aliasData'] as
+				{ targetVariableName?: string } | undefined;
+			out.push({
+				name: path.join('/'),
+				description: leaf.$description ?? '',
+				type,
+				value:
+					type === 'COLOR'
+						? { hex: String(raw.hex), alpha: Number(raw.alpha ?? 1) }
+						: (leaf.$value as number | string),
+				codeSyntax: (extensions['com.figma.codeSyntax'] ?? {}) as RawVariable['codeSyntax'],
+				hiddenFromPublishing: extensions['com.figma.hiddenFromPublishing'] === true,
+				alias: alias?.targetVariableName?.replace(/\//g, '-'),
+			});
+			return;
+		}
+
+		for (const [key, child] of Object.entries(node)) {
+			// `$extensions` at group level carries the mode name, not a token.
+			if (key.startsWith('$')) continue;
+			visit(child, [...path, key]);
+		}
+	};
+
+	visit(tree, []);
+	return out;
 }
 
-/**
- * The single mode of a collection that only has one. Figma re-exports have
- * carried stray extra modes before (see `theme-colors strip 3932:0`); silently
- * taking the first key would read one mode's values while claiming to read
- * the collection's only one, so this fails loud instead.
- */
-export function soleModeId(collection: RawCollection): string {
-	const ids = Object.keys(collection.modes);
-	if (ids.length !== 1) {
-		throw new Error(
-			`Expected exactly one mode in collection "${collection.name}", found ${ids.length}: ` +
-				`${Object.values(collection.modes).join(', ')}.`,
-		);
+function load(file: string): RawVariable[] {
+	const contents = files.get(file);
+	if (!contents) {
+		throw new Error(`No token export named "${file}". Available: ${[...files.keys()].join(', ')}`);
 	}
-	return ids[0]!;
+	return flattenTokens(contents);
 }
 
-function toCssColor(value: RawResolved['resolvedValue']): string {
+function toCssColor(value: RawVariable['value']): string {
 	if (typeof value !== 'object') return String(value);
-	const channel = (n: number) =>
-		Math.round(n * 255)
-			.toString(16)
-			.padStart(2, '0');
-	const alpha = value.a ?? 1;
-	const base = `#${channel(value.r)}${channel(value.g)}${channel(value.b)}`;
-	return alpha < 0.999 ? `${base}${channel(alpha)}` : base;
+	const alpha = value.alpha;
+	if (alpha >= 0.999) return value.hex.toLowerCase();
+	const byte = Math.round(alpha * 255)
+		.toString(16)
+		.padStart(2, '0');
+	return `${value.hex.toLowerCase()}${byte}`;
 }
 
 export interface ColorToken {
@@ -106,6 +135,10 @@ export interface ColorToken {
 	dark: string;
 	/** True when light and dark resolve to the same value. */
 	fixed: boolean;
+	/** The primitive this aliases in the light theme, e.g. "neutral-50". */
+	alias?: string;
+	/** The primitive it aliases in dark, when that differs. */
+	darkAlias?: string;
 	android?: string;
 	ios?: string;
 }
@@ -116,17 +149,25 @@ export interface ColorGroup {
 }
 
 export function themeColors(): ColorGroup[] {
-	const collection = load('theme-colors.json');
-	const light = modeId(collection, 'Light');
-	const dark = modeId(collection, 'Dark');
+	// Light and dark are separate exports now, so they are paired by token path
+	// rather than by mode id.
+	const lightTokens = load('theme-colors.light.tokens.json');
+	const darkByName = new Map(load('theme-colors.dark.tokens.json').map((v) => [v.name, v]));
 
-	const tokens: ColorToken[] = collection.variables
+	const tokens: ColorToken[] = lightTokens
 		.filter((v) => !v.hiddenFromPublishing)
 		.map((v) => {
 			const segments = v.name.split('/');
 			const name = segments.pop()!;
-			const lightValue = toCssColor(v.resolvedValuesByMode[light]!.resolvedValue);
-			const darkValue = toCssColor(v.resolvedValuesByMode[dark]!.resolvedValue);
+			const dark = darkByName.get(v.name);
+			if (!dark) {
+				throw new Error(
+					`"${v.name}" is in the light theme export but not the dark one. The two ` +
+						'files have drifted; re-export both from Figma.',
+				);
+			}
+			const lightValue = toCssColor(v.value);
+			const darkValue = toCssColor(dark.value);
 			return {
 				name,
 				path: segments,
@@ -134,6 +175,8 @@ export function themeColors(): ColorGroup[] {
 				light: lightValue,
 				dark: darkValue,
 				fixed: lightValue === darkValue,
+				alias: v.alias,
+				darkAlias: dark.alias,
 				android: v.codeSyntax.ANDROID,
 				ios: v.codeSyntax.iOS,
 			};
@@ -177,7 +220,7 @@ export function resolveColorTokens(names: string[], tokens: ColorToken[]): Color
 	const missing = names.filter((_, i) => !resolved[i]);
 	if (missing.length > 0) {
 		throw new Error(
-			`Token(s) not found in theme-colors.json: ${missing.join(', ')}. They may have ` +
+			`Token(s) not found in theme-colors.light.tokens.json: ${missing.join(', ')}. They may have ` +
 				'been renamed or marked hiddenFromPublishing — update the caller to match.',
 		);
 	}
@@ -202,7 +245,7 @@ const RENDERED_COLOR_GROUPS = [
 
 /**
  * Pure comparison step, split out from `assertAllColorGroupsRendered()` so it
- * can be exercised in tests without needing a malformed `theme-colors.json`
+ * can be exercised in tests without needing a malformed `theme-colors.light.tokens.json`
  * on disk (the real export is well-formed, so it can never trigger the throw
  * itself).
  */
@@ -211,7 +254,7 @@ export function unrenderedColorGroups(exportedLabels: string[]): string[] {
 }
 
 /**
- * Fails the build if `theme-colors.json` contains a top-level group the
+ * Fails the build if `theme-colors.light.tokens.json` contains a top-level group the
  * Colour page does not render. The project rule is that a token schema
  * change must fail the build rather than silently empty a page — without
  * this, a new Figma group ships with a green build and no signal.
@@ -221,7 +264,7 @@ export function assertAllColorGroupsRendered(): void {
 	const missing = unrenderedColorGroups(exportedLabels);
 	if (missing.length > 0) {
 		throw new Error(
-			`theme-colors.json contains colour group(s) the Colour page does not render: ` +
+			`theme-colors.light.tokens.json contains colour group(s) the Colour page does not render: ` +
 				`${missing.join(', ')}. Add a <ColorTokens group="..."/> section for each in ` +
 				'colour.mdx, and add the group name to RENDERED_COLOR_GROUPS in tokens.ts.',
 		);
@@ -238,24 +281,21 @@ export function assertAllColorGroupsRendered(): void {
  *
  * Pure lookup step, split out from `fixedLightSurface()` so the fail-loud
  * validation below can be exercised directly in tests without needing a
- * malformed `theme-colors.json` on disk (the real export is well-formed, so
+ * malformed `theme-colors.light.tokens.json` on disk (the real export is well-formed, so
  * it can never trigger this throw itself).
  */
 export function findFixedLightSurface(
-	variables: Array<{ name: string; resolvedValuesByMode: Record<string, RawResolved> }>,
-	light: string,
+	variables: Array<Pick<RawVariable, 'name' | 'value'>>,
 ): string {
 	const variable = variables.find((v) => v.name.endsWith('/bg-always-light'));
 	if (!variable) {
-		throw new Error('theme-colors.json is missing the "bg-always-light" token.');
+		throw new Error('theme-colors.light.tokens.json is missing the "bg-always-light" token.');
 	}
-	return toCssColor(variable.resolvedValuesByMode[light]!.resolvedValue);
+	return toCssColor(variable.value);
 }
 
 export function fixedLightSurface(): string {
-	const collection = load('theme-colors.json');
-	const light = modeId(collection, 'Light');
-	return findFixedLightSurface(collection.variables, light);
+	return findFixedLightSurface(load('theme-colors.light.tokens.json'));
 }
 
 export interface ScaleToken {
@@ -267,15 +307,12 @@ export interface ScaleToken {
 
 /** Reads a single-mode numeric collection such as spacing or radius. */
 export function scale(file: string, options: { prefix?: string } = {}): ScaleToken[] {
-	const collection = load(file);
-	const mode = soleModeId(collection);
-
-	return collection.variables
+	return load(file)
 		.filter((v) => !v.hiddenFromPublishing && v.type === 'FLOAT')
 		.filter((v) => (options.prefix ? v.name.startsWith(options.prefix) : true))
 		.map((v) => ({
 			name: v.name.split('/').pop()!,
-			value: Number(v.resolvedValuesByMode[mode]!.resolvedValue),
+			value: Number(v.value),
 			android: v.codeSyntax.ANDROID,
 			ios: v.codeSyntax.iOS,
 		}))
@@ -283,11 +320,11 @@ export function scale(file: string, options: { prefix?: string } = {}): ScaleTok
 }
 
 export function fontSizes(): ScaleToken[] {
-	return scale('typography.json', { prefix: 'font-size/' });
+	return scale('typography.tokens.json', { prefix: 'font-size/' });
 }
 
 export function lineHeights(): ScaleToken[] {
-	return scale('typography.json', { prefix: 'line-height/' });
+	return scale('typography.tokens.json', { prefix: 'line-height/' });
 }
 
 /**
@@ -355,16 +392,13 @@ export function composeFontWeights(entries: Array<{ name: string; style: string 
  * type filter dropped all four tokens and nothing complained.
  */
 export function fontWeights(): WeightToken[] {
-	const collection = load('typography.json');
-	const mode = soleModeId(collection);
-
 	return composeFontWeights(
-		collection.variables
+		load('typography.tokens.json')
 			.filter((v) => !v.hiddenFromPublishing && v.type === 'STRING')
 			.filter((v) => v.name.startsWith('font-weight/'))
 			.map((v) => ({
 				name: v.name.split('/').pop()!,
-				style: String(v.resolvedValuesByMode[mode]!.resolvedValue),
+				style: String(v.value),
 			})),
 	);
 }
@@ -439,19 +473,15 @@ export function composeShadowSizes(
 }
 
 export function shadowSets(): ShadowSet[] {
-	const collection = load('shadow.json');
-	const mode = soleModeId(collection);
-
 	// name is shadow/<size>/<level>/sd-<abbr>-lv<n>-<prop>
 	const parts = new Map<string, Map<string, Map<string, number | string>>>();
-	for (const variable of collection.variables) {
+	for (const variable of load('shadow.tokens.json')) {
 		if (variable.hiddenFromPublishing) continue;
 		const [, size, level, leaf] = variable.name.split('/');
 		if (!size || !level || !leaf) continue;
 
 		const property = leaf.replace(/^sd-[a-z]+-lv\d-/, '');
-		const raw = variable.resolvedValuesByMode[mode]!.resolvedValue;
-		const value = variable.type === 'COLOR' ? toCssColor(raw) : Number(raw);
+		const value = variable.type === 'COLOR' ? toCssColor(variable.value) : Number(variable.value);
 
 		if (!parts.has(size)) parts.set(size, new Map());
 		const levels = parts.get(size)!;

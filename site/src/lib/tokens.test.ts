@@ -15,10 +15,88 @@ import {
 	unrenderedColorGroups,
 	assertAllColorGroupsRendered,
 	resolveColorTokens,
-	soleModeId,
-	type RawCollection,
+	flattenTokens,
 	type ColorToken,
 } from './tokens';
+
+/** A cut-down stand-in for one `*.tokens.json` export. */
+function parseFixture() {
+	return flattenTokens({
+		$extensions: { 'com.figma.modeName': 'Light' },
+		Background: {
+			'bg-default': {
+				$type: 'color',
+				$value: { colorSpace: 'srgb', components: [1, 1, 1], alpha: 1, hex: '#FFFFFF' },
+				$description: 'The page.',
+				$extensions: {
+					'com.figma.codeSyntax': {
+						ANDROID: 'LemonadeTheme.colors.background.bgDefault',
+						iOS: 'LemonadeTheme.colors.background.bgDefault',
+					},
+					'com.figma.aliasData': { targetVariableName: 'white/950' },
+				},
+			},
+			Voice: {
+				'bg-critical': {
+					$type: 'color',
+					$value: { colorSpace: 'srgb', components: [1, 0, 0], alpha: 0.1, hex: '#F73C48' },
+					$extensions: { 'com.figma.aliasData': { targetVariableName: 'red/alpha/100' } },
+				},
+			},
+			Fixed: {
+				'bg-always-light': {
+					$type: 'color',
+					$value: { colorSpace: 'srgb', components: [1, 1, 1], alpha: 1, hex: '#FFFFFF' },
+					$extensions: { 'com.figma.hiddenFromPublishing': true },
+				},
+			},
+		},
+	});
+}
+
+describe('flattenTokens', () => {
+	// The export moved from the Figma plugin's { modes, variables[] } shape to
+	// Figma native's nested DTCG tree, so this is the layer everything else
+	// depends on.
+	it('walks nested groups into slash-delimited names', () => {
+		const flat = parseFixture();
+
+		expect(flat.map((t) => t.name)).toEqual([
+			'Background/bg-default',
+			'Background/Voice/bg-critical',
+			'Background/Fixed/bg-always-light',
+		]);
+	});
+
+	it('reads value, description, code syntax and the aliased primitive', () => {
+		const [first] = parseFixture();
+
+		expect(first).toMatchObject({
+			type: 'COLOR',
+			value: { hex: '#FFFFFF', alpha: 1 },
+			description: 'The page.',
+			alias: 'white-950',
+			hiddenFromPublishing: false,
+		});
+		expect(first!.codeSyntax.ANDROID).toBe('LemonadeTheme.colors.background.bgDefault');
+	});
+
+	it('skips $-prefixed group metadata rather than treating it as a token', () => {
+		expect(parseFixture().some((t) => t.name.includes('$'))).toBe(false);
+	});
+
+	it('carries hiddenFromPublishing through', () => {
+		const hidden = parseFixture().find((t) => t.name.endsWith('bg-always-light'));
+
+		expect(hidden!.hiddenFromPublishing).toBe(true);
+	});
+
+	it('throws on a $type it cannot map rather than dropping the token', () => {
+		expect(() => flattenTokens({ Odd: { thing: { $type: 'duration', $value: 3 } } })).toThrow(
+			/unsupported \$type "duration"/,
+		);
+	});
+});
 
 describe('themeColors', () => {
 	it('reads tokens from the Figma export', () => {
@@ -121,7 +199,7 @@ describe('resolveColorTokens', () => {
 
 describe('scale', () => {
 	it('reads spacing in ascending order', () => {
-		const spacing = scale('spacing.json');
+		const spacing = scale('spacing.tokens.json');
 		const values = spacing.map((t) => t.value);
 
 		expect(values).toEqual([...values].sort((a, b) => a - b));
@@ -305,32 +383,6 @@ describe('parseTextStyleSource', () => {
 	});
 });
 
-describe('soleModeId', () => {
-	const collection = (modes: Record<string, string>): RawCollection => ({
-		id: 'c1',
-		name: 'Test collection',
-		modes,
-		variables: [],
-	});
-
-	it('returns the only mode id', () => {
-		expect(soleModeId(collection({ '1:0': 'Value' }))).toBe('1:0');
-	});
-
-	it('throws when a collection has more than one mode', () => {
-		expect(() => soleModeId(collection({ '1:0': 'Value', '2:0': 'Stray' }))).toThrow(
-			/exactly one mode/,
-		);
-		expect(() => soleModeId(collection({ '1:0': 'Value', '2:0': 'Stray' }))).toThrow(
-			/Test collection/,
-		);
-	});
-
-	it('throws when a collection has no modes', () => {
-		expect(() => soleModeId(collection({}))).toThrow(/exactly one mode/);
-	});
-});
-
 describe('shadowSets', () => {
 	it('composes every shadow size', () => {
 		const names = shadowSets().map((s) => s.name);
@@ -346,7 +398,7 @@ describe('shadowSets', () => {
 	it('builds the box-shadow value for every size', () => {
 		const css = Object.fromEntries(shadowSets().map((s) => [s.name, s.css]));
 		expect(css).toEqual({
-			xsmall: '0px 1px 2px 0px #0000000d',
+			xsmall: '0px 0.5px 1px 0px #0000000d',
 			small: '0px 1px 3px 0px #0000000d, 0px 1px 2px -1px #0000000d',
 			medium: '0px 2px 3px -2px #0000000d, 0px 4px 6px -2px #0000000d',
 			large: '0px 4px 6px -4px #0000000d, 0px 10px 15px -3px #0000000d',
@@ -364,19 +416,15 @@ describe('fixedLightSurface', () => {
 describe('findFixedLightSurface', () => {
 	it('resolves the light value of bg-always-light', () => {
 		const variables = [
-			{
-				name: 'Background/Fixed/bg-always-light',
-				resolvedValuesByMode: {
-					light: { resolvedValue: { r: 1, g: 1, b: 1 }, alias: null },
-				},
-			},
+			{ name: 'Background/Voice/bg-critical', value: { hex: '#F73C48', alpha: 1 } },
+			{ name: 'Background/Fixed/bg-always-light', value: { hex: '#FFFFFF', alpha: 1 } },
 		];
 
-		expect(findFixedLightSurface(variables, 'light')).toBe('#ffffff');
+		expect(findFixedLightSurface(variables)).toBe('#ffffff');
 	});
 
-	it('throws when the token is missing', () => {
-		expect(() => findFixedLightSurface([], 'light')).toThrow(/bg-always-light/);
+	it('throws when the token is missing rather than guessing a surface', () => {
+		expect(() => findFixedLightSurface([])).toThrow(/bg-always-light/);
 	});
 });
 
