@@ -681,7 +681,11 @@ private fun SwipeActionRowCore(
     // catches up with. Every delta used to launch its own `snapTo`, and one landing after the
     // settle had started cancelled it — an `Animatable` lets the later mutation win — leaving the
     // row parked wherever the finger let go until something else moved it.
-    var travel by remember { mutableFloatStateOf(0f) }
+    // Held rather than read: nothing in this function's body may touch `travel`, or the row
+    // recomposes on every frame of every drag and every settle — and with it the content it wraps,
+    // which is the caller's whole list item. The layout and draw lambdas below read it instead, so
+    // a moving row is re-laid-out and redrawn without being composed again.
+    val travel = remember { mutableFloatStateOf(0f) }
     // The one animation allowed to write `travel`, held so a new one, or a finger, can end it.
     val settling = remember { mutableStateOf<Job?>(null) }
     var rowWidth by remember { mutableFloatStateOf(0f) }
@@ -718,11 +722,11 @@ private fun SwipeActionRowCore(
         settling.value?.cancel()
         settling.value = scope.launch {
             animate(
-                initialValue = travel,
+                initialValue = travel.floatValue,
                 targetValue = target,
                 initialVelocity = velocity,
                 animationSpec = settleSpring,
-            ) { value, _ -> travel = value }
+            ) { value, _ -> travel.floatValue = value }
         }
     }
 
@@ -737,25 +741,29 @@ private fun SwipeActionRowCore(
     // out of the drag's hands and carries it the rest of the way itself; dragging back below hands
     // it back. The blend is what makes both a spring rather than a jump, and what keeps the finger
     // in charge on the way there.
-    val claimed by animateFloatAsState(
+    val claimed = animateFloatAsState(
         targetValue = if (committed) 1f else 0f,
         // Sprung on the way out, snapped on the way back: leaving a commit hands the row to
         // [resolveSwipeReleasedTravel], which picks it up exactly where the claim had it.
         animationSpec = if (committed) commitSpring else noSpring,
         label = "swipeCommitClaim",
     )
-    // Where the finger has the row: its own travel, or the lead a commit gave it, being given back
-    // in proportion to the finger.
-    val base = if (releasing) {
-        resolveSwipeReleasedTravel(
-            travel = travel,
-            commitTravel = commitTravel,
-            threshold = rowWidth * COMMIT_FRACTION,
-        )
-    } else {
-        travel
+    // What the row draws, resolved wherever it is needed rather than here: the finger's own travel,
+    // or the lead a commit gave it being given back in proportion to the finger, blended with
+    // however far the commit has claimed the row.
+    val shown = {
+        val reached = travel.floatValue
+        val base = if (releasing) {
+            resolveSwipeReleasedTravel(
+                travel = reached,
+                commitTravel = commitTravel,
+                threshold = rowWidth * COMMIT_FRACTION,
+            )
+        } else {
+            reached
+        }
+        base + (commitTravel - base) * claimed.value
     }
-    val shown = base + (commitTravel - base) * claimed
 
     // A tapped action tidies the row away after it, unless it has put something on screen that the
     // row is the subject of. Claiming the slot again is what keeps the group's own tap — the same
@@ -802,7 +810,7 @@ private fun SwipeActionRowCore(
 
     val dragState = rememberDraggableState { delta ->
         val ceiling = if (allowsFullSwipe) rowWidth else revealWidth
-        val next = (travel + delta * towardsTrailing).coerceIn(0f, ceiling)
+        val next = (travel.floatValue + delta * towardsTrailing).coerceIn(0f, ceiling)
         val crossed = allowsFullSwipe && next >= rowWidth * COMMIT_FRACTION
         if (crossed != committed) {
             committed = crossed
@@ -811,7 +819,7 @@ private fun SwipeActionRowCore(
             // action, which is as worth knowing as the moment it started to.
             haptics.performHapticFeedback(HapticFeedbackType.LongPress)
         }
-        travel = next
+        travel.floatValue = next
     }
 
     val highlight = LemonadeTheme.colors.interaction.bgSubtleInteractive
@@ -819,7 +827,7 @@ private fun SwipeActionRowCore(
     // and easing out rather than following the travel: keyed off the travel it would blink off the
     // frame the row landed, and the row is still being handled until it has finished arriving.
     val handled = dragging || open
-    val highlightAlpha by animateFloatAsState(
+    val highlightAlpha = animateFloatAsState(
         targetValue = if (handled) 1f else 0f,
         animationSpec = if (handled) noSpring else settleSpring,
         label = "swipeRowHighlight",
@@ -827,7 +835,7 @@ private fun SwipeActionRowCore(
     // Drained of colour and dimmed while something an action opened has the reader's attention:
     // the actions are still there, and still where they were, but they are not what is being
     // answered.
-    val dim by animateFloatAsState(
+    val dim = animateFloatAsState(
         targetValue = if (holding) 1f else 0f,
         animationSpec = settleSpring,
         label = "swipeActionsDimmed",
@@ -871,13 +879,13 @@ private fun SwipeActionRowCore(
                         dragging = false
                         // The claim is spent: the row settles from where it is being drawn, not
                         // from where the finger left off.
-                        travel = shown
+                        travel.floatValue = shown()
                         releasing = false
                         // The spring picks up the speed the finger let go at rather than starting
                         // from rest, so the row carries straight on out of the drag.
                         val released = velocity * towardsTrailing
                         val target = resolveSwipeSettle(
-                            travel = travel,
+                            travel = travel.floatValue,
                             velocity = released,
                             firstActionReveal = firstActionReveal,
                             rowWidth = rowWidth,
@@ -929,29 +937,29 @@ private fun SwipeActionRowCore(
         ) {
             SwipeActionStrip(
                 actions = actions,
-                travel = { shown },
+                travel = shown,
                 rowWidth = { rowWidth },
                 committed = { committed },
                 onFired = fired,
-                dim = { dim },
+                dim = { dim.value },
                 modifier = Modifier.align(Alignment.CenterEnd),
             )
             Box(
                 modifier = Modifier
-                    .offset { IntOffset(x = (shown * towardsTrailing).roundToInt(), y = 0) }
+                    .offset { IntOffset(x = (shown() * towardsTrailing).roundToInt(), y = 0) }
                     // A row under the finger rests on the list item's own press highlight rather
                     // than on a surface of its own: same fill, same radius, same gutter. It is on
                     // for the whole gesture, not proportional to the travel — the row is being
                     // handled from the first pixel.
                     .drawBehind {
-                        if (highlightAlpha > 0f) {
+                        if (highlightAlpha.value > 0f) {
                             val gutter = gutterPx
                             drawRoundRect(
                                 color = highlight,
                                 topLeft = Offset(x = gutter, y = gutter),
                                 size = Size(size.width - gutter * 2, size.height - gutter * 2),
                                 cornerRadius = CornerRadius(highlightRadiusPx),
-                                alpha = highlightAlpha,
+                                alpha = highlightAlpha.value,
                             )
                         }
                     },
