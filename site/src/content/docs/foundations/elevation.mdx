@@ -2,7 +2,6 @@
 title: Elevation
 description: The shadow sets that lift Lemonade surfaces off the page.
 ---
-
 import ShadowTokens from '../../../components/ShadowTokens.astro';
 
 Shadows are stored decomposed in the Figma export — each size is one or two
@@ -19,8 +18,51 @@ the page — a card, a menu, a modal — not by how the shadow looks in
 isolation. Reach for the next size up when a surface needs to read as closer
 to the user, not for a shadow that merely looks "stronger."
 
-:::caution[Previews are CSS, not the real renderers]
-The samples above are CSS `box-shadow`. The KMP implementation currently renders
-shadows noticeably darker than the token values describe, so a Compose screen will
-not match this page exactly. SwiftUI matches. Treat these as the intended values.
-:::
+## Using them in code
+
+Both platforms apply a whole shadow set through one call, so you never compose the
+layers yourself. The token names are `Xsmall`, `Small`, `Medium`, `Large`, `Xlarge` and
+`None` on Kotlin, and the same list lowercased on Swift. The container shape sits at
+`shapes.radiusContainerDefault` on Swift and under `shapes.semantic` on Kotlin — the one
+naming difference between the two.
+
+### Kotlin
+
+A modifier, which needs the shape you are going to clip with:
+
+```kotlin
+Column(
+    modifier = Modifier
+        .lemonadeShadow(
+            shadow = LemonadeShadow.Medium,
+            shape = LemonadeTheme.shapes.semantic.radiusContainerDefault,
+        ) // Applies the shadow
+        .clip(shape = LemonadeTheme.shapes.semantic.radiusContainerDefault)
+        .background(color = LemonadeTheme.colors.background.bgDefault)
+        .padding(all = LemonadeTheme.spaces.spacing400),
+) {
+    LemonadeUi.Text(text = "Payment received")
+}
+```
+
+Order matters. The shadow is drawn outside the surface, so `lemonadeShadow` goes before
+`clip` — put it after and the clip removes the very thing you just drew. Pass the same
+shape to both, or the shadow will not follow the corners.
+
+There is also `Modifier.animateLemonadeShadow(shadow, shape)` for a surface that changes
+elevation, which animates between sets rather than swapping them.
+
+### SwiftUI
+
+A view modifier, which takes the shape from the view it is applied to:
+
+```swift
+VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing200) {
+    LemonadeUi.Text("Payment received")
+}
+.padding(LemonadeTheme.spaces.spacing400)
+.background(LemonadeTheme.colors.background.bgDefault)
+.clipShape(LemonadeTheme.shapes.radiusContainerDefault)
+.lemonadeShadow(.medium) // Applies the shadow
+```
+
