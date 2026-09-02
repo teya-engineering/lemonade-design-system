@@ -4,7 +4,6 @@ import androidx.compose.animation.core.SnapSpec
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
@@ -161,12 +160,6 @@ private val commitSpring: SpringSpec<Float> = spring(
 private val bumpSpring: SpringSpec<Float> = spring(
     dampingRatio = BUMP_DAMPING,
     stiffness = BUMP_STIFFNESS,
-)
-
-/** The commit's spring in [Dp], for the icon sliding to the capsule's leading end. */
-private val commitDpSpring: SpringSpec<Dp> = spring(
-    dampingRatio = Spring.DampingRatioNoBouncy,
-    stiffness = COMMIT_STIFFNESS,
 )
 
 /** No spring at all: the value is already where it needs to be. */
@@ -513,6 +506,7 @@ private fun SwipeActionStrip(
     travel: () -> Float,
     rowWidth: () -> Float,
     committed: () -> Boolean,
+    committedStretch: Dp,
     onFired: (SwipeAction) -> Unit,
     dim: () -> Float,
     modifier: Modifier = Modifier,
@@ -561,6 +555,7 @@ private fun SwipeActionStrip(
                 },
                 stretches = index == 0,
                 committed = committed() && index == 0,
+                committedStretch = committedStretch,
                 onFired = onFired,
                 dim = dim(),
                 modifier = Modifier.offset(x = -step * index - push),
@@ -583,6 +578,7 @@ private fun SwipeActionCapsule(
     opacity: Float,
     stretches: Boolean,
     committed: Boolean,
+    committedStretch: Dp,
     onFired: (SwipeAction) -> Unit,
     dim: Float,
     modifier: Modifier = Modifier,
@@ -611,13 +607,17 @@ private fun SwipeActionCapsule(
     // Centred in the capsule until the swipe commits, then it slides to the centre of the capsule's
     // leading end — where the action would sit if it had stayed a circle and the row had simply
     // carried on past it.
-    // On the commit's own spring, not the settle's: the icon has to arrive with the width it is
-    // sliding along, and iOS lands the two within a frame of each other.
-    val iconOffset by animateDpAsState(
-        targetValue = if (committed) -stretch / 2 else 0.dp,
-        animationSpec = commitDpSpring,
+    //
+    // Off the same claim the row travels on, against the width the commit is heading for rather
+    // than the one it has: a spring chasing a target that is itself still moving arrives ahead of
+    // it, which put the icon a fifth of the way further along than the capsule it slides in. iOS
+    // holds the two within 0.012 of each other the whole way, which is what this is.
+    val iconClaim by animateFloatAsState(
+        targetValue = if (committed) 1f else 0f,
+        animationSpec = commitSpring,
         label = "swipeActionIcon",
     )
+    val iconOffset = -committedStretch / 2 * iconClaim
     Box(
         modifier = modifier
             .size(width = size + stretch, height = size)
@@ -736,6 +736,9 @@ private fun SwipeActionRowCore(
     val commitTravel = maxOf(revealWidth, rowWidth - with(density) { COMMIT_INSET.toPx() })
     // Where the row rests while open: at the reveal, or wherever a commit is holding it.
     val restingTravel = if (held) commitTravel else revealWidth
+    // How far the first action has stretched once a commit has parked the row: what the icon is
+    // sliding towards from the moment the crossing happens.
+    val committedStretch = with(density) { (commitTravel - revealWidth).coerceAtLeast(0f).toDp() }
 
     // How far the commit has claimed the row off the finger. Crossing the threshold takes the row
     // out of the drag's hands and carries it the rest of the way itself; dragging back below hands
@@ -940,6 +943,7 @@ private fun SwipeActionRowCore(
                 travel = shown,
                 rowWidth = { rowWidth },
                 committed = { committed },
+                committedStretch = committedStretch,
                 onFired = fired,
                 dim = { dim.value },
                 modifier = Modifier.align(Alignment.CenterEnd),

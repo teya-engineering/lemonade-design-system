@@ -440,6 +440,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                     travel: shown,
                     actions: actions,
                     committed: committed,
+                    committedStretch: max(commitTravel - revealWidth, 0),
                     rowWidth: rowWidth,
                     towardsTrailing: towardsTrailing,
                     onFired: fired
@@ -669,6 +670,9 @@ private struct SwipeActionStrip: View, Animatable {
     var travel: CGFloat
     let actions: [LemonadeSwipeAction]
     let committed: Bool
+    /// How far the first action has stretched once a commit has parked the row: what the icon is
+    /// sliding towards from the moment the crossing happens.
+    let committedStretch: CGFloat
     let rowWidth: CGFloat
     let towardsTrailing: CGFloat
     let onFired: (LemonadeSwipeAction) -> Void
@@ -715,7 +719,8 @@ private struct SwipeActionStrip: View, Animatable {
                 capsule(
                     action,
                     stretch: index == 0 ? reveal.stretch : 0,
-                    committed: committed && index == 0
+                    committed: committed && index == 0,
+                    committedStretch: committedStretch
                 )
                 // Scoped between the two scales, so the spring governs the bump and nothing else.
                 // Outside them it takes the reveal's own scale with it, and since that is driven
@@ -748,13 +753,17 @@ private struct SwipeActionStrip: View, Animatable {
     private func capsule(
         _ action: LemonadeSwipeAction,
         stretch: CGFloat,
-        committed: Bool
+        committed: Bool,
+        committedStretch: CGFloat
     ) -> some View {
         let colors = resolveColors(variant: action.variant, type: .solid)
         // Centred in the capsule until the swipe commits, then it slides to the centre of the
         // capsule's leading end — where the action would sit if it had stayed a circle and the row
         // had simply carried on past it.
-        let iconOffset = committed ? stretch / 2 * towardsTrailing : 0
+        // Against the width the commit is heading for rather than the one it has: an offset that
+        // chases a target still moving under it arrives behind the capsule it slides in. iOS holds
+        // the two within 0.012 of each other the whole way, which is what this is.
+        let iconOffset = committed ? committedStretch / 2 * towardsTrailing : 0
         return SwiftUI.Button { onFired(action) } label: {
             Capsule()
                 .fill(colors.backgroundColor)
