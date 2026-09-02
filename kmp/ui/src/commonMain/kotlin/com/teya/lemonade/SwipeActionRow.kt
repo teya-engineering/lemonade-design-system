@@ -10,6 +10,8 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -22,7 +24,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -39,7 +43,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -56,6 +64,7 @@ import com.teya.lemonade.core.LemonadeButtonType
 import com.teya.lemonade.core.LemonadeButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 /**
@@ -67,6 +76,12 @@ import kotlin.math.roundToInt
  * damping — the row arrives without springing past and coming back.
  */
 private const val SETTLE_STIFFNESS = 156.25f
+
+/**
+ * How far the row may drift on screen before an open one counts as scrolled past. Enough to sit out
+ * the rounding a layout pass can move it by, and far short of a deliberate scroll.
+ */
+private val SCROLL_SLACK = 4.dp
 
 /** Fraction of the row's width a drag must cross for a full swipe to commit. */
 private const val COMMIT_FRACTION = 0.5f
@@ -254,6 +269,94 @@ internal fun resolveSwipeStripReveal(
 }
 
 /**
+ * What a group tells its rows: one of them has taken the open slot, or nothing has.
+ *
+ * The count is what makes it a signal rather than a value. Two rows opening in turn both leave
+ * [opener] set, and a row that closed and reopened would look unchanged — the count moves either
+ * way, so every row hears every announcement.
+ */
+internal data class SwipeActionGroupSignal(
+    val announcements: Int = 0,
+    val opener: Any? = null,
+)
+
+private val LocalSwipeActionGroupSignal = compositionLocalOf { SwipeActionGroupSignal() }
+
+/** Null outside a group, which is what leaves a lone row owning its own state. */
+private val LocalSwipeActionGroupAnnounce = compositionLocalOf<((Any?) -> Unit)?> { null }
+
+/**
+ * Groups swipe rows so that at most one of them is open.
+ *
+ * A row cannot see a touch that lands outside it, so the group is what carries the news: opening one
+ * closes the rest, and a tap anywhere inside closes whichever is open. Wrap the list, or the screen
+ * — anything a reader would take as "somewhere else".
+ *
+ * Rows manage themselves inside it, including the ones given an `id` and `openId`, so nothing has to
+ * be hoisted to get this.
+ *
+ * ## Usage
+ * ```kotlin
+ * LemonadeUi.SwipeActionGroup {
+ *     Column {
+ *         accounts.forEach { account ->
+ *             LemonadeUi.SwipeActionRow(actions = listOf(remove(account))) {
+ *                 LemonadeUi.ActionListItem(label = account.name, onItemClicked = { })
+ *             }
+ *         }
+ *     }
+ * }
+ * ```
+ *
+ * @param modifier - [Modifier] applied to the group.
+ * @param content - the rows, and whatever else the group covers.
+ */
+@Composable
+public fun LemonadeUi.SwipeActionGroup(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    var signal by remember { mutableStateOf(SwipeActionGroupSignal()) }
+    val announce: (Any?) -> Unit = { opener ->
+        signal = SwipeActionGroupSignal(
+            announcements = signal.announcements + 1,
+            opener = opener,
+        )
+    }
+    CompositionLocalProvider(
+        LocalSwipeActionGroupSignal provides signal,
+        LocalSwipeActionGroupAnnounce provides announce,
+    ) {
+        Box(
+            modifier = modifier.pointerInput(Unit) {
+                awaitEachGesture {
+                    // Watched on the initial pass and never consumed, so the tap still reaches
+                    // whatever was tapped. Closing an open row is not meant to cost the reader the
+                    // tap that closed it. A gesture that travelled is a swipe, and a row settling
+                    // out of one announces itself.
+                    val down = awaitFirstDown(
+                        requireUnconsumed = false,
+                        pass = PointerEventPass.Initial,
+                    )
+                    var travelled = 0f
+                    while (true) {
+                        val event = awaitPointerEvent(PointerEventPass.Initial)
+                        val change = event.changes.firstOrNull { it.id == down.id } ?: break
+                        travelled += (change.position - change.previousPosition).getDistance()
+                        if (!change.pressed) {
+                            if (travelled < viewConfiguration.touchSlop) announce(null)
+                            break
+                        }
+                    }
+                }
+            },
+        ) {
+            content()
+        }
+    }
+}
+
+/**
  * One action revealed behind a [SwipeActionRow]. [contentDescription] has no default because it is
  * what publishes the action to TalkBack, where the gesture itself is invisible.
  */
@@ -413,6 +516,16 @@ private fun SwipeActionRowCore(
 ) {
     val travel = remember { Animatable(initialValue = 0f) }
     var rowWidth by remember { mutableFloatStateOf(0f) }
+    // What this row answers to inside a group. Its own, so a row needs no identity from the caller
+    // to take part.
+    val groupIdentity = remember { Any() }
+    val groupSignal = LocalSwipeActionGroupSignal.current
+    val announce = LocalSwipeActionGroupAnnounce.current
+    // Where the row sits on screen, and where it sat when it opened. A row that has moved since is
+    // being scrolled past, and an open row scrolling away is one the reader has left behind.
+    var rowY by remember { mutableFloatStateOf(0f) }
+    var openedAt by remember { mutableStateOf<Float?>(null) }
+    val scrollSlack = with(LocalDensity.current) { SCROLL_SLACK.toPx() }
     var committed by remember { mutableStateOf(false) }
     var dragging by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -441,7 +554,18 @@ private fun SwipeActionRowCore(
     // alone: a settle animates itself, because it usually writes the value `open` already holds
     // and this effect would not restart.
     LaunchedEffect(open) {
+        openedAt = if (open) rowY else null
+        if (open) announce?.invoke(groupIdentity)
         travel.animateTo(if (open) revealWidth else 0f, settleSpring)
+    }
+
+    // Another row took the slot, or the group was touched and nothing holds it. Keyed on the count
+    // so a row hears every announcement, and ignored before the first so a row that starts open
+    // stays that way.
+    LaunchedEffect(groupSignal) {
+        if (open && groupSignal.announcements > 0 && groupSignal.opener !== groupIdentity) {
+            onOpenChange(false)
+        }
     }
 
     // `actions` can change while the row is open, and an open row would otherwise rest at a stale
@@ -465,7 +589,17 @@ private fun SwipeActionRowCore(
     val gutterPx = with(density) { LemonadeTheme.spaces.spacing100.toPx() }
     val highlightRadiusPx = with(density) { LemonadeTheme.radius.radius500.toPx() }
 
-    Column(modifier = modifier.onSizeChanged { rowWidth = it.width.toFloat() }) {
+    Column(
+        modifier = modifier
+            .onSizeChanged { rowWidth = it.width.toFloat() }
+            .onGloballyPositioned { coordinates ->
+                val y = coordinates.positionInRoot().y
+                rowY = y
+                // Scrolled past, so the row is no longer the one being read.
+                val opened = openedAt
+                if (open && opened != null && abs(y - opened) > scrollSlack) onOpenChange(false)
+            },
+    ) {
         Box(
             modifier = Modifier
                 .clipToBounds()

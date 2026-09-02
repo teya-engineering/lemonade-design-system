@@ -23,6 +23,15 @@ private val sampleAccounts = listOf(
 
 @Composable
 internal fun SwipeActionRowDisplay() {
+    // Everything on the screen is one group: opening a row closes the last one, and a tap anywhere
+    // closes whichever is open.
+    LemonadeUi.SwipeActionGroup {
+        SwipeActionRowDisplayContent()
+    }
+}
+
+@Composable
+private fun SwipeActionRowDisplayContent() {
     SampleScreenDisplayLazyColumn(title = "SwipeActionRow") {
         item(key = "single-open") {
             var openId by remember { mutableStateOf<Any?>(null) }

@@ -32,6 +32,10 @@ private func settle(velocity: CGFloat = 0, over distance: CGFloat = 0) -> Animat
 /// Fraction of the row's width a drag must cross for a full swipe to commit.
 private let commitFraction: CGFloat = 0.5
 
+/// How far the row may drift on screen before an open one counts as scrolled past. Enough to sit
+/// out the rounding a layout pass can move it by, and far short of a deliberate scroll.
+private let scrollSlack: CGFloat = 4
+
 /// How far a finger travels before the row claims the drag.
 ///
 /// Further than a scroll view needs to start scrolling, which is what leaves a vertical drag to it:
@@ -202,6 +206,39 @@ func resolveSwipeDisplacedOpacity(travel: CGFloat, rowWidth: CGFloat) -> CGFloat
     return 1 - (1 - displacedFloor) * progress
 }
 
+// MARK: - Group
+
+/// What a group tells its rows: one of them has taken the open slot, or nothing has.
+///
+/// The token is what makes it a signal rather than a value. Two rows opening in turn both leave
+/// `opener` set, and a row that closed and reopened would look unchanged — the count moves either
+/// way, so every row hears every announcement.
+struct SwipeActionGroupSignal: Equatable {
+    var announcements = 0
+    var opener: AnyHashable?
+}
+
+private struct SwipeActionGroupSignalKey: EnvironmentKey {
+    static let defaultValue = SwipeActionGroupSignal()
+}
+
+private struct SwipeActionGroupAnnounceKey: EnvironmentKey {
+    static let defaultValue: ((AnyHashable?) -> Void)? = nil
+}
+
+extension EnvironmentValues {
+    var swipeActionGroupSignal: SwipeActionGroupSignal {
+        get { self[SwipeActionGroupSignalKey.self] }
+        set { self[SwipeActionGroupSignalKey.self] = newValue }
+    }
+
+    /// Nil outside a group, which is what leaves a lone row owning its own state.
+    var swipeActionGroupAnnounce: ((AnyHashable?) -> Void)? {
+        get { self[SwipeActionGroupAnnounceKey.self] }
+        set { self[SwipeActionGroupAnnounceKey.self] = newValue }
+    }
+}
+
 // MARK: - LemonadeSwipeAction
 
 /// One action revealed behind a `LemonadeUi.SwipeActionRow`.
@@ -250,7 +287,16 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     @State private var rowWidth: CGFloat = 0
     @State private var committed = false
     @GestureState private var isDragging = false
+    /// What this row answers to inside a group. Its own, so an uncontrolled row needs no identity
+    /// from the caller to take part.
+    @State private var groupIdentity = UUID()
+    /// Where the row sits on screen, and where it sat when it opened. A row that has moved since
+    /// is being scrolled past, and an open row scrolling away is one the reader has left behind.
+    @State private var rowY: CGFloat = 0
+    @State private var openedAt: CGFloat?
     @Environment(\.layoutDirection) private var layoutDirection
+    @Environment(\.swipeActionGroupSignal) private var groupSignal
+    @Environment(\.swipeActionGroupAnnounce) private var announce
 
     /// A reveal on the trailing edge travels left in LTR and right in RTL.
     private var towardsTrailing: CGFloat { layoutDirection == .rightToLeft ? 1 : -1 }
@@ -297,6 +343,15 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                     Color.clear
                         .onAppear { rowWidth = proxy.size.width }
                         .onChange(of: proxy.size.width) { rowWidth = $0 }
+                        .onAppear { rowY = proxy.frame(in: .global).minY }
+                        .onChange(of: proxy.frame(in: .global).minY) { y in
+                            rowY = y
+                            // Scrolled past, so the row is no longer the one being read.
+                            guard open, let opened = openedAt, abs(y - opened) > scrollSlack else {
+                                return
+                            }
+                            open = false
+                        }
                 }
             )
             // High priority, because the wrapped row is usually a `Button` and a plain `.gesture`
@@ -317,6 +372,13 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
         }
         .onChange(of: open) { newValue in
             withAnimation(settle()) { travel = newValue ? revealWidth : 0 }
+            openedAt = newValue ? rowY : nil
+            if newValue { announce?(groupIdentity) }
+        }
+        .onChange(of: groupSignal) { signal in
+            // Another row took the slot, or the group was tapped and nothing holds it.
+            guard open, signal.opener != AnyHashable(groupIdentity) else { return }
+            open = false
         }
         .onChange(of: revealWidth) { newValue in
             // `actions` can change while the row is open, and an open row would otherwise rest at
@@ -624,6 +686,63 @@ public extension LemonadeUi {
             ),
             content: content
         )
+    }
+}
+
+public extension LemonadeUi {
+    /// Groups swipe rows so that at most one of them is open.
+    ///
+    /// A row cannot see a touch that lands outside it, so the group is what carries the news:
+    /// opening one closes the rest, and a tap anywhere inside closes whichever is open. Wrap the
+    /// list, or the screen — anything a reader would take as "somewhere else".
+    ///
+    /// Rows manage themselves inside it, including the ones given an `id` and `openId`, so nothing
+    /// has to be hoisted to get this.
+    ///
+    /// ## Usage
+    /// ```swift
+    /// LemonadeUi.SwipeActionGroup {
+    ///     ForEach(accounts) { account in
+    ///         LemonadeUi.SwipeActionRow(actions: [remove(account)]) {
+    ///             LemonadeUi.ActionListItem(label: account.name, onItemClicked: { })
+    ///         }
+    ///     }
+    /// }
+    /// ```
+    ///
+    /// - Parameter content: the rows, and whatever else the group covers
+    @ViewBuilder
+    static func SwipeActionGroup<Content: View>(
+        @ViewBuilder content: @escaping () -> Content
+    ) -> some View {
+        LemonadeSwipeActionGroupView(content: content)
+    }
+}
+
+private struct LemonadeSwipeActionGroupView<Content: View>: View {
+    @ViewBuilder let content: () -> Content
+
+    @State private var signal = SwipeActionGroupSignal()
+
+    var body: some View {
+        content()
+            .environment(\.swipeActionGroupSignal, signal)
+            .environment(\.swipeActionGroupAnnounce) { opener in
+                signal = SwipeActionGroupSignal(
+                    announcements: signal.announcements + 1,
+                    opener: opener
+                )
+            }
+            // Simultaneous, so the tap still reaches whatever was tapped. Closing an open row is
+            // not meant to cost the reader the tap that closed it.
+            .simultaneousGesture(
+                TapGesture().onEnded {
+                    signal = SwipeActionGroupSignal(
+                        announcements: signal.announcements + 1,
+                        opener: nil
+                    )
+                }
+            )
     }
 }
 

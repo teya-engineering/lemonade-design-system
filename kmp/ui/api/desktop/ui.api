@@ -562,6 +562,7 @@ public final class com/teya/lemonade/SwipeAction {
 }
 
 public final class com/teya/lemonade/SwipeActionRowKt {
+	public static final fun SwipeActionGroup (Lcom/teya/lemonade/LemonadeUi;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 	public static final fun SwipeActionRow (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/Object;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Ljava/util/List;Landroidx/compose/ui/Modifier;ZZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 	public static final fun SwipeActionRow (Lcom/teya/lemonade/LemonadeUi;Ljava/util/List;Landroidx/compose/ui/Modifier;ZZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
