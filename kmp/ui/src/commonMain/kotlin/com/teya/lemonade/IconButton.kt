@@ -152,15 +152,19 @@ private fun CoreIconButton(
 
 // MARK: - Color Resolution
 
-private data class IconButtonColorData(
+internal data class IconButtonColorData(
     val backgroundColor: Color,
     val backgroundHoverColor: Color,
     val backgroundPressedColor: Color,
     val contentColor: Color,
 )
 
+/**
+ * Shared with [LemonadeUi.SwipeActionRow], which draws its own stretchable capsule but has to stay
+ * in step with the Solid icon button it stands in for.
+ */
 @Composable
-private fun resolveColors(
+internal fun resolveColors(
     variant: LemonadeButtonVariant,
     type: LemonadeButtonType,
 ): IconButtonColorData =

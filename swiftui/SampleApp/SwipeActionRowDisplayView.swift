@@ -17,6 +17,7 @@ private let sampleAccounts = [
 struct SwipeActionRowDisplayView: View {
     @State private var openId: AnyHashable?
     @State private var removed: Set<String> = []
+    @State private var fired = 0
 
     var body: some View {
         ScrollView {
@@ -82,6 +83,38 @@ struct SwipeActionRowDisplayView: View {
                         LemonadeUi.ActionListItem(
                             label: "Two actions",
                             supportText: "Outermost action first",
+                            // The SwipeActionRow draws the divider: one drawn here would travel with the row.
+                            showDivider: false,
+                            onItemClicked: { }
+                        )
+                    }
+                }
+
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(
+                        title: "Two actions, allowsFullSwipe: true",
+                        subtitle: "Dragging across the row fires the first action, which takes over the second."
+                    )
+                ) {
+                    LemonadeUi.SwipeActionRow(
+                        actions: [
+                            LemonadeSwipeAction(
+                                icon: .trash,
+                                contentDescription: "Delete",
+                                onClick: { fired += 1 }
+                            ),
+                            LemonadeSwipeAction(
+                                icon: .pencilLine,
+                                contentDescription: "Edit",
+                                onClick: { },
+                                variant: .neutral
+                            )
+                        ]
+                    ) {
+                        LemonadeUi.ActionListItem(
+                            label: "Two actions",
+                            // Counted rather than removed, so the swipe can be tried again.
+                            supportText: fired == 0 ? "Drag across to fire Delete" : "Delete fired \(fired)×",
                             // The SwipeActionRow draws the divider: one drawn here would travel with the row.
                             showDivider: false,
                             onItemClicked: { }

@@ -86,7 +86,7 @@ public extension LemonadeUi {
 
 // MARK: - Internal Icon Button Colors
 
-private struct LemonadeIconButtonColors {
+struct LemonadeIconButtonColors {
     let backgroundColor: Color
     let backgroundHoverColor: Color
     let backgroundPressedColor: Color
@@ -136,7 +136,9 @@ private extension LemonadeButtonSize {
 
 // MARK: - Color Resolution (Variant x Type)
 
-private func resolveColors(
+/// Shared with `LemonadeUi.SwipeActionRow`, which draws its own stretchable capsule but has to
+/// stay in step with the solid icon button it stands in for.
+func resolveColors(
     variant: LemonadeButtonVariant,
     type: LemonadeButtonType
 ) -> LemonadeIconButtonColors {

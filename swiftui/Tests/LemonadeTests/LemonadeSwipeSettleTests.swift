@@ -1,23 +1,23 @@
 import XCTest
 @testable import Lemonade
 
-/// Covers `resolveSwipeSettle` — where a released drag lands. Geometry matches one trailing action
-/// on a 361pt-wide row: a 60pt reveal, and a full swipe that has to cross half of 361.
+/// Covers `resolveSwipeSettle` — where a released drag lands. Geometry matches a trailing action on
+/// a 361pt-wide row: 76pt of travel brings it fully out, and a full swipe has to cross half of 361.
 final class LemonadeSwipeSettleTests: XCTestCase {
 
-    private let revealWidth: CGFloat = 60
+    private let firstActionReveal: CGFloat = 76
     private let rowWidth: CGFloat = 361
 
     private func settle(
         travel: CGFloat,
         velocity: CGFloat = 0,
         allowsFullSwipe: Bool = true,
-        revealWidth: CGFloat? = nil
+        firstActionReveal: CGFloat? = nil
     ) -> SwipeSettleTarget {
         resolveSwipeSettle(
             travel: travel,
             velocity: velocity,
-            revealWidth: revealWidth ?? self.revealWidth,
+            firstActionReveal: firstActionReveal ?? self.firstActionReveal,
             rowWidth: rowWidth,
             allowsFullSwipe: allowsFullSwipe
         )
@@ -27,16 +27,34 @@ final class LemonadeSwipeSettleTests: XCTestCase {
         XCTAssertEqual(settle(travel: 20), .closed)
     }
 
-    func testDragPastHalfTheRevealSettlesOpen() {
-        XCTAssertEqual(settle(travel: 40), .open)
+    /// A drag that showed most of the action but not all of it still belongs back where it was.
+    func testDragShortOfTheWholeActionSettlesClosed() {
+        XCTAssertEqual(settle(travel: 70), .closed)
     }
 
-    func testFlickOpensBeforeTravellingHalfTheReveal() {
-        XCTAssertEqual(settle(travel: 12, velocity: 900), .open)
+    func testDragThatBringsTheActionFullyOutSettlesOpen() {
+        XCTAssertEqual(settle(travel: 76), .open)
+    }
+
+    /// Momentum settles the row where it was going, not where the finger let go.
+    func testAFlickOpensARowTheFingerDidNotCarryAllTheWay() {
+        XCTAssertEqual(settle(travel: 20, velocity: 900), .open)
+    }
+
+    /// The same distance without the speed behind it does not, which is the whole point of settling
+    /// on the projection rather than on a speed rule of its own.
+    func testTheSameDragWithoutTheSpeedDoesNot() {
+        XCTAssertEqual(settle(travel: 20), .closed)
+    }
+
+    /// A destructive action must not fire off momentum alone: the commit reads the travel itself,
+    /// so a flick that projects across the row still only opens it.
+    func testMomentumDoesNotCommitASwipeTheFingerNeverCarried() {
+        XCTAssertEqual(settle(travel: 100, velocity: 2000), .open)
     }
 
     func testFlickBackClosesAnOpenRow() {
-        XCTAssertEqual(settle(travel: 55, velocity: -900), .closed)
+        XCTAssertEqual(settle(travel: 100, velocity: -900), .closed)
     }
 
     func testCrossingHalfTheRowCommits() {
@@ -54,23 +72,20 @@ final class LemonadeSwipeSettleTests: XCTestCase {
 
     /// Threshold cases, mirroring `SwipeSettleTest`: these are what pin the `>=` choices down.
 
-    func testDragExactlyOnHalfTheRevealOpens() {
-        XCTAssertEqual(settle(travel: revealWidth / 2), .open)
+    func testDragExactlyOnTheActionsRevealOpens() {
+        XCTAssertEqual(settle(travel: firstActionReveal), .open)
     }
 
-    func testFlickExactlyOnTheFlingThresholdOpens() {
-        XCTAssertEqual(settle(travel: 0, velocity: 400), .open)
-    }
-
-    func testFlickBackExactlyOnTheFlingThresholdCloses() {
-        XCTAssertEqual(settle(travel: 55, velocity: -400), .closed)
+    /// A drag back carries its own momentum too, so the projection is what closes the row.
+    func testAFlickBackClosesARowTheFingerLeftOpen() {
+        XCTAssertEqual(settle(travel: 100, velocity: -400), .closed)
     }
 
     func testTravelExactlyOnHalfTheRowCommits() {
         XCTAssertEqual(settle(travel: rowWidth / 2), .committed)
     }
 
-    func testFirstFrameWithNothingMeasuredSettlesClosed() {
-        XCTAssertEqual(settle(travel: 0, revealWidth: 0), .closed)
+    func testARowWithNoActionsSettlesClosed() {
+        XCTAssertEqual(settle(travel: 0, firstActionReveal: 0), .closed)
     }
 }

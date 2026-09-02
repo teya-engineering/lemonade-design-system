@@ -103,5 +103,44 @@ internal fun SwipeActionRowDisplay() {
                 }
             }
         }
+
+        item(key = "two-actions-full-swipe") {
+            var fired by remember { mutableStateOf(0) }
+            LemonadeUi.Card(
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
+                header = CardHeaderConfig(
+                    title = "Two actions, allowsFullSwipe = true",
+                    subtitle = "Dragging across the row fires the first action, which takes over the second.",
+                ),
+            ) {
+                LemonadeUi.SwipeActionRow(
+                    actions = listOf(
+                        SwipeAction(
+                            icon = LemonadeIcons.Trash,
+                            contentDescription = "Delete",
+                            onClick = { fired += 1 },
+                        ),
+                        SwipeAction(
+                            icon = LemonadeIcons.PencilLine,
+                            contentDescription = "Edit",
+                            onClick = { },
+                            variant = LemonadeButtonVariant.Neutral,
+                        ),
+                    ),
+                ) {
+                    LemonadeUi.ActionListItem(
+                        label = "Two actions",
+                        // Counted rather than removed, so the swipe can be tried again.
+                        supportText = if (fired == 0) {
+                            "Drag across to fire Delete"
+                        } else {
+                            "Delete fired ${fired}x"
+                        },
+                        showDivider = false,
+                        onItemClicked = { },
+                    )
+                }
+            }
+        }
     }
 }

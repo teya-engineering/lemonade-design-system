@@ -4,42 +4,70 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 /**
- * Covers [resolveSwipeSettle] — where a released drag lands. Geometry matches one trailing action
- * on a 361dp-wide row: a 60dp reveal, and a full swipe that has to cross half of 361.
+ * Covers [resolveSwipeSettle] — where a released drag lands. Geometry matches a trailing action on a
+ * 361dp-wide row: 76dp of travel brings it fully out, and a full swipe has to cross half of 361.
  */
 class SwipeSettleTest {
-    private val revealWidth = 60f
+    private val firstActionReveal = 76f
     private val rowWidth = 361f
 
     private fun settle(
         travel: Float,
         velocity: Float = 0f,
         allowsFullSwipe: Boolean = true,
-        revealWidth: Float = this.revealWidth,
+        firstActionReveal: Float = this.firstActionReveal,
     ): SwipeSettleTarget =
         resolveSwipeSettle(
             travel = travel,
             velocity = velocity,
-            revealWidth = revealWidth,
+            firstActionReveal = firstActionReveal,
             rowWidth = rowWidth,
             allowsFullSwipe = allowsFullSwipe,
         )
 
     @Test
-    fun `a drag short of half the reveal settles closed`() {
+    fun `a short drag settles closed`() {
         assertEquals(expected = SwipeSettleTarget.Closed, actual = settle(travel = 20f))
     }
 
+    /** A drag that showed most of the action but not all of it still belongs back where it was. */
     @Test
-    fun `a drag past half the reveal settles open`() {
-        assertEquals(expected = SwipeSettleTarget.Open, actual = settle(travel = 40f))
+    fun `a drag short of the whole action settles closed`() {
+        assertEquals(expected = SwipeSettleTarget.Closed, actual = settle(travel = 70f))
     }
 
     @Test
-    fun `a flick opens before travelling half the reveal`() {
+    fun `a drag that brings the action fully out settles open`() {
+        assertEquals(expected = SwipeSettleTarget.Open, actual = settle(travel = 76f))
+    }
+
+    /** Momentum settles the row where it was going, not where the finger let go. */
+    @Test
+    fun `a flick opens a row the finger did not carry all the way`() {
         assertEquals(
             expected = SwipeSettleTarget.Open,
-            actual = settle(travel = 12f, velocity = 900f),
+            actual = settle(travel = 20f, velocity = 900f),
+        )
+    }
+
+    /**
+     * The same distance without the speed behind it does not, which is the whole point of settling
+     * on the projection rather than on a speed rule of its own.
+     */
+    @Test
+    fun `the same drag without the speed does not`() {
+        assertEquals(expected = SwipeSettleTarget.Closed, actual = settle(travel = 20f))
+    }
+
+    /**
+     * A destructive action must not fire off momentum alone: the commit reads the travel itself, so
+     * a flick that projects across the row still only opens it.
+     */
+    @Test
+    fun `momentum does not commit a swipe the finger never carried`() {
+        assertEquals(
+            expected = SwipeSettleTarget.Open,
+            actual = settle(travel = 100f, velocity = 2000f),
         )
     }
 
@@ -47,7 +75,7 @@ class SwipeSettleTest {
     fun `a flick back closes an open row`() {
         assertEquals(
             expected = SwipeSettleTarget.Closed,
-            actual = settle(travel = 55f, velocity = -900f),
+            actual = settle(travel = 100f, velocity = -900f),
         )
     }
 
@@ -73,23 +101,16 @@ class SwipeSettleTest {
     }
 
     @Test
-    fun `a drag exactly on half the reveal opens`() {
-        assertEquals(expected = SwipeSettleTarget.Open, actual = settle(travel = revealWidth / 2f))
+    fun `a drag exactly on the action's reveal opens`() {
+        assertEquals(expected = SwipeSettleTarget.Open, actual = settle(travel = firstActionReveal))
     }
 
+    /** A drag back carries its own momentum too, so the projection is what closes the row. */
     @Test
-    fun `a flick exactly on the fling threshold opens`() {
-        assertEquals(
-            expected = SwipeSettleTarget.Open,
-            actual = settle(travel = 0f, velocity = 400f),
-        )
-    }
-
-    @Test
-    fun `a flick back exactly on the fling threshold closes`() {
+    fun `a flick back closes a row the finger left open`() {
         assertEquals(
             expected = SwipeSettleTarget.Closed,
-            actual = settle(travel = 55f, velocity = -400f),
+            actual = settle(travel = 100f, velocity = -400f),
         )
     }
 
@@ -102,10 +123,10 @@ class SwipeSettleTest {
     }
 
     @Test
-    fun `the first frame with nothing measured settles closed`() {
+    fun `a row with no actions settles closed`() {
         assertEquals(
             expected = SwipeSettleTarget.Closed,
-            actual = settle(travel = 0f, revealWidth = 0f),
+            actual = settle(travel = 0f, firstActionReveal = 0f),
         )
     }
 }

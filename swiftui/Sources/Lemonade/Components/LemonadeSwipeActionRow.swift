@@ -2,15 +2,44 @@ import SwiftUI
 
 // MARK: - Settle policy
 
+/// The spring a released row travels on, and the one animation the reveal rides.
+///
+/// Fitted to iOS frame by frame: a settle of 90pt lands within 0.123pt of a critically damped
+/// spring at ω = 12.5 rad/s across the whole animation, which is inside the pixel quantisation of
+/// the measurement. Stiffness is ω², damping is 2ω at unit mass — critically damped, so the row
+/// arrives without springing past and coming back.
+private let settleStiffness: Double = 156.25
+private let settleDamping: Double = 25
+
+/// That spring, continuing from the speed the finger let go at.
+///
+/// A settle that starts from rest is the thing that reads as unpolished: the row stalls for a frame
+/// where the drag ended and then picks itself back up. The same fit recovers the release velocity
+/// carried into the animation, so it is handed on rather than thrown away.
+///
+/// - Parameter velocity: pt/s at release, positive while still travelling open.
+/// - Parameter distance: what `travel` is about to change by, which is what SwiftUI measures the
+///   initial velocity against.
+private func settle(velocity: CGFloat = 0, over distance: CGFloat = 0) -> Animation {
+    .interpolatingSpring(
+        mass: 1,
+        stiffness: settleStiffness,
+        damping: settleDamping,
+        initialVelocity: distance == 0 ? 0 : velocity / distance
+    )
+}
+
 /// Fraction of the row's width a drag must cross for a full swipe to commit.
 private let commitFraction: CGFloat = 0.5
 
-/// Speed, in pt/s, past which a flick decides the settle regardless of how far it travelled.
-private let flingVelocity: CGFloat = 400
+/// Deceleration a released row is left to coast on, `UIScrollView`'s normal rate.
+private let decelerationRate: CGFloat = 0.998
 
-/// Growth applied to the first action while a full swipe is committed, taking it from the small
-/// button's 40pt to the 48pt the design asks for.
-private let committedScale: CGFloat = 1.2
+/// Where a drag that let go at `velocity` pt/s would have come to rest, by Apple's projection: the
+/// distance a second of that speed covers, scaled by how long the deceleration takes to eat it.
+private func projectedTravel(from travel: CGFloat, velocity: CGFloat) -> CGFloat {
+    travel + velocity / 1000 * decelerationRate / (1 - decelerationRate)
+}
 
 /// Where a released drag lands.
 enum SwipeSettleTarget {
@@ -23,35 +52,146 @@ enum SwipeSettleTarget {
 ///
 /// A commit outranks everything: once the row has crossed `commitFraction` of its width the gesture
 /// has already been read as a full swipe, and dragging back at speed without crossing the threshold
-/// again should not undo it. Otherwise a flick wins over position, so a short fast drag opens.
+/// again should not undo it.
+///
+/// Otherwise the row stays open only if the drag would have brought the first action all the way
+/// out — not where the finger let go, but where the row's own momentum was taking it. A flick opens
+/// a row the finger never carried that far, and a slow drag of the same length does not, off one
+/// threshold rather than a speed rule sitting in front of it. It is also what closes a row flung
+/// back: the projection lands short of the threshold.
+///
+/// The commit is the exception, and reads `travel` itself. Momentum must not fire an action across
+/// a row the finger never crossed.
 ///
 /// - Parameters:
 ///   - travel: distance the row has moved from closed, always positive.
 ///   - velocity: pt/s at release, positive while still travelling open.
-///   - revealWidth: width of the action strip, which is where an open row rests.
+///   - firstActionReveal: travel that brings the first action fully out, which is what a release
+///     has to reach for the row to stay open.
 ///   - rowWidth: full width of the row.
 ///   - allowsFullSwipe: whether a drag across the row may commit the first action.
 func resolveSwipeSettle(
     travel: CGFloat,
     velocity: CGFloat,
-    revealWidth: CGFloat,
+    firstActionReveal: CGFloat,
     rowWidth: CGFloat,
     allowsFullSwipe: Bool
 ) -> SwipeSettleTarget {
     if allowsFullSwipe, travel >= rowWidth * commitFraction {
         return .committed
     }
-    // Nothing to open onto: the strip has not measured yet, or there are no actions.
-    if revealWidth <= 0 {
+    // Nothing to open onto: there are no actions.
+    if firstActionReveal <= 0 {
         return .closed
     }
-    if velocity >= flingVelocity {
-        return .open
-    }
-    if velocity <= -flingVelocity {
-        return .closed
-    }
-    return travel >= revealWidth / 2 ? .open : .closed
+    return projectedTravel(from: travel, velocity: velocity) >= firstActionReveal ? .open : .closed
+}
+
+/// How much of an action's arrival is held back for the end.
+///
+/// The last of it springs into place when the row has revealed the action fully, so it lands rather
+/// than simply stopping. Measured off iOS, where an action's scale rings about 3% past its resting
+/// size before settling — a bounce this shallow overshoots by about that, and at 1.5pt of a 48pt
+/// action it stays well inside the gap the action sits in.
+private let bumpDepth: CGFloat = 0.12
+
+/// How far out an action has to be before it lands.
+///
+/// Not all the way: the row settles onto its last action asymptotically, so a trigger sitting on
+/// that exact position is only reached as the spring runs out — the action would then start its
+/// landing after the row had already stopped. Firing at most of the way out puts the two together,
+/// and staggers a pair, each landing as the row clears it.
+private let bumpTrigger: CGFloat = 0.7
+
+/// The spring that lands it. Bouncy where the row's own settle is not: this is the one place a
+/// little ring is the point.
+///
+/// Quick, so it lands with the row rather than trailing it: the row's own settle is 0.5s, and a
+/// bump that long is still arriving after the row has stopped, which reads as a second movement
+/// rather than the end of the first. `dampingFraction` is what makes it ring — 0.4 overshoots by
+/// about 2%, the same as iOS.
+private let bump: Animation = .spring(response: 0.25, dampingFraction: 0.4)
+
+// MARK: - Reveal policy
+
+/// How the action strip draws itself part-way through a reveal.
+struct SwipeStripReveal: Equatable {
+    /// 0…1. The strip scales about its centre by this and fades by the same amount, so an action
+    /// arriving grows and appears as one movement.
+    let scale: CGFloat
+    /// Width added to the leading side of the first action once the strip is at full size.
+    let stretch: CGFloat
+}
+
+/// Resolves how far one action has been revealed.
+///
+/// An action is the gap the row has opened for it: `travel` less everything between it and the row's
+/// trailing edge is the width it wants, and the rest follows from that. Short of its own width it
+/// scales into it; past it the first action — the one a full swipe fires — stretches to fill it.
+/// Because that width *is* the gap, an action never reaches under the row, whatever the row is
+/// drawn on.
+///
+/// Resolved per action rather than for the strip, so each one arrives as the row uncovers it: the
+/// second action of a pair waits until the row has cleared the first.
+///
+/// Nothing here is animated. Everything is a function of where the row is, so an action can never
+/// get out of step with the row it belongs to — a spring chasing the gap overshoots into it the
+/// moment the row comes back, and settling animates a spring of its own that no longer agrees with
+/// the row's. The row's own animation carries all of it.
+///
+/// The stretch waits for the whole strip, not for this action's share of it. An action that grew
+/// into its own leftover would grow over the actions still queued behind it — for the outermost of
+/// a pair, from the moment the row rests open.
+///
+/// - Parameters:
+///   - travel: distance the row has moved from closed, always positive.
+///   - actionReveal: travel that rests the row on this action, so the strip's width up to and
+///     including it.
+///   - stripReveal: travel that rests the row on every action, which is where a stretch starts.
+///   - actionWidth: the action's own width, which is what it scales towards.
+func resolveSwipeStripReveal(
+    travel: CGFloat,
+    actionReveal: CGFloat,
+    stripReveal: CGFloat,
+    actionWidth: CGFloat
+) -> SwipeStripReveal {
+    guard actionWidth > 0 else { return SwipeStripReveal(scale: 0, stretch: 0) }
+    // An action grows over the last half of its own width. Scaling about its centre, that walks its
+    // leading edge out at exactly the rate the row is travelling — so from nothing to full size,
+    // and on past it as the capsule stretches, the action's leading edge sits one leading gap ahead
+    // of the row. The action *is* the gap the row has opened, at every point of the drag.
+    let growth = actionWidth / 2
+    let scale = min(max((travel - (actionReveal - growth)) / growth, 0), 1)
+    return SwipeStripReveal(scale: scale, stretch: max(travel - stripReveal, 0))
+}
+
+/// Travel that rests a row on the first `count` of its actions. The whole reveal at the action
+/// count, and one action's own share of it at its index plus one.
+private func swipeRevealWidth(through count: Int) -> CGFloat {
+    guard count > 0 else { return 0 }
+    let gaps = CGFloat(count - 1) * LemonadeTheme.spaces.spacing200
+    return LemonadeTheme.spaces.spacing300 + CGFloat(count) * LemonadeTheme.sizes.size1200 + gaps
+        + LemonadeTheme.spaces.spacing400
+}
+
+/// Opacity an action being pushed along has dimmed to once the row has travelled its whole width.
+/// `opacity20`, held as a plain number so the reveal stays resolvable without a theme.
+private let displacedFloor: CGFloat = 0.2
+
+/// Opacity of the actions a stretching one is pushing along.
+///
+/// A swipe past the commit threshold is taking the row over, and the actions it is displacing recede
+/// as it does rather than riding out at full strength: unchanged through the reveal, down to
+/// `displacedFloor` by the time the row has travelled its whole width.
+///
+/// - Parameters:
+///   - travel: distance the row has moved from closed, always positive.
+///   - rowWidth: full width of the row.
+func resolveSwipeDisplacedOpacity(travel: CGFloat, rowWidth: CGFloat) -> CGFloat {
+    let takeover = rowWidth * commitFraction
+    guard rowWidth > takeover else { return 1 }
+    let progress = min(max((travel - takeover) / (rowWidth - takeover), 0), 1)
+    return 1 - (1 - displacedFloor) * progress
 }
 
 // MARK: - LemonadeSwipeAction
@@ -96,7 +236,6 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     /// The same origin, cleared only by `onEnded`, which is what `onEnded` guards on. Keeping the
     /// two apart is what lets the cancel path snap back without stealing the settle.
     @State private var settleOrigin: CGFloat?
-    @State private var revealWidth: CGFloat = 0
     @State private var rowWidth: CGFloat = 0
     @State private var committed = false
     @GestureState private var isDragging = false
@@ -105,22 +244,30 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     /// A reveal on the trailing edge travels left in LTR and right in RTL.
     private var towardsTrailing: CGFloat { layoutDirection == .rightToLeft ? 1 : -1 }
 
-    private var progress: CGFloat {
-        guard revealWidth > 0 else { return 0 }
-        return min(max(travel / revealWidth, 0), 1)
-    }
+    /// Where an open row rests: every action, plus the padding they sit in. Computed rather than
+    /// measured: the strip changes width as the first action stretches, so anything measured off it
+    /// would move under the model driving it.
+    private var revealWidth: CGFloat { swipeRevealWidth(through: actions.count) }
 
     var body: some View {
         VStack(spacing: 0) {
             ZStack(alignment: .trailing) {
-                actionStrip
+                SwipeActionStrip(
+                    travel: travel,
+                    actions: actions,
+                    committed: committed,
+                    rowWidth: rowWidth,
+                    towardsTrailing: towardsTrailing
+                )
                 content()
-                    // The open row rests on the list item's own press highlight rather than a
-                    // surface of its own: same fill, same radius, same gutter.
+                    // A row under the finger rests on the list item's own press highlight rather
+                    // than on a surface of its own: same fill, same radius, same gutter. It is on
+                    // for the whole gesture, not proportional to the travel — the row is being
+                    // handled from the first pixel.
                     .background(
                         RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
                             .fill(LemonadeTheme.colors.interaction.bgSubtleInteractive)
-                            .opacity(progress)
+                            .opacity(travel > 0 ? 1 : 0)
                             .padding(LemonadeTheme.spaces.spacing100)
                     )
                     .offset(x: travel * towardsTrailing)
@@ -141,9 +288,15 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                         .onChange(of: proxy.size.width) { rowWidth = $0 }
                 }
             )
-            // A disabled row must not compete with the enclosing scroll view for the gesture, so
-            // the mask drops to `.subviews` rather than the gesture checking `enabled` inside.
-            .gesture(drag, including: enabled && !actions.isEmpty ? .all : .subviews)
+            // High priority, because the wrapped row is usually a `Button` and a plain `.gesture`
+            // ranks below the gestures of the view it is attached to: whichever of the two claimed
+            // the touch first won, so the same drag opened the row or did nothing depending on
+            // where it started. The 10pt minimum is what keeps the row's own tap working — a tap
+            // never travels far enough for this gesture to claim it.
+            //
+            // A disabled row must not compete with the enclosing scroll view either, so the mask
+            // drops to `.subviews` rather than the gesture checking `enabled` inside.
+            .highPriorityGesture(drag, including: enabled && !actions.isEmpty ? .all : .subviews)
             .modifier(SwipeAccessibilityActions(actions: actions))
 
             if showDivider {
@@ -152,14 +305,13 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             }
         }
         .onChange(of: open) { newValue in
-            withAnimation(.spring()) { travel = newValue ? revealWidth : 0 }
+            withAnimation(settle()) { travel = newValue ? revealWidth : 0 }
         }
         .onChange(of: revealWidth) { newValue in
-            // The strip can measure after the row is already open, or re-measure when `actions`
-            // change, so an open row would otherwise rest at a stale offset. Never under a live
-            // finger, where it would fight the drag.
+            // `actions` can change while the row is open, and an open row would otherwise rest at
+            // a stale offset. Never under a live finger, where it would fight the drag.
             guard open, dragOrigin == nil else { return }
-            withAnimation(.spring()) { travel = newValue }
+            withAnimation(settle()) { travel = newValue }
         }
         .onChange(of: isDragging) { dragging in
             // A cancelled gesture never delivers `onEnded`, so the snap back has to happen here.
@@ -168,46 +320,8 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             guard !dragging, dragOrigin != nil else { return }
             dragOrigin = nil
             committed = false
-            withAnimation(.spring()) { travel = open ? revealWidth : 0 }
+            withAnimation(settle()) { travel = open ? revealWidth : 0 }
         }
-    }
-
-    private var actionStrip: some View {
-        HStack(spacing: LemonadeTheme.spaces.spacing200) {
-            ForEach(Array(actions.enumerated()), id: \.offset) { index, action in
-                // The first action is the one a full swipe fires, so it is the one that grows. It
-                // grows by scaling rather than by changing size: a size change re-measures the
-                // strip mid-drag, which rewrites the reveal width the settle is resolved against.
-                LemonadeUi.IconButton(
-                    icon: action.icon,
-                    contentDescription: action.contentDescription,
-                    onClick: action.onClick,
-                    variant: action.variant,
-                    type: .solid,
-                    size: .small,
-                    shape: .circular
-                )
-                .scaleEffect(committed && index == 0 ? committedScale : 1)
-            }
-        }
-        .padding(.leading, LemonadeTheme.spaces.spacing300)
-        .padding(.trailing, LemonadeTheme.spaces.spacing200)
-        .background(
-            GeometryReader { proxy in
-                Color.clear
-                    .onAppear { revealWidth = measuredRevealWidth(proxy.size.width) }
-                    .onChange(of: proxy.size.width) { revealWidth = measuredRevealWidth($0) }
-            }
-        )
-        // The strip's buttons stay in the accessibility tree even while covered by the row, where
-        // they would announce a destructive action ahead of the row it belongs to. The row's own
-        // custom actions are the accessible path.
-        .accessibilityHidden(true)
-    }
-
-    /// An empty strip still measures its padding, which would open the row onto a bare gap.
-    private func measuredRevealWidth(_ width: CGFloat) -> CGFloat {
-        actions.isEmpty ? 0 : width
     }
 
     private func clampedTravel(_ value: CGFloat) -> CGFloat {
@@ -243,24 +357,24 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 // Read the release position off the gesture rather than off `travel`: the cancel
                 // path may already have snapped `travel` back before this ran.
                 let released = clampedTravel(origin + value.translation.width * towardsTrailing)
+                let speed = releaseVelocity(of: value) * towardsTrailing
                 let target = resolveSwipeSettle(
                     travel: released,
-                    velocity: releaseVelocity(of: value) * towardsTrailing,
-                    revealWidth: revealWidth,
+                    velocity: speed,
+                    firstActionReveal: swipeRevealWidth(through: 1),
                     rowWidth: rowWidth,
                     allowsFullSwipe: allowsFullSwipe
                 )
-                switch target {
-                case .committed:
-                    open = false
+                open = target == .open
+                if target == .committed {
+                    // Before the animation, not after: the row must not wait on a spring to fire.
                     actions.first?.onClick()
-                    withAnimation(.spring()) { travel = 0 }
-                case .open:
-                    open = true
-                    withAnimation(.spring()) { travel = revealWidth }
-                case .closed:
-                    open = false
-                    withAnimation(.spring()) { travel = 0 }
+                }
+                // The spring picks up the speed the finger let go at rather than starting from
+                // rest, so the row carries straight on out of the drag.
+                let settleTo: CGFloat = target == .open ? revealWidth : 0
+                withAnimation(settle(velocity: speed, over: settleTo - travel)) {
+                    travel = settleTo
                 }
             }
     }
@@ -280,6 +394,130 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
         #if canImport(UIKit) && !os(watchOS)
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         #endif
+    }
+}
+
+// MARK: - Strip
+
+/// The actions behind the row, drawn as far as the row has revealed them.
+///
+/// `Animatable` on `travel`, so that a settle hands it the row's own interpolated position frame by
+/// frame. Left to interpolate a scale and a width of its own, it would arrive at the right place by
+/// a different route: an action still at full width while the row has come most of the way back,
+/// which is exactly where the two would be seen to overlap.
+private struct SwipeActionStrip: View, Animatable {
+    var travel: CGFloat
+    let actions: [LemonadeSwipeAction]
+    let committed: Bool
+    let rowWidth: CGFloat
+    let towardsTrailing: CGFloat
+
+    var animatableData: CGFloat {
+        get { travel }
+        set { travel = newValue }
+    }
+
+    private var actionSize: CGFloat { LemonadeTheme.sizes.size1200 }
+
+    /// Distance from one action to the next.
+    private var step: CGFloat { actionSize + LemonadeTheme.spaces.spacing200 }
+
+    private var actionsWidth: CGFloat {
+        guard !actions.isEmpty else { return 0 }
+        let gaps = CGFloat(actions.count - 1) * LemonadeTheme.spaces.spacing200
+        return CGFloat(actions.count) * actionSize + gaps
+    }
+
+    private var displacedOpacity: CGFloat {
+        resolveSwipeDisplacedOpacity(travel: travel, rowWidth: rowWidth)
+    }
+
+    var body: some View {
+        ZStack(alignment: .trailing) {
+            // Outermost last, so it is drawn on top: the first action is the one a full swipe
+            // fires, and the one that stretches over the actions beside it.
+            ForEach(Array(actions.enumerated()).reversed(), id: \.offset) { index, action in
+                let reveal = resolveSwipeStripReveal(
+                    travel: travel,
+                    actionReveal: swipeRevealWidth(through: index + 1),
+                    stripReveal: swipeRevealWidth(through: actions.count),
+                    actionWidth: actionSize
+                )
+                // Each action lands as the row clears it, so the second of a pair bumps in on its
+                // own rather than with the first.
+                let arrived = reveal.scale >= bumpTrigger
+                capsule(
+                    action,
+                    stretch: index == 0 ? reveal.stretch : 0,
+                    committed: committed && index == 0
+                )
+                // Scoped between the two scales, so the spring governs the bump and nothing else.
+                // Outside them it takes the reveal's own scale with it, and since that is driven
+                // by the row frame by frame the spring restarts from wherever the action had got
+                // to — which stalls it mid-arrival and then walks it up again.
+                .scaleEffect(arrived ? 1 : 1 - bumpDepth)
+                .animation(bump, value: arrived)
+                .scaleEffect(reveal.scale)
+                .opacity(reveal.scale * (index == 0 ? 1 : displacedOpacity))
+                // The slack goes to the first action's width and to everything else's position, so
+                // a stretching action pushes the ones beside it along rather than growing over
+                // them. Their gaps hold, and the strip still ends exactly one leading gap ahead of
+                // the row however far it is dragged.
+                .offset(x: (CGFloat(index) * step + (index == 0 ? 0 : reveal.stretch)) * towardsTrailing)
+            }
+        }
+        .frame(width: actionsWidth, alignment: .trailing)
+        .padding(.leading, LemonadeTheme.spaces.spacing300)
+        .padding(.trailing, LemonadeTheme.spaces.spacing400)
+        // Crossing the commit threshold moves the icon without moving the row, so it is the one
+        // thing here with an animation of its own.
+        .animation(settle(), value: committed)
+        // The actions stay in the accessibility tree even while covered by the row, where they
+        // would announce a destructive action ahead of the row it belongs to. The row's own custom
+        // actions are the accessible path.
+        .accessibilityHidden(true)
+    }
+
+    /// One action: a capsule that is a circle until a full swipe stretches it.
+    ///
+    /// Drawn here rather than with `LemonadeUi.IconButton`, whose frame is square and fixed, but
+    /// off the same colours so the two stay in step.
+    private func capsule(
+        _ action: LemonadeSwipeAction,
+        stretch: CGFloat,
+        committed: Bool
+    ) -> some View {
+        let colors = resolveColors(variant: action.variant, type: .solid)
+        // Centred in the capsule until the swipe commits, then it slides to the centre of the
+        // capsule's leading end — where the action would sit if it had stayed a circle and the row
+        // had simply carried on past it.
+        let iconOffset = committed ? stretch / 2 * towardsTrailing : 0
+        return SwiftUI.Button(action: action.onClick) {
+            Capsule()
+                .fill(colors.backgroundColor)
+                .frame(width: actionSize + stretch, height: actionSize)
+                .overlay {
+                    LemonadeUi.Icon(
+                        icon: action.icon,
+                        contentDescription: action.contentDescription,
+                        size: .large,
+                        tint: colors.contentColor
+                    )
+                    .offset(x: iconOffset)
+                }
+                .contentShape(Capsule())
+        }
+        .buttonStyle(SwipeActionButtonStyle())
+    }
+}
+
+/// The press treatment `LemonadeUi.IconButton` gives its own button, for the capsule that stands in
+/// for it here.
+private struct SwipeActionButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(configuration.isPressed ? .opacity.opacityPressed : .opacity.opacity100)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
     }
 }
 
