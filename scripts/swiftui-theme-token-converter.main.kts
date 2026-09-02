@@ -50,7 +50,7 @@ fun main() {
 
         val resourcesWithAssets = mutableListOf<Pair<ResourceData<Unit>, String>>()
         tokenNames.forEach { name ->
-            val assetName = "lemonade-${name.split("/").joinToString("-") { it.lowercase().replace("_", "-") }}"
+            val assetName = name.sanitizedAssetName()
             val resource = resourcesByName[name.sanitizedSwiftValueName()]
             if (resource != null) {
                 resourcesWithAssets.add(resource to assetName)

@@ -74,7 +74,7 @@ fun main() {
             val parts = key.split("/")
             val group = parts.getOrNull(0)?.sanitizeGroup() ?: "Other"
             val name = parts.last().sanitizeSwiftName()
-            val assetName = "lemonade-${parts.joinToString("-") { it.lowercase().replace("_", "-").replace(" ", "-") }}"
+            val assetName = key.sanitizedAssetName()
 
             ColorResource(
                 group = group,
