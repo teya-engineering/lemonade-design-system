@@ -112,7 +112,8 @@ usage note design wrote in Figma — is in Foundations:
 - [Typography](/lemonade-design-system/foundations/typography/)
 - [Space & shape](/lemonade-design-system/foundations/space-and-shape/)
 - [Elevation](/lemonade-design-system/foundations/elevation/)
-- [Opacity & borders](/lemonade-design-system/foundations/opacity-and-borders/)
+- [Opacity](/lemonade-design-system/foundations/opacity/)
+- [Borders](/lemonade-design-system/foundations/borders/)
 
 Elevation and opacity are left out of the paste block on purpose — they matter less to a
 prototype's credibility than the three above, and every line in that block costs attention.

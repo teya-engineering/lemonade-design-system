@@ -63,8 +63,8 @@ around text — let the container grow with it.
 ## Focus
 
 Focus needs to be visible. The `state/focus-ring` token exists for exactly this — see
-[Opacity & borders](/lemonade-design-system/foundations/opacity-and-borders/) for how it
-sits alongside the other state tokens. Reach for it rather than inventing a focus
+[Borders](/lemonade-design-system/foundations/borders/) for how it sits alongside the
+other state tokens. Reach for it rather than inventing a focus
 treatment, for the same reason any state token beats a raw value: components and screens
 that use the token pick up any future change together, and the ones that didn't, won't.
 

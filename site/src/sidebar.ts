@@ -92,7 +92,8 @@ export const sections: SidebarSection[] = [
 			{ label: 'Typography', slug: 'foundations/typography' },
 			{ label: 'Space & shape', slug: 'foundations/space-and-shape' },
 			{ label: 'Elevation', slug: 'foundations/elevation' },
-			{ label: 'Opacity & borders', slug: 'foundations/opacity-and-borders' },
+			{ label: 'Opacity', slug: 'foundations/opacity' },
+			{ label: 'Borders', slug: 'foundations/borders' },
 		],
 	},
 ];
