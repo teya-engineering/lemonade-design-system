@@ -805,6 +805,11 @@ private fun SwipeActionRowCore(
                         holding = false
                         releasing = false
                         dragging = true
+                        // Claimed, so this is the row being read now. Announced here rather than
+                        // when the row settles open: a reader who has started on another row has
+                        // already left the open one, and waiting for the release leaves it
+                        // sitting there through the whole gesture.
+                        announce?.invoke(groupIdentity)
                     },
                     onDragStopped = { velocity ->
                         dragging = false

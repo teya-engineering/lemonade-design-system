@@ -533,6 +533,11 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                     dragOrigin = travel
                     settleOrigin = travel
                     claimTranslation = value.translation.width
+                    // Claimed, so this is the row being read now. Announced here rather than when
+                    // the row settles open: a reader who has started on another row has already
+                    // left the open one, and waiting for the release leaves it sitting there
+                    // through the whole gesture.
+                    announce?(groupIdentity)
                     // Back under a finger, so nothing is holding it any more: this drag settles
                     // the row wherever it asks, like any other.
                     heldTravel = nil
