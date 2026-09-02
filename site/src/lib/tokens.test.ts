@@ -98,6 +98,63 @@ describe('flattenTokens', () => {
 	});
 });
 
+describe('flattenTokens alias references', () => {
+	// The native export keeps aliases as DTCG references instead of resolving
+	// them, so `state/focus-ring` arrives as the string "{base.border-50}". Left
+	// alone it reaches the page as NaN — and it is the semantic tokens, the ones
+	// the docs tell people to prefer, that are written this way.
+	const scale = (extra = {}) =>
+		flattenTokens({
+			base: {
+				'border-50': { $type: 'number', $value: 2 },
+				'border-100': { $type: 'number', $value: 4 },
+			},
+			state: {
+				'focus-ring': { $type: 'number', $value: '{base.border-50}' },
+				...extra,
+			},
+		});
+
+	it('resolves a reference to the value it points at', () => {
+		const byName = new Map(scale().map((t) => [t.name, t]));
+
+		expect(byName.get('state/focus-ring')!.value).toBe(2);
+		expect(byName.get('base/border-50')!.value).toBe(2);
+	});
+
+	it('follows a chain of references', () => {
+		const byName = new Map(
+			scale({ 'ring-alias': { $type: 'number', $value: '{state.focus-ring}' } }).map((t) => [
+				t.name,
+				t,
+			]),
+		);
+
+		expect(byName.get('state/ring-alias')!.value).toBe(2);
+	});
+
+	it('throws on a reference that points nowhere', () => {
+		expect(() => scale({ orphan: { $type: 'number', $value: '{base.border-999}' } })).toThrow(
+			/aliases "base\/border-999"/,
+		);
+	});
+
+	it('throws on a loop rather than recursing forever', () => {
+		expect(() =>
+			flattenTokens({
+				a: { $type: 'number', $value: '{b}' },
+				b: { $type: 'number', $value: '{a}' },
+			}),
+		).toThrow(/Alias loop/);
+	});
+
+	it('leaves ordinary string values alone', () => {
+		const [weight] = flattenTokens({ 'font-weight': { $type: 'string', $value: 'SemiBold' } });
+
+		expect(weight!.value).toBe('SemiBold');
+	});
+});
+
 describe('themeColors', () => {
 	it('reads tokens from the Figma export', () => {
 		const groups = themeColors();

@@ -104,7 +104,47 @@ export function flattenTokens(tree: Record<string, unknown>): RawVariable[] {
 	};
 
 	visit(tree, []);
-	return out;
+	return resolveReferences(out);
+}
+
+/** `{base.border-50}` — how the Figma native export writes an alias. */
+const REFERENCE = /^\{(.+)\}$/;
+
+/**
+ * Replaces alias references with the value they point at.
+ *
+ * The old plugin export resolved these itself; the native one keeps the
+ * reference, so a semantic token like `state/focus-ring` arrives as the string
+ * `{base.border-50}` rather than 2. Left alone it reaches the page as `NaN`,
+ * and it is exactly the semantic tokens the docs tell people to prefer that
+ * are written this way.
+ */
+function resolveReferences(tokens: RawVariable[]): RawVariable[] {
+	const byName = new Map(tokens.map((token) => [token.name, token]));
+
+	const resolve = (token: RawVariable, seen: Set<string>): RawVariable['value'] => {
+		const match = typeof token.value === 'string' ? REFERENCE.exec(token.value) : null;
+		if (!match) return token.value;
+
+		// References are dot-delimited paths from the root of the same export.
+		const target = match[1]!.replace(/\./g, '/');
+		if (seen.has(target)) {
+			throw new Error(`Alias loop: "${token.name}" resolves back to itself via "${target}".`);
+		}
+
+		const referenced = byName.get(target);
+		if (!referenced) {
+			throw new Error(
+				`"${token.name}" aliases "${target}", which is not in the same export. ` +
+					'Aliases are dot-delimited paths from the root of the file they live in.',
+			);
+		}
+
+		seen.add(target);
+		return resolve(referenced, seen);
+	};
+
+	return tokens.map((token) => ({ ...token, value: resolve(token, new Set([token.name])) }));
 }
 
 function load(file: string): RawVariable[] {
