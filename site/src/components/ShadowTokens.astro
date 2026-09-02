@@ -6,30 +6,38 @@ const sets = shadowSets();
 const sampleSurface = fixedLightSurface();
 ---
 
-<div class="grid">
-	{
-		sets.map((set) => (
-			<article class="card">
-				<div class="sample" style={`box-shadow: ${set.css}`} />
-				<p class="name">{set.name}</p>
-				<p class="levels">
-					{set.levels.length} {set.levels.length === 1 ? 'layer' : 'layers'}
-				</p>
-				<code>{set.css}</code>
-			</article>
-		))
-	}
+<div class="panel">
+	<div class="grid">
+		{
+			sets.map((set) => (
+				<article class="card">
+					<div class="sample" style={`box-shadow: ${set.css}`} />
+					<p class="name">{set.name}</p>
+				</article>
+			))
+		}
+	</div>
 </div>
 
 <style define:vars={{ sampleSurface }}>
+	.panel {
+		margin-block: 2rem;
+		padding: 24px;
+		border-radius: 0.75rem;
+		background: var(--sl-color-gray-6);
+	}
+
 	.grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
 		gap: 1.5rem;
-		margin-block: 2rem;
 	}
 
+	/* Starlight's markdown flow puts a top margin on every sibling after the
+	   first, which grid items honour — so every card but the first sat lower
+	   than its row. The grid's `gap` does the spacing here. */
 	.card {
+		margin: 0;
 		display: flex;
 		flex-direction: column;
 		gap: 0.4rem;
@@ -53,18 +61,5 @@ const sampleSurface = fixedLightSurface();
 		font-size: var(--sl-text-sm);
 		font-weight: 600;
 		color: var(--sl-color-white);
-	}
-
-	.levels {
-		margin: 0;
-		font-size: var(--sl-text-xs);
-		color: var(--sl-color-gray-3);
-	}
-
-	code {
-		font-size: 0.625rem;
-		line-height: 1.5;
-		overflow-wrap: anywhere;
-		color: var(--sl-color-gray-2);
 	}
 </style>
