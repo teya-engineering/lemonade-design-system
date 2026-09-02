@@ -6,6 +6,7 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -606,6 +607,15 @@ private fun SwipeActionRowCore(
     }
 
     val highlight = LemonadeTheme.colors.interaction.bgSubtleInteractive
+    // On the moment a finger takes the row, gone by the time it has carried it home. Snapping in
+    // and easing out rather than following the travel: keyed off the travel it would blink off the
+    // frame the row landed, and the row is still being handled until it has finished arriving.
+    val handled = dragging || open
+    val highlightAlpha by animateFloatAsState(
+        targetValue = if (handled) 1f else 0f,
+        animationSpec = if (handled) snap() else settleSpring,
+        label = "swipeRowHighlight",
+    )
     val gutterPx = with(density) { LemonadeTheme.spaces.spacing100.toPx() }
     val highlightRadiusPx = with(density) { LemonadeTheme.radius.radius500.toPx() }
 
@@ -712,13 +722,14 @@ private fun SwipeActionRowCore(
                     // for the whole gesture, not proportional to the travel — the row is being
                     // handled from the first pixel.
                     .drawBehind {
-                        if (travel > 0f) {
+                        if (highlightAlpha > 0f) {
                             val gutter = gutterPx
                             drawRoundRect(
                                 color = highlight,
                                 topLeft = Offset(x = gutter, y = gutter),
                                 size = Size(size.width - gutter * 2, size.height - gutter * 2),
                                 cornerRadius = CornerRadius(highlightRadiusPx),
+                                alpha = highlightAlpha,
                             )
                         }
                     },
