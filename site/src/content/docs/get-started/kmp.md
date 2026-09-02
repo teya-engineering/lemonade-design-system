@@ -64,6 +64,68 @@ fun MyScreenContent() {
 }
 ```
 
+## Using the tokens
+
+Wrap the app once in `LemonadeTheme`. Everything inside it can read the tokens; outside
+it, reading one throws `No default colors set. Wrap your content in LemonadeTheme.`
+
+```kotlin
+@Composable
+fun App() {
+    LemonadeTheme {
+        Screen()
+    }
+}
+```
+
+The theme follows the system appearance on its own — it picks `LemonadeLightTheme` or
+`LemonadeDarkTheme` from `isSystemInDarkTheme()` — so a semantic token resolves to the
+right value in both themes without anything at the call site.
+
+Inside, reach a token through its group:
+
+```kotlin
+@Composable
+private fun Screen() {
+    Column(
+        modifier = Modifier
+            .background(LemonadeTheme.colors.background.bgDefault)
+            .padding(LemonadeTheme.spaces.spacing400),
+        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+    ) {
+        LemonadeUi.Text(
+            text = "Payment received",
+            textStyle = LemonadeTheme.typography.bodyMediumSemiBold,
+            color = LemonadeTheme.colors.content.contentPositive,
+        )
+    }
+}
+```
+
+| Tokens | Accessor | Example |
+|---|---|---|
+| Colour | `LemonadeTheme.colors` | `colors.content.contentPositive` |
+| Typography | `LemonadeTheme.typography` | `typography.bodyMediumSemiBold` |
+| Spacing | `LemonadeTheme.spaces` | `spaces.spacing400` |
+| Radius | `LemonadeTheme.radius` | `radius.radius600` |
+| Shape | `LemonadeTheme.shapes` | `shapes.radiusContainerDefault` |
+| Size | `LemonadeTheme.sizes` | `sizes.size500` |
+| Opacity | `LemonadeTheme.opacities` | `opacities.opacity5` |
+| Border width | `LemonadeTheme.borderWidths` | `borderWidths.borderWidth100` |
+
+Colour is grouped the same way [Foundations](/lemonade-design-system/foundations/colour/)
+lists it: `background`, `border`, `content`, `interaction`, `scoped` and `shadow`.
+`LemonadeTheme.colors.isDark` tells you which theme resolved, for the rare case where a
+decision genuinely depends on it.
+
+Shadows are a modifier rather than a value — `Modifier.lemonadeShadow(...)`.
+
+:::note
+Every accessor is `@Composable`. They read composition locals, so they can only be
+called from inside a composable function — pull the value out and pass it down if you
+need it somewhere else.
+:::
+
 ## Where to go next
 
 - [Semantic tokens first](/lemonade-design-system/standards/semantic-tokens/) — the one

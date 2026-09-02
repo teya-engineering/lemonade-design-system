@@ -29,6 +29,50 @@ struct MyScreen: View {
 }
 ```
 
+## Using the tokens
+
+There is no theme wrapper to add. `LemonadeTheme` is a namespace of statics, and the
+colours resolve through the asset catalog, so they follow light and dark on their own.
+
+```swift
+VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing200) {
+    LemonadeUi.Text(
+        "Payment received",
+        textStyle: LemonadeTypography.shared.bodyMediumSemiBold,
+        color: LemonadeTheme.colors.content.contentPositive
+    )
+}
+.padding(LemonadeTheme.spaces.spacing400)
+.background(LemonadeTheme.colors.background.bgDefault)
+```
+
+| Tokens | Accessor | Example |
+|---|---|---|
+| Colour | `LemonadeTheme.colors` | `colors.content.contentPositive` |
+| Typography | `LemonadeTypography.shared` | `shared.bodyMediumSemiBold` |
+| Spacing | `LemonadeTheme.spaces` | `spaces.spacing400` |
+| Radius | `LemonadeTheme.radius` | `radius.radius600` |
+| Shape | `LemonadeTheme.shapes` | `shapes.radiusContainerDefault` |
+| Size | `LemonadeTheme.sizes` | `sizes.size500` |
+| Opacity | `LemonadeTheme.opacity` | `opacity.opacity5` |
+| Border width | `LemonadeTheme.borderWidth` | `borderWidth.borderWidth100` |
+
+Colour is grouped the same way [Foundations](/lemonade-design-system/foundations/colour/)
+lists it: `background`, `border`, `content`, `interaction`, `scoped` and `shadow`.
+
+Two shorthands are worth knowing. Colours work anywhere SwiftUI takes a `ShapeStyle`:
+
+```swift
+Text("Total").foregroundStyle(.content.contentPrimary)
+Rectangle().fill(.bg.bgSubtle)
+```
+
+And every text style is on `Font`, so it drops straight into `.font(_:)`:
+
+```swift
+Text("Total").font(.bodyMediumSemiBold)
+```
+
 ## Where to go next
 
 - [Semantic tokens first](/lemonade-design-system/standards/semantic-tokens/) — the one
