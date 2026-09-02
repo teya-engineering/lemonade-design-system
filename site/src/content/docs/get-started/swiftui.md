@@ -3,11 +3,6 @@ title: SwiftUI
 description: Add Lemonade to a SwiftUI project and render your first component.
 ---
 
-:::caution[Unverified]
-These installation steps have not been walked through end to end. If you follow
-them and something is wrong, please correct this page.
-:::
-
 Add the package in Xcode via **File → Add Package Dependencies**, pointing at
 `github.com/saltpay/lemonade-design-system`, and pick the most recent
 `lemonade-swiftui-*` tag (no `v` prefix — e.g. `lemonade-swiftui-0.37.1`).
