@@ -180,6 +180,18 @@ public object LemonadeDarkTheme : LemonadeSemanticColors {
             override val contentOnSettlementEveryday = LemonadePrimitiveColors.Solid.Violet.violet800
             override val contentOnSettlementInstant = LemonadePrimitiveColors.Solid.YellowLime.yellowLime900
             override val contentOnSettlementScheduled = LemonadePrimitiveColors.Solid.Fuchsia.fuchsia800
+            override val bgUserRoleAccountant = LemonadePrimitiveColors.Alpha.Rose.alpha100
+            override val bgUserRoleAdmin = LemonadePrimitiveColors.Alpha.Yellow.alpha100
+            override val bgUserRoleLegalRepresentative = LemonadePrimitiveColors.Alpha.Cyan.alpha100
+            override val bgUserRoleManager = LemonadePrimitiveColors.Alpha.Purple.alpha100
+            override val borderUserRoleAccountant = LemonadePrimitiveColors.Alpha.Rose.alpha200
+            override val borderUserRoleAdmin = LemonadePrimitiveColors.Alpha.Yellow.alpha200
+            override val borderUserRoleLegalRepresentative = LemonadePrimitiveColors.Alpha.Cyan.alpha200
+            override val borderUserRoleManager = LemonadePrimitiveColors.Alpha.Purple.alpha200
+            override val contentOnUserRoleAccountant = LemonadePrimitiveColors.Solid.Rose.rose400
+            override val contentOnUserRoleAdmin = LemonadePrimitiveColors.Solid.Yellow.yellow500
+            override val contentOnUserRoleLegalRepresentative = LemonadePrimitiveColors.Solid.Cyan.cyan500
+            override val contentOnUserRoleManager = LemonadePrimitiveColors.Solid.Purple.purple400
         }
     override val shadow: LemonadeSemanticColors.ShadowColors =
         object : LemonadeSemanticColors.ShadowColors {

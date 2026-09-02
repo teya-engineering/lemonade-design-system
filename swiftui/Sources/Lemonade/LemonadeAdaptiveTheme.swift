@@ -184,6 +184,18 @@ private struct AdaptiveScopedColors: ScopedColors {
     let contentOnSettlementEveryday = Color("lemonade-scoped-settlements-content-on-settlement-everyday", bundle: .lemonade)
     let contentOnSettlementInstant = Color("lemonade-scoped-settlements-content-on-settlement-instant", bundle: .lemonade)
     let contentOnSettlementScheduled = Color("lemonade-scoped-settlements-content-on-settlement-scheduled", bundle: .lemonade)
+    let bgUserRoleAccountant = Color("lemonade-scoped-user roles-bg-user-role-accountant", bundle: .lemonade)
+    let bgUserRoleAdmin = Color("lemonade-scoped-user roles-bg-user-role-admin", bundle: .lemonade)
+    let bgUserRoleLegalRepresentative = Color("lemonade-scoped-user roles-bg-user-role-legal-representative", bundle: .lemonade)
+    let bgUserRoleManager = Color("lemonade-scoped-user roles-bg-user-role-manager", bundle: .lemonade)
+    let borderUserRoleAccountant = Color("lemonade-scoped-user roles-border-user-role-accountant", bundle: .lemonade)
+    let borderUserRoleAdmin = Color("lemonade-scoped-user roles-border-user-role-admin", bundle: .lemonade)
+    let borderUserRoleLegalRepresentative = Color("lemonade-scoped-user roles-border-user-role-legal-representative", bundle: .lemonade)
+    let borderUserRoleManager = Color("lemonade-scoped-user roles-border-user-role-manager", bundle: .lemonade)
+    let contentOnUserRoleAccountant = Color("lemonade-scoped-user roles-content-on-user-role-accountant", bundle: .lemonade)
+    let contentOnUserRoleAdmin = Color("lemonade-scoped-user roles-content-on-user-role-admin", bundle: .lemonade)
+    let contentOnUserRoleLegalRepresentative = Color("lemonade-scoped-user roles-content-on-user-role-legal-representative", bundle: .lemonade)
+    let contentOnUserRoleManager = Color("lemonade-scoped-user roles-content-on-user-role-manager", bundle: .lemonade)
 }
 
 private struct AdaptiveShadowColors: ShadowColors {

@@ -198,6 +198,18 @@ public interface LemonadeSemanticColors {
         public val contentOnSettlementEveryday: Color
         public val contentOnSettlementInstant: Color
         public val contentOnSettlementScheduled: Color
+        public val bgUserRoleAccountant: Color
+        public val bgUserRoleAdmin: Color
+        public val bgUserRoleLegalRepresentative: Color
+        public val bgUserRoleManager: Color
+        public val borderUserRoleAccountant: Color
+        public val borderUserRoleAdmin: Color
+        public val borderUserRoleLegalRepresentative: Color
+        public val borderUserRoleManager: Color
+        public val contentOnUserRoleAccountant: Color
+        public val contentOnUserRoleAdmin: Color
+        public val contentOnUserRoleLegalRepresentative: Color
+        public val contentOnUserRoleManager: Color
     }
 
     public interface ShadowColors {
