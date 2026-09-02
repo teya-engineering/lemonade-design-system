@@ -303,6 +303,9 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     /// the way across, with the action still stretched behind it. Cleared when the row closes, or
     /// when a finger takes hold of it again.
     @State private var heldTravel: CGFloat?
+    /// Whether an action is holding the row open behind something it opened. The actions are then
+    /// nothing the reader can act on — whatever they opened is — so they are drawn as inert.
+    @State private var holding = false
     @GestureState private var isDragging = false
     /// What this row answers to inside a group. Its own, so an uncontrolled row needs no identity
     /// from the caller to take part.
@@ -332,6 +335,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     private func fired(_ action: LemonadeSwipeAction) {
         action.onClick()
         if action.keepsRowOpen {
+            withAnimation(settle()) { holding = true }
             announce?(groupIdentity)
         } else {
             open = false
@@ -349,6 +353,11 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                     towardsTrailing: towardsTrailing,
                     onFired: fired
                 )
+                // Drained of colour and dimmed while something the action opened has the reader's
+                // attention: the actions are still there, and still where they were, but they are
+                // not what is being answered.
+                .grayscale(holding ? 1 : 0)
+                .opacity(holding ? .opacity.opacityDisabled : 1)
                 content()
                     // A row under the finger rests on the list item's own press highlight rather
                     // than on a surface of its own: same fill, same radius, same gutter. It is on
@@ -413,7 +422,10 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 heldTravel = nil
                 committed = false
             }
-            withAnimation(settle()) { travel = newValue ? restingTravel : 0 }
+            withAnimation(settle()) {
+                travel = newValue ? restingTravel : 0
+                if !newValue { holding = false }
+            }
             openedAt = newValue ? rowY : nil
             if newValue { announce?(groupIdentity) }
         }
@@ -435,7 +447,10 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             guard !dragging, dragOrigin != nil else { return }
             dragOrigin = nil
             committed = false
-            withAnimation(settle()) { travel = open ? restingTravel : 0 }
+            withAnimation(settle()) {
+                travel = open ? restingTravel : 0
+                holding = false
+            }
         }
     }
 
@@ -463,6 +478,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                     // Back under a finger, so nothing is holding it any more: this drag settles
                     // the row wherever it asks, like any other.
                     heldTravel = nil
+                    withAnimation(settle()) { holding = false }
                 }
                 guard let origin = dragOrigin else { return }
                 let next = clampedTravel(origin + dragged(value) * towardsTrailing)
@@ -506,6 +522,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 let settleTo: CGFloat = open ? (holds ? rowWidth : revealWidth) : 0
                 withAnimation(settle(velocity: speed, over: settleTo - travel)) {
                     travel = settleTo
+                    holding = holds
                 }
             }
     }

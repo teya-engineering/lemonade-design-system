@@ -43,7 +43,9 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
@@ -65,10 +67,10 @@ import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeButtonType
 import com.teya.lemonade.core.LemonadeButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 /**
  * Stiffness of the spring a released row travels on, and the one animation the reveal rides.
@@ -397,6 +399,7 @@ private fun SwipeActionStrip(
     displacedOpacity: () -> Float,
     committed: () -> Boolean,
     onFired: (SwipeAction) -> Unit,
+    dim: () -> Float,
     modifier: Modifier = Modifier,
 ) {
     val step = LemonadeTheme.sizes.size1200 + LemonadeTheme.spaces.spacing200
@@ -432,6 +435,7 @@ private fun SwipeActionStrip(
                 stretches = index == 0,
                 committed = committed() && index == 0,
                 onFired = onFired,
+                dim = dim(),
                 modifier = Modifier.offset(x = -step * index - push),
             )
         }
@@ -453,6 +457,7 @@ private fun SwipeActionCapsule(
     stretches: Boolean,
     committed: Boolean,
     onFired: (SwipeAction) -> Unit,
+    dim: Float,
     modifier: Modifier = Modifier,
 ) {
     val colors = resolveColors(
@@ -460,6 +465,7 @@ private fun SwipeActionCapsule(
         type = LemonadeButtonType.Solid,
     )
     val size = LemonadeTheme.sizes.size1200
+    val dimFloor = LocalOpacities.current.state.opacityDisabled
     val bump by animateFloatAsState(
         targetValue = if (arrived) 1f else 1f - BUMP_DEPTH,
         animationSpec = spring(dampingRatio = BUMP_DAMPING, stiffness = BUMP_STIFFNESS),
@@ -501,7 +507,7 @@ private fun SwipeActionCapsule(
             .graphicsLayer {
                 scaleX = scale
                 scaleY = scale
-                alpha = scale * opacity
+                alpha = scale * opacity * (1f - dim * (1f - dimFloor))
             }.clip(shape = CircleShape)
             .clickable(
                 onClick = {
@@ -510,17 +516,33 @@ private fun SwipeActionCapsule(
                 role = Role.Button,
                 interactionSource = interactionSource,
                 indication = LocalEffects.current.interactionIndication,
-            ).background(color = background),
+            ).background(color = drained(color = background, amount = dim)),
         contentAlignment = Alignment.Center,
     ) {
         LemonadeUi.Icon(
             icon = action.icon,
             contentDescription = action.contentDescription,
             size = LemonadeAssetSize.Large,
-            tint = colors.contentColor,
+            tint = drained(color = colors.contentColor, amount = dim),
             modifier = Modifier.offset(x = iconOffset),
         )
     }
+}
+
+/**
+ * [color] drained of [amount] of its colour: what a grayscale filter would leave of it, mixed back
+ * in by how far the drain has gone.
+ */
+private fun drained(color: Color, amount: Float): Color {
+    if (amount <= 0f) {
+        return color
+    }
+    val luma = 0.213f * color.red + 0.715f * color.green + 0.072f * color.blue
+    return lerp(
+        start = color,
+        stop = Color(red = luma, green = luma, blue = luma, alpha = color.alpha),
+        fraction = amount,
+    )
 }
 
 @Suppress("CyclomaticComplexMethod")
@@ -558,6 +580,9 @@ private fun SwipeActionRowCore(
     // the way across, with the action still stretched behind it. Cleared when the row closes, or
     // when a finger takes hold of it again.
     var heldTravel by remember { mutableStateOf<Float?>(null) }
+    // Whether an action is holding the row open behind something it opened. The actions are then
+    // nothing the reader can act on — whatever they opened is — so they are drawn as inert.
+    var holding by remember { mutableStateOf(false) }
     var dragging by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val haptics = LocalHapticFeedback.current
@@ -600,6 +625,7 @@ private fun SwipeActionRowCore(
     val fired: (SwipeAction) -> Unit = { action ->
         action.onClick()
         if (action.keepsRowOpen) {
+            holding = true
             announce?.invoke(groupIdentity)
         } else {
             onOpenChange(false)
@@ -616,6 +642,7 @@ private fun SwipeActionRowCore(
         } else {
             heldTravel = null
             committed = false
+            holding = false
         }
         settleTo(if (open) (heldTravel ?: revealWidth) else 0f, 0f)
     }
@@ -656,6 +683,14 @@ private fun SwipeActionRowCore(
         animationSpec = if (handled) snap() else settleSpring,
         label = "swipeRowHighlight",
     )
+    // Drained of colour and dimmed while something an action opened has the reader's attention:
+    // the actions are still there, and still where they were, but they are not what is being
+    // answered.
+    val dim by animateFloatAsState(
+        targetValue = if (holding) 1f else 0f,
+        animationSpec = settleSpring,
+        label = "swipeActionsDimmed",
+    )
     val gutterPx = with(density) { LemonadeTheme.spaces.spacing100.toPx() }
     val highlightRadiusPx = with(density) { LemonadeTheme.radius.radius500.toPx() }
 
@@ -682,6 +717,7 @@ private fun SwipeActionRowCore(
                         // the row any more: this drag settles it wherever it asks.
                         settling.value?.cancel()
                         heldTravel = null
+                        holding = false
                         dragging = true
                     },
                     onDragStopped = { velocity ->
@@ -708,6 +744,7 @@ private fun SwipeActionRowCore(
                                 val holds = first?.keepsRowOpen == true
                                 heldTravel = if (holds) rowWidth else null
                                 committed = holds
+                                holding = holds
                                 onOpenChange(holds)
                                 // Before the animation, not after: animateTo suspends until it
                                 // settles, and the action must not wait on a spring.
@@ -762,6 +799,7 @@ private fun SwipeActionRowCore(
                 },
                 committed = { committed },
                 onFired = fired,
+                dim = { dim },
                 modifier = Modifier.align(Alignment.CenterEnd),
             )
             Box(
