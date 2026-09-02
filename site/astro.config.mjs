@@ -27,6 +27,10 @@ export default defineConfig({
 			// The landing page is a standalone Astro page at src/pages/index.astro,
 			// so Starlight owns everything except "/".
 			sidebar,
+			// Keep the site out of search results. `noindex` is the directive that
+			// actually governs indexing; robots.txt deliberately allows crawling so
+			// that engines can reach a page and read this. See public/robots.txt.
+			head: [{ tag: 'meta', attrs: { name: 'robots', content: 'noindex, nofollow' } }],
 			components: {
 				// Adds inert section headings above the groups; see the component.
 				Sidebar: './src/components/Sidebar.astro',
