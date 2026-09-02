@@ -57,7 +57,7 @@ final class LemonadeSwipeSettleTests: XCTestCase {
         XCTAssertEqual(settle(travel: 100, velocity: -900), .closed)
     }
 
-    func testCrossingHalfTheRowCommits() {
+    func testCrossingTheCommitThresholdCommits() {
         XCTAssertEqual(settle(travel: 200), .committed)
     }
 
@@ -70,7 +70,7 @@ final class LemonadeSwipeSettleTests: XCTestCase {
         XCTAssertEqual(settle(travel: 200, velocity: -900), .committed)
     }
 
-    /// Threshold cases, mirroring `SwipeSettleTest`: these are what pin the `>=` choices down.
+    // Threshold cases, mirroring `SwipeSettleTest`: these are what pin the `>=` choices down.
 
     func testDragExactlyOnTheActionsRevealOpens() {
         XCTAssertEqual(settle(travel: firstActionReveal), .open)

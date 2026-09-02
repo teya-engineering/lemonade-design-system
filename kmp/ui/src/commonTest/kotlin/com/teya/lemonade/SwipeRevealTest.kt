@@ -4,12 +4,20 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 /**
- * Covers [resolveSwipeStripReveal] — how far one action has been revealed. Geometry matches a 40dp
- * trailing action in a 60dp reveal: 12dp of padding ahead of it and 8dp behind.
+ * Covers [resolveSwipeStripReveal] — how far one action has been revealed. Geometry matches a 48dp
+ * trailing action in a 76dp reveal: 12dp of padding ahead of it and 16dp behind, which is what
+ * [resolveSwipeRevealWidth] gives for one action at the theme's own tokens.
  */
 class SwipeRevealTest {
-    private val revealWidth = 76f
     private val actionWidth = 48f
+    private val gap = 8f
+    private val padding = 28f
+    private val revealWidth = resolveSwipeRevealWidth(
+        count = 1,
+        actionWidth = actionWidth,
+        gap = gap,
+        padding = padding,
+    )
 
     private fun reveal(
         travel: Float,
@@ -140,6 +148,37 @@ class SwipeRevealTest {
         assertEquals(
             expected = SwipeStripReveal(scale = 1f, stretch = 0f),
             actual = reveal(travel = 132f, revealWidth = 132f),
+        )
+    }
+
+    /**
+     * Where the row rests: the padding it opens into, every action, and a gap between each pair.
+     * The one formula the whole reveal is measured from, so it is worth pinning at the sizes the
+     * theme actually gives it.
+     */
+    @Test
+    fun `the reveal is the actions plus their gaps plus the padding they sit in`() {
+        val through = { count: Int ->
+            resolveSwipeRevealWidth(
+                count = count,
+                actionWidth = actionWidth,
+                gap = gap,
+                padding = padding,
+            )
+        }
+        assertEquals(expected = 0f, actual = through(0), absoluteTolerance = 0.001f)
+        assertEquals(expected = 76f, actual = through(1), absoluteTolerance = 0.001f)
+        assertEquals(expected = 132f, actual = through(2), absoluteTolerance = 0.001f)
+        assertEquals(expected = 188f, actual = through(3), absoluteTolerance = 0.001f)
+    }
+
+    /** A row with no actions has nothing to open onto. */
+    @Test
+    fun `a reveal with no actions is closed`() {
+        assertEquals(
+            expected = 0f,
+            actual = resolveSwipeRevealWidth(count = -1, actionWidth = 48f, gap = 8f, padding = 28f),
+            absoluteTolerance = 0.001f,
         )
     }
 }

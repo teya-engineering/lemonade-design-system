@@ -9,6 +9,7 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -96,19 +97,11 @@ private fun CoreIconButton(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     modifier: Modifier = Modifier,
 ) {
-    val isHovering by interactionSource.collectIsHoveredAsState()
-    val isPressed by interactionSource.collectIsPressedAsState()
     val colors = resolveColors(
         variant = variant,
         type = type,
     ).adjustedForDisabledFill(dimmed = !enabled || loading, variant = variant, type = type)
-    val animatedBackgroundColor by animateColorAsState(
-        targetValue = when {
-            isPressed -> colors.backgroundPressedColor
-            isHovering -> colors.backgroundHoverColor
-            else -> colors.backgroundColor
-        },
-    )
+    val animatedBackgroundColor by colors.animatedBackground(interactionSource = interactionSource)
     val sizeData = size.toSizeData(shape = shape)
 
     // When disabled or loading, wrap the fill and content in a single alpha graphics layer so the
@@ -158,6 +151,25 @@ internal data class IconButtonColorData(
     val backgroundPressedColor: Color,
     val contentColor: Color,
 )
+
+/**
+ * The fill a button of these [IconButtonColorData] draws under a finger, a pointer, or neither.
+ *
+ * Shared so that anything standing in for an icon button — the capsule a [LemonadeUi.SwipeActionRow]
+ * reveals, for one — is pressed and hovered the same way rather than restating the rule.
+ */
+@Composable
+internal fun IconButtonColorData.animatedBackground(interactionSource: MutableInteractionSource): State<Color> {
+    val hovered by interactionSource.collectIsHoveredAsState()
+    val pressed by interactionSource.collectIsPressedAsState()
+    return animateColorAsState(
+        targetValue = when {
+            pressed -> backgroundPressedColor
+            hovered -> backgroundHoverColor
+            else -> backgroundColor
+        },
+    )
+}
 
 /**
  * Shared with [LemonadeUi.SwipeActionRow], which draws its own stretchable capsule but has to stay

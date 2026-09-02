@@ -2,7 +2,8 @@ import XCTest
 @testable import Lemonade
 
 /// Covers `resolveSwipeStripReveal` — how far one action has been revealed. Geometry matches a 48pt
-/// trailing action in a 76pt reveal: 12pt of padding ahead of it and 16pt behind.
+/// trailing action in a 76pt reveal: 12pt of padding ahead of it and 16pt behind, which is what
+/// `resolveSwipeRevealWidth` gives for one action at the theme's own tokens.
 final class LemonadeSwipeRevealTests: XCTestCase {
 
     private let revealWidth: CGFloat = 76
@@ -90,6 +91,28 @@ final class LemonadeSwipeRevealTests: XCTestCase {
         XCTAssertEqual(
             reveal(travel: 172, revealWidth: 76, stripReveal: 132),
             SwipeStripReveal(scale: 1, stretch: 40)
+        )
+    }
+
+    /// Where the row rests: the padding it opens into, every action, and a gap between each pair.
+    /// The one formula the whole reveal is measured from, so it is worth pinning at the sizes the
+    /// theme actually gives it.
+    func testTheRevealIsTheActionsPlusTheirGapsPlusThePaddingTheySitIn() {
+        func through(_ count: Int) -> CGFloat {
+            resolveSwipeRevealWidth(count: count, actionWidth: 48, gap: 8, padding: 28)
+        }
+        XCTAssertEqual(through(0), 0, accuracy: 0.001)
+        XCTAssertEqual(through(1), 76, accuracy: 0.001)
+        XCTAssertEqual(through(2), 132, accuracy: 0.001)
+        XCTAssertEqual(through(3), 188, accuracy: 0.001)
+    }
+
+    /// A row with no actions has nothing to open onto.
+    func testARevealWithNoActionsIsClosed() {
+        XCTAssertEqual(
+            resolveSwipeRevealWidth(count: -1, actionWidth: 48, gap: 8, padding: 28),
+            0,
+            accuracy: 0.001
         )
     }
 }

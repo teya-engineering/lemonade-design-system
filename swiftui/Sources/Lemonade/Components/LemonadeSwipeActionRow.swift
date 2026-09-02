@@ -214,15 +214,37 @@ func resolveSwipeStripReveal(
 
 /// Travel that rests a row on the first `count` of its actions. The whole reveal at the action
 /// count, and one action's own share of it at its index plus one.
-private func swipeRevealWidth(through count: Int) -> CGFloat {
+///
+/// Computed rather than measured: the strip changes width as the first action stretches, so
+/// anything measured off it would move under the model driving it.
+///
+/// - Parameter count: how many of the row's actions the row rests on.
+/// - Parameter actionWidth: width of one action.
+/// - Parameter gap: space between two actions.
+/// - Parameter padding: space ahead of the first action and behind the last.
+func resolveSwipeRevealWidth(
+    count: Int,
+    actionWidth: CGFloat,
+    gap: CGFloat,
+    padding: CGFloat
+) -> CGFloat {
     guard count > 0 else { return 0 }
-    let gaps = CGFloat(count - 1) * LemonadeTheme.spaces.spacing200
-    return LemonadeTheme.spaces.spacing300 + CGFloat(count) * LemonadeTheme.sizes.size1200 + gaps
-        + LemonadeTheme.spaces.spacing400
+    return padding + CGFloat(count) * actionWidth + CGFloat(count - 1) * gap
+}
+
+/// `resolveSwipeRevealWidth` against the theme the row is drawn in.
+private func swipeRevealWidth(through count: Int) -> CGFloat {
+    resolveSwipeRevealWidth(
+        count: count,
+        actionWidth: LemonadeTheme.sizes.size1200,
+        gap: LemonadeTheme.spaces.spacing200,
+        padding: LemonadeTheme.spaces.spacing300 + LemonadeTheme.spaces.spacing400
+    )
 }
 
 /// Opacity an action being pushed along has dimmed to once the row has travelled its whole width.
-/// `opacity20`, held as a plain number so the reveal stays resolvable without a theme.
+/// `opacity20`, held as a plain number to match the Compose twin, where the reveal is resolved
+/// outside a composition and cannot read the theme.
 private let displacedFloor: CGFloat = 0.2
 
 /// Opacity of the actions a stretching one is pushing along.
@@ -248,6 +270,11 @@ func resolveSwipeDisplacedOpacity(travel: CGFloat, rowWidth: CGFloat) -> CGFloat
 /// The token is what makes it a signal rather than a value. Two rows opening in turn both leave
 /// `opener` set, and a row that closed and reopened would look unchanged — the count moves either
 /// way, so every row hears every announcement.
+///
+/// An announcement means two things at once, which is what lets one counter serve both: *I am the
+/// open row now*, and *do not close on the tap in flight*. The group's own tap-to-close waits a
+/// turn and then stands down if the count moved, so anything inside a group that acts on a tap has
+/// to announce or the row underneath it closes.
 struct SwipeActionGroupSignal: Equatable {
     var announcements = 0
     var opener: AnyHashable?
@@ -296,7 +323,10 @@ public struct LemonadeSwipeAction {
     ///   - keepsRowOpen: whether the row stays open once this has fired. Firing an action normally
     ///     closes the row, which is wrong for one that puts something on screen about it — a
     ///     confirmation asking whether to go ahead reads oddly over a row that has already tidied
-    ///     itself away.
+    ///     itself away. Nothing inside the row closes it again afterwards: the reader does, by
+    ///     tapping away or swiping another row, or the caller does through the `openId` overload.
+    ///     An action that opens something modal needs that overload, because the modal takes the
+    ///     taps the reader would have closed it with.
     public init(
         icon: LemonadeIcon,
         contentDescription: String,
@@ -334,15 +364,21 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     @State private var settleOrigin: CGFloat?
     @State private var rowWidth: CGFloat = 0
     @State private var committed = false
-    /// Where the row rests instead of at the reveal, once a committed swipe has left it there: all
-    /// the way across, with the action still stretched behind it. Cleared when the row closes, or
-    /// when a finger takes hold of it again.
-    @State private var heldTravel: CGFloat?
+    /// Whether a committed swipe is holding the row where it left it — all the way across, with
+    /// the action still stretched behind it — rather than at the reveal. Cleared when the row
+    /// closes, or when a finger takes hold of it again.
+    @State private var held = false
     /// Whether an action is holding the row open behind something it opened. The actions are then
     /// nothing the reader can act on — whatever they opened is — so they are drawn as inert.
     @State private var holding = false
     /// Whether this drag has left a commit behind and is carrying the row's lead back with it.
     @State private var releasing = false
+    #if canImport(UIKit) && !os(watchOS)
+    /// Held rather than built at the crossing, and warmed when the drag is claimed: a generator
+    /// made on the frame it fires spins the engine up then, which is the one frame the haptic has
+    /// to land on.
+    @State private var haptics = UIImpactFeedbackGenerator(style: .medium)
+    #endif
     @GestureState private var isDragging = false
     /// What this row answers to inside a group. Its own, so an uncontrolled row needs no identity
     /// from the caller to take part.
@@ -364,7 +400,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     private var revealWidth: CGFloat { swipeRevealWidth(through: actions.count) }
 
     /// Where the row rests while open: at the reveal, or wherever a commit is holding it.
-    private var restingTravel: CGFloat { heldTravel ?? revealWidth }
+    private var restingTravel: CGFloat { held ? commitTravel : revealWidth }
 
     /// Where a commit parks the row: as far as it goes, less the sliver iOS leaves of it.
     private var commitTravel: CGFloat { max(revealWidth, rowWidth - commitInset) }
@@ -462,7 +498,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             // High priority, because the wrapped row is usually a `Button` and a plain `.gesture`
             // ranks below the gestures of the view it is attached to: whichever of the two claimed
             // the touch first won, so the same drag opened the row or did nothing depending on
-            // where it started. The 10pt minimum is what keeps the row's own tap working — a tap
+            // where it started. `claimDistance` is what keeps the row's own tap working — a tap
             // never travels far enough for this gesture to claim it.
             //
             // A disabled row must not compete with the enclosing scroll view either, so the mask
@@ -477,7 +513,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
         }
         .onChange(of: open) { newValue in
             if !newValue {
-                heldTravel = nil
+                held = false
                 committed = false
             }
             withAnimation(settle()) {
@@ -495,7 +531,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
         .onChange(of: revealWidth) { newValue in
             // `actions` can change while the row is open, and an open row would otherwise rest at
             // a stale offset. Never under a live finger, where it would fight the drag.
-            guard open, dragOrigin == nil, heldTravel == nil else { return }
+            guard open, dragOrigin == nil, !held else { return }
             withAnimation(settle()) { travel = newValue }
         }
         .onChange(of: isDragging) { dragging in
@@ -533,6 +569,9 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                     dragOrigin = travel
                     settleOrigin = travel
                     claimTranslation = value.translation.width
+                    #if canImport(UIKit) && !os(watchOS)
+                    haptics.prepare()
+                    #endif
                     // Claimed, so this is the row being read now. Announced here rather than when
                     // the row settles open: a reader who has started on another row has already
                     // left the open one, and waiting for the release leaves it sitting there
@@ -540,7 +579,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                     announce?(groupIdentity)
                     // Back under a finger, so nothing is holding it any more: this drag settles
                     // the row wherever it asks, like any other.
-                    heldTravel = nil
+                    held = false
                     releasing = false
                     withAnimation(settle()) { holding = false }
                 }
@@ -584,7 +623,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 // has just put on screen.
                 let holds = commits && actions.first?.keepsRowOpen == true
                 open = target == .open || holds
-                heldTravel = holds ? commitTravel : nil
+                held = holds
                 committed = holds
                 if commits {
                     // Before the animation, not after: the row must not wait on a spring to fire.
@@ -613,7 +652,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
 
     private func playCommitHaptic() {
         #if canImport(UIKit) && !os(watchOS)
-        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        haptics.impactOccurred()
         #endif
     }
 }
@@ -644,10 +683,12 @@ private struct SwipeActionStrip: View, Animatable {
     /// Distance from one action to the next.
     private var step: CGFloat { actionSize + LemonadeTheme.spaces.spacing200 }
 
+    /// Where the row rests on every one of these actions.
+    private var stripReveal: CGFloat { swipeRevealWidth(through: actions.count) }
+
     private var actionsWidth: CGFloat {
         guard !actions.isEmpty else { return 0 }
-        let gaps = CGFloat(actions.count - 1) * LemonadeTheme.spaces.spacing200
-        return CGFloat(actions.count) * actionSize + gaps
+        return stripReveal - LemonadeTheme.spaces.spacing300 - LemonadeTheme.spaces.spacing400
     }
 
     private var displacedOpacity: CGFloat {
@@ -655,14 +696,17 @@ private struct SwipeActionStrip: View, Animatable {
     }
 
     var body: some View {
-        ZStack(alignment: .trailing) {
+        let strip = stripReveal
+        let dimmed = displacedOpacity
+        return ZStack(alignment: .trailing) {
             // Outermost last, so it is drawn on top: the first action is the one a full swipe
             // fires, and the one that stretches over the actions beside it.
-            ForEach(Array(actions.enumerated()).reversed(), id: \.offset) { index, action in
+            ForEach(actions.indices.reversed(), id: \.self) { index in
+                let action = actions[index]
                 let reveal = resolveSwipeStripReveal(
                     travel: travel,
                     actionReveal: swipeRevealWidth(through: index + 1),
-                    stripReveal: swipeRevealWidth(through: actions.count),
+                    stripReveal: strip,
                     actionWidth: actionSize
                 )
                 // Each action lands as the row clears it, so the second of a pair bumps in on its
@@ -680,7 +724,7 @@ private struct SwipeActionStrip: View, Animatable {
                 .scaleEffect(arrived ? 1 : 1 - bumpDepth)
                 .animation(bump, value: arrived)
                 .scaleEffect(reveal.scale)
-                .opacity(reveal.scale * (index == 0 ? 1 : displacedOpacity))
+                .opacity(reveal.scale * (index == 0 ? 1 : dimmed))
                 // The slack goes to the first action's width and to everything else's position, so
                 // a stretching action pushes the ones beside it along rather than growing over
                 // them. Their gaps hold, and the strip still ends exactly one leading gap ahead of
@@ -751,6 +795,8 @@ private struct SwipeActionButtonStyle: ButtonStyle {
 private struct SwipeAccessibilityActions: ViewModifier {
     let actions: [LemonadeSwipeAction]
 
+    // `accessibilityActions { }` would build this once instead of folding an `AnyView` per action,
+    // but it is iOS 16 and this package ships to iOS 15.
     func body(content: Content) -> some View {
         actions.reduce(AnyView(content.accessibilityElement(children: .combine))) { view, action in
             AnyView(view.accessibilityAction(named: Text(action.contentDescription), action.onClick))
@@ -802,8 +848,13 @@ public extension LemonadeUi {
         )
     }
 
-    /// `SwipeActionRow` whose open row is controlled by the caller, so a list can keep at most one
-    /// row open: hoist a single optional id and hand every row the same binding.
+    /// `SwipeActionRow` whose open row is controlled by the caller.
+    ///
+    /// Keeping one row open at a time needs nothing from the caller — that is what
+    /// `LemonadeUi.SwipeActionGroup` is for, and it works on these rows too. Reach for this
+    /// overload when the caller has to be able to close the row itself: after an action with
+    /// `keepsRowOpen` has fired, the row waits on the reader, and only an `openId` the caller owns
+    /// can put it back.
     ///
     /// - Parameters:
     ///   - id: identity of this row, compared against `openId`
