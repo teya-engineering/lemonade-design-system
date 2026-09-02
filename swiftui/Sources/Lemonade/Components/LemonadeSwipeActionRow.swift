@@ -795,11 +795,27 @@ private struct SwipeActionButtonStyle: ButtonStyle {
 private struct SwipeAccessibilityActions: ViewModifier {
     let actions: [LemonadeSwipeAction]
 
-    // `accessibilityActions { }` would build this once instead of folding an `AnyView` per action,
-    // but it is iOS 16 and this package ships to iOS 15.
+    @ViewBuilder
     func body(content: Content) -> some View {
-        actions.reduce(AnyView(content.accessibilityElement(children: .combine))) { view, action in
-            AnyView(view.accessibilityAction(named: Text(action.contentDescription), action.onClick))
+        let element = content.accessibilityElement(children: .combine)
+        if #available(iOS 16, macOS 13, tvOS 16, watchOS 9, *) {
+            // One modifier holding every action. The drag rewrites the row's body on every touch
+            // event, and the fold below erases each action into an `AnyView` — which SwiftUI tears
+            // down and rebuilds rather than diffing, N times a frame, for the whole gesture.
+            element.accessibilityActions {
+                ForEach(actions.indices, id: \.self) { index in
+                    SwiftUI.Button(
+                        actions[index].contentDescription,
+                        action: actions[index].onClick
+                    )
+                }
+            }
+        } else {
+            actions.reduce(AnyView(element)) { view, action in
+                AnyView(
+                    view.accessibilityAction(named: Text(action.contentDescription), action.onClick)
+                )
+            }
         }
     }
 }
