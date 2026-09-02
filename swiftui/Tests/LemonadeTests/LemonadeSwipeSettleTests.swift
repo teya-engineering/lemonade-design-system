@@ -93,4 +93,36 @@ final class LemonadeSwipeSettleTests: XCTestCase {
     func testARowWithNoActionsSettlesClosed() {
         XCTAssertEqual(settle(travel: 0, firstActionReveal: 0), .closed)
     }
+
+    /// Coming back from a commit, the row gives up its lead in proportion to the finger: no step at
+    /// the crossing, and home exactly as the finger gets there.
+    func testAReleasedCommitHandsTheRowBackInProportionToTheFinger() {
+        let threshold = rowWidth * 0.55
+        let commitTravel = rowWidth - 20
+        func released(_ travel: CGFloat) -> CGFloat {
+            resolveSwipeReleasedTravel(travel: travel, commitTravel: commitTravel, threshold: threshold)
+        }
+        // Continuous at the crossing: a drag can only leave a commit here.
+        XCTAssertEqual(released(threshold), commitTravel, accuracy: 0.001)
+        XCTAssertEqual(released(threshold / 2), commitTravel / 2, accuracy: 0.001)
+        XCTAssertEqual(released(0), 0, accuracy: 0.001)
+    }
+
+    /// Never past where the commit had it, however far the finger is.
+    func testAReleasedCommitNeverDrawsTheRowFurtherThanTheCommitDid() {
+        XCTAssertEqual(
+            resolveSwipeReleasedTravel(travel: 300, commitTravel: 400, threshold: 220),
+            400,
+            accuracy: 0.001
+        )
+    }
+
+    /// A row with no width to cross has no lead to give back.
+    func testAReleasedCommitWithNoThresholdDrawsTheFinger() {
+        XCTAssertEqual(
+            resolveSwipeReleasedTravel(travel: 40, commitTravel: 0, threshold: 0),
+            40,
+            accuracy: 0.001
+        )
+    }
 }

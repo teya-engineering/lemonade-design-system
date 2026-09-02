@@ -139,4 +139,45 @@ class SwipeSettleTest {
             actual = settle(travel = 0f, firstActionReveal = 0f),
         )
     }
+
+    /**
+     * Coming back from a commit, the row gives up its lead in proportion to the finger: no step at
+     * the crossing, and home exactly as the finger gets there.
+     */
+    @Test
+    fun `a released commit hands the row back in proportion to the finger`() {
+        val threshold = rowWidth * 0.55f
+        val commitTravel = rowWidth - 20f
+        val released = { travel: Float ->
+            resolveSwipeReleasedTravel(
+                travel = travel,
+                commitTravel = commitTravel,
+                threshold = threshold,
+            )
+        }
+        // Continuous at the crossing: a drag can only leave a commit here.
+        assertEquals(commitTravel, released(threshold), 0.001f)
+        assertEquals(commitTravel / 2f, released(threshold / 2f), 0.001f)
+        assertEquals(0f, released(0f), 0.001f)
+    }
+
+    /** Never past where the commit had it, however far the finger is. */
+    @Test
+    fun `a released commit never draws the row further than the commit did`() {
+        assertEquals(
+            expected = 400f,
+            actual = resolveSwipeReleasedTravel(travel = 300f, commitTravel = 400f, threshold = 220f),
+            absoluteTolerance = 0.001f,
+        )
+    }
+
+    /** A row with no width to cross has no lead to give back. */
+    @Test
+    fun `a released commit with no threshold draws the finger`() {
+        assertEquals(
+            expected = 40f,
+            actual = resolveSwipeReleasedTravel(travel = 40f, commitTravel = 0f, threshold = 0f),
+            absoluteTolerance = 0.001f,
+        )
+    }
 }

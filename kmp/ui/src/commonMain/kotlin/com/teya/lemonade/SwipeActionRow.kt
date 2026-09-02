@@ -134,6 +134,30 @@ private val commitSpring: SpringSpec<Float> = spring(
     stiffness = COMMIT_STIFFNESS,
 )
 
+/**
+ * Where the row is drawn while a drag is bringing it back from a commit.
+ *
+ * The claim is not handed back on a spring of its own, which would step the row across whatever the
+ * finger is doing. The row keeps the lead the commit gave it and gives it up in proportion to the
+ * finger, so it arrives home exactly as the finger does. Continuous at the crossing by
+ * construction: a drag can only leave a commit at the threshold, and the threshold times the gain
+ * is where the commit had it.
+ *
+ * @param travel where the finger has the row, always positive.
+ * @param commitTravel where a commit parks the row.
+ * @param threshold travel a drag commits at.
+ */
+internal fun resolveSwipeReleasedTravel(
+    travel: Float,
+    commitTravel: Float,
+    threshold: Float,
+): Float {
+    if (threshold <= 0f) {
+        return travel
+    }
+    return minOf(travel * (commitTravel / threshold), commitTravel)
+}
+
 /** Where a released drag lands. */
 internal enum class SwipeSettleTarget {
     Closed,
@@ -613,6 +637,8 @@ private fun SwipeActionRowCore(
     // Whether an action is holding the row open behind something it opened. The actions are then
     // nothing the reader can act on — whatever they opened is — so they are drawn as inert.
     var holding by remember { mutableStateOf(false) }
+    // Whether this drag has left a commit behind and is carrying the row's lead back with it.
+    var releasing by remember { mutableStateOf(false) }
     var dragging by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val haptics = LocalHapticFeedback.current
@@ -657,10 +683,23 @@ private fun SwipeActionRowCore(
     // in charge on the way there.
     val claimed by animateFloatAsState(
         targetValue = if (committed) 1f else 0f,
-        animationSpec = commitSpring,
+        // Sprung on the way out, snapped on the way back: leaving a commit hands the row to
+        // [resolveSwipeReleasedTravel], which picks it up exactly where the claim had it.
+        animationSpec = if (committed) commitSpring else snap(),
         label = "swipeCommitClaim",
     )
-    val shown = travel + (commitTravel - travel) * claimed
+    // Where the finger has the row: its own travel, or the lead a commit gave it, being given back
+    // in proportion to the finger.
+    val base = if (releasing) {
+        resolveSwipeReleasedTravel(
+            travel = travel,
+            commitTravel = commitTravel,
+            threshold = rowWidth * COMMIT_FRACTION,
+        )
+    } else {
+        travel
+    }
+    val shown = base + (commitTravel - base) * claimed
 
     // A tapped action tidies the row away after it, unless it has put something on screen that the
     // row is the subject of. Claiming the slot again is what keeps the group's own tap — the same
@@ -711,7 +750,10 @@ private fun SwipeActionRowCore(
         val crossed = allowsFullSwipe && next >= rowWidth * COMMIT_FRACTION
         if (crossed != committed) {
             committed = crossed
-            if (crossed) haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+            releasing = !crossed
+            // Felt either way: crossing back is the moment the gesture stops belonging to the
+            // action, which is as worth knowing as the moment it started to.
+            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
         }
         travel = next
     }
@@ -761,6 +803,7 @@ private fun SwipeActionRowCore(
                         settling.value?.cancel()
                         heldTravel = null
                         holding = false
+                        releasing = false
                         dragging = true
                     },
                     onDragStopped = { velocity ->
@@ -768,6 +811,7 @@ private fun SwipeActionRowCore(
                         // The claim is spent: the row settles from where it is being drawn, not
                         // from where the finger left off.
                         travel = shown
+                        releasing = false
                         // The spring picks up the speed the finger let go at rather than starting
                         // from rest, so the row carries straight on out of the drag.
                         val released = velocity * towardsTrailing
