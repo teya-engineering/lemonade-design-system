@@ -379,7 +379,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 // attention: the actions are still there, and still where they were, but they are
                 // not what is being answered.
                 .grayscale(holding ? 1 : 0)
-                .opacity(holding ? .opacity.opacityDisabled : 1)
+                .opacity(holding ? .opacity.opacity30 : 1)
                 content()
                     // A row under the finger rests on the list item's own press highlight rather
                     // than on a surface of its own: same fill, same radius, same gutter. It is on

@@ -490,7 +490,7 @@ private fun SwipeActionCapsule(
         type = LemonadeButtonType.Solid,
     )
     val size = LemonadeTheme.sizes.size1200
-    val dimFloor = LocalOpacities.current.state.opacityDisabled
+    val dimFloor = LocalOpacities.current.base.opacity30
     val bump by animateFloatAsState(
         targetValue = if (arrived) 1f else 1f - BUMP_DEPTH,
         animationSpec = spring(dampingRatio = BUMP_DAMPING, stiffness = BUMP_STIFFNESS),
