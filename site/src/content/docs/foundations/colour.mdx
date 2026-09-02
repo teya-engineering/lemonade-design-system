@@ -5,27 +5,40 @@ description: Lemonade's semantic colour tokens, read directly from the Figma exp
 
 import ColorTokens from '../../../components/ColorTokens.astro';
 
-Every colour below is read at build time from `tokens/theme-colors.json` — the same
-file the Kotlin and Swift token converters generate from. When design re-exports the
-Figma collection, this page changes with it. Nobody updates it by hand.
+Every colour below is read at build time from `tokens/theme-colors.light.tokens.json`
+and its dark counterpart — the same files the Kotlin and Swift token converters
+generate from. When design re-exports the Figma collection, this page changes with it.
+Nobody updates it by hand.
 
-Each token carries its light and dark value, the guidance design wrote in Figma, and
-the symbol to use on each platform. Tokens marked **fixed** resolve to the same value
-in both themes, on purpose — they are for surfaces that must not flip.
+Each row carries the token's name, the guidance design wrote in Figma, and the
+primitive it resolves to. The swatch and that value both follow the theme you are
+reading in: two thirds of these tokens point at a different primitive in dark than in
+light.
 
-:::caution[Reach for these, not the primitives]
-These are the semantic tokens. The primitive palette underneath them
-(`blue/500`, `green-lime/alpha/200`, and so on) exists to define these, not to be used
-in product code. See [Semantic tokens first](/lemonade-design-system/standards/semantic-tokens/).
-:::
+### Reach for these, not the primitives
 
-## Background
+These are the semantic tokens. The primitive palette underneath them (`blue/500`,
+`green-lime/alpha/200`, and so on) exists to define these, not to be used in product
+code. See [Semantic tokens first](/lemonade-design-system/standards/semantic-tokens/).
+
+### Using these in code
+
+Colours are reached through their group — `LemonadeTheme.colors.content.contentPrimary`
+on both platforms, from the same six groups this page is organised by. Kotlin needs the
+`LemonadeTheme` wrapper around your content and Swift does not, so start with the setup
+for the platform you are on: [Kotlin
+Multiplatform](/lemonade-design-system/get-started/kmp/#using-the-tokens) or
+[SwiftUI](/lemonade-design-system/get-started/swiftui/#using-the-tokens).
+
+## Semantic Colours
+
+### Background
 
 Surfaces, from the page underneath everything to the elevated layers on top of it.
 
 <ColorTokens group="Background" />
 
-## Content
+### Content
 
 Text and icons. `content-primary` carries body copy, `content-secondary` supporting
 copy, `content-tertiary` the quietest labels.
@@ -36,14 +49,14 @@ copy, `content-tertiary` the quietest labels.
 
 <ColorTokens group="Border" />
 
-## Interaction
+### Interaction
 
 Applied on press, hover and focus. These are layered over a background token rather
 than replacing it.
 
 <ColorTokens group="Interaction" />
 
-## Scoped
+### Scoped
 
 Tied to one feature rather than reusable across the product — currently the
 Settlements frequency badges. Don't reach for these outside that context; if you need
@@ -52,7 +65,7 @@ token, not for reusing a scoped one.
 
 <ColorTokens group="Scoped" />
 
-## Shadow
+### Shadow
 
 The colour a shadow renders in, used together with the offset/blur/spread values on
 [Elevation](/lemonade-design-system/foundations/elevation/).

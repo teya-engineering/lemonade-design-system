@@ -1,4 +1,14 @@
 ---
+/**
+ * The colour tokens for one top-level group, as a table: what the token is
+ * called, what it is for, and which primitive it resolves to.
+ *
+ * Laid out to match the Foundations frame in Figma. Two departures from it,
+ * both because this page is themeable and that frame is not: the swatch and
+ * the resolved value follow the reader's theme, and where a token aliases a
+ * different primitive in each theme — 66 of them do — only the relevant one is
+ * shown.
+ */
 import { themeColors, assertAllColorGroupsRendered, type ColorGroup } from '../lib/tokens';
 
 interface Props {
@@ -23,218 +33,196 @@ if (groups.length === 0) {
 
 {
 	groups.map((g) => (
-		<section class="token-group">
-			{g.subgroups.map((sub) => (
-				<>
-					{sub.label && <h4 class="subgroup">{sub.label}</h4>}
-					<div class="grid">
-						{sub.tokens.map((token) => (
-							<article class="card">
-								<div class="swatches" aria-hidden="true">
-									<span class="swatch" style={`--fill: ${token.light}`}>
-										<span class="swatch-label">Light</span>
-									</span>
-									<span class="swatch" style={`--fill: ${token.dark}`}>
-										<span class="swatch-label">Dark</span>
-									</span>
-								</div>
-								<div class="body">
-									<p class="name">
-										{token.name}
-										{token.fixed && <span class="pill">fixed</span>}
-									</p>
-									{token.description && <p class="description">{token.description}</p>}
-									{/* Plain spans, not a <dl>: Starlight's markdown styles target
-									    description lists with enough specificity to beat scoped
-									    component CSS, which reintroduces their default indent. */}
-									<div class="values">
-										<span><b>Light</b> {token.light}</span>
-										<span><b>Dark</b> {token.dark}</span>
-									</div>
-									{(token.android || token.ios) && (
-										<ul class="usage">
-											{token.android && (
-												<li>
-													<span class="platform">KMP</span>
-													<code>{token.android}</code>
-												</li>
-											)}
-											{token.ios && (
-												<li>
-													<span class="platform">SwiftUI</span>
-													<code>{token.ios}</code>
-												</li>
-											)}
-										</ul>
-									)}
-								</div>
-							</article>
-						))}
-					</div>
-				</>
-			))}
-		</section>
+		<div class="scroller">
+			<table>
+				<thead>
+					<tr>
+						<th scope="col">Token</th>
+						<th scope="col">Usage</th>
+						<th scope="col">Value</th>
+					</tr>
+				</thead>
+				<tbody>
+					{g.subgroups.map((sub) => (
+						<>
+							<tr class="section">
+								<th colspan="3" scope="colgroup">{sub.label ?? g.label}</th>
+							</tr>
+							{sub.tokens.map((token) => (
+								<tr>
+									<th scope="row" class="token">
+										<span
+											class="swatch"
+											style={`--light: ${token.light}; --dark: ${token.dark}`}
+											aria-hidden="true"
+										/>
+										<code>{token.name}</code>
+									</th>
+									<td class="usage">{token.description}</td>
+									<td class="value">
+										{/* Both are rendered and one is hidden, the same way the
+										    theme-paired screenshots work, because the resolved
+										    primitive is not the same in both themes. */}
+										<span class="chip on-light">
+											<svg
+												aria-hidden="true"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+											>
+												<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1" />
+												<path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" />
+											</svg>
+											{token.alias ?? token.light}
+										</span>
+										<span class="chip on-dark">
+											<svg
+												aria-hidden="true"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+											>
+												<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1" />
+												<path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" />
+											</svg>
+											{token.darkAlias ?? token.dark}
+										</span>
+									</td>
+								</tr>
+							))}
+						</>
+					))}
+				</tbody>
+			</table>
+		</div>
 	))
 }
 
 <style>
-	.token-group {
-		margin-block: 2rem;
-	}
-
-	.subgroup {
-		margin-block: 1.5rem 0.75rem;
-		font-size: var(--sl-text-lg);
-		color: var(--sl-color-gray-2);
-	}
-
-	.grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
-		gap: 1rem;
-	}
-
-	.card {
-		display: flex;
-		flex-direction: column;
-		overflow: hidden;
+	.scroller {
+		overflow-x: auto;
+		margin-block: 1.5rem;
 		border: 1px solid var(--sl-color-gray-5);
 		border-radius: 0.75rem;
-		background: var(--sl-color-black);
 	}
 
-	.swatches {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		height: 4.5rem;
-		/* Checkerboard so that translucent tokens read as translucent. */
-		background-image: conic-gradient(
-			from 90deg at 50% 50%,
-			#0000 25%,
-			#8883 0 50%,
-			#0000 0 75%,
-			#8883 0
-		);
-		background-size: 12px 12px;
-	}
-
-	.swatch {
-		position: relative;
-		display: block;
-		background-color: var(--fill);
-	}
-
-	.swatch:first-child {
-		box-shadow: inset -1px 0 0 var(--sl-color-gray-5);
-	}
-
-	.swatch-label {
-		position: absolute;
-		inset-block-end: 0.25rem;
-		inset-inline-start: 0.4rem;
-		font-size: 0.625rem;
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-		color: var(--sl-color-gray-3);
-		opacity: 0;
-		transition: opacity 0.15s ease;
-	}
-
-	.card:hover .swatch-label {
-		opacity: 1;
-	}
-
-	.body {
-		display: flex;
-		flex: 1;
-		flex-direction: column;
-		gap: 0.5rem;
-		padding: 0.75rem 0.85rem 0.85rem;
-	}
-
-	.name {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
+	table {
+		width: 100%;
 		margin: 0;
-		font-family: var(--sl-font-mono);
+		border-collapse: collapse;
 		font-size: var(--sl-text-sm);
+	}
+
+	thead th {
+		padding: 0.85rem 1rem;
+		border-bottom: 1px solid var(--sl-color-gray-5);
+		font-weight: 500;
+		text-align: start;
+		color: var(--sl-color-gray-3);
+	}
+
+	/* Subgroup banner — "Color / Background / Brand". */
+	.section th {
+		padding: 0.7rem 1rem;
+		border-block: 1px solid var(--sl-color-gray-5);
+		background: var(--sl-color-gray-6);
 		font-weight: 600;
+		text-align: start;
 		color: var(--sl-color-white);
 	}
 
-	.pill {
-		padding: 0.05rem 0.35rem;
-		border-radius: 999px;
-		background: var(--sl-color-gray-6);
-		font-family: var(--sl-font);
-		font-size: 0.625rem;
-		font-weight: 500;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-		color: var(--sl-color-gray-2);
+	tbody tr + tr:not(.section) th,
+	tbody tr + tr:not(.section) td {
+		border-top: 1px solid var(--sl-color-gray-6);
 	}
 
-	.description {
-		margin: 0;
-		font-size: var(--sl-text-xs);
-		line-height: 1.5;
-		color: var(--sl-color-gray-3);
-	}
-
-	.values {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.25rem 1rem;
-		margin: 0;
-		font-family: var(--sl-font-mono);
-		font-size: 0.6875rem;
-		color: var(--sl-color-gray-2);
-	}
-
-	.values b {
-		margin-inline-end: 0.35rem;
+	td,
+	tbody th {
+		padding: 0.7rem 1rem;
+		vertical-align: middle;
 		font-weight: 400;
-		color: var(--sl-color-gray-4);
+		text-align: start;
+	}
+
+	/* Not flex: a flex `th` stops behaving as a table cell and the row borders
+	   collapse to the width of its content. */
+	.token {
+		white-space: nowrap;
+	}
+
+	.token code {
+		vertical-align: middle;
+		border: 0;
+		background: none;
+		padding: 0;
+		font-size: 0.8125rem;
+		color: var(--sl-color-white);
+	}
+
+	.swatch {
+		display: inline-block;
+		vertical-align: middle;
+		margin-inline-end: 0.7rem;
+		inline-size: 1.75rem;
+		block-size: 1.75rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.5rem;
+		/* Checkerboard so a translucent token reads as translucent. */
+		background-image: linear-gradient(var(--dark), var(--dark)),
+			conic-gradient(from 90deg at 50% 50%, #0000 25%, #8883 0 50%, #0000 0 75%, #8883 0);
+		background-size:
+			100% 100%,
+			10px 10px;
 	}
 
 	.usage {
-		display: flex;
-		flex-direction: column;
-		gap: 0.3rem;
-		margin: 0.15rem 0 0;
-		padding: 0;
-		list-style: none;
+		min-width: 18rem;
+		color: var(--sl-color-gray-2);
 	}
 
-	.usage li {
-		display: flex;
-		align-items: baseline;
-		gap: 0.5rem;
-		min-width: 0;
+	.value {
+		white-space: nowrap;
 	}
 
-	.platform {
+	.chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.15rem 0.45rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.35rem;
+		background: var(--sl-color-gray-6);
+		font-family: var(--sl-font-mono);
+		font-size: 0.75rem;
+		color: var(--sl-color-gray-2);
+	}
+
+	.chip svg {
 		flex: none;
-		width: 3.75rem;
-		font-size: 0.625rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
+		inline-size: 0.8em;
+		block-size: 0.8em;
 		color: var(--sl-color-gray-4);
 	}
 
-	/* The symbols are long; wrapping keeps them readable where a nowrap box
-	   would silently clip the useful end of the path. */
-	.usage code {
-		flex: 1;
-		min-width: 0;
-		padding: 0.1rem 0.3rem;
-		border-radius: 0.25rem;
-		background: var(--sl-color-gray-6);
-		font-size: 0.6875rem;
-		line-height: 1.45;
-		overflow-wrap: anywhere;
-		color: var(--sl-color-gray-1);
+	/* Bare :root is the dark theme, so the dark values show by default. */
+	.on-light {
+		display: none;
+	}
+
+	:global(:root[data-theme='light']) .swatch {
+		background-image: linear-gradient(var(--light), var(--light)),
+			conic-gradient(from 90deg at 50% 50%, #0000 25%, #8883 0 50%, #0000 0 75%, #8883 0);
+	}
+
+	:global(:root[data-theme='light']) .on-light {
+		display: inline-flex;
+	}
+
+	:global(:root[data-theme='light']) .on-dark {
+		display: none;
 	}
 </style>
