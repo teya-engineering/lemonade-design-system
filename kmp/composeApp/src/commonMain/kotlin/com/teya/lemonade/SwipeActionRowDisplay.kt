@@ -1,17 +1,60 @@
 package com.teya.lemonade
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.Dialog
+import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonVariant
+import com.teya.lemonade.core.LemonadeCardPadding
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.SymbolContainerShape
 import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.SymbolContainerVoice
+
+@Composable
+private fun RemovalConfirmation(
+    onDelete: () -> Unit,
+    onCancel: () -> Unit,
+) {
+    Dialog(onDismissRequest = onCancel) {
+        LemonadeUi.Card(contentPadding = LemonadeCardPadding.Medium) {
+            LemonadeUi.Text(
+                text = "This will be deleted and you will not be able to recover it.",
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = LemonadeTheme.spaces.spacing400),
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = LemonadeTheme.spaces.spacing200,
+                    alignment = Alignment.End,
+                ),
+            ) {
+                LemonadeUi.Button(
+                    label = "Cancel",
+                    onClick = onCancel,
+                    variant = LemonadeButtonVariant.Neutral,
+                    size = LemonadeButtonSize.Medium,
+                )
+                LemonadeUi.Button(
+                    label = "Delete",
+                    onClick = onDelete,
+                    variant = LemonadeButtonVariant.Critical,
+                    size = LemonadeButtonSize.Medium,
+                )
+            }
+        }
+    }
+}
 
 private data class SampleAccount(val id: String, val name: String, val email: String, val initials: String)
 
@@ -36,6 +79,19 @@ private fun SwipeActionRowDisplayContent() {
         item(key = "single-open") {
             var openId by remember { mutableStateOf<Any?>(null) }
             var removed by remember { mutableStateOf(emptySet<String>()) }
+            // The swipe asks; it does not decide. A destructive action fired by a gesture is the
+            // one most easily fired by accident, so the row hands it on rather than carrying it
+            // out.
+            var pendingRemoval by remember { mutableStateOf<SampleAccount?>(null) }
+            pendingRemoval?.let { account ->
+                RemovalConfirmation(
+                    onDelete = {
+                        removed = removed + account.id
+                        pendingRemoval = null
+                    },
+                    onCancel = { pendingRemoval = null },
+                )
+            }
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
                 header = CardHeaderConfig(

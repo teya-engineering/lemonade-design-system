@@ -19,6 +19,8 @@ struct SwipeActionRowDisplayView: View {
     @State private var removed: Set<String> = []
     @State private var fired = 0
     @State private var pinned = false
+    /// The row a swipe has asked to remove, held until the reader confirms it.
+    @State private var pendingRemoval: SampleAccount?
 
     var body: some View {
         ScrollView {
@@ -41,7 +43,7 @@ struct SwipeActionRowDisplayView: View {
                                     LemonadeSwipeAction(
                                         icon: .trash,
                                         contentDescription: "Remove \(account.name)",
-                                        onClick: { removed.insert(account.id) }
+                                        onClick: { pendingRemoval = account }
                                     )
                                 ],
                                 showDivider: index != visible.count - 1
@@ -232,5 +234,23 @@ struct SwipeActionRowDisplayView: View {
         }
         .background(.bg.bgSubtle)
         .navigationTitle("SwipeActionRow")
+        // The swipe asks; it does not decide. A destructive action fired by a gesture is the one
+        // most easily fired by accident, so the row hands it on rather than carrying it out.
+        .confirmationDialog(
+            "This will be deleted and you will not be able to recover it.",
+            isPresented: Binding(
+                get: { pendingRemoval != nil },
+                set: { presented in if !presented { pendingRemoval = nil } }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button("Delete", role: .destructive) {
+                if let account = pendingRemoval { removed.insert(account.id) }
+                pendingRemoval = nil
+            }
+            // Plain rather than `.cancel`: iOS leaves a cancel-role button out of this
+            // presentation, where tapping away is the way out.
+            Button("Cancel") { pendingRemoval = nil }
+        }
     }
 }
