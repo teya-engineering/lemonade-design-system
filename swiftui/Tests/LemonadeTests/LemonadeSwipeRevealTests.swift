@@ -58,8 +58,8 @@ final class LemonadeSwipeRevealTests: XCTestCase {
     func testDisplacedActionsDimAsTheSwipeTakesTheRowOver() {
         let rowWidth: CGFloat = 400
         XCTAssertEqual(resolveSwipeDisplacedOpacity(travel: 0, rowWidth: rowWidth), 1, accuracy: 0.001)
-        XCTAssertEqual(resolveSwipeDisplacedOpacity(travel: 200, rowWidth: rowWidth), 1, accuracy: 0.001)
-        XCTAssertEqual(resolveSwipeDisplacedOpacity(travel: 300, rowWidth: rowWidth), 0.6, accuracy: 0.001)
+        XCTAssertEqual(resolveSwipeDisplacedOpacity(travel: 220, rowWidth: rowWidth), 1, accuracy: 0.001)
+        XCTAssertEqual(resolveSwipeDisplacedOpacity(travel: 310, rowWidth: rowWidth), 0.6, accuracy: 0.001)
         XCTAssertEqual(resolveSwipeDisplacedOpacity(travel: 400, rowWidth: rowWidth), 0.2, accuracy: 0.001)
     }
 

@@ -30,7 +30,22 @@ private func settle(velocity: CGFloat = 0, over distance: CGFloat = 0) -> Animat
 }
 
 /// Fraction of the row's width a drag must cross for a full swipe to commit.
-private let commitFraction: CGFloat = 0.5
+///
+/// Measured off iOS frame by frame: a 440pt row commits as the drag passes 240pt, which is 0.546 of
+/// it. Far enough past halfway that the reader has to mean it.
+private let commitFraction: CGFloat = 0.55
+
+/// What is left of the row on screen once a commit has claimed it. iOS stops the row 18.3pt short
+/// of carrying it off, which keeps the row a row rather than a bare action.
+private let commitInset: CGFloat = 20
+
+/// The spring a commit claims the row on — ω = 35 rad/s, a fifth of a second end to end, against
+/// the settle's half.
+///
+/// Fitted to iOS frame by frame: the action reaches half its width within 50ms of the crossing and
+/// 94% within 130ms, which a critically damped spring at that ω tracks to within a frame across the
+/// whole animation.
+private let commit: Animation = .interpolatingSpring(mass: 1, stiffness: 1225, damping: 70)
 
 /// How far the row may drift on screen before an open one counts as scrolled past. Enough to sit
 /// out the rounding a layout pass can move it by, and far short of a deliberate scroll.
@@ -329,6 +344,13 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     /// Where the row rests while open: at the reveal, or wherever a commit is holding it.
     private var restingTravel: CGFloat { heldTravel ?? revealWidth }
 
+    /// Where a commit parks the row: as far as it goes, less the sliver iOS leaves of it.
+    private var commitTravel: CGFloat { max(revealWidth, rowWidth - commitInset) }
+
+    /// What the row draws. Crossing the commit threshold takes the row out of the drag's hands and
+    /// carries it the rest of the way itself; dragging back below hands it back.
+    private var shown: CGFloat { committed ? commitTravel : travel }
+
     /// A tapped action tidies the row away after it, unless it has put something on screen that the
     /// row is the subject of. Claiming the slot again is what keeps the group's own tap — the same
     /// one that fired this — from closing the row underneath it.
@@ -346,7 +368,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
         VStack(spacing: 0) {
             ZStack(alignment: .trailing) {
                 SwipeActionStrip(
-                    travel: travel,
+                    travel: shown,
                     actions: actions,
                     committed: committed,
                     rowWidth: rowWidth,
@@ -382,7 +404,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                                 .onTapGesture { open = false }
                         }
                     }
-                    .offset(x: travel * towardsTrailing)
+                    .offset(x: shown * towardsTrailing)
             }
             .clipped()
             .background(
@@ -484,7 +506,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 let next = clampedTravel(origin + dragged(value) * towardsTrailing)
                 let crossed = allowsFullSwipe && next >= rowWidth * commitFraction
                 if crossed != committed {
-                    committed = crossed
+                    withAnimation(commit) { committed = crossed }
                     if crossed { playCommitHaptic() }
                 }
                 travel = next
@@ -493,6 +515,8 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 guard let origin = settleOrigin else { return }
                 settleOrigin = nil
                 dragOrigin = nil
+                // The claim is spent: the row settles from where it is being drawn.
+                if committed { travel = commitTravel }
                 committed = false
                 // Read the release position off the gesture rather than off `travel`: the cancel
                 // path may already have snapped `travel` back before this ran.
@@ -511,7 +535,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 // has just put on screen.
                 let holds = commits && actions.first?.keepsRowOpen == true
                 open = target == .open || holds
-                heldTravel = holds ? rowWidth : nil
+                heldTravel = holds ? commitTravel : nil
                 committed = holds
                 if commits {
                     // Before the animation, not after: the row must not wait on a spring to fire.
@@ -519,7 +543,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 }
                 // The spring picks up the speed the finger let go at rather than starting from
                 // rest, so the row carries straight on out of the drag.
-                let settleTo: CGFloat = open ? (holds ? rowWidth : revealWidth) : 0
+                let settleTo: CGFloat = open ? (holds ? commitTravel : revealWidth) : 0
                 withAnimation(settle(velocity: speed, over: settleTo - travel)) {
                     travel = settleTo
                     holding = holds
@@ -618,9 +642,9 @@ private struct SwipeActionStrip: View, Animatable {
         .frame(width: actionsWidth, alignment: .trailing)
         .padding(.leading, LemonadeTheme.spaces.spacing300)
         .padding(.trailing, LemonadeTheme.spaces.spacing400)
-        // Crossing the commit threshold moves the icon without moving the row, so it is the one
-        // thing here with an animation of its own.
-        .animation(settle(), value: committed)
+        // The crossing carries the icon to the leading end while the width it is sliding along is
+        // still growing, so both ride the commit's own spring.
+        .animation(commit, value: committed)
         // The actions stay in the accessibility tree even while covered by the row, where they
         // would announce a destructive action ahead of the row it belongs to. The row's own custom
         // actions are the accessible path.

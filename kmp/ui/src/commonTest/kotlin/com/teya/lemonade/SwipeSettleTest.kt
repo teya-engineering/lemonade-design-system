@@ -2,6 +2,7 @@ package com.teya.lemonade
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 
 /**
  * Covers [resolveSwipeSettle] — where a released drag lands. Geometry matches a trailing action on a
@@ -80,15 +81,15 @@ class SwipeSettleTest {
     }
 
     @Test
-    fun `crossing half the row commits`() {
-        assertEquals(expected = SwipeSettleTarget.Committed, actual = settle(travel = 200f))
+    fun `crossing the commit threshold commits`() {
+        assertEquals(expected = SwipeSettleTarget.Committed, actual = settle(travel = 240f))
     }
 
     @Test
     fun `a long drag only opens when full swipe is off`() {
         assertEquals(
             expected = SwipeSettleTarget.Open,
-            actual = settle(travel = 200f, allowsFullSwipe = false),
+            actual = settle(travel = 240f, allowsFullSwipe = false),
         )
     }
 
@@ -96,7 +97,7 @@ class SwipeSettleTest {
     fun `a commit beats a flick back`() {
         assertEquals(
             expected = SwipeSettleTarget.Committed,
-            actual = settle(travel = 200f, velocity = -900f),
+            actual = settle(travel = 240f, velocity = -900f),
         )
     }
 
@@ -115,9 +116,18 @@ class SwipeSettleTest {
     }
 
     @Test
-    fun `travel exactly on half the row commits`() {
+    fun `travel exactly on the commit threshold commits`() {
         assertEquals(
             expected = SwipeSettleTarget.Committed,
+            actual = settle(travel = rowWidth * 0.55f),
+        )
+    }
+
+    /** Halfway is no longer enough: iOS asks for a little more than half the row. */
+    @Test
+    fun `travel on half the row does not commit`() {
+        assertNotEquals(
+            illegal = SwipeSettleTarget.Committed,
             actual = settle(travel = rowWidth / 2f),
         )
     }

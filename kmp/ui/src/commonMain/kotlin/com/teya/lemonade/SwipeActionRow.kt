@@ -67,10 +67,10 @@ import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeButtonType
 import com.teya.lemonade.core.LemonadeButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
-import kotlin.math.abs
-import kotlin.math.roundToInt
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlin.math.abs
+import kotlin.math.roundToInt
 
 /**
  * Stiffness of the spring a released row travels on, and the one animation the reveal rides.
@@ -88,8 +88,27 @@ private const val SETTLE_STIFFNESS = 156.25f
  */
 private val SCROLL_SLACK = 4.dp
 
-/** Fraction of the row's width a drag must cross for a full swipe to commit. */
-private const val COMMIT_FRACTION = 0.5f
+/**
+ * Fraction of the row's width a drag must cross for a full swipe to commit.
+ *
+ * Measured off iOS frame by frame: a 440pt row commits as the drag passes 240pt, which is 0.546 of
+ * it. Far enough past halfway that the reader has to mean it.
+ */
+private const val COMMIT_FRACTION = 0.55f
+
+/**
+ * What is left of the row on screen once a commit has claimed it. iOS stops the row 18.3pt short of
+ * carrying it off, which keeps the row a row rather than a bare action.
+ */
+private val COMMIT_INSET = 20.dp
+
+/**
+ * Stiffness of the spring a commit claims the row on — ω = 35 rad/s, a fifth of a second end to
+ * end, against the settle's half. Fitted to iOS frame by frame: the action reaches half its width
+ * within 50ms of the crossing and 94% within 130ms, which a critically damped spring at that ω
+ * tracks to within a frame across the whole animation.
+ */
+private const val COMMIT_STIFFNESS = 1225f
 
 /** Deceleration a released row is left to coast on, matching a scroll's normal rate. */
 private const val DECELERATION_RATE = 0.998f
@@ -107,6 +126,12 @@ private fun projectedTravel(
 private val settleSpring: SpringSpec<Float> = spring(
     dampingRatio = Spring.DampingRatioNoBouncy,
     stiffness = SETTLE_STIFFNESS,
+)
+
+/** The spring [COMMIT_STIFFNESS] describes, for the claim a commit takes of the row. */
+private val commitSpring: SpringSpec<Float> = spring(
+    dampingRatio = Spring.DampingRatioNoBouncy,
+    stiffness = COMMIT_STIFFNESS,
 )
 
 /** Where a released drag lands. */
@@ -493,11 +518,13 @@ private fun SwipeActionCapsule(
     // Centred in the capsule until the swipe commits, then it slides to the centre of the capsule's
     // leading end — where the action would sit if it had stayed a circle and the row had simply
     // carried on past it.
+    // On the commit's own spring, not the settle's: the icon has to arrive with the width it is
+    // sliding along, and iOS lands the two within a frame of each other.
     val iconOffset by animateDpAsState(
         targetValue = if (committed) -stretch / 2 else 0.dp,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioNoBouncy,
-            stiffness = SETTLE_STIFFNESS,
+            stiffness = COMMIT_STIFFNESS,
         ),
         label = "swipeActionIcon",
     )
@@ -533,7 +560,10 @@ private fun SwipeActionCapsule(
  * [color] drained of [amount] of its colour: what a grayscale filter would leave of it, mixed back
  * in by how far the drain has gone.
  */
-private fun drained(color: Color, amount: Float): Color {
+private fun drained(
+    color: Color,
+    amount: Float,
+): Color {
     if (amount <= 0f) {
         return color
     }
@@ -618,6 +648,19 @@ private fun SwipeActionRowCore(
         if (count <= 0) 0f else padding + count * actionWidth + (count - 1) * gap
     }
     val revealWidth = revealWidthThrough(actions.size)
+    // Where a commit parks the row: as far as it goes, less the sliver iOS leaves of it.
+    val commitTravel = maxOf(revealWidth, rowWidth - with(density) { COMMIT_INSET.toPx() })
+
+    // How far the commit has claimed the row off the finger. Crossing the threshold takes the row
+    // out of the drag's hands and carries it the rest of the way itself; dragging back below hands
+    // it back. The blend is what makes both a spring rather than a jump, and what keeps the finger
+    // in charge on the way there.
+    val claimed by animateFloatAsState(
+        targetValue = if (committed) 1f else 0f,
+        animationSpec = commitSpring,
+        label = "swipeCommitClaim",
+    )
+    val shown = travel + (commitTravel - travel) * claimed
 
     // A tapped action tidies the row away after it, unless it has put something on screen that the
     // row is the subject of. Claiming the slot again is what keeps the group's own tap — the same
@@ -722,6 +765,9 @@ private fun SwipeActionRowCore(
                     },
                     onDragStopped = { velocity ->
                         dragging = false
+                        // The claim is spent: the row settles from where it is being drawn, not
+                        // from where the finger left off.
+                        travel = shown
                         // The spring picks up the speed the finger let go at rather than starting
                         // from rest, so the row carries straight on out of the drag.
                         val released = velocity * towardsTrailing
@@ -742,14 +788,14 @@ private fun SwipeActionRowCore(
                                 // action asks: away, or held all the way across, the action still
                                 // stretched, behind whatever the action has just put on screen.
                                 val holds = first?.keepsRowOpen == true
-                                heldTravel = if (holds) rowWidth else null
+                                heldTravel = if (holds) commitTravel else null
                                 committed = holds
                                 holding = holds
                                 onOpenChange(holds)
                                 // Before the animation, not after: animateTo suspends until it
                                 // settles, and the action must not wait on a spring.
                                 first?.onClick()
-                                settleTo(if (holds) rowWidth else 0f, released)
+                                settleTo(if (holds) commitTravel else 0f, released)
                             }
 
                             SwipeSettleTarget.Open -> {
@@ -780,7 +826,7 @@ private fun SwipeActionRowCore(
                 actions = actions,
                 reveal = { index ->
                     resolveSwipeStripReveal(
-                        travel = travel,
+                        travel = shown,
                         actionReveal = revealWidthThrough(index + 1),
                         stripReveal = revealWidth,
                         actionWidth = actionWidth,
@@ -788,14 +834,14 @@ private fun SwipeActionRowCore(
                 },
                 arrived = { index ->
                     resolveSwipeStripReveal(
-                        travel = travel,
+                        travel = shown,
                         actionReveal = revealWidthThrough(index + 1),
                         stripReveal = revealWidth,
                         actionWidth = actionWidth,
                     ).scale >= BUMP_TRIGGER
                 },
                 displacedOpacity = {
-                    resolveSwipeDisplacedOpacity(travel = travel, rowWidth = rowWidth)
+                    resolveSwipeDisplacedOpacity(travel = shown, rowWidth = rowWidth)
                 },
                 committed = { committed },
                 onFired = fired,
@@ -804,7 +850,7 @@ private fun SwipeActionRowCore(
             )
             Box(
                 modifier = Modifier
-                    .offset { IntOffset(x = (travel * towardsTrailing).roundToInt(), y = 0) }
+                    .offset { IntOffset(x = (shown * towardsTrailing).roundToInt(), y = 0) }
                     // A row under the finger rests on the list item's own press highlight rather
                     // than on a surface of its own: same fill, same radius, same gutter. It is on
                     // for the whole gesture, not proportional to the travel — the row is being

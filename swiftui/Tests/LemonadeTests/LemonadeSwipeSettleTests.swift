@@ -81,8 +81,13 @@ final class LemonadeSwipeSettleTests: XCTestCase {
         XCTAssertEqual(settle(travel: 100, velocity: -400), .closed)
     }
 
-    func testTravelExactlyOnHalfTheRowCommits() {
-        XCTAssertEqual(settle(travel: rowWidth / 2), .committed)
+    func testTravelExactlyOnTheCommitThresholdCommits() {
+        XCTAssertEqual(settle(travel: rowWidth * 0.55), .committed)
+    }
+
+    /// Halfway is no longer enough: iOS asks for a little more than half the row.
+    func testTravelOnHalfTheRowDoesNotCommit() {
+        XCTAssertNotEqual(settle(travel: rowWidth / 2), .committed)
     }
 
     func testARowWithNoActionsSettlesClosed() {

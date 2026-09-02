@@ -104,8 +104,8 @@ class SwipeRevealTest {
         val rowWidth = 400f
         val tolerance = 0.001f
         assertEquals(1f, resolveSwipeDisplacedOpacity(travel = 0f, rowWidth = rowWidth), tolerance)
-        assertEquals(1f, resolveSwipeDisplacedOpacity(travel = 200f, rowWidth = rowWidth), tolerance)
-        assertEquals(0.6f, resolveSwipeDisplacedOpacity(travel = 300f, rowWidth = rowWidth), tolerance)
+        assertEquals(1f, resolveSwipeDisplacedOpacity(travel = 220f, rowWidth = rowWidth), tolerance)
+        assertEquals(0.6f, resolveSwipeDisplacedOpacity(travel = 310f, rowWidth = rowWidth), tolerance)
         assertEquals(0.2f, resolveSwipeDisplacedOpacity(travel = 400f, rowWidth = rowWidth), tolerance)
     }
 
