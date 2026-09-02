@@ -43,7 +43,10 @@ struct SwipeActionRowDisplayView: View {
                                     LemonadeSwipeAction(
                                         icon: .trash,
                                         contentDescription: "Remove \(account.name)",
-                                        onClick: { pendingRemoval = account }
+                                        onClick: { pendingRemoval = account },
+                                        // The row is what the confirmation is about, so it stays
+                                        // open behind it.
+                                        keepsRowOpen: true
                                     )
                                 ],
                                 showDivider: index != visible.count - 1
@@ -240,7 +243,14 @@ struct SwipeActionRowDisplayView: View {
             "This will be deleted and you will not be able to recover it.",
             isPresented: Binding(
                 get: { pendingRemoval != nil },
-                set: { presented in if !presented { pendingRemoval = nil } }
+                // The row held itself open for this, so closing it again is the caller's to do:
+                // the row cannot see the confirmation go, however it went.
+                set: { presented in
+                    if !presented {
+                        pendingRemoval = nil
+                        openId = nil
+                    }
+                }
             ),
             titleVisibility: .visible
         ) {

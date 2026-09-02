@@ -250,17 +250,30 @@ public struct LemonadeSwipeAction {
     let contentDescription: String
     let onClick: () -> Void
     let variant: LemonadeButtonVariant
+    let keepsRowOpen: Bool
 
+    /// - Parameters:
+    ///   - icon: what the action shows
+    ///   - contentDescription: what VoiceOver reads, and how the action is reached without the
+    ///     gesture
+    ///   - onClick: what the action does
+    ///   - variant: the button palette it is drawn in
+    ///   - keepsRowOpen: whether the row stays open once this has fired. Firing an action normally
+    ///     closes the row, which is wrong for one that puts something on screen about it — a
+    ///     confirmation asking whether to go ahead reads oddly over a row that has already tidied
+    ///     itself away.
     public init(
         icon: LemonadeIcon,
         contentDescription: String,
         onClick: @escaping () -> Void,
-        variant: LemonadeButtonVariant = .critical
+        variant: LemonadeButtonVariant = .critical,
+        keepsRowOpen: Bool = false
     ) {
         self.icon = icon
         self.contentDescription = contentDescription
         self.onClick = onClick
         self.variant = variant
+        self.keepsRowOpen = keepsRowOpen
     }
 }
 
@@ -286,6 +299,10 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     @State private var settleOrigin: CGFloat?
     @State private var rowWidth: CGFloat = 0
     @State private var committed = false
+    /// Where the row rests instead of at the reveal, once a committed swipe has left it there: all
+    /// the way across, with the action still stretched behind it. Cleared when the row closes, or
+    /// when a finger takes hold of it again.
+    @State private var heldTravel: CGFloat?
     @GestureState private var isDragging = false
     /// What this row answers to inside a group. Its own, so an uncontrolled row needs no identity
     /// from the caller to take part.
@@ -306,6 +323,21 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     /// would move under the model driving it.
     private var revealWidth: CGFloat { swipeRevealWidth(through: actions.count) }
 
+    /// Where the row rests while open: at the reveal, or wherever a commit is holding it.
+    private var restingTravel: CGFloat { heldTravel ?? revealWidth }
+
+    /// A tapped action tidies the row away after it, unless it has put something on screen that the
+    /// row is the subject of. Claiming the slot again is what keeps the group's own tap — the same
+    /// one that fired this — from closing the row underneath it.
+    private func fired(_ action: LemonadeSwipeAction) {
+        action.onClick()
+        if action.keepsRowOpen {
+            announce?(groupIdentity)
+        } else {
+            open = false
+        }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             ZStack(alignment: .trailing) {
@@ -314,7 +346,8 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                     actions: actions,
                     committed: committed,
                     rowWidth: rowWidth,
-                    towardsTrailing: towardsTrailing
+                    towardsTrailing: towardsTrailing,
+                    onFired: fired
                 )
                 content()
                     // A row under the finger rests on the list item's own press highlight rather
@@ -376,7 +409,11 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             }
         }
         .onChange(of: open) { newValue in
-            withAnimation(settle()) { travel = newValue ? revealWidth : 0 }
+            if !newValue {
+                heldTravel = nil
+                committed = false
+            }
+            withAnimation(settle()) { travel = newValue ? restingTravel : 0 }
             openedAt = newValue ? rowY : nil
             if newValue { announce?(groupIdentity) }
         }
@@ -388,7 +425,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
         .onChange(of: revealWidth) { newValue in
             // `actions` can change while the row is open, and an open row would otherwise rest at
             // a stale offset. Never under a live finger, where it would fight the drag.
-            guard open, dragOrigin == nil else { return }
+            guard open, dragOrigin == nil, heldTravel == nil else { return }
             withAnimation(settle()) { travel = newValue }
         }
         .onChange(of: isDragging) { dragging in
@@ -398,7 +435,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             guard !dragging, dragOrigin != nil else { return }
             dragOrigin = nil
             committed = false
-            withAnimation(settle()) { travel = open ? revealWidth : 0 }
+            withAnimation(settle()) { travel = open ? restingTravel : 0 }
         }
     }
 
@@ -423,6 +460,9 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                     dragOrigin = travel
                     settleOrigin = travel
                     claimTranslation = value.translation.width
+                    // Back under a finger, so nothing is holding it any more: this drag settles
+                    // the row wherever it asks, like any other.
+                    heldTravel = nil
                 }
                 guard let origin = dragOrigin else { return }
                 let next = clampedTravel(origin + dragged(value) * towardsTrailing)
@@ -449,14 +489,21 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                     rowWidth: rowWidth,
                     allowsFullSwipe: allowsFullSwipe
                 )
-                open = target == .open
-                if target == .committed {
+                let commits = target == .committed
+                // A commit fires the first action, so it rests where that action asks: away, or
+                // held all the way across, the action still stretched, behind whatever the action
+                // has just put on screen.
+                let holds = commits && actions.first?.keepsRowOpen == true
+                open = target == .open || holds
+                heldTravel = holds ? rowWidth : nil
+                committed = holds
+                if commits {
                     // Before the animation, not after: the row must not wait on a spring to fire.
                     actions.first?.onClick()
                 }
                 // The spring picks up the speed the finger let go at rather than starting from
                 // rest, so the row carries straight on out of the drag.
-                let settleTo: CGFloat = target == .open ? revealWidth : 0
+                let settleTo: CGFloat = open ? (holds ? rowWidth : revealWidth) : 0
                 withAnimation(settle(velocity: speed, over: settleTo - travel)) {
                     travel = settleTo
                 }
@@ -495,6 +542,7 @@ private struct SwipeActionStrip: View, Animatable {
     let committed: Bool
     let rowWidth: CGFloat
     let towardsTrailing: CGFloat
+    let onFired: (LemonadeSwipeAction) -> Void
 
     var animatableData: CGFloat {
         get { travel }
@@ -576,7 +624,7 @@ private struct SwipeActionStrip: View, Animatable {
         // capsule's leading end — where the action would sit if it had stayed a circle and the row
         // had simply carried on past it.
         let iconOffset = committed ? stretch / 2 * towardsTrailing : 0
-        return SwiftUI.Button(action: action.onClick) {
+        return SwiftUI.Button { onFired(action) } label: {
             Capsule()
                 .fill(colors.backgroundColor)
                 .frame(width: actionSize + stretch, height: actionSize)
@@ -740,12 +788,21 @@ private struct LemonadeSwipeActionGroupView<Content: View>: View {
             }
             // Simultaneous, so the tap still reaches whatever was tapped. Closing an open row is
             // not meant to cost the reader the tap that closed it.
+            //
+            // Settled a turn later, and only if nothing claimed the slot meanwhile. The tap that
+            // fires an action is this same tap, and neither platform says whether the action or the
+            // gesture is seen first — waiting a turn means a row that has claimed the slot has said
+            // so by the time this decides, and this leaves it alone.
             .simultaneousGesture(
                 TapGesture().onEnded {
-                    signal = SwipeActionGroupSignal(
-                        announcements: signal.announcements + 1,
-                        opener: nil
-                    )
+                    let seen = signal.announcements
+                    Task { @MainActor in
+                        guard signal.announcements == seen else { return }
+                        signal = SwipeActionGroupSignal(
+                            announcements: signal.announcements + 1,
+                            opener: nil
+                        )
+                    }
                 }
             )
     }

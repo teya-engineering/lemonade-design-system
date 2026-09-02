@@ -91,7 +91,12 @@ private fun SwipeActionRowDisplayContent() {
                         removed = removed + account.id
                         pendingRemoval = null
                     },
-                    onCancel = { pendingRemoval = null },
+                    // The row held itself open for this, so closing it again is the caller's to
+                    // do: the row cannot see the confirmation go.
+                    onCancel = {
+                        pendingRemoval = null
+                        openId = null
+                    },
                 )
             }
             LemonadeUi.Card(
@@ -112,6 +117,9 @@ private fun SwipeActionRowDisplayContent() {
                                 icon = LemonadeIcons.Trash,
                                 contentDescription = "Remove ${account.name}",
                                 onClick = { pendingRemoval = account },
+                                // The row is what the confirmation is about, so it stays open
+                                // behind it.
+                                keepsRowOpen = true,
                             ),
                         ),
                         showDivider = index != visible.lastIndex,

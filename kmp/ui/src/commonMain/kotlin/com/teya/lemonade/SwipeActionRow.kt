@@ -34,6 +34,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -319,6 +320,7 @@ public fun LemonadeUi.SwipeActionGroup(
     content: @Composable () -> Unit,
 ) {
     var signal by remember { mutableStateOf(SwipeActionGroupSignal()) }
+    val scope = rememberCoroutineScope()
     val announce: (Any?) -> Unit = { opener ->
         signal = SwipeActionGroupSignal(
             announcements = signal.announcements + 1,
@@ -346,7 +348,18 @@ public fun LemonadeUi.SwipeActionGroup(
                         val change = event.changes.firstOrNull { it.id == down.id } ?: break
                         travelled += (change.position - change.previousPosition).getDistance()
                         if (!change.pressed) {
-                            if (travelled < viewConfiguration.touchSlop) announce(null)
+                            // Settled a frame later, and only if nothing claimed the slot
+                            // meanwhile. The tap that fires an action is this same tap, seen here
+                            // on the initial pass and by the action on the final one — waiting a
+                            // frame means a row that has claimed the slot has said so by the time
+                            // this decides, and this leaves it alone.
+                            if (travelled < viewConfiguration.touchSlop) {
+                                val seen = signal.announcements
+                                scope.launch {
+                                    withFrameNanos { }
+                                    if (signal.announcements == seen) announce(null)
+                                }
+                            }
                             break
                         }
                     }
@@ -367,6 +380,7 @@ public data class SwipeAction(
     val contentDescription: String,
     val onClick: () -> Unit,
     val variant: LemonadeButtonVariant = LemonadeButtonVariant.Critical,
+    val keepsRowOpen: Boolean = false,
 )
 
 /**
@@ -382,6 +396,7 @@ private fun SwipeActionStrip(
     arrived: (Int) -> Boolean,
     displacedOpacity: () -> Float,
     committed: () -> Boolean,
+    onFired: (SwipeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val step = LemonadeTheme.sizes.size1200 + LemonadeTheme.spaces.spacing200
@@ -416,6 +431,7 @@ private fun SwipeActionStrip(
                 opacity = if (index == 0) 1f else displacedOpacity(),
                 stretches = index == 0,
                 committed = committed() && index == 0,
+                onFired = onFired,
                 modifier = Modifier.offset(x = -step * index - push),
             )
         }
@@ -436,6 +452,7 @@ private fun SwipeActionCapsule(
     opacity: Float,
     stretches: Boolean,
     committed: Boolean,
+    onFired: (SwipeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colors = resolveColors(
@@ -487,7 +504,9 @@ private fun SwipeActionCapsule(
                 alpha = scale * opacity
             }.clip(shape = CircleShape)
             .clickable(
-                onClick = action.onClick,
+                onClick = {
+                    onFired(action)
+                },
                 role = Role.Button,
                 interactionSource = interactionSource,
                 indication = LocalEffects.current.interactionIndication,
@@ -535,6 +554,10 @@ private fun SwipeActionRowCore(
     var openedAt by remember { mutableStateOf<Float?>(null) }
     val scrollSlack = with(LocalDensity.current) { SCROLL_SLACK.toPx() }
     var committed by remember { mutableStateOf(false) }
+    // Where the row rests instead of at the reveal, once a committed swipe has left it there: all
+    // the way across, with the action still stretched behind it. Cleared when the row closes, or
+    // when a finger takes hold of it again.
+    var heldTravel by remember { mutableStateOf<Float?>(null) }
     var dragging by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val haptics = LocalHapticFeedback.current
@@ -571,13 +594,30 @@ private fun SwipeActionRowCore(
     }
     val revealWidth = revealWidthThrough(actions.size)
 
+    // A tapped action tidies the row away after it, unless it has put something on screen that the
+    // row is the subject of. Claiming the slot again is what keeps the group's own tap — the same
+    // one that fired this — from closing the row underneath it.
+    val fired: (SwipeAction) -> Unit = { action ->
+        action.onClick()
+        if (action.keepsRowOpen) {
+            announce?.invoke(groupIdentity)
+        } else {
+            onOpenChange(false)
+        }
+    }
+
     // The caller is the source of truth: another row opening closes this one. Keyed on `open`
     // alone: a settle animates itself, because it usually writes the value `open` already holds
     // and this effect would not restart.
     LaunchedEffect(open) {
         openedAt = if (open) rowY else null
-        if (open) announce?.invoke(groupIdentity)
-        settleTo(if (open) revealWidth else 0f, 0f)
+        if (open) {
+            announce?.invoke(groupIdentity)
+        } else {
+            heldTravel = null
+            committed = false
+        }
+        settleTo(if (open) (heldTravel ?: revealWidth) else 0f, 0f)
     }
 
     // Another row took the slot, or the group was touched and nothing holds it. Keyed on the count
@@ -592,7 +632,7 @@ private fun SwipeActionRowCore(
     // `actions` can change while the row is open, and an open row would otherwise rest at a stale
     // offset. Never under a live finger, where it would fight the drag.
     LaunchedEffect(revealWidth) {
-        if (open && !dragging) settleTo(revealWidth, 0f)
+        if (open && !dragging && heldTravel == null) settleTo(revealWidth, 0f)
     }
 
     val dragState = rememberDraggableState { delta ->
@@ -638,8 +678,10 @@ private fun SwipeActionRowCore(
                     orientation = Orientation.Horizontal,
                     enabled = enabled && actions.isNotEmpty(),
                     onDragStarted = {
-                        // The finger outranks whatever the row was doing.
+                        // The finger outranks whatever the row was doing, and nothing is holding
+                        // the row any more: this drag settles it wherever it asks.
                         settling.value?.cancel()
+                        heldTravel = null
                         dragging = true
                     },
                     onDragStopped = { velocity ->
@@ -659,11 +701,18 @@ private fun SwipeActionRowCore(
                         // holds, so nothing else would move the row off where the finger left it.
                         when (target) {
                             SwipeSettleTarget.Committed -> {
-                                onOpenChange(false)
+                                val first = actions.firstOrNull()
+                                // A commit fires the first action, so the row rests where that
+                                // action asks: away, or held all the way across, the action still
+                                // stretched, behind whatever the action has just put on screen.
+                                val holds = first?.keepsRowOpen == true
+                                heldTravel = if (holds) rowWidth else null
+                                committed = holds
+                                onOpenChange(holds)
                                 // Before the animation, not after: animateTo suspends until it
                                 // settles, and the action must not wait on a spring.
-                                actions.firstOrNull()?.onClick()
-                                settleTo(0f, released)
+                                first?.onClick()
+                                settleTo(if (holds) rowWidth else 0f, released)
                             }
 
                             SwipeSettleTarget.Open -> {
@@ -712,6 +761,7 @@ private fun SwipeActionRowCore(
                     resolveSwipeDisplacedOpacity(travel = travel, rowWidth = rowWidth)
                 },
                 committed = { committed },
+                onFired = fired,
                 modifier = Modifier.align(Alignment.CenterEnd),
             )
             Box(

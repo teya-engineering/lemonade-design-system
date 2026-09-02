@@ -291,12 +291,14 @@ final class com.teya.lemonade/NavigationAction { // com.teya.lemonade/Navigation
 }
 
 final class com.teya.lemonade/SwipeAction { // com.teya.lemonade/SwipeAction|null[0]
-    constructor <init>(com.teya.lemonade.core/LemonadeIcons, kotlin/String, kotlin/Function0<kotlin/Unit>, com.teya.lemonade.core/LemonadeButtonVariant = ...) // com.teya.lemonade/SwipeAction.<init>|<init>(com.teya.lemonade.core.LemonadeIcons;kotlin.String;kotlin.Function0<kotlin.Unit>;com.teya.lemonade.core.LemonadeButtonVariant){}[0]
+    constructor <init>(com.teya.lemonade.core/LemonadeIcons, kotlin/String, kotlin/Function0<kotlin/Unit>, com.teya.lemonade.core/LemonadeButtonVariant = ..., kotlin/Boolean = ...) // com.teya.lemonade/SwipeAction.<init>|<init>(com.teya.lemonade.core.LemonadeIcons;kotlin.String;kotlin.Function0<kotlin.Unit>;com.teya.lemonade.core.LemonadeButtonVariant;kotlin.Boolean){}[0]
 
     final val contentDescription // com.teya.lemonade/SwipeAction.contentDescription|{}contentDescription[0]
         final fun <get-contentDescription>(): kotlin/String // com.teya.lemonade/SwipeAction.contentDescription.<get-contentDescription>|<get-contentDescription>(){}[0]
     final val icon // com.teya.lemonade/SwipeAction.icon|{}icon[0]
         final fun <get-icon>(): com.teya.lemonade.core/LemonadeIcons // com.teya.lemonade/SwipeAction.icon.<get-icon>|<get-icon>(){}[0]
+    final val keepsRowOpen // com.teya.lemonade/SwipeAction.keepsRowOpen|{}keepsRowOpen[0]
+        final fun <get-keepsRowOpen>(): kotlin/Boolean // com.teya.lemonade/SwipeAction.keepsRowOpen.<get-keepsRowOpen>|<get-keepsRowOpen>(){}[0]
     final val onClick // com.teya.lemonade/SwipeAction.onClick|{}onClick[0]
         final fun <get-onClick>(): kotlin/Function0<kotlin/Unit> // com.teya.lemonade/SwipeAction.onClick.<get-onClick>|<get-onClick>(){}[0]
     final val variant // com.teya.lemonade/SwipeAction.variant|{}variant[0]
@@ -306,7 +308,8 @@ final class com.teya.lemonade/SwipeAction { // com.teya.lemonade/SwipeAction|nul
     final fun component2(): kotlin/String // com.teya.lemonade/SwipeAction.component2|component2(){}[0]
     final fun component3(): kotlin/Function0<kotlin/Unit> // com.teya.lemonade/SwipeAction.component3|component3(){}[0]
     final fun component4(): com.teya.lemonade.core/LemonadeButtonVariant // com.teya.lemonade/SwipeAction.component4|component4(){}[0]
-    final fun copy(com.teya.lemonade.core/LemonadeIcons = ..., kotlin/String = ..., kotlin/Function0<kotlin/Unit> = ..., com.teya.lemonade.core/LemonadeButtonVariant = ...): com.teya.lemonade/SwipeAction // com.teya.lemonade/SwipeAction.copy|copy(com.teya.lemonade.core.LemonadeIcons;kotlin.String;kotlin.Function0<kotlin.Unit>;com.teya.lemonade.core.LemonadeButtonVariant){}[0]
+    final fun component5(): kotlin/Boolean // com.teya.lemonade/SwipeAction.component5|component5(){}[0]
+    final fun copy(com.teya.lemonade.core/LemonadeIcons = ..., kotlin/String = ..., kotlin/Function0<kotlin/Unit> = ..., com.teya.lemonade.core/LemonadeButtonVariant = ..., kotlin/Boolean = ...): com.teya.lemonade/SwipeAction // com.teya.lemonade/SwipeAction.copy|copy(com.teya.lemonade.core.LemonadeIcons;kotlin.String;kotlin.Function0<kotlin.Unit>;com.teya.lemonade.core.LemonadeButtonVariant;kotlin.Boolean){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // com.teya.lemonade/SwipeAction.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // com.teya.lemonade/SwipeAction.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // com.teya.lemonade/SwipeAction.toString|toString(){}[0]
