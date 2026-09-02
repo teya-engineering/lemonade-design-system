@@ -229,7 +229,6 @@ struct ToastDisplayView: View {
                 .padding(.vertical, 8)
             }
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("Toast")
         .sheet(isPresented: $showOverSheet) {
             // Give the sheet its own toast container so a toast fired from inside it renders on top of

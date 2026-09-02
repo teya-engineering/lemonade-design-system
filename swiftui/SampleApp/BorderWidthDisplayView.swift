@@ -24,7 +24,6 @@ struct BorderWidthDisplayView: View {
             }
             .padding()
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("Border Width")
     }
 }

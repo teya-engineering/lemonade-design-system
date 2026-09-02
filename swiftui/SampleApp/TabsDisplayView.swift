@@ -107,7 +107,6 @@ struct TabsDisplayView: View {
             }
             .padding(.vertical)
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("Tabs")
     }
 

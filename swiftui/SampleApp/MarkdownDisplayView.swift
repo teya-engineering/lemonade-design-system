@@ -57,7 +57,6 @@ struct MarkdownDisplayView: View {
             }
             .padding()
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("Markdown")
     }
 

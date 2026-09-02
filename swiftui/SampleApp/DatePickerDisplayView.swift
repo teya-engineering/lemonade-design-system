@@ -114,7 +114,6 @@ struct DatePickerDisplayView: View {
             }
             .padding()
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("DatePicker")
     }
 

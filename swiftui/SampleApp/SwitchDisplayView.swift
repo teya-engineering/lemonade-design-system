@@ -134,7 +134,6 @@ struct SwitchDisplayView: View {
             }
             .padding()
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("Switch")
     }
 

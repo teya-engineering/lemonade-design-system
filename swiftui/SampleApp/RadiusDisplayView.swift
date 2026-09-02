@@ -21,7 +21,6 @@ struct RadiusDisplayView: View {
             }
             .padding()
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("Radius")
     }
 }

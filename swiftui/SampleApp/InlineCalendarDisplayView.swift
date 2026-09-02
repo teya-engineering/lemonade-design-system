@@ -112,7 +112,6 @@ struct InlineCalendarDisplayView: View {
             }
             .padding()
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("InlineCalendar")
     }
 

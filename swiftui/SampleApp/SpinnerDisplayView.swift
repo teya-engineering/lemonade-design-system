@@ -78,7 +78,6 @@ struct SpinnerDisplayView: View {
             }
             .padding()
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("Spinner")
     }
 

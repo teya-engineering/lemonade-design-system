@@ -102,7 +102,6 @@ struct TextDisplayView: View {
             }
             .padding()
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("Text")
     }
 

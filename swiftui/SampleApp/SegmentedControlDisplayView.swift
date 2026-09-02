@@ -166,7 +166,6 @@ struct SegmentedControlDisplayView: View {
             }
             .padding()
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("SegmentedControl")
     }
 

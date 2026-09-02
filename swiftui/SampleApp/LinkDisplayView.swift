@@ -47,7 +47,6 @@ struct LinkDisplayView: View {
             }
             .padding()
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("Link")
     }
 
