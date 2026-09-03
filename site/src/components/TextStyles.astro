@@ -1,0 +1,127 @@
+---
+import { semanticTextStyles } from "../lib/tokens";
+
+interface Props {
+  /** The group to render: "Display", "Heading", "Body" or "Overline". */
+  group: string;
+}
+
+const { group } = Astro.props;
+
+const all = semanticTextStyles();
+const match = all.find((g) => g.label === group);
+
+if (!match) {
+  throw new Error(
+    `No text style group named "${group}". Available: ${all.map((g) => g.label).join(", ")}`,
+  );
+}
+
+// Display runs to 72px; two of those side by side would each be clipped, so it
+// gets one column and the rest share a responsive grid.
+const single = group === "Display";
+
+// Both platforms uppercase overline text inside the component itself
+// (`Text.kt` and `LemonadeText.swift`), so the specimen has to as well or it
+// would not be showing what a reader actually gets.
+const upper = group === "Overline";
+---
+
+{
+  match.subgroups.map((subgroup) => (
+    <section class="group">
+      {subgroup.label && <h4 class="subgroup">{subgroup.label}</h4>}
+      <div class:list={["grid", { single }]}>
+        {subgroup.styles.map((style) => (
+          <article class="card">
+            <p
+              class:list={["specimen", { upper }]}
+              style={`font-size: ${style.fontSize}px; line-height: ${style.lineHeight}px; font-weight: ${style.fontWeight}; letter-spacing: ${style.letterSpacing ?? 0}px`}
+            >
+              {style.label}
+            </p>
+            <div class="tokens not-content">
+              <code>{style.sizeToken}</code>
+              <code>{style.lineHeightToken}</code>
+              <code>font-weight/{style.weightToken}</code>
+              {style.letterSpacing !== undefined && (
+                <code>letter-spacing: {style.letterSpacing}px</code>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  ))
+}
+
+<style>
+  /* Specimens must render in Figtree, not in the site's UI font — the whole
+	   point of the page is showing the real typeface at the real values. */
+  .group {
+    font-family: "Figtree", ui-sans-serif, system-ui, sans-serif;
+    margin-block: 1.5rem;
+  }
+
+  .subgroup {
+    margin-block: 1.5rem 0.75rem;
+    font-size: var(--sl-text-sm);
+    font-weight: 600;
+    color: var(--sl-color-gray-2);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1rem;
+  }
+
+  .grid.single {
+    grid-template-columns: 1fr;
+  }
+
+  /* Starlight's markdown flow puts vertical margin on block children; inside
+     the grid these cards are spaced by `gap` instead. */
+  .card {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem 1.15rem 1.15rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 1rem;
+    /* A 72px specimen will not fit a narrow viewport; scroll it rather than
+		   let it push the page sideways. */
+    overflow-x: auto;
+  }
+
+  .specimen {
+    margin: 0;
+    color: var(--sl-color-white);
+  }
+
+  .specimen.upper {
+    text-transform: uppercase;
+  }
+
+  .tokens {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    /* Back to the UI font: these are labels about the specimen, not part of it. */
+    font-family: var(--sl-font);
+  }
+
+  .tokens code {
+    padding: 0.1rem 0.35rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.25rem;
+    background: var(--sl-color-gray-6);
+    font-size: 0.6875rem;
+    color: var(--sl-color-gray-2);
+  }
+</style>

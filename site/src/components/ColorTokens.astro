@@ -1,0 +1,228 @@
+---
+/**
+ * The colour tokens for one top-level group, as a table: what the token is
+ * called, what it is for, and which primitive it resolves to.
+ *
+ * Laid out to match the Foundations frame in Figma. Two departures from it,
+ * both because this page is themeable and that frame is not: the swatch and
+ * the resolved value follow the reader's theme, and where a token aliases a
+ * different primitive in each theme — 66 of them do — only the relevant one is
+ * shown.
+ */
+import { themeColors, assertAllColorGroupsRendered, type ColorGroup } from '../lib/tokens';
+
+interface Props {
+	/** The top-level group to render, e.g. "Background". */
+	group: string;
+}
+
+const { group } = Astro.props;
+
+// Fails the build if the export has grown a group no page section renders.
+assertAllColorGroupsRendered();
+
+const all = themeColors();
+const groups: ColorGroup[] = all.filter((g) => g.label === group);
+
+if (groups.length === 0) {
+	throw new Error(
+		`No colour group named "${group}". Available: ${all.map((g) => g.label).join(', ')}`,
+	);
+}
+---
+
+{
+	groups.map((g) => (
+		<div class="scroller">
+			<table>
+				<thead>
+					<tr>
+						<th scope="col">Token</th>
+						<th scope="col">Usage</th>
+						<th scope="col">Value</th>
+					</tr>
+				</thead>
+				<tbody>
+					{g.subgroups.map((sub) => (
+						<>
+							<tr class="section">
+								<th colspan="3" scope="colgroup">{sub.label ?? g.label}</th>
+							</tr>
+							{sub.tokens.map((token) => (
+								<tr>
+									<th scope="row" class="token">
+										<span
+											class="swatch"
+											style={`--light: ${token.light}; --dark: ${token.dark}`}
+											aria-hidden="true"
+										/>
+										<code>{token.name}</code>
+									</th>
+									<td class="usage">{token.description}</td>
+									<td class="value">
+										{/* Both are rendered and one is hidden, the same way the
+										    theme-paired screenshots work, because the resolved
+										    primitive is not the same in both themes. */}
+										<span class="chip on-light">
+											<svg
+												aria-hidden="true"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+											>
+												<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1" />
+												<path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" />
+											</svg>
+											{token.alias ?? token.light}
+										</span>
+										<span class="chip on-dark">
+											<svg
+												aria-hidden="true"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+											>
+												<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1" />
+												<path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" />
+											</svg>
+											{token.darkAlias ?? token.dark}
+										</span>
+									</td>
+								</tr>
+							))}
+						</>
+					))}
+				</tbody>
+			</table>
+		</div>
+	))
+}
+
+<style>
+	.scroller {
+		overflow-x: auto;
+		margin-block: 1.5rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.75rem;
+	}
+
+	table {
+		width: 100%;
+		margin: 0;
+		border-collapse: collapse;
+		font-size: var(--sl-text-sm);
+	}
+
+	thead th {
+		padding: 0.85rem 1rem;
+		border-bottom: 1px solid var(--sl-color-gray-5);
+		font-weight: 500;
+		text-align: start;
+		color: var(--sl-color-gray-3);
+	}
+
+	/* Subgroup banner — "Color / Background / Brand". */
+	.section th {
+		padding: 0.7rem 1rem;
+		border-block: 1px solid var(--sl-color-gray-5);
+		background: var(--sl-color-gray-6);
+		font-weight: 600;
+		text-align: start;
+		color: var(--sl-color-white);
+	}
+
+	tbody tr + tr:not(.section) th,
+	tbody tr + tr:not(.section) td {
+		border-top: 1px solid var(--sl-color-gray-6);
+	}
+
+	td,
+	tbody th {
+		padding: 0.7rem 1rem;
+		vertical-align: middle;
+		font-weight: 400;
+		text-align: start;
+	}
+
+	/* Not flex: a flex `th` stops behaving as a table cell and the row borders
+	   collapse to the width of its content. */
+	.token {
+		white-space: nowrap;
+	}
+
+	.token code {
+		vertical-align: middle;
+		border: 0;
+		background: none;
+		padding: 0;
+		font-size: 0.8125rem;
+		color: var(--sl-color-white);
+	}
+
+	.swatch {
+		display: inline-block;
+		vertical-align: middle;
+		margin-inline-end: 0.7rem;
+		inline-size: 1.75rem;
+		block-size: 1.75rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.5rem;
+		/* Checkerboard so a translucent token reads as translucent. */
+		background-image: linear-gradient(var(--dark), var(--dark)),
+			conic-gradient(from 90deg at 50% 50%, #0000 25%, #8883 0 50%, #0000 0 75%, #8883 0);
+		background-size:
+			100% 100%,
+			10px 10px;
+	}
+
+	.usage {
+		min-width: 18rem;
+		color: var(--sl-color-gray-2);
+	}
+
+	.value {
+		white-space: nowrap;
+	}
+
+	.chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.15rem 0.45rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.35rem;
+		background: var(--sl-color-gray-6);
+		font-family: var(--sl-font-mono);
+		font-size: 0.75rem;
+		color: var(--sl-color-gray-2);
+	}
+
+	.chip svg {
+		flex: none;
+		inline-size: 0.8em;
+		block-size: 0.8em;
+		color: var(--sl-color-gray-4);
+	}
+
+	/* Bare :root is the dark theme, so the dark values show by default. */
+	.on-light {
+		display: none;
+	}
+
+	:global(:root[data-theme='light']) .swatch {
+		background-image: linear-gradient(var(--light), var(--light)),
+			conic-gradient(from 90deg at 50% 50%, #0000 25%, #8883 0 50%, #0000 0 75%, #8883 0);
+	}
+
+	:global(:root[data-theme='light']) .on-light {
+		display: inline-flex;
+	}
+
+	:global(:root[data-theme='light']) .on-dark {
+		display: none;
+	}
+</style>

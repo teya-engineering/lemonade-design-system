@@ -1082,6 +1082,7 @@
         "alpha": 0.20000000298023224,
         "hex": "#8F8676"
       },
+      "$description": "Use to create a higher elevation background against bg-default, bg-subtle or bg-elevated.",
       "$extensions": {
         "com.figma.variableId": "VariableID:3139:2120",
         "com.figma.scopes": [
