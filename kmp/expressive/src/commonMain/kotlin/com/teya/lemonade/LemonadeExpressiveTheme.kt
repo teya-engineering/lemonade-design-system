@@ -10,6 +10,7 @@ import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -51,26 +52,30 @@ public fun LemonadeExpressiveTheme(
  * scope their own Material theme — [LemonadeUi.TimeInput] and friends — pin the same mapping
  * instead of restating it, and so they stay independent of how the host set Material up.
  */
+@OptIn(InternalLemonadeApi::class)
 @Composable
 internal fun lemonadeExpressiveTypography(): Typography {
     val typography = LemonadeTheme.typography
-    return Typography(
-        displayLarge = typography.displayLarge.textStyle,
-        displayMedium = typography.displayMedium.textStyle,
-        displaySmall = typography.displaySmall.textStyle,
-        headlineLarge = typography.headingLarge.textStyle,
-        headlineMedium = typography.headingMedium.textStyle,
-        headlineSmall = typography.headingSmall.textStyle,
-        titleLarge = typography.headingXSmall.textStyle,
-        titleMedium = typography.bodyLargeSemiBold.textStyle,
-        titleSmall = typography.bodyMediumSemiBold.textStyle,
-        bodyLarge = typography.bodyLargeRegular.textStyle,
-        bodyMedium = typography.bodyMediumRegular.textStyle,
-        bodySmall = typography.bodySmallRegular.textStyle,
-        labelLarge = typography.bodyMediumMedium.textStyle,
-        labelMedium = typography.bodySmallMedium.textStyle,
-        labelSmall = typography.bodyXSmallMedium.textStyle,
-    )
+    val fontFamily = lemonadeFontFamily
+    return remember(typography, fontFamily) {
+        Typography(
+            displayLarge = typography.displayLarge.toTextStyle(fontFamily),
+            displayMedium = typography.displayMedium.toTextStyle(fontFamily),
+            displaySmall = typography.displaySmall.toTextStyle(fontFamily),
+            headlineLarge = typography.headingLarge.toTextStyle(fontFamily),
+            headlineMedium = typography.headingMedium.toTextStyle(fontFamily),
+            headlineSmall = typography.headingSmall.toTextStyle(fontFamily),
+            titleLarge = typography.headingXSmall.toTextStyle(fontFamily),
+            titleMedium = typography.bodyLargeSemiBold.toTextStyle(fontFamily),
+            titleSmall = typography.bodyMediumSemiBold.toTextStyle(fontFamily),
+            bodyLarge = typography.bodyLargeRegular.toTextStyle(fontFamily),
+            bodyMedium = typography.bodyMediumRegular.toTextStyle(fontFamily),
+            bodySmall = typography.bodySmallRegular.toTextStyle(fontFamily),
+            labelLarge = typography.bodyMediumMedium.toTextStyle(fontFamily),
+            labelMedium = typography.bodySmallMedium.toTextStyle(fontFamily),
+            labelSmall = typography.bodyXSmallMedium.toTextStyle(fontFamily),
+        )
+    }
 }
 
 /**
