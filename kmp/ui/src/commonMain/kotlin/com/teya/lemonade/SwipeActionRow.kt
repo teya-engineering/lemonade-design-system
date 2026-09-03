@@ -886,12 +886,16 @@ private fun SwipeActionRowCore(
             .onSizeChanged { rowWidth = it.width.toFloat() }
             .onGloballyPositioned { coordinates ->
                 val y = coordinates.positionInRoot().y
+                // Placed where it was last placed, so the layout around it has stopped moving.
+                val settled = y == rowY
                 rowY = y
                 if (!open) return@onGloballyPositioned
                 val opened = openedAt
                 when {
-                    // The first placement since it opened is where it opened.
-                    opened == null -> openedAt = y
+                    // Anchored once the layout has settled, not on the first placement: a screen
+                    // still finding its own size moves every row on it — 314dp on this one — and
+                    // that is not the reader scrolling anything.
+                    opened == null -> if (settled) openedAt = y
                     // Scrolled past, so the row is no longer the one being read.
                     abs(y - opened) > scrollSlack -> onOpenChange(false)
                 }

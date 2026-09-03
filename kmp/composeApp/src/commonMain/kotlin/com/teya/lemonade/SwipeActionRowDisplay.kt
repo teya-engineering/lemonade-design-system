@@ -145,6 +145,42 @@ private fun SwipeActionRowDisplayContent() {
             }
         }
 
+        item(key = "starts-open") {
+            // The caller decides which row is open, including before anyone has touched one. The
+            // row has to be drawn open from the first frame and stay that way — it has no measured
+            // position yet, and mistaking that for having been scrolled away closes it again.
+            var openId by remember { mutableStateOf<Any?>("unread") }
+            LemonadeUi.Card(
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
+                header = CardHeaderConfig(
+                    title = "Opened by the caller",
+                    subtitle = "This row starts open, and closes on a tap away like any other.",
+                ),
+            ) {
+                LemonadeUi.SwipeActionRow(
+                    id = "unread",
+                    openId = openId,
+                    onOpenIdChange = { openId = it },
+                    actions = listOf(
+                        SwipeAction(
+                            icon = LemonadeIcons.Envelope,
+                            contentDescription = "Mark unread",
+                            onClick = { },
+                            variant = LemonadeButtonVariant.Neutral,
+                        ),
+                    ),
+                    allowsFullSwipe = false,
+                ) {
+                    LemonadeUi.ActionListItem(
+                        label = "Already open",
+                        supportText = if (openId == null) "Closed" else "Open",
+                        showDivider = false,
+                        onItemClicked = { },
+                    )
+                }
+            }
+        }
+
         item(key = "two-actions-no-full-swipe") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),

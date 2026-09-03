@@ -489,7 +489,12 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
         rowY = y
         guard open else { return }
         guard let opened = openedAt else {
-            openedAt = y
+            // Anchored a turn later, not on the first placement: a screen still finding its own
+            // size moves every row on it, and that is not the reader scrolling anything. By the
+            // time this runs the layout has settled and `rowY` holds where the row ended up.
+            Task { @MainActor in
+                if open, openedAt == nil { openedAt = rowY }
+            }
             return
         }
         if abs(y - opened) > scrollSlack { open = false }

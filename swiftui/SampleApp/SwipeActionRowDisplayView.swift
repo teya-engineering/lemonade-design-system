@@ -19,6 +19,8 @@ struct SwipeActionRowDisplayView: View {
     @State private var removed: Set<String> = []
     @State private var fired = 0
     @State private var pinned = false
+    /// The caller decides which row is open, including before anyone has touched one.
+    @State private var startsOpenId: AnyHashable? = "unread"
     /// The row a swipe has asked to remove, held until the reader confirms it.
     @State private var pendingRemoval: SampleAccount?
 
@@ -68,6 +70,38 @@ struct SwipeActionRowDisplayView: View {
                                     }
                                 )
                             }
+                        }
+                    }
+
+                    // The caller decides which row is open, including before anyone has touched
+                    // one. The row has to be drawn open from the first frame and stay that way —
+                    // it has no measured position yet, and mistaking the screen settling into
+                    // place for having been scrolled away closes it again.
+                    LemonadeUi.Card(
+                        header: CardHeaderConfig(
+                            title: "Opened by the caller",
+                            subtitle: "This row starts open, and closes on a tap away like any other."
+                        )
+                    ) {
+                        LemonadeUi.SwipeActionRow(
+                            id: "unread",
+                            openId: $startsOpenId,
+                            actions: [
+                                LemonadeSwipeAction(
+                                    icon: .envelope,
+                                    contentDescription: "Mark unread",
+                                    onClick: { },
+                                    variant: .neutral
+                                )
+                            ],
+                            allowsFullSwipe: false
+                        ) {
+                            LemonadeUi.ActionListItem(
+                                label: "Already open",
+                                supportText: startsOpenId == nil ? "Closed" : "Open",
+                                showDivider: false,
+                                onItemClicked: { }
+                            )
                         }
                     }
 
