@@ -41,6 +41,8 @@ converters_for() {
     primitive-colors.tokens.json) echo "kmp-color-token-converter swiftui-color-token-converter" ;;
     theme-colors.light.tokens.json|theme-colors.dark.tokens.json)
                                   echo "kmp-theme-token-converter swiftui-theme-token-converter swiftui-color-assets-generator" ;;
+    themed-colors.light.tokens.json|themed-colors.dark.tokens.json)
+                                  echo "kmp-themed-token-converter swiftui-themed-token-converter swiftui-themed-assets-generator" ;;
     radius.tokens.json)           echo "kmp-radius-token-converter swiftui-radius-token-converter" ;;
     spacing.tokens.json)          echo "kmp-spacing-token-converter swiftui-spacing-token-converter" ;;
     size.tokens.json)             echo "kmp-dimension-token-converter swiftui-size-token-converter" ;;
@@ -52,7 +54,7 @@ converters_for() {
   esac
 }
 
-ALL_FILES="primitive-colors.tokens.json theme-colors.light.tokens.json radius.tokens.json spacing.tokens.json size.tokens.json opacity.tokens.json border-width.tokens.json shadow.tokens.json typography.tokens.json"
+ALL_FILES="primitive-colors.tokens.json theme-colors.light.tokens.json themed-colors.light.tokens.json radius.tokens.json spacing.tokens.json size.tokens.json opacity.tokens.json border-width.tokens.json shadow.tokens.json typography.tokens.json"
 
 # Resolve the target token files from args.
 mode="${1:---changed}"

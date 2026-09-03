@@ -36,10 +36,12 @@ Export from Figma, copy the files into `tokens/` under the names below, then:
 Use **File → Export variables** — the native export, not a plugin. Figma only
 exports variables *local to the file you run it in*, so run it **twice**:
 
-1. In the design-system file — the nine local collections.
+1. In the design-system file — every local collection.
 2. In the **Colors** library file — the primitives every theme colour aliases
    into. Skip this and the theme converters will emit references to primitive
    properties that do not exist, which fails at compile time.
+
+`Themed Colors` is a local collection in the design-system file, so it comes out of that same export — there is no third export to run.
 
 ## Naming the files — read this before copying
 
@@ -60,9 +62,11 @@ identifying them**. Rename as you copy:
 | `Typography/Default.tokens.json` | `typography.tokens.json` |
 | `Theme/Light.tokens.json` | `theme-colors.light.tokens.json` |
 | `Theme/Dark.tokens.json` | `theme-colors.dark.tokens.json` |
+| `Themed Colors/Light.tokens.json` | `themed-colors.light.tokens.json` |
+| `Themed Colors/Dark.tokens.json` | `themed-colors.dark.tokens.json` |
 | `Colors/Default.tokens.json` (library file) | `primitive-colors.tokens.json` |
 
-`tokens/` must end up holding exactly those ten names and nothing else.
+`tokens/` must end up holding exactly those twelve names and nothing else.
 
 Two mistakes to watch for, because neither announces itself:
 
@@ -128,6 +132,7 @@ version of the two that bite:
 |-------------------------------------------------------------------|----------------------------------|-----------------------------------------------------|
 | `primitive-colors.tokens.json`                                     | `kmp-color`                      | `swiftui-color`                                     |
 | `theme-colors.light.tokens.json` / `theme-colors.dark.tokens.json` | `kmp-theme`                      | `swiftui-theme` + `swiftui-color-assets-generator`  |
+| `themed-colors.light.tokens.json` / `themed-colors.dark.tokens.json` | `kmp-themed`                     | `swiftui-themed` + `swiftui-themed-assets-generator` |
 | `radius.tokens.json`                                               | `kmp-radius`                     | `swiftui-radius`                                    |
 | `spacing.tokens.json`                                              | `kmp-spacing`                    | `swiftui-spacing`                                   |
 | `size.tokens.json`                                                 | `kmp-dimension`                  | `swiftui-size`                                      |
@@ -137,7 +142,7 @@ version of the two that bite:
 | `typography.tokens.json`                                           | `kmp-typography`                 | `swiftui-typography`                                |
 
 (Converter names above omit the `-token-converter.main.kts` suffix, except
-`swiftui-color-assets-generator.main.kts`. `flutter-*` converters exist in
+`swiftui-color-assets-generator.main.kts` and `swiftui-themed-assets-generator.main.kts`. `flutter-*` converters exist in
 `scripts/` but are deliberately not run — see the note at the top.)
 
 ## When to run verify-generated.sh
