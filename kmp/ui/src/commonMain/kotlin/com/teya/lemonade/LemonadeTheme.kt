@@ -25,6 +25,11 @@ public fun LemonadeTheme(
     CompositionLocalProvider(
         LocalTypographies provides typography,
         LocalColors provides colors,
+        LocalThemedColors provides if (colors.isDark) {
+            LemonadeDarkThemedColors
+        } else {
+            LemonadeLightThemedColors
+        },
         LocalContentColors provides colors.content.contentNeutral,
         LocalTextStyles provides typography.bodyMediumRegular,
         LocalRadius provides radius,
@@ -44,6 +49,21 @@ public object LemonadeTheme {
         @Composable
         get() {
             return LocalColors.current
+        }
+
+    /**
+     * Generic, theme-aware hues for colour that carries application meaning the
+     * design system does not model - chart series, categories, per-role accents.
+     *
+     * Prefer [colors] whenever a semantic token fits. Resolved from
+     * [LemonadeSemanticColors.isDark], so a custom palette gets the correct
+     * themed hues without providing them.
+     */
+    public val themed: LemonadeThemedColors
+        @ReadOnlyComposable
+        @Composable
+        get() {
+            return LocalThemedColors.current
         }
 
     public val typography: LemonadeTypographyProvider

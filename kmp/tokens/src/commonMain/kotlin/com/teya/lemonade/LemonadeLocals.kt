@@ -14,6 +14,12 @@ public val LocalColors: ProvidableCompositionLocal<LemonadeSemanticColors> =
     }
 
 @InternalLemonadeApi
+public val LocalThemedColors: ProvidableCompositionLocal<LemonadeThemedColors> =
+    staticCompositionLocalOf {
+        error("No default themed colors set. Wrap your content in LemonadeTheme.")
+    }
+
+@InternalLemonadeApi
 public val LocalTypographies: ProvidableCompositionLocal<LemonadeTypographyProvider> =
     staticCompositionLocalOf {
         LemonadeTypographyProvider()
