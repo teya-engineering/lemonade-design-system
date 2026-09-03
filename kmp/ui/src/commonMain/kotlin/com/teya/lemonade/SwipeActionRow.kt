@@ -774,8 +774,10 @@ private fun SwipeActionRowCore(
                     // Through `fired`, not straight to `onClick`: an action reached this way has to
                     // close the row, or hold it open and announce, exactly as a tapped one does.
                     // Gated on `enabled`, because a row that will not open must not offer its
-                    // actions to a reader who cannot see they are unreachable.
-                    customActions = if (enabled) {
+                    // actions to a reader who cannot see they are unreachable — and on `holding`,
+                    // because the capsules stop taking taps once an action has put something on
+                    // screen, and a reader must not be able to fire it again through here.
+                    customActions = if (enabled && !holding) {
                         actions.map { action ->
                             CustomAccessibilityAction(action.contentDescription) {
                                 fired(action)

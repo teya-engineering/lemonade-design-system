@@ -591,7 +591,10 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             // `onClick`: an action reached this way has to close the row, or hold it open and
             // announce, exactly as a tapped one does.
             .modifier(
-                SwipeAccessibilityActions(actions: enabled ? actions : [], onFired: fired)
+                SwipeAccessibilityActions(
+                    actions: enabled && !holding ? actions : [],
+                    onFired: fired
+                )
             )
 
             if showDivider {
@@ -768,6 +771,9 @@ private struct SwipeActionStrip: View, Animatable {
     /// sliding towards from the moment the crossing happens.
     let committedStretch: CGFloat
     let holding: Bool
+
+    /// Which capsule a pointer is over, if any.
+    @State private var hovered: Int?
     let rowWidth: CGFloat
     let towardsTrailing: CGFloat
     let onFired: (LemonadeSwipeAction) -> Void
@@ -813,6 +819,7 @@ private struct SwipeActionStrip: View, Animatable {
                 let arrived = reveal.scale >= bumpTrigger
                 capsule(
                     action,
+                    index: index,
                     stretch: index == 0 ? reveal.stretch : 0,
                     committed: committed && index == 0
                 )
@@ -846,6 +853,7 @@ private struct SwipeActionStrip: View, Animatable {
     /// off the same colours so the two stay in step.
     private func capsule(
         _ action: LemonadeSwipeAction,
+        index: Int,
         stretch: CGFloat,
         committed: Bool
     ) -> some View {
@@ -859,7 +867,9 @@ private struct SwipeActionStrip: View, Animatable {
         let iconOffset = committed ? committedStretch / 2 * towardsTrailing : 0
         return SwiftUI.Button { onFired(action) } label: {
             Capsule()
-                .fill(colors.backgroundColor)
+                // Hovered the way the icon button this stands in for is hovered, so a pointer on
+                // iPad or macOS does not find the two out of step.
+                .fill(hovered == index ? colors.backgroundHoverColor : colors.backgroundColor)
                 .frame(width: actionSize + stretch, height: actionSize)
                 .overlay {
                     LemonadeUi.Icon(
@@ -877,6 +887,9 @@ private struct SwipeActionStrip: View, Animatable {
         }
         .buttonStyle(SwipeActionButtonStyle())
         .disabled(holding)
+        .onHover { hovering in
+            hovered = hovering ? index : (hovered == index ? nil : hovered)
+        }
     }
 }
 
@@ -916,7 +929,9 @@ private struct SwipeAccessibilityActions: ViewModifier {
         } else {
             actions.reduce(AnyView(element)) { view, action in
                 AnyView(
-                    view.accessibilityAction(named: Text(action.contentDescription), action.onClick)
+                    view.accessibilityAction(named: Text(action.contentDescription)) {
+                        onFired(action)
+                    }
                 )
             }
         }
