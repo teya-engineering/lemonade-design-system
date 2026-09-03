@@ -28,6 +28,13 @@ public enum LemonadeTheme {
     /// via asset catalog named colors.
     public static let colors: LemonadeSemanticColors = LemonadeAdaptiveTheme()
 
+    /// Generic, theme-aware hues for colour that carries application meaning the
+    /// design system does not model — chart series, categories, per-role accents.
+    ///
+    /// Prefer ``colors`` whenever a semantic token fits. Light and dark are
+    /// resolved by the asset catalog, so no manual switching is needed.
+    public static let themed: LemonadeThemedColors = LemonadeAdaptiveThemedColors()
+
     /// Spacing tokens
     public static let spaces: LemonadeSpaceValues = LemonadeSpaceValuesImpl()
 
