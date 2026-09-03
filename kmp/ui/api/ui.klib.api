@@ -444,6 +444,15 @@ final object com.teya.lemonade/LemonadeDarkTheme : com.teya.lemonade/LemonadeSem
         final fun <get-shadow>(): com.teya.lemonade/LemonadeSemanticColors.ShadowColors // com.teya.lemonade/LemonadeDarkTheme.shadow.<get-shadow>|<get-shadow>(){}[0]
 }
 
+final object com.teya.lemonade/LemonadeDarkThemedColors : com.teya.lemonade/LemonadeThemedColors { // com.teya.lemonade/LemonadeDarkThemedColors|null[0]
+    final val background // com.teya.lemonade/LemonadeDarkThemedColors.background|{}background[0]
+        final fun <get-background>(): com.teya.lemonade/LemonadeThemedColors.BackgroundColors // com.teya.lemonade/LemonadeDarkThemedColors.background.<get-background>|<get-background>(){}[0]
+    final val border // com.teya.lemonade/LemonadeDarkThemedColors.border|{}border[0]
+        final fun <get-border>(): com.teya.lemonade/LemonadeThemedColors.BorderColors // com.teya.lemonade/LemonadeDarkThemedColors.border.<get-border>|<get-border>(){}[0]
+    final val content // com.teya.lemonade/LemonadeDarkThemedColors.content|{}content[0]
+        final fun <get-content>(): com.teya.lemonade/LemonadeThemedColors.ContentColors // com.teya.lemonade/LemonadeDarkThemedColors.content.<get-content>|<get-content>(){}[0]
+}
+
 final object com.teya.lemonade/LemonadeLightTheme : com.teya.lemonade/LemonadeSemanticColors { // com.teya.lemonade/LemonadeLightTheme|null[0]
     final val background // com.teya.lemonade/LemonadeLightTheme.background|{}background[0]
         final fun <get-background>(): com.teya.lemonade/LemonadeSemanticColors.BackgroundColors // com.teya.lemonade/LemonadeLightTheme.background.<get-background>|<get-background>(){}[0]
@@ -459,6 +468,15 @@ final object com.teya.lemonade/LemonadeLightTheme : com.teya.lemonade/LemonadeSe
         final fun <get-scoped>(): com.teya.lemonade/LemonadeSemanticColors.ScopedColors // com.teya.lemonade/LemonadeLightTheme.scoped.<get-scoped>|<get-scoped>(){}[0]
     final val shadow // com.teya.lemonade/LemonadeLightTheme.shadow|{}shadow[0]
         final fun <get-shadow>(): com.teya.lemonade/LemonadeSemanticColors.ShadowColors // com.teya.lemonade/LemonadeLightTheme.shadow.<get-shadow>|<get-shadow>(){}[0]
+}
+
+final object com.teya.lemonade/LemonadeLightThemedColors : com.teya.lemonade/LemonadeThemedColors { // com.teya.lemonade/LemonadeLightThemedColors|null[0]
+    final val background // com.teya.lemonade/LemonadeLightThemedColors.background|{}background[0]
+        final fun <get-background>(): com.teya.lemonade/LemonadeThemedColors.BackgroundColors // com.teya.lemonade/LemonadeLightThemedColors.background.<get-background>|<get-background>(){}[0]
+    final val border // com.teya.lemonade/LemonadeLightThemedColors.border|{}border[0]
+        final fun <get-border>(): com.teya.lemonade/LemonadeThemedColors.BorderColors // com.teya.lemonade/LemonadeLightThemedColors.border.<get-border>|<get-border>(){}[0]
+    final val content // com.teya.lemonade/LemonadeLightThemedColors.content|{}content[0]
+        final fun <get-content>(): com.teya.lemonade/LemonadeThemedColors.ContentColors // com.teya.lemonade/LemonadeLightThemedColors.content.<get-content>|<get-content>(){}[0]
 }
 
 final object com.teya.lemonade/LemonadeTheme { // com.teya.lemonade/LemonadeTheme|null[0]
@@ -478,6 +496,8 @@ final object com.teya.lemonade/LemonadeTheme { // com.teya.lemonade/LemonadeThem
         final fun <get-sizes>(androidx.compose.runtime/Composer?, kotlin/Int): com.teya.lemonade/LemonadeSizeValues // com.teya.lemonade/LemonadeTheme.sizes.<get-sizes>|<get-sizes>(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
     final val spaces // com.teya.lemonade/LemonadeTheme.spaces|{}spaces[0]
         final fun <get-spaces>(androidx.compose.runtime/Composer?, kotlin/Int): com.teya.lemonade/LemonadeSpaceValues // com.teya.lemonade/LemonadeTheme.spaces.<get-spaces>|<get-spaces>(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final val themed // com.teya.lemonade/LemonadeTheme.themed|{}themed[0]
+        final fun <get-themed>(androidx.compose.runtime/Composer?, kotlin/Int): com.teya.lemonade/LemonadeThemedColors // com.teya.lemonade/LemonadeTheme.themed.<get-themed>|<get-themed>(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
     final val typography // com.teya.lemonade/LemonadeTheme.typography|{}typography[0]
         final fun <get-typography>(androidx.compose.runtime/Composer?, kotlin/Int): com.teya.lemonade/LemonadeTypographyProvider // com.teya.lemonade/LemonadeTheme.typography.<get-typography>|<get-typography>(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 }
@@ -497,7 +517,9 @@ final val com.teya.lemonade/com_teya_lemonade_CardHeaderConfig$stableprop // com
 final val com.teya.lemonade/com_teya_lemonade_HistoryTimelineItem$stableprop // com.teya.lemonade/com_teya_lemonade_HistoryTimelineItem$stableprop|#static{}com_teya_lemonade_HistoryTimelineItem$stableprop[0]
 final val com.teya.lemonade/com_teya_lemonade_LemonadeButtonColors$stableprop // com.teya.lemonade/com_teya_lemonade_LemonadeButtonColors$stableprop|#static{}com_teya_lemonade_LemonadeButtonColors$stableprop[0]
 final val com.teya.lemonade/com_teya_lemonade_LemonadeDarkTheme$stableprop // com.teya.lemonade/com_teya_lemonade_LemonadeDarkTheme$stableprop|#static{}com_teya_lemonade_LemonadeDarkTheme$stableprop[0]
+final val com.teya.lemonade/com_teya_lemonade_LemonadeDarkThemedColors$stableprop // com.teya.lemonade/com_teya_lemonade_LemonadeDarkThemedColors$stableprop|#static{}com_teya_lemonade_LemonadeDarkThemedColors$stableprop[0]
 final val com.teya.lemonade/com_teya_lemonade_LemonadeLightTheme$stableprop // com.teya.lemonade/com_teya_lemonade_LemonadeLightTheme$stableprop|#static{}com_teya_lemonade_LemonadeLightTheme$stableprop[0]
+final val com.teya.lemonade/com_teya_lemonade_LemonadeLightThemedColors$stableprop // com.teya.lemonade/com_teya_lemonade_LemonadeLightThemedColors$stableprop|#static{}com_teya_lemonade_LemonadeLightThemedColors$stableprop[0]
 final val com.teya.lemonade/com_teya_lemonade_LemonadeMarkdown$stableprop // com.teya.lemonade/com_teya_lemonade_LemonadeMarkdown$stableprop|#static{}com_teya_lemonade_LemonadeMarkdown$stableprop[0]
 final val com.teya.lemonade/com_teya_lemonade_LemonadeMarkdown_Bold$stableprop // com.teya.lemonade/com_teya_lemonade_LemonadeMarkdown_Bold$stableprop|#static{}com_teya_lemonade_LemonadeMarkdown_Bold$stableprop[0]
 final val com.teya.lemonade/com_teya_lemonade_LemonadeMarkdown_Italic$stableprop // com.teya.lemonade/com_teya_lemonade_LemonadeMarkdown_Italic$stableprop|#static{}com_teya_lemonade_LemonadeMarkdown_Italic$stableprop[0]
@@ -670,7 +692,9 @@ final fun com.teya.lemonade/com_teya_lemonade_CardHeaderConfig$stableprop_getter
 final fun com.teya.lemonade/com_teya_lemonade_HistoryTimelineItem$stableprop_getter(): kotlin/Int // com.teya.lemonade/com_teya_lemonade_HistoryTimelineItem$stableprop_getter|com_teya_lemonade_HistoryTimelineItem$stableprop_getter(){}[0]
 final fun com.teya.lemonade/com_teya_lemonade_LemonadeButtonColors$stableprop_getter(): kotlin/Int // com.teya.lemonade/com_teya_lemonade_LemonadeButtonColors$stableprop_getter|com_teya_lemonade_LemonadeButtonColors$stableprop_getter(){}[0]
 final fun com.teya.lemonade/com_teya_lemonade_LemonadeDarkTheme$stableprop_getter(): kotlin/Int // com.teya.lemonade/com_teya_lemonade_LemonadeDarkTheme$stableprop_getter|com_teya_lemonade_LemonadeDarkTheme$stableprop_getter(){}[0]
+final fun com.teya.lemonade/com_teya_lemonade_LemonadeDarkThemedColors$stableprop_getter(): kotlin/Int // com.teya.lemonade/com_teya_lemonade_LemonadeDarkThemedColors$stableprop_getter|com_teya_lemonade_LemonadeDarkThemedColors$stableprop_getter(){}[0]
 final fun com.teya.lemonade/com_teya_lemonade_LemonadeLightTheme$stableprop_getter(): kotlin/Int // com.teya.lemonade/com_teya_lemonade_LemonadeLightTheme$stableprop_getter|com_teya_lemonade_LemonadeLightTheme$stableprop_getter(){}[0]
+final fun com.teya.lemonade/com_teya_lemonade_LemonadeLightThemedColors$stableprop_getter(): kotlin/Int // com.teya.lemonade/com_teya_lemonade_LemonadeLightThemedColors$stableprop_getter|com_teya_lemonade_LemonadeLightThemedColors$stableprop_getter(){}[0]
 final fun com.teya.lemonade/com_teya_lemonade_LemonadeMarkdown$stableprop_getter(): kotlin/Int // com.teya.lemonade/com_teya_lemonade_LemonadeMarkdown$stableprop_getter|com_teya_lemonade_LemonadeMarkdown$stableprop_getter(){}[0]
 final fun com.teya.lemonade/com_teya_lemonade_LemonadeMarkdown_Bold$stableprop_getter(): kotlin/Int // com.teya.lemonade/com_teya_lemonade_LemonadeMarkdown_Bold$stableprop_getter|com_teya_lemonade_LemonadeMarkdown_Bold$stableprop_getter(){}[0]
 final fun com.teya.lemonade/com_teya_lemonade_LemonadeMarkdown_Italic$stableprop_getter(): kotlin/Int // com.teya.lemonade/com_teya_lemonade_LemonadeMarkdown_Italic$stableprop_getter|com_teya_lemonade_LemonadeMarkdown_Italic$stableprop_getter(){}[0]
