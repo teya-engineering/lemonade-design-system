@@ -162,12 +162,15 @@ func resolveSwipeSettle(
     rowWidth: CGFloat,
     allowsFullSwipe: Bool
 ) -> SwipeSettleTarget {
-    if allowsFullSwipe, travel >= swipeCommitThreshold(rowWidth: rowWidth) {
-        return .committed
-    }
-    // Nothing to open onto: there are no actions.
+    // Nothing to open onto: there are no actions. Asked before the commit, because a row with
+    // nothing behind it has nothing to fire.
     if firstActionReveal <= 0 {
         return .closed
+    }
+    // A row that has not been measured has no width to have crossed half of: the threshold would
+    // be zero, and every release — including one that never moved — would commit.
+    if allowsFullSwipe, rowWidth > 0, travel >= swipeCommitThreshold(rowWidth: rowWidth) {
+        return .committed
     }
     return projectedTravel(from: travel, velocity: velocity) >= firstActionReveal ? .open : .closed
 }

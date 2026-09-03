@@ -123,11 +123,14 @@ internal fun resolveSwipeSettle(
     allowsFullSwipe: Boolean,
 ): SwipeSettleTarget =
     when {
-        allowsFullSwipe && travel >= swipeCommitThreshold(rowWidth = rowWidth) ->
-            SwipeSettleTarget.Committed
-
-        // Nothing to open onto: there are no actions.
+        // Nothing to open onto: there are no actions. Asked before the commit, because a row
+        // with nothing behind it has nothing to fire.
         firstActionReveal <= 0f -> SwipeSettleTarget.Closed
+
+        // A row that has not been measured has no width to have crossed half of: the threshold
+        // would be zero, and every release — including one that never moved — would commit.
+        allowsFullSwipe && rowWidth > 0f && travel >= swipeCommitThreshold(rowWidth = rowWidth) ->
+            SwipeSettleTarget.Committed
         projectedTravel(travel = travel, velocity = velocity) >= firstActionReveal ->
             SwipeSettleTarget.Open
 

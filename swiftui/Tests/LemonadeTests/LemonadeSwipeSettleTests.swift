@@ -13,13 +13,14 @@ final class LemonadeSwipeSettleTests: XCTestCase {
         travel: CGFloat,
         velocity: CGFloat = 0,
         allowsFullSwipe: Bool = true,
-        firstActionReveal: CGFloat? = nil
+        firstActionReveal: CGFloat? = nil,
+        rowWidth: CGFloat? = nil
     ) -> SwipeSettleTarget {
         resolveSwipeSettle(
             travel: travel,
             velocity: velocity,
             firstActionReveal: firstActionReveal ?? self.firstActionReveal,
-            rowWidth: rowWidth,
+            rowWidth: rowWidth ?? self.rowWidth,
             allowsFullSwipe: allowsFullSwipe
         )
     }
@@ -146,5 +147,20 @@ final class LemonadeSwipeSettleTests: XCTestCase {
         XCTAssertGreaterThan(drawn, reached, "the row is drawn ahead of the finger on the way back")
         XCTAssertEqual(settle(travel: drawn), .committed)
         XCTAssertNotEqual(settle(travel: reached), .committed)
+    }
+
+    /// A row that has not been measured yet must not commit.
+    ///
+    /// The threshold is a fraction of the row's width, so at width zero it is zero and every
+    /// release clears it — including one that never moved. Unreachable through the component,
+    /// which cannot be dragged before it is laid out, but this is the half that is meant to be
+    /// right on its own.
+    func testAnUnmeasuredRowDoesNotCommit() {
+        XCTAssertEqual(settle(travel: 0, rowWidth: 0), .closed)
+    }
+
+    /// Nor does a row with nothing behind it, however far it is dragged.
+    func testARowWithNoActionsDoesNotCommit() {
+        XCTAssertEqual(settle(travel: 300, firstActionReveal: 0), .closed)
     }
 }

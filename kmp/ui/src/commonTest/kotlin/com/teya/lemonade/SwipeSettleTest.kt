@@ -19,6 +19,7 @@ class SwipeSettleTest {
         velocity: Float = 0f,
         allowsFullSwipe: Boolean = true,
         firstActionReveal: Float = this.firstActionReveal,
+        rowWidth: Float = this.rowWidth,
     ): SwipeSettleTarget =
         resolveSwipeSettle(
             travel = travel,
@@ -200,5 +201,30 @@ class SwipeSettleTest {
         assertTrue(drawn > reached, "the row is drawn ahead of the finger on the way back")
         assertEquals(expected = SwipeSettleTarget.Committed, actual = settle(travel = drawn))
         assertNotEquals(illegal = SwipeSettleTarget.Committed, actual = settle(travel = reached))
+    }
+
+    /**
+     * A row that has not been measured yet must not commit.
+     *
+     * The threshold is a fraction of the row's width, so at width zero it is zero and every
+     * release clears it — including one that never moved. Unreachable through the component,
+     * which cannot be dragged before it is laid out, but this is the half that is meant to be
+     * right on its own.
+     */
+    @Test
+    fun `an unmeasured row does not commit`() {
+        assertEquals(
+            expected = SwipeSettleTarget.Closed,
+            actual = settle(travel = 0f, rowWidth = 0f),
+        )
+    }
+
+    /** Nor does a row with nothing behind it, however far it is dragged. */
+    @Test
+    fun `a row with no actions does not commit`() {
+        assertEquals(
+            expected = SwipeSettleTarget.Closed,
+            actual = settle(travel = 300f, firstActionReveal = 0f),
+        )
     }
 }
