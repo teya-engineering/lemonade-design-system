@@ -13,6 +13,7 @@ icons.manifest.json               Figma icon name -> node id (shared by both)
 connect/*.figma.ts                Compose components, hand-written
 connect/icons/*.figma.ts          Compose icons, GENERATED — do not edit
 connect-swiftui/*.figma.ts        SwiftUI components, hand-written
+connect-swiftui/icons/*.figma.ts  SwiftUI icons, GENERATED — do not edit
 scripts/generate-icon-templates.mjs
 ```
 
@@ -29,9 +30,8 @@ back to another label's. A missing SwiftUI icon does not render blank — it
 renders the *Kotlin* snippet inside a Swift call (`icon: LemonadeIcons.Heart` in
 a `LemonadeUi.Tag`).
 
-The SwiftUI icon templates land on a follow-up branch. **Do not publish the
-`SwiftUI` label from this branch alone** — its icons will resolve to Compose's
-Kotlin values. The `Compose` label is unaffected.
+Both platforms now have their icons, so publish both labels and keep them in
+step.
 
 Swift rejects a trailing comma in an argument list, so the SwiftUI templates
 compose optional arguments with a **leading** comma. Kotlin permits either, so
@@ -46,7 +46,8 @@ swap it for real `@State` when wiring the screen up.
 The 284 glyph templates are generated, not written:
 
 ```bash
-node scripts/generate-icon-templates.mjs
+node scripts/generate-icon-templates.mjs            # both platforms
+node scripts/generate-icon-templates.mjs swiftui    # just one
 ```
 
 It cross-checks `icons.manifest.json` against the `LemonadeIcons` enum (itself
