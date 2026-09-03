@@ -183,6 +183,18 @@ public protocol ScopedColors {
     var contentOnSettlementEveryday: Color { get }
     var contentOnSettlementInstant: Color { get }
     var contentOnSettlementScheduled: Color { get }
+    var bgUserRoleAccountant: Color { get }
+    var bgUserRoleAdmin: Color { get }
+    var bgUserRoleLegalRepresentative: Color { get }
+    var bgUserRoleManager: Color { get }
+    var borderUserRoleAccountant: Color { get }
+    var borderUserRoleAdmin: Color { get }
+    var borderUserRoleLegalRepresentative: Color { get }
+    var borderUserRoleManager: Color { get }
+    var contentOnUserRoleAccountant: Color { get }
+    var contentOnUserRoleAdmin: Color { get }
+    var contentOnUserRoleLegalRepresentative: Color { get }
+    var contentOnUserRoleManager: Color { get }
 }
 
 /// Shadow color definitions

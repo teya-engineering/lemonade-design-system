@@ -85,6 +85,20 @@ fun String.sanitizedGroups(): List<String> {
     }
 }
 
+/**
+ * Builds the asset catalog name for a token path, e.g. `Scoped/User Roles/bg-user-role-admin`
+ * becomes `lemonade-scoped-user-roles-bg-user-role-admin`.
+ *
+ * Both the assets generator (which creates the `.colorset` folders) and the theme converter
+ * (which emits the `Color("...")` lookups) must derive the name the same way — a mismatch
+ * does not fail the build, it silently falls back at runtime.
+ */
+fun String.sanitizedAssetName(): String =
+    "lemonade-" +
+        split("/").joinToString("-") { group ->
+            group.lowercase().replace("_", "-").replace(" ", "-")
+        }
+
 fun String.sanitizedSwiftValueName(): String {
     val groups = split("/")
     var valueName = groups[groups.lastIndex]
