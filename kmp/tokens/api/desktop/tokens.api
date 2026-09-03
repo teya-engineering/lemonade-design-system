@@ -952,22 +952,10 @@ public abstract interface class com/teya/lemonade/LemonadeSemanticColors$ScopedC
 	public abstract fun getBgSettlementEveryday-0d7_KjU ()J
 	public abstract fun getBgSettlementInstant-0d7_KjU ()J
 	public abstract fun getBgSettlementScheduled-0d7_KjU ()J
-	public abstract fun getBgUserRoleAccountant-0d7_KjU ()J
-	public abstract fun getBgUserRoleAdmin-0d7_KjU ()J
-	public abstract fun getBgUserRoleLegalRepresentative-0d7_KjU ()J
-	public abstract fun getBgUserRoleManager-0d7_KjU ()J
-	public abstract fun getBorderUserRoleAccountant-0d7_KjU ()J
-	public abstract fun getBorderUserRoleAdmin-0d7_KjU ()J
-	public abstract fun getBorderUserRoleLegalRepresentative-0d7_KjU ()J
-	public abstract fun getBorderUserRoleManager-0d7_KjU ()J
 	public abstract fun getContentOnSettlementBusinessDays-0d7_KjU ()J
 	public abstract fun getContentOnSettlementEveryday-0d7_KjU ()J
 	public abstract fun getContentOnSettlementInstant-0d7_KjU ()J
 	public abstract fun getContentOnSettlementScheduled-0d7_KjU ()J
-	public abstract fun getContentOnUserRoleAccountant-0d7_KjU ()J
-	public abstract fun getContentOnUserRoleAdmin-0d7_KjU ()J
-	public abstract fun getContentOnUserRoleLegalRepresentative-0d7_KjU ()J
-	public abstract fun getContentOnUserRoleManager-0d7_KjU ()J
 }
 
 public abstract interface class com/teya/lemonade/LemonadeSemanticColors$ShadowColors {
