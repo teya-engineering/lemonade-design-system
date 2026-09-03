@@ -40,3 +40,4 @@ jobs:
           test -f node_modules/@teya/lemonade-ds/styles/tokens.css
           test -f node_modules/@teya/lemonade-ds/dist/fonts.css
           test -f node_modules/@teya/lemonade-ds/llms.txt
+          test -f node_modules/@teya/lemonade-ds/dist/assets/icons/airplane.svg
