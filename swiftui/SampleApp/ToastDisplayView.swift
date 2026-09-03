@@ -92,6 +92,17 @@ struct ToastDisplayView: View {
                         }
                     )
                 }
+
+                Button("Long Label with Action") {
+                    toastManager.show(
+                        label: "We couldn't sync your latest changes because the connection dropped partway through",
+                        voice: .error,
+                        actionLabel: "Try again",
+                        onAction: { @MainActor in
+                            toastManager.show(label: "Retrying…", voice: .neutral)
+                        }
+                    )
+                }
             }
 
             Section("Custom Icon (Neutral Only)") {
@@ -225,6 +236,11 @@ struct ToastDisplayView: View {
                     LemonadeUi.Toast(label: "Success message", voice: .success, actionLabel: "Undo") {}
                     LemonadeUi.Toast(label: "Error message", voice: .error, actionLabel: "Retry") {}
                     LemonadeUi.Toast(label: "Neutral message", voice: .neutral, actionLabel: "View") {}
+                    LemonadeUi.Toast(
+                        label: "We couldn't sync your latest changes because the connection dropped partway through",
+                        voice: .error,
+                        actionLabel: "Try again"
+                    ) {}
                 }
                 .padding(.vertical, 8)
             }

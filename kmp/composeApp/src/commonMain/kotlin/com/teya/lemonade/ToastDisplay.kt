@@ -148,6 +148,23 @@ internal fun ToastDisplay() {
                         )
                     },
                 )
+                LemonadeUi.Button(
+                    label = "Long Label with Action",
+                    onClick = {
+                        toastState.show(
+                            label = "We couldn't sync your latest changes because the connection " +
+                                "dropped partway through",
+                            voice = ToastVoice.Error,
+                            actionLabel = "Try again",
+                            onAction = {
+                                toastState.show(
+                                    label = "Retrying…",
+                                    voice = ToastVoice.Neutral,
+                                )
+                            },
+                        )
+                    },
+                )
             }
         }
 

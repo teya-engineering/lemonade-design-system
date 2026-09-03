@@ -139,18 +139,23 @@ private struct LemonadeToastView: View {
                 .font(LemonadeTypography.shared.bodySmallMedium.font)
                 .foregroundStyle(.content.contentAlwaysLight)
                 .lineLimit(nil)
+                .truncationMode(.tail)
                 .padding(.horizontal, .space.spacing100)
-                .layoutPriority(1)
 
             if let actionLabel, let onAction {
                 Button(action: onAction) {
                     Text(actionLabel)
                         .font(LemonadeTypography.shared.bodySmallMedium.font)
                         .foregroundStyle(.content.contentInfoAlwaysOnColor)
+                        .lineLimit(1)
+                        .fixedSize(horizontal: true, vertical: false)
                 }
                 .buttonStyle(.plain)
                 .padding(.vertical, .space.spacing100)
                 .contentShape(Rectangle())
+                // The action keeps its intrinsic width whatever the message does: the message wraps,
+                // and ellipsizes on the last line, rather than the action breaking across lines.
+                .layoutPriority(1)
             }
         }
         .padding(
@@ -223,6 +228,11 @@ struct LemonadeToast_Previews: PreviewProvider {
             LemonadeUi.Toast(label: "Changes saved", voice: .success, actionLabel: "Undo") {}
             LemonadeUi.Toast(label: "Something went wrong", voice: .error, actionLabel: "Retry") {}
             LemonadeUi.Toast(label: "Added to favorites", voice: .neutral, icon: .heart, actionLabel: "View") {}
+            LemonadeUi.Toast(
+                label: "We couldn't sync your latest changes because the connection dropped partway through",
+                voice: .error,
+                actionLabel: "Try again"
+            ) {}
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
