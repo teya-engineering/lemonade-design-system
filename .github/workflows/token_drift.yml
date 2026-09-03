@@ -13,6 +13,12 @@ on:
       - 'tokens/**'
       - 'scripts/*token*'
       - 'scripts/*resource-file-loading*'
+      - 'scripts/web-*'
+      - 'text-styles.json'
+      - 'web/styles/**'
+      - 'web/src/*.generated.ts'
+      - 'web/llms.txt'
+      - 'web/tokens.json'
       - '.claude/skills/generate-tokens/**'
       - '.github/workflows/token_drift.yml'
 
@@ -41,19 +47,39 @@ jobs:
       - name: Regenerate tokens
         run: .claude/skills/generate-tokens/scripts/run-converters.sh --all
 
+      # web-text-style-converter is driven by text-styles.json, not tokens/*.tokens.json,
+      # so run-converters.sh never calls it. Without this step, an out-of-date
+      # typography.css / text-styles.generated.ts would never be caught by the drift
+      # assertion below. web-css-bundle must re-run after it, since lemonade.css
+      # concatenates typography.css.
+      - name: Regenerate text styles
+        run: |
+          "$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/web-text-style-converter.main.kts
+          "$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/web-css-bundle.main.kts
+
       - name: DTCG loader unit test
         run: '"$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/kmp-loader-dtcg-test.main.kts'
 
+      - name: Web loader DTCG unit test
+        run: '"$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/web-loader-dtcg-test.main.kts'
+
+      - name: Web token commons unit test
+        run: '"$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/web-token-commons-test.main.kts'
+
+      - name: Text style parity with SwiftUI
+        run: '"$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/web-text-style-parity-check.main.kts'
+
+
       - name: Fail if generated code drifted
         run: |
-          if [ -n "$(git status --porcelain -- kmp/ swiftui/)" ]; then
+          if [ -n "$(git status --porcelain -- kmp/ swiftui/ web/ text-styles.json)" ]; then
             echo "::error::Generated token code does not match tokens/. Run:"
             echo "  .claude/skills/generate-tokens/scripts/run-converters.sh --all"
             echo "--- changed paths ---"
-            git status --porcelain -- kmp/ swiftui/
+            git status --porcelain -- kmp/ swiftui/ web/ text-styles.json
             echo "--- diff (tracked files, truncated) ---"
-            git --no-pager diff --stat -- kmp/ swiftui/
-            git --no-pager diff -- kmp/ swiftui/ | head -100
+            git --no-pager diff --stat -- kmp/ swiftui/ web/ text-styles.json
+            git --no-pager diff -- kmp/ swiftui/ web/ text-styles.json | head -100
             exit 1
           fi
           echo "Generated token code is in sync with tokens/."
