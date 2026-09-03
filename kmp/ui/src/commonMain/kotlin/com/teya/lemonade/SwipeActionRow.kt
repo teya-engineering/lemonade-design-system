@@ -519,6 +519,7 @@ private fun SwipeActionStrip(
     committedStretch: Dp,
     onFired: (SwipeAction) -> Unit,
     dim: () -> Float,
+    holding: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val step = LemonadeTheme.sizes.size1200 + LemonadeTheme.spaces.spacing200
@@ -568,6 +569,7 @@ private fun SwipeActionStrip(
                 committedStretch = committedStretch,
                 onFired = onFired,
                 dim = dim(),
+                holding = holding,
                 modifier = Modifier.offset(x = -step * index - push),
             )
         }
@@ -591,6 +593,7 @@ private fun SwipeActionCapsule(
     committedStretch: Dp,
     onFired: (SwipeAction) -> Unit,
     dim: Float,
+    holding: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val colors = resolveIconButtonColors(
@@ -642,6 +645,10 @@ private fun SwipeActionCapsule(
                 alpha = scale * opacity * (1f - dim * (1f - dimFloor))
             }.clip(shape = LemonadeTheme.shapes.radiusFull)
             .clickable(
+                // Drawn inert while something the action opened is up, so it does not take taps
+                // either: an inline confirmation leaves the capsule reachable, and a second tap on
+                // a destructive action is the one thing this must not allow.
+                enabled = !holding,
                 onClick = {
                     onFired(action)
                 },
@@ -707,6 +714,10 @@ private fun SwipeActionRowCore(
     val travel = remember { mutableFloatStateOf(0f) }
     // The one animation allowed to write `travel`, held so a new one, or a finger, can end it.
     val settling = remember { mutableStateOf<Job?>(null) }
+    // Where the row was last sent. The open/close effect checks it before settling: a drag that
+    // opens or closes the row flips `open` too, and re-settling from rest would cancel the spring
+    // the release velocity is riding on — every flick, a frame after it started.
+    val settleTarget = remember { mutableFloatStateOf(Float.NaN) }
     var rowWidth by remember { mutableFloatStateOf(0f) }
     // What this row answers to inside a group. Its own, so a row needs no identity from the caller
     // to take part.
@@ -739,6 +750,7 @@ private fun SwipeActionRowCore(
     /** Carries the row to [target], from whatever it is doing now. */
     val settleTo = { target: Float, velocity: Float ->
         settling.value?.cancel()
+        settleTarget.floatValue = target
         settling.value = scope.launch {
             animate(
                 initialValue = travel.floatValue,
@@ -804,15 +816,19 @@ private fun SwipeActionRowCore(
     // alone: a settle animates itself, because it usually writes the value `open` already holds
     // and this effect would not restart.
     LaunchedEffect(open) {
-        openedAt = if (open) rowY else null
         if (open) {
             announce?.invoke(groupIdentity)
         } else {
+            openedAt = null
             held = false
             committed = false
             holding = false
         }
-        settleTo(if (open) restingTravel else 0f, 0f)
+        // Armed from the first placement instead of from here: this runs before the row has been
+        // measured, so a row composed already open would take `rowY`'s initial 0 for where it
+        // opened and close itself the moment the real position arrived.
+        val want = if (open) restingTravel else 0f
+        if (settleTarget.floatValue != want) settleTo(want, 0f)
     }
 
     // Another row took the slot, or the group was touched and nothing holds it. Keyed on the count
@@ -871,9 +887,14 @@ private fun SwipeActionRowCore(
             .onGloballyPositioned { coordinates ->
                 val y = coordinates.positionInRoot().y
                 rowY = y
-                // Scrolled past, so the row is no longer the one being read.
+                if (!open) return@onGloballyPositioned
                 val opened = openedAt
-                if (open && opened != null && abs(y - opened) > scrollSlack) onOpenChange(false)
+                when {
+                    // The first placement since it opened is where it opened.
+                    opened == null -> openedAt = y
+                    // Scrolled past, so the row is no longer the one being read.
+                    abs(y - opened) > scrollSlack -> onOpenChange(false)
+                }
             },
     ) {
         Box(
@@ -954,11 +975,19 @@ private fun SwipeActionRowCore(
                 // item's own `clickable` creates below it. Unmerged, the container is never
                 // focused and its actions are never announced.
                 .semantics(mergeDescendants = true) {
-                    customActions = actions.map { action ->
-                        CustomAccessibilityAction(action.contentDescription) {
-                            action.onClick()
-                            true
+                    // Through `fired`, not straight to `onClick`: an action reached this way has to
+                    // close the row, or hold it open and announce, exactly as a tapped one does.
+                    // Gated on `enabled`, because a row that will not open must not offer its
+                    // actions to a reader who cannot see they are unreachable.
+                    customActions = if (enabled) {
+                        actions.map { action ->
+                            CustomAccessibilityAction(action.contentDescription) {
+                                fired(action)
+                                true
+                            }
                         }
+                    } else {
+                        emptyList()
                     }
                 },
         ) {
@@ -970,6 +999,7 @@ private fun SwipeActionRowCore(
                 committedStretch = committedStretch,
                 onFired = fired,
                 dim = { dim.value },
+                holding = holding,
                 modifier = Modifier.align(Alignment.CenterEnd),
             )
             Box(
@@ -1096,7 +1126,14 @@ public fun LemonadeUi.SwipeActionRow(
 ) {
     SwipeActionRowCore(
         open = openId == id,
-        onOpenChange = { onOpenIdChange(if (it) id else null) },
+        onOpenChange = { opening ->
+            when {
+                opening -> onOpenIdChange(id)
+                // Only ever clears its own slot: a drag that settles closed on one row would
+                // otherwise close whichever row the caller actually has open.
+                openId == id -> onOpenIdChange(null)
+            }
+        },
         actions = actions,
         enabled = enabled,
         allowsFullSwipe = allowsFullSwipe,

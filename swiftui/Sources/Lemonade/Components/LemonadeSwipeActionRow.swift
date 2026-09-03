@@ -96,6 +96,36 @@ func resolveSwipeReleasedTravel(
     return min(travel * (commitTravel / threshold), commitTravel)
 }
 
+/// The row's drawn travel, written by the spring as it interpolates.
+///
+/// A reference rather than state: it is updated from inside a view update, and nothing renders off
+/// it — only the drag reads it, to anchor itself where the row actually is.
+private final class SwipeDrawnTravel {
+    var value: CGFloat = 0
+}
+
+/// Follows the row's travel through an animation and records it in [SwipeDrawnTravel].
+///
+/// `travel` holds the spring's *target* while it is in flight, so a finger landing on a settling
+/// row would anchor the drag at where the row is going rather than where it is, and the row would
+/// jump the remaining distance on the first delta.
+private struct SwipeDrawnTravelReader: ViewModifier, Animatable {
+    var travel: CGFloat
+    let drawn: SwipeDrawnTravel
+
+    var animatableData: CGFloat {
+        get { travel }
+        set {
+            travel = newValue
+            drawn.value = newValue
+        }
+    }
+
+    func body(content: Content) -> some View {
+        content
+    }
+}
+
 /// Where a released drag lands.
 enum SwipeSettleTarget {
     case closed
@@ -400,6 +430,8 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     @State private var holding = false
     /// Whether this drag has left a commit behind and is carrying the row's lead back with it.
     @State private var releasing = false
+    /// Where the row is drawn, as opposed to where `travel` says it is heading.
+    @State private var drawnTravel = SwipeDrawnTravel()
     #if canImport(UIKit) && !os(watchOS)
     /// Held rather than built at the crossing, and warmed when the drag is claimed: a generator
     /// made on the frame it fires spins the engine up then, which is the one frame the haptic has
@@ -447,6 +479,22 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     /// carries it the rest of the way itself; dragging back below hands it back.
     private var shown: CGFloat { committed ? commitTravel : base }
 
+    /// Where the row has been placed. The first placement since it opened is where it opened;
+    /// after that, moving more than `scrollSlack` means the reader has scrolled it away.
+    ///
+    /// Armed from here rather than from `open` changing, because that fires before the row has
+    /// been measured — a row composed already open would take zero for where it opened and close
+    /// itself the moment the real position arrived.
+    private func positioned(at y: CGFloat) {
+        rowY = y
+        guard open else { return }
+        guard let opened = openedAt else {
+            openedAt = y
+            return
+        }
+        if abs(y - opened) > scrollSlack { open = false }
+    }
+
     /// A tapped action tidies the row away after it, unless it has put something on screen that the
     /// row is the subject of. Claiming the slot again is what keeps the group's own tap — the same
     /// one that fired this — from closing the row underneath it.
@@ -468,6 +516,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                     actions: actions,
                     committed: committed,
                     committedStretch: commitTravel - revealWidth,
+                    holding: holding,
                     rowWidth: rowWidth,
                     towardsTrailing: towardsTrailing,
                     onFired: fired
@@ -506,23 +555,23 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             // Scoped rather than ambient: the drag writes `travel` in the same turn as the
             // crossing, and a plain `withAnimation` around the crossing loses the spring to it.
             .animation(commit, value: committed)
+            .modifier(SwipeDrawnTravelReader(travel: shown, drawn: drawnTravel))
             .clipped()
             .background(
                 GeometryReader { proxy in
                     Color.clear
                         .onAppear { rowWidth = proxy.size.width }
                         .onChange(of: proxy.size.width) { rowWidth = $0 }
-                        .onAppear { rowY = proxy.frame(in: .global).minY }
+                        .onAppear { positioned(at: proxy.frame(in: .global).minY) }
                         .onChange(of: proxy.frame(in: .global).minY) { y in
-                            rowY = y
-                            // Scrolled past, so the row is no longer the one being read.
-                            guard open, let opened = openedAt, abs(y - opened) > scrollSlack else {
-                                return
-                            }
-                            open = false
+                            positioned(at: y)
                         }
                 }
             )
+            // A row handed to us already open is drawn open: `onChange` does not fire for an
+            // initial value, so nothing else would move it off zero, and the tap-to-close overlay
+            // would sit invisibly over a row that looks shut.
+            .onAppear { if open { travel = restingTravel } }
             // High priority, because the wrapped row is usually a `Button` and a plain `.gesture`
             // ranks below the gestures of the view it is attached to: whichever of the two claimed
             // the touch first won, so the same drag opened the row or did nothing depending on
@@ -532,7 +581,13 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             // A disabled row must not compete with the enclosing scroll view either, so the mask
             // drops to `.subviews` rather than the gesture checking `enabled` inside.
             .highPriorityGesture(drag, including: enabled && !actions.isEmpty ? .all : .subviews)
-            .modifier(SwipeAccessibilityActions(actions: actions))
+            // Gated on `enabled`, because a row that will not open must not offer its actions to a
+            // reader who cannot see they are unreachable. Through `fired`, not straight to
+            // `onClick`: an action reached this way has to close the row, or hold it open and
+            // announce, exactly as a tapped one does.
+            .modifier(
+                SwipeAccessibilityActions(actions: enabled ? actions : [], onFired: fired)
+            )
 
             if showDivider {
                 LemonadeUi.HorizontalDivider()
@@ -548,7 +603,9 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 travel = newValue ? restingTravel : 0
                 if !newValue { holding = false }
             }
-            openedAt = newValue ? rowY : nil
+            // Armed by `positioned(at:)`, which knows a measured position; this only clears the
+            // one the last opening left behind.
+            openedAt = nil
             if newValue { announce?(groupIdentity) }
         }
         .onChange(of: groupSignal) { signal in
@@ -594,8 +651,10 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                     // Let a vertical scroll win: start tracking only a predominantly
                     // horizontal drag, and never claim the gesture otherwise.
                     guard abs(value.translation.width) > abs(value.translation.height) else { return }
-                    dragOrigin = travel
-                    settleOrigin = travel
+                    // Off the drawn position, not the model one: grabbing a row mid-settle must
+                    // carry on from where it is rather than from where the spring was taking it.
+                    dragOrigin = drawnTravel.value
+                    settleOrigin = drawnTravel.value
                     claimTranslation = value.translation.width
                     #if canImport(UIKit) && !os(watchOS)
                     haptics.prepare()
@@ -696,9 +755,14 @@ private struct SwipeActionStrip: View, Animatable {
     var travel: CGFloat
     let actions: [LemonadeSwipeAction]
     let committed: Bool
+    /// Whether an action is holding the row open behind something it opened, which is what the
+    /// reader is answering — so the capsule is drawn inert and stops taking taps. An inline
+    /// confirmation leaves it reachable, and a second tap on a destructive action is the one thing
+    /// this must not allow.
     /// How far the first action has stretched once a commit has parked the row: what the icon is
     /// sliding towards from the moment the crossing happens.
     let committedStretch: CGFloat
+    let holding: Bool
     let rowWidth: CGFloat
     let towardsTrailing: CGFloat
     let onFired: (LemonadeSwipeAction) -> Void
@@ -807,6 +871,7 @@ private struct SwipeActionStrip: View, Animatable {
                 .contentShape(Capsule())
         }
         .buttonStyle(SwipeActionButtonStyle())
+        .disabled(holding)
     }
 }
 
@@ -827,6 +892,7 @@ private struct SwipeActionButtonStyle: ButtonStyle {
 /// every action then hangs off it as a custom action.
 private struct SwipeAccessibilityActions: ViewModifier {
     let actions: [LemonadeSwipeAction]
+    let onFired: (LemonadeSwipeAction) -> Void
 
     @ViewBuilder
     func body(content: Content) -> some View {
@@ -837,10 +903,9 @@ private struct SwipeAccessibilityActions: ViewModifier {
             // down and rebuilds rather than diffing, N times a frame, for the whole gesture.
             element.accessibilityActions {
                 ForEach(actions.indices, id: \.self) { index in
-                    SwiftUI.Button(
-                        actions[index].contentDescription,
-                        action: actions[index].onClick
-                    )
+                    SwiftUI.Button(actions[index].contentDescription) {
+                        onFired(actions[index])
+                    }
                 }
             }
         } else {
@@ -925,7 +990,15 @@ public extension LemonadeUi {
             showDivider: showDivider,
             open: Binding(
                 get: { openId.wrappedValue == id },
-                set: { openId.wrappedValue = $0 ? id : nil }
+                // Only ever clears its own slot: a drag that settles closed on one row would
+                // otherwise close whichever row the caller actually has open.
+                set: { opening in
+                    if opening {
+                        openId.wrappedValue = id
+                    } else if openId.wrappedValue == id {
+                        openId.wrappedValue = nil
+                    }
+                }
             ),
             content: content
         )
