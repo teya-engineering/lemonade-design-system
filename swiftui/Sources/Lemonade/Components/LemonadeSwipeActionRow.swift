@@ -29,6 +29,14 @@ private func settle(velocity: CGFloat = 0, over distance: CGFloat = 0) -> Animat
     )
 }
 
+/// Travel a drag has to cross for a full swipe to commit, for a row `rowWidth` wide.
+///
+/// One place, because everything hangs off it: the haptic, the icon's slide, the strip's dimming,
+/// where the row parks, and whether a release fires the action. Restating it is how the four drift.
+func swipeCommitThreshold(rowWidth: CGFloat) -> CGFloat {
+    rowWidth * commitFraction
+}
+
 /// Fraction of the row's width a drag must cross for a full swipe to commit.
 ///
 /// Measured off iOS frame by frame: a 440pt row commits as the drag passes 240pt, which is 0.546 of
@@ -124,7 +132,7 @@ func resolveSwipeSettle(
     rowWidth: CGFloat,
     allowsFullSwipe: Bool
 ) -> SwipeSettleTarget {
-    if allowsFullSwipe, travel >= rowWidth * commitFraction {
+    if allowsFullSwipe, travel >= swipeCommitThreshold(rowWidth: rowWidth) {
         return .committed
     }
     // Nothing to open onto: there are no actions.
@@ -257,7 +265,7 @@ private let displacedFloor: CGFloat = 0.2
 ///   - travel: distance the row has moved from closed, always positive.
 ///   - rowWidth: full width of the row.
 func resolveSwipeDisplacedOpacity(travel: CGFloat, rowWidth: CGFloat) -> CGFloat {
-    let takeover = rowWidth * commitFraction
+    let takeover = swipeCommitThreshold(rowWidth: rowWidth)
     guard rowWidth > takeover else { return 1 }
     let progress = min(max((travel - takeover) / (rowWidth - takeover), 0), 1)
     return 1 - (1 - displacedFloor) * progress
@@ -350,7 +358,26 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     let allowsFullSwipe: Bool
     let showDivider: Bool
     @Binding var open: Bool
-    @ViewBuilder let content: () -> Content
+    /// Built once rather than held as a closure. The drag rewrites this view's body on every touch
+    /// event, and a closure would re-run the caller's whole builder each time — the cost the
+    /// Compose row sheds by keeping `travel` out of composition.
+    let content: Content
+
+    init(
+        actions: [LemonadeSwipeAction],
+        enabled: Bool,
+        allowsFullSwipe: Bool,
+        showDivider: Bool,
+        open: Binding<Bool>,
+        @ViewBuilder content: () -> Content
+    ) {
+        self.actions = actions
+        self.enabled = enabled
+        self.allowsFullSwipe = allowsFullSwipe
+        self.showDivider = showDivider
+        self._open = open
+        self.content = content()
+    }
 
     @State private var travel: CGFloat = 0
     /// Where `travel` stood when this drag was claimed. Released by the cancel path, so the next
@@ -412,7 +439,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
         return resolveSwipeReleasedTravel(
             travel: travel,
             commitTravel: commitTravel,
-            threshold: rowWidth * commitFraction
+            threshold: swipeCommitThreshold(rowWidth: rowWidth)
         )
     }
 
@@ -440,7 +467,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                     travel: shown,
                     actions: actions,
                     committed: committed,
-                    committedStretch: max(commitTravel - revealWidth, 0),
+                    committedStretch: commitTravel - revealWidth,
                     rowWidth: rowWidth,
                     towardsTrailing: towardsTrailing,
                     onFired: fired
@@ -450,7 +477,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 // not what is being answered.
                 .grayscale(holding ? 1 : 0)
                 .opacity(holding ? .opacity.opacity30 : 1)
-                content()
+                content
                     // A row under the finger rests on the list item's own press highlight rather
                     // than on a surface of its own: same fill, same radius, same gutter. It is on
                     // for the whole gesture, not proportional to the travel — the row is being
@@ -586,7 +613,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 }
                 guard let origin = dragOrigin else { return }
                 let next = clampedTravel(origin + dragged(value) * towardsTrailing)
-                let crossed = allowsFullSwipe && next >= rowWidth * commitFraction
+                let crossed = allowsFullSwipe && next >= swipeCommitThreshold(rowWidth: rowWidth)
                 if crossed != committed {
                     // Sprung on the way out, and nothing to animate on the way back: leaving a
                     // commit hands the row to `base`, which picks it up exactly where the claim
@@ -606,7 +633,6 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 // The claim is spent: the row settles from where it is being drawn.
                 travel = shown
                 releasing = false
-                committed = false
                 // Read the release position off the gesture rather than off `travel`: the cancel
                 // path may already have snapped `travel` back before this ran.
                 let released = clampedTravel(origin + dragged(value) * towardsTrailing)
@@ -719,8 +745,7 @@ private struct SwipeActionStrip: View, Animatable {
                 capsule(
                     action,
                     stretch: index == 0 ? reveal.stretch : 0,
-                    committed: committed && index == 0,
-                    committedStretch: committedStretch
+                    committed: committed && index == 0
                 )
                 // Scoped between the two scales, so the spring governs the bump and nothing else.
                 // Outside them it takes the reveal's own scale with it, and since that is driven
@@ -753,16 +778,15 @@ private struct SwipeActionStrip: View, Animatable {
     private func capsule(
         _ action: LemonadeSwipeAction,
         stretch: CGFloat,
-        committed: Bool,
-        committedStretch: CGFloat
+        committed: Bool
     ) -> some View {
-        let colors = resolveColors(variant: action.variant, type: .solid)
+        let colors = resolveIconButtonColors(variant: action.variant, type: .solid)
         // Centred in the capsule until the swipe commits, then it slides to the centre of the
         // capsule's leading end — where the action would sit if it had stayed a circle and the row
         // had simply carried on past it.
         // Against the width the commit is heading for rather than the one it has: an offset that
-        // chases a target still moving under it arrives behind the capsule it slides in. iOS holds
-        // the two within 0.012 of each other the whole way, which is what this is.
+        // chases a target still moving under it never catches it, and lands behind the capsule it
+        // slides in. iOS holds the two within 0.012 of each other the whole way, which is this.
         let iconOffset = committed ? committedStretch / 2 * towardsTrailing : 0
         return SwiftUI.Button { onFired(action) } label: {
             Capsule()
@@ -807,7 +831,7 @@ private struct SwipeAccessibilityActions: ViewModifier {
     @ViewBuilder
     func body(content: Content) -> some View {
         let element = content.accessibilityElement(children: .combine)
-        if #available(iOS 16, macOS 13, tvOS 16, watchOS 9, *) {
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
             // One modifier holding every action. The drag rewrites the row's body on every touch
             // event, and the fold below erases each action into an `AnyView` — which SwiftUI tears
             // down and rebuilds rather than diffing, N times a frame, for the whole gesture.

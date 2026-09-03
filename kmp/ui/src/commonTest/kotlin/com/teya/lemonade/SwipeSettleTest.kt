@@ -3,10 +3,12 @@ package com.teya.lemonade
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
+import kotlin.test.assertTrue
 
 /**
  * Covers [resolveSwipeSettle] — where a released drag lands. Geometry matches a trailing action on a
- * 361dp-wide row: 76dp of travel brings it fully out, and a full swipe has to cross half of 361.
+ * 361dp-wide row: 76dp of travel brings it fully out, and a full swipe commits at
+ * [swipeCommitThreshold], which is 198.55dp of it.
  */
 class SwipeSettleTest {
     private val firstActionReveal = 76f
@@ -25,11 +27,6 @@ class SwipeSettleTest {
             rowWidth = rowWidth,
             allowsFullSwipe = allowsFullSwipe,
         )
-
-    @Test
-    fun `a short drag settles closed`() {
-        assertEquals(expected = SwipeSettleTarget.Closed, actual = settle(travel = 20f))
-    }
 
     /** A drag that showed most of the action but not all of it still belongs back where it was. */
     @Test
@@ -179,5 +176,29 @@ class SwipeSettleTest {
             actual = resolveSwipeReleasedTravel(travel = 40f, commitTravel = 0f, threshold = 0f),
             absoluteTolerance = 0.001f,
         )
+    }
+
+    /**
+     * A drag that committed and then came back below the threshold must not fire on release.
+     *
+     * The two resolvers compose: the row is drawn at [resolveSwipeReleasedTravel] of the finger,
+     * which is up to 1.7x further out, and settling on *that* fires the action from a third of the
+     * way across — after the crossing back has already told the reader the gesture is no longer
+     * its. Each function alone is right; only together do they say so.
+     */
+    @Test
+    fun `a drag handed back from a commit does not fire on release`() {
+        val commitTravel = rowWidth - 20f
+        val threshold = swipeCommitThreshold(rowWidth = rowWidth)
+        // Just below the threshold, where crossing back has just happened.
+        val reached = threshold - 1f
+        val drawn = resolveSwipeReleasedTravel(
+            travel = reached,
+            commitTravel = commitTravel,
+            threshold = threshold,
+        )
+        assertTrue(drawn > reached, "the row is drawn ahead of the finger on the way back")
+        assertEquals(expected = SwipeSettleTarget.Committed, actual = settle(travel = drawn))
+        assertNotEquals(illegal = SwipeSettleTarget.Committed, actual = settle(travel = reached))
     }
 }

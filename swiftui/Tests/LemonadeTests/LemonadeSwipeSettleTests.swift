@@ -2,7 +2,8 @@ import XCTest
 @testable import Lemonade
 
 /// Covers `resolveSwipeSettle` — where a released drag lands. Geometry matches a trailing action on
-/// a 361pt-wide row: 76pt of travel brings it fully out, and a full swipe has to cross half of 361.
+/// a 361pt-wide row: 76pt of travel brings it fully out, and a full swipe commits at
+/// `swipeCommitThreshold`, which is 198.55pt of it.
 final class LemonadeSwipeSettleTests: XCTestCase {
 
     private let firstActionReveal: CGFloat = 76
@@ -124,5 +125,26 @@ final class LemonadeSwipeSettleTests: XCTestCase {
             40,
             accuracy: 0.001
         )
+    }
+
+    /// A drag that committed and then came back below the threshold must not fire on release.
+    ///
+    /// The two resolvers compose: the row is drawn at `resolveSwipeReleasedTravel` of the finger,
+    /// which is up to 1.7x further out, and settling on *that* fires the action from a third of the
+    /// way across — after the crossing back has already told the reader the gesture is no longer
+    /// its. Each function alone is right; only together do they say so.
+    func testADragHandedBackFromACommitDoesNotFireOnRelease() {
+        let commitTravel = rowWidth - 20
+        let threshold = swipeCommitThreshold(rowWidth: rowWidth)
+        // Just below the threshold, where crossing back has just happened.
+        let reached = threshold - 1
+        let drawn = resolveSwipeReleasedTravel(
+            travel: reached,
+            commitTravel: commitTravel,
+            threshold: threshold
+        )
+        XCTAssertGreaterThan(drawn, reached, "the row is drawn ahead of the finger on the way back")
+        XCTAssertEqual(settle(travel: drawn), .committed)
+        XCTAssertNotEqual(settle(travel: reached), .committed)
     }
 }

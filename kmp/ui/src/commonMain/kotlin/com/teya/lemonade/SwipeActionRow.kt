@@ -95,6 +95,14 @@ private val SCROLL_SLACK = 4.dp
 private const val COMMIT_FRACTION = 0.55f
 
 /**
+ * Travel a drag has to cross for a full swipe to commit, for a row [rowWidth] px wide.
+ *
+ * One place, because everything hangs off it: the haptic, the icon's slide, the strip's dimming,
+ * where the row parks, and whether a release fires the action. Restating it is how the five drift.
+ */
+internal fun swipeCommitThreshold(rowWidth: Float): Float = rowWidth * COMMIT_FRACTION
+
+/**
  * What is left of the row on screen once a commit has claimed it. iOS stops the row 18.3pt short of
  * carrying it off, which keeps the row a row rather than a bare action.
  */
@@ -227,7 +235,9 @@ internal fun resolveSwipeSettle(
     allowsFullSwipe: Boolean,
 ): SwipeSettleTarget =
     when {
-        allowsFullSwipe && travel >= rowWidth * COMMIT_FRACTION -> SwipeSettleTarget.Committed
+        allowsFullSwipe && travel >= swipeCommitThreshold(rowWidth = rowWidth) ->
+            SwipeSettleTarget.Committed
+
         // Nothing to open onto: there are no actions.
         firstActionReveal <= 0f -> SwipeSettleTarget.Closed
         projectedTravel(travel = travel, velocity = velocity) >= firstActionReveal ->
@@ -256,7 +266,7 @@ internal fun resolveSwipeDisplacedOpacity(
     travel: Float,
     rowWidth: Float,
 ): Float {
-    val takeover = rowWidth * COMMIT_FRACTION
+    val takeover = swipeCommitThreshold(rowWidth = rowWidth)
     if (rowWidth <= takeover) {
         return 1f
     }
@@ -583,7 +593,7 @@ private fun SwipeActionCapsule(
     dim: Float,
     modifier: Modifier = Modifier,
 ) {
-    val colors = resolveColors(
+    val colors = resolveIconButtonColors(
         variant = action.variant,
         type = LemonadeButtonType.Solid,
     )
@@ -608,10 +618,15 @@ private fun SwipeActionCapsule(
     // leading end — where the action would sit if it had stayed a circle and the row had simply
     // carried on past it.
     //
-    // Off the same claim the row travels on, against the width the commit is heading for rather
-    // than the one it has: a spring chasing a target that is itself still moving arrives ahead of
-    // it, which put the icon a fifth of the way further along than the capsule it slides in. iOS
-    // holds the two within 0.012 of each other the whole way, which is what this is.
+    // Against the width the commit is heading for rather than the one it has: a spring chasing a
+    // target that is itself still moving never catches it, which left the icon a third of its
+    // travel behind the capsule it slides in. iOS holds the two within 0.012 of each other the
+    // whole way, which is what this is.
+    //
+    // A claim of its own, not the row's: that one snaps back so the row can be handed to
+    // [resolveSwipeReleasedTravel] where it stands, while the icon is sprung both ways — it comes
+    // back to the centre the moment the gesture stops belonging to the action, rather than popping
+    // there.
     val iconClaim by animateFloatAsState(
         targetValue = if (committed) 1f else 0f,
         animationSpec = commitSpring,
@@ -685,6 +700,10 @@ private fun SwipeActionRowCore(
     // recomposes on every frame of every drag and every settle — and with it the content it wraps,
     // which is the caller's whole list item. The layout and draw lambdas below read it instead, so
     // a moving row is re-laid-out and redrawn without being composed again.
+    //
+    // [SwipeActionStrip] is the exception, by design: it reads the lambda in its own composition,
+    // because an action's width and scale are composition-level. A drag recomposes the strip and
+    // its handful of capsules, and nothing above them.
     val travel = remember { mutableFloatStateOf(0f) }
     // The one animation allowed to write `travel`, held so a new one, or a finger, can end it.
     val settling = remember { mutableStateOf<Job?>(null) }
@@ -738,7 +757,7 @@ private fun SwipeActionRowCore(
     val restingTravel = if (held) commitTravel else revealWidth
     // How far the first action has stretched once a commit has parked the row: what the icon is
     // sliding towards from the moment the crossing happens.
-    val committedStretch = with(density) { (commitTravel - revealWidth).coerceAtLeast(0f).toDp() }
+    val committedStretch = with(density) { (commitTravel - revealWidth).toDp() }
 
     // How far the commit has claimed the row off the finger. Crossing the threshold takes the row
     // out of the drag's hands and carries it the rest of the way itself; dragging back below hands
@@ -760,7 +779,7 @@ private fun SwipeActionRowCore(
             resolveSwipeReleasedTravel(
                 travel = reached,
                 commitTravel = commitTravel,
-                threshold = rowWidth * COMMIT_FRACTION,
+                threshold = swipeCommitThreshold(rowWidth = rowWidth),
             )
         } else {
             reached
@@ -814,7 +833,7 @@ private fun SwipeActionRowCore(
     val dragState = rememberDraggableState { delta ->
         val ceiling = if (allowsFullSwipe) rowWidth else revealWidth
         val next = (travel.floatValue + delta * towardsTrailing).coerceIn(0f, ceiling)
-        val crossed = allowsFullSwipe && next >= rowWidth * COMMIT_FRACTION
+        val crossed = allowsFullSwipe && next >= swipeCommitThreshold(rowWidth = rowWidth)
         if (crossed != committed) {
             committed = crossed
             releasing = !crossed
@@ -880,15 +899,20 @@ private fun SwipeActionRowCore(
                     },
                     onDragStopped = { velocity ->
                         dragging = false
-                        // The claim is spent: the row settles from where it is being drawn, not
-                        // from where the finger left off.
+                        // Where the finger left the row, read before the claim is folded in. A drag
+                        // coming back from a commit draws the row ahead of the finger — by the
+                        // gain in [resolveSwipeReleasedTravel] — and settling on the drawn value
+                        // would fire the action from a third of the way across, after crossing
+                        // back had already told the reader the gesture was no longer its.
+                        val reached = travel.floatValue
+                        // The claim is spent: the row settles from where it is being drawn.
                         travel.floatValue = shown()
                         releasing = false
                         // The spring picks up the speed the finger let go at rather than starting
                         // from rest, so the row carries straight on out of the drag.
                         val released = velocity * towardsTrailing
                         val target = resolveSwipeSettle(
-                            travel = travel.floatValue,
+                            travel = reached,
                             velocity = released,
                             firstActionReveal = firstActionReveal,
                             rowWidth = rowWidth,

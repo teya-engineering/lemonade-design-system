@@ -138,7 +138,7 @@ private extension LemonadeButtonSize {
 
 /// Shared with `LemonadeUi.SwipeActionRow`, which draws its own stretchable capsule but has to
 /// stay in step with the solid icon button it stands in for.
-func resolveColors(
+func resolveIconButtonColors(
     variant: LemonadeButtonVariant,
     type: LemonadeButtonType
 ) -> LemonadeIconButtonColors {
@@ -279,7 +279,7 @@ private struct LemonadeIconButtonView: View {
     }
 
     var body: some View {
-        let colors = resolveColors(variant: variant, type: type)
+        let colors = resolveIconButtonColors(variant: variant, type: type)
         let bgColor: Color = isHovering ? colors.backgroundHoverColor : colors.backgroundColor
         let buttonShape = RoundedRectangle(cornerRadius: cornerRadius)
 

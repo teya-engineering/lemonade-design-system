@@ -97,7 +97,7 @@ private fun CoreIconButton(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     modifier: Modifier = Modifier,
 ) {
-    val colors = resolveColors(
+    val colors = resolveIconButtonColors(
         variant = variant,
         type = type,
     ).adjustedForDisabledFill(dimmed = !enabled || loading, variant = variant, type = type)
@@ -176,7 +176,7 @@ internal fun IconButtonColorData.animatedBackground(interactionSource: MutableIn
  * in step with the Solid icon button it stands in for.
  */
 @Composable
-internal fun resolveColors(
+internal fun resolveIconButtonColors(
     variant: LemonadeButtonVariant,
     type: LemonadeButtonType,
 ): IconButtonColorData =
