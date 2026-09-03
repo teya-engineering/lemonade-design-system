@@ -39,6 +39,7 @@ import com.teya.lemonade.SizesDisplay
 import com.teya.lemonade.SkeletonDisplay
 import com.teya.lemonade.SpacingDisplay
 import com.teya.lemonade.SpinnerDisplay
+import com.teya.lemonade.SwipeActionRowDisplay
 import com.teya.lemonade.SwitchDisplay
 import com.teya.lemonade.SymbolContainerDisplay
 import com.teya.lemonade.TabsDisplay
@@ -67,6 +68,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.RadioButton to { _ -> RadioButtonDisplay() },
     Displays.SelectListItem to { _ -> SelectListItemDisplay() },
     Displays.ActionListItem to { _ -> ActionListItemDisplay() },
+    Displays.SwipeActionRow to { _ -> SwipeActionRowDisplay() },
     Displays.ResourceListItem to { _ -> ResourceListItemDisplay() },
     Displays.ContentListItem to { _ -> ContentListItemDisplay() },
     Displays.Chip to { _ -> ChipDisplay() },

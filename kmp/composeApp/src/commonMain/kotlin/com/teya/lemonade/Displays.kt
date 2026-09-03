@@ -63,6 +63,11 @@ internal interface Displays {
     }
 
     @Serializable
+    data object SwipeActionRow : Displays {
+        override val label: String = "SwipeActionRow"
+    }
+
+    @Serializable
     data object ResourceListItem : Displays {
         override val label: String = "ResourceListItem"
     }
