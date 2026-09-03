@@ -17,8 +17,8 @@ result immediately. There is no staging environment.
 
 | Thing | Value |
 |---|---|
-| Config | `figma/figma.config.json` |
-| Label | `Compose` (independent namespace — publishing never touches the `React` label on the same file) |
+| Configs | `figma/figma.config.json` (Compose) and `figma/figma.swiftui.config.json` (SwiftUI) |
+| Labels | `Compose`, `SwiftUI` — each published separately from its own config. Neither touches the unrelated `React` label on the same file. |
 | Components file | `91S16rhVrl5wivqV66fNjm` |
 | Icons file | `f7zokCdnayXejxc2y7r1Qt` |
 | Token env var | `FIGMA_CODE_CONNECT_TOKEN` (exported in `~/.zshrc`) |
@@ -67,10 +67,17 @@ Only step 4 catches that.
 
 ```bash
 cd figma
-FIGMA_ACCESS_TOKEN="$FIGMA_CODE_CONNECT_TOKEN" \
-  ./node_modules/.bin/figma connect publish --config figma.config.json \
-  2>&1 | grep -viE "^-> |\.figma\.ts$" | tail -15
+for cfg in figma.config.json figma.swiftui.config.json; do
+  FIGMA_ACCESS_TOKEN="$FIGMA_CODE_CONNECT_TOKEN" \
+    ./node_modules/.bin/figma connect publish --config "$cfg" \
+    2>&1 | grep -viE "^-> |\.figma\.ts$" | tail -8
+done
 ```
+
+Publish **both** labels, and never a platform's components without its icons.
+Figma resolves a nested icon by node; a label with no template for that node
+falls back to another label's, so a missing SwiftUI icon renders the *Kotlin*
+snippet inside a Swift call rather than rendering nothing.
 
 **Pipe it.** The command prints one line per template — ~300 of them — and the
 success or error summary is the *last* line. Unfiltered it scrolls off and a
