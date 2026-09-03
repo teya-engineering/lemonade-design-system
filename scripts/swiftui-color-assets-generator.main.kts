@@ -6,8 +6,6 @@
 
 import org.json.JSONObject
 import java.io.File
-import java.util.Locale
-import kotlin.math.roundToInt
 
 /**
  * Script to generate SwiftUI Color Assets from theme tokens.

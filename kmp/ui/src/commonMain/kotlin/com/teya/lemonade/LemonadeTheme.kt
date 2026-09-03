@@ -57,7 +57,9 @@ public object LemonadeTheme {
      *
      * Prefer [colors] whenever a semantic token fits. Resolved from
      * [LemonadeSemanticColors.isDark], so a custom palette gets the correct
-     * themed hues without providing them.
+     * themed hues without providing them - but [LemonadeSemanticColors.isDark]
+     * defaults to `false`, so a custom dark palette must override it or this
+     * silently resolves to the light themed hues.
      */
     public val themed: LemonadeThemedColors
         @ReadOnlyComposable
