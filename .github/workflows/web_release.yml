@@ -1,0 +1,33 @@
+name: Publish Lemonade Web
+
+on:
+  push:
+    tags:
+      - 'lemonade-web-v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0, fetch-tags: true }
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: web/.nvmrc
+          registry-url: 'https://registry.npmjs.org'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - name: Set version from tag
+        run: npm version "${GITHUB_REF#refs/tags/lemonade-web-}" --no-git-tag-version
+      - run: npm run build
+      # Remove --dry-run only after local validation and team sign-off — spec §3.
+      - name: Publish
+        run: npm publish --access public --dry-run
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
