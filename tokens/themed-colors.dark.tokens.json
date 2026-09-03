@@ -1,0 +1,3547 @@
+{
+  "Background": {
+    "bg-yellow": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9930035471916199,
+          0.7819446325302124,
+          0
+        ],
+        "alpha": 1,
+        "hex": "#FDC700"
+      },
+      "$description": "Generic yellow surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with content-on-yellow.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:14",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgYellow",
+          "iOS": "LemonadeTheme.themed.background.bgYellow"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:8aae62451636e999de1efef0151c4b4721091ab9/72:189",
+          "targetVariableName": "yellow/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-yellow-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9413119554519653,
+          0.6929154396057129,
+          0
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#F0B100"
+      },
+      "$description": "Subtle generic yellow surface. Use behind content-yellow, optionally outlined with border-yellow-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:15",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgYellowSubtle",
+          "iOS": "LemonadeTheme.themed.background.bgYellowSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:f7429f9fba6b8fd08ad8d26b89e60bcab694cd15/76:117",
+          "targetVariableName": "yellow/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-amber": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9930035471916199,
+          0.7819446325302124,
+          0
+        ],
+        "alpha": 1,
+        "hex": "#FDC700"
+      },
+      "$description": "Generic amber surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with content-on-amber.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:16",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgAmber",
+          "iOS": "LemonadeTheme.themed.background.bgAmber"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:e37bef0d14979b03cf97c6b3c7608ebf73123a5c/72:200",
+          "targetVariableName": "amber/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-amber-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.994271457195282,
+          0.6020927429199219,
+          0
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#FE9A00"
+      },
+      "$description": "Subtle generic amber surface. Use behind content-amber, optionally outlined with border-amber-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:17",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgAmberSubtle",
+          "iOS": "LemonadeTheme.themed.background.bgAmberSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:0aa49d6b6d51cd34a538da859f6db0a2c5c62dbf/76:139",
+          "targetVariableName": "amber/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-orange": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          0.53702312707901,
+          0.013841553591191769
+        ],
+        "alpha": 1,
+        "hex": "#FF8904"
+      },
+      "$description": "Generic orange surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with content-on-orange.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:18",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgOrange",
+          "iOS": "LemonadeTheme.themed.background.bgOrange"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:4317c983d1f303e4b80280c89917f9c89038470d/72:244",
+          "targetVariableName": "orange/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-orange-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          0.4107343256473541,
+          0
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#FF6900"
+      },
+      "$description": "Subtle generic orange surface. Use behind content-orange, optionally outlined with border-orange-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:19",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgOrangeSubtle",
+          "iOS": "LemonadeTheme.themed.background.bgOrangeSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:798357b6c28271a579acd379d7528d833b57a34f/76:457",
+          "targetVariableName": "orange/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-red": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9960784316062927,
+          0.32549020648002625,
+          0.3686274588108063
+        ],
+        "alpha": 1,
+        "hex": "#FE535E"
+      },
+      "$description": "Generic red surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with content-on-red.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:20",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgRed",
+          "iOS": "LemonadeTheme.themed.background.bgRed"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5",
+          "targetVariableName": "red/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-red-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9686274528503418,
+          0.23529411852359772,
+          0.2823529541492462
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#F73C48"
+      },
+      "$description": "Subtle generic red surface. Use behind content-red, optionally outlined with border-red-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:21",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgRedSubtle",
+          "iOS": "LemonadeTheme.themed.background.bgRedSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/559:13",
+          "targetVariableName": "red/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-rose": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          0.3888605535030365,
+          0.49433162808418274
+        ],
+        "alpha": 1,
+        "hex": "#FF637E"
+      },
+      "$description": "Generic rose surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with content-on-rose.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:22",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgRose",
+          "iOS": "LemonadeTheme.themed.background.bgRose"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:24da115b401167c077c0ab4e303bc0353f15e5cf/71:79",
+          "targetVariableName": "rose/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-rose-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          0.12461522966623306,
+          0.3390033543109894
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#FF2056"
+      },
+      "$description": "Subtle generic rose surface. Use behind content-rose, optionally outlined with border-rose-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:23",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgRoseSubtle",
+          "iOS": "LemonadeTheme.themed.background.bgRoseSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:c198e83cffc1b8a5a5ffddec358b0bb3872e9fa1/76:205",
+          "targetVariableName": "rose/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-pink": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9856091141700745,
+          0.3920409381389618,
+          0.7138620615005493
+        ],
+        "alpha": 1,
+        "hex": "#FB64B6"
+      },
+      "$description": "Generic pink surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with content-on-pink.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:24",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgPink",
+          "iOS": "LemonadeTheme.themed.background.bgPink"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:b238726d1df33e0165a4c402f408349f9d5139ed/72:89",
+          "targetVariableName": "pink/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-pink-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9658054709434509,
+          0.19813880324363708,
+          0.6043244004249573
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#F6339A"
+      },
+      "$description": "Subtle generic pink surface. Use behind content-pink, optionally outlined with border-pink-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:25",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgPinkSubtle",
+          "iOS": "LemonadeTheme.themed.background.bgPinkSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:7046265db81b1e01550a99ad92ddd560d215d188/76:227",
+          "targetVariableName": "pink/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-fuchsia": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.929411768913269,
+          0.4156862795352936,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#ED6AFF"
+      },
+      "$description": "Generic fuchsia surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with content-on-fuchsia.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:26",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgFuchsia",
+          "iOS": "LemonadeTheme.themed.background.bgFuchsia"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:474c9b0fdc54459be73db4a4cb2ccc2e7803e1e7/590:15",
+          "targetVariableName": "fuchsia/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-fuchsia-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.8823529481887817,
+          0.16470588743686676,
+          0.9843137264251709
+        ],
+        "alpha": 0.10196078568696976,
+        "hex": "#E12AFB"
+      },
+      "$description": "Subtle generic fuchsia surface. Use behind content-fuchsia, optionally outlined with border-fuchsia-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:27",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgFuchsiaSubtle",
+          "iOS": "LemonadeTheme.themed.background.bgFuchsiaSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:e188cbcfd40b66a8cf9af777514a1072c97a9daa/590:39",
+          "targetVariableName": "fuchsia/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-purple": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.7595676779747009,
+          0.47980010509490967,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#C27AFF"
+      },
+      "$description": "Generic purple surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with content-on-purple.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:28",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgPurple",
+          "iOS": "LemonadeTheme.themed.background.bgPurple"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:dacb1222ed4c4104b8d0559a90c6ab357666d2cb/72:99",
+          "targetVariableName": "purple/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-purple-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.6779096126556396,
+          0.27594193816185,
+          1
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#AD46FF"
+      },
+      "$description": "Subtle generic purple surface. Use behind content-purple, optionally outlined with border-purple-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:29",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgPurpleSubtle",
+          "iOS": "LemonadeTheme.themed.background.bgPurpleSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:8ffd1ae610cfa4da75bd2e7d489cfbee2bdbeec9/76:249",
+          "targetVariableName": "purple/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-violet": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.6526055335998535,
+          0.5169346928596497,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#A684FF"
+      },
+      "$description": "Generic violet surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with content-on-violet.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:30",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgViolet",
+          "iOS": "LemonadeTheme.themed.background.bgViolet"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:a92d2726cf90db0ee12c25fbf925a17f6be6b286/74:9",
+          "targetVariableName": "violet/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-violet-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.5559262633323669,
+          0.31816375255584717,
+          1
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#8E51FF"
+      },
+      "$description": "Subtle generic violet surface. Use behind content-violet, optionally outlined with border-violet-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:31",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgVioletSubtle",
+          "iOS": "LemonadeTheme.themed.background.bgVioletSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:291bb791b34bb447a355620f86a3f72e8723b45f/76:271",
+          "targetVariableName": "violet/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-indigo": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.4878469407558441,
+          0.5265172719955444,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#7C86FF"
+      },
+      "$description": "Generic indigo surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with content-on-indigo.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:32",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgIndigo",
+          "iOS": "LemonadeTheme.themed.background.bgIndigo"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:48c17c2f730ffa264dd9d76c9edd21898f7bd71a/72:124",
+          "targetVariableName": "indigo/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-indigo-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.38217607140541077,
+          0.37188827991485596,
+          1
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#615FFF"
+      },
+      "$description": "Subtle generic indigo surface. Use behind content-indigo, optionally outlined with border-indigo-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:33",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgIndigoSubtle",
+          "iOS": "LemonadeTheme.themed.background.bgIndigoSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:5a5846e08b0d9eb77b5de2e2b83adbbe580a7c39/76:293",
+          "targetVariableName": "indigo/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-blue": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.3157993257045746,
+          0.6355904340744019,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#51A2FF"
+      },
+      "$description": "Generic blue surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with content-on-blue.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:34",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgBlue",
+          "iOS": "LemonadeTheme.themed.background.bgBlue"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134",
+          "targetVariableName": "blue/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-blue-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.16933248937129974,
+          0.49804946780204773,
+          1
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#2B7FFF"
+      },
+      "$description": "Subtle generic blue surface. Use behind content-blue, optionally outlined with border-blue-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:35",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgBlueSubtle",
+          "iOS": "LemonadeTheme.themed.background.bgBlueSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315",
+          "targetVariableName": "blue/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-cyan": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.8273619413375854,
+          0.9509646892547607
+        ],
+        "alpha": 1,
+        "hex": "#00D3F2"
+      },
+      "$description": "Generic cyan surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with content-on-cyan.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:36",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgCyan",
+          "iOS": "LemonadeTheme.themed.background.bgCyan"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:d85eb1eb7b3cb3574b4e4f28507b4128ede11b9b/72:144",
+          "targetVariableName": "cyan/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-cyan-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.7218724489212036,
+          0.8573380708694458
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#00B8DB"
+      },
+      "$description": "Subtle generic cyan surface. Use behind content-cyan, optionally outlined with border-cyan-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:37",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgCyanSubtle",
+          "iOS": "LemonadeTheme.themed.background.bgCyanSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:e950c1611e1f6d7063d6d1a0db67185918839908/76:337",
+          "targetVariableName": "cyan/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-teal": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.8352503776550293,
+          0.7433176636695862
+        ],
+        "alpha": 1,
+        "hex": "#00D5BE"
+      },
+      "$description": "Generic teal surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with content-on-teal.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:38",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgTeal",
+          "iOS": "LemonadeTheme.themed.background.bgTeal"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:9910911f644f0b83e6deaf2c1f0b1c36fe467a41/72:152",
+          "targetVariableName": "teal/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-teal-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.7333587408065796,
+          0.654870867729187
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#00BBA7"
+      },
+      "$description": "Subtle generic teal surface. Use behind content-teal, optionally outlined with border-teal-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:39",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgTealSubtle",
+          "iOS": "LemonadeTheme.themed.background.bgTealSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:e298897fac82f421303bdb392a48941b21487d47/76:359",
+          "targetVariableName": "teal/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-green": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.019869813695549965,
+          0.8753122687339783,
+          0.4485098123550415
+        ],
+        "alpha": 1,
+        "hex": "#05DF72"
+      },
+      "$description": "Generic green surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with content-on-green.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:40",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgGreen",
+          "iOS": "LemonadeTheme.themed.background.bgGreen"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:692bf5198f34c4fad1721e48162ad2dbbdbb9175/72:169",
+          "targetVariableName": "green/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-green-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.7871556282043457,
+          0.31562188267707825
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#00C950"
+      },
+      "$description": "Subtle generic green surface. Use behind content-green, optionally outlined with border-green-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:41",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgGreenSubtle",
+          "iOS": "LemonadeTheme.themed.background.bgGreenSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:10f488664318faf3dbc2f9aa376df1c8deeacc12/76:381",
+          "targetVariableName": "green/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-green-lime": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.6024433970451355,
+          0.9016712307929993,
+          0
+        ],
+        "alpha": 1,
+        "hex": "#9AE600"
+      },
+      "$description": "Generic green lime surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with content-on-green-lime.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:42",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgGreenLime",
+          "iOS": "LemonadeTheme.themed.background.bgGreenLime"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175",
+          "targetVariableName": "green-lime/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-green-lime-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.4872932434082031,
+          0.8099173903465271,
+          0
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#7CCF00"
+      },
+      "$description": "Subtle generic green lime surface. Use behind content-green-lime, optionally outlined with border-green-lime-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:43",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgGreenLimeSubtle",
+          "iOS": "LemonadeTheme.themed.background.bgGreenLimeSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:169b48022f4a60164b3d49fb0e10aced4427846a/76:403",
+          "targetVariableName": "green-lime/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-yellow-lime": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9160000085830688,
+          0.9160000085830688,
+          0.2840000092983246
+        ],
+        "alpha": 1,
+        "hex": "#EAEA48"
+      },
+      "$description": "Generic yellow lime surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with content-on-yellow-lime.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:44",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgYellowLime",
+          "iOS": "LemonadeTheme.themed.background.bgYellowLime"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:3d29360b74ce2b1f363eda98f910b1182240f8f9/406:13",
+          "targetVariableName": "yellow-lime/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-yellow-lime-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.8823529481887817,
+          0.8980392217636108,
+          0.10196078568696976
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#E1E51A"
+      },
+      "$description": "Subtle generic yellow lime surface. Use behind content-yellow-lime, optionally outlined with border-yellow-lime-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:45",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.background.bgYellowLimeSubtle",
+          "iOS": "LemonadeTheme.themed.background.bgYellowLimeSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:a7751070191f972d99f13f9b71dabea2f0894547/90:22",
+          "targetVariableName": "yellow-lime/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    }
+  },
+  "Border": {
+    "border-yellow": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9930035471916199,
+          0.7819446325302124,
+          0
+        ],
+        "alpha": 1,
+        "hex": "#FDC700"
+      },
+      "$description": "Generic yellow border. Use for application-defined meaning where no semantic token applies.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:46",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderYellow",
+          "iOS": "LemonadeTheme.themed.border.borderYellow"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:8aae62451636e999de1efef0151c4b4721091ab9/72:189",
+          "targetVariableName": "yellow/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-yellow-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9413119554519653,
+          0.6929154396057129,
+          0
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#F0B100"
+      },
+      "$description": "Subtle generic yellow border. Pairs with bg-yellow-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:47",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderYellowSubtle",
+          "iOS": "LemonadeTheme.themed.border.borderYellowSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:f7429f9fba6b8fd08ad8d26b89e60bcab694cd15/76:117",
+          "targetVariableName": "yellow/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-amber": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9930035471916199,
+          0.7819446325302124,
+          0
+        ],
+        "alpha": 1,
+        "hex": "#FDC700"
+      },
+      "$description": "Generic amber border. Use for application-defined meaning where no semantic token applies.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:48",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderAmber",
+          "iOS": "LemonadeTheme.themed.border.borderAmber"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:e37bef0d14979b03cf97c6b3c7608ebf73123a5c/72:200",
+          "targetVariableName": "amber/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-amber-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.994271457195282,
+          0.6020927429199219,
+          0
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#FE9A00"
+      },
+      "$description": "Subtle generic amber border. Pairs with bg-amber-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:49",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderAmberSubtle",
+          "iOS": "LemonadeTheme.themed.border.borderAmberSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:0aa49d6b6d51cd34a538da859f6db0a2c5c62dbf/76:139",
+          "targetVariableName": "amber/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-orange": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          0.53702312707901,
+          0.013841553591191769
+        ],
+        "alpha": 1,
+        "hex": "#FF8904"
+      },
+      "$description": "Generic orange border. Use for application-defined meaning where no semantic token applies.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:50",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderOrange",
+          "iOS": "LemonadeTheme.themed.border.borderOrange"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:4317c983d1f303e4b80280c89917f9c89038470d/72:244",
+          "targetVariableName": "orange/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-orange-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          0.4107343256473541,
+          0
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#FF6900"
+      },
+      "$description": "Subtle generic orange border. Pairs with bg-orange-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:51",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderOrangeSubtle",
+          "iOS": "LemonadeTheme.themed.border.borderOrangeSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:798357b6c28271a579acd379d7528d833b57a34f/76:457",
+          "targetVariableName": "orange/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-red": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9960784316062927,
+          0.32549020648002625,
+          0.3686274588108063
+        ],
+        "alpha": 1,
+        "hex": "#FE535E"
+      },
+      "$description": "Generic red border. Use for application-defined meaning where no semantic token applies.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:52",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderRed",
+          "iOS": "LemonadeTheme.themed.border.borderRed"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5",
+          "targetVariableName": "red/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-red-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9686274528503418,
+          0.23529411852359772,
+          0.2823529541492462
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#F73C48"
+      },
+      "$description": "Subtle generic red border. Pairs with bg-red-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:53",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderRedSubtle",
+          "iOS": "LemonadeTheme.themed.border.borderRedSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/559:13",
+          "targetVariableName": "red/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-rose": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          0.3888605535030365,
+          0.49433162808418274
+        ],
+        "alpha": 1,
+        "hex": "#FF637E"
+      },
+      "$description": "Generic rose border. Use for application-defined meaning where no semantic token applies.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:54",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderRose",
+          "iOS": "LemonadeTheme.themed.border.borderRose"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:24da115b401167c077c0ab4e303bc0353f15e5cf/71:79",
+          "targetVariableName": "rose/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-rose-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          0.12461522966623306,
+          0.3390033543109894
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#FF2056"
+      },
+      "$description": "Subtle generic rose border. Pairs with bg-rose-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:55",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderRoseSubtle",
+          "iOS": "LemonadeTheme.themed.border.borderRoseSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:c198e83cffc1b8a5a5ffddec358b0bb3872e9fa1/76:205",
+          "targetVariableName": "rose/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-pink": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9856091141700745,
+          0.3920409381389618,
+          0.7138620615005493
+        ],
+        "alpha": 1,
+        "hex": "#FB64B6"
+      },
+      "$description": "Generic pink border. Use for application-defined meaning where no semantic token applies.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:56",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderPink",
+          "iOS": "LemonadeTheme.themed.border.borderPink"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:b238726d1df33e0165a4c402f408349f9d5139ed/72:89",
+          "targetVariableName": "pink/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-pink-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9658054709434509,
+          0.19813880324363708,
+          0.6043244004249573
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#F6339A"
+      },
+      "$description": "Subtle generic pink border. Pairs with bg-pink-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:57",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderPinkSubtle",
+          "iOS": "LemonadeTheme.themed.border.borderPinkSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:7046265db81b1e01550a99ad92ddd560d215d188/76:227",
+          "targetVariableName": "pink/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-fuchsia": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.929411768913269,
+          0.4156862795352936,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#ED6AFF"
+      },
+      "$description": "Generic fuchsia border. Use for application-defined meaning where no semantic token applies.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:58",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderFuchsia",
+          "iOS": "LemonadeTheme.themed.border.borderFuchsia"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:474c9b0fdc54459be73db4a4cb2ccc2e7803e1e7/590:15",
+          "targetVariableName": "fuchsia/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-fuchsia-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.8823529481887817,
+          0.16470588743686676,
+          0.9843137264251709
+        ],
+        "alpha": 0.10196078568696976,
+        "hex": "#E12AFB"
+      },
+      "$description": "Subtle generic fuchsia border. Pairs with bg-fuchsia-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:59",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderFuchsiaSubtle",
+          "iOS": "LemonadeTheme.themed.border.borderFuchsiaSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:e188cbcfd40b66a8cf9af777514a1072c97a9daa/590:39",
+          "targetVariableName": "fuchsia/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-purple": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.7595676779747009,
+          0.47980010509490967,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#C27AFF"
+      },
+      "$description": "Generic purple border. Use for application-defined meaning where no semantic token applies.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:60",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderPurple",
+          "iOS": "LemonadeTheme.themed.border.borderPurple"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:dacb1222ed4c4104b8d0559a90c6ab357666d2cb/72:99",
+          "targetVariableName": "purple/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-purple-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.6779096126556396,
+          0.27594193816185,
+          1
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#AD46FF"
+      },
+      "$description": "Subtle generic purple border. Pairs with bg-purple-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:61",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderPurpleSubtle",
+          "iOS": "LemonadeTheme.themed.border.borderPurpleSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:8ffd1ae610cfa4da75bd2e7d489cfbee2bdbeec9/76:249",
+          "targetVariableName": "purple/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-violet": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.6526055335998535,
+          0.5169346928596497,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#A684FF"
+      },
+      "$description": "Generic violet border. Use for application-defined meaning where no semantic token applies.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:62",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderViolet",
+          "iOS": "LemonadeTheme.themed.border.borderViolet"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:a92d2726cf90db0ee12c25fbf925a17f6be6b286/74:9",
+          "targetVariableName": "violet/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-violet-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.5559262633323669,
+          0.31816375255584717,
+          1
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#8E51FF"
+      },
+      "$description": "Subtle generic violet border. Pairs with bg-violet-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:63",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderVioletSubtle",
+          "iOS": "LemonadeTheme.themed.border.borderVioletSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:291bb791b34bb447a355620f86a3f72e8723b45f/76:271",
+          "targetVariableName": "violet/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-indigo": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.4878469407558441,
+          0.5265172719955444,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#7C86FF"
+      },
+      "$description": "Generic indigo border. Use for application-defined meaning where no semantic token applies.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:64",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderIndigo",
+          "iOS": "LemonadeTheme.themed.border.borderIndigo"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:48c17c2f730ffa264dd9d76c9edd21898f7bd71a/72:124",
+          "targetVariableName": "indigo/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-indigo-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.38217607140541077,
+          0.37188827991485596,
+          1
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#615FFF"
+      },
+      "$description": "Subtle generic indigo border. Pairs with bg-indigo-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:65",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderIndigoSubtle",
+          "iOS": "LemonadeTheme.themed.border.borderIndigoSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:5a5846e08b0d9eb77b5de2e2b83adbbe580a7c39/76:293",
+          "targetVariableName": "indigo/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-blue": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.3157993257045746,
+          0.6355904340744019,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#51A2FF"
+      },
+      "$description": "Generic blue border. Use for application-defined meaning where no semantic token applies.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:66",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderBlue",
+          "iOS": "LemonadeTheme.themed.border.borderBlue"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134",
+          "targetVariableName": "blue/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-blue-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.16933248937129974,
+          0.49804946780204773,
+          1
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#2B7FFF"
+      },
+      "$description": "Subtle generic blue border. Pairs with bg-blue-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:67",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderBlueSubtle",
+          "iOS": "LemonadeTheme.themed.border.borderBlueSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315",
+          "targetVariableName": "blue/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-cyan": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.8273619413375854,
+          0.9509646892547607
+        ],
+        "alpha": 1,
+        "hex": "#00D3F2"
+      },
+      "$description": "Generic cyan border. Use for application-defined meaning where no semantic token applies.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:68",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderCyan",
+          "iOS": "LemonadeTheme.themed.border.borderCyan"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:d85eb1eb7b3cb3574b4e4f28507b4128ede11b9b/72:144",
+          "targetVariableName": "cyan/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-cyan-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.7218724489212036,
+          0.8573380708694458
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#00B8DB"
+      },
+      "$description": "Subtle generic cyan border. Pairs with bg-cyan-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:69",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderCyanSubtle",
+          "iOS": "LemonadeTheme.themed.border.borderCyanSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:e950c1611e1f6d7063d6d1a0db67185918839908/76:337",
+          "targetVariableName": "cyan/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-teal": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.8352503776550293,
+          0.7433176636695862
+        ],
+        "alpha": 1,
+        "hex": "#00D5BE"
+      },
+      "$description": "Generic teal border. Use for application-defined meaning where no semantic token applies.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:70",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderTeal",
+          "iOS": "LemonadeTheme.themed.border.borderTeal"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:9910911f644f0b83e6deaf2c1f0b1c36fe467a41/72:152",
+          "targetVariableName": "teal/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-teal-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.7333587408065796,
+          0.654870867729187
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#00BBA7"
+      },
+      "$description": "Subtle generic teal border. Pairs with bg-teal-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:71",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderTealSubtle",
+          "iOS": "LemonadeTheme.themed.border.borderTealSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:e298897fac82f421303bdb392a48941b21487d47/76:359",
+          "targetVariableName": "teal/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-green": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.019869813695549965,
+          0.8753122687339783,
+          0.4485098123550415
+        ],
+        "alpha": 1,
+        "hex": "#05DF72"
+      },
+      "$description": "Generic green border. Use for application-defined meaning where no semantic token applies.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:72",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderGreen",
+          "iOS": "LemonadeTheme.themed.border.borderGreen"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:692bf5198f34c4fad1721e48162ad2dbbdbb9175/72:169",
+          "targetVariableName": "green/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-green-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.7871556282043457,
+          0.31562188267707825
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#00C950"
+      },
+      "$description": "Subtle generic green border. Pairs with bg-green-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:73",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderGreenSubtle",
+          "iOS": "LemonadeTheme.themed.border.borderGreenSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:10f488664318faf3dbc2f9aa376df1c8deeacc12/76:381",
+          "targetVariableName": "green/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-green-lime": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.6024433970451355,
+          0.9016712307929993,
+          0
+        ],
+        "alpha": 1,
+        "hex": "#9AE600"
+      },
+      "$description": "Generic green lime border. Use for application-defined meaning where no semantic token applies.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:74",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderGreenLime",
+          "iOS": "LemonadeTheme.themed.border.borderGreenLime"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175",
+          "targetVariableName": "green-lime/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-green-lime-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.4872932434082031,
+          0.8099173903465271,
+          0
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#7CCF00"
+      },
+      "$description": "Subtle generic green lime border. Pairs with bg-green-lime-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:75",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderGreenLimeSubtle",
+          "iOS": "LemonadeTheme.themed.border.borderGreenLimeSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:169b48022f4a60164b3d49fb0e10aced4427846a/76:403",
+          "targetVariableName": "green-lime/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-yellow-lime": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9160000085830688,
+          0.9160000085830688,
+          0.2840000092983246
+        ],
+        "alpha": 1,
+        "hex": "#EAEA48"
+      },
+      "$description": "Generic yellow lime border. Use for application-defined meaning where no semantic token applies.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:76",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderYellowLime",
+          "iOS": "LemonadeTheme.themed.border.borderYellowLime"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:3d29360b74ce2b1f363eda98f910b1182240f8f9/406:13",
+          "targetVariableName": "yellow-lime/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-yellow-lime-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.8823529481887817,
+          0.8980392217636108,
+          0.10196078568696976
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#E1E51A"
+      },
+      "$description": "Subtle generic yellow lime border. Pairs with bg-yellow-lime-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:77",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.border.borderYellowLimeSubtle",
+          "iOS": "LemonadeTheme.themed.border.borderYellowLimeSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:a7751070191f972d99f13f9b71dabea2f0894547/90:22",
+          "targetVariableName": "yellow-lime/alpha/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    }
+  },
+  "Content": {
+    "content-yellow": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9930035471916199,
+          0.7819446325302124,
+          0
+        ],
+        "alpha": 1,
+        "hex": "#FDC700"
+      },
+      "$description": "Generic yellow text and icons on a default surface. Also legible on bg-yellow-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:79",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentYellow",
+          "iOS": "LemonadeTheme.themed.content.contentYellow"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:8aae62451636e999de1efef0151c4b4721091ab9/72:189",
+          "targetVariableName": "yellow/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-yellow-on-color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.6510636210441589,
+          0.3732093870639801,
+          0
+        ],
+        "alpha": 1,
+        "hex": "#A65F00"
+      },
+      "$description": "Generic yellow text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content-yellow.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:80",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentYellowOnColor",
+          "iOS": "LemonadeTheme.themed.content.contentYellowOnColor"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:768f568ab04f1feaa27e5ae400ffc92cc9a21734/72:191",
+          "targetVariableName": "yellow/700",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-on-yellow": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.03529411926865578,
+          0.0313725508749485,
+          0.0235294122248888
+        ],
+        "alpha": 0.925000011920929,
+        "hex": "#090806"
+      },
+      "$description": "Text and icons drawn on top of bg-yellow. Chosen per hue for contrast — do not substitute a fixed neutral.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:81",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOnYellow",
+          "iOS": "LemonadeTheme.themed.content.contentOnYellow"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "targetVariableName": "neutral/alpha/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-amber": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9930035471916199,
+          0.7819446325302124,
+          0
+        ],
+        "alpha": 1,
+        "hex": "#FDC700"
+      },
+      "$description": "Generic amber text and icons on a default surface. Also legible on bg-amber-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:82",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentAmber",
+          "iOS": "LemonadeTheme.themed.content.contentAmber"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:e37bef0d14979b03cf97c6b3c7608ebf73123a5c/72:200",
+          "targetVariableName": "amber/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-amber-on-color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.7317888140678406,
+          0.30102330446243286,
+          0
+        ],
+        "alpha": 1,
+        "hex": "#BB4D00"
+      },
+      "$description": "Generic amber text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content-amber.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:83",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentAmberOnColor",
+          "iOS": "LemonadeTheme.themed.content.contentAmberOnColor"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:deae95126cb95b53a3cbd5871b992b3bfca35319/72:202",
+          "targetVariableName": "amber/700",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-on-amber": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.03529411926865578,
+          0.0313725508749485,
+          0.0235294122248888
+        ],
+        "alpha": 0.925000011920929,
+        "hex": "#090806"
+      },
+      "$description": "Text and icons drawn on top of bg-amber. Chosen per hue for contrast — do not substitute a fixed neutral.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:84",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOnAmber",
+          "iOS": "LemonadeTheme.themed.content.contentOnAmber"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "targetVariableName": "neutral/alpha/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-orange": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          0.53702312707901,
+          0.013841553591191769
+        ],
+        "alpha": 1,
+        "hex": "#FF8904"
+      },
+      "$description": "Generic orange text and icons on a default surface. Also legible on bg-orange-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:85",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOrange",
+          "iOS": "LemonadeTheme.themed.content.contentOrange"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:4317c983d1f303e4b80280c89917f9c89038470d/72:244",
+          "targetVariableName": "orange/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-orange-on-color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.7918817400932312,
+          0.20726992189884186,
+          0
+        ],
+        "alpha": 1,
+        "hex": "#CA3500"
+      },
+      "$description": "Generic orange text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content-orange.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:86",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOrangeOnColor",
+          "iOS": "LemonadeTheme.themed.content.contentOrangeOnColor"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:f5407b5ab129d5aaf70c1d86d21a5fefd9fde2de/72:247",
+          "targetVariableName": "orange/700",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-on-orange": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.03529411926865578,
+          0.0313725508749485,
+          0.0235294122248888
+        ],
+        "alpha": 0.925000011920929,
+        "hex": "#090806"
+      },
+      "$description": "Text and icons drawn on top of bg-orange. Chosen per hue for contrast — do not substitute a fixed neutral.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:87",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOnOrange",
+          "iOS": "LemonadeTheme.themed.content.contentOnOrange"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "targetVariableName": "neutral/alpha/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-red": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9960784316062927,
+          0.32549020648002625,
+          0.3686274588108063
+        ],
+        "alpha": 1,
+        "hex": "#FE535E"
+      },
+      "$description": "Generic red text and icons on a default surface. Also legible on bg-red-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:88",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentRed",
+          "iOS": "LemonadeTheme.themed.content.contentRed"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5",
+          "targetVariableName": "red/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-red-on-color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.7529411911964417,
+          0.08235294371843338,
+          0.125490203499794
+        ],
+        "alpha": 1,
+        "hex": "#C01520"
+      },
+      "$description": "Generic red text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content-red.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:89",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentRedOnColor",
+          "iOS": "LemonadeTheme.themed.content.contentRedOnColor"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:a17656e99cc45a002894f8a0fc808807399ae7f0/559:8",
+          "targetVariableName": "red/700",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-on-red": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.03529411926865578,
+          0.0313725508749485,
+          0.0235294122248888
+        ],
+        "alpha": 0.925000011920929,
+        "hex": "#090806"
+      },
+      "$description": "Text and icons drawn on top of bg-red. Chosen per hue for contrast — do not substitute a fixed neutral.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:90",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOnRed",
+          "iOS": "LemonadeTheme.themed.content.contentOnRed"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "targetVariableName": "neutral/alpha/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-rose": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          0.3888605535030365,
+          0.49433162808418274
+        ],
+        "alpha": 1,
+        "hex": "#FF637E"
+      },
+      "$description": "Generic rose text and icons on a default surface. Also legible on bg-rose-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:91",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentRose",
+          "iOS": "LemonadeTheme.themed.content.contentRose"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:24da115b401167c077c0ab4e303bc0353f15e5cf/71:79",
+          "targetVariableName": "rose/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-rose-on-color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.7785063982009888,
+          0,
+          0.21069633960723877
+        ],
+        "alpha": 1,
+        "hex": "#C70036"
+      },
+      "$description": "Generic rose text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content-rose.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:92",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentRoseOnColor",
+          "iOS": "LemonadeTheme.themed.content.contentRoseOnColor"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:cb9a5d2622553e64145a7c57f909881df69c2276/71:73",
+          "targetVariableName": "rose/700",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-on-rose": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.03529411926865578,
+          0.0313725508749485,
+          0.0235294122248888
+        ],
+        "alpha": 0.925000011920929,
+        "hex": "#090806"
+      },
+      "$description": "Text and icons drawn on top of bg-rose. Chosen per hue for contrast — do not substitute a fixed neutral.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:93",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOnRose",
+          "iOS": "LemonadeTheme.themed.content.contentOnRose"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "targetVariableName": "neutral/alpha/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-pink": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9856091141700745,
+          0.3920409381389618,
+          0.7138620615005493
+        ],
+        "alpha": 1,
+        "hex": "#FB64B6"
+      },
+      "$description": "Generic pink text and icons on a default surface. Also legible on bg-pink-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:94",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentPink",
+          "iOS": "LemonadeTheme.themed.content.contentPink"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:b238726d1df33e0165a4c402f408349f9d5139ed/72:89",
+          "targetVariableName": "pink/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-pink-on-color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.7777568101882935,
+          0,
+          0.35892295837402344
+        ],
+        "alpha": 1,
+        "hex": "#C6005C"
+      },
+      "$description": "Generic pink text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content-pink.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:95",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentPinkOnColor",
+          "iOS": "LemonadeTheme.themed.content.contentPinkOnColor"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:738ef3cee0466ed6325c1034d294dde486609e79/72:86",
+          "targetVariableName": "pink/700",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-on-pink": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.03529411926865578,
+          0.0313725508749485,
+          0.0235294122248888
+        ],
+        "alpha": 0.925000011920929,
+        "hex": "#090806"
+      },
+      "$description": "Text and icons drawn on top of bg-pink. Chosen per hue for contrast — do not substitute a fixed neutral.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:96",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOnPink",
+          "iOS": "LemonadeTheme.themed.content.contentOnPink"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "targetVariableName": "neutral/alpha/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-fuchsia": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.929411768913269,
+          0.4156862795352936,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#ED6AFF"
+      },
+      "$description": "Generic fuchsia text and icons on a default surface. Also legible on bg-fuchsia-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:97",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentFuchsia",
+          "iOS": "LemonadeTheme.themed.content.contentFuchsia"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:474c9b0fdc54459be73db4a4cb2ccc2e7803e1e7/590:15",
+          "targetVariableName": "fuchsia/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-fuchsia-on-color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.658823549747467,
+          0,
+          0.7176470756530762
+        ],
+        "alpha": 1,
+        "hex": "#A800B7"
+      },
+      "$description": "Generic fuchsia text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content-fuchsia.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:98",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentFuchsiaOnColor",
+          "iOS": "LemonadeTheme.themed.content.contentFuchsiaOnColor"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:34713dffaf0599fbccf0da127827e7b5a7b27a3b/590:24",
+          "targetVariableName": "fuchsia/700",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-on-fuchsia": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.03529411926865578,
+          0.0313725508749485,
+          0.0235294122248888
+        ],
+        "alpha": 0.925000011920929,
+        "hex": "#090806"
+      },
+      "$description": "Text and icons drawn on top of bg-fuchsia. Chosen per hue for contrast — do not substitute a fixed neutral.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:99",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOnFuchsia",
+          "iOS": "LemonadeTheme.themed.content.contentOnFuchsia"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "targetVariableName": "neutral/alpha/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-purple": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.7595676779747009,
+          0.47980010509490967,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#C27AFF"
+      },
+      "$description": "Generic purple text and icons on a default surface. Also legible on bg-purple-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:100",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentPurple",
+          "iOS": "LemonadeTheme.themed.content.contentPurple"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:dacb1222ed4c4104b8d0559a90c6ab357666d2cb/72:99",
+          "targetVariableName": "purple/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-purple-on-color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.5099056959152222,
+          0,
+          0.8572576642036438
+        ],
+        "alpha": 1,
+        "hex": "#8200DB"
+      },
+      "$description": "Generic purple text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content-purple.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:101",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentPurpleOnColor",
+          "iOS": "LemonadeTheme.themed.content.contentPurpleOnColor"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:7d1020840663e8b173eb558ae2c466851c709cdc/72:100",
+          "targetVariableName": "purple/700",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-on-purple": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.03529411926865578,
+          0.0313725508749485,
+          0.0235294122248888
+        ],
+        "alpha": 0.925000011920929,
+        "hex": "#090806"
+      },
+      "$description": "Text and icons drawn on top of bg-purple. Chosen per hue for contrast — do not substitute a fixed neutral.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:102",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOnPurple",
+          "iOS": "LemonadeTheme.themed.content.contentOnPurple"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "targetVariableName": "neutral/alpha/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-violet": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.6526055335998535,
+          0.5169346928596497,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#A684FF"
+      },
+      "$description": "Generic violet text and icons on a default surface. Also legible on bg-violet-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:103",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentViolet",
+          "iOS": "LemonadeTheme.themed.content.contentViolet"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:a92d2726cf90db0ee12c25fbf925a17f6be6b286/74:9",
+          "targetVariableName": "violet/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-violet-on-color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.4396858811378479,
+          0.03142301365733147,
+          0.9064206480979919
+        ],
+        "alpha": 1,
+        "hex": "#7008E7"
+      },
+      "$description": "Generic violet text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content-violet.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:104",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentVioletOnColor",
+          "iOS": "LemonadeTheme.themed.content.contentVioletOnColor"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:5cce525c80ec6bf3b0f5c4b3476bede891893493/74:15",
+          "targetVariableName": "violet/700",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-on-violet": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.03529411926865578,
+          0.0313725508749485,
+          0.0235294122248888
+        ],
+        "alpha": 0.925000011920929,
+        "hex": "#090806"
+      },
+      "$description": "Text and icons drawn on top of bg-violet. Chosen per hue for contrast — do not substitute a fixed neutral.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:105",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOnViolet",
+          "iOS": "LemonadeTheme.themed.content.contentOnViolet"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "targetVariableName": "neutral/alpha/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-indigo": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.4878469407558441,
+          0.5265172719955444,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#7C86FF"
+      },
+      "$description": "Generic indigo text and icons on a default surface. Also legible on bg-indigo-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:106",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentIndigo",
+          "iOS": "LemonadeTheme.themed.content.contentIndigo"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:48c17c2f730ffa264dd9d76c9edd21898f7bd71a/72:124",
+          "targetVariableName": "indigo/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-indigo-on-color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.2643529772758484,
+          0.17659243941307068,
+          0.8448341488838196
+        ],
+        "alpha": 1,
+        "hex": "#432DD7"
+      },
+      "$description": "Generic indigo text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content-indigo.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:107",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentIndigoOnColor",
+          "iOS": "LemonadeTheme.themed.content.contentIndigoOnColor"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:d2b17880e05ecc87de782cf168beafbeb84d0420/72:126",
+          "targetVariableName": "indigo/700",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-on-indigo": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.03529411926865578,
+          0.0313725508749485,
+          0.0235294122248888
+        ],
+        "alpha": 0.925000011920929,
+        "hex": "#090806"
+      },
+      "$description": "Text and icons drawn on top of bg-indigo. Chosen per hue for contrast — do not substitute a fixed neutral.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:108",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOnIndigo",
+          "iOS": "LemonadeTheme.themed.content.contentOnIndigo"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "targetVariableName": "neutral/alpha/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-blue": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.3157993257045746,
+          0.6355904340744019,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#51A2FF"
+      },
+      "$description": "Generic blue text and icons on a default surface. Also legible on bg-blue-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:109",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentBlue",
+          "iOS": "LemonadeTheme.themed.content.contentBlue"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134",
+          "targetVariableName": "blue/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-blue-on-color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.0779077485203743,
+          0.27913516759872437,
+          0.9017744660377502
+        ],
+        "alpha": 1,
+        "hex": "#1447E6"
+      },
+      "$description": "Generic blue text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content-blue.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:110",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentBlueOnColor",
+          "iOS": "LemonadeTheme.themed.content.contentBlueOnColor"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:a6ed5840402749dbf76d19a0d797da45c091b8a4/72:129",
+          "targetVariableName": "blue/700",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-on-blue": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.03529411926865578,
+          0.0313725508749485,
+          0.0235294122248888
+        ],
+        "alpha": 0.925000011920929,
+        "hex": "#090806"
+      },
+      "$description": "Text and icons drawn on top of bg-blue. Chosen per hue for contrast — do not substitute a fixed neutral.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:111",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOnBlue",
+          "iOS": "LemonadeTheme.themed.content.contentOnBlue"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "targetVariableName": "neutral/alpha/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-cyan": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.8273619413375854,
+          0.9509646892547607
+        ],
+        "alpha": 1,
+        "hex": "#00D3F2"
+      },
+      "$description": "Generic cyan text and icons on a default surface. Also legible on bg-cyan-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:112",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentCyan",
+          "iOS": "LemonadeTheme.themed.content.contentCyan"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:d85eb1eb7b3cb3574b4e4f28507b4128ede11b9b/72:144",
+          "targetVariableName": "cyan/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-cyan-on-color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.45903703570365906,
+          0.5832521915435791
+        ],
+        "alpha": 1,
+        "hex": "#007595"
+      },
+      "$description": "Generic cyan text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content-cyan.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:113",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentCyanOnColor",
+          "iOS": "LemonadeTheme.themed.content.contentCyanOnColor"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:eef25792a986dbba70361752246fe8c68c395611/72:146",
+          "targetVariableName": "cyan/700",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-on-cyan": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.03529411926865578,
+          0.0313725508749485,
+          0.0235294122248888
+        ],
+        "alpha": 0.925000011920929,
+        "hex": "#090806"
+      },
+      "$description": "Text and icons drawn on top of bg-cyan. Chosen per hue for contrast — do not substitute a fixed neutral.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:114",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOnCyan",
+          "iOS": "LemonadeTheme.themed.content.contentOnCyan"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "targetVariableName": "neutral/alpha/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-teal": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.8352503776550293,
+          0.7433176636695862
+        ],
+        "alpha": 1,
+        "hex": "#00D5BE"
+      },
+      "$description": "Generic teal text and icons on a default surface. Also legible on bg-teal-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:115",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentTeal",
+          "iOS": "LemonadeTheme.themed.content.contentTeal"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:9910911f644f0b83e6deaf2c1f0b1c36fe467a41/72:152",
+          "targetVariableName": "teal/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-teal-on-color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.4689987897872925,
+          0.4349716603755951
+        ],
+        "alpha": 1,
+        "hex": "#00786F"
+      },
+      "$description": "Generic teal text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content-teal.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:116",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentTealOnColor",
+          "iOS": "LemonadeTheme.themed.content.contentTealOnColor"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:7aa7a11b55350ee6f5beedda2eec789ae59c8ea1/72:159",
+          "targetVariableName": "teal/700",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-on-teal": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.03529411926865578,
+          0.0313725508749485,
+          0.0235294122248888
+        ],
+        "alpha": 0.925000011920929,
+        "hex": "#090806"
+      },
+      "$description": "Text and icons drawn on top of bg-teal. Chosen per hue for contrast — do not substitute a fixed neutral.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:117",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOnTeal",
+          "iOS": "LemonadeTheme.themed.content.contentOnTeal"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "targetVariableName": "neutral/alpha/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-green": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.019869813695549965,
+          0.8753122687339783,
+          0.4485098123550415
+        ],
+        "alpha": 1,
+        "hex": "#05DF72"
+      },
+      "$description": "Generic green text and icons on a default surface. Also legible on bg-green-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:118",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentGreen",
+          "iOS": "LemonadeTheme.themed.content.contentGreen"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:692bf5198f34c4fad1721e48162ad2dbbdbb9175/72:169",
+          "targetVariableName": "green/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-green-on-color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.5099976658821106,
+          0.20980969071388245
+        ],
+        "alpha": 1,
+        "hex": "#008236"
+      },
+      "$description": "Generic green text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content-green.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:119",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentGreenOnColor",
+          "iOS": "LemonadeTheme.themed.content.contentGreenOnColor"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:cdfaf322851d9055db21e5c99f8aa75166d186d4/72:168",
+          "targetVariableName": "green/700",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-on-green": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.03529411926865578,
+          0.0313725508749485,
+          0.0235294122248888
+        ],
+        "alpha": 0.925000011920929,
+        "hex": "#090806"
+      },
+      "$description": "Text and icons drawn on top of bg-green. Chosen per hue for contrast — do not substitute a fixed neutral.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:120",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOnGreen",
+          "iOS": "LemonadeTheme.themed.content.contentOnGreen"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "targetVariableName": "neutral/alpha/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-green-lime": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.6024433970451355,
+          0.9016712307929993,
+          0
+        ],
+        "alpha": 1,
+        "hex": "#9AE600"
+      },
+      "$description": "Generic green lime text and icons on a default surface. Also legible on bg-green-lime-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:121",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentGreenLime",
+          "iOS": "LemonadeTheme.themed.content.contentGreenLime"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175",
+          "targetVariableName": "green-lime/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-green-lime-on-color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.2848081886768341,
+          0.49150213599205017,
+          0
+        ],
+        "alpha": 1,
+        "hex": "#497D00"
+      },
+      "$description": "Generic green lime text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content-green-lime.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:122",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentGreenLimeOnColor",
+          "iOS": "LemonadeTheme.themed.content.contentGreenLimeOnColor"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181",
+          "targetVariableName": "green-lime/700",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-on-green-lime": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.03529411926865578,
+          0.0313725508749485,
+          0.0235294122248888
+        ],
+        "alpha": 0.925000011920929,
+        "hex": "#090806"
+      },
+      "$description": "Text and icons drawn on top of bg-green-lime. Chosen per hue for contrast — do not substitute a fixed neutral.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:123",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOnGreenLime",
+          "iOS": "LemonadeTheme.themed.content.contentOnGreenLime"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "targetVariableName": "neutral/alpha/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-yellow-lime": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9160000085830688,
+          0.9160000085830688,
+          0.2840000092983246
+        ],
+        "alpha": 1,
+        "hex": "#EAEA48"
+      },
+      "$description": "Generic yellow lime text and icons on a default surface. Also legible on bg-yellow-lime-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:124",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentYellowLime",
+          "iOS": "LemonadeTheme.themed.content.contentYellowLime"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:3d29360b74ce2b1f363eda98f910b1182240f8f9/406:13",
+          "targetVariableName": "yellow-lime/400",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-yellow-lime-on-color": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.42639997601509094,
+          0.46799999475479126,
+          0.052000001072883606
+        ],
+        "alpha": 1,
+        "hex": "#6D770D"
+      },
+      "$description": "Generic yellow lime text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content-yellow-lime.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:125",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentYellowLimeOnColor",
+          "iOS": "LemonadeTheme.themed.content.contentYellowLimeOnColor"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:6d9c92c71562a356221eeae95c51cd6962648e80/394:22",
+          "targetVariableName": "yellow-lime/700",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-on-yellow-lime": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.03529411926865578,
+          0.0313725508749485,
+          0.0235294122248888
+        ],
+        "alpha": 0.925000011920929,
+        "hex": "#090806"
+      },
+      "$description": "Text and icons drawn on top of bg-yellow-lime. Chosen per hue for contrast — do not substitute a fixed neutral.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:5186:126",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.themed.content.contentOnYellowLime",
+          "iOS": "LemonadeTheme.themed.content.contentOnYellowLime"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "targetVariableName": "neutral/alpha/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "Dark"
+  }
+}
