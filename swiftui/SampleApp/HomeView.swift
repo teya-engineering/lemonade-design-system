@@ -166,12 +166,11 @@ struct HomeView: View {
         .disableAutocorrection(true)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button(action: { showSettings = true }) {
-                    LemonadeUi.Icon(
-                        icon: .gear,
-                        contentDescription: "Settings"
-                    )
-                }
+                LemonadeUi.ToolbarIconButton(
+                    icon: .gear,
+                    contentDescription: "Settings",
+                    action: { showSettings = true }
+                )
             }
         }
         .sheet(isPresented: $showSettings) {
