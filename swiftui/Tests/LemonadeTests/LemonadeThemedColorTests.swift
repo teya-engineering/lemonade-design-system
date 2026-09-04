@@ -1,3 +1,4 @@
+import SwiftUI
 import XCTest
 #if canImport(UIKit)
 import UIKit
@@ -30,6 +31,26 @@ final class LemonadeThemedColorTests: XCTestCase {
         #else
         return nil
         #endif
+    }
+
+    func testThemedColorsCanBePassedAroundAsValues() {
+        // The point of grouping by hue: one colour is a value, so a chart series or a
+        // per-role mapping can hold them in a collection and read slots off them. This
+        // only compiles because every group conforms to ThemedColor — without it the
+        // array infers as [Any] and `\.background` does not resolve.
+        let series: [ThemedColor] = [
+            LemonadeTheme.themed.blue,
+            LemonadeTheme.themed.amber,
+            LemonadeTheme.themed.neutral,
+        ]
+        XCTAssertEqual(series.map(\.background).count, 3)
+
+        // A component can style itself entirely from one ThemedColor.
+        func style(_ colour: ThemedColor) -> [Color] {
+            [colour.background, colour.backgroundSubtle, colour.border, colour.borderSubtle,
+             colour.content, colour.contentOnColor, colour.onBackground]
+        }
+        XCTAssertEqual(style(LemonadeTheme.themed.violet).count, 7)
     }
 
     func testEveryThemedAssetResolvesInTheBundle() throws {

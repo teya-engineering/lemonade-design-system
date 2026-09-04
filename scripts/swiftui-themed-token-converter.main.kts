@@ -86,6 +86,19 @@ private fun buildThemedProtocolCode(
     resources: List<ResourceData<Unit>>,
 ): String {
     val grouped = resources.groupBy { it.groups.getOrNull(1) }
+
+    // ThemedColor is only sound while every group declares exactly the same slots.
+    // If a group ever differs - a variant with a reduced slot set, say - fail loudly
+    // here rather than silently emitting a supertype the groups do not satisfy.
+    val slotSets = grouped.values.map { group -> group.map { it.name } }
+    val sharedSlots = slotSets.first()
+    slotSets.forEach { slots ->
+        require(slots == sharedSlots) {
+            "Themed groups declare different slots, so they cannot share ThemedColor:\n" +
+                "  $sharedSlots\n  vs\n  $slots"
+        }
+    }
+
     return buildString {
         appendLine("import SwiftUI")
         appendLine()
@@ -102,16 +115,24 @@ private fun buildThemedProtocolCode(
             appendLine("/// $line")
         }
         appendLine()
-        grouped.forEach { (groupName, groupResources) ->
-            if (groupName != null) {
-                appendLine("/// Themed ${groupName.lowercase()} color definitions")
-                appendLine("public protocol Themed${groupName}Colors {")
-                groupResources.forEach { resource ->
-                    appendLine("    var ${resource.name}: Color { get }")
-                }
-                appendLine("}")
-                appendLine()
-            }
+        appendLine("/// The slots every themed color provides, so one can be passed around as a")
+        appendLine("/// value - a chart series, a per-role accent, a category - without naming a")
+        appendLine("/// specific one.")
+        appendLine("///")
+        appendLine("/// ```swift")
+        appendLine("/// let series: [ThemedColor] = [LemonadeTheme.themed.blue, LemonadeTheme.themed.amber]")
+        appendLine("/// series.map(\\.background)")
+        appendLine("/// ```")
+        appendLine("public protocol ThemedColor {")
+        sharedSlots.forEach { slot ->
+            appendLine("    var $slot: Color { get }")
+        }
+        appendLine("}")
+        appendLine()
+        grouped.keys.filterNotNull().forEach { groupName ->
+            appendLine("/// Themed ${groupName.lowercase()} color definitions")
+            appendLine("public protocol Themed${groupName}Colors: ThemedColor {}")
+            appendLine()
         }
         appendLine("/// Protocol defining themed color categories")
         appendLine("public protocol LemonadeThemedColors {")

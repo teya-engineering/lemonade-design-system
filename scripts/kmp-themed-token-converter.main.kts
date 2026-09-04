@@ -95,6 +95,19 @@ private fun buildThemedInterfaceCode(
     resources: List<ResourceData<ThemedResourceData>>,
 ): String {
     val grouped = resources.groupBy { it.groups.getOrNull(1) }
+
+    // ThemedColor is only sound while every group declares exactly the same slots.
+    // If a group ever differs - a variant with a reduced slot set, say - fail loudly
+    // here rather than silently emitting a supertype the groups do not satisfy.
+    val slotSets = grouped.values.map { group -> group.map { it.name } }
+    val sharedSlots = slotSets.first()
+    slotSets.forEach { slots ->
+        require(slots == sharedSlots) {
+            "Themed groups declare different slots, so they cannot share ThemedColor:\n" +
+                "  $sharedSlots\n  vs\n  $slots"
+        }
+    }
+
     return buildString {
         appendLine("package com.teya.lemonade")
         appendLine()
@@ -116,15 +129,25 @@ private fun buildThemedInterfaceCode(
         grouped.keys.filterNotNull().forEach { groupName ->
             appendLine("    public val ${groupName.sanitizedValueName()}: ${groupName}Colors")
         }
-        grouped.forEach { (groupName, groupResources) ->
-            if (groupName != null) {
-                appendLine()
-                appendLine("    public interface ${groupName}Colors {")
-                groupResources.forEach { resource ->
-                    appendLine("        public val ${resource.name}: Color")
-                }
-                appendLine("    }")
-            }
+        grouped.keys.filterNotNull().forEach { groupName ->
+            appendLine()
+            appendLine("    public interface ${groupName}Colors : ThemedColor")
+        }
+        appendLine("}")
+        appendLine()
+        appendLine("/**")
+        appendLine(" * The slots every themed colour provides, so one can be passed around as a value -")
+        appendLine(" * a chart series, a per-role accent, a category - without naming a specific one.")
+        appendLine(" *")
+        appendLine(" * ```")
+        appendLine(" * val series = listOf(LemonadeTheme.themed.blue, LemonadeTheme.themed.amber)")
+        appendLine(" * series.map { it.background }")
+        appendLine(" * ```")
+        append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
+        appendLine(" */")
+        appendLine("public interface ThemedColor {")
+        sharedSlots.forEach { slot ->
+            appendLine("    public val $slot: Color")
         }
         appendLine("}")
     }

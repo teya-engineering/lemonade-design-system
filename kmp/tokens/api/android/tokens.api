@@ -1061,174 +1061,55 @@ public abstract interface class com/teya/lemonade/LemonadeThemedColors {
 	public abstract fun getYellowLime ()Lcom/teya/lemonade/LemonadeThemedColors$YellowLimeColors;
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$AmberColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$AmberColors : com/teya/lemonade/ThemedColor {
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$BlueColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$BlueColors : com/teya/lemonade/ThemedColor {
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$CyanColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$CyanColors : com/teya/lemonade/ThemedColor {
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$FuchsiaColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$FuchsiaColors : com/teya/lemonade/ThemedColor {
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$GreenColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$GreenColors : com/teya/lemonade/ThemedColor {
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$GreenLimeColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$GreenLimeColors : com/teya/lemonade/ThemedColor {
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$IndigoColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$IndigoColors : com/teya/lemonade/ThemedColor {
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$NeutralColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$NeutralColors : com/teya/lemonade/ThemedColor {
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$OrangeColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$OrangeColors : com/teya/lemonade/ThemedColor {
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$PinkColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$PinkColors : com/teya/lemonade/ThemedColor {
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$PurpleColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$PurpleColors : com/teya/lemonade/ThemedColor {
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$RedColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$RedColors : com/teya/lemonade/ThemedColor {
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$RoseColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$RoseColors : com/teya/lemonade/ThemedColor {
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$TealColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$TealColors : com/teya/lemonade/ThemedColor {
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$VioletColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$VioletColors : com/teya/lemonade/ThemedColor {
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$YellowColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$YellowColors : com/teya/lemonade/ThemedColor {
 }
 
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$YellowLimeColors {
-	public abstract fun getBackground-0d7_KjU ()J
-	public abstract fun getBackgroundSubtle-0d7_KjU ()J
-	public abstract fun getBorder-0d7_KjU ()J
-	public abstract fun getBorderSubtle-0d7_KjU ()J
-	public abstract fun getContent-0d7_KjU ()J
-	public abstract fun getContentOnColor-0d7_KjU ()J
-	public abstract fun getOnBackground-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$YellowLimeColors : com/teya/lemonade/ThemedColor {
 }
 
 public class com/teya/lemonade/LemonadeTypographyProvider {
@@ -1264,5 +1145,15 @@ public class com/teya/lemonade/LemonadeTypographyProvider {
 	public fun getHeadingXLarge ()Lcom/teya/lemonade/core/LemonadeTextStyle;
 	public fun getHeadingXSmall ()Lcom/teya/lemonade/core/LemonadeTextStyle;
 	public fun getHeadingXXSmall ()Lcom/teya/lemonade/core/LemonadeTextStyle;
+}
+
+public abstract interface class com/teya/lemonade/ThemedColor {
+	public abstract fun getBackground-0d7_KjU ()J
+	public abstract fun getBackgroundSubtle-0d7_KjU ()J
+	public abstract fun getBorder-0d7_KjU ()J
+	public abstract fun getBorderSubtle-0d7_KjU ()J
+	public abstract fun getContent-0d7_KjU ()J
+	public abstract fun getContentOnColor-0d7_KjU ()J
+	public abstract fun getOnBackground-0d7_KjU ()J
 }
 

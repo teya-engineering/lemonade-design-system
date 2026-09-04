@@ -43,6 +43,42 @@ class ThemedColorsTest {
     }
 
     @Test
+    fun themedColoursCanBePassedAroundAsValues() {
+        // The point of grouping by hue: one colour is a value, so a chart series or a
+        // per-role mapping can hold them in a collection and read slots off them. This
+        // only compiles because every group shares the ThemedColor supertype — without
+        // it the list infers as List<Any> and `it.background` does not resolve.
+        val series: List<ThemedColor> = listOf(
+            LemonadeLightThemedColors.blue,
+            LemonadeLightThemedColors.amber,
+            LemonadeLightThemedColors.neutral,
+        )
+        val fills = series.map { it.background }
+
+        assertEquals(3, fills.size)
+        assertEquals(LemonadePrimitiveColors.Solid.Blue.blue600, fills[0])
+        assertEquals(LemonadePrimitiveColors.Solid.Amber.amber600, fills[1])
+        assertEquals(LemonadePrimitiveColors.Solid.Neutral.neutral600, fills[2])
+    }
+
+    @Test
+    fun aThemedColourSuppliesEverySlotThroughTheSharedType() {
+        // A component can take a ThemedColor and style itself entirely from it.
+        fun style(colour: ThemedColor) = listOf(
+            colour.background,
+            colour.backgroundSubtle,
+            colour.border,
+            colour.borderSubtle,
+            colour.content,
+            colour.contentOnColor,
+            colour.onBackground,
+        )
+
+        assertEquals(7, style(LemonadeLightThemedColors.violet).size)
+        assertEquals(7, style(LemonadeDarkThemedColors.greenLime).size)
+    }
+
+    @Test
     fun neutralFollowsTheMirrorRuleRatherThanTheChromaticStepMap() {
         // Neutral is the one themed hue that does not follow the chromatic step map:
         // light draws from neutral/alpha, dark from white, at the same rung.

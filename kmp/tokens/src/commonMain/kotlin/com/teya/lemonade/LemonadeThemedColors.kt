@@ -44,173 +44,68 @@ public interface LemonadeThemedColors {
     public val yellow: YellowColors
     public val yellowLime: YellowLimeColors
 
-    public interface AmberColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface AmberColors : ThemedColor
 
-    public interface BlueColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface BlueColors : ThemedColor
 
-    public interface CyanColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface CyanColors : ThemedColor
 
-    public interface FuchsiaColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface FuchsiaColors : ThemedColor
 
-    public interface GreenColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface GreenColors : ThemedColor
 
-    public interface GreenLimeColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface GreenLimeColors : ThemedColor
 
-    public interface IndigoColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface IndigoColors : ThemedColor
 
-    public interface NeutralColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface NeutralColors : ThemedColor
 
-    public interface OrangeColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface OrangeColors : ThemedColor
 
-    public interface PinkColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface PinkColors : ThemedColor
 
-    public interface PurpleColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface PurpleColors : ThemedColor
 
-    public interface RedColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface RedColors : ThemedColor
 
-    public interface RoseColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface RoseColors : ThemedColor
 
-    public interface TealColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface TealColors : ThemedColor
 
-    public interface VioletColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface VioletColors : ThemedColor
 
-    public interface YellowColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface YellowColors : ThemedColor
 
-    public interface YellowLimeColors {
-        public val background: Color
-        public val backgroundSubtle: Color
-        public val border: Color
-        public val borderSubtle: Color
-        public val content: Color
-        public val contentOnColor: Color
-        public val onBackground: Color
-    }
+    public interface YellowLimeColors : ThemedColor
+}
+
+/**
+ * The slots every themed colour provides, so one can be passed around as a value -
+ * a chart series, a per-role accent, a category - without naming a specific one.
+ *
+ * ```
+ * val series = listOf(LemonadeTheme.themed.blue, LemonadeTheme.themed.amber)
+ * series.map { it.background }
+ * ```
+ * Auto-generated content.
+ *
+ * ⚠️ **DO NOT MODIFY THIS FILE MANUALLY** ⚠️
+ *
+ * This file is automatically generated by the scripts/kmp-themed-token-converter.main.kts script.
+ * All changes will be overwritten when the script is run again.
+ *
+ * To add updated content:
+ * 1. Add your file to the tokens/ directory
+ * 2. Run: kotlin scripts/kmp-themed-token-converter.main.kts
+ *
+ * @generated by scripts/kmp-themed-token-converter.main.kts
+ */
+public interface ThemedColor {
+    public val background: Color
+    public val backgroundSubtle: Color
+    public val border: Color
+    public val borderSubtle: Color
+    public val content: Color
+    public val contentOnColor: Color
+    public val onBackground: Color
 }
