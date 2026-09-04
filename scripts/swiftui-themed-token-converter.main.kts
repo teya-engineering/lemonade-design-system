@@ -40,11 +40,17 @@ fun main() {
             resourceMap = { _ -> Unit },
         )
 
-        val resourcesByName = themedResources.groupBy { it.name }.mapValues { it.value.first() }
+        // Keyed by the full group-qualified path, not the leaf name alone: the themed
+        // collection is grouped by hue, so leaf names ("background", "border", ...)
+        // repeat across all 16 hues and a leaf-only key would collapse them onto one.
+        val resourcesByPath = themedResources.associateBy { resource ->
+            (resource.groups + resource.name).joinToString("/")
+        }
 
         val resourcesWithAssets = mutableListOf<Pair<ResourceData<Unit>, String>>()
         tokenNames.forEach { name ->
-            val resource = resourcesByName[name.sanitizedSwiftValueName()]
+            val path = (name.sanitizedGroups() + name.sanitizedSwiftValueName()).joinToString("/")
+            val resource = resourcesByPath[path]
             if (resource != null) {
                 resourcesWithAssets.add(resource to lemonadeAssetName(name, prefix = "themed"))
             }
