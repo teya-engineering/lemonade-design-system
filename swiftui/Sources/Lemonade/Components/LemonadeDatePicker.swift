@@ -372,7 +372,12 @@ private struct CoreDatePickerView: View {
                     .tag(offset)
                 }
             }
+            #if os(iOS)
+            // `.page` (PageTabViewStyle) is unavailable on macOS; fall back to the
+            // default TabView style there so the package builds for its declared
+            // macOS deployment target.
             .tabViewStyle(.page(indexDisplayMode: .never))
+            #endif
             .frame(height: 300)
             #else
             MonthGridView(
