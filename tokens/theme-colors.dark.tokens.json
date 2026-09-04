@@ -8389,6 +8389,229 @@
           }
         }
       }
+    },
+    "neutral": {
+      "background": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6500392556190491,
+            0.6419216394424438,
+            0.6283921599388123
+          ],
+          "alpha": 1,
+          "hex": "#A6A4A0"
+        },
+        "$description": "Generic neutral surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5197:10",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.neutral.background",
+            "iOS": "LemonadeTheme.themed.neutral.background"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:3343c47086185f2662fc85622239fae01a0a4297/424:101",
+            "targetVariableName": "neutral/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "background-subtle": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.10000000149011612,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Subtle generic neutral surface. Use behind content, optionally outlined with border-subtle.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5197:11",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.neutral.backgroundSubtle",
+            "iOS": "LemonadeTheme.themed.neutral.backgroundSubtle"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24",
+            "targetVariableName": "white/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6500392556190491,
+            0.6419216394424438,
+            0.6283921599388123
+          ],
+          "alpha": 1,
+          "hex": "#A6A4A0"
+        },
+        "$description": "Generic neutral border. Use for application-defined meaning where no semantic token applies.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5197:12",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE_COLOR",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.neutral.border",
+            "iOS": "LemonadeTheme.themed.neutral.border"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:3343c47086185f2662fc85622239fae01a0a4297/424:101",
+            "targetVariableName": "neutral/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-subtle": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.10000000149011612,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Subtle generic neutral border. Pairs with background-subtle.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5197:13",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE_COLOR",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.neutral.borderSubtle",
+            "iOS": "LemonadeTheme.themed.neutral.borderSubtle"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24",
+            "targetVariableName": "white/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.8999999761581421,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Generic neutral text and icons on a default surface. Also legible on background-subtle.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5197:14",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.neutral.content",
+            "iOS": "LemonadeTheme.themed.neutral.content"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:1cde25931e5330368f430707ddecf5da880df6d6/109:32",
+            "targetVariableName": "white/900",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-on-color": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.03529411926865578,
+            0.0313725508749485,
+            0.0235294122248888
+          ],
+          "alpha": 0.925000011920929,
+          "hex": "#090806"
+        },
+        "$description": "Generic neutral text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5197:15",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.neutral.contentOnColor",
+            "iOS": "LemonadeTheme.themed.neutral.contentOnColor"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+            "targetVariableName": "neutral/alpha/900",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.03529411926865578,
+            0.0313725508749485,
+            0.0235294122248888
+          ],
+          "alpha": 0.925000011920929,
+          "hex": "#090806"
+        },
+        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5197:16",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.neutral.onBackground",
+            "iOS": "LemonadeTheme.themed.neutral.onBackground"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+            "targetVariableName": "neutral/alpha/900",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      }
     }
   },
   "$extensions": {

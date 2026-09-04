@@ -43,6 +43,39 @@ class ThemedColorsTest {
     }
 
     @Test
+    fun neutralFollowsTheMirrorRuleRatherThanTheChromaticStepMap() {
+        // Neutral is the one themed hue that does not follow the chromatic step map:
+        // light draws from neutral/alpha, dark from white, at the same rung.
+        assertEquals(
+            LemonadePrimitiveColors.Alpha.Neutral.alpha100,
+            LemonadeLightThemedColors.neutral.backgroundSubtle,
+        )
+        assertEquals(
+            LemonadePrimitiveColors.Solid.White.white100,
+            LemonadeDarkThemedColors.neutral.backgroundSubtle,
+        )
+        assertEquals(LemonadePrimitiveColors.Alpha.Neutral.alpha900, LemonadeLightThemedColors.neutral.content)
+        assertEquals(LemonadePrimitiveColors.Solid.White.white900, LemonadeDarkThemedColors.neutral.content)
+
+        // Its subtle slots are therefore NOT theme-invariant, unlike every chromatic hue's.
+        assertNotEquals(
+            LemonadeLightThemedColors.neutral.backgroundSubtle,
+            LemonadeDarkThemedColors.neutral.backgroundSubtle,
+        )
+        assertEquals(
+            LemonadeLightThemedColors.blue.backgroundSubtle,
+            LemonadeDarkThemedColors.blue.backgroundSubtle,
+        )
+    }
+
+    @Test
+    fun neutralStillTracksBackgroundWithItsBorder() {
+        // The one chromatic rule neutral does keep.
+        assertEquals(LemonadeLightThemedColors.neutral.background, LemonadeLightThemedColors.neutral.border)
+        assertEquals(LemonadeDarkThemedColors.neutral.background, LemonadeDarkThemedColors.neutral.border)
+    }
+
+    @Test
     fun hyphenatedHuesResolveOnTheirOwnAccessor() {
         assertEquals(
             LemonadePrimitiveColors.Solid.GreenLime.greenLime600,

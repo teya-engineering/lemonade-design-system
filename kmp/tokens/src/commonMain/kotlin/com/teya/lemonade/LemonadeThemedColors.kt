@@ -33,6 +33,7 @@ public interface LemonadeThemedColors {
     public val green: GreenColors
     public val greenLime: GreenLimeColors
     public val indigo: IndigoColors
+    public val neutral: NeutralColors
     public val orange: OrangeColors
     public val pink: PinkColors
     public val purple: PurpleColors
@@ -104,6 +105,16 @@ public interface LemonadeThemedColors {
     }
 
     public interface IndigoColors {
+        public val background: Color
+        public val backgroundSubtle: Color
+        public val border: Color
+        public val borderSubtle: Color
+        public val content: Color
+        public val contentOnColor: Color
+        public val onBackground: Color
+    }
+
+    public interface NeutralColors {
         public val background: Color
         public val backgroundSubtle: Color
         public val border: Color

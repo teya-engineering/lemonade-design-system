@@ -97,6 +97,17 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
             override val onBackground = LemonadePrimitiveColors.Alpha.Neutral.alpha900
         }
 
+    override val neutral: LemonadeThemedColors.NeutralColors =
+        object : LemonadeThemedColors.NeutralColors {
+            override val background = LemonadePrimitiveColors.Solid.Neutral.neutral400
+            override val backgroundSubtle = LemonadePrimitiveColors.Solid.White.white100
+            override val border = LemonadePrimitiveColors.Solid.Neutral.neutral400
+            override val borderSubtle = LemonadePrimitiveColors.Solid.White.white100
+            override val content = LemonadePrimitiveColors.Solid.White.white900
+            override val contentOnColor = LemonadePrimitiveColors.Alpha.Neutral.alpha900
+            override val onBackground = LemonadePrimitiveColors.Alpha.Neutral.alpha900
+        }
+
     override val orange: LemonadeThemedColors.OrangeColors =
         object : LemonadeThemedColors.OrangeColors {
             override val background = LemonadePrimitiveColors.Solid.Orange.orange400

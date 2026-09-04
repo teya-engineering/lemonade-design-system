@@ -271,6 +271,7 @@ public final class com/teya/lemonade/LemonadeDarkThemedColors : com/teya/lemonad
 	public fun getGreen ()Lcom/teya/lemonade/LemonadeThemedColors$GreenColors;
 	public fun getGreenLime ()Lcom/teya/lemonade/LemonadeThemedColors$GreenLimeColors;
 	public fun getIndigo ()Lcom/teya/lemonade/LemonadeThemedColors$IndigoColors;
+	public fun getNeutral ()Lcom/teya/lemonade/LemonadeThemedColors$NeutralColors;
 	public fun getOrange ()Lcom/teya/lemonade/LemonadeThemedColors$OrangeColors;
 	public fun getPink ()Lcom/teya/lemonade/LemonadeThemedColors$PinkColors;
 	public fun getPurple ()Lcom/teya/lemonade/LemonadeThemedColors$PurpleColors;
@@ -341,6 +342,7 @@ public final class com/teya/lemonade/LemonadeLightThemedColors : com/teya/lemona
 	public fun getGreen ()Lcom/teya/lemonade/LemonadeThemedColors$GreenColors;
 	public fun getGreenLime ()Lcom/teya/lemonade/LemonadeThemedColors$GreenLimeColors;
 	public fun getIndigo ()Lcom/teya/lemonade/LemonadeThemedColors$IndigoColors;
+	public fun getNeutral ()Lcom/teya/lemonade/LemonadeThemedColors$NeutralColors;
 	public fun getOrange ()Lcom/teya/lemonade/LemonadeThemedColors$OrangeColors;
 	public fun getPink ()Lcom/teya/lemonade/LemonadeThemedColors$PinkColors;
 	public fun getPurple ()Lcom/teya/lemonade/LemonadeThemedColors$PurpleColors;

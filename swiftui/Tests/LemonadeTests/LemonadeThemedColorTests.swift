@@ -10,6 +10,9 @@ final class LemonadeThemedColorTests: XCTestCase {
     private static let hues = [
         "yellow", "amber", "orange", "red", "rose", "pink", "fuchsia", "purple",
         "violet", "indigo", "blue", "cyan", "teal", "green", "green-lime", "yellow-lime",
+        // Achromatic, and the one hue whose slots follow the mirror rule rather than
+        // the chromatic step map — see LemonadeThemedColors for the values.
+        "neutral",
     ]
 
     private static let slots = [

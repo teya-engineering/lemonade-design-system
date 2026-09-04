@@ -100,6 +100,17 @@ public protocol ThemedIndigoColors {
     var onBackground: Color { get }
 }
 
+/// Themed neutral color definitions
+public protocol ThemedNeutralColors {
+    var background: Color { get }
+    var backgroundSubtle: Color { get }
+    var border: Color { get }
+    var borderSubtle: Color { get }
+    var content: Color { get }
+    var contentOnColor: Color { get }
+    var onBackground: Color { get }
+}
+
 /// Themed orange color definitions
 public protocol ThemedOrangeColors {
     var background: Color { get }
@@ -208,6 +219,7 @@ public protocol LemonadeThemedColors {
     var green: ThemedGreenColors { get }
     var greenLime: ThemedGreenLimeColors { get }
     var indigo: ThemedIndigoColors { get }
+    var neutral: ThemedNeutralColors { get }
     var orange: ThemedOrangeColors { get }
     var pink: ThemedPinkColors { get }
     var purple: ThemedPurpleColors { get }
@@ -287,6 +299,16 @@ private struct AdaptiveThemedIndigoColors: ThemedIndigoColors {
     let content = Color("lemonade-themed-indigo-content", bundle: .lemonade)
     let contentOnColor = Color("lemonade-themed-indigo-content-on-color", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-indigo-on-background", bundle: .lemonade)
+}
+
+private struct AdaptiveThemedNeutralColors: ThemedNeutralColors {
+    let background = Color("lemonade-themed-neutral-background", bundle: .lemonade)
+    let backgroundSubtle = Color("lemonade-themed-neutral-background-subtle", bundle: .lemonade)
+    let border = Color("lemonade-themed-neutral-border", bundle: .lemonade)
+    let borderSubtle = Color("lemonade-themed-neutral-border-subtle", bundle: .lemonade)
+    let content = Color("lemonade-themed-neutral-content", bundle: .lemonade)
+    let contentOnColor = Color("lemonade-themed-neutral-content-on-color", bundle: .lemonade)
+    let onBackground = Color("lemonade-themed-neutral-on-background", bundle: .lemonade)
 }
 
 private struct AdaptiveThemedOrangeColors: ThemedOrangeColors {
@@ -390,6 +412,7 @@ public struct LemonadeAdaptiveThemedColors: LemonadeThemedColors {
     public let green: ThemedGreenColors = AdaptiveThemedGreenColors()
     public let greenLime: ThemedGreenLimeColors = AdaptiveThemedGreenLimeColors()
     public let indigo: ThemedIndigoColors = AdaptiveThemedIndigoColors()
+    public let neutral: ThemedNeutralColors = AdaptiveThemedNeutralColors()
     public let orange: ThemedOrangeColors = AdaptiveThemedOrangeColors()
     public let pink: ThemedPinkColors = AdaptiveThemedPinkColors()
     public let purple: ThemedPurpleColors = AdaptiveThemedPurpleColors()

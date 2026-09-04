@@ -1049,6 +1049,7 @@ public abstract interface class com/teya/lemonade/LemonadeThemedColors {
 	public abstract fun getGreen ()Lcom/teya/lemonade/LemonadeThemedColors$GreenColors;
 	public abstract fun getGreenLime ()Lcom/teya/lemonade/LemonadeThemedColors$GreenLimeColors;
 	public abstract fun getIndigo ()Lcom/teya/lemonade/LemonadeThemedColors$IndigoColors;
+	public abstract fun getNeutral ()Lcom/teya/lemonade/LemonadeThemedColors$NeutralColors;
 	public abstract fun getOrange ()Lcom/teya/lemonade/LemonadeThemedColors$OrangeColors;
 	public abstract fun getPink ()Lcom/teya/lemonade/LemonadeThemedColors$PinkColors;
 	public abstract fun getPurple ()Lcom/teya/lemonade/LemonadeThemedColors$PurpleColors;
@@ -1121,6 +1122,16 @@ public abstract interface class com/teya/lemonade/LemonadeThemedColors$GreenLime
 }
 
 public abstract interface class com/teya/lemonade/LemonadeThemedColors$IndigoColors {
+	public abstract fun getBackground-0d7_KjU ()J
+	public abstract fun getBackgroundSubtle-0d7_KjU ()J
+	public abstract fun getBorder-0d7_KjU ()J
+	public abstract fun getBorderSubtle-0d7_KjU ()J
+	public abstract fun getContent-0d7_KjU ()J
+	public abstract fun getContentOnColor-0d7_KjU ()J
+	public abstract fun getOnBackground-0d7_KjU ()J
+}
+
+public abstract interface class com/teya/lemonade/LemonadeThemedColors$NeutralColors {
 	public abstract fun getBackground-0d7_KjU ()J
 	public abstract fun getBackgroundSubtle-0d7_KjU ()J
 	public abstract fun getBorder-0d7_KjU ()J
