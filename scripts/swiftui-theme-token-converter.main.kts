@@ -5,6 +5,9 @@
 import org.json.JSONObject
 import java.io.File
 
+/** Tokens under this group belong to the themed layer and are generated separately. */
+private val THEMED_GROUP = "Themed"
+
 fun main() {
     val colorTokensFile = tokenFile("theme-colors.light.tokens.json")
     val outputDir = File("swiftui/Sources/Lemonade")
@@ -31,7 +34,9 @@ fun main() {
         require(isDtcgDocument(lightJson)) { "${lightFile.path} is not a Figma native DTCG export" }
 
         val tokens = dtcgTokens(lightJson)
+        // The Theme export also carries the themed layer, generated separately.
         val tokenNames = tokens.keys
+            .filterNot { name -> name.startsWith("$THEMED_GROUP/") }
             .sortedWith(::canonicalTokenOrder)
             .filterNot { name ->
                 tokens.getValue(name).optJSONObject("\$extensions")
@@ -42,7 +47,7 @@ fun main() {
             files = themeFiles,
             modeName = lightMode,
             resourceMap = { _ -> Unit },
-        )
+        ).filterNot { it.groups.firstOrNull() == THEMED_GROUP }
 
         // Indexed once rather than scanned per token — first-wins, matching the
         // previous `find` semantics if two names ever sanitize to the same value.

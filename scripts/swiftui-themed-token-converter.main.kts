@@ -5,6 +5,9 @@
 import org.json.JSONObject
 import java.io.File
 
+/** The themed layer lives under this group inside the Theme collection. */
+private val THEMED_GROUP = "Themed"
+
 fun main() {
     val outputDir = File("swiftui/Sources/Lemonade")
 
@@ -13,9 +16,9 @@ fun main() {
             outputDir.mkdirs()
         }
 
-        val themedFiles = tokenFiles("themed-colors")
+        val themedFiles = tokenFiles("theme-colors")
         require(themedFiles.isNotEmpty()) {
-            "No tokens/themed-colors.*.tokens.json found - export the Themed Colors collection from Figma first"
+            "No tokens/theme-colors.*.tokens.json found - export the Theme collection from Figma first"
         }
         requireModes(themedFiles, "Light", "Dark")
         val lightMode = availableModeNames(themedFiles).first { it.equals("Light", ignoreCase = true) }
@@ -27,7 +30,9 @@ fun main() {
         require(isDtcgDocument(lightJson)) { "${lightFile.path} is not a Figma native DTCG export" }
 
         val tokens = dtcgTokens(lightJson)
+        // The Theme export carries both layers; keep only the themed subtree.
         val tokenNames = tokens.keys
+            .filter { name -> name.startsWith("$THEMED_GROUP/") }
             .sortedWith(::canonicalTokenOrder)
             .filterNot { name ->
                 tokens.getValue(name).optJSONObject("\$extensions")
@@ -38,7 +43,7 @@ fun main() {
             files = themedFiles,
             modeName = lightMode,
             resourceMap = { _ -> Unit },
-        )
+        ).filter { it.groups.firstOrNull() == THEMED_GROUP }
 
         // Keyed by the full group-qualified path, not the leaf name alone: the themed
         // collection is grouped by hue, so leaf names ("background", "border", ...)
@@ -52,7 +57,7 @@ fun main() {
             val path = (name.sanitizedGroups() + name.sanitizedSwiftValueName()).joinToString("/")
             val resource = resourcesByPath[path]
             if (resource != null) {
-                resourcesWithAssets.add(resource to lemonadeAssetName(name, prefix = "themed"))
+                resourcesWithAssets.add(resource to lemonadeAssetName(name))
             }
         }
 
@@ -80,7 +85,7 @@ private fun buildThemedProtocolCode(
     scriptFilePath: String,
     resources: List<ResourceData<Unit>>,
 ): String {
-    val grouped = resources.groupBy { it.groups.firstOrNull() }
+    val grouped = resources.groupBy { it.groups.getOrNull(1) }
     return buildString {
         appendLine("import SwiftUI")
         appendLine()
@@ -121,7 +126,7 @@ private fun buildAdaptiveThemedCode(
     scriptFilePath: String,
     resourcesWithAssets: List<Pair<ResourceData<Unit>, String>>,
 ): String {
-    val grouped = resourcesWithAssets.groupBy { it.first.groups.firstOrNull() }
+    val grouped = resourcesWithAssets.groupBy { it.first.groups.getOrNull(1) }
     return buildString {
         grouped.forEach { (groupName, groupResources) ->
             if (groupName != null) {

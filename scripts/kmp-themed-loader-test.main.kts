@@ -4,6 +4,8 @@
 
 import java.io.File
 
+private val THEMED_GROUP = "Themed"
+
 fun check(condition: Boolean, message: String) {
     if (!condition) error("FAIL: $message")
     println("  ok  $message")
@@ -31,42 +33,53 @@ fun main() {
         },
     ).filterNull()
 
-    check(resources.size == 5, "all five tokens load (expected 5, got ${resources.size})")
+    check(resources.size == 6, "all six fixture tokens load (expected 6, got ${resources.size})")
 
-    val byName = resources.associateBy { resource ->
-        (resource.groups + resource.name).joinToString("/")
-    }
+    // The Theme export carries both layers. Each converter filters to its own subtree,
+    // so the loader must expose the group path that makes that split possible.
+    val themed = resources.filter { it.groups.firstOrNull() == THEMED_GROUP }
+    val semantic = resources.filterNot { it.groups.firstOrNull() == THEMED_GROUP }
+    check(themed.size == 5, "the themed filter keeps only the Themed subtree (expected 5, got ${themed.size})")
+    check(semantic.size == 1, "the semantic filter keeps everything else (expected 1, got ${semantic.size})")
 
+    // A themed token's hue is the SECOND path segment, which is what the output groups by.
+    val hues = themed.mapNotNull { it.groups.getOrNull(1) }.distinct().sorted()
     check(
-        byName.keys.sorted() == listOf(
-            "Background/bgBlue",
-            "Background/bgBlueSubtle",
-            "Border/borderGreenLime",
-            "Content/contentOnAmber",
-            "Content/contentOnBlue",
+        hues == listOf("Amber", "Blue", "GreenLime"),
+        "hue is the second group and Pascal-cases hyphenated names: $hues",
+    )
+
+    val byPath = themed.associateBy { resource -> (resource.groups + resource.name).joinToString("/") }
+    check(
+        byPath.keys.sorted() == listOf(
+            "Themed/Amber/onBackground",
+            "Themed/Blue/background",
+            "Themed/Blue/backgroundSubtle",
+            "Themed/Blue/onBackground",
+            "Themed/GreenLime/border",
         ),
-        "token paths flatten to one group plus a camelCase leaf: ${byName.keys.sorted()}",
+        "token paths flatten to Themed/<Hue>/<camelCaseLeaf>: ${byPath.keys.sorted()}",
     )
 
     check(
-        byName.getValue("Background/bgBlue").value == "Solid.Blue.blue600",
-        "solid hue alias -> Solid.Blue.blue600 (got ${byName.getValue("Background/bgBlue").value})",
+        byPath.getValue("Themed/Blue/background").value == "Solid.Blue.blue600",
+        "solid hue alias -> Solid.Blue.blue600 (got ${byPath.getValue("Themed/Blue/background").value})",
     )
     check(
-        byName.getValue("Background/bgBlueSubtle").value == "Alpha.Blue.alpha100",
-        "alpha hue alias -> Alpha.Blue.alpha100 (got ${byName.getValue("Background/bgBlueSubtle").value})",
+        byPath.getValue("Themed/Blue/backgroundSubtle").value == "Alpha.Blue.alpha100",
+        "alpha hue alias -> Alpha.Blue.alpha100 (got ${byPath.getValue("Themed/Blue/backgroundSubtle").value})",
     )
     check(
-        byName.getValue("Border/borderGreenLime").value == "Solid.GreenLime.greenLime600",
-        "hyphenated hue alias -> Solid.GreenLime.greenLime600 (got ${byName.getValue("Border/borderGreenLime").value})",
+        byPath.getValue("Themed/GreenLime/border").value == "Solid.GreenLime.greenLime600",
+        "hyphenated hue alias -> Solid.GreenLime.greenLime600 (got ${byPath.getValue("Themed/GreenLime/border").value})",
     )
     check(
-        byName.getValue("Content/contentOnBlue").value == "Solid.White.white950",
-        "white label alias -> Solid.White.white950 (got ${byName.getValue("Content/contentOnBlue").value})",
+        byPath.getValue("Themed/Blue/onBackground").value == "Solid.White.white950",
+        "white label alias -> Solid.White.white950 (got ${byPath.getValue("Themed/Blue/onBackground").value})",
     )
     check(
-        byName.getValue("Content/contentOnAmber").value == "Alpha.Neutral.alpha900",
-        "ink label alias -> Alpha.Neutral.alpha900 (got ${byName.getValue("Content/contentOnAmber").value})",
+        byPath.getValue("Themed/Amber/onBackground").value == "Alpha.Neutral.alpha900",
+        "ink label alias -> Alpha.Neutral.alpha900 (got ${byPath.getValue("Themed/Amber/onBackground").value})",
     )
 
     check(dtcgModeName(org.json.JSONObject(fixture.readText())) == "Light", "mode name reads as Light")

@@ -4,6 +4,9 @@
 
 import java.io.File
 
+/** Tokens under this group belong to the themed layer and are generated separately. */
+private val THEMED_GROUP = "Themed"
+
 data class ThemeResourceData(
     val valueGroup: String,
     val valueName: String,
@@ -56,7 +59,7 @@ fun main() {
                         null
                     }
                 },
-            ).filterNull()
+            ).filterNull().filterNot { it.groups.firstOrNull() == THEMED_GROUP }
 
             println("✓ Loaded $modeName theme resource")
 
@@ -91,7 +94,7 @@ fun main() {
                     null
                 }
             },
-        ).filterNull()
+        ).filterNull().filterNot { it.groups.firstOrNull() == THEMED_GROUP }
 
         val interfaceCode = buildThemeInterfaceCode(
             scriptFilePath = "scripts/kmp-theme-token-converter.main.kts",

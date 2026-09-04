@@ -41,7 +41,10 @@ exports variables *local to the file you run it in*, so run it **twice**:
    into. Skip this and the theme converters will emit references to primitive
    properties that do not exist, which fails at compile time.
 
-`Themed Colors` is a local collection in the design-system file, so it comes out of that same export — there is no third export to run.
+The themed colour layer lives inside the **Theme** collection under a `Themed/` group, not in a
+collection of its own — one collection carries the Light/Dark modes for the whole file. So the
+themed tokens arrive in the same two `Theme` files, and the converters split them: the theme
+converters skip everything under `Themed/`, and the themed converters keep only it.
 
 ## Naming the files — read this before copying
 
@@ -62,11 +65,9 @@ identifying them**. Rename as you copy:
 | `Typography/Default.tokens.json` | `typography.tokens.json` |
 | `Theme/Light.tokens.json` | `theme-colors.light.tokens.json` |
 | `Theme/Dark.tokens.json` | `theme-colors.dark.tokens.json` |
-| `Themed Colors/Light.tokens.json` | `themed-colors.light.tokens.json` |
-| `Themed Colors/Dark.tokens.json` | `themed-colors.dark.tokens.json` |
 | `Colors/Default.tokens.json` (library file) | `primitive-colors.tokens.json` |
 
-`tokens/` must end up holding exactly those twelve names and nothing else.
+`tokens/` must end up holding exactly those ten names and nothing else.
 
 Two mistakes to watch for, because neither announces itself:
 
@@ -131,8 +132,7 @@ version of the two that bite:
 | `tokens/` file                                                   | KMP                               | SwiftUI                                             |
 |-------------------------------------------------------------------|----------------------------------|-----------------------------------------------------|
 | `primitive-colors.tokens.json`                                     | `kmp-color`                      | `swiftui-color`                                     |
-| `theme-colors.light.tokens.json` / `theme-colors.dark.tokens.json` | `kmp-theme`                      | `swiftui-theme` + `swiftui-color-assets-generator`  |
-| `themed-colors.light.tokens.json` / `themed-colors.dark.tokens.json` | `kmp-themed`                     | `swiftui-themed` + `swiftui-themed-assets-generator` |
+| `theme-colors.light.tokens.json` / `theme-colors.dark.tokens.json` | `kmp-theme` + `kmp-themed`       | `swiftui-theme` + `swiftui-color-assets-generator` + `swiftui-themed` + `swiftui-themed-assets-generator` |
 | `radius.tokens.json`                                               | `kmp-radius`                     | `swiftui-radius`                                    |
 | `spacing.tokens.json`                                              | `kmp-spacing`                    | `swiftui-spacing`                                   |
 | `size.tokens.json`                                                 | `kmp-dimension`                  | `swiftui-size`                                      |

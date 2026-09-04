@@ -5,6 +5,13 @@
 import org.json.JSONObject
 import java.io.File
 
+/**
+ * The themed layer lives under this group inside the Theme collection, so the file
+ * holds both layers: the semantic converters skip this subtree and these keep only it.
+ * The hue is therefore the SECOND path segment, which is what the output groups by.
+ */
+private val THEMED_GROUP = "Themed"
+
 data class ThemedResourceData(
     val valueGroup: String,
     val valueName: String,
@@ -32,9 +39,9 @@ fun main() {
         if (!themedOutputDir.exists()) themedOutputDir.mkdirs()
         if (!interfaceOutputDir.exists()) interfaceOutputDir.mkdirs()
 
-        val themedFiles = tokenFiles("themed-colors")
+        val themedFiles = tokenFiles("theme-colors")
         require(themedFiles.isNotEmpty()) {
-            "No tokens/themed-colors.*.tokens.json found — export the Themed Colors collection from Figma first"
+            "No tokens/theme-colors.*.tokens.json found — export the Theme collection from Figma first"
         }
         requireModes(themedFiles, "Light", "Dark")
         val modeNames = availableModeNames(themedFiles)
@@ -50,7 +57,7 @@ fun main() {
                 files = themedFiles,
                 modeName = modeName,
                 resourceMap = ::primitiveReference,
-            ).filterNull()
+            ).filterNull().filter { it.groups.firstOrNull() == THEMED_GROUP }
 
             println("✓ Loaded $modeName themed resources")
 
@@ -68,7 +75,7 @@ fun main() {
             files = themedFiles,
             modeName = modeNames.first { it.equals("Light", ignoreCase = true) },
             resourceMap = ::primitiveReference,
-        ).filterNull()
+        ).filterNull().filter { it.groups.firstOrNull() == THEMED_GROUP }
 
         val interfaceCode = buildThemedInterfaceCode(
             scriptFilePath = "scripts/kmp-themed-token-converter.main.kts",
@@ -87,7 +94,7 @@ private fun buildThemedInterfaceCode(
     scriptFilePath: String,
     resources: List<ResourceData<ThemedResourceData>>,
 ): String {
-    val grouped = resources.groupBy { it.groups.firstOrNull() }
+    val grouped = resources.groupBy { it.groups.getOrNull(1) }
     return buildString {
         appendLine("package com.teya.lemonade")
         appendLine()
@@ -129,7 +136,7 @@ private fun buildThemedObjectCode(
     resources: List<ResourceData<ThemedResourceData>>,
     modeName: String,
 ): String {
-    val grouped = resources.groupBy { it.groups.firstOrNull() }
+    val grouped = resources.groupBy { it.groups.getOrNull(1) }
     return buildString {
         appendLine("package com.teya.lemonade")
         appendLine()

@@ -4,6 +4,9 @@
 
 import java.io.File
 
+/** The themed layer lives under this group inside the Theme collection. */
+private val THEMED_GROUP = "Themed"
+
 fun main() {
     val assetsDir = File("swiftui/Sources/Lemonade/Resources/Assets.xcassets/Colors")
 
@@ -12,16 +15,27 @@ fun main() {
             "$assetsDir does not exist - run swiftui-color-assets-generator.main.kts first"
         }
 
-        val themedFiles = tokenFiles("themed-colors")
+        val themedFiles = tokenFiles("theme-colors")
         require(themedFiles.isNotEmpty()) {
-            "No tokens/themed-colors.*.tokens.json found - export the Themed Colors collection from Figma first"
+            "No tokens/theme-colors.*.tokens.json found - export the Theme collection from Figma first"
         }
         requireModes(themedFiles, "Light", "Dark")
         val modeNames = availableModeNames(themedFiles)
 
-        val lightColors = parseThemeColors(themedFiles, modeNames.first { it.equals("Light", ignoreCase = true) })
+        // The Theme export carries both layers. Keep only the themed subtree — the
+        // semantic colorsets belong to swiftui-color-assets-generator, and emitting
+        // them here would have two generators writing the same folders.
+        val themedOnly = { colors: Map<String, ColorValue> ->
+            colors.filterKeys { key -> key.startsWith("$THEMED_GROUP/") }
+        }
+
+        val lightColors = themedOnly(
+            parseThemeColors(themedFiles, modeNames.first { it.equals("Light", ignoreCase = true) })
+        )
         println("✓ Loaded ${lightColors.size} themed colors from light mode")
-        val darkColors = parseThemeColors(themedFiles, modeNames.first { it.equals("Dark", ignoreCase = true) })
+        val darkColors = themedOnly(
+            parseThemeColors(themedFiles, modeNames.first { it.equals("Dark", ignoreCase = true) })
+        )
         println("✓ Loaded ${darkColors.size} themed colors from dark mode")
 
         val colorResources = lightColors.map { (key, lightColor) ->
@@ -29,7 +43,7 @@ fun main() {
             ColorResource(
                 group = parts.getOrNull(0)?.sanitizeGroup() ?: "Other",
                 name = parts.last().sanitizeSwiftName(),
-                assetName = lemonadeAssetName(key, prefix = "themed"),
+                assetName = lemonadeAssetName(key),
                 lightColor = lightColor,
                 darkColor = darkColors[key],
             )

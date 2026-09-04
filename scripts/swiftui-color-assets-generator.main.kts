@@ -17,6 +17,9 @@ import java.io.File
  * Usage: kotlin scripts/swiftui-color-assets-generator.main.kts
  */
 
+/** Tokens under this group belong to the themed layer and are generated separately. */
+private val THEMED_GROUP = "Themed"
+
 fun main() {
     val themeFile = tokenFile("theme-colors.light.tokens.json")
 
@@ -47,9 +50,16 @@ fun main() {
         val themeFiles = tokenFiles("theme-colors")
         requireModes(themeFiles, "Light", "Dark")
         val modeNames = availableModeNames(themeFiles)
-        val lightColors = parseThemeColors(themeFiles, modeNames.first { it.equals("Light", ignoreCase = true) })
+        // The Theme export also carries the themed layer, whose colorsets and Swift are
+        // written by swiftui-themed-assets-generator / swiftui-themed-token-converter.
+        // Excluding it here keeps the themed hues out of the semantic shorthand namespaces.
+        val semanticOnly = { colors: Map<String, ColorValue> ->
+            colors.filterKeys { key -> !key.startsWith("$THEMED_GROUP/") }
+        }
+
+        val lightColors = semanticOnly(parseThemeColors(themeFiles, modeNames.first { it.equals("Light", ignoreCase = true) }))
         println("✓ Loaded ${lightColors.size} colors from light theme")
-        val darkColors = parseThemeColors(themeFiles, modeNames.first { it.equals("Dark", ignoreCase = true) })
+        val darkColors = semanticOnly(parseThemeColors(themeFiles, modeNames.first { it.equals("Dark", ignoreCase = true) }))
         println("✓ Loaded ${darkColors.size} colors from dark theme")
 
         // Create color resources with both light and dark values
