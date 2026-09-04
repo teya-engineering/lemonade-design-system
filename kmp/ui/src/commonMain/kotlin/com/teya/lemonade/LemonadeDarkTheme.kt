@@ -89,7 +89,7 @@ public object LemonadeDarkTheme : LemonadeSemanticColors {
             override val borderNeutralHigh = LemonadePrimitiveColors.Solid.White.white300
             override val borderNeutralLow = LemonadePrimitiveColors.Solid.White.white100
             override val borderNeutralMedium = LemonadePrimitiveColors.Solid.White.white200
-            override val borderSelected = LemonadePrimitiveColors.Solid.YellowLime.yellowLime500
+            override val borderSelected = LemonadePrimitiveColors.Solid.White.white900
         }
     override val content: LemonadeSemanticColors.ContentColors =
         object : LemonadeSemanticColors.ContentColors {
