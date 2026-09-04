@@ -64,15 +64,16 @@ class ThemedColorsTest {
     @Test
     fun aThemedColourSuppliesEverySlotThroughTheSharedType() {
         // A component can take a ThemedColor and style itself entirely from it.
-        fun style(colour: ThemedColor) = listOf(
-            colour.background,
-            colour.backgroundSubtle,
-            colour.border,
-            colour.borderSubtle,
-            colour.content,
-            colour.contentOnColor,
-            colour.onBackground,
-        )
+        fun style(colour: ThemedColor) =
+            listOf(
+                colour.background,
+                colour.backgroundSubtle,
+                colour.border,
+                colour.borderSubtle,
+                colour.content,
+                colour.contentOnColor,
+                colour.onBackground,
+            )
 
         assertEquals(7, style(LemonadeLightThemedColors.violet).size)
         assertEquals(7, style(LemonadeDarkThemedColors.greenLime).size)
