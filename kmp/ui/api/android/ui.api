@@ -268,6 +268,28 @@ public final class com/teya/lemonade/LemonadeDarkTheme : com/teya/lemonade/Lemon
 	public fun isDark ()Z
 }
 
+public final class com/teya/lemonade/LemonadeDarkThemedColors : com/teya/lemonade/LemonadeThemedColors {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/teya/lemonade/LemonadeDarkThemedColors;
+	public fun getAmber ()Lcom/teya/lemonade/LemonadeThemedColors$AmberColors;
+	public fun getBlue ()Lcom/teya/lemonade/LemonadeThemedColors$BlueColors;
+	public fun getCyan ()Lcom/teya/lemonade/LemonadeThemedColors$CyanColors;
+	public fun getFuchsia ()Lcom/teya/lemonade/LemonadeThemedColors$FuchsiaColors;
+	public fun getGreen ()Lcom/teya/lemonade/LemonadeThemedColors$GreenColors;
+	public fun getGreenLime ()Lcom/teya/lemonade/LemonadeThemedColors$GreenLimeColors;
+	public fun getIndigo ()Lcom/teya/lemonade/LemonadeThemedColors$IndigoColors;
+	public fun getNeutral ()Lcom/teya/lemonade/LemonadeThemedColors$NeutralColors;
+	public fun getOrange ()Lcom/teya/lemonade/LemonadeThemedColors$OrangeColors;
+	public fun getPink ()Lcom/teya/lemonade/LemonadeThemedColors$PinkColors;
+	public fun getPurple ()Lcom/teya/lemonade/LemonadeThemedColors$PurpleColors;
+	public fun getRed ()Lcom/teya/lemonade/LemonadeThemedColors$RedColors;
+	public fun getRose ()Lcom/teya/lemonade/LemonadeThemedColors$RoseColors;
+	public fun getTeal ()Lcom/teya/lemonade/LemonadeThemedColors$TealColors;
+	public fun getViolet ()Lcom/teya/lemonade/LemonadeThemedColors$VioletColors;
+	public fun getYellow ()Lcom/teya/lemonade/LemonadeThemedColors$YellowColors;
+	public fun getYellowLime ()Lcom/teya/lemonade/LemonadeThemedColors$YellowLimeColors;
+}
+
 public abstract interface class com/teya/lemonade/LemonadeFontSizeValues {
 	public abstract fun getFontSize1000-XSAIIZE ()J
 	public abstract fun getFontSize1200-XSAIIZE ()J
@@ -315,6 +337,28 @@ public final class com/teya/lemonade/LemonadeLightTheme : com/teya/lemonade/Lemo
 	public fun getScoped ()Lcom/teya/lemonade/LemonadeSemanticColors$ScopedColors;
 	public fun getShadow ()Lcom/teya/lemonade/LemonadeSemanticColors$ShadowColors;
 	public fun isDark ()Z
+}
+
+public final class com/teya/lemonade/LemonadeLightThemedColors : com/teya/lemonade/LemonadeThemedColors {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/teya/lemonade/LemonadeLightThemedColors;
+	public fun getAmber ()Lcom/teya/lemonade/LemonadeThemedColors$AmberColors;
+	public fun getBlue ()Lcom/teya/lemonade/LemonadeThemedColors$BlueColors;
+	public fun getCyan ()Lcom/teya/lemonade/LemonadeThemedColors$CyanColors;
+	public fun getFuchsia ()Lcom/teya/lemonade/LemonadeThemedColors$FuchsiaColors;
+	public fun getGreen ()Lcom/teya/lemonade/LemonadeThemedColors$GreenColors;
+	public fun getGreenLime ()Lcom/teya/lemonade/LemonadeThemedColors$GreenLimeColors;
+	public fun getIndigo ()Lcom/teya/lemonade/LemonadeThemedColors$IndigoColors;
+	public fun getNeutral ()Lcom/teya/lemonade/LemonadeThemedColors$NeutralColors;
+	public fun getOrange ()Lcom/teya/lemonade/LemonadeThemedColors$OrangeColors;
+	public fun getPink ()Lcom/teya/lemonade/LemonadeThemedColors$PinkColors;
+	public fun getPurple ()Lcom/teya/lemonade/LemonadeThemedColors$PurpleColors;
+	public fun getRed ()Lcom/teya/lemonade/LemonadeThemedColors$RedColors;
+	public fun getRose ()Lcom/teya/lemonade/LemonadeThemedColors$RoseColors;
+	public fun getTeal ()Lcom/teya/lemonade/LemonadeThemedColors$TealColors;
+	public fun getViolet ()Lcom/teya/lemonade/LemonadeThemedColors$VioletColors;
+	public fun getYellow ()Lcom/teya/lemonade/LemonadeThemedColors$YellowColors;
+	public fun getYellowLime ()Lcom/teya/lemonade/LemonadeThemedColors$YellowLimeColors;
 }
 
 public abstract interface class com/teya/lemonade/LemonadeLineHeightValues {
@@ -404,6 +448,7 @@ public final class com/teya/lemonade/LemonadeTheme {
 	public final fun getShapes (Landroidx/compose/runtime/Composer;I)Lcom/teya/lemonade/LemonadeShapes;
 	public final fun getSizes (Landroidx/compose/runtime/Composer;I)Lcom/teya/lemonade/LemonadeSizeValues;
 	public final fun getSpaces (Landroidx/compose/runtime/Composer;I)Lcom/teya/lemonade/LemonadeSpaceValues;
+	public final fun getThemed (Landroidx/compose/runtime/Composer;I)Lcom/teya/lemonade/LemonadeThemedColors;
 	public final fun getTypography (Landroidx/compose/runtime/Composer;I)Lcom/teya/lemonade/LemonadeTypographyProvider;
 }
 

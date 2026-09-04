@@ -577,6 +577,94 @@ abstract interface com.teya.lemonade/LemonadeSpaceValues { // com.teya.lemonade/
         abstract fun <get-spacing800>(): androidx.compose.ui.unit/Dp // com.teya.lemonade/LemonadeSpaceValues.spacing800.<get-spacing800>|<get-spacing800>(){}[0]
 }
 
+abstract interface com.teya.lemonade/LemonadeThemedColors { // com.teya.lemonade/LemonadeThemedColors|null[0]
+    abstract val amber // com.teya.lemonade/LemonadeThemedColors.amber|{}amber[0]
+        abstract fun <get-amber>(): com.teya.lemonade/LemonadeThemedColors.AmberColors // com.teya.lemonade/LemonadeThemedColors.amber.<get-amber>|<get-amber>(){}[0]
+    abstract val blue // com.teya.lemonade/LemonadeThemedColors.blue|{}blue[0]
+        abstract fun <get-blue>(): com.teya.lemonade/LemonadeThemedColors.BlueColors // com.teya.lemonade/LemonadeThemedColors.blue.<get-blue>|<get-blue>(){}[0]
+    abstract val cyan // com.teya.lemonade/LemonadeThemedColors.cyan|{}cyan[0]
+        abstract fun <get-cyan>(): com.teya.lemonade/LemonadeThemedColors.CyanColors // com.teya.lemonade/LemonadeThemedColors.cyan.<get-cyan>|<get-cyan>(){}[0]
+    abstract val fuchsia // com.teya.lemonade/LemonadeThemedColors.fuchsia|{}fuchsia[0]
+        abstract fun <get-fuchsia>(): com.teya.lemonade/LemonadeThemedColors.FuchsiaColors // com.teya.lemonade/LemonadeThemedColors.fuchsia.<get-fuchsia>|<get-fuchsia>(){}[0]
+    abstract val green // com.teya.lemonade/LemonadeThemedColors.green|{}green[0]
+        abstract fun <get-green>(): com.teya.lemonade/LemonadeThemedColors.GreenColors // com.teya.lemonade/LemonadeThemedColors.green.<get-green>|<get-green>(){}[0]
+    abstract val greenLime // com.teya.lemonade/LemonadeThemedColors.greenLime|{}greenLime[0]
+        abstract fun <get-greenLime>(): com.teya.lemonade/LemonadeThemedColors.GreenLimeColors // com.teya.lemonade/LemonadeThemedColors.greenLime.<get-greenLime>|<get-greenLime>(){}[0]
+    abstract val indigo // com.teya.lemonade/LemonadeThemedColors.indigo|{}indigo[0]
+        abstract fun <get-indigo>(): com.teya.lemonade/LemonadeThemedColors.IndigoColors // com.teya.lemonade/LemonadeThemedColors.indigo.<get-indigo>|<get-indigo>(){}[0]
+    abstract val neutral // com.teya.lemonade/LemonadeThemedColors.neutral|{}neutral[0]
+        abstract fun <get-neutral>(): com.teya.lemonade/LemonadeThemedColors.NeutralColors // com.teya.lemonade/LemonadeThemedColors.neutral.<get-neutral>|<get-neutral>(){}[0]
+    abstract val orange // com.teya.lemonade/LemonadeThemedColors.orange|{}orange[0]
+        abstract fun <get-orange>(): com.teya.lemonade/LemonadeThemedColors.OrangeColors // com.teya.lemonade/LemonadeThemedColors.orange.<get-orange>|<get-orange>(){}[0]
+    abstract val pink // com.teya.lemonade/LemonadeThemedColors.pink|{}pink[0]
+        abstract fun <get-pink>(): com.teya.lemonade/LemonadeThemedColors.PinkColors // com.teya.lemonade/LemonadeThemedColors.pink.<get-pink>|<get-pink>(){}[0]
+    abstract val purple // com.teya.lemonade/LemonadeThemedColors.purple|{}purple[0]
+        abstract fun <get-purple>(): com.teya.lemonade/LemonadeThemedColors.PurpleColors // com.teya.lemonade/LemonadeThemedColors.purple.<get-purple>|<get-purple>(){}[0]
+    abstract val red // com.teya.lemonade/LemonadeThemedColors.red|{}red[0]
+        abstract fun <get-red>(): com.teya.lemonade/LemonadeThemedColors.RedColors // com.teya.lemonade/LemonadeThemedColors.red.<get-red>|<get-red>(){}[0]
+    abstract val rose // com.teya.lemonade/LemonadeThemedColors.rose|{}rose[0]
+        abstract fun <get-rose>(): com.teya.lemonade/LemonadeThemedColors.RoseColors // com.teya.lemonade/LemonadeThemedColors.rose.<get-rose>|<get-rose>(){}[0]
+    abstract val teal // com.teya.lemonade/LemonadeThemedColors.teal|{}teal[0]
+        abstract fun <get-teal>(): com.teya.lemonade/LemonadeThemedColors.TealColors // com.teya.lemonade/LemonadeThemedColors.teal.<get-teal>|<get-teal>(){}[0]
+    abstract val violet // com.teya.lemonade/LemonadeThemedColors.violet|{}violet[0]
+        abstract fun <get-violet>(): com.teya.lemonade/LemonadeThemedColors.VioletColors // com.teya.lemonade/LemonadeThemedColors.violet.<get-violet>|<get-violet>(){}[0]
+    abstract val yellow // com.teya.lemonade/LemonadeThemedColors.yellow|{}yellow[0]
+        abstract fun <get-yellow>(): com.teya.lemonade/LemonadeThemedColors.YellowColors // com.teya.lemonade/LemonadeThemedColors.yellow.<get-yellow>|<get-yellow>(){}[0]
+    abstract val yellowLime // com.teya.lemonade/LemonadeThemedColors.yellowLime|{}yellowLime[0]
+        abstract fun <get-yellowLime>(): com.teya.lemonade/LemonadeThemedColors.YellowLimeColors // com.teya.lemonade/LemonadeThemedColors.yellowLime.<get-yellowLime>|<get-yellowLime>(){}[0]
+
+    abstract interface AmberColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.AmberColors|null[0]
+
+    abstract interface BlueColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.BlueColors|null[0]
+
+    abstract interface CyanColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.CyanColors|null[0]
+
+    abstract interface FuchsiaColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.FuchsiaColors|null[0]
+
+    abstract interface GreenColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.GreenColors|null[0]
+
+    abstract interface GreenLimeColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.GreenLimeColors|null[0]
+
+    abstract interface IndigoColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.IndigoColors|null[0]
+
+    abstract interface NeutralColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.NeutralColors|null[0]
+
+    abstract interface OrangeColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.OrangeColors|null[0]
+
+    abstract interface PinkColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.PinkColors|null[0]
+
+    abstract interface PurpleColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.PurpleColors|null[0]
+
+    abstract interface RedColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.RedColors|null[0]
+
+    abstract interface RoseColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.RoseColors|null[0]
+
+    abstract interface TealColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.TealColors|null[0]
+
+    abstract interface VioletColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.VioletColors|null[0]
+
+    abstract interface YellowColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.YellowColors|null[0]
+
+    abstract interface YellowLimeColors : com.teya.lemonade/ThemedColor // com.teya.lemonade/LemonadeThemedColors.YellowLimeColors|null[0]
+}
+
+abstract interface com.teya.lemonade/ThemedColor { // com.teya.lemonade/ThemedColor|null[0]
+    abstract val background // com.teya.lemonade/ThemedColor.background|{}background[0]
+        abstract fun <get-background>(): androidx.compose.ui.graphics/Color // com.teya.lemonade/ThemedColor.background.<get-background>|<get-background>(){}[0]
+    abstract val backgroundSubtle // com.teya.lemonade/ThemedColor.backgroundSubtle|{}backgroundSubtle[0]
+        abstract fun <get-backgroundSubtle>(): androidx.compose.ui.graphics/Color // com.teya.lemonade/ThemedColor.backgroundSubtle.<get-backgroundSubtle>|<get-backgroundSubtle>(){}[0]
+    abstract val border // com.teya.lemonade/ThemedColor.border|{}border[0]
+        abstract fun <get-border>(): androidx.compose.ui.graphics/Color // com.teya.lemonade/ThemedColor.border.<get-border>|<get-border>(){}[0]
+    abstract val borderSubtle // com.teya.lemonade/ThemedColor.borderSubtle|{}borderSubtle[0]
+        abstract fun <get-borderSubtle>(): androidx.compose.ui.graphics/Color // com.teya.lemonade/ThemedColor.borderSubtle.<get-borderSubtle>|<get-borderSubtle>(){}[0]
+    abstract val content // com.teya.lemonade/ThemedColor.content|{}content[0]
+        abstract fun <get-content>(): androidx.compose.ui.graphics/Color // com.teya.lemonade/ThemedColor.content.<get-content>|<get-content>(){}[0]
+    abstract val contentOnColor // com.teya.lemonade/ThemedColor.contentOnColor|{}contentOnColor[0]
+        abstract fun <get-contentOnColor>(): androidx.compose.ui.graphics/Color // com.teya.lemonade/ThemedColor.contentOnColor.<get-contentOnColor>|<get-contentOnColor>(){}[0]
+    abstract val onBackground // com.teya.lemonade/ThemedColor.onBackground|{}onBackground[0]
+        abstract fun <get-onBackground>(): androidx.compose.ui.graphics/Color // com.teya.lemonade/ThemedColor.onBackground.<get-onBackground>|<get-onBackground>(){}[0]
+}
+
 open class com.teya.lemonade/LemonadeTypographyProvider { // com.teya.lemonade/LemonadeTypographyProvider|null[0]
     constructor <init>() // com.teya.lemonade/LemonadeTypographyProvider.<init>|<init>(){}[0]
 
@@ -1712,6 +1800,8 @@ final val com.teya.lemonade/LocalSpaces // com.teya.lemonade/LocalSpaces|{}Local
     final fun <get-LocalSpaces>(): androidx.compose.runtime/ProvidableCompositionLocal<com.teya.lemonade/LemonadeSpaceValues> // com.teya.lemonade/LocalSpaces.<get-LocalSpaces>|<get-LocalSpaces>(){}[0]
 final val com.teya.lemonade/LocalTextStyles // com.teya.lemonade/LocalTextStyles|{}LocalTextStyles[0]
     final fun <get-LocalTextStyles>(): androidx.compose.runtime/ProvidableCompositionLocal<com.teya.lemonade.core/LemonadeTextStyle> // com.teya.lemonade/LocalTextStyles.<get-LocalTextStyles>|<get-LocalTextStyles>(){}[0]
+final val com.teya.lemonade/LocalThemedColors // com.teya.lemonade/LocalThemedColors|{}LocalThemedColors[0]
+    final fun <get-LocalThemedColors>(): androidx.compose.runtime/ProvidableCompositionLocal<com.teya.lemonade/LemonadeThemedColors> // com.teya.lemonade/LocalThemedColors.<get-LocalThemedColors>|<get-LocalThemedColors>(){}[0]
 final val com.teya.lemonade/LocalTypographies // com.teya.lemonade/LocalTypographies|{}LocalTypographies[0]
     final fun <get-LocalTypographies>(): androidx.compose.runtime/ProvidableCompositionLocal<com.teya.lemonade/LemonadeTypographyProvider> // com.teya.lemonade/LocalTypographies.<get-LocalTypographies>|<get-LocalTypographies>(){}[0]
 final val com.teya.lemonade/com_teya_lemonade_LemonadePrimitiveColors$stableprop // com.teya.lemonade/com_teya_lemonade_LemonadePrimitiveColors$stableprop|#static{}com_teya_lemonade_LemonadePrimitiveColors$stableprop[0]

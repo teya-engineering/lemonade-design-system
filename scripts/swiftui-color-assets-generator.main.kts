@@ -6,8 +6,6 @@
 
 import org.json.JSONObject
 import java.io.File
-import java.util.Locale
-import kotlin.math.roundToInt
 
 /**
  * Script to generate SwiftUI Color Assets from theme tokens.
@@ -19,20 +17,8 @@ import kotlin.math.roundToInt
  * Usage: kotlin scripts/swiftui-color-assets-generator.main.kts
  */
 
-data class ColorValue(
-    val r: Double,
-    val g: Double,
-    val b: Double,
-    val a: Double,
-)
-
-data class ColorResource(
-    val group: String,      // e.g., "Content", "Background", "Border", "Interaction"
-    val name: String,       // e.g., "contentPrimary", "bgDefault"
-    val assetName: String,  // e.g., "lemonade-content-primary"
-    val lightColor: ColorValue,
-    val darkColor: ColorValue?, // null if dark theme not available yet
-)
+/** Tokens under this group belong to the themed layer and are generated separately. */
+private val THEMED_GROUP = "Themed"
 
 fun main() {
     val themeFile = tokenFile("theme-colors.light.tokens.json")
@@ -64,9 +50,16 @@ fun main() {
         val themeFiles = tokenFiles("theme-colors")
         requireModes(themeFiles, "Light", "Dark")
         val modeNames = availableModeNames(themeFiles)
-        val lightColors = parseThemeColors(themeFiles, modeNames.first { it.equals("Light", ignoreCase = true) })
+        // The Theme export also carries the themed layer, whose colorsets and Swift are
+        // written by swiftui-themed-assets-generator / swiftui-themed-token-converter.
+        // Excluding it here keeps the themed hues out of the semantic shorthand namespaces.
+        val semanticOnly = { colors: Map<String, ColorValue> ->
+            colors.filterKeys { key -> !key.startsWith("$THEMED_GROUP/") }
+        }
+
+        val lightColors = semanticOnly(parseThemeColors(themeFiles, modeNames.first { it.equals("Light", ignoreCase = true) }))
         println("✓ Loaded ${lightColors.size} colors from light theme")
-        val darkColors = parseThemeColors(themeFiles, modeNames.first { it.equals("Dark", ignoreCase = true) })
+        val darkColors = semanticOnly(parseThemeColors(themeFiles, modeNames.first { it.equals("Dark", ignoreCase = true) }))
         println("✓ Loaded ${darkColors.size} colors from dark theme")
 
         // Create color resources with both light and dark values
@@ -74,7 +67,7 @@ fun main() {
             val parts = key.split("/")
             val group = parts.getOrNull(0)?.sanitizeGroup() ?: "Other"
             val name = parts.last().sanitizeSwiftName()
-            val assetName = "lemonade-${parts.joinToString("-") { it.lowercase().replace("_", "-") }}"
+            val assetName = lemonadeAssetName(key)
 
             ColorResource(
                 group = group,
@@ -104,74 +97,6 @@ fun main() {
         error.printStackTrace()
         throw error
     }
-}
-
-fun parseThemeColors(files: List<File>, modeName: String): Map<String, ColorValue> {
-    val colors = linkedMapOf<String, ColorValue>()
-    readFileResourceFileByModeRaw(files, modeName) { name, resolved ->
-        colors[name] = ColorValue(
-            r = resolved.getDouble("r"),
-            g = resolved.getDouble("g"),
-            b = resolved.getDouble("b"),
-            a = resolved.optDouble("a", 1.0),
-        )
-    }
-    return colors
-}
-
-fun generateColorAsset(assetsDir: File, resource: ColorResource) {
-    val colorsetDir = File(assetsDir, "${resource.assetName}.colorset")
-    colorsetDir.mkdirs()
-
-    val light = resource.lightColor
-    val dark = resource.darkColor ?: resource.lightColor // Fallback to light if no dark
-
-    val contentsJson = """
-{
-  "colors" : [
-    {
-      "color" : {
-        "color-space" : "srgb",
-        "components" : {
-          "alpha" : "${formatColorComponent(light.a)}",
-          "blue" : "${formatColorComponent(light.b)}",
-          "green" : "${formatColorComponent(light.g)}",
-          "red" : "${formatColorComponent(light.r)}"
-        }
-      },
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "color" : {
-        "color-space" : "srgb",
-        "components" : {
-          "alpha" : "${formatColorComponent(dark.a)}",
-          "blue" : "${formatColorComponent(dark.b)}",
-          "green" : "${formatColorComponent(dark.g)}",
-          "red" : "${formatColorComponent(dark.r)}"
-        }
-      },
-      "idiom" : "universal"
-    }
-  ],
-  "info" : {
-    "author" : "xcode",
-    "version" : 1
-  }
-}
-""".trimIndent()
-
-    File(colorsetDir, "Contents.json").writeText(contentsJson)
-}
-
-fun formatColorComponent(value: Double): String {
-    return "%.3f".format(Locale.US, value)
 }
 
 fun generateColorShorthand(resources: List<ColorResource>): String {
@@ -253,22 +178,6 @@ fun generateColorShorthand(resources: List<ColorResource>): String {
 
         appendLine("}")
     }
-}
-
-fun String.sanitizeGroup(): String {
-    return split("/").firstOrNull()
-        ?.split("-")
-        ?.joinToString("") { it.replaceFirstChar { c -> c.uppercase() } }
-        ?: "Other"
-}
-
-fun String.sanitizeSwiftName(): String {
-    return split("-")
-        .mapIndexed { index, word ->
-            if (index == 0) word.lowercase()
-            else word.replaceFirstChar { it.uppercase() }
-        }
-        .joinToString("")
 }
 
 main()
