@@ -205,6 +205,7 @@ public struct LemonadeButtonColors {
 private struct LemonadeButtonContentData {
     let verticalPadding: CGFloat
     let horizontalPadding: CGFloat
+    let labelPadding: CGFloat
     let requiredHeight: CGFloat
     let minWidth: CGFloat
     let cornerRadius: CGFloat
@@ -220,6 +221,7 @@ private extension LemonadeButtonSize {
             return LemonadeButtonContentData(
                 verticalPadding: LemonadeTheme.spaces.spacing100,
                 horizontalPadding: LemonadeTheme.spaces.spacing200,
+                labelPadding: LemonadeTheme.spaces.spacing100,
                 requiredHeight: LemonadeTheme.sizes.size800,
                 minWidth: LemonadeTheme.sizes.size1600,
                 cornerRadius: LemonadeTheme.radius.radius250,
@@ -229,6 +231,7 @@ private extension LemonadeButtonSize {
             return LemonadeButtonContentData(
                 verticalPadding: LemonadeTheme.spaces.spacing200,
                 horizontalPadding: LemonadeTheme.spaces.spacing300,
+                labelPadding: LemonadeTheme.spaces.spacing200,
                 requiredHeight: LemonadeTheme.sizes.size1000,
                 minWidth: LemonadeTheme.sizes.size1600,
                 cornerRadius: LemonadeTheme.radius.radius300,
@@ -238,6 +241,7 @@ private extension LemonadeButtonSize {
             return LemonadeButtonContentData(
                 verticalPadding: LemonadeTheme.spaces.spacing300,
                 horizontalPadding: LemonadeTheme.spaces.spacing400,
+                labelPadding: LemonadeTheme.spaces.spacing200,
                 requiredHeight: LemonadeTheme.sizes.size1200,
                 minWidth: LemonadeTheme.sizes.size1600,
                 cornerRadius: LemonadeTheme.radius.radius350,
@@ -247,6 +251,7 @@ private extension LemonadeButtonSize {
             return LemonadeButtonContentData(
                 verticalPadding: LemonadeTheme.spaces.spacing300,
                 horizontalPadding: LemonadeTheme.spaces.spacing400,
+                labelPadding: LemonadeTheme.spaces.spacing200,
                 requiredHeight: LemonadeTheme.sizes.size1400,
                 minWidth: LemonadeTheme.sizes.size1600,
                 cornerRadius: LemonadeTheme.radius.radius400,
@@ -503,7 +508,7 @@ private struct LemonadeButtonView: View {
                         maxLines: 1
                     )
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, LemonadeTheme.spaces.spacing200)
+                    .padding(.horizontal, size.contentData.labelPadding)
 
                     if let trailingIcon = trailingIcon {
                         LemonadeUi.Icon(
@@ -554,7 +559,7 @@ private struct LemonadeSlotButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
                         maxLines: 1
                     )
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, LemonadeTheme.spaces.spacing200)
+                    .padding(.horizontal, size.contentData.labelPadding)
                 )
             },
             leadingSlot: leadingSlot,
