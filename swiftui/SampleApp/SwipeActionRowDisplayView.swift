@@ -19,6 +19,8 @@ struct SwipeActionRowDisplayView: View {
     @State private var removed: Set<String> = []
     @State private var fired = 0
     @State private var pinned = false
+    @State private var read = false
+    @State private var deleted = 0
     /// The caller decides which row is open, including before anyone has touched one.
     @State private var startsOpenId: AnyHashable? = "unread"
     /// The row a swipe has asked to remove, held until the reader confirms it.
@@ -164,6 +166,72 @@ struct SwipeActionRowDisplayView: View {
                             )
                         }
                     }
+                    LemonadeUi.Card(
+                        header: CardHeaderConfig(
+                            title: "Leading actions",
+                            subtitle: "Drag right. Nothing sits on the trailing edge, so dragging left does nothing."
+                        )
+                    ) {
+                        LemonadeUi.SwipeActionRow(
+                            leadingActions: [
+                                LemonadeSwipeAction(
+                                    icon: .check,
+                                    contentDescription: "Mark as read",
+                                    onClick: { read.toggle() },
+                                    variant: .primary
+                                )
+                            ]
+                        ) {
+                            LemonadeUi.ActionListItem(
+                                label: "Leading only",
+                                supportText: read ? "Read" : "Unread",
+                                showDivider: false,
+                                onItemClicked: { }
+                            )
+                        }
+                    }
+
+                    LemonadeUi.Card(
+                        header: CardHeaderConfig(
+                            title: "Both edges",
+                            subtitle: "Each edge has its own actions. One drag reveals one edge, and can fire it."
+                        )
+                    ) {
+                        LemonadeUi.SwipeActionRow(
+                            actions: [
+                                LemonadeSwipeAction(
+                                    icon: .trash,
+                                    contentDescription: "Delete",
+                                    onClick: { deleted += 1 }
+                                )
+                            ],
+                            leadingActions: [
+                                LemonadeSwipeAction(
+                                    icon: .check,
+                                    contentDescription: "Mark as read",
+                                    onClick: { read.toggle() },
+                                    variant: .primary
+                                ),
+                                LemonadeSwipeAction(
+                                    icon: .star,
+                                    contentDescription: "Star",
+                                    onClick: { },
+                                    variant: .neutral
+                                )
+                            ]
+                        ) {
+                            LemonadeUi.ActionListItem(
+                                label: "Both edges",
+                                // Counted rather than removed, so either swipe can be tried again.
+                                supportText: deleted > 0
+                                    ? "Delete fired \(deleted)×"
+                                    : (read ? "Read" : "Unread"),
+                                showDivider: false,
+                                onItemClicked: { }
+                            )
+                        }
+                    }
+
                     LemonadeUi.Card(
                         header: CardHeaderConfig(
                             title: "Any icon, any variant",

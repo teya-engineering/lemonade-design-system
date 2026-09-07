@@ -25,6 +25,97 @@ private const val COMMIT_FRACTION = 0.55f
  */
 internal fun swipeCommitThreshold(rowWidth: Float): Float = rowWidth * COMMIT_FRACTION
 
+/** Which edge of the row a reveal belongs to. */
+internal enum class SwipeActionSide {
+    Leading,
+    Trailing,
+}
+
+/**
+ * The side a signed travel has the row open on, or null at rest.
+ *
+ * Travel carries its side in its sign — negative onto the leading actions, positive onto the
+ * trailing ones — so the row needs no second piece of state to say which strip it is showing, and
+ * the two can never disagree. Everything downstream of here works on the magnitude, which is what
+ * lets one set of rules serve both edges.
+ */
+internal fun swipeTravelSide(travel: Float): SwipeActionSide? =
+    when {
+        travel > 0f -> SwipeActionSide.Trailing
+        travel < 0f -> SwipeActionSide.Leading
+        else -> null
+    }
+
+/**
+ * The side a gesture owns: the one the row is already open on, or, for a row at rest, the one the
+ * finger has set off towards.
+ *
+ * A gesture keeps that side until it ends. A finger dragging an open row back is closing it, and
+ * letting it carry on through zero would turn one drag into a commit on the opposite edge — the
+ * reader would have had no way to ask for that, having never lifted their finger.
+ *
+ * @param travel where the row is now, signed.
+ * @param delta how far the finger has moved, in travel's own sign.
+ */
+internal fun resolveSwipeGestureSide(
+    travel: Float,
+    delta: Float,
+): SwipeActionSide? = swipeTravelSide(travel = travel) ?: swipeTravelSide(travel = delta)
+
+/**
+ * How far the row may travel onto one side, as a magnitude.
+ *
+ * Nothing when the side has no actions: a row with actions on one edge only is still draggable, and
+ * the empty edge has to hold it where it is rather than let it be carried across to reveal nothing.
+ * [revealWidth] is zero exactly when the side is empty, which is what makes that the same question.
+ *
+ * @param revealWidth travel that rests the row on every action of this side.
+ * @param rowWidth full width of the row.
+ * @param allowsFullSwipe whether a drag across the row may commit this side's first action.
+ */
+internal fun resolveSwipeCeiling(
+    revealWidth: Float,
+    rowWidth: Float,
+    allowsFullSwipe: Boolean,
+): Float =
+    when {
+        revealWidth <= 0f -> 0f
+        allowsFullSwipe -> rowWidth
+        else -> revealWidth
+    }
+
+/**
+ * Where a delta leaves the row, in signed travel.
+ *
+ * Held to the side the gesture owns, so it stops at rest rather than crossing into the other edge's
+ * actions. [side] is null only while a row at rest has not been moved, where either way is still
+ * open to it and the result is zero regardless.
+ *
+ * @param travel where the row is now, signed.
+ * @param delta how far the finger has moved, in travel's own sign.
+ * @param side the side this gesture owns.
+ * @param leadingCeiling how far the row may travel onto its leading actions.
+ * @param trailingCeiling how far the row may travel onto its trailing actions.
+ */
+internal fun resolveSwipeTravel(
+    travel: Float,
+    delta: Float,
+    side: SwipeActionSide?,
+    leadingCeiling: Float,
+    trailingCeiling: Float,
+): Float {
+    val next = travel + delta
+    val held = when (side) {
+        SwipeActionSide.Leading -> next.coerceIn(-leadingCeiling, 0f)
+        SwipeActionSide.Trailing -> next.coerceIn(0f, trailingCeiling)
+        null -> next.coerceIn(-leadingCeiling, trailingCeiling)
+    }
+    // Clamping a leading drag against an empty side's own ceiling leaves negative zero, whose sign
+    // reads as Leading while the row is plainly at rest. Here the sign is the side, so a row that
+    // has not moved must not carry one.
+    return if (held == 0f) 0f else held
+}
+
 /** Deceleration a released row is left to coast on, matching a scroll's normal rate. */
 private const val DECELERATION_RATE = 0.998f
 

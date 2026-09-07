@@ -297,14 +297,20 @@ private fun swipeRevealWidth(through: Int): Float =
     }
 
 /**
- * The actions behind the row, drawn as far as the row has revealed them.
+ * The actions behind the row on one of its edges, drawn as far as the row has revealed them.
  *
  * Takes the row's travel rather than the geometry read off it, so the whole reveal is resolved in
- * one place and an action's arrival cannot drift from the width it is derived from.
+ * one place and an action's arrival cannot drift from the width it is derived from. [travel] is the
+ * magnitude the row has moved onto *this* side, so the side the row is not showing is handed zero
+ * and draws nothing.
+ *
+ * Mirrored off [side] rather than written twice: an action sits against the edge it is revealed
+ * from, grows inwards from it, and stacks away from it. Everything below is that one sign.
  */
 @Composable
 private fun SwipeActionStrip(
     actions: List<SwipeAction>,
+    side: SwipeActionSide,
     travel: () -> Float,
     rowWidth: () -> Float,
     committed: () -> Boolean,
@@ -316,17 +322,25 @@ private fun SwipeActionStrip(
 ) {
     val step = LemonadeTheme.sizes.size1200 + LemonadeTheme.spaces.spacing200
     val density = LocalDensity.current
+    val leading = side == SwipeActionSide.Leading
+    // Which way is *into* the row from this edge: where a stacking action goes, where a stretching
+    // one grows, and where a committed icon slides.
+    val towardsInside = if (leading) 1f else -1f
+    // The wider padding is the one against the edge the actions are revealed from; the narrower one
+    // sits between the strip and the travelling row.
+    val outerPadding = LemonadeTheme.spaces.spacing400
+    val innerPadding = LemonadeTheme.spaces.spacing300
     Box(
         modifier = modifier
             .padding(
-                start = LemonadeTheme.spaces.spacing300,
-                end = LemonadeTheme.spaces.spacing400,
+                start = if (leading) outerPadding else innerPadding,
+                end = if (leading) innerPadding else outerPadding,
             )
             // The actions stay in the semantics tree even while the row covers them, which would
             // duplicate every custom action. The gesture is visual; the custom action is the
             // accessible path.
             .clearAndSetSemantics { },
-        contentAlignment = Alignment.CenterEnd,
+        contentAlignment = if (leading) Alignment.CenterStart else Alignment.CenterEnd,
     ) {
         // Outermost last, so it is drawn on top: the first action is the one a full swipe fires,
         // and the one that stretches over the actions beside it.
@@ -359,10 +373,11 @@ private fun SwipeActionStrip(
                 stretches = index == 0,
                 committed = committed() && index == 0,
                 committedStretch = committedStretch,
+                towardsInside = towardsInside,
                 onFired = onFired,
                 dim = dim(),
                 holding = holding,
-                modifier = Modifier.offset(x = -step * index - push),
+                modifier = Modifier.offset(x = (step * index + push) * towardsInside),
             )
         }
     }
@@ -383,6 +398,7 @@ private fun SwipeActionCapsule(
     stretches: Boolean,
     committed: Boolean,
     committedStretch: Dp,
+    towardsInside: Float,
     onFired: (SwipeAction) -> Unit,
     dim: Float,
     holding: Boolean,
@@ -410,8 +426,8 @@ private fun SwipeActionCapsule(
         (if (stretches) reveal.stretch else 0f).toDp()
     }
     // Centred in the capsule until the swipe commits, then it slides to the centre of the capsule's
-    // leading end — where the action would sit if it had stayed a circle and the row had simply
-    // carried on past it.
+    // inner end — where the action would sit if it had stayed a circle and the row had simply
+    // carried on past it. Which end that is follows the edge the action is revealed from.
     //
     // Against the width the commit is heading for rather than the one it has: a spring chasing a
     // target that is itself still moving never catches it, which left the icon a third of its
@@ -427,7 +443,7 @@ private fun SwipeActionCapsule(
         animationSpec = commitSpring,
         label = "swipeActionIcon",
     )
-    val iconOffset = -committedStretch / 2 * iconClaim
+    val iconOffset = committedStretch / 2 * iconClaim * towardsInside
     Box(
         modifier = modifier
             .size(width = size + stretch, height = size)
@@ -485,12 +501,17 @@ private fun SwipeActionRowCore(
     open: Boolean,
     onOpenChange: (Boolean) -> Unit,
     actions: List<SwipeAction>,
+    leadingActions: List<SwipeAction>,
     enabled: Boolean,
     allowsFullSwipe: Boolean,
     showDivider: Boolean,
     modifier: Modifier,
     content: @Composable () -> Unit,
 ) {
+    // Signed: negative onto the leading actions, positive onto the trailing ones. The sign is the
+    // whole of what says which edge the row is showing, so the two can never disagree, and every
+    // rule below it works on the magnitude — which is what lets one set of them serve both edges.
+    //
     // A plain value the drag writes as it happens, not an `Animatable` a launched coroutine
     // catches up with. Every delta used to launch its own `snapTo`, and one landing after the
     // settle had started cancelled it — an `Animatable` lets the later mutation win — leaving the
@@ -521,7 +542,15 @@ private fun SwipeActionRowCore(
     var rowY by remember { mutableFloatStateOf(0f) }
     var openedAt by remember { mutableStateOf<Float?>(null) }
     val scrollSlack = with(LocalDensity.current) { SCROLL_SLACK.toPx() }
-    var committed by remember { mutableStateOf(false) }
+    // Which side a full swipe has claimed the row on, or null while none has. The side rather than
+    // a flag, because the strip that stretches and the icon that slides are one edge's, not both.
+    var committedSide by remember { mutableStateOf<SwipeActionSide?>(null) }
+    // Which side the row is open on, once something has opened it. Null until a drag or a caller
+    // says, which is what lets a row composed already open fall back to the edge it always used.
+    var openSide by remember { mutableStateOf<SwipeActionSide?>(null) }
+    // The side the live gesture owns. Held outside composition: it is written on the first delta of
+    // every drag, and nothing drawn reads it.
+    val gestureSide = remember { mutableStateOf<SwipeActionSide?>(null) }
     // Whether a committed swipe is holding the row where it left it — all the way across, with the
     // action still stretched behind it — rather than at the reveal. Cleared when the row closes, or
     // when a finger takes hold of it again.
@@ -553,42 +582,76 @@ private fun SwipeActionRowCore(
         }
     }
 
-    val revealWidth = swipeRevealWidth(through = actions.size)
-    val firstActionReveal = swipeRevealWidth(through = 1)
+    val leadingReveal = swipeRevealWidth(through = leadingActions.size)
+    val trailingReveal = swipeRevealWidth(through = actions.size)
+    // The same for either side: one action, and the padding it sits in.
+    val oneActionReveal = swipeRevealWidth(through = 1)
+    val commitInset = with(density) { COMMIT_INSET.toPx() }
+
+    // The three things a side is: which actions it holds, how far the row rests on them, and which
+    // way its travel points. Everything sided below is one of these.
+    val actionsOn = { side: SwipeActionSide ->
+        if (side == SwipeActionSide.Leading) leadingActions else actions
+    }
+    val revealOn = { side: SwipeActionSide ->
+        if (side == SwipeActionSide.Leading) leadingReveal else trailingReveal
+    }
+    val signOn = { side: SwipeActionSide ->
+        if (side == SwipeActionSide.Leading) -1f else 1f
+    }
     // Where a commit parks the row: as far as it goes, less the sliver iOS leaves of it.
-    val commitTravel = maxOf(revealWidth, rowWidth - with(density) { COMMIT_INSET.toPx() })
-    // Where the row rests while open: at the reveal, or wherever a commit is holding it.
-    val restingTravel = if (held) commitTravel else revealWidth
-    // How far the first action has stretched once a commit has parked the row: what the icon is
-    // sliding towards from the moment the crossing happens.
-    val committedStretch = with(density) { (commitTravel - revealWidth).toDp() }
+    val commitTravelOn = { side: SwipeActionSide ->
+        maxOf(revealOn(side), rowWidth - commitInset)
+    }
+    // Nothing to open onto is what closes a release on an edge with no actions behind it.
+    val firstActionRevealOn = { side: SwipeActionSide ->
+        if (actionsOn(side).isEmpty()) 0f else oneActionReveal
+    }
+
+    // The side the row would open onto with nothing having said otherwise: whichever edge has
+    // actions, trailing first, so a row opened by its caller opens the way it always did.
+    val restingSide = openSide
+        ?: if (actions.isNotEmpty()) SwipeActionSide.Trailing else SwipeActionSide.Leading
+    // Where the row rests while open, signed: at the reveal, or wherever a commit is holding it.
+    val restingTravel = signOn(restingSide) *
+        if (held) commitTravelOn(restingSide) else revealOn(restingSide)
 
     // How far the commit has claimed the row off the finger. Crossing the threshold takes the row
     // out of the drag's hands and carries it the rest of the way itself; dragging back below hands
     // it back. The blend is what makes both a spring rather than a jump, and what keeps the finger
     // in charge on the way there.
     val claimed = animateFloatAsState(
-        targetValue = if (committed) 1f else 0f,
+        targetValue = if (committedSide != null) 1f else 0f,
         // Sprung on the way out, snapped on the way back: leaving a commit hands the row to
         // [resolveSwipeReleasedTravel], which picks it up exactly where the claim had it.
-        animationSpec = if (committed) commitSpring else noSpring,
+        animationSpec = if (committedSide != null) commitSpring else noSpring,
         label = "swipeCommitClaim",
     )
     // What the row draws, resolved wherever it is needed rather than here: the finger's own travel,
     // or the lead a commit gave it being given back in proportion to the finger, blended with
-    // however far the commit has claimed the row.
+    // however far the commit has claimed the row. Resolved on the magnitude and signed back, so the
+    // two edges share every rule between them.
     val shown = {
         val reached = travel.floatValue
+        val side = swipeTravelSide(travel = reached) ?: restingSide
+        val magnitude = abs(reached)
+        val commitTravel = commitTravelOn(side)
         val base = if (releasing) {
             resolveSwipeReleasedTravel(
-                travel = reached,
+                travel = magnitude,
                 commitTravel = commitTravel,
                 threshold = swipeCommitThreshold(rowWidth = rowWidth),
             )
         } else {
-            reached
+            magnitude
         }
-        base + (commitTravel - base) * claimed.value
+        (base + (commitTravel - base) * claimed.value) * signOn(side)
+    }
+    // What one side's strip has been revealed by, which is nothing at all unless the row is showing
+    // that side. Magnitude, because a strip only ever grows out of its own edge.
+    val shownOn = { side: SwipeActionSide ->
+        val reached = shown()
+        if (swipeTravelSide(travel = reached) == side) abs(reached) else 0f
     }
 
     // A tapped action tidies the row away after it, unless it has put something on screen that the
@@ -613,8 +676,11 @@ private fun SwipeActionRowCore(
         } else {
             openedAt = null
             held = false
-            committed = false
+            committedSide = null
             holding = false
+            // The side is forgotten with the row. Nothing is drawn off it while the row travels
+            // home — the sign `travel` still carries is — and the next opening picks its own.
+            openSide = null
         }
         // Armed from the first placement instead of from here: this runs before the row has been
         // measured, so a row composed already open would take `rowY`'s initial 0 for where it
@@ -632,19 +698,54 @@ private fun SwipeActionRowCore(
         }
     }
 
-    // `actions` can change while the row is open, and an open row would otherwise rest at a stale
+    // Either list can change while the row is open, and an open row would otherwise rest at a stale
     // offset. Never under a live finger, where it would fight the drag.
-    LaunchedEffect(revealWidth) {
-        if (open && !dragging && !held) settleTo(revealWidth, 0f)
+    //
+    // Checked against where the row was last sent, as the open/close effect is: this key now moves
+    // when the *side* does, and a drag that settles open sets the side — so without it every
+    // release would restart its own spring from rest, a frame after it began, and lose the velocity
+    // the finger let go at.
+    val openReveal = signOn(restingSide) * revealOn(restingSide)
+    LaunchedEffect(openReveal) {
+        if (open && !dragging && !held && settleTarget.floatValue != openReveal) {
+            settleTo(openReveal, 0f)
+        }
     }
 
     val dragState = rememberDraggableState { delta ->
-        val ceiling = if (allowsFullSwipe) rowWidth else revealWidth
-        val next = (travel.floatValue + delta * towardsTrailing).coerceIn(0f, ceiling)
-        val crossed = allowsFullSwipe && next >= swipeCommitThreshold(rowWidth = rowWidth)
-        if (crossed != committed) {
-            committed = crossed
-            releasing = !crossed
+        val towards = delta * towardsTrailing
+        // Decided once and kept for the rest of the gesture: a finger dragging an open row back is
+        // closing it, and letting it carry through zero would commit an action on the far edge that
+        // the reader never lifted their finger to ask for.
+        val side = gestureSide.value
+            ?: resolveSwipeGestureSide(travel = travel.floatValue, delta = towards)
+        gestureSide.value = side
+        val next = resolveSwipeTravel(
+            travel = travel.floatValue,
+            delta = towards,
+            side = side,
+            leadingCeiling = resolveSwipeCeiling(
+                revealWidth = leadingReveal,
+                rowWidth = rowWidth,
+                allowsFullSwipe = allowsFullSwipe,
+            ),
+            trailingCeiling = resolveSwipeCeiling(
+                revealWidth = trailingReveal,
+                rowWidth = rowWidth,
+                allowsFullSwipe = allowsFullSwipe,
+            ),
+        )
+        // Guarded on the width, because an unmeasured row has no width to have crossed half of:
+        // the threshold would be zero and a drag that never moved would read as a commit.
+        val crossed = side
+            ?.takeIf {
+                allowsFullSwipe &&
+                    rowWidth > 0f &&
+                    abs(next) >= swipeCommitThreshold(rowWidth = rowWidth)
+            }
+        if (crossed != committedSide) {
+            committedSide = crossed
+            releasing = crossed == null
             // Felt either way: crossing back is the moment the gesture stops belonging to the
             // action, which is as worth knowing as the moment it started to.
             haptics.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -699,7 +800,7 @@ private fun SwipeActionRowCore(
                 .draggable(
                     state = dragState,
                     orientation = Orientation.Horizontal,
-                    enabled = enabled && actions.isNotEmpty(),
+                    enabled = enabled && (actions.isNotEmpty() || leadingActions.isNotEmpty()),
                     onDragStarted = {
                         // The finger outranks whatever the row was doing, and nothing is holding
                         // the row any more: this drag settles it wherever it asks.
@@ -708,6 +809,8 @@ private fun SwipeActionRowCore(
                         holding = false
                         releasing = false
                         dragging = true
+                        // Earned again by every drag, off wherever this one finds the row.
+                        gestureSide.value = null
                         // Claimed, so this is the row being read now. Announced here rather than
                         // when the row settles open: a reader who has started on another row has
                         // already left the open one, and waiting for the release leaves it
@@ -716,53 +819,63 @@ private fun SwipeActionRowCore(
                     },
                     onDragStopped = { velocity ->
                         dragging = false
+                        val side = gestureSide.value ?: restingSide
+                        gestureSide.value = null
+                        // The side's own sign, so everything below reads as it always did: travel
+                        // and velocity both positive while the row is still opening.
+                        val sign = signOn(side)
                         // Where the finger left the row, read before the claim is folded in. A drag
                         // coming back from a commit draws the row ahead of the finger — by the
                         // gain in [resolveSwipeReleasedTravel] — and settling on the drawn value
                         // would fire the action from a third of the way across, after crossing
                         // back had already told the reader the gesture was no longer its.
-                        val reached = travel.floatValue
+                        val reached = abs(travel.floatValue)
                         // The claim is spent: the row settles from where it is being drawn.
                         travel.floatValue = shown()
                         releasing = false
                         // The spring picks up the speed the finger let go at rather than starting
                         // from rest, so the row carries straight on out of the drag.
-                        val released = velocity * towardsTrailing
+                        val released = velocity * towardsTrailing * sign
                         val target = resolveSwipeSettle(
                             travel = reached,
                             velocity = released,
-                            firstActionReveal = firstActionReveal,
+                            firstActionReveal = firstActionRevealOn(side),
                             rowWidth = rowWidth,
                             allowsFullSwipe = allowsFullSwipe,
                         )
-                        committed = false
+                        committedSide = null
                         // Every branch animates: settling usually writes the value `open` already
                         // holds, so nothing else would move the row off where the finger left it.
                         when (target) {
                             SwipeSettleTarget.Committed -> {
-                                val first = actions.firstOrNull()
+                                val first = actionsOn(side).firstOrNull()
                                 // A commit fires the first action, so the row rests where that
                                 // action asks: away, or held all the way across, the action still
                                 // stretched, behind whatever the action has just put on screen.
                                 val holds = first?.keepsRowOpen == true
                                 held = holds
-                                committed = holds
+                                committedSide = if (holds) side else null
                                 holding = holds
+                                openSide = if (holds) side else null
                                 onOpenChange(holds)
                                 // Before the animation, not after: animateTo suspends until it
                                 // settles, and the action must not wait on a spring.
                                 first?.onClick()
-                                settleTo(if (holds) commitTravel else 0f, released)
+                                settleTo(
+                                    if (holds) sign * commitTravelOn(side) else 0f,
+                                    released * sign,
+                                )
                             }
 
                             SwipeSettleTarget.Open -> {
+                                openSide = side
                                 onOpenChange(true)
-                                settleTo(revealWidth, released)
+                                settleTo(sign * revealOn(side), released * sign)
                             }
 
                             SwipeSettleTarget.Closed -> {
                                 onOpenChange(false)
-                                settleTo(0f, released)
+                                settleTo(0f, released * sign)
                             }
                         }
                     },
@@ -777,8 +890,10 @@ private fun SwipeActionRowCore(
                     // actions to a reader who cannot see they are unreachable — and on `holding`,
                     // because the capsules stop taking taps once an action has put something on
                     // screen, and a reader must not be able to fire it again through here.
+                    // Both edges, leading first, so a reader hears them in the order they would
+                    // find them: the gesture is what is invisible here, not the side.
                     customActions = if (enabled && !holding) {
-                        actions.map { action ->
+                        (leadingActions + actions).map { action ->
                             CustomAccessibilityAction(action.contentDescription) {
                                 fired(action)
                                 true
@@ -789,12 +904,34 @@ private fun SwipeActionRowCore(
                     }
                 },
         ) {
+            // Both strips are always here. Each is handed only the travel that belongs to its own
+            // edge, so the side the row is not showing draws nothing, and neither has to be
+            // composed away and back as the row crosses between them.
+            SwipeActionStrip(
+                actions = leadingActions,
+                side = SwipeActionSide.Leading,
+                travel = { shownOn(SwipeActionSide.Leading) },
+                rowWidth = { rowWidth },
+                committed = { committedSide == SwipeActionSide.Leading },
+                // How far the first action has stretched once a commit has parked the row: what
+                // the icon is sliding towards from the moment the crossing happens.
+                committedStretch = with(density) {
+                    (commitTravelOn(SwipeActionSide.Leading) - leadingReveal).toDp()
+                },
+                onFired = fired,
+                dim = { dim.value },
+                holding = holding,
+                modifier = Modifier.align(Alignment.CenterStart),
+            )
             SwipeActionStrip(
                 actions = actions,
-                travel = shown,
+                side = SwipeActionSide.Trailing,
+                travel = { shownOn(SwipeActionSide.Trailing) },
                 rowWidth = { rowWidth },
-                committed = { committed },
-                committedStretch = committedStretch,
+                committed = { committedSide == SwipeActionSide.Trailing },
+                committedStretch = with(density) {
+                    (commitTravelOn(SwipeActionSide.Trailing) - trailingReveal).toDp()
+                },
                 onFired = fired,
                 dim = { dim.value },
                 holding = holding,
@@ -868,17 +1005,23 @@ private fun SwipeActionRowCore(
  *     LemonadeUi.ActionListItem(label = "Label", onItemClicked = { /* … */ })
  * }
  * ```
+ * Actions may sit on either edge, or both. A drag takes the side it sets off towards and keeps it
+ * for the rest of the gesture, so one drag never reveals both.
+ *
  * @param actions - the actions revealed on the trailing edge, outermost first.
  * @param modifier - [Modifier] applied to the base container.
+ * @param leadingActions - the actions revealed on the leading edge, outermost first.
  * @param enabled - flag to define whether the drag is active.
- * @param allowsFullSwipe - whether dragging across the row fires the first action on release.
+ * @param allowsFullSwipe - whether dragging across the row fires the first action of whichever
+ *  edge is being dragged, on release.
  * @param showDivider - flag to show a divider below the row, which does not travel with it.
  * @param content - the row this wraps.
  */
 @Composable
 public fun LemonadeUi.SwipeActionRow(
-    actions: List<SwipeAction>,
+    actions: List<SwipeAction> = emptyList(),
     modifier: Modifier = Modifier,
+    leadingActions: List<SwipeAction> = emptyList(),
     enabled: Boolean = true,
     allowsFullSwipe: Boolean = true,
     showDivider: Boolean = false,
@@ -889,10 +1032,39 @@ public fun LemonadeUi.SwipeActionRow(
         open = open,
         onOpenChange = { open = it },
         actions = actions,
+        leadingActions = leadingActions,
         enabled = enabled,
         allowsFullSwipe = allowsFullSwipe,
         showDivider = showDivider,
         modifier = modifier,
+        content = content,
+    )
+}
+
+/**
+ * Binary compatibility for callers compiled against the row before it had a leading edge. Keeps the
+ * symbol that shipped, delegating to the overload above.
+ */
+@Deprecated(
+    message = "Use the overload with leadingActions.",
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.SwipeActionRow(
+    actions: List<SwipeAction>,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    allowsFullSwipe: Boolean = true,
+    showDivider: Boolean = false,
+    content: @Composable () -> Unit,
+) {
+    SwipeActionRow(
+        actions = actions,
+        modifier = modifier,
+        leadingActions = emptyList(),
+        enabled = enabled,
+        allowsFullSwipe = allowsFullSwipe,
+        showDivider = showDivider,
         content = content,
     )
 }
@@ -915,8 +1087,9 @@ public fun LemonadeUi.SwipeActionRow(
     id: Any,
     openId: Any?,
     onOpenIdChange: (Any?) -> Unit,
-    actions: List<SwipeAction>,
+    actions: List<SwipeAction> = emptyList(),
     modifier: Modifier = Modifier,
+    leadingActions: List<SwipeAction> = emptyList(),
     enabled: Boolean = true,
     allowsFullSwipe: Boolean = true,
     showDivider: Boolean = false,
@@ -933,10 +1106,45 @@ public fun LemonadeUi.SwipeActionRow(
             }
         },
         actions = actions,
+        leadingActions = leadingActions,
         enabled = enabled,
         allowsFullSwipe = allowsFullSwipe,
         showDivider = showDivider,
         modifier = modifier,
+        content = content,
+    )
+}
+
+/**
+ * Binary compatibility for callers compiled against the controlled row before it had a leading
+ * edge. Keeps the symbol that shipped, delegating to the overload above.
+ */
+@Deprecated(
+    message = "Use the overload with leadingActions.",
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.SwipeActionRow(
+    id: Any,
+    openId: Any?,
+    onOpenIdChange: (Any?) -> Unit,
+    actions: List<SwipeAction>,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    allowsFullSwipe: Boolean = true,
+    showDivider: Boolean = false,
+    content: @Composable () -> Unit,
+) {
+    SwipeActionRow(
+        id = id,
+        openId = openId,
+        onOpenIdChange = onOpenIdChange,
+        actions = actions,
+        modifier = modifier,
+        leadingActions = emptyList(),
+        enabled = enabled,
+        allowsFullSwipe = allowsFullSwipe,
+        showDivider = showDivider,
         content = content,
     )
 }

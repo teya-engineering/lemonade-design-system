@@ -254,6 +254,83 @@ private fun SwipeActionRowDisplayContent() {
             }
         }
 
+        item(key = "leading-actions") {
+            var read by remember { mutableStateOf(false) }
+            LemonadeUi.Card(
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
+                header = CardHeaderConfig(
+                    title = "Leading actions",
+                    subtitle = "Drag right. Nothing sits on the trailing edge, so dragging left does nothing.",
+                ),
+            ) {
+                LemonadeUi.SwipeActionRow(
+                    leadingActions = listOf(
+                        SwipeAction(
+                            icon = LemonadeIcons.Check,
+                            contentDescription = "Mark as read",
+                            onClick = { read = !read },
+                            variant = LemonadeButtonVariant.Primary,
+                        ),
+                    ),
+                ) {
+                    LemonadeUi.ActionListItem(
+                        label = "Leading only",
+                        supportText = if (read) "Read" else "Unread",
+                        showDivider = false,
+                        onItemClicked = { },
+                    )
+                }
+            }
+        }
+
+        item(key = "both-edges") {
+            var read by remember { mutableStateOf(false) }
+            var deleted by remember { mutableStateOf(0) }
+            LemonadeUi.Card(
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
+                header = CardHeaderConfig(
+                    title = "Both edges",
+                    subtitle = "Each edge has its own actions. One drag reveals one edge, and can fire it.",
+                ),
+            ) {
+                LemonadeUi.SwipeActionRow(
+                    leadingActions = listOf(
+                        SwipeAction(
+                            icon = LemonadeIcons.Check,
+                            contentDescription = "Mark as read",
+                            onClick = { read = !read },
+                            variant = LemonadeButtonVariant.Primary,
+                        ),
+                        SwipeAction(
+                            icon = LemonadeIcons.Star,
+                            contentDescription = "Star",
+                            onClick = { },
+                            variant = LemonadeButtonVariant.Neutral,
+                        ),
+                    ),
+                    actions = listOf(
+                        SwipeAction(
+                            icon = LemonadeIcons.Trash,
+                            contentDescription = "Delete",
+                            onClick = { deleted += 1 },
+                        ),
+                    ),
+                ) {
+                    LemonadeUi.ActionListItem(
+                        label = "Both edges",
+                        // Counted rather than removed, so either swipe can be tried again.
+                        supportText = when {
+                            deleted > 0 -> "Delete fired ${deleted}x"
+                            read -> "Read"
+                            else -> "Unread"
+                        },
+                        showDivider = false,
+                        onItemClicked = { },
+                    )
+                }
+            }
+        }
+
         item(key = "any-variant") {
             var pinned by remember { mutableStateOf(false) }
             LemonadeUi.Card(
