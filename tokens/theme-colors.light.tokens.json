@@ -4855,38 +4855,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.9413119554519653,
-            0.6929154396057129,
-            0
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#F0B100"
-        },
-        "$description": "Subtle generic yellow surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:26",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.yellow.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.yellow.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:f7429f9fba6b8fd08ad8d26b89e60bcab694cd15/76:117",
-            "targetVariableName": "yellow/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -4914,38 +4882,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:b63a6aa40b854c27dbd155eca41cfaf2331b2f58/72:192",
             "targetVariableName": "yellow/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.9413119554519653,
-            0.6929154396057129,
-            0
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#F0B100"
-        },
-        "$description": "Subtle generic yellow border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:58",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.yellow.borderSubtle",
-            "iOS": "LemonadeTheme.themed.yellow.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:f7429f9fba6b8fd08ad8d26b89e60bcab694cd15/76:117",
-            "targetVariableName": "yellow/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -5043,6 +4979,103 @@
             "targetVariableSetName": "Colors"
           }
         }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.9413119554519653,
+              0.6929154396057129,
+              0
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#F0B100"
+          },
+          "$description": "Subtle generic yellow surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:11",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.yellow.subtle.background",
+              "iOS": "LemonadeTheme.themed.yellow.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:f7429f9fba6b8fd08ad8d26b89e60bcab694cd15/76:117",
+              "targetVariableName": "yellow/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.9413119554519653,
+              0.6929154396057129,
+              0
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#F0B100"
+          },
+          "$description": "Subtle generic yellow border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:43",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.yellow.subtle.border",
+              "iOS": "LemonadeTheme.themed.yellow.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:f7429f9fba6b8fd08ad8d26b89e60bcab694cd15/76:117",
+              "targetVariableName": "yellow/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.6510636210441589,
+              0.3732093870639801,
+              0
+            ],
+            "alpha": 1,
+            "hex": "#A65F00"
+          },
+          "$description": "Text and icons drawn on top of the subtle yellow background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:10",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.yellow.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.yellow.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:768f568ab04f1feaa27e5ae400ffc92cc9a21734/72:191",
+              "targetVariableName": "yellow/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
       }
     },
     "amber": {
@@ -5078,38 +5111,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.994271457195282,
-            0.6020927429199219,
-            0
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#FE9A00"
-        },
-        "$description": "Subtle generic amber surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:27",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.amber.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.amber.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:0aa49d6b6d51cd34a538da859f6db0a2c5c62dbf/76:139",
-            "targetVariableName": "amber/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -5137,38 +5138,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:41033fa93dfdd2518235ad4db6a7935a815f5e18/72:201",
             "targetVariableName": "amber/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.994271457195282,
-            0.6020927429199219,
-            0
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#FE9A00"
-        },
-        "$description": "Subtle generic amber border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:59",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.amber.borderSubtle",
-            "iOS": "LemonadeTheme.themed.amber.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:0aa49d6b6d51cd34a538da859f6db0a2c5c62dbf/76:139",
-            "targetVariableName": "amber/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -5266,6 +5235,103 @@
             "targetVariableSetName": "Colors"
           }
         }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.994271457195282,
+              0.6020927429199219,
+              0
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#FE9A00"
+          },
+          "$description": "Subtle generic amber surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5206:10",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.amber.subtle.background",
+              "iOS": "LemonadeTheme.themed.amber.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:0aa49d6b6d51cd34a538da859f6db0a2c5c62dbf/76:139",
+              "targetVariableName": "amber/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.994271457195282,
+              0.6020927429199219,
+              0
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#FE9A00"
+          },
+          "$description": "Subtle generic amber border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5206:11",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.amber.subtle.border",
+              "iOS": "LemonadeTheme.themed.amber.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:0aa49d6b6d51cd34a538da859f6db0a2c5c62dbf/76:139",
+              "targetVariableName": "amber/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.7317888140678406,
+              0.30102330446243286,
+              0
+            ],
+            "alpha": 1,
+            "hex": "#BB4D00"
+          },
+          "$description": "Text and icons drawn on top of the subtle amber background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:11",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.amber.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.amber.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:deae95126cb95b53a3cbd5871b992b3bfca35319/72:202",
+              "targetVariableName": "amber/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
       }
     },
     "orange": {
@@ -5301,38 +5367,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            1,
-            0.4107343256473541,
-            0
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#FF6900"
-        },
-        "$description": "Subtle generic orange surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:28",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.orange.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.orange.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:798357b6c28271a579acd379d7528d833b57a34f/76:457",
-            "targetVariableName": "orange/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -5360,38 +5394,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:c1a53fba3a8ca45de5366caf5bdcae724b8140ab/72:241",
             "targetVariableName": "orange/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            1,
-            0.4107343256473541,
-            0
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#FF6900"
-        },
-        "$description": "Subtle generic orange border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:60",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.orange.borderSubtle",
-            "iOS": "LemonadeTheme.themed.orange.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:798357b6c28271a579acd379d7528d833b57a34f/76:457",
-            "targetVariableName": "orange/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -5489,6 +5491,103 @@
             "targetVariableSetName": "Colors"
           }
         }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              1,
+              0.4107343256473541,
+              0
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#FF6900"
+          },
+          "$description": "Subtle generic orange surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:15",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.orange.subtle.background",
+              "iOS": "LemonadeTheme.themed.orange.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:798357b6c28271a579acd379d7528d833b57a34f/76:457",
+              "targetVariableName": "orange/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              1,
+              0.4107343256473541,
+              0
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#FF6900"
+          },
+          "$description": "Subtle generic orange border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:47",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.orange.subtle.border",
+              "iOS": "LemonadeTheme.themed.orange.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:798357b6c28271a579acd379d7528d833b57a34f/76:457",
+              "targetVariableName": "orange/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.7918817400932312,
+              0.20726992189884186,
+              0
+            ],
+            "alpha": 1,
+            "hex": "#CA3500"
+          },
+          "$description": "Text and icons drawn on top of the subtle orange background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:12",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.orange.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.orange.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:f5407b5ab129d5aaf70c1d86d21a5fefd9fde2de/72:247",
+              "targetVariableName": "orange/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
       }
     },
     "red": {
@@ -5524,38 +5623,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.9686274528503418,
-            0.23529411852359772,
-            0.2823529541492462
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#F73C48"
-        },
-        "$description": "Subtle generic red surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:29",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.red.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.red.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/559:13",
-            "targetVariableName": "red/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -5583,38 +5650,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/559:7",
             "targetVariableName": "red/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.9686274528503418,
-            0.23529411852359772,
-            0.2823529541492462
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#F73C48"
-        },
-        "$description": "Subtle generic red border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:61",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.red.borderSubtle",
-            "iOS": "LemonadeTheme.themed.red.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/559:13",
-            "targetVariableName": "red/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -5712,6 +5747,103 @@
             "targetVariableSetName": "Colors"
           }
         }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.9686274528503418,
+              0.23529411852359772,
+              0.2823529541492462
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#F73C48"
+          },
+          "$description": "Subtle generic red surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:17",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.red.subtle.background",
+              "iOS": "LemonadeTheme.themed.red.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/559:13",
+              "targetVariableName": "red/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.9686274528503418,
+              0.23529411852359772,
+              0.2823529541492462
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#F73C48"
+          },
+          "$description": "Subtle generic red border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:49",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.red.subtle.border",
+              "iOS": "LemonadeTheme.themed.red.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/559:13",
+              "targetVariableName": "red/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.7529411911964417,
+              0.08235294371843338,
+              0.125490203499794
+            ],
+            "alpha": 1,
+            "hex": "#C01520"
+          },
+          "$description": "Text and icons drawn on top of the subtle red background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:13",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.red.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.red.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:a17656e99cc45a002894f8a0fc808807399ae7f0/559:8",
+              "targetVariableName": "red/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
       }
     },
     "rose": {
@@ -5747,38 +5879,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            1,
-            0.12461522966623306,
-            0.3390033543109894
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#FF2056"
-        },
-        "$description": "Subtle generic rose surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:30",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.rose.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.rose.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:c198e83cffc1b8a5a5ffddec358b0bb3872e9fa1/76:205",
-            "targetVariableName": "rose/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -5806,38 +5906,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:bc1e36e44c17315b78c897bc826f64068e2987ac/71:81",
             "targetVariableName": "rose/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            1,
-            0.12461522966623306,
-            0.3390033543109894
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#FF2056"
-        },
-        "$description": "Subtle generic rose border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:62",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.rose.borderSubtle",
-            "iOS": "LemonadeTheme.themed.rose.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:c198e83cffc1b8a5a5ffddec358b0bb3872e9fa1/76:205",
-            "targetVariableName": "rose/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -5935,6 +6003,103 @@
             "targetVariableSetName": "Colors"
           }
         }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              1,
+              0.12461522966623306,
+              0.3390033543109894
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#FF2056"
+          },
+          "$description": "Subtle generic rose surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:19",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.rose.subtle.background",
+              "iOS": "LemonadeTheme.themed.rose.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:c198e83cffc1b8a5a5ffddec358b0bb3872e9fa1/76:205",
+              "targetVariableName": "rose/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              1,
+              0.12461522966623306,
+              0.3390033543109894
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#FF2056"
+          },
+          "$description": "Subtle generic rose border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:51",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.rose.subtle.border",
+              "iOS": "LemonadeTheme.themed.rose.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:c198e83cffc1b8a5a5ffddec358b0bb3872e9fa1/76:205",
+              "targetVariableName": "rose/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.7785063982009888,
+              0,
+              0.21069633960723877
+            ],
+            "alpha": 1,
+            "hex": "#C70036"
+          },
+          "$description": "Text and icons drawn on top of the subtle rose background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:14",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.rose.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.rose.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:cb9a5d2622553e64145a7c57f909881df69c2276/71:73",
+              "targetVariableName": "rose/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
       }
     },
     "pink": {
@@ -5970,38 +6135,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.9658054709434509,
-            0.19813880324363708,
-            0.6043244004249573
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#F6339A"
-        },
-        "$description": "Subtle generic pink surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:31",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.pink.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.pink.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:7046265db81b1e01550a99ad92ddd560d215d188/76:227",
-            "targetVariableName": "pink/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -6029,38 +6162,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:fbe98adbd33ec14255fe83d09095c57c96189ea9/72:91",
             "targetVariableName": "pink/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.9658054709434509,
-            0.19813880324363708,
-            0.6043244004249573
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#F6339A"
-        },
-        "$description": "Subtle generic pink border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:63",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.pink.borderSubtle",
-            "iOS": "LemonadeTheme.themed.pink.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:7046265db81b1e01550a99ad92ddd560d215d188/76:227",
-            "targetVariableName": "pink/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -6158,6 +6259,103 @@
             "targetVariableSetName": "Colors"
           }
         }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.9658054709434509,
+              0.19813880324363708,
+              0.6043244004249573
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#F6339A"
+          },
+          "$description": "Subtle generic pink surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:21",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.pink.subtle.background",
+              "iOS": "LemonadeTheme.themed.pink.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:7046265db81b1e01550a99ad92ddd560d215d188/76:227",
+              "targetVariableName": "pink/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.9658054709434509,
+              0.19813880324363708,
+              0.6043244004249573
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#F6339A"
+          },
+          "$description": "Subtle generic pink border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:53",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.pink.subtle.border",
+              "iOS": "LemonadeTheme.themed.pink.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:7046265db81b1e01550a99ad92ddd560d215d188/76:227",
+              "targetVariableName": "pink/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.7777568101882935,
+              0,
+              0.35892295837402344
+            ],
+            "alpha": 1,
+            "hex": "#C6005C"
+          },
+          "$description": "Text and icons drawn on top of the subtle pink background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:15",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.pink.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.pink.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:738ef3cee0466ed6325c1034d294dde486609e79/72:86",
+              "targetVariableName": "pink/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
       }
     },
     "fuchsia": {
@@ -6193,38 +6391,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.8823529481887817,
-            0.16470588743686676,
-            0.9843137264251709
-          ],
-          "alpha": 0.10196078568696976,
-          "hex": "#E12AFB"
-        },
-        "$description": "Subtle generic fuchsia surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:32",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.fuchsia.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.fuchsia.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:e188cbcfd40b66a8cf9af777514a1072c97a9daa/590:39",
-            "targetVariableName": "fuchsia/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -6252,38 +6418,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:f1750cd14f5079e1ab8ecf1773ec3b37fe211dc2/590:21",
             "targetVariableName": "fuchsia/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.8823529481887817,
-            0.16470588743686676,
-            0.9843137264251709
-          ],
-          "alpha": 0.10196078568696976,
-          "hex": "#E12AFB"
-        },
-        "$description": "Subtle generic fuchsia border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:64",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.fuchsia.borderSubtle",
-            "iOS": "LemonadeTheme.themed.fuchsia.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:e188cbcfd40b66a8cf9af777514a1072c97a9daa/590:39",
-            "targetVariableName": "fuchsia/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -6381,6 +6515,103 @@
             "targetVariableSetName": "Colors"
           }
         }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.8823529481887817,
+              0.16470588743686676,
+              0.9843137264251709
+            ],
+            "alpha": 0.10196078568696976,
+            "hex": "#E12AFB"
+          },
+          "$description": "Subtle generic fuchsia surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:23",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.fuchsia.subtle.background",
+              "iOS": "LemonadeTheme.themed.fuchsia.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:e188cbcfd40b66a8cf9af777514a1072c97a9daa/590:39",
+              "targetVariableName": "fuchsia/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.8823529481887817,
+              0.16470588743686676,
+              0.9843137264251709
+            ],
+            "alpha": 0.10196078568696976,
+            "hex": "#E12AFB"
+          },
+          "$description": "Subtle generic fuchsia border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:55",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.fuchsia.subtle.border",
+              "iOS": "LemonadeTheme.themed.fuchsia.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:e188cbcfd40b66a8cf9af777514a1072c97a9daa/590:39",
+              "targetVariableName": "fuchsia/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.658823549747467,
+              0,
+              0.7176470756530762
+            ],
+            "alpha": 1,
+            "hex": "#A800B7"
+          },
+          "$description": "Text and icons drawn on top of the subtle fuchsia background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:16",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.fuchsia.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.fuchsia.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:34713dffaf0599fbccf0da127827e7b5a7b27a3b/590:24",
+              "targetVariableName": "fuchsia/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
       }
     },
     "purple": {
@@ -6416,38 +6647,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.6779096126556396,
-            0.27594193816185,
-            1
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#AD46FF"
-        },
-        "$description": "Subtle generic purple surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:33",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.purple.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.purple.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8ffd1ae610cfa4da75bd2e7d489cfbee2bdbeec9/76:249",
-            "targetVariableName": "purple/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -6475,38 +6674,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:011ea411eb574b5e11c463705d0c2ab278382006/72:103",
             "targetVariableName": "purple/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.6779096126556396,
-            0.27594193816185,
-            1
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#AD46FF"
-        },
-        "$description": "Subtle generic purple border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:65",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.purple.borderSubtle",
-            "iOS": "LemonadeTheme.themed.purple.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8ffd1ae610cfa4da75bd2e7d489cfbee2bdbeec9/76:249",
-            "targetVariableName": "purple/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -6604,6 +6771,103 @@
             "targetVariableSetName": "Colors"
           }
         }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.6779096126556396,
+              0.27594193816185,
+              1
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#AD46FF"
+          },
+          "$description": "Subtle generic purple surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:25",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.purple.subtle.background",
+              "iOS": "LemonadeTheme.themed.purple.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:8ffd1ae610cfa4da75bd2e7d489cfbee2bdbeec9/76:249",
+              "targetVariableName": "purple/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.6779096126556396,
+              0.27594193816185,
+              1
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#AD46FF"
+          },
+          "$description": "Subtle generic purple border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:57",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.purple.subtle.border",
+              "iOS": "LemonadeTheme.themed.purple.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:8ffd1ae610cfa4da75bd2e7d489cfbee2bdbeec9/76:249",
+              "targetVariableName": "purple/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.5099056959152222,
+              0,
+              0.8572576642036438
+            ],
+            "alpha": 1,
+            "hex": "#8200DB"
+          },
+          "$description": "Text and icons drawn on top of the subtle purple background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:17",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.purple.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.purple.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:7d1020840663e8b173eb558ae2c466851c709cdc/72:100",
+              "targetVariableName": "purple/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
       }
     },
     "violet": {
@@ -6639,38 +6903,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.5559262633323669,
-            0.31816375255584717,
-            1
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#8E51FF"
-        },
-        "$description": "Subtle generic violet surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:34",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.violet.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.violet.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:291bb791b34bb447a355620f86a3f72e8723b45f/76:271",
-            "targetVariableName": "violet/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -6698,38 +6930,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:b891b27d3616ad1828212f35c90c37cda822d6a4/74:13",
             "targetVariableName": "violet/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.5559262633323669,
-            0.31816375255584717,
-            1
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#8E51FF"
-        },
-        "$description": "Subtle generic violet border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:66",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.violet.borderSubtle",
-            "iOS": "LemonadeTheme.themed.violet.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:291bb791b34bb447a355620f86a3f72e8723b45f/76:271",
-            "targetVariableName": "violet/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -6827,6 +7027,103 @@
             "targetVariableSetName": "Colors"
           }
         }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.5559262633323669,
+              0.31816375255584717,
+              1
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#8E51FF"
+          },
+          "$description": "Subtle generic violet surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:27",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.violet.subtle.background",
+              "iOS": "LemonadeTheme.themed.violet.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:291bb791b34bb447a355620f86a3f72e8723b45f/76:271",
+              "targetVariableName": "violet/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.5559262633323669,
+              0.31816375255584717,
+              1
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#8E51FF"
+          },
+          "$description": "Subtle generic violet border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:59",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.violet.subtle.border",
+              "iOS": "LemonadeTheme.themed.violet.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:291bb791b34bb447a355620f86a3f72e8723b45f/76:271",
+              "targetVariableName": "violet/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.4396858811378479,
+              0.03142301365733147,
+              0.9064206480979919
+            ],
+            "alpha": 1,
+            "hex": "#7008E7"
+          },
+          "$description": "Text and icons drawn on top of the subtle violet background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:18",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.violet.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.violet.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:5cce525c80ec6bf3b0f5c4b3476bede891893493/74:15",
+              "targetVariableName": "violet/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
       }
     },
     "indigo": {
@@ -6862,38 +7159,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.38217607140541077,
-            0.37188827991485596,
-            1
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#615FFF"
-        },
-        "$description": "Subtle generic indigo surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:35",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.indigo.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.indigo.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:5a5846e08b0d9eb77b5de2e2b83adbbe580a7c39/76:293",
-            "targetVariableName": "indigo/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -6921,38 +7186,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:752d3aedb71470db1c117dc227106ae480bbe653/72:118",
             "targetVariableName": "indigo/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.38217607140541077,
-            0.37188827991485596,
-            1
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#615FFF"
-        },
-        "$description": "Subtle generic indigo border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:67",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.indigo.borderSubtle",
-            "iOS": "LemonadeTheme.themed.indigo.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:5a5846e08b0d9eb77b5de2e2b83adbbe580a7c39/76:293",
-            "targetVariableName": "indigo/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -7050,6 +7283,103 @@
             "targetVariableSetName": "Colors"
           }
         }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.38217607140541077,
+              0.37188827991485596,
+              1
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#615FFF"
+          },
+          "$description": "Subtle generic indigo surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:29",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.indigo.subtle.background",
+              "iOS": "LemonadeTheme.themed.indigo.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:5a5846e08b0d9eb77b5de2e2b83adbbe580a7c39/76:293",
+              "targetVariableName": "indigo/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.38217607140541077,
+              0.37188827991485596,
+              1
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#615FFF"
+          },
+          "$description": "Subtle generic indigo border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:61",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.indigo.subtle.border",
+              "iOS": "LemonadeTheme.themed.indigo.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:5a5846e08b0d9eb77b5de2e2b83adbbe580a7c39/76:293",
+              "targetVariableName": "indigo/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.2643529772758484,
+              0.17659243941307068,
+              0.8448341488838196
+            ],
+            "alpha": 1,
+            "hex": "#432DD7"
+          },
+          "$description": "Text and icons drawn on top of the subtle indigo background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:19",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.indigo.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.indigo.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:d2b17880e05ecc87de782cf168beafbeb84d0420/72:126",
+              "targetVariableName": "indigo/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
       }
     },
     "blue": {
@@ -7085,38 +7415,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.16933248937129974,
-            0.49804946780204773,
-            1
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#2B7FFF"
-        },
-        "$description": "Subtle generic blue surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:36",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.blue.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.blue.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315",
-            "targetVariableName": "blue/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -7144,38 +7442,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:8606e789d83dbafb138cbb989a290014dd9416b1/72:133",
             "targetVariableName": "blue/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.16933248937129974,
-            0.49804946780204773,
-            1
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#2B7FFF"
-        },
-        "$description": "Subtle generic blue border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:68",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.blue.borderSubtle",
-            "iOS": "LemonadeTheme.themed.blue.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315",
-            "targetVariableName": "blue/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -7273,6 +7539,103 @@
             "targetVariableSetName": "Colors"
           }
         }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.16933248937129974,
+              0.49804946780204773,
+              1
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#2B7FFF"
+          },
+          "$description": "Subtle generic blue surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:31",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.blue.subtle.background",
+              "iOS": "LemonadeTheme.themed.blue.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315",
+              "targetVariableName": "blue/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.16933248937129974,
+              0.49804946780204773,
+              1
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#2B7FFF"
+          },
+          "$description": "Subtle generic blue border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:63",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.blue.subtle.border",
+              "iOS": "LemonadeTheme.themed.blue.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315",
+              "targetVariableName": "blue/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.0779077485203743,
+              0.27913516759872437,
+              0.9017744660377502
+            ],
+            "alpha": 1,
+            "hex": "#1447E6"
+          },
+          "$description": "Text and icons drawn on top of the subtle blue background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:20",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.blue.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.blue.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:a6ed5840402749dbf76d19a0d797da45c091b8a4/72:129",
+              "targetVariableName": "blue/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
       }
     },
     "cyan": {
@@ -7308,38 +7671,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0,
-            0.7218724489212036,
-            0.8573380708694458
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#00B8DB"
-        },
-        "$description": "Subtle generic cyan surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:37",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.cyan.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.cyan.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:e950c1611e1f6d7063d6d1a0db67185918839908/76:337",
-            "targetVariableName": "cyan/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -7367,38 +7698,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:563fc565566653ef6b34fd115a7a339c9b54a0b6/72:140",
             "targetVariableName": "cyan/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0,
-            0.7218724489212036,
-            0.8573380708694458
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#00B8DB"
-        },
-        "$description": "Subtle generic cyan border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:69",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.cyan.borderSubtle",
-            "iOS": "LemonadeTheme.themed.cyan.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:e950c1611e1f6d7063d6d1a0db67185918839908/76:337",
-            "targetVariableName": "cyan/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -7496,6 +7795,103 @@
             "targetVariableSetName": "Colors"
           }
         }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0,
+              0.7218724489212036,
+              0.8573380708694458
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#00B8DB"
+          },
+          "$description": "Subtle generic cyan surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:33",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.cyan.subtle.background",
+              "iOS": "LemonadeTheme.themed.cyan.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:e950c1611e1f6d7063d6d1a0db67185918839908/76:337",
+              "targetVariableName": "cyan/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0,
+              0.7218724489212036,
+              0.8573380708694458
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#00B8DB"
+          },
+          "$description": "Subtle generic cyan border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:65",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.cyan.subtle.border",
+              "iOS": "LemonadeTheme.themed.cyan.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:e950c1611e1f6d7063d6d1a0db67185918839908/76:337",
+              "targetVariableName": "cyan/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0,
+              0.45903703570365906,
+              0.5832521915435791
+            ],
+            "alpha": 1,
+            "hex": "#007595"
+          },
+          "$description": "Text and icons drawn on top of the subtle cyan background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:21",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.cyan.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.cyan.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:eef25792a986dbba70361752246fe8c68c395611/72:146",
+              "targetVariableName": "cyan/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
       }
     },
     "teal": {
@@ -7531,38 +7927,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0,
-            0.7333587408065796,
-            0.654870867729187
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#00BBA7"
-        },
-        "$description": "Subtle generic teal surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:38",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.teal.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.teal.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:e298897fac82f421303bdb392a48941b21487d47/76:359",
-            "targetVariableName": "teal/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -7590,38 +7954,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:89fbb3c36d5b433d903749121fb3081f8f09950f/72:158",
             "targetVariableName": "teal/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0,
-            0.7333587408065796,
-            0.654870867729187
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#00BBA7"
-        },
-        "$description": "Subtle generic teal border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:70",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.teal.borderSubtle",
-            "iOS": "LemonadeTheme.themed.teal.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:e298897fac82f421303bdb392a48941b21487d47/76:359",
-            "targetVariableName": "teal/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -7719,6 +8051,103 @@
             "targetVariableSetName": "Colors"
           }
         }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0,
+              0.7333587408065796,
+              0.654870867729187
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#00BBA7"
+          },
+          "$description": "Subtle generic teal surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:35",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.teal.subtle.background",
+              "iOS": "LemonadeTheme.themed.teal.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:e298897fac82f421303bdb392a48941b21487d47/76:359",
+              "targetVariableName": "teal/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0,
+              0.7333587408065796,
+              0.654870867729187
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#00BBA7"
+          },
+          "$description": "Subtle generic teal border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:67",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.teal.subtle.border",
+              "iOS": "LemonadeTheme.themed.teal.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:e298897fac82f421303bdb392a48941b21487d47/76:359",
+              "targetVariableName": "teal/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0,
+              0.4689987897872925,
+              0.4349716603755951
+            ],
+            "alpha": 1,
+            "hex": "#00786F"
+          },
+          "$description": "Text and icons drawn on top of the subtle teal background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:22",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.teal.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.teal.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:7aa7a11b55350ee6f5beedda2eec789ae59c8ea1/72:159",
+              "targetVariableName": "teal/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
       }
     },
     "green": {
@@ -7754,38 +8183,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0,
-            0.7871556282043457,
-            0.31562188267707825
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#00C950"
-        },
-        "$description": "Subtle generic green surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:39",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.green.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.green.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:10f488664318faf3dbc2f9aa376df1c8deeacc12/76:381",
-            "targetVariableName": "green/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -7813,38 +8210,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:8c51290ae15a1290cab12aa6056843e544bf7a7b/72:161",
             "targetVariableName": "green/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0,
-            0.7871556282043457,
-            0.31562188267707825
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#00C950"
-        },
-        "$description": "Subtle generic green border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:71",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.green.borderSubtle",
-            "iOS": "LemonadeTheme.themed.green.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:10f488664318faf3dbc2f9aa376df1c8deeacc12/76:381",
-            "targetVariableName": "green/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -7942,6 +8307,103 @@
             "targetVariableSetName": "Colors"
           }
         }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0,
+              0.7871556282043457,
+              0.31562188267707825
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#00C950"
+          },
+          "$description": "Subtle generic green surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:37",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.green.subtle.background",
+              "iOS": "LemonadeTheme.themed.green.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:10f488664318faf3dbc2f9aa376df1c8deeacc12/76:381",
+              "targetVariableName": "green/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0,
+              0.7871556282043457,
+              0.31562188267707825
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#00C950"
+          },
+          "$description": "Subtle generic green border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:69",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.green.subtle.border",
+              "iOS": "LemonadeTheme.themed.green.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:10f488664318faf3dbc2f9aa376df1c8deeacc12/76:381",
+              "targetVariableName": "green/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0,
+              0.5099976658821106,
+              0.20980969071388245
+            ],
+            "alpha": 1,
+            "hex": "#008236"
+          },
+          "$description": "Text and icons drawn on top of the subtle green background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:23",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.green.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.green.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:cdfaf322851d9055db21e5c99f8aa75166d186d4/72:168",
+              "targetVariableName": "green/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
       }
     },
     "green-lime": {
@@ -7977,38 +8439,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.4872932434082031,
-            0.8099173903465271,
-            0
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#7CCF00"
-        },
-        "$description": "Subtle generic green lime surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:40",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.greenLime.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.greenLime.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:169b48022f4a60164b3d49fb0e10aced4427846a/76:403",
-            "targetVariableName": "green-lime/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -8036,38 +8466,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:a42113c6629bb91bae8d01d8fcc64054dc203a48/72:180",
             "targetVariableName": "green-lime/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.4872932434082031,
-            0.8099173903465271,
-            0
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#7CCF00"
-        },
-        "$description": "Subtle generic green lime border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:72",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.greenLime.borderSubtle",
-            "iOS": "LemonadeTheme.themed.greenLime.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:169b48022f4a60164b3d49fb0e10aced4427846a/76:403",
-            "targetVariableName": "green-lime/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -8165,6 +8563,103 @@
             "targetVariableSetName": "Colors"
           }
         }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.4872932434082031,
+              0.8099173903465271,
+              0
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#7CCF00"
+          },
+          "$description": "Subtle generic green lime surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:39",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.greenLime.subtle.background",
+              "iOS": "LemonadeTheme.themed.greenLime.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:169b48022f4a60164b3d49fb0e10aced4427846a/76:403",
+              "targetVariableName": "green-lime/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.4872932434082031,
+              0.8099173903465271,
+              0
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#7CCF00"
+          },
+          "$description": "Subtle generic green lime border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:71",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.greenLime.subtle.border",
+              "iOS": "LemonadeTheme.themed.greenLime.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:169b48022f4a60164b3d49fb0e10aced4427846a/76:403",
+              "targetVariableName": "green-lime/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.2848081886768341,
+              0.49150213599205017,
+              0
+            ],
+            "alpha": 1,
+            "hex": "#497D00"
+          },
+          "$description": "Text and icons drawn on top of the subtle green lime background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:24",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.greenLime.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.greenLime.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181",
+              "targetVariableName": "green-lime/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
       }
     },
     "yellow-lime": {
@@ -8200,38 +8695,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.8823529481887817,
-            0.8980392217636108,
-            0.10196078568696976
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#E1E51A"
-        },
-        "$description": "Subtle generic yellow lime surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:41",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.yellowLime.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.yellowLime.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:a7751070191f972d99f13f9b71dabea2f0894547/90:22",
-            "targetVariableName": "yellow-lime/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -8259,38 +8722,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:e101b2da4e92f186cf4f636e7e0ac67eb6e5bd72/405:10",
             "targetVariableName": "yellow-lime/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.8823529481887817,
-            0.8980392217636108,
-            0.10196078568696976
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#E1E51A"
-        },
-        "$description": "Subtle generic yellow lime border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5196:73",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.yellowLime.borderSubtle",
-            "iOS": "LemonadeTheme.themed.yellowLime.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:a7751070191f972d99f13f9b71dabea2f0894547/90:22",
-            "targetVariableName": "yellow-lime/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -8388,6 +8819,103 @@
             "targetVariableSetName": "Colors"
           }
         }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.8823529481887817,
+              0.8980392217636108,
+              0.10196078568696976
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#E1E51A"
+          },
+          "$description": "Subtle generic yellow lime surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:41",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.yellowLime.subtle.background",
+              "iOS": "LemonadeTheme.themed.yellowLime.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:a7751070191f972d99f13f9b71dabea2f0894547/90:22",
+              "targetVariableName": "yellow-lime/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.8823529481887817,
+              0.8980392217636108,
+              0.10196078568696976
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#E1E51A"
+          },
+          "$description": "Subtle generic yellow lime border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5196:73",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.yellowLime.subtle.border",
+              "iOS": "LemonadeTheme.themed.yellowLime.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:a7751070191f972d99f13f9b71dabea2f0894547/90:22",
+              "targetVariableName": "yellow-lime/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.42639997601509094,
+              0.46799999475479126,
+              0.052000001072883606
+            ],
+            "alpha": 1,
+            "hex": "#6D770D"
+          },
+          "$description": "Text and icons drawn on top of the subtle yellow lime background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:25",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.yellowLime.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.yellowLime.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:6d9c92c71562a356221eeae95c51cd6962648e80/394:22",
+              "targetVariableName": "yellow-lime/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
       }
     },
     "neutral": {
@@ -8423,38 +8951,6 @@
           }
         }
       },
-      "background-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.46000000834465027,
-            0.4200000762939453,
-            0.3400000035762787
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#756B57"
-        },
-        "$description": "Subtle generic neutral surface. Use behind content, optionally outlined with border-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5197:11",
-          "com.figma.scopes": [
-            "FRAME_FILL",
-            "SHAPE_FILL",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.neutral.backgroundSubtle",
-            "iOS": "LemonadeTheme.themed.neutral.backgroundSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/504:61",
-            "targetVariableName": "neutral/alpha/100",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
       "border": {
         "$type": "color",
         "$value": {
@@ -8482,38 +8978,6 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:24c08dfd7f4ff5eaec42f78097cb8353cf15e38b/424:6",
             "targetVariableName": "neutral/600",
-            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
-            "targetVariableSetName": "Colors"
-          }
-        }
-      },
-      "border-subtle": {
-        "$type": "color",
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [
-            0.46000000834465027,
-            0.4200000762939453,
-            0.3400000035762787
-          ],
-          "alpha": 0.10000000149011612,
-          "hex": "#756B57"
-        },
-        "$description": "Subtle generic neutral border. Pairs with background-subtle.",
-        "$extensions": {
-          "com.figma.variableId": "VariableID:5197:13",
-          "com.figma.scopes": [
-            "SHAPE_FILL",
-            "STROKE_COLOR",
-            "EFFECT_COLOR"
-          ],
-          "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.neutral.borderSubtle",
-            "iOS": "LemonadeTheme.themed.neutral.borderSubtle"
-          },
-          "com.figma.aliasData": {
-            "targetVariableId": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/504:61",
-            "targetVariableName": "neutral/alpha/100",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -8609,6 +9073,103 @@
             "targetVariableName": "neutral/50",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "subtle": {
+        "background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.46000000834465027,
+              0.4200000762939453,
+              0.3400000035762787
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#756B57"
+          },
+          "$description": "Subtle generic neutral surface. Pair with on-background for the label, optionally outlined with border.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5197:11",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.neutral.subtle.background",
+              "iOS": "LemonadeTheme.themed.neutral.subtle.background"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/504:61",
+              "targetVariableName": "neutral/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.46000000834465027,
+              0.4200000762939453,
+              0.3400000035762787
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#756B57"
+          },
+          "$description": "Subtle generic neutral border. Pairs with background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5197:13",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "STROKE_COLOR",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.neutral.subtle.border",
+              "iOS": "LemonadeTheme.themed.neutral.subtle.border"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/504:61",
+              "targetVariableName": "neutral/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "on-background": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.03529411926865578,
+              0.0313725508749485,
+              0.0235294122248888
+            ],
+            "alpha": 0.925000011920929,
+            "hex": "#090806"
+          },
+          "$description": "Text and icons drawn on top of the subtle neutral background. The hue's own content colour, which stays legible on a pale fill.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5208:26",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.themed.neutral.subtle.onBackground",
+              "iOS": "LemonadeTheme.themed.neutral.subtle.onBackground"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+              "targetVariableName": "neutral/alpha/900",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
           }
         }
       }

@@ -8,6 +8,9 @@ import java.io.File
 /** The themed layer lives under this group inside the Theme collection. */
 private val THEMED_GROUP = "Themed"
 
+/** The nested variant group inside each hue. */
+private val SUBTLE_GROUP = "Subtle"
+
 fun main() {
     val outputDir = File("swiftui/Sources/Lemonade")
 
@@ -81,24 +84,46 @@ fun main() {
     }
 }
 
+private fun <T> partition(
+    resources: List<ResourceData<T>>,
+): Pair<Map<String, List<ResourceData<T>>>, Map<String, List<ResourceData<T>>>> {
+    val primary = resources.filter { it.groups.size == 2 }.groupBy { it.groups[1] }
+    val subtle = resources.filter { it.groups.size == 3 && it.groups[2] == SUBTLE_GROUP }
+        .groupBy { it.groups[1] }
+    require(primary.keys == subtle.keys) {
+        "Every hue needs both a primary and a subtle group.\n" +
+            "  primary only: ${primary.keys - subtle.keys}\n  subtle only: ${subtle.keys - primary.keys}"
+    }
+    return primary to subtle
+}
+
+private fun <T> sharedSlots(
+    primary: Map<String, List<ResourceData<T>>>,
+    subtle: Map<String, List<ResourceData<T>>>,
+): Pair<List<String>, List<String>> {
+    fun uniform(groups: Map<String, List<ResourceData<T>>>, what: String): List<String> {
+        val sets = groups.values.map { group -> group.map { it.name } }
+        val first = sets.first()
+        sets.forEach { slots ->
+            require(slots == first) { "Themed $what groups declare different slots:\n  $first\n  vs\n  $slots" }
+        }
+        return first
+    }
+    val common = uniform(subtle, "subtle")
+    val all = uniform(primary, "primary")
+    require(all.containsAll(common)) {
+        "Subtle slots must be a subset of the primary slots so both can share ThemedColor.\n" +
+            "  primary: $all\n  subtle:  $common"
+    }
+    return common to all.filterNot { it in common }
+}
+
 private fun buildThemedProtocolCode(
     scriptFilePath: String,
     resources: List<ResourceData<Unit>>,
 ): String {
-    val grouped = resources.groupBy { it.groups.getOrNull(1) }
-
-    // ThemedColor is only sound while every group declares exactly the same slots.
-    // If a group ever differs - a variant with a reduced slot set, say - fail loudly
-    // here rather than silently emitting a supertype the groups do not satisfy.
-    val slotSets = grouped.values.map { group -> group.map { it.name } }
-    val sharedSlots = slotSets.first()
-    slotSets.forEach { slots ->
-        require(slots == sharedSlots) {
-            "Themed groups declare different slots, so they cannot share ThemedColor:\n" +
-                "  $sharedSlots\n  vs\n  $slots"
-        }
-    }
-
+    val (primary, subtle) = partition(resources)
+    val (commonSlots, primaryOnlySlots) = sharedSlots(primary, subtle)
     return buildString {
         appendLine("import SwiftUI")
         appendLine()
@@ -109,35 +134,41 @@ private fun buildThemedProtocolCode(
         appendLine("/// application meaning the design system does not model - chart series, categories,")
         appendLine("/// per-role or per-status accents.")
         appendLine("///")
+        appendLine("/// Each hue carries a saturated palette and a `subtle` one, so a component can hold")
+        appendLine("/// either as a `ThemedColor` and style itself from it.")
+        appendLine("///")
         appendLine("/// Prefer a semantic token whenever one fits.")
         appendLine("///")
         defaultSwiftAutoGenerationMessage(scriptFilePath = scriptFilePath).lines().forEach { line ->
             appendLine("/// $line")
         }
         appendLine()
-        appendLine("/// The slots every themed color provides, so one can be passed around as a")
-        appendLine("/// value - a chart series, a per-role accent, a category - without naming a")
-        appendLine("/// specific one.")
+        appendLine("/// The slots every themed palette provides, saturated or subtle alike, so one can be")
+        appendLine("/// passed around as a value - a chart series, a per-role accent, a category.")
         appendLine("///")
         appendLine("/// ```swift")
-        appendLine("/// let series: [ThemedColor] = [LemonadeTheme.themed.blue, LemonadeTheme.themed.amber]")
-        appendLine("/// series.map(\\.background)")
+        appendLine("/// let style: ThemedColor = subtle ? LemonadeTheme.themed.blue.subtle : LemonadeTheme.themed.blue")
         appendLine("/// ```")
         appendLine("public protocol ThemedColor {")
-        sharedSlots.forEach { slot ->
-            appendLine("    var $slot: Color { get }")
-        }
+        commonSlots.forEach { appendLine("    var $it: Color { get }") }
         appendLine("}")
         appendLine()
-        grouped.keys.filterNotNull().forEach { groupName ->
-            appendLine("/// Themed ${groupName.lowercase()} color definitions")
-            appendLine("public protocol Themed${groupName}Colors: ThemedColor {}")
+        appendLine("/// A hue's saturated palette. Adds the slots that only make sense on the hue itself,")
+        appendLine("/// plus its `subtle` counterpart.")
+        appendLine("public protocol ThemedPrimaryColor: ThemedColor {")
+        primaryOnlySlots.forEach { appendLine("    var $it: Color { get }") }
+        appendLine("    var subtle: ThemedColor { get }")
+        appendLine("}")
+        appendLine()
+        primary.keys.forEach { hue ->
+            appendLine("/// Themed ${hue.lowercase()} color definitions")
+            appendLine("public protocol Themed${hue}Colors: ThemedPrimaryColor {}")
             appendLine()
         }
         appendLine("/// Protocol defining themed color categories")
         appendLine("public protocol LemonadeThemedColors {")
-        grouped.keys.filterNotNull().forEach { groupName ->
-            appendLine("    var ${groupName.sanitizedSwiftValueName()}: Themed${groupName}Colors { get }")
+        primary.keys.forEach { hue ->
+            appendLine("    var ${hue.sanitizedSwiftValueName()}: Themed${hue}Colors { get }")
         }
         appendLine("}")
     }
@@ -147,24 +178,35 @@ private fun buildAdaptiveThemedCode(
     scriptFilePath: String,
     resourcesWithAssets: List<Pair<ResourceData<Unit>, String>>,
 ): String {
-    val grouped = resourcesWithAssets.groupBy { it.first.groups.getOrNull(1) }
+    val assetOf = resourcesWithAssets.associate { (resource, asset) ->
+        (resource.groups + resource.name).joinToString("/") to asset
+    }
+    val (primary, subtle) = partition(resourcesWithAssets.map { it.first })
+    fun asset(resource: ResourceData<Unit>) =
+        assetOf.getValue((resource.groups + resource.name).joinToString("/"))
+
     return buildString {
-        grouped.forEach { (groupName, groupResources) ->
-            if (groupName != null) {
-                appendLine("private struct AdaptiveThemed${groupName}Colors: Themed${groupName}Colors {")
-                groupResources.forEach { (resource, assetName) ->
-                    appendLine("    let ${resource.name} = Color(\"${assetName}\", bundle: .lemonade)")
-                }
-                appendLine("}")
-                appendLine()
+        primary.keys.forEach { hue ->
+            appendLine("private struct AdaptiveThemed${hue}SubtleColors: ThemedColor {")
+            subtle.getValue(hue).forEach { resource ->
+                appendLine("    let ${resource.name} = Color(\"${asset(resource)}\", bundle: .lemonade)")
             }
+            appendLine("}")
+            appendLine()
+            appendLine("private struct AdaptiveThemed${hue}Colors: Themed${hue}Colors {")
+            primary.getValue(hue).forEach { resource ->
+                appendLine("    let ${resource.name} = Color(\"${asset(resource)}\", bundle: .lemonade)")
+            }
+            appendLine("    let subtle: ThemedColor = AdaptiveThemed${hue}SubtleColors()")
+            appendLine("}")
+            appendLine()
         }
         appendLine("/// Themed palette implementation - colors resolve automatically via Asset Catalog")
         appendLine("public struct LemonadeAdaptiveThemedColors: LemonadeThemedColors {")
         appendLine("    public init() {}")
         appendLine()
-        grouped.keys.filterNotNull().forEach { groupName ->
-            appendLine("    public let ${groupName.sanitizedSwiftValueName()}: Themed${groupName}Colors = AdaptiveThemed${groupName}Colors()")
+        primary.keys.forEach { hue ->
+            appendLine("    public let ${hue.sanitizedSwiftValueName()}: Themed${hue}Colors = AdaptiveThemed${hue}Colors()")
         }
         appendLine("}")
     }

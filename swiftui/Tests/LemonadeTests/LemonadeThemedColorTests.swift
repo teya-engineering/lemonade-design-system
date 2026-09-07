@@ -16,10 +16,11 @@ final class LemonadeThemedColorTests: XCTestCase {
         "neutral",
     ]
 
-    private static let slots = [
-        "background", "background-subtle", "border", "border-subtle",
-        "content", "content-on-color", "on-background",
+    private static let primarySlots = [
+        "background", "border", "content", "content-on-color", "on-background",
     ]
+
+    private static let subtleSlots = ["background", "border", "on-background"]
 
     /// Looks an asset up through the platform colour type. `Color(_:bundle:)` succeeds
     /// even when the asset is missing, so it cannot detect a broken lookup.
@@ -38,19 +39,19 @@ final class LemonadeThemedColorTests: XCTestCase {
         // per-role mapping can hold them in a collection and read slots off them. This
         // only compiles because every group conforms to ThemedColor — without it the
         // array infers as [Any] and `\.background` does not resolve.
-        let series: [ThemedColor] = [
+        let series: [ThemedPrimaryColor] = [
             LemonadeTheme.themed.blue,
             LemonadeTheme.themed.amber,
             LemonadeTheme.themed.neutral,
         ]
         XCTAssertEqual(series.map(\.background).count, 3)
 
-        // A component can style itself entirely from one ThemedColor.
+        // Either palette is a ThemedColor, so a component picks one and styles from it.
         func style(_ colour: ThemedColor) -> [Color] {
-            [colour.background, colour.backgroundSubtle, colour.border, colour.borderSubtle,
-             colour.content, colour.contentOnColor, colour.onBackground]
+            [colour.background, colour.border, colour.onBackground]
         }
-        XCTAssertEqual(style(LemonadeTheme.themed.violet).count, 7)
+        XCTAssertEqual(style(LemonadeTheme.themed.violet).count, 3)
+        XCTAssertEqual(style(LemonadeTheme.themed.violet.subtle).count, 3)
     }
 
     func testEveryThemedAssetResolvesInTheBundle() throws {
@@ -65,8 +66,12 @@ final class LemonadeThemedColorTests: XCTestCase {
         )
 
         for hue in Self.hues {
-            for slot in Self.slots {
+            for slot in Self.primarySlots {
                 let name = "lemonade-themed-\(hue)-\(slot)"
+                XCTAssertNotNil(namedColor(name), "missing asset \(name)")
+            }
+            for slot in Self.subtleSlots {
+                let name = "lemonade-themed-\(hue)-subtle-\(slot)"
                 XCTAssertNotNil(namedColor(name), "missing asset \(name)")
             }
         }
