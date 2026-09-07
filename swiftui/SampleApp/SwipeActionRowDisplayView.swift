@@ -314,6 +314,43 @@ struct SwipeActionRowDisplayView: View {
                         }
                     }
 
+                    // Both affordances on one row: the swipe and the hold. A press drifts far
+                    // enough to claim the drag on its way to the menu, and the row has to give
+                    // that claim back rather than sit offset behind the menu until it goes.
+                    LemonadeUi.Card(
+                        header: CardHeaderConfig(
+                            title: "Swipe or hold",
+                            subtitle: "The content carries a context menu. Holding the row leaves it where it is."
+                        )
+                    ) {
+                        LemonadeUi.SwipeActionRow(
+                            actions: [
+                                LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: { })
+                            ],
+                            allowsFullSwipe: false
+                        ) {
+                            LemonadeUi.ActionListItem(
+                                label: "Swipe or hold",
+                                supportText: "Both reach Delete",
+                                showDivider: false,
+                                onItemClicked: { }
+                            )
+                            // The lift a context menu does is a snapshot of the view it is
+                            // attached to, and a list item's own fill is clear — the Card behind
+                            // it is the surface. Without one of its own the row lifts as floating
+                            // text, so this gives it the fill and the shape the row already wears
+                            // under a finger.
+                            .background(
+                                RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
+                                    .fill(LemonadeTheme.colors.background.bgDefault)
+                                    .padding(LemonadeTheme.spaces.spacing100)
+                            )
+                            .contextMenu {
+                                Button("Delete", role: .destructive) { }
+                            }
+                        }
+                    }
+
                     LemonadeUi.Card(
                         header: CardHeaderConfig(
                             title: "enabled: false",
