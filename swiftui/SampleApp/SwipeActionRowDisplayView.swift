@@ -20,6 +20,7 @@ struct SwipeActionRowDisplayView: View {
     @State private var fired = 0
     @State private var pinned = false
     @State private var read = false
+    @State private var bothEdgesRead = false
     @State private var deleted = 0
     /// The caller decides which row is open, including before anyone has touched one.
     @State private var startsOpenId: AnyHashable? = "unread"
@@ -209,7 +210,7 @@ struct SwipeActionRowDisplayView: View {
                                 LemonadeSwipeAction(
                                     icon: .check,
                                     contentDescription: "Mark as read",
-                                    onClick: { read.toggle() },
+                                    onClick: { bothEdgesRead.toggle() },
                                     variant: .primary
                                 ),
                                 LemonadeSwipeAction(
@@ -225,7 +226,7 @@ struct SwipeActionRowDisplayView: View {
                                 // Counted rather than removed, so either swipe can be tried again.
                                 supportText: deleted > 0
                                     ? "Delete fired \(deleted)×"
-                                    : (read ? "Read" : "Unread"),
+                                    : (bothEdgesRead ? "Read" : "Unread"),
                                 showDivider: false,
                                 onItemClicked: { }
                             )

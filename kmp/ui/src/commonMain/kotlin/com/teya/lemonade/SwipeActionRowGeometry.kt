@@ -1,5 +1,7 @@
 package com.teya.lemonade
 
+import kotlin.math.abs
+
 /*
  * The geometry a swipe action row is drawn from.
  *
@@ -25,10 +27,16 @@ private const val COMMIT_FRACTION = 0.55f
  */
 internal fun swipeCommitThreshold(rowWidth: Float): Float = rowWidth * COMMIT_FRACTION
 
-/** Which edge of the row a reveal belongs to. */
-internal enum class SwipeActionSide {
-    Leading,
-    Trailing,
+/**
+ * Which edge of the row a reveal belongs to, and which way its travel points.
+ *
+ * The sign belongs to the side rather than to the code that uses it: everything sided is resolved
+ * on a magnitude and signed back by exactly this, so one definition is what keeps the row, the
+ * strip and the settle agreeing about which way is out.
+ */
+internal enum class SwipeActionSide(val sign: Float) {
+    Leading(sign = -1f),
+    Trailing(sign = 1f),
 }
 
 /**
@@ -88,33 +96,46 @@ internal fun resolveSwipeCeiling(
  * Where a delta leaves the row, in signed travel.
  *
  * Held to the side the gesture owns, so it stops at rest rather than crossing into the other edge's
- * actions. [side] is null only while a row at rest has not been moved, where either way is still
- * open to it and the result is zero regardless.
+ * actions — which is the whole of the rule, once the side's own sign turns the drag into a
+ * magnitude and back. A row at rest that has not been moved owns no side yet, and has not gone
+ * anywhere.
  *
  * @param travel where the row is now, signed.
  * @param delta how far the finger has moved, in travel's own sign.
  * @param side the side this gesture owns.
- * @param leadingCeiling how far the row may travel onto its leading actions.
- * @param trailingCeiling how far the row may travel onto its trailing actions.
+ * @param ceiling how far the row may travel onto that side.
  */
 internal fun resolveSwipeTravel(
     travel: Float,
     delta: Float,
     side: SwipeActionSide?,
-    leadingCeiling: Float,
-    trailingCeiling: Float,
+    ceiling: Float,
 ): Float {
-    val next = travel + delta
-    val held = when (side) {
-        SwipeActionSide.Leading -> next.coerceIn(-leadingCeiling, 0f)
-        SwipeActionSide.Trailing -> next.coerceIn(0f, trailingCeiling)
-        null -> next.coerceIn(-leadingCeiling, trailingCeiling)
-    }
-    // Clamping a leading drag against an empty side's own ceiling leaves negative zero, whose sign
-    // reads as Leading while the row is plainly at rest. Here the sign is the side, so a row that
-    // has not moved must not carry one.
-    return if (held == 0f) 0f else held
+    val sign = side?.sign
+        ?: return 0f
+    return sign * ((travel + delta) * sign).coerceIn(0f, ceiling)
 }
+
+/**
+ * Whether the row has been carried far enough for a full swipe to commit.
+ *
+ * Beside [swipeCommitThreshold] because it is the whole of what the threshold is for, and one place
+ * because both the live drag and the release ask it. Restating it is how the two drift: the drag's
+ * own copy once lacked the [rowWidth] guard, and an unmeasured row — whose threshold is zero — read
+ * every touch as a commit.
+ *
+ * @param travel distance the row has moved from closed, in either direction.
+ * @param rowWidth full width of the row.
+ * @param allowsFullSwipe whether a drag across the row may commit an action at all.
+ */
+internal fun swipeCrossedCommit(
+    travel: Float,
+    rowWidth: Float,
+    allowsFullSwipe: Boolean,
+): Boolean =
+    allowsFullSwipe &&
+        rowWidth > 0f &&
+        abs(travel) >= swipeCommitThreshold(rowWidth = rowWidth)
 
 /** Deceleration a released row is left to coast on, matching a scroll's normal rate. */
 private const val DECELERATION_RATE = 0.998f
@@ -218,10 +239,11 @@ internal fun resolveSwipeSettle(
         // with nothing behind it has nothing to fire.
         firstActionReveal <= 0f -> SwipeSettleTarget.Closed
 
-        // A row that has not been measured has no width to have crossed half of: the threshold
-        // would be zero, and every release — including one that never moved — would commit.
-        allowsFullSwipe && rowWidth > 0f && travel >= swipeCommitThreshold(rowWidth = rowWidth) ->
-            SwipeSettleTarget.Committed
+        swipeCrossedCommit(
+            travel = travel,
+            rowWidth = rowWidth,
+            allowsFullSwipe = allowsFullSwipe,
+        ) -> SwipeSettleTarget.Committed
         projectedTravel(travel = travel, velocity = velocity) >= firstActionReveal ->
             SwipeSettleTarget.Open
 

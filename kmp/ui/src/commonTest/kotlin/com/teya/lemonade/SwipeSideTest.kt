@@ -2,7 +2,9 @@ package com.teya.lemonade
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 /**
  * Covers the rules that give a swipe a side: which one a gesture owns, how far the row may travel
@@ -96,15 +98,13 @@ class SwipeSideTest {
         travel: Float,
         delta: Float,
         side: SwipeActionSide?,
-        leadingCeiling: Float = rowWidth,
-        trailingCeiling: Float = rowWidth,
+        ceiling: Float = rowWidth,
     ): Float =
         resolveSwipeTravel(
             travel = travel,
             delta = delta,
             side = side,
-            leadingCeiling = leadingCeiling,
-            trailingCeiling = trailingCeiling,
+            ceiling = ceiling,
         )
 
     /** Leading travel is negative, which is the whole of what tells the row which strip to draw. */
@@ -123,17 +123,22 @@ class SwipeSideTest {
     /**
      * A gesture that has closed the row stops there. Carrying on into the other side's actions
      * would turn one drag back into a commit on the opposite edge.
+     *
+     * Compared numerically rather than by equality: a leading gesture signs its clamped magnitude
+     * back and lands on negative zero, which is the same place as zero — [swipeTravelSide] reads
+     * both as at rest, since `-0f < 0f` is false — but is a different `Float` object to boxed
+     * equality.
      */
     @Test
     fun `a gesture cannot cross into the other side`() {
         assertEquals(
             expected = 0f,
             actual = travel(travel = 10f, delta = -50f, side = SwipeActionSide.Trailing),
+            absoluteTolerance = 0f,
         )
-        assertEquals(
-            expected = 0f,
-            actual = travel(travel = -10f, delta = 50f, side = SwipeActionSide.Leading),
-        )
+        val backToRest = travel(travel = -10f, delta = 50f, side = SwipeActionSide.Leading)
+        assertEquals(expected = 0f, actual = backToRest, absoluteTolerance = 0f)
+        assertNull(actual = swipeTravelSide(travel = backToRest))
     }
 
     @Test
@@ -144,7 +149,7 @@ class SwipeSideTest {
                 travel = 0f,
                 delta = 400f,
                 side = SwipeActionSide.Trailing,
-                trailingCeiling = revealWidth,
+                ceiling = revealWidth,
             ),
         )
         assertEquals(
@@ -153,31 +158,78 @@ class SwipeSideTest {
                 travel = 0f,
                 delta = -400f,
                 side = SwipeActionSide.Leading,
-                leadingCeiling = revealWidth,
+                ceiling = revealWidth,
             ),
         )
     }
 
-    /** A side with nothing behind it holds the row at rest however hard it is dragged. */
+    /**
+     * A side with nothing behind it holds the row at rest however hard it is dragged, and does not
+     * come back carrying a sign that would read as the side it could not move onto.
+     */
     @Test
     fun `an empty side does not move`() {
-        assertEquals(
-            expected = 0f,
-            actual = travel(
-                travel = 0f,
-                delta = -400f,
-                side = SwipeActionSide.Leading,
-                leadingCeiling = 0f,
-            ),
+        val held = travel(
+            travel = 0f,
+            delta = -400f,
+            side = SwipeActionSide.Leading,
+            ceiling = 0f,
         )
+        assertEquals(expected = 0f, actual = held, absoluteTolerance = 0f)
+        assertNull(actual = swipeTravelSide(travel = held))
     }
 
-    /** Undecided only while the row is at rest and the finger has not moved, so it may go either way. */
+    /**
+     * A gesture that owns no side yet is a row at rest that has not been moved, so it has not gone
+     * anywhere.
+     */
     @Test
-    fun `an undecided gesture is held to both ceilings`() {
+    fun `a gesture that owns no side has not moved`() {
         assertEquals(
             expected = 0f,
             actual = travel(travel = 0f, delta = 0f, side = null),
         )
     }
+
+    // swipeCrossedCommit
+
+    @Test
+    fun `a drag past the threshold crosses, either way`() {
+        assertTrue(
+            actual = crossed(travel = 200f),
+        )
+        assertTrue(
+            actual = crossed(travel = -200f),
+        )
+    }
+
+    @Test
+    fun `a drag short of it does not`() {
+        assertFalse(actual = crossed(travel = 190f))
+    }
+
+    /**
+     * An unmeasured row has no width to have crossed half of: without the guard the threshold is
+     * zero and a drag that never moved reads as a commit.
+     */
+    @Test
+    fun `an unmeasured row never crosses`() {
+        assertFalse(actual = crossed(travel = 0f, rowWidth = 0f))
+    }
+
+    @Test
+    fun `nothing crosses without a full swipe`() {
+        assertFalse(actual = crossed(travel = 300f, allowsFullSwipe = false))
+    }
+
+    private fun crossed(
+        travel: Float,
+        rowWidth: Float = this.rowWidth,
+        allowsFullSwipe: Boolean = true,
+    ): Boolean =
+        swipeCrossedCommit(
+            travel = travel,
+            rowWidth = rowWidth,
+            allowsFullSwipe = allowsFullSwipe,
+        )
 }

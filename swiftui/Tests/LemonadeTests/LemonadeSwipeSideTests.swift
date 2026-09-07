@@ -62,15 +62,13 @@ final class LemonadeSwipeSideTests: XCTestCase {
         _ travel: CGFloat,
         delta: CGFloat,
         side: SwipeActionSide?,
-        leadingCeiling: CGFloat? = nil,
-        trailingCeiling: CGFloat? = nil
+        ceiling: CGFloat? = nil
     ) -> CGFloat {
         resolveSwipeTravel(
             travel: travel,
             delta: delta,
             side: side,
-            leadingCeiling: leadingCeiling ?? rowWidth,
-            trailingCeiling: trailingCeiling ?? rowWidth
+            ceiling: ceiling ?? rowWidth
         )
     }
 
@@ -88,27 +86,50 @@ final class LemonadeSwipeSideTests: XCTestCase {
     }
 
     func testTravelCapsAtItsOwnSidesCeiling() {
-        XCTAssertEqual(
-            travel(0, delta: 400, side: .trailing, trailingCeiling: revealWidth),
-            revealWidth
-        )
-        XCTAssertEqual(
-            travel(0, delta: -400, side: .leading, leadingCeiling: revealWidth),
-            -revealWidth
-        )
+        XCTAssertEqual(travel(0, delta: 400, side: .trailing, ceiling: revealWidth), revealWidth)
+        XCTAssertEqual(travel(0, delta: -400, side: .leading, ceiling: revealWidth), -revealWidth)
     }
 
     /// A side with nothing behind it holds the row at rest however hard it is dragged, and does
     /// not come back carrying a sign that would read as the side it could not move onto.
     func testAnEmptySideDoesNotMove() {
-        let held = travel(0, delta: -400, side: .leading, leadingCeiling: 0)
+        let held = travel(0, delta: -400, side: .leading, ceiling: 0)
         XCTAssertEqual(held, 0)
         XCTAssertNil(swipeTravelSide(travel: held))
     }
 
-    /// Undecided only while the row is at rest and the finger has not moved, so it may go either
-    /// way.
-    func testAnUndecidedGestureIsHeldToBothCeilings() {
+    /// A gesture that owns no side yet is a row at rest that has not been moved, so it has not
+    /// gone anywhere.
+    func testAGestureThatOwnsNoSideHasNotMoved() {
         XCTAssertEqual(travel(0, delta: 0, side: nil), 0)
+    }
+
+    // MARK: - swipeCrossedCommit
+
+    func testADragPastTheThresholdCrosses() {
+        XCTAssertTrue(
+            swipeCrossedCommit(travel: 200, rowWidth: rowWidth, allowsFullSwipe: true)
+        )
+        XCTAssertTrue(
+            swipeCrossedCommit(travel: -200, rowWidth: rowWidth, allowsFullSwipe: true)
+        )
+    }
+
+    func testADragShortOfItDoesNot() {
+        XCTAssertFalse(
+            swipeCrossedCommit(travel: 190, rowWidth: rowWidth, allowsFullSwipe: true)
+        )
+    }
+
+    /// An unmeasured row has no width to have crossed half of: without the guard the threshold is
+    /// zero and a drag that never moved reads as a commit.
+    func testAnUnmeasuredRowNeverCrosses() {
+        XCTAssertFalse(swipeCrossedCommit(travel: 0, rowWidth: 0, allowsFullSwipe: true))
+    }
+
+    func testNothingCrossesWithoutFullSwipe() {
+        XCTAssertFalse(
+            swipeCrossedCommit(travel: 300, rowWidth: rowWidth, allowsFullSwipe: false)
+        )
     }
 }

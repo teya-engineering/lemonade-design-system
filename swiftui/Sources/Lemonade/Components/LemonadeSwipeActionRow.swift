@@ -37,10 +37,16 @@ func swipeCommitThreshold(rowWidth: CGFloat) -> CGFloat {
     rowWidth * commitFraction
 }
 
-/// Which edge of the row a reveal belongs to.
+/// Which edge of the row a reveal belongs to, and which way its travel points.
+///
+/// The sign belongs to the side rather than to the code that uses it: everything sided is resolved
+/// on a magnitude and signed back by exactly this, so one definition is what keeps the row, the
+/// strip and the settle agreeing about which way is out.
 enum SwipeActionSide {
     case leading
     case trailing
+
+    var sign: CGFloat { self == .leading ? -1 : 1 }
 }
 
 /// The side a signed travel has the row open on, or nil at rest.
@@ -91,33 +97,42 @@ func resolveSwipeCeiling(
 /// Where a delta leaves the row, in signed travel.
 ///
 /// Held to the side the gesture owns, so it stops at rest rather than crossing into the other
-/// edge's actions. `side` is nil only while a row at rest has not been moved, where either way is
-/// still open to it and the result is zero regardless.
+/// edge's actions — which is the whole of the rule, once the side's own sign turns the drag into a
+/// magnitude and back. A row at rest that has not been moved owns no side yet, and has not gone
+/// anywhere.
 ///
 /// - Parameters:
 ///   - travel: where the row is now, signed.
 ///   - delta: how far the finger has moved, in travel's own sign.
 ///   - side: the side this gesture owns.
-///   - leadingCeiling: how far the row may travel onto its leading actions.
-///   - trailingCeiling: how far the row may travel onto its trailing actions.
+///   - ceiling: how far the row may travel onto that side.
 func resolveSwipeTravel(
     travel: CGFloat,
     delta: CGFloat,
     side: SwipeActionSide?,
-    leadingCeiling: CGFloat,
-    trailingCeiling: CGFloat
+    ceiling: CGFloat
 ) -> CGFloat {
-    let next = travel + delta
-    let held: CGFloat
-    switch side {
-    case .leading: held = min(max(next, -leadingCeiling), 0)
-    case .trailing: held = min(max(next, 0), trailingCeiling)
-    case nil: held = min(max(next, -leadingCeiling), trailingCeiling)
-    }
-    // Clamping a leading drag against an empty side's own ceiling leaves negative zero, whose sign
-    // reads as leading while the row is plainly at rest. Here the sign is the side, so a row that
-    // has not moved must not carry one.
-    return held == 0 ? 0 : held
+    guard let sign = side?.sign else { return 0 }
+    return sign * min(max((travel + delta) * sign, 0), ceiling)
+}
+
+/// Whether the row has been carried far enough for a full swipe to commit.
+///
+/// Beside `swipeCommitThreshold` because it is the whole of what the threshold is for, and one
+/// place because both the live drag and the release ask it. Restating it is how the two drift: the
+/// drag's own copy once lacked the `rowWidth` guard, and an unmeasured row — whose threshold is
+/// zero — read every touch as a commit.
+///
+/// - Parameters:
+///   - travel: distance the row has moved from closed, in either direction.
+///   - rowWidth: full width of the row.
+///   - allowsFullSwipe: whether a drag across the row may commit an action at all.
+func swipeCrossedCommit(
+    travel: CGFloat,
+    rowWidth: CGFloat,
+    allowsFullSwipe: Bool
+) -> Bool {
+    allowsFullSwipe && rowWidth > 0 && abs(travel) >= swipeCommitThreshold(rowWidth: rowWidth)
 }
 
 /// Fraction of the row's width a drag must cross for a full swipe to commit.
@@ -250,9 +265,7 @@ func resolveSwipeSettle(
     if firstActionReveal <= 0 {
         return .closed
     }
-    // A row that has not been measured has no width to have crossed half of: the threshold would
-    // be zero, and every release — including one that never moved — would commit.
-    if allowsFullSwipe, rowWidth > 0, travel >= swipeCommitThreshold(rowWidth: rowWidth) {
+    if swipeCrossedCommit(travel: travel, rowWidth: rowWidth, allowsFullSwipe: allowsFullSwipe) {
         return .committed
     }
     return projectedTravel(from: travel, velocity: velocity) >= firstActionReveal ? .open : .closed
@@ -568,10 +581,6 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
         swipeRevealWidth(through: actionsOn(side).count)
     }
 
-    private func signOn(_ side: SwipeActionSide) -> CGFloat {
-        side == .leading ? -1 : 1
-    }
-
     /// Where a commit parks the row: as far as it goes, less the sliver iOS leaves of it.
     private func commitTravelOn(_ side: SwipeActionSide) -> CGFloat {
         max(revealOn(side), rowWidth - commitInset)
@@ -599,13 +608,13 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     /// Where the row rests while open, signed: at the reveal, or wherever a commit is holding it.
     private var restingTravel: CGFloat {
         let side = restingSide
-        return signOn(side) * (held ? commitTravelOn(side) : revealOn(side))
+        return side.sign * (held ? commitTravelOn(side) : revealOn(side))
     }
 
     /// Where an open row rests, signed — what an action list changing under an open row moves it
     /// to.
     private var openReveal: CGFloat {
-        signOn(restingSide) * revealOn(restingSide)
+        restingSide.sign * revealOn(restingSide)
     }
 
     /// Where the finger has the row: its own travel, or the lead a commit gave it, being given
@@ -614,7 +623,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     private var base: CGFloat {
         guard releasing else { return travel }
         let side = swipeTravelSide(travel: travel) ?? restingSide
-        return signOn(side) * resolveSwipeReleasedTravel(
+        return side.sign * resolveSwipeReleasedTravel(
             travel: abs(travel),
             commitTravel: commitTravelOn(side),
             threshold: swipeCommitThreshold(rowWidth: rowWidth)
@@ -625,7 +634,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     /// carries it the rest of the way itself; dragging back below hands it back.
     private var shown: CGFloat {
         guard let side = committedSide else { return base }
-        return signOn(side) * commitTravelOn(side)
+        return side.sign * commitTravelOn(side)
     }
 
     /// What one side's strip has been revealed by, which is nothing at all unless the row is
@@ -672,13 +681,15 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     var body: some View {
         VStack(spacing: 0) {
             ZStack(alignment: .trailing) {
-                // Both strips are always here, each against its own edge and handed only the
-                // travel that belongs to it, so the side the row is not showing draws nothing and
-                // neither has to be torn down and rebuilt as the row crosses between them.
+                // Both edges, each against its own edge and handed only the travel that belongs
+                // to it, so the side the row is not showing draws nothing. An edge with no actions
+                // is left out entirely: an empty strip is still rebuilt on every drag event to
+                // draw nothing, and still takes its padding out of the row's width. Emptiness is
+                // not a function of travel, so this can never drop a strip mid-gesture.
                 HStack(spacing: 0) {
-                    strip(on: .leading)
+                    if !leadingActions.isEmpty { strip(on: .leading) }
                     Spacer(minLength: 0)
-                    strip(on: .trailing)
+                    if !actions.isEmpty { strip(on: .trailing) }
                 }
                 // Drained of colour and dimmed while something the action opened has the reader's
                 // attention: the actions are still there, and still where they were, but they are
@@ -814,14 +825,15 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
 
     /// One edge's actions, handed the travel that belongs to that edge and nothing else.
     private func strip(on side: SwipeActionSide) -> some View {
-        SwipeActionStrip(
+        let reveal = revealOn(side)
+        return SwipeActionStrip(
             travel: shownOn(side),
             actions: actionsOn(side),
             side: side,
             committed: committedSide == side,
             // How far the first action has stretched once a commit has parked the row: what the
             // icon is sliding towards from the moment the crossing happens.
-            committedStretch: commitTravelOn(side) - revealOn(side),
+            committedStretch: commitTravelOn(side) - reveal,
             holding: holding,
             rowWidth: rowWidth,
             towardsTrailing: towardsTrailing,
@@ -844,8 +856,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             travel: origin,
             delta: translation,
             side: side,
-            leadingCeiling: ceilingOn(.leading),
-            trailingCeiling: ceilingOn(.trailing)
+            ceiling: side.map(ceilingOn) ?? 0
         )
     }
 
@@ -886,14 +897,13 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 let side = gestureSide ?? resolveSwipeGestureSide(travel: origin, delta: towards)
                 gestureSide = side
                 let next = draggedTravel(from: origin, by: towards, side: side)
-                // Guarded on the width, because an unmeasured row has no width to have crossed
-                // half of: the threshold would be zero and a drag that never moved would read as
-                // a commit.
-                let crossed: SwipeActionSide? = {
-                    guard let side, allowsFullSwipe, rowWidth > 0,
-                          abs(next) >= swipeCommitThreshold(rowWidth: rowWidth) else { return nil }
-                    return side
-                }()
+                let crossed: SwipeActionSide? = side.flatMap { side in
+                    swipeCrossedCommit(
+                        travel: next,
+                        rowWidth: rowWidth,
+                        allowsFullSwipe: allowsFullSwipe
+                    ) ? side : nil
+                }
                 if crossed != committedSide {
                     // Sprung on the way out, and nothing to animate on the way back: leaving a
                     // commit hands the row to `base`, which picks it up exactly where the claim
@@ -914,7 +924,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 gestureSide = nil
                 // The side's own sign, so everything below reads as it always did: travel and
                 // velocity both positive while the row is still opening.
-                let sign = signOn(side)
+                let sign = side.sign
                 // The claim is spent: the row settles from where it is being drawn.
                 travel = shown
                 releasing = false
@@ -1022,9 +1032,10 @@ private struct SwipeActionStrip: View, Animatable {
     private var leading: Bool { side == .leading }
 
     /// Which way is *into* the row from this edge: where a stacking action goes, where a stretching
-    /// one grows, and where a committed icon slides. `offset(x:)` is not direction-aware, so the
-    /// row's own RTL sign is folded in here.
-    private var towardsInside: CGFloat { leading ? -towardsTrailing : towardsTrailing }
+    /// one grows, and where a committed icon slides. The opposite of the side's own travel, which
+    /// points out of the row; `offset(x:)` is not direction-aware, so the row's RTL sign folds in
+    /// here too.
+    private var towardsInside: CGFloat { side.sign * towardsTrailing }
 
     private var actionSize: CGFloat { LemonadeTheme.sizes.size1200 }
 
@@ -1042,7 +1053,7 @@ private struct SwipeActionStrip: View, Animatable {
 
     private var actionsWidth: CGFloat {
         guard !actions.isEmpty else { return 0 }
-        return stripReveal - LemonadeTheme.spaces.spacing300 - LemonadeTheme.spaces.spacing400
+        return stripReveal - innerPadding - outerPadding
     }
 
     private var displacedOpacity: CGFloat {
@@ -1193,7 +1204,9 @@ public extension LemonadeUi {
     /// Wraps a row with actions revealed by a horizontal drag.
     ///
     /// Actions may sit on either edge, or both. A drag takes the side it sets off towards and
-    /// keeps it for the rest of the gesture, so one drag never reveals both.
+    /// keeps it for the rest of the gesture, so one drag never reveals both. A row opened by its
+    /// caller rather than by a drag opens onto `actions`, falling back to `leadingActions` only
+    /// when there are none.
     ///
     /// The wrapped item must not draw its own divider — pass `showDivider: false` to it and set
     /// `showDivider` here instead. A list item draws its divider inside its own body, so it would

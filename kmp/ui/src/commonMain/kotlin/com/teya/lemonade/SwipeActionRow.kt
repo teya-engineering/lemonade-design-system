@@ -26,6 +26,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -324,8 +325,9 @@ private fun SwipeActionStrip(
     val density = LocalDensity.current
     val leading = side == SwipeActionSide.Leading
     // Which way is *into* the row from this edge: where a stacking action goes, where a stretching
-    // one grows, and where a committed icon slides.
-    val towardsInside = if (leading) 1f else -1f
+    // one grows, and where a committed icon slides. The opposite of the side's own travel, which
+    // points out of the row.
+    val towardsInside = -side.sign
     // The wider padding is the one against the edge the actions are revealed from; the narrower one
     // sits between the strip and the travelling row.
     val outerPadding = LemonadeTheme.spaces.spacing400
@@ -596,16 +598,21 @@ private fun SwipeActionRowCore(
     val revealOn = { side: SwipeActionSide ->
         if (side == SwipeActionSide.Leading) leadingReveal else trailingReveal
     }
-    val signOn = { side: SwipeActionSide ->
-        if (side == SwipeActionSide.Leading) -1f else 1f
-    }
     // Where a commit parks the row: as far as it goes, less the sliver iOS leaves of it.
     val commitTravelOn = { side: SwipeActionSide ->
         maxOf(revealOn(side), rowWidth - commitInset)
     }
-    // Nothing to open onto is what closes a release on an edge with no actions behind it.
+    // Nothing to open onto is what closes a release on an edge with no actions behind it: an empty
+    // side's reveal is zero, so this asks the widths rather than the list a second time.
     val firstActionRevealOn = { side: SwipeActionSide ->
-        if (actionsOn(side).isEmpty()) 0f else oneActionReveal
+        minOf(revealOn(side), oneActionReveal)
+    }
+    val ceilingOn = { side: SwipeActionSide ->
+        resolveSwipeCeiling(
+            revealWidth = revealOn(side),
+            rowWidth = rowWidth,
+            allowsFullSwipe = allowsFullSwipe,
+        )
     }
 
     // The side the row would open onto with nothing having said otherwise: whichever edge has
@@ -613,7 +620,7 @@ private fun SwipeActionRowCore(
     val restingSide = openSide
         ?: if (actions.isNotEmpty()) SwipeActionSide.Trailing else SwipeActionSide.Leading
     // Where the row rests while open, signed: at the reveal, or wherever a commit is holding it.
-    val restingTravel = signOn(restingSide) *
+    val restingTravel = restingSide.sign *
         if (held) commitTravelOn(restingSide) else revealOn(restingSide)
 
     // How far the commit has claimed the row off the finger. Crossing the threshold takes the row
@@ -645,7 +652,7 @@ private fun SwipeActionRowCore(
         } else {
             magnitude
         }
-        (base + (commitTravel - base) * claimed.value) * signOn(side)
+        (base + (commitTravel - base) * claimed.value) * side.sign
     }
     // What one side's strip has been revealed by, which is nothing at all unless the row is showing
     // that side. Magnitude, because a strip only ever grows out of its own edge.
@@ -705,7 +712,7 @@ private fun SwipeActionRowCore(
     // when the *side* does, and a drag that settles open sets the side — so without it every
     // release would restart its own spring from rest, a frame after it began, and lose the velocity
     // the finger let go at.
-    val openReveal = signOn(restingSide) * revealOn(restingSide)
+    val openReveal = restingSide.sign * revealOn(restingSide)
     LaunchedEffect(openReveal) {
         if (open && !dragging && !held && settleTarget.floatValue != openReveal) {
             settleTo(openReveal, 0f)
@@ -724,25 +731,15 @@ private fun SwipeActionRowCore(
             travel = travel.floatValue,
             delta = towards,
             side = side,
-            leadingCeiling = resolveSwipeCeiling(
-                revealWidth = leadingReveal,
-                rowWidth = rowWidth,
-                allowsFullSwipe = allowsFullSwipe,
-            ),
-            trailingCeiling = resolveSwipeCeiling(
-                revealWidth = trailingReveal,
-                rowWidth = rowWidth,
-                allowsFullSwipe = allowsFullSwipe,
-            ),
+            ceiling = side?.let(ceilingOn) ?: 0f,
         )
-        // Guarded on the width, because an unmeasured row has no width to have crossed half of:
-        // the threshold would be zero and a drag that never moved would read as a commit.
-        val crossed = side
-            ?.takeIf {
-                allowsFullSwipe &&
-                    rowWidth > 0f &&
-                    abs(next) >= swipeCommitThreshold(rowWidth = rowWidth)
-            }
+        val crossed = side?.takeIf {
+            swipeCrossedCommit(
+                travel = next,
+                rowWidth = rowWidth,
+                allowsFullSwipe = allowsFullSwipe,
+            )
+        }
         if (crossed != committedSide) {
             committedSide = crossed
             releasing = crossed == null
@@ -823,7 +820,7 @@ private fun SwipeActionRowCore(
                         gestureSide.value = null
                         // The side's own sign, so everything below reads as it always did: travel
                         // and velocity both positive while the row is still opening.
-                        val sign = signOn(side)
+                        val sign = side.sign
                         // Where the finger left the row, read before the claim is folded in. A drag
                         // coming back from a commit draws the row ahead of the finger — by the
                         // gain in [resolveSwipeReleasedTravel] — and settling on the drawn value
@@ -904,39 +901,40 @@ private fun SwipeActionRowCore(
                     }
                 },
         ) {
-            // Both strips are always here. Each is handed only the travel that belongs to its own
-            // edge, so the side the row is not showing draws nothing, and neither has to be
-            // composed away and back as the row crosses between them.
-            SwipeActionStrip(
-                actions = leadingActions,
-                side = SwipeActionSide.Leading,
-                travel = { shownOn(SwipeActionSide.Leading) },
-                rowWidth = { rowWidth },
-                committed = { committedSide == SwipeActionSide.Leading },
-                // How far the first action has stretched once a commit has parked the row: what
-                // the icon is sliding towards from the moment the crossing happens.
-                committedStretch = with(density) {
-                    (commitTravelOn(SwipeActionSide.Leading) - leadingReveal).toDp()
-                },
-                onFired = fired,
-                dim = { dim.value },
-                holding = holding,
-                modifier = Modifier.align(Alignment.CenterStart),
-            )
-            SwipeActionStrip(
-                actions = actions,
-                side = SwipeActionSide.Trailing,
-                travel = { shownOn(SwipeActionSide.Trailing) },
-                rowWidth = { rowWidth },
-                committed = { committedSide == SwipeActionSide.Trailing },
-                committedStretch = with(density) {
-                    (commitTravelOn(SwipeActionSide.Trailing) - trailingReveal).toDp()
-                },
-                onFired = fired,
-                dim = { dim.value },
-                holding = holding,
-                modifier = Modifier.align(Alignment.CenterEnd),
-            )
+            // Both edges, each handed only the travel that belongs to it, so the side the row is
+            // not showing draws nothing. An edge with no actions is left out entirely: an empty
+            // strip still reads the row's travel in its own composition, and would recompose on
+            // every frame of every drag to draw nothing at all. Emptiness is not a function of
+            // travel, so this can never take a strip away mid-gesture.
+            SwipeActionSide.entries.forEach { side ->
+                key(side) {
+                    val sideActions = actionsOn(side)
+                    if (sideActions.isNotEmpty()) {
+                        SwipeActionStrip(
+                            actions = sideActions,
+                            side = side,
+                            travel = { shownOn(side) },
+                            rowWidth = { rowWidth },
+                            committed = { committedSide == side },
+                            // How far the first action has stretched once a commit has parked the
+                            // row: what the icon is sliding towards from the crossing onwards.
+                            committedStretch = with(density) {
+                                (commitTravelOn(side) - revealOn(side)).toDp()
+                            },
+                            onFired = fired,
+                            dim = { dim.value },
+                            holding = holding,
+                            modifier = Modifier.align(
+                                if (side == SwipeActionSide.Leading) {
+                                    Alignment.CenterStart
+                                } else {
+                                    Alignment.CenterEnd
+                                },
+                            ),
+                        )
+                    }
+                }
+            }
             Box(
                 modifier = Modifier
                     .offset { IntOffset(x = (shown() * towardsTrailing).roundToInt(), y = 0) }
@@ -1006,7 +1004,8 @@ private fun SwipeActionRowCore(
  * }
  * ```
  * Actions may sit on either edge, or both. A drag takes the side it sets off towards and keeps it
- * for the rest of the gesture, so one drag never reveals both.
+ * for the rest of the gesture, so one drag never reveals both. A row opened by its caller rather
+ * than by a drag opens onto [actions], falling back to [leadingActions] only when there are none.
  *
  * @param actions - the actions revealed on the trailing edge, outermost first.
  * @param modifier - [Modifier] applied to the base container.
