@@ -114,13 +114,13 @@ private extension LemonadeButtonSize {
             )
         case .medium:
             return LemonadeIconButtonSizeData(
-                iconSize: .large,
+                iconSize: .medium,
                 size: LemonadeTheme.sizes.size1200,
                 cornerRadius: LemonadeTheme.radius.radius350
             )
         case .small:
             return LemonadeIconButtonSizeData(
-                iconSize: .small,
+                iconSize: .medium,
                 size: LemonadeTheme.sizes.size1000,
                 cornerRadius: LemonadeTheme.radius.radius300
             )
