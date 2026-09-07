@@ -179,13 +179,17 @@ private let holdTravel: CGFloat = 24
 /// to claim the drag, and the menu then takes the touch — so the drag never ends, and the claim
 /// would otherwise sit on the row until the menu is dismissed.
 ///
-/// The measure is what the drag has asked for, not how long it has been asking: a row carried no
-/// further than the distance it travelled to claim the touch is showing nothing the reader can act
-/// on — the first action is not drawn at all until much further out — and a finger still on the row
-/// claims again on its next move, from where the row is being drawn. A reveal a reader is holding
-/// open to look at is well past this, and stays.
-func swipeHoldReleasesClaim(travelSinceClaim: CGFloat) -> Bool {
-    abs(travelSinceClaim) < holdTravel
+/// Only a closed row hands a claim back, and only one the claim has taken nowhere. A press cannot
+/// be told apart from a finger that has simply paused, so the row gives up a claim only where
+/// being wrong about that costs nothing: under `holdTravel` on a closed row nothing of the first
+/// action is drawn, and a finger still on the row claims again on its next move, from where the
+/// row is being drawn.
+///
+/// An open row is left alone whichever way its drag is going. It is already showing a reveal the
+/// reader can act on, and `releaseClaim` would spring it back open — so a drag pulling it closed,
+/// paused halfway, would have the close taken off it and be left to start again.
+func swipeHoldReleasesClaim(travelSinceClaim: CGFloat, rowIsOpen: Bool) -> Bool {
+    !rowIsOpen && abs(travelSinceClaim) < holdTravel
 }
 
 /// Deceleration a released row is left to coast on, `UIScrollView`'s normal rate.
@@ -840,12 +844,10 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             } catch {
                 return
             }
-            guard swipeHoldReleasesClaim(travelSinceClaim: travel - origin) else { return }
-            // The touch is a press now, so nothing it does later is a swipe: the settle is spent
-            // with the claim, and an `onEnded` that does turn up cannot fire an action off a
-            // translation the row stopped following. A finger still on the row claims again, and
-            // takes a new one.
-            settleOrigin = nil
+            // `settleOrigin` is deliberately left alone: a finger that lifts without moving again
+            // still gets the settle its drag earned, rather than having the gesture thrown away.
+            guard swipeHoldReleasesClaim(travelSinceClaim: travel - origin, rowIsOpen: open)
+            else { return }
             releaseClaim()
         }
     }

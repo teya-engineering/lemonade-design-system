@@ -3,27 +3,34 @@ import XCTest
 
 /// Covers `swipeHoldReleasesClaim` — whether a touch that has gone quiet keeps the drag it claimed
 /// on its way to a context menu. The measure is the row's travel since the claim, against the 24pt
-/// of `holdTravel`.
+/// of `holdTravel`, and only a closed row ever hands a claim back.
 final class LemonadeSwipeHoldTests: XCTestCase {
+
+    private func releases(_ travelSinceClaim: CGFloat, open: Bool = false) -> Bool {
+        swipeHoldReleasesClaim(travelSinceClaim: travelSinceClaim, rowIsOpen: open)
+    }
 
     /// The drift a finger rolls through while it waits out a long press: measured at 7.3pt on the
     /// row that raised this, and nothing a reader can act on.
     func testDriftUnderAPressHandsTheClaimBack() {
-        XCTAssertTrue(swipeHoldReleasesClaim(travelSinceClaim: 7.3))
-        XCTAssertTrue(swipeHoldReleasesClaim(travelSinceClaim: -7.3))
+        XCTAssertTrue(releases(7.3))
+        XCTAssertTrue(releases(-7.3))
     }
 
     /// The boundary. A drag that has carried the row this far has asked for something, and a finger
     /// resting over it does not take it away.
     func testTheBoundaryKeepsTheClaim() {
-        XCTAssertTrue(swipeHoldReleasesClaim(travelSinceClaim: 23.9))
-        XCTAssertFalse(swipeHoldReleasesClaim(travelSinceClaim: 24))
+        XCTAssertTrue(releases(23.9))
+        XCTAssertFalse(releases(24))
     }
 
-    /// The case the slack is really there for: a reveal a reader is holding open to look at stays
-    /// open under their finger.
-    func testAReadableRevealKeepsIt() {
-        XCTAssertFalse(swipeHoldReleasesClaim(travelSinceClaim: 76))
+    /// An open row keeps its claim however little the drag has moved it. It is already showing a
+    /// reveal, and handing the claim back would spring it open again under the finger — so a drag
+    /// pulling it closed, paused halfway, would lose the close it had asked for.
+    func testAnOpenRowAlwaysKeepsItsClaim() {
+        XCTAssertFalse(releases(0, open: true))
+        XCTAssertFalse(releases(7.3, open: true))
+        XCTAssertFalse(releases(-20, open: true))
     }
 
     /// The invariant the slack exists to hold, checked against the reveal geometry rather than
@@ -32,6 +39,9 @@ final class LemonadeSwipeHoldTests: XCTestCase {
     /// `holdTravel` and the travel at which the first action starts to be drawn are set apart in
     /// different places, and nothing but this ties them together. Raising the slack past that
     /// point would let a finger resting on a row take a reveal the reader can see away from them.
+    ///
+    /// Read as travel rather than as a delta, which is what it is at the call site for the row this
+    /// guards: a closed row is claimed at rest, so the claim's origin is zero.
     func testAHoldNeverTakesBackARevealTheReaderCanSee() {
         let reveal: CGFloat = 76
         let actionWidth: CGFloat = 48
@@ -45,7 +55,7 @@ final class LemonadeSwipeHoldTests: XCTestCase {
             )
             guard drawn.scale > 0 else { continue }
             XCTAssertFalse(
-                swipeHoldReleasesClaim(travelSinceClaim: travel),
+                releases(travel),
                 "travel \(travel) draws the action at scale \(drawn.scale) but would be handed back"
             )
         }
