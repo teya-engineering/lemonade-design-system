@@ -44,7 +44,7 @@ struct SwipeActionRowDisplayView: View {
                             LemonadeUi.SwipeActionRow(
                                 id: account.id,
                                 openId: $openId,
-                                actions: [
+                                trailingActions: [
                                     LemonadeSwipeAction(
                                         icon: .trash,
                                         contentDescription: "Remove \(account.name)",
@@ -89,7 +89,7 @@ struct SwipeActionRowDisplayView: View {
                         LemonadeUi.SwipeActionRow(
                             id: "unread",
                             openId: $startsOpenId,
-                            actions: [
+                            trailingActions: [
                                 LemonadeSwipeAction(
                                     icon: .envelope,
                                     contentDescription: "Mark unread",
@@ -115,7 +115,7 @@ struct SwipeActionRowDisplayView: View {
                         )
                     ) {
                         LemonadeUi.SwipeActionRow(
-                            actions: [
+                            trailingActions: [
                                 LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: { }),
                                 LemonadeSwipeAction(
                                     icon: .pencilLine,
@@ -143,7 +143,7 @@ struct SwipeActionRowDisplayView: View {
                         )
                     ) {
                         LemonadeUi.SwipeActionRow(
-                            actions: [
+                            trailingActions: [
                                 LemonadeSwipeAction(
                                     icon: .trash,
                                     contentDescription: "Delete",
@@ -199,13 +199,6 @@ struct SwipeActionRowDisplayView: View {
                         )
                     ) {
                         LemonadeUi.SwipeActionRow(
-                            actions: [
-                                LemonadeSwipeAction(
-                                    icon: .trash,
-                                    contentDescription: "Delete",
-                                    onClick: { deleted += 1 }
-                                )
-                            ],
                             leadingActions: [
                                 LemonadeSwipeAction(
                                     icon: .check,
@@ -218,6 +211,13 @@ struct SwipeActionRowDisplayView: View {
                                     contentDescription: "Star",
                                     onClick: { },
                                     variant: .neutral
+                                )
+                            ],
+                            trailingActions: [
+                                LemonadeSwipeAction(
+                                    icon: .trash,
+                                    contentDescription: "Delete",
+                                    onClick: { deleted += 1 }
                                 )
                             ]
                         ) {
@@ -240,7 +240,7 @@ struct SwipeActionRowDisplayView: View {
                         )
                     ) {
                         LemonadeUi.SwipeActionRow(
-                            actions: [
+                            trailingActions: [
                                 LemonadeSwipeAction(
                                     icon: .pin,
                                     contentDescription: "Pin",
@@ -272,7 +272,7 @@ struct SwipeActionRowDisplayView: View {
                         )
                     ) {
                         LemonadeUi.SwipeActionRow(
-                            actions: [
+                            trailingActions: [
                                 LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: { }),
                                 LemonadeSwipeAction(
                                     icon: .pin,
@@ -305,7 +305,7 @@ struct SwipeActionRowDisplayView: View {
                         )
                     ) {
                         LemonadeUi.SwipeActionRow(
-                            actions: [
+                            trailingActions: [
                                 LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: { })
                             ],
                             allowsFullSwipe: false
@@ -321,7 +321,7 @@ struct SwipeActionRowDisplayView: View {
                         )
                     ) {
                         LemonadeUi.SwipeActionRow(
-                            actions: [
+                            trailingActions: [
                                 LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: { })
                             ],
                             enabled: false
