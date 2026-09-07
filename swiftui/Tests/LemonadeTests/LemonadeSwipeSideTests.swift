@@ -90,16 +90,13 @@ final class LemonadeSwipeSideTests: XCTestCase {
         XCTAssertEqual(travel(0, delta: -400, side: .leading, ceiling: revealWidth), -revealWidth)
     }
 
-    /// A side with nothing behind it holds the row at rest however hard it is dragged, and does
-    /// not come back carrying a sign that would read as the side it could not move onto.
+    /// A side with nothing behind it holds the row at rest however hard it is dragged.
     func testAnEmptySideDoesNotMove() {
         let held = travel(0, delta: -400, side: .leading, ceiling: 0)
         XCTAssertEqual(held, 0)
         XCTAssertNil(swipeTravelSide(travel: held))
     }
 
-    /// A gesture that owns no side yet is a row at rest that has not been moved, so it has not
-    /// gone anywhere.
     func testAGestureThatOwnsNoSideHasNotMoved() {
         XCTAssertEqual(travel(0, delta: 0, side: nil), 0)
     }

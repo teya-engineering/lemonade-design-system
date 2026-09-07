@@ -30,9 +30,8 @@ internal fun swipeCommitThreshold(rowWidth: Float): Float = rowWidth * COMMIT_FR
 /**
  * Which edge of the row a reveal belongs to, and which way its travel points.
  *
- * The sign belongs to the side rather than to the code that uses it: everything sided is resolved
- * on a magnitude and signed back by exactly this, so one definition is what keeps the row, the
- * strip and the settle agreeing about which way is out.
+ * The sign lives here rather than in each place that needs it: everything sided is resolved on a
+ * magnitude and signed back by exactly this, which is what lets one set of rules serve both edges.
  */
 internal enum class SwipeActionSide(val sign: Float) {
     Leading(sign = -1f),
@@ -42,10 +41,8 @@ internal enum class SwipeActionSide(val sign: Float) {
 /**
  * The side a signed travel has the row open on, or null at rest.
  *
- * Travel carries its side in its sign — negative onto the leading actions, positive onto the
- * trailing ones — so the row needs no second piece of state to say which strip it is showing, and
- * the two can never disagree. Everything downstream of here works on the magnitude, which is what
- * lets one set of rules serve both edges.
+ * Negative travel is onto the leading actions, positive onto the trailing ones, so what the row is
+ * showing is never a separate fact that could disagree with where it is.
  */
 internal fun swipeTravelSide(travel: Float): SwipeActionSide? =
     when {
@@ -96,9 +93,7 @@ internal fun resolveSwipeCeiling(
  * Where a delta leaves the row, in signed travel.
  *
  * Held to the side the gesture owns, so it stops at rest rather than crossing into the other edge's
- * actions — which is the whole of the rule, once the side's own sign turns the drag into a
- * magnitude and back. A row at rest that has not been moved owns no side yet, and has not gone
- * anywhere.
+ * actions. A row that has not been moved owns no side yet, and has not gone anywhere.
  *
  * @param travel where the row is now, signed.
  * @param delta how far the finger has moved, in travel's own sign.
@@ -119,10 +114,9 @@ internal fun resolveSwipeTravel(
 /**
  * Whether the row has been carried far enough for a full swipe to commit.
  *
- * Beside [swipeCommitThreshold] because it is the whole of what the threshold is for, and one place
- * because both the live drag and the release ask it. Restating it is how the two drift: the drag's
- * own copy once lacked the [rowWidth] guard, and an unmeasured row — whose threshold is zero — read
- * every touch as a commit.
+ * One place because both the live drag and the release ask it, and restating it is how the two
+ * drift: the drag's own copy once lacked the [rowWidth] guard, and an unmeasured row — whose
+ * threshold is zero — read every touch as a commit.
  *
  * @param travel distance the row has moved from closed, in either direction.
  * @param rowWidth full width of the row.

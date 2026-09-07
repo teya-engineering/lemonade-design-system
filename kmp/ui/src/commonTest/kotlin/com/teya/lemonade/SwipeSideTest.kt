@@ -124,9 +124,8 @@ class SwipeSideTest {
      * A gesture that has closed the row stops there. Carrying on into the other side's actions
      * would turn one drag back into a commit on the opposite edge.
      *
-     * Compared numerically rather than by equality: a leading gesture signs its clamped magnitude
-     * back and lands on negative zero, which is the same place as zero — [swipeTravelSide] reads
-     * both as at rest, since `-0f < 0f` is false — but is a different `Float` object to boxed
+     * Compared numerically: a leading gesture signs its clamped magnitude back and lands on
+     * negative zero, which is at rest exactly as zero is, but is a different object to boxed
      * equality.
      */
     @Test
@@ -163,10 +162,7 @@ class SwipeSideTest {
         )
     }
 
-    /**
-     * A side with nothing behind it holds the row at rest however hard it is dragged, and does not
-     * come back carrying a sign that would read as the side it could not move onto.
-     */
+    /** A side with nothing behind it holds the row at rest however hard it is dragged. */
     @Test
     fun `an empty side does not move`() {
         val held = travel(
@@ -179,10 +175,6 @@ class SwipeSideTest {
         assertNull(actual = swipeTravelSide(travel = held))
     }
 
-    /**
-     * A gesture that owns no side yet is a row at rest that has not been moved, so it has not gone
-     * anywhere.
-     */
     @Test
     fun `a gesture that owns no side has not moved`() {
         assertEquals(

@@ -305,8 +305,8 @@ private fun swipeRevealWidth(through: Int): Float =
  * magnitude the row has moved onto *this* side, so the side the row is not showing is handed zero
  * and draws nothing.
  *
- * Mirrored off [side] rather than written twice: an action sits against the edge it is revealed
- * from, grows inwards from it, and stacks away from it. Everything below is that one sign.
+ * Mirrored off [side]: an action sits against the edge it is revealed from, grows inwards from it,
+ * and stacks away from it.
  */
 @Composable
 private fun SwipeActionStrip(
@@ -324,12 +324,8 @@ private fun SwipeActionStrip(
     val step = LemonadeTheme.sizes.size1200 + LemonadeTheme.spaces.spacing200
     val density = LocalDensity.current
     val leading = side == SwipeActionSide.Leading
-    // Which way is *into* the row from this edge: where a stacking action goes, where a stretching
-    // one grows, and where a committed icon slides. The opposite of the side's own travel, which
-    // points out of the row.
+    // Into the row, against the side's own outward travel.
     val towardsInside = -side.sign
-    // The wider padding is the one against the edge the actions are revealed from; the narrower one
-    // sits between the strip and the travelling row.
     val outerPadding = LemonadeTheme.spaces.spacing400
     val innerPadding = LemonadeTheme.spaces.spacing300
     Box(
@@ -510,9 +506,7 @@ private fun SwipeActionRowCore(
     modifier: Modifier,
     content: @Composable () -> Unit,
 ) {
-    // Signed: negative onto the leading actions, positive onto the trailing ones. The sign is the
-    // whole of what says which edge the row is showing, so the two can never disagree, and every
-    // rule below it works on the magnitude — which is what lets one set of them serve both edges.
+    // Signed: negative onto the leading actions, positive onto the trailing ones.
     //
     // A plain value the drag writes as it happens, not an `Animatable` a launched coroutine
     // catches up with. Every delta used to launch its own `snapTo`, and one landing after the
@@ -544,14 +538,13 @@ private fun SwipeActionRowCore(
     var rowY by remember { mutableFloatStateOf(0f) }
     var openedAt by remember { mutableStateOf<Float?>(null) }
     val scrollSlack = with(LocalDensity.current) { SCROLL_SLACK.toPx() }
-    // Which side a full swipe has claimed the row on, or null while none has. The side rather than
-    // a flag, because the strip that stretches and the icon that slides are one edge's, not both.
+    // The side rather than a flag: the strip that stretches and the icon that slides are one
+    // edge's, not both.
     var committedSide by remember { mutableStateOf<SwipeActionSide?>(null) }
-    // Which side the row is open on, once something has opened it. Null until a drag or a caller
-    // says, which is what lets a row composed already open fall back to the edge it always used.
+    // Which side the row is open on. Null until a drag or a caller says.
     var openSide by remember { mutableStateOf<SwipeActionSide?>(null) }
-    // The side the live gesture owns. Held outside composition: it is written on the first delta of
-    // every drag, and nothing drawn reads it.
+    // The side the live gesture owns. Outside composition, like `travel`: written on the first
+    // delta of every drag, and nothing drawn reads it.
     val gestureSide = remember { mutableStateOf<SwipeActionSide?>(null) }
     // Whether a committed swipe is holding the row where it left it — all the way across, with the
     // action still stretched behind it — rather than at the reveal. Cleared when the row closes, or
@@ -586,12 +579,9 @@ private fun SwipeActionRowCore(
 
     val leadingReveal = swipeRevealWidth(through = leadingActions.size)
     val trailingReveal = swipeRevealWidth(through = actions.size)
-    // The same for either side: one action, and the padding it sits in.
     val oneActionReveal = swipeRevealWidth(through = 1)
     val commitInset = with(density) { COMMIT_INSET.toPx() }
 
-    // The three things a side is: which actions it holds, how far the row rests on them, and which
-    // way its travel points. Everything sided below is one of these.
     val actionsOn = { side: SwipeActionSide ->
         if (side == SwipeActionSide.Leading) leadingActions else actions
     }
@@ -602,8 +592,7 @@ private fun SwipeActionRowCore(
     val commitTravelOn = { side: SwipeActionSide ->
         maxOf(revealOn(side), rowWidth - commitInset)
     }
-    // Nothing to open onto is what closes a release on an edge with no actions behind it: an empty
-    // side's reveal is zero, so this asks the widths rather than the list a second time.
+    // Nothing to open onto is what closes a release on an edge with nothing behind it.
     val firstActionRevealOn = { side: SwipeActionSide ->
         minOf(revealOn(side), oneActionReveal)
     }
@@ -636,8 +625,7 @@ private fun SwipeActionRowCore(
     )
     // What the row draws, resolved wherever it is needed rather than here: the finger's own travel,
     // or the lead a commit gave it being given back in proportion to the finger, blended with
-    // however far the commit has claimed the row. Resolved on the magnitude and signed back, so the
-    // two edges share every rule between them.
+    // however far the commit has claimed the row. Resolved on the magnitude and signed back.
     val shown = {
         val reached = travel.floatValue
         val side = swipeTravelSide(travel = reached) ?: restingSide
@@ -654,8 +642,7 @@ private fun SwipeActionRowCore(
         }
         (base + (commitTravel - base) * claimed.value) * side.sign
     }
-    // What one side's strip has been revealed by, which is nothing at all unless the row is showing
-    // that side. Magnitude, because a strip only ever grows out of its own edge.
+    // What one side's strip has been revealed by: nothing at all unless the row is showing it.
     val shownOn = { side: SwipeActionSide ->
         val reached = shown()
         if (swipeTravelSide(travel = reached) == side) abs(reached) else 0f
@@ -685,8 +672,8 @@ private fun SwipeActionRowCore(
             held = false
             committedSide = null
             holding = false
-            // The side is forgotten with the row. Nothing is drawn off it while the row travels
-            // home — the sign `travel` still carries is — and the next opening picks its own.
+            // Safe to forget while the row travels home: the sign `travel` still carries is what
+            // is drawn from.
             openSide = null
         }
         // Armed from the first placement instead of from here: this runs before the row has been
@@ -721,9 +708,6 @@ private fun SwipeActionRowCore(
 
     val dragState = rememberDraggableState { delta ->
         val towards = delta * towardsTrailing
-        // Decided once and kept for the rest of the gesture: a finger dragging an open row back is
-        // closing it, and letting it carry through zero would commit an action on the far edge that
-        // the reader never lifted their finger to ask for.
         val side = gestureSide.value
             ?: resolveSwipeGestureSide(travel = travel.floatValue, delta = towards)
         gestureSide.value = side
@@ -806,7 +790,6 @@ private fun SwipeActionRowCore(
                         holding = false
                         releasing = false
                         dragging = true
-                        // Earned again by every drag, off wherever this one finds the row.
                         gestureSide.value = null
                         // Claimed, so this is the row being read now. Announced here rather than
                         // when the row settles open: a reader who has started on another row has
@@ -818,8 +801,8 @@ private fun SwipeActionRowCore(
                         dragging = false
                         val side = gestureSide.value ?: restingSide
                         gestureSide.value = null
-                        // The side's own sign, so everything below reads as it always did: travel
-                        // and velocity both positive while the row is still opening.
+                        // Everything below then reads as it always did: travel and velocity both
+                        // positive while the row is still opening.
                         val sign = side.sign
                         // Where the finger left the row, read before the claim is folded in. A drag
                         // coming back from a commit draws the row ahead of the finger — by the
@@ -887,8 +870,8 @@ private fun SwipeActionRowCore(
                     // actions to a reader who cannot see they are unreachable — and on `holding`,
                     // because the capsules stop taking taps once an action has put something on
                     // screen, and a reader must not be able to fire it again through here.
-                    // Both edges, leading first, so a reader hears them in the order they would
-                    // find them: the gesture is what is invisible here, not the side.
+                    // Both edges in the order a reader would find them: the gesture is what is
+                    // invisible here, not the side.
                     customActions = if (enabled && !holding) {
                         (leadingActions + actions).map { action ->
                             CustomAccessibilityAction(action.contentDescription) {
@@ -901,11 +884,10 @@ private fun SwipeActionRowCore(
                     }
                 },
         ) {
-            // Both edges, each handed only the travel that belongs to it, so the side the row is
-            // not showing draws nothing. An edge with no actions is left out entirely: an empty
-            // strip still reads the row's travel in its own composition, and would recompose on
-            // every frame of every drag to draw nothing at all. Emptiness is not a function of
-            // travel, so this can never take a strip away mid-gesture.
+            // An edge with no actions is left out entirely: an empty strip still reads the row's
+            // travel in its own composition, so it would recompose every frame of every drag to
+            // draw nothing. Emptiness is not a function of travel, so this cannot fire
+            // mid-gesture.
             SwipeActionSide.entries.forEach { side ->
                 key(side) {
                     val sideActions = actionsOn(side)
