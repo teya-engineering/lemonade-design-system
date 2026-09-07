@@ -106,7 +106,7 @@ public fun LemonadeUi.Button(
                     textAlign = TextAlign.Center,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing200),
+                    modifier = Modifier.padding(horizontal = size.contentData.labelPadding),
                 )
 
                 if (trailingIcon != null) {
@@ -182,7 +182,7 @@ public fun LemonadeUi.Button(
                     textAlign = TextAlign.Center,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing200),
+                    modifier = Modifier.padding(horizontal = size.contentData.labelPadding),
                 )
             }
         },
@@ -200,6 +200,7 @@ public class LemonadeButtonColors internal constructor(
 private data class LemonadeButtonContentData(
     val verticalPadding: Dp,
     val horizontalPadding: Dp,
+    val labelPadding: Dp,
     val requiredHeight: Dp,
     val minWidth: Dp,
     val shape: Shape,
@@ -212,6 +213,7 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
             LemonadeButtonSize.XSmall -> LemonadeButtonContentData(
                 verticalPadding = LocalSpaces.current.spacing100,
                 horizontalPadding = LocalSpaces.current.spacing200,
+                labelPadding = LocalSpaces.current.spacing100,
                 requiredHeight = LocalSizes.current.size800,
                 minWidth = LocalSizes.current.size1600,
                 shape = LocalShapes.current.radius250,
@@ -221,6 +223,7 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
             LemonadeButtonSize.Small -> LemonadeButtonContentData(
                 verticalPadding = LocalSpaces.current.spacing200,
                 horizontalPadding = LocalSpaces.current.spacing300,
+                labelPadding = LocalSpaces.current.spacing200,
                 requiredHeight = LocalSizes.current.size1000,
                 minWidth = LocalSizes.current.size1600,
                 shape = LocalShapes.current.radius300,
@@ -230,6 +233,7 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
             LemonadeButtonSize.Medium -> LemonadeButtonContentData(
                 verticalPadding = LocalSpaces.current.spacing300,
                 horizontalPadding = LocalSpaces.current.spacing400,
+                labelPadding = LocalSpaces.current.spacing200,
                 requiredHeight = LocalSizes.current.size1200,
                 minWidth = LocalSizes.current.size1600,
                 shape = LocalShapes.current.radius350,
@@ -239,6 +243,7 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
             LemonadeButtonSize.Large -> LemonadeButtonContentData(
                 verticalPadding = LocalSpaces.current.spacing300,
                 horizontalPadding = LocalSpaces.current.spacing400,
+                labelPadding = LocalSpaces.current.spacing200,
                 requiredHeight = LocalSizes.current.size1400,
                 minWidth = LocalSizes.current.size1600,
                 shape = LocalShapes.current.radius400,
