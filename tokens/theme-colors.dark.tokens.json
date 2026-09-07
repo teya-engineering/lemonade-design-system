@@ -5018,14 +5018,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.26186099648475647,
+            0.12400030344724655,
+            0.017420610412955284
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#432004"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:106",
           "com.figma.scopes": [
@@ -5037,8 +5037,8 @@
             "iOS": "LemonadeTheme.themed.yellow.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:d7f680fde91f55a70cee4ac439e30d3a533ba3c3/72:187",
+            "targetVariableName": "yellow/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -5241,14 +5241,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.27406713366508484,
+            0.09849269688129425,
+            0.004666847642511129
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#461901"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:107",
           "com.figma.scopes": [
@@ -5260,8 +5260,8 @@
             "iOS": "LemonadeTheme.themed.amber.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:bb6e63e4e5d055332342bfa598b19f74841efcd6/72:196",
+            "targetVariableName": "amber/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -5464,14 +5464,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.26643437147140503,
+            0.07441099733114243,
+            0.021905357018113136
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#441306"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:108",
           "com.figma.scopes": [
@@ -5483,8 +5483,8 @@
             "iOS": "LemonadeTheme.themed.orange.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:9311706b09ea916218c1e413376ad40d281718b6/72:240",
+            "targetVariableName": "orange/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -5687,14 +5687,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.2823529541492462,
+            0.027450980618596077,
+            0.04313725605607033
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#48070B"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:109",
           "com.figma.scopes": [
@@ -5706,8 +5706,8 @@
             "iOS": "LemonadeTheme.themed.red.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:1bdece67c85d6092272e1273f2dfb3e09425a47a/559:11",
+            "targetVariableName": "red/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -5910,14 +5910,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.30314695835113525,
+            0.008819825015962124,
+            0.09585873037576675
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#4D0218"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:110",
           "com.figma.scopes": [
@@ -5929,8 +5929,8 @@
             "iOS": "LemonadeTheme.themed.rose.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:d8c07403df900b681951657ff24721c94b9178e2/71:78",
+            "targetVariableName": "rose/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -6133,14 +6133,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.31800174713134766,
+            0.015083705075085163,
+            0.13981924951076508
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#510424"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:111",
           "com.figma.scopes": [
@@ -6152,8 +6152,8 @@
             "iOS": "LemonadeTheme.themed.pink.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:5fd3ca7b56409b0dfc1a2ea95b9ef3b9bb98eb53/72:85",
+            "targetVariableName": "pink/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -6356,14 +6356,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.29411765933036804,
+            0,
+            0.30980393290519714
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#4B004F"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:112",
           "com.figma.scopes": [
@@ -6375,8 +6375,8 @@
             "iOS": "LemonadeTheme.themed.fuchsia.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:8841cdffff6e2fc5c66ebb519e7df0e2c5bf1884/590:32",
+            "targetVariableName": "fuchsia/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -6579,14 +6579,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.20000000298023224,
+            0.027450980618596077,
+            0.3490196168422699
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#330759"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:113",
           "com.figma.scopes": [
@@ -6598,8 +6598,8 @@
             "iOS": "LemonadeTheme.themed.purple.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:c7986096e0252a9e221df46da127dc7d86cfcdea/72:96",
+            "targetVariableName": "purple/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -6802,14 +6802,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.182546928524971,
+            0.05090215802192688,
+            0.4063526391983032
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#2F0D68"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:114",
           "com.figma.scopes": [
@@ -6821,8 +6821,8 @@
             "iOS": "LemonadeTheme.themed.violet.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:1d7437360f77c7e28d235a490a4db95f20d398f9/74:21",
+            "targetVariableName": "violet/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -7025,14 +7025,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.11713384091854095,
+            0.10263016074895859,
+            0.3006191551685333
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#1E1A4D"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:115",
           "com.figma.scopes": [
@@ -7044,8 +7044,8 @@
             "iOS": "LemonadeTheme.themed.indigo.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:50ebc5dd5beb895c460aa0073f3c0fabad6a090b/72:120",
+            "targetVariableName": "indigo/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -7248,14 +7248,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.0872625783085823,
+            0.1431322991847992,
+            0.33569207787513733
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#162456"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:116",
           "com.figma.scopes": [
@@ -7267,8 +7267,8 @@
             "iOS": "LemonadeTheme.themed.blue.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:0b2fb1b38403ea21bb152bc9880dd83f5af6ecac/72:130",
+            "targetVariableName": "blue/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -7471,14 +7471,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.02118789404630661,
+            0.20064710080623627,
+            0.2698321044445038
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#053345"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:117",
           "com.figma.scopes": [
@@ -7490,8 +7490,8 @@
             "iOS": "LemonadeTheme.themed.cyan.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:c0257cc1300304edcd4f9da8ce149ef7faf08311/72:142",
+            "targetVariableName": "cyan/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -7694,14 +7694,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.0081214290112257,
+            0.18475638329982758,
+            0.18082283437252045
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#022F2E"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:118",
           "com.figma.scopes": [
@@ -7713,8 +7713,8 @@
             "iOS": "LemonadeTheme.themed.teal.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:4152025e9422bdb5c3213a08852130ed7b98455b/72:153",
+            "targetVariableName": "teal/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -7917,14 +7917,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.011995701119303703,
+            0.18100152909755707,
+            0.08350356668233871
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#032E15"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:119",
           "com.figma.scopes": [
@@ -7936,8 +7936,8 @@
             "iOS": "LemonadeTheme.themed.green.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:66b7d653e2ec3a42a2072d7f3ceee1313b654322/72:164",
+            "targetVariableName": "green/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -8140,14 +8140,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.09908609837293625,
+            0.18128961324691772,
+            0.010939915664494038
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#192E03"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:120",
           "com.figma.scopes": [
@@ -8159,8 +8159,8 @@
             "iOS": "LemonadeTheme.themed.greenLime.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:65aaf3023f94b4d262a24816620da2362e6f68dc/72:174",
+            "targetVariableName": "green-lime/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -8363,14 +8363,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.11600000411272049,
+            0.1550000011920929,
+            0.02500000037252903
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#1E2806"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:121",
           "com.figma.scopes": [
@@ -8382,8 +8382,8 @@
             "iOS": "LemonadeTheme.themed.yellowLime.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:42c4e072fa330a540702e501522d153308f72deb/121:80",
+            "targetVariableName": "yellow-lime/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -8586,14 +8586,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.08235294371843338,
+            0.08235294371843338,
+            0.07450980693101883
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 1,
+          "hex": "#151513"
         },
-        "$description": "Text and icons drawn on top of background. Chosen per hue for contrast — do not substitute a fixed neutral.",
+        "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5197:16",
           "com.figma.scopes": [
@@ -8605,8 +8605,8 @@
             "iOS": "LemonadeTheme.themed.neutral.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:c97bf8aac4abe5f86d9d48fdf23be25e851540b1/554:1",
+            "targetVariableName": "neutral/950",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }

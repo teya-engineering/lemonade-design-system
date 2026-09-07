@@ -33,13 +33,31 @@ class ThemedColorsTest {
     }
 
     @Test
-    fun labelColourIsChosenPerHue() {
-        // Cool hues take a white label in light; warm hues take ink.
-        assertEquals(LemonadePrimitiveColors.Solid.White.white950, LemonadeLightThemedColors.blue.onBackground)
-        assertEquals(LemonadePrimitiveColors.Alpha.Neutral.alpha900, LemonadeLightThemedColors.amber.onBackground)
-        // Dark backgrounds are light enough that ink wins for every hue.
-        assertEquals(LemonadePrimitiveColors.Alpha.Neutral.alpha900, LemonadeDarkThemedColors.blue.onBackground)
-        assertEquals(LemonadePrimitiveColors.Alpha.Neutral.alpha900, LemonadeDarkThemedColors.amber.onBackground)
+    fun labelColourUsesTheHuesOwnExtremeWhereContrastAllows() {
+        // In dark the background is the pale <hue>/400, so the hue's darkest step clears
+        // AA for all seventeen — every label stays in the family.
+        assertEquals(LemonadePrimitiveColors.Solid.Blue.blue950, LemonadeDarkThemedColors.blue.onBackground)
+        assertEquals(LemonadePrimitiveColors.Solid.Amber.amber950, LemonadeDarkThemedColors.amber.onBackground)
+        assertEquals(LemonadePrimitiveColors.Solid.Red.red950, LemonadeDarkThemedColors.red.onBackground)
+
+        // In light the background is the saturated <hue>/600, so which end of the ramp
+        // works depends on the hue: light end for the cool ones, dark end for the warm.
+        assertEquals(LemonadePrimitiveColors.Solid.Blue.blue50, LemonadeLightThemedColors.blue.onBackground)
+        assertEquals(LemonadePrimitiveColors.Solid.Amber.amber950, LemonadeLightThemedColors.amber.onBackground)
+    }
+
+    @Test
+    fun labelColourFallsBackToWhiteOrInkWhereTheFamilyCannotReachAA() {
+        // Seven hues sit too near mid-luminance for either end of their own ramp to reach
+        // 4.5:1 on <hue>/600 — their best in-family option is 3.71-4.34. Those fall back,
+        // staying on the side their family was closest to.
+        assertEquals(LemonadePrimitiveColors.Solid.White.white950, LemonadeLightThemedColors.red.onBackground)
+        assertEquals(LemonadePrimitiveColors.Solid.White.white950, LemonadeLightThemedColors.fuchsia.onBackground)
+        assertEquals(LemonadePrimitiveColors.Alpha.Neutral.alpha900, LemonadeLightThemedColors.cyan.onBackground)
+        assertEquals(LemonadePrimitiveColors.Alpha.Neutral.alpha900, LemonadeLightThemedColors.teal.onBackground)
+
+        // The fallback is a light-mode concern only; dark stays in-family throughout.
+        assertEquals(LemonadePrimitiveColors.Solid.Cyan.cyan950, LemonadeDarkThemedColors.cyan.onBackground)
     }
 
     @Test
