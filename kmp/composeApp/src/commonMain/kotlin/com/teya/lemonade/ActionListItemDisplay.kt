@@ -2,6 +2,10 @@ package com.teya.lemonade
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -14,6 +18,10 @@ import com.teya.lemonade.core.TagVoice
 
 @Composable
 internal fun ActionListItemDisplay() {
+    // Lazy items dispose their state when scrolled out of view, which would reset these readouts.
+    var tapOrHoldEvent by rememberSaveable { mutableStateOf("Tap or hold this row") }
+    var holdOnlyEvent by rememberSaveable { mutableStateOf("Hold this row") }
+
     SampleScreenDisplayLazyColumn(title = "ActionListItem") {
         item(key = "priority-trailing") {
             LemonadeUi.Card(
@@ -489,6 +497,44 @@ internal fun ActionListItemDisplay() {
                             contentDescription = null,
                             size = LemonadeAssetSize.Medium,
                             tint = LemonadeTheme.colors.content.contentCritical,
+                        )
+                    },
+                )
+            }
+        }
+
+        item(key = "long-press") {
+            LemonadeUi.Card(
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
+                header = CardHeaderConfig(
+                    title = "Long press",
+                    subtitle = "A hold fires onLongClick; the tap is suppressed on lift.",
+                ),
+            ) {
+                LemonadeUi.ActionListItem(
+                    label = "Tap or hold",
+                    supportText = tapOrHoldEvent,
+                    onItemClicked = { tapOrHoldEvent = "Last event: tap" },
+                    onLongClick = { tapOrHoldEvent = "Last event: long press" },
+                    showDivider = true,
+                    leadingSlot = {
+                        LemonadeUi.Icon(
+                            icon = LemonadeIcons.Gear,
+                            contentDescription = null,
+                            size = LemonadeAssetSize.Medium,
+                        )
+                    },
+                )
+
+                LemonadeUi.ActionListItem(
+                    label = "Hold only",
+                    supportText = holdOnlyEvent,
+                    onLongClick = { holdOnlyEvent = "Last event: long press" },
+                    leadingSlot = {
+                        LemonadeUi.Icon(
+                            icon = LemonadeIcons.Trash,
+                            contentDescription = null,
+                            size = LemonadeAssetSize.Medium,
                         )
                     },
                 )
