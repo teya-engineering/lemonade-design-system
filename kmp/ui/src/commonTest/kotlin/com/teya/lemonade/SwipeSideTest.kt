@@ -97,7 +97,7 @@ class SwipeSideTest {
     private fun travel(
         travel: Float,
         delta: Float,
-        side: SwipeActionSide?,
+        side: SwipeActionSide,
         ceiling: Float = rowWidth,
     ): Float =
         resolveSwipeTravel(
@@ -175,14 +175,6 @@ class SwipeSideTest {
         assertNull(actual = swipeTravelSide(travel = held))
     }
 
-    @Test
-    fun `a gesture that owns no side has not moved`() {
-        assertEquals(
-            expected = 0f,
-            actual = travel(travel = 0f, delta = 0f, side = null),
-        )
-    }
-
     // swipeCrossedCommit
 
     @Test
@@ -195,23 +187,14 @@ class SwipeSideTest {
         )
     }
 
-    @Test
-    fun `a drag short of it does not`() {
-        assertFalse(actual = crossed(travel = 190f))
-    }
-
     /**
      * An unmeasured row has no width to have crossed half of: without the guard the threshold is
-     * zero and a drag that never moved reads as a commit.
+     * zero and a drag that never moved reads as a commit. [SwipeSettleTest] pins the rest of the
+     * rule through [resolveSwipeSettle], which asks this.
      */
     @Test
     fun `an unmeasured row never crosses`() {
         assertFalse(actual = crossed(travel = 0f, rowWidth = 0f))
-    }
-
-    @Test
-    fun `nothing crosses without a full swipe`() {
-        assertFalse(actual = crossed(travel = 300f, allowsFullSwipe = false))
     }
 
     private fun crossed(

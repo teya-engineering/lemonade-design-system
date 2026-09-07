@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -286,6 +287,7 @@ public data class SwipeAction(
 
 /** [resolveSwipeRevealWidth] against the theme the row is drawn in. */
 @Composable
+@ReadOnlyComposable
 private fun swipeRevealWidth(through: Int): Float =
     with(LocalDensity.current) {
         resolveSwipeRevealWidth(
@@ -296,6 +298,10 @@ private fun swipeRevealWidth(through: Int): Float =
                 LemonadeTheme.spaces.spacing400.toPx(),
         )
     }
+
+/** Which edge of the row this side's actions sit against. */
+private val SwipeActionSide.alignment: Alignment
+    get() = if (this == SwipeActionSide.Leading) Alignment.CenterStart else Alignment.CenterEnd
 
 /**
  * The actions behind the row on one of its edges, drawn as far as the row has revealed them.
@@ -308,6 +314,7 @@ private fun swipeRevealWidth(through: Int): Float =
  * Mirrored off [side]: an action sits against the edge it is revealed from, grows inwards from it,
  * and stacks away from it.
  */
+
 @Composable
 private fun SwipeActionStrip(
     actions: List<SwipeAction>,
@@ -338,17 +345,25 @@ private fun SwipeActionStrip(
             // duplicate every custom action. The gesture is visual; the custom action is the
             // accessible path.
             .clearAndSetSemantics { },
-        contentAlignment = if (leading) Alignment.CenterStart else Alignment.CenterEnd,
+        contentAlignment = side.alignment,
     ) {
         // Outermost last, so it is drawn on top: the first action is the one a full swipe fires,
         // and the one that stretches over the actions beside it.
         val shown = travel()
         val actionWidth = with(density) { LemonadeTheme.sizes.size1200.toPx() }
         val stripReveal = swipeRevealWidth(through = actions.size)
+        // The same for every action a stretching one is pushing along, so asked once rather than
+        // once per action.
+        val displaced = resolveSwipeDisplacedOpacity(travel = shown, rowWidth = rowWidth())
         actions.indices.reversed().forEach { index ->
             val revealed = resolveSwipeStripReveal(
                 travel = shown,
-                actionReveal = swipeRevealWidth(through = index + 1),
+                // The last action's own reveal is the whole strip's.
+                actionReveal = if (index == actions.lastIndex) {
+                    stripReveal
+                } else {
+                    swipeRevealWidth(through = index + 1)
+                },
                 stripReveal = stripReveal,
                 actionWidth = actionWidth,
             )
@@ -363,11 +378,7 @@ private fun SwipeActionStrip(
                 // Each action lands as the row clears it, so the second of a pair bumps in on its
                 // own rather than with the first.
                 arrived = revealed.scale >= BUMP_TRIGGER,
-                opacity = if (index == 0) {
-                    1f
-                } else {
-                    resolveSwipeDisplacedOpacity(travel = shown, rowWidth = rowWidth())
-                },
+                opacity = if (index == 0) 1f else displaced,
                 stretches = index == 0,
                 committed = committed() && index == 0,
                 committedStretch = committedStretch,
@@ -592,17 +603,6 @@ private fun SwipeActionRowCore(
     val commitTravelOn = { side: SwipeActionSide ->
         maxOf(revealOn(side), rowWidth - commitInset)
     }
-    // Nothing to open onto is what closes a release on an edge with nothing behind it.
-    val firstActionRevealOn = { side: SwipeActionSide ->
-        minOf(revealOn(side), oneActionReveal)
-    }
-    val ceilingOn = { side: SwipeActionSide ->
-        resolveSwipeCeiling(
-            revealWidth = revealOn(side),
-            rowWidth = rowWidth,
-            allowsFullSwipe = allowsFullSwipe,
-        )
-    }
 
     // The side the row would open onto with nothing having said otherwise: whichever edge has
     // actions, trailing first, so a row opened by its caller opens the way it always did.
@@ -693,16 +693,13 @@ private fun SwipeActionRowCore(
     }
 
     // Either list can change while the row is open, and an open row would otherwise rest at a stale
-    // offset. Never under a live finger, where it would fight the drag.
-    //
-    // Checked against where the row was last sent, as the open/close effect is: this key now moves
-    // when the *side* does, and a drag that settles open sets the side — so without it every
-    // release would restart its own spring from rest, a frame after it began, and lose the velocity
-    // the finger let go at.
-    val openReveal = restingSide.sign * revealOn(restingSide)
-    LaunchedEffect(openReveal) {
-        if (open && !dragging && !held && settleTarget.floatValue != openReveal) {
-            settleTo(openReveal, 0f)
+    // offset. Keyed on the counts the reveals are a function of rather than on the reveal itself,
+    // which also moves when the side does — and a drag that settles open is what sets the side, so
+    // that key would restart every release's spring from rest a frame after it began. Never under a
+    // live finger either, where it would fight the drag.
+    LaunchedEffect(leadingActions.size, actions.size) {
+        if (open && !dragging && !held) {
+            settleTo(restingSide.sign * revealOn(restingSide), 0f)
         }
     }
 
@@ -711,12 +708,18 @@ private fun SwipeActionRowCore(
         val side = gestureSide.value
             ?: resolveSwipeGestureSide(travel = travel.floatValue, delta = towards)
         gestureSide.value = side
-        val next = resolveSwipeTravel(
-            travel = travel.floatValue,
-            delta = towards,
-            side = side,
-            ceiling = side?.let(ceilingOn) ?: 0f,
-        )
+        val next = side?.let { owned ->
+            resolveSwipeTravel(
+                travel = travel.floatValue,
+                delta = towards,
+                side = owned,
+                ceiling = resolveSwipeCeiling(
+                    revealWidth = revealOn(owned),
+                    rowWidth = rowWidth,
+                    allowsFullSwipe = allowsFullSwipe,
+                ),
+            )
+        } ?: 0f
         val crossed = side?.takeIf {
             swipeCrossedCommit(
                 travel = next,
@@ -819,45 +822,37 @@ private fun SwipeActionRowCore(
                         val target = resolveSwipeSettle(
                             travel = reached,
                             velocity = released,
-                            firstActionReveal = firstActionRevealOn(side),
+                            // Nothing to open onto is what closes a release on an edge with
+                            // nothing behind it: an empty side's reveal is zero.
+                            firstActionReveal = minOf(revealOn(side), oneActionReveal),
                             rowWidth = rowWidth,
                             allowsFullSwipe = allowsFullSwipe,
                         )
-                        committedSide = null
-                        // Every branch animates: settling usually writes the value `open` already
-                        // holds, so nothing else would move the row off where the finger left it.
-                        when (target) {
-                            SwipeSettleTarget.Committed -> {
-                                val first = actionsOn(side).firstOrNull()
-                                // A commit fires the first action, so the row rests where that
-                                // action asks: away, or held all the way across, the action still
-                                // stretched, behind whatever the action has just put on screen.
-                                val holds = first?.keepsRowOpen == true
-                                held = holds
-                                committedSide = if (holds) side else null
-                                holding = holds
-                                openSide = if (holds) side else null
-                                onOpenChange(holds)
-                                // Before the animation, not after: animateTo suspends until it
-                                // settles, and the action must not wait on a spring.
-                                first?.onClick()
-                                settleTo(
-                                    if (holds) sign * commitTravelOn(side) else 0f,
-                                    released * sign,
-                                )
-                            }
-
-                            SwipeSettleTarget.Open -> {
-                                openSide = side
-                                onOpenChange(true)
-                                settleTo(sign * revealOn(side), released * sign)
-                            }
-
-                            SwipeSettleTarget.Closed -> {
-                                onOpenChange(false)
-                                settleTo(0f, released * sign)
-                            }
+                        val commits = target == SwipeSettleTarget.Committed
+                        val first = actionsOn(side).firstOrNull()
+                        // A commit fires the first action, so the row rests where that action
+                        // asks: away, or held all the way across, the action still stretched,
+                        // behind whatever the action has just put on screen.
+                        val holds = commits && first?.keepsRowOpen == true
+                        val opens = target == SwipeSettleTarget.Open || holds
+                        held = holds
+                        holding = holds
+                        committedSide = if (holds) side else null
+                        openSide = if (opens) side else null
+                        onOpenChange(opens)
+                        if (commits) {
+                            // Before the animation, not after: animateTo suspends until it
+                            // settles, and the action must not wait on a spring.
+                            first?.onClick()
                         }
+                        // Always animates: settling usually writes the value `open` already holds,
+                        // so nothing else would move the row off where the finger left it.
+                        val settlesTo = when {
+                            holds -> sign * commitTravelOn(side)
+                            opens -> sign * revealOn(side)
+                            else -> 0f
+                        }
+                        settleTo(settlesTo, released * sign)
                     },
                 )
                 // Merged, so TalkBack focuses this node instead of the merging node the wrapped

@@ -6,8 +6,8 @@ import XCTest
 /// row, where 76pt of travel brings an action fully out.
 final class LemonadeSwipeSideTests: XCTestCase {
 
-    private let revealWidth: CGFloat = 76
-    private let rowWidth: CGFloat = 361
+    private static let revealWidth: CGFloat = 76
+    private static let rowWidth: CGFloat = 361
 
     // MARK: - resolveSwipeGestureSide
 
@@ -33,26 +33,26 @@ final class LemonadeSwipeSideTests: XCTestCase {
     /// draggable, and the empty edge has to hold it at rest rather than let it be carried across.
     func testASideWithNoActionsHasNowhereToGo() {
         XCTAssertEqual(
-            resolveSwipeCeiling(revealWidth: 0, rowWidth: rowWidth, allowsFullSwipe: true),
+            resolveSwipeCeiling(revealWidth: 0, rowWidth: Self.rowWidth, allowsFullSwipe: true),
             0
         )
     }
 
     func testAFullSwipeMayCarryTheRowAcross() {
         XCTAssertEqual(
-            resolveSwipeCeiling(revealWidth: revealWidth, rowWidth: rowWidth, allowsFullSwipe: true),
-            rowWidth
+            resolveSwipeCeiling(revealWidth: Self.revealWidth, rowWidth: Self.rowWidth, allowsFullSwipe: true),
+            Self.rowWidth
         )
     }
 
     func testWithoutOneTheRowCapsAtTheReveal() {
         XCTAssertEqual(
             resolveSwipeCeiling(
-                revealWidth: revealWidth,
-                rowWidth: rowWidth,
+                revealWidth: Self.revealWidth,
+                rowWidth: Self.rowWidth,
                 allowsFullSwipe: false
             ),
-            revealWidth
+            Self.revealWidth
         )
     }
 
@@ -61,15 +61,10 @@ final class LemonadeSwipeSideTests: XCTestCase {
     private func travel(
         _ travel: CGFloat,
         delta: CGFloat,
-        side: SwipeActionSide?,
-        ceiling: CGFloat? = nil
+        side: SwipeActionSide,
+        ceiling: CGFloat = rowWidth
     ) -> CGFloat {
-        resolveSwipeTravel(
-            travel: travel,
-            delta: delta,
-            side: side,
-            ceiling: ceiling ?? rowWidth
-        )
+        resolveSwipeTravel(travel: travel, delta: delta, side: side, ceiling: ceiling)
     }
 
     /// Leading travel is negative, which is the whole of what tells the row which strip to draw.
@@ -86,8 +81,8 @@ final class LemonadeSwipeSideTests: XCTestCase {
     }
 
     func testTravelCapsAtItsOwnSidesCeiling() {
-        XCTAssertEqual(travel(0, delta: 400, side: .trailing, ceiling: revealWidth), revealWidth)
-        XCTAssertEqual(travel(0, delta: -400, side: .leading, ceiling: revealWidth), -revealWidth)
+        XCTAssertEqual(travel(0, delta: 400, side: .trailing, ceiling: Self.revealWidth), Self.revealWidth)
+        XCTAssertEqual(travel(0, delta: -400, side: .leading, ceiling: Self.revealWidth), -Self.revealWidth)
     }
 
     /// A side with nothing behind it holds the row at rest however hard it is dragged.
@@ -97,36 +92,21 @@ final class LemonadeSwipeSideTests: XCTestCase {
         XCTAssertNil(swipeTravelSide(travel: held))
     }
 
-    func testAGestureThatOwnsNoSideHasNotMoved() {
-        XCTAssertEqual(travel(0, delta: 0, side: nil), 0)
-    }
-
     // MARK: - swipeCrossedCommit
 
     func testADragPastTheThresholdCrosses() {
         XCTAssertTrue(
-            swipeCrossedCommit(travel: 200, rowWidth: rowWidth, allowsFullSwipe: true)
+            swipeCrossedCommit(travel: 200, rowWidth: Self.rowWidth, allowsFullSwipe: true)
         )
         XCTAssertTrue(
-            swipeCrossedCommit(travel: -200, rowWidth: rowWidth, allowsFullSwipe: true)
-        )
-    }
-
-    func testADragShortOfItDoesNot() {
-        XCTAssertFalse(
-            swipeCrossedCommit(travel: 190, rowWidth: rowWidth, allowsFullSwipe: true)
+            swipeCrossedCommit(travel: -200, rowWidth: Self.rowWidth, allowsFullSwipe: true)
         )
     }
 
     /// An unmeasured row has no width to have crossed half of: without the guard the threshold is
-    /// zero and a drag that never moved reads as a commit.
+    /// zero and a drag that never moved reads as a commit. `LemonadeSwipeSettleTests` pins the
+    /// rest of the rule through `resolveSwipeSettle`, which asks this.
     func testAnUnmeasuredRowNeverCrosses() {
         XCTAssertFalse(swipeCrossedCommit(travel: 0, rowWidth: 0, allowsFullSwipe: true))
-    }
-
-    func testNothingCrossesWithoutFullSwipe() {
-        XCTAssertFalse(
-            swipeCrossedCommit(travel: 300, rowWidth: rowWidth, allowsFullSwipe: false)
-        )
     }
 }

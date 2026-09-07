@@ -93,7 +93,7 @@ internal fun resolveSwipeCeiling(
  * Where a delta leaves the row, in signed travel.
  *
  * Held to the side the gesture owns, so it stops at rest rather than crossing into the other edge's
- * actions. A row that has not been moved owns no side yet, and has not gone anywhere.
+ * actions.
  *
  * @param travel where the row is now, signed.
  * @param delta how far the finger has moved, in travel's own sign.
@@ -103,13 +103,9 @@ internal fun resolveSwipeCeiling(
 internal fun resolveSwipeTravel(
     travel: Float,
     delta: Float,
-    side: SwipeActionSide?,
+    side: SwipeActionSide,
     ceiling: Float,
-): Float {
-    val sign = side?.sign
-        ?: return 0f
-    return sign * ((travel + delta) * sign).coerceIn(0f, ceiling)
-}
+): Float = side.sign * ((travel + delta) * side.sign).coerceIn(0f, ceiling)
 
 /**
  * Whether the row has been carried far enough for a full swipe to commit.

@@ -94,7 +94,7 @@ func resolveSwipeCeiling(
 /// Where a delta leaves the row, in signed travel.
 ///
 /// Held to the side the gesture owns, so it stops at rest rather than crossing into the other
-/// edge's actions. A row that has not been moved owns no side yet, and has not gone anywhere.
+/// edge's actions.
 ///
 /// - Parameters:
 ///   - travel: where the row is now, signed.
@@ -104,11 +104,10 @@ func resolveSwipeCeiling(
 func resolveSwipeTravel(
     travel: CGFloat,
     delta: CGFloat,
-    side: SwipeActionSide?,
+    side: SwipeActionSide,
     ceiling: CGFloat
 ) -> CGFloat {
-    guard let sign = side?.sign else { return 0 }
-    return sign * min(max((travel + delta) * sign, 0), ceiling)
+    side.sign * min(max((travel + delta) * side.sign, 0), ceiling)
 }
 
 /// Whether the row has been carried far enough for a full swipe to commit.
@@ -486,6 +485,10 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     /// event, and a closure would re-run the caller's whole builder each time — the cost the
     /// Compose row sheds by keeping `travel` out of composition.
     let content: Content
+    /// Both edges in the order a reader would find them, joined once for the same reason: the drag
+    /// rewrites the body on every touch event, and concatenating there would rebuild the
+    /// accessibility subtree with it.
+    let allActions: [LemonadeSwipeAction]
 
     init(
         actions: [LemonadeSwipeAction],
@@ -498,6 +501,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     ) {
         self.actions = actions
         self.leadingActions = leadingActions
+        self.allActions = leadingActions + actions
         self.enabled = enabled
         self.allowsFullSwipe = allowsFullSwipe
         self.showDivider = showDivider
@@ -571,12 +575,11 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
 
     /// Where a commit parks the row: as far as it goes, less the sliver iOS leaves of it.
     private func commitTravelOn(_ side: SwipeActionSide) -> CGFloat {
-        max(revealOn(side), rowWidth - commitInset)
+        commitTravel(forReveal: revealOn(side))
     }
 
-    /// Nothing to open onto is what closes a release on an edge with nothing behind it.
-    private func firstActionRevealOn(_ side: SwipeActionSide) -> CGFloat {
-        actionsOn(side).isEmpty ? 0 : swipeRevealWidth(through: 1)
+    private func commitTravel(forReveal reveal: CGFloat) -> CGFloat {
+        max(reveal, rowWidth - commitInset)
     }
 
     private func ceilingOn(_ side: SwipeActionSide) -> CGFloat {
@@ -749,7 +752,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 // Both edges in the order a reader would find them: the gesture is what is
                 // invisible here, not the side.
                 SwipeAccessibilityActions(
-                    actions: enabled && !holding ? leadingActions + actions : [],
+                    actions: enabled && !holding ? allActions : [],
                     onFired: fired
                 )
             )
@@ -782,16 +785,14 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             guard open, signal.opener != AnyHashable(groupIdentity) else { return }
             open = false
         }
-        .onChange(of: openReveal) { newValue in
-            // Either list can change while the row is open, and an open row would otherwise rest
-            // at a stale offset. Never under a live finger, where it would fight the drag.
-            //
-            // `travel` holds the target a settle is heading for, so comparing against it is what
-            // keeps this off a release already in flight: this fires when the *side* moves too,
-            // and a drag that settles open sets the side — without the check every release would
-            // restart its own spring from rest and lose the velocity the finger let go at.
-            guard open, dragOrigin == nil, !held, travel != newValue else { return }
-            withAnimation(settle()) { travel = newValue }
+        // Either list can change while the row is open, and an open row would otherwise rest at a
+        // stale offset. Observed on the counts the reveals are a function of rather than on the
+        // reveal itself, which also moves when the side does — and a drag that settles open is
+        // what sets the side, so that would restart every release's spring from rest. Never under
+        // a live finger either, where it would fight the drag.
+        .onChange(of: [leadingActions.count, actions.count]) { _ in
+            guard open, dragOrigin == nil, !held else { return }
+            withAnimation(settle()) { travel = openReveal }
         }
         .onChange(of: isDragging) { dragging in
             // A cancelled gesture never delivers `onEnded`, so the snap back has to happen here.
@@ -818,7 +819,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             committed: committedSide == side,
             // How far the first action has stretched once a commit has parked the row: what the
             // icon is sliding towards from the moment the crossing happens.
-            committedStretch: commitTravelOn(side) - reveal,
+            committedStretch: commitTravel(forReveal: reveal) - reveal,
             holding: holding,
             rowWidth: rowWidth,
             towardsTrailing: towardsTrailing,
@@ -835,13 +836,13 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     private func draggedTravel(
         from origin: CGFloat,
         by translation: CGFloat,
-        side: SwipeActionSide?
+        side: SwipeActionSide
     ) -> CGFloat {
         resolveSwipeTravel(
             travel: origin,
             delta: translation,
             side: side,
-            ceiling: side.map(ceilingOn) ?? 0
+            ceiling: ceilingOn(side)
         )
     }
 
@@ -877,7 +878,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 let towards = dragged(value) * towardsTrailing
                 let side = gestureSide ?? resolveSwipeGestureSide(travel: origin, delta: towards)
                 gestureSide = side
-                let next = draggedTravel(from: origin, by: towards, side: side)
+                let next = side.map { draggedTravel(from: origin, by: towards, side: $0) } ?? 0
                 let crossed: SwipeActionSide? = side.flatMap { side in
                     swipeCrossedCommit(
                         travel: next,
@@ -920,7 +921,9 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 let target = resolveSwipeSettle(
                     travel: abs(released),
                     velocity: speed,
-                    firstActionReveal: firstActionRevealOn(side),
+                    // Nothing to open onto is what closes a release on an edge with nothing
+                    // behind it: an empty side's reveal is zero.
+                    firstActionReveal: min(revealOn(side), swipeRevealWidth(through: 1)),
                     rowWidth: rowWidth,
                     allowsFullSwipe: allowsFullSwipe
                 )
