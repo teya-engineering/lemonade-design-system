@@ -25,4 +25,29 @@ final class LemonadeSwipeHoldTests: XCTestCase {
     func testAReadableRevealKeepsIt() {
         XCTAssertFalse(swipeHoldReleasesClaim(travelSinceClaim: 76))
     }
+
+    /// The invariant the slack exists to hold, checked against the reveal geometry rather than
+    /// against a number: a claim is only ever handed back while the row is showing nothing.
+    ///
+    /// `holdTravel` and the travel at which the first action starts to be drawn are set apart in
+    /// different places, and nothing but this ties them together. Raising the slack past that
+    /// point would let a finger resting on a row take a reveal the reader can see away from them.
+    func testAHoldNeverTakesBackARevealTheReaderCanSee() {
+        let reveal: CGFloat = 76
+        let actionWidth: CGFloat = 48
+        for step in 0...Int(reveal * 2) {
+            let travel = CGFloat(step) / 2
+            let drawn = resolveSwipeStripReveal(
+                travel: travel,
+                actionReveal: reveal,
+                stripReveal: reveal,
+                actionWidth: actionWidth
+            )
+            guard drawn.scale > 0 else { continue }
+            XCTAssertFalse(
+                swipeHoldReleasesClaim(travelSinceClaim: travel),
+                "travel \(travel) draws the action at scale \(drawn.scale) but would be handed back"
+            )
+        }
+    }
 }
