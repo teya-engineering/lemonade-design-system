@@ -278,8 +278,9 @@ public fun LemonadeUi.TimeInput(
  * - On a short or wide window — a landscape phone or a tablet — Material lays the dial out
  *   side by side with the selected time, and the dialog takes the width that layout needs rather
  *   than the platform's default dialog width, which would clip the clock face. That side-by-side
- *   layout measures around 530.dp against [LemonadeUi.Dialog]'s 560.dp ceiling, so it is worth
- *   re-checking the dial on a large font scale before widening anything inside this dialog.
+ *   layout measures around 530.dp against the ceiling [LemonadeUi.Dialog] allows — 560.dp, and
+ *   less than that once its edge margin binds on a narrow window — so it is worth re-checking the
+ *   dial on a large font scale before widening anything inside this dialog.
  *
  * @param expanded Whether the dialog is currently visible. When `false`, nothing is composed.
  * @param title Heading shown above the picker, already localized.
