@@ -133,6 +133,6 @@ public interface ThemedColor {
 @ExperimentalLemonadeApi
 public interface ThemedPrimaryColor : ThemedColor {
     public val content: Color
-    public val contentOnColor: Color
+    public val contentInverse: Color
     public val subtle: ThemedColor
 }

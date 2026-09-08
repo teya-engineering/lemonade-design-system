@@ -47,7 +47,7 @@ public protocol ThemedColor {
 /// plus its `subtle` counterpart.
 public protocol ThemedPrimaryColor: ThemedColor {
     var content: Color { get }
-    var contentOnColor: Color { get }
+    var contentInverse: Color { get }
     var subtle: ThemedColor { get }
 }
 
@@ -133,7 +133,7 @@ private struct AdaptiveThemedAmberColors: ThemedAmberColors {
     let background = Color("lemonade-themed-amber-background", bundle: .lemonade)
     let border = Color("lemonade-themed-amber-border", bundle: .lemonade)
     let content = Color("lemonade-themed-amber-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-amber-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-amber-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-amber-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedAmberSubtleColors()
 }
@@ -148,7 +148,7 @@ private struct AdaptiveThemedBlueColors: ThemedBlueColors {
     let background = Color("lemonade-themed-blue-background", bundle: .lemonade)
     let border = Color("lemonade-themed-blue-border", bundle: .lemonade)
     let content = Color("lemonade-themed-blue-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-blue-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-blue-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-blue-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedBlueSubtleColors()
 }
@@ -163,7 +163,7 @@ private struct AdaptiveThemedCyanColors: ThemedCyanColors {
     let background = Color("lemonade-themed-cyan-background", bundle: .lemonade)
     let border = Color("lemonade-themed-cyan-border", bundle: .lemonade)
     let content = Color("lemonade-themed-cyan-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-cyan-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-cyan-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-cyan-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedCyanSubtleColors()
 }
@@ -178,7 +178,7 @@ private struct AdaptiveThemedFuchsiaColors: ThemedFuchsiaColors {
     let background = Color("lemonade-themed-fuchsia-background", bundle: .lemonade)
     let border = Color("lemonade-themed-fuchsia-border", bundle: .lemonade)
     let content = Color("lemonade-themed-fuchsia-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-fuchsia-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-fuchsia-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-fuchsia-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedFuchsiaSubtleColors()
 }
@@ -193,7 +193,7 @@ private struct AdaptiveThemedGreenColors: ThemedGreenColors {
     let background = Color("lemonade-themed-green-background", bundle: .lemonade)
     let border = Color("lemonade-themed-green-border", bundle: .lemonade)
     let content = Color("lemonade-themed-green-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-green-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-green-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-green-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedGreenSubtleColors()
 }
@@ -208,7 +208,7 @@ private struct AdaptiveThemedGreenLimeColors: ThemedGreenLimeColors {
     let background = Color("lemonade-themed-green-lime-background", bundle: .lemonade)
     let border = Color("lemonade-themed-green-lime-border", bundle: .lemonade)
     let content = Color("lemonade-themed-green-lime-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-green-lime-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-green-lime-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-green-lime-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedGreenLimeSubtleColors()
 }
@@ -223,7 +223,7 @@ private struct AdaptiveThemedIndigoColors: ThemedIndigoColors {
     let background = Color("lemonade-themed-indigo-background", bundle: .lemonade)
     let border = Color("lemonade-themed-indigo-border", bundle: .lemonade)
     let content = Color("lemonade-themed-indigo-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-indigo-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-indigo-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-indigo-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedIndigoSubtleColors()
 }
@@ -238,7 +238,7 @@ private struct AdaptiveThemedNeutralColors: ThemedNeutralColors {
     let background = Color("lemonade-themed-neutral-background", bundle: .lemonade)
     let border = Color("lemonade-themed-neutral-border", bundle: .lemonade)
     let content = Color("lemonade-themed-neutral-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-neutral-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-neutral-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-neutral-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedNeutralSubtleColors()
 }
@@ -253,7 +253,7 @@ private struct AdaptiveThemedOrangeColors: ThemedOrangeColors {
     let background = Color("lemonade-themed-orange-background", bundle: .lemonade)
     let border = Color("lemonade-themed-orange-border", bundle: .lemonade)
     let content = Color("lemonade-themed-orange-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-orange-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-orange-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-orange-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedOrangeSubtleColors()
 }
@@ -268,7 +268,7 @@ private struct AdaptiveThemedPinkColors: ThemedPinkColors {
     let background = Color("lemonade-themed-pink-background", bundle: .lemonade)
     let border = Color("lemonade-themed-pink-border", bundle: .lemonade)
     let content = Color("lemonade-themed-pink-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-pink-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-pink-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-pink-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedPinkSubtleColors()
 }
@@ -283,7 +283,7 @@ private struct AdaptiveThemedPurpleColors: ThemedPurpleColors {
     let background = Color("lemonade-themed-purple-background", bundle: .lemonade)
     let border = Color("lemonade-themed-purple-border", bundle: .lemonade)
     let content = Color("lemonade-themed-purple-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-purple-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-purple-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-purple-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedPurpleSubtleColors()
 }
@@ -298,7 +298,7 @@ private struct AdaptiveThemedRedColors: ThemedRedColors {
     let background = Color("lemonade-themed-red-background", bundle: .lemonade)
     let border = Color("lemonade-themed-red-border", bundle: .lemonade)
     let content = Color("lemonade-themed-red-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-red-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-red-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-red-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedRedSubtleColors()
 }
@@ -313,7 +313,7 @@ private struct AdaptiveThemedRoseColors: ThemedRoseColors {
     let background = Color("lemonade-themed-rose-background", bundle: .lemonade)
     let border = Color("lemonade-themed-rose-border", bundle: .lemonade)
     let content = Color("lemonade-themed-rose-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-rose-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-rose-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-rose-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedRoseSubtleColors()
 }
@@ -328,7 +328,7 @@ private struct AdaptiveThemedTealColors: ThemedTealColors {
     let background = Color("lemonade-themed-teal-background", bundle: .lemonade)
     let border = Color("lemonade-themed-teal-border", bundle: .lemonade)
     let content = Color("lemonade-themed-teal-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-teal-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-teal-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-teal-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedTealSubtleColors()
 }
@@ -343,7 +343,7 @@ private struct AdaptiveThemedVioletColors: ThemedVioletColors {
     let background = Color("lemonade-themed-violet-background", bundle: .lemonade)
     let border = Color("lemonade-themed-violet-border", bundle: .lemonade)
     let content = Color("lemonade-themed-violet-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-violet-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-violet-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-violet-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedVioletSubtleColors()
 }
@@ -358,7 +358,7 @@ private struct AdaptiveThemedYellowColors: ThemedYellowColors {
     let background = Color("lemonade-themed-yellow-background", bundle: .lemonade)
     let border = Color("lemonade-themed-yellow-border", bundle: .lemonade)
     let content = Color("lemonade-themed-yellow-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-yellow-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-yellow-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-yellow-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedYellowSubtleColors()
 }
@@ -373,7 +373,7 @@ private struct AdaptiveThemedYellowLimeColors: ThemedYellowLimeColors {
     let background = Color("lemonade-themed-yellow-lime-background", bundle: .lemonade)
     let border = Color("lemonade-themed-yellow-lime-border", bundle: .lemonade)
     let content = Color("lemonade-themed-yellow-lime-content", bundle: .lemonade)
-    let contentOnColor = Color("lemonade-themed-yellow-lime-content-on-color", bundle: .lemonade)
+    let contentInverse = Color("lemonade-themed-yellow-lime-content-inverse", bundle: .lemonade)
     let onBackground = Color("lemonade-themed-yellow-lime-on-background", bundle: .lemonade)
     let subtle: ThemedColor = AdaptiveThemedYellowLimeSubtleColors()
 }

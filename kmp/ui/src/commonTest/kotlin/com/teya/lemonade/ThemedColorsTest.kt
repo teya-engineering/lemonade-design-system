@@ -60,9 +60,12 @@ class ThemedColorsTest {
     }
 
     @Test
-    fun contentOnColorIsContentWithModesSwapped() {
-        assertEquals(LemonadeLightThemedColors.blue.content, LemonadeDarkThemedColors.blue.contentOnColor)
-        assertEquals(LemonadeDarkThemedColors.blue.content, LemonadeLightThemedColors.blue.contentOnColor)
+    fun contentInverseIsContentWithModesSwapped() {
+        // For a surface whose brightness is inverted relative to the theme: a dark one in
+        // light mode, a light one in dark. `content` is tuned for the default surface and
+        // drops to 2.53:1 on an inverted one.
+        assertEquals(LemonadeLightThemedColors.blue.content, LemonadeDarkThemedColors.blue.contentInverse)
+        assertEquals(LemonadeDarkThemedColors.blue.content, LemonadeLightThemedColors.blue.contentInverse)
     }
 
     @Test

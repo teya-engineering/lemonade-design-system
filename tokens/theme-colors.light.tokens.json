@@ -4918,7 +4918,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -4930,7 +4930,7 @@
           "alpha": 1,
           "hex": "#FDC700"
         },
-        "$description": "Generic yellow text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic yellow text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:90",
           "com.figma.scopes": [
@@ -4938,8 +4938,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.yellow.contentOnColor",
-            "iOS": "LemonadeTheme.themed.yellow.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.yellow.contentInverse",
+            "iOS": "LemonadeTheme.themed.yellow.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:8aae62451636e999de1efef0151c4b4721091ab9/72:189",
@@ -5174,7 +5174,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -5186,7 +5186,7 @@
           "alpha": 1,
           "hex": "#FDC700"
         },
-        "$description": "Generic amber text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic amber text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:91",
           "com.figma.scopes": [
@@ -5194,8 +5194,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.amber.contentOnColor",
-            "iOS": "LemonadeTheme.themed.amber.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.amber.contentInverse",
+            "iOS": "LemonadeTheme.themed.amber.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:e37bef0d14979b03cf97c6b3c7608ebf73123a5c/72:200",
@@ -5430,7 +5430,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -5442,7 +5442,7 @@
           "alpha": 1,
           "hex": "#FF8904"
         },
-        "$description": "Generic orange text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic orange text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:92",
           "com.figma.scopes": [
@@ -5450,8 +5450,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.orange.contentOnColor",
-            "iOS": "LemonadeTheme.themed.orange.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.orange.contentInverse",
+            "iOS": "LemonadeTheme.themed.orange.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:4317c983d1f303e4b80280c89917f9c89038470d/72:244",
@@ -5686,7 +5686,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -5698,7 +5698,7 @@
           "alpha": 1,
           "hex": "#FE535E"
         },
-        "$description": "Generic red text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic red text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:93",
           "com.figma.scopes": [
@@ -5706,8 +5706,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.red.contentOnColor",
-            "iOS": "LemonadeTheme.themed.red.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.red.contentInverse",
+            "iOS": "LemonadeTheme.themed.red.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5",
@@ -5942,7 +5942,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -5954,7 +5954,7 @@
           "alpha": 1,
           "hex": "#FF637E"
         },
-        "$description": "Generic rose text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic rose text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:94",
           "com.figma.scopes": [
@@ -5962,8 +5962,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.rose.contentOnColor",
-            "iOS": "LemonadeTheme.themed.rose.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.rose.contentInverse",
+            "iOS": "LemonadeTheme.themed.rose.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:24da115b401167c077c0ab4e303bc0353f15e5cf/71:79",
@@ -6198,7 +6198,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -6210,7 +6210,7 @@
           "alpha": 1,
           "hex": "#FB64B6"
         },
-        "$description": "Generic pink text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic pink text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:95",
           "com.figma.scopes": [
@@ -6218,8 +6218,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.pink.contentOnColor",
-            "iOS": "LemonadeTheme.themed.pink.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.pink.contentInverse",
+            "iOS": "LemonadeTheme.themed.pink.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:b238726d1df33e0165a4c402f408349f9d5139ed/72:89",
@@ -6454,7 +6454,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -6466,7 +6466,7 @@
           "alpha": 1,
           "hex": "#ED6AFF"
         },
-        "$description": "Generic fuchsia text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic fuchsia text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:96",
           "com.figma.scopes": [
@@ -6474,8 +6474,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.fuchsia.contentOnColor",
-            "iOS": "LemonadeTheme.themed.fuchsia.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.fuchsia.contentInverse",
+            "iOS": "LemonadeTheme.themed.fuchsia.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:474c9b0fdc54459be73db4a4cb2ccc2e7803e1e7/590:15",
@@ -6710,7 +6710,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -6722,7 +6722,7 @@
           "alpha": 1,
           "hex": "#C27AFF"
         },
-        "$description": "Generic purple text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic purple text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:97",
           "com.figma.scopes": [
@@ -6730,8 +6730,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.purple.contentOnColor",
-            "iOS": "LemonadeTheme.themed.purple.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.purple.contentInverse",
+            "iOS": "LemonadeTheme.themed.purple.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:dacb1222ed4c4104b8d0559a90c6ab357666d2cb/72:99",
@@ -6966,7 +6966,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -6978,7 +6978,7 @@
           "alpha": 1,
           "hex": "#A684FF"
         },
-        "$description": "Generic violet text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic violet text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:98",
           "com.figma.scopes": [
@@ -6986,8 +6986,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.violet.contentOnColor",
-            "iOS": "LemonadeTheme.themed.violet.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.violet.contentInverse",
+            "iOS": "LemonadeTheme.themed.violet.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:a92d2726cf90db0ee12c25fbf925a17f6be6b286/74:9",
@@ -7222,7 +7222,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -7234,7 +7234,7 @@
           "alpha": 1,
           "hex": "#7C86FF"
         },
-        "$description": "Generic indigo text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic indigo text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:99",
           "com.figma.scopes": [
@@ -7242,8 +7242,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.indigo.contentOnColor",
-            "iOS": "LemonadeTheme.themed.indigo.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.indigo.contentInverse",
+            "iOS": "LemonadeTheme.themed.indigo.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:48c17c2f730ffa264dd9d76c9edd21898f7bd71a/72:124",
@@ -7478,7 +7478,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -7490,7 +7490,7 @@
           "alpha": 1,
           "hex": "#51A2FF"
         },
-        "$description": "Generic blue text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic blue text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:100",
           "com.figma.scopes": [
@@ -7498,8 +7498,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.blue.contentOnColor",
-            "iOS": "LemonadeTheme.themed.blue.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.blue.contentInverse",
+            "iOS": "LemonadeTheme.themed.blue.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134",
@@ -7734,7 +7734,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -7746,7 +7746,7 @@
           "alpha": 1,
           "hex": "#00D3F2"
         },
-        "$description": "Generic cyan text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic cyan text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:101",
           "com.figma.scopes": [
@@ -7754,8 +7754,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.cyan.contentOnColor",
-            "iOS": "LemonadeTheme.themed.cyan.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.cyan.contentInverse",
+            "iOS": "LemonadeTheme.themed.cyan.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:d85eb1eb7b3cb3574b4e4f28507b4128ede11b9b/72:144",
@@ -7990,7 +7990,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -8002,7 +8002,7 @@
           "alpha": 1,
           "hex": "#00D5BE"
         },
-        "$description": "Generic teal text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic teal text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:102",
           "com.figma.scopes": [
@@ -8010,8 +8010,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.teal.contentOnColor",
-            "iOS": "LemonadeTheme.themed.teal.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.teal.contentInverse",
+            "iOS": "LemonadeTheme.themed.teal.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:9910911f644f0b83e6deaf2c1f0b1c36fe467a41/72:152",
@@ -8246,7 +8246,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -8258,7 +8258,7 @@
           "alpha": 1,
           "hex": "#05DF72"
         },
-        "$description": "Generic green text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic green text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:103",
           "com.figma.scopes": [
@@ -8266,8 +8266,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.green.contentOnColor",
-            "iOS": "LemonadeTheme.themed.green.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.green.contentInverse",
+            "iOS": "LemonadeTheme.themed.green.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:692bf5198f34c4fad1721e48162ad2dbbdbb9175/72:169",
@@ -8502,7 +8502,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -8514,7 +8514,7 @@
           "alpha": 1,
           "hex": "#9AE600"
         },
-        "$description": "Generic green lime text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic green lime text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:104",
           "com.figma.scopes": [
@@ -8522,8 +8522,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.greenLime.contentOnColor",
-            "iOS": "LemonadeTheme.themed.greenLime.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.greenLime.contentInverse",
+            "iOS": "LemonadeTheme.themed.greenLime.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175",
@@ -8758,7 +8758,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -8770,7 +8770,7 @@
           "alpha": 1,
           "hex": "#EAEA48"
         },
-        "$description": "Generic yellow lime text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic yellow lime text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5196:105",
           "com.figma.scopes": [
@@ -8778,8 +8778,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.yellowLime.contentOnColor",
-            "iOS": "LemonadeTheme.themed.yellowLime.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.yellowLime.contentInverse",
+            "iOS": "LemonadeTheme.themed.yellowLime.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:3d29360b74ce2b1f363eda98f910b1182240f8f9/406:13",
@@ -9014,7 +9014,7 @@
           }
         }
       },
-      "content-on-color": {
+      "content-inverse": {
         "$type": "color",
         "$value": {
           "colorSpace": "srgb",
@@ -9026,7 +9026,7 @@
           "alpha": 0.800000011920929,
           "hex": "#FFFFFF"
         },
-        "$description": "Generic neutral text and icons for use on a dark or strongly coloured surface. The mode-swapped counterpart of content.",
+        "$description": "Generic neutral text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5197:15",
           "com.figma.scopes": [
@@ -9034,8 +9034,8 @@
             "TEXT_FILL"
           ],
           "com.figma.codeSyntax": {
-            "ANDROID": "LemonadeTheme.themed.neutral.contentOnColor",
-            "iOS": "LemonadeTheme.themed.neutral.contentOnColor"
+            "ANDROID": "LemonadeTheme.themed.neutral.contentInverse",
+            "iOS": "LemonadeTheme.themed.neutral.contentInverse"
           },
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:42ee631b01d15ddd550816fb6216127c7593d71a/109:31",
