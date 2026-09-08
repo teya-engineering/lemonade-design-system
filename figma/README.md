@@ -116,7 +116,7 @@ two does not touch it.
 
 ## Components
 
-Twenty-one components per platform, hand-written and kept at parity. A few needed
+Twenty-two components per platform, hand-written and kept at parity. A few needed
 more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
