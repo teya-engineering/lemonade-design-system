@@ -665,10 +665,14 @@ abstract interface com.teya.lemonade/ThemedColor { // com.teya.lemonade/ThemedCo
 }
 
 abstract interface com.teya.lemonade/ThemedPrimaryColor : com.teya.lemonade/ThemedColor { // com.teya.lemonade/ThemedPrimaryColor|null[0]
+    abstract val backgroundHigh // com.teya.lemonade/ThemedPrimaryColor.backgroundHigh|{}backgroundHigh[0]
+        abstract fun <get-backgroundHigh>(): androidx.compose.ui.graphics/Color // com.teya.lemonade/ThemedPrimaryColor.backgroundHigh.<get-backgroundHigh>|<get-backgroundHigh>(){}[0]
     abstract val content // com.teya.lemonade/ThemedPrimaryColor.content|{}content[0]
         abstract fun <get-content>(): androidx.compose.ui.graphics/Color // com.teya.lemonade/ThemedPrimaryColor.content.<get-content>|<get-content>(){}[0]
     abstract val contentInverse // com.teya.lemonade/ThemedPrimaryColor.contentInverse|{}contentInverse[0]
         abstract fun <get-contentInverse>(): androidx.compose.ui.graphics/Color // com.teya.lemonade/ThemedPrimaryColor.contentInverse.<get-contentInverse>|<get-contentInverse>(){}[0]
+    abstract val onBackgroundHigh // com.teya.lemonade/ThemedPrimaryColor.onBackgroundHigh|{}onBackgroundHigh[0]
+        abstract fun <get-onBackgroundHigh>(): androidx.compose.ui.graphics/Color // com.teya.lemonade/ThemedPrimaryColor.onBackgroundHigh.<get-onBackgroundHigh>|<get-onBackgroundHigh>(){}[0]
     abstract val subtle // com.teya.lemonade/ThemedPrimaryColor.subtle|{}subtle[0]
         abstract fun <get-subtle>(): com.teya.lemonade/ThemedColor // com.teya.lemonade/ThemedPrimaryColor.subtle.<get-subtle>|<get-subtle>(){}[0]
 }

@@ -17,7 +17,8 @@ final class LemonadeThemedColorTests: XCTestCase {
     ]
 
     private static let primarySlots = [
-        "background", "border", "content", "content-inverse", "on-background",
+        "background", "background-high", "border", "content", "content-inverse",
+        "on-background", "on-background-high",
     ]
 
     private static let subtleSlots = ["background", "border", "on-background"]

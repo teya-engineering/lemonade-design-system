@@ -69,6 +69,29 @@ class ThemedColorsTest {
     }
 
     @Test
+    fun backgroundHighGoesDeeperInLightAndLighterInDark() {
+        // "High" means further from the page, so the direction flips with the theme.
+        // A 900 fill in dark would be invisible: the dark page is neutral/900 itself.
+        assertEquals(LemonadePrimitiveColors.Solid.Blue.blue900, LemonadeLightThemedColors.blue.backgroundHigh)
+        assertEquals(LemonadePrimitiveColors.Solid.Blue.blue200, LemonadeDarkThemedColors.blue.backgroundHigh)
+        assertNotEquals(LemonadeLightThemedColors.blue.background, LemonadeLightThemedColors.blue.backgroundHigh)
+    }
+
+    @Test
+    fun backgroundHighNeedsItsOwnLabelBecauseOnBackgroundDoesNotCarry() {
+        // onBackground is tuned for background. On a 900 fill it fails for the eight hues
+        // whose label is itself dark — amber's is amber/950, which scores 1.66:1 there.
+        assertEquals(LemonadePrimitiveColors.Solid.Amber.amber950, LemonadeLightThemedColors.amber.onBackground)
+        assertEquals(LemonadePrimitiveColors.Solid.Amber.amber50, LemonadeLightThemedColors.amber.onBackgroundHigh)
+        assertNotEquals(
+            LemonadeLightThemedColors.amber.onBackground,
+            LemonadeLightThemedColors.amber.onBackgroundHigh,
+        )
+        // In dark the high fill is pale, so its label is the hue's dark end.
+        assertEquals(LemonadePrimitiveColors.Solid.Amber.amber900, LemonadeDarkThemedColors.amber.onBackgroundHigh)
+    }
+
+    @Test
     fun labelOnTheSolidFillUsesTheHuesOwnExtremeWhereContrastAllows() {
         // Dark backgrounds are the pale <hue>/400, so the hue's darkest step clears AA
         // for all seventeen and every label stays in the family.

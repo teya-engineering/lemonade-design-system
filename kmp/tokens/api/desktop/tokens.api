@@ -1158,8 +1158,10 @@ public abstract interface class com/teya/lemonade/ThemedColor {
 }
 
 public abstract interface class com/teya/lemonade/ThemedPrimaryColor : com/teya/lemonade/ThemedColor {
+	public abstract fun getBackgroundHigh-0d7_KjU ()J
 	public abstract fun getContent-0d7_KjU ()J
 	public abstract fun getContentInverse-0d7_KjU ()J
+	public abstract fun getOnBackgroundHigh-0d7_KjU ()J
 	public abstract fun getSubtle ()Lcom/teya/lemonade/ThemedColor;
 }
 

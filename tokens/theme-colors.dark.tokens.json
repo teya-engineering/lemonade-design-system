@@ -4855,6 +4855,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9986841678619385,
+            0.9411307573318481,
+            0.5228281021118164
+          ],
+          "alpha": 1,
+          "hex": "#FFF085"
+        },
+        "$description": "High-emphasis generic yellow surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:12",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.yellow.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.yellow.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:9b704a7afac27eafb08fda0f31c8997065155b19/72:186",
+            "targetVariableName": "yellow/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -4975,6 +5007,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:d7f680fde91f55a70cee4ac439e30d3a533ba3c3/72:187",
             "targetVariableName": "yellow/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.4504861533641815,
+            0.2424023449420929,
+            0.04090375453233719
+          ],
+          "alpha": 1,
+          "hex": "#733E0A"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:13",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.yellow.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.yellow.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:7ac7604e2947a6e29da727162d1796b7af73a6af/72:183",
+            "targetVariableName": "yellow/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -5111,6 +5174,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9957298636436462,
+            0.9012048244476318,
+            0.522189199924469
+          ],
+          "alpha": 1,
+          "hex": "#FEE685"
+        },
+        "$description": "High-emphasis generic amber surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:14",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.amber.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.amber.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:a2ef624052b9e62c8d55d00a81f92463a71117ef/72:197",
+            "targetVariableName": "amber/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -5231,6 +5326,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:bb6e63e4e5d055332342bfa598b19f74841efcd6/72:196",
             "targetVariableName": "amber/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.48044630885124207,
+            0.19976529479026794,
+            0.024833204224705696
+          ],
+          "alpha": 1,
+          "hex": "#7B3306"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:15",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.amber.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.amber.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:c1468d14a413ff4165a1ad833ba04bb1baa8e5e9/72:193",
+            "targetVariableName": "amber/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -5367,6 +5493,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            0.8411152362823486,
+            0.6568334698677063
+          ],
+          "alpha": 1,
+          "hex": "#FFD6A7"
+        },
+        "$description": "High-emphasis generic orange surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:16",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.orange.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.orange.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:2638022db150efb24dd4ade267093c5862464f6d/72:243",
+            "targetVariableName": "orange/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -5487,6 +5645,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:9311706b09ea916218c1e413376ad40d281718b6/72:240",
             "targetVariableName": "orange/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.49511849880218506,
+            0.16541889309883118,
+            0.04565234109759331
+          ],
+          "alpha": 1,
+          "hex": "#7E2A0C"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:17",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.orange.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.orange.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:620dcf766e2d379f8dd0053797ea722f1ad41097/72:242",
+            "targetVariableName": "orange/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -5623,6 +5812,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            0.7843137383460999,
+            0.800000011920929
+          ],
+          "alpha": 1,
+          "hex": "#FFC8CC"
+        },
+        "$description": "High-emphasis generic red surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:18",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.red.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.red.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:8e80f11a2933e6bfbc899125af8e7c286d47876e/559:2",
+            "targetVariableName": "red/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -5743,6 +5964,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:1bdece67c85d6092272e1273f2dfb3e09425a47a/559:11",
             "targetVariableName": "red/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5137255191802979,
+            0.09803921729326248,
+            0.125490203499794
+          ],
+          "alpha": 1,
+          "hex": "#831920"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:19",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.red.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.red.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:305b98a3981c4dfff8381bea982976d4aaaf05b7/559:10",
+            "targetVariableName": "red/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -5879,6 +6131,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            0.8011075854301453,
+            0.8256558179855347
+          ],
+          "alpha": 1,
+          "hex": "#FFCCD3"
+        },
+        "$description": "High-emphasis generic rose surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:20",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.rose.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.rose.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:397a874e45b87acc8c539c1e417628bebfbd8d4c/71:75",
+            "targetVariableName": "rose/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -5999,6 +6283,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:d8c07403df900b681951657ff24721c94b9178e2/71:78",
             "targetVariableName": "rose/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5445029139518738,
+            0.030038680881261826,
+            0.2106989622116089
+          ],
+          "alpha": 1,
+          "hex": "#8B0836"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:21",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.rose.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.rose.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:15850e158aea845e079d20ca6d67d16e86df2f00/71:82",
+            "targetVariableName": "rose/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -6135,6 +6450,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9876744151115417,
+            0.8090493083000183,
+            0.910728394985199
+          ],
+          "alpha": 1,
+          "hex": "#FCCEE8"
+        },
+        "$description": "High-emphasis generic pink surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:22",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.pink.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.pink.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:ac53d33a666abdf70cbe9cb6d9fe4e2895a367a1/72:87",
+            "targetVariableName": "pink/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -6255,6 +6602,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:5fd3ca7b56409b0dfc1a2ea95b9ef3b9bb98eb53/72:85",
             "targetVariableName": "pink/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5251818299293518,
+            0.06328236311674118,
+            0.26133397221565247
+          ],
+          "alpha": 1,
+          "hex": "#861043"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:23",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.pink.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.pink.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:18b5c42e6ff2fe42a6cc4f15cd7e65939df7c15e/72:93",
+            "targetVariableName": "pink/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -6391,6 +6769,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9647058844566345,
+            0.8117647171020508,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#F6CFFF"
+        },
+        "$description": "High-emphasis generic fuchsia surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:24",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.fuchsia.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.fuchsia.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:50c055b9f05351877f395adb63b29db579bb226a/590:9",
+            "targetVariableName": "fuchsia/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -6511,6 +6921,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:8841cdffff6e2fc5c66ebb519e7df0e2c5bf1884/590:32",
             "targetVariableName": "fuchsia/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.4470588266849518,
+            0.07450980693101883,
+            0.47058823704719543
+          ],
+          "alpha": 1,
+          "hex": "#721378"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:25",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.fuchsia.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.fuchsia.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:a8b3f0c160be9fe57e077baa48d3c7cac81ff752/590:30",
+            "targetVariableName": "fuchsia/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -6647,6 +7088,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9150136709213257,
+            0.8330873847007751,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#E9D4FF"
+        },
+        "$description": "High-emphasis generic purple surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:26",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.purple.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.purple.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:51a054c011a3196db761584bedfcaa747257b5af/72:98",
+            "targetVariableName": "purple/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -6767,6 +7240,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:c7986096e0252a9e221df46da127dc7d86cfcdea/72:96",
             "targetVariableName": "purple/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3507220149040222,
+            0.08730047941207886,
+            0.5451928377151489
+          ],
+          "alpha": 1,
+          "hex": "#59168B"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:27",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.purple.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.purple.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:ce8da6772b9aeaaa006c6ee70ca317286bfcc8f1/72:101",
+            "targetVariableName": "purple/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -6903,6 +7407,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8665415048599243,
+            0.8378734588623047,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#DDD6FF"
+        },
+        "$description": "High-emphasis generic violet surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:28",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.violet.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.violet.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:2d2cc3f79b64963d3e72f5648e7e22c13ffaa79d/74:5",
+            "targetVariableName": "violet/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -7023,6 +7559,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:1d7437360f77c7e28d235a490a4db95f20d398f9/74:21",
             "targetVariableName": "violet/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3024733364582062,
+            0.0891159400343895,
+            0.603715717792511
+          ],
+          "alpha": 1,
+          "hex": "#4D179A"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:29",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.violet.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.violet.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:d2d4c5e832894e12c87cbc20411f5ee5a405614d/74:19",
+            "targetVariableName": "violet/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -7159,6 +7726,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.7783516645431519,
+            0.8231921195983887,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#C6D2FF"
+        },
+        "$description": "High-emphasis generic indigo surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:30",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.indigo.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.indigo.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:f82a1e495634bf84ebe4bb7784b7222d622255f6/72:117",
+            "targetVariableName": "indigo/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -7279,6 +7878,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:50ebc5dd5beb895c460aa0073f3c0fabad6a090b/72:120",
             "targetVariableName": "indigo/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.19164836406707764,
+            0.17264515161514282,
+            0.5226694345474243
+          ],
+          "alpha": 1,
+          "hex": "#312C85"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:31",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.indigo.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.indigo.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:57b411f0e7ff79d5825e76e31038bfe0f9c7b54e/72:122",
+            "targetVariableName": "indigo/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -7415,6 +8045,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.7450929880142212,
+            0.85866379737854,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#BEDBFF"
+        },
+        "$description": "High-emphasis generic blue surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:32",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.blue.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.blue.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:e7a43f5f223b2f0b746883b020076263bcfc0be5/72:131",
+            "targetVariableName": "blue/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -7535,6 +8197,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:0b2fb1b38403ea21bb152bc9880dd83f5af6ecac/72:130",
             "targetVariableName": "blue/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.10905591398477554,
+            0.22219257056713104,
+            0.5575136542320251
+          ],
+          "alpha": 1,
+          "hex": "#1C398E"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:33",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.blue.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.blue.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:1930813803689a64a35ed4d28cde14a5df885ab3/72:137",
+            "targetVariableName": "blue/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -7671,6 +8364,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6366475820541382,
+            0.9554243087768555,
+            0.9921553730964661
+          ],
+          "alpha": 1,
+          "hex": "#A2F4FD"
+        },
+        "$description": "High-emphasis generic cyan surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:34",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.cyan.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.cyan.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:60b5e70131dc4454fab4092671a739e85442afb8/72:141",
+            "targetVariableName": "cyan/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -7791,6 +8516,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:c0257cc1300304edcd4f9da8ce149ef7faf08311/72:142",
             "targetVariableName": "cyan/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.0637282282114029,
+            0.30670857429504395,
+            0.3937416672706604
+          ],
+          "alpha": 1,
+          "hex": "#104E64"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:35",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.cyan.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.cyan.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:69a86b2a5687500306b19d989e9a7bc149691bf2/72:147",
+            "targetVariableName": "cyan/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -7927,6 +8683,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5870300531387329,
+            0.9674542546272278,
+            0.8945856690406799
+          ],
+          "alpha": 1,
+          "hex": "#96F7E4"
+        },
+        "$description": "High-emphasis generic teal surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:36",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.teal.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.teal.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:5682587e724c93a668327d8b1780e25b1b65b048/72:150",
+            "targetVariableName": "teal/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -8047,6 +8835,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:4152025e9422bdb5c3213a08852130ed7b98455b/72:153",
             "targetVariableName": "teal/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.042003072798252106,
+            0.3081708252429962,
+            0.2917560338973999
+          ],
+          "alpha": 1,
+          "hex": "#0B4F4A"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:37",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.teal.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.teal.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:dece0a91be202fbbadecca73ba44868418a3beb3/72:157",
+            "targetVariableName": "teal/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -8183,6 +9002,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.7250789999961853,
+            0.971260666847229,
+            0.8118365406990051
+          ],
+          "alpha": 1,
+          "hex": "#B9F8CF"
+        },
+        "$description": "High-emphasis generic green surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:38",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.green.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.green.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:6567252d42298c0b9bbe6d3889f7c50b24175866/72:163",
+            "targetVariableName": "green/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -8303,6 +9154,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:66b7d653e2ec3a42a2072d7f3ceee1313b654322/72:164",
             "targetVariableName": "green/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.05112534016370773,
+            0.3286888003349304,
+            0.17017251253128052
+          ],
+          "alpha": 1,
+          "hex": "#0D542B"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:39",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.green.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.green.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:abde7b3267ee96ccadbdb70a6e49330e543bbc63/72:162",
+            "targetVariableName": "green/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -8439,6 +9321,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8477643132209778,
+            0.9783046841621399,
+            0.5999009609222412
+          ],
+          "alpha": 1,
+          "hex": "#D8F999"
+        },
+        "$description": "High-emphasis generic green lime surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:40",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.greenLime.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.greenLime.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:c86e114793dfffcf357570206e8af145c6073e86/72:177",
+            "targetVariableName": "green-lime/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -8559,6 +9473,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:65aaf3023f94b4d262a24816620da2362e6f68dc/72:174",
             "targetVariableName": "green-lime/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.20701801776885986,
+            0.32722383737564087,
+            0.05523703992366791
+          ],
+          "alpha": 1,
+          "hex": "#35530E"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:41",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.greenLime.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.greenLime.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:d006633573d7941a93f8ebe2a1b72be8273f9fd4/72:172",
+            "targetVariableName": "green-lime/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -8695,6 +9640,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9677966237068176,
+            0.9677966237068176,
+            0.652203381061554
+          ],
+          "alpha": 1,
+          "hex": "#F7F7A6"
+        },
+        "$description": "High-emphasis generic yellow lime surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:42",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.yellowLime.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.yellowLime.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:4b78bb5bdcf11bff5a404c245dfff412dc77c23e/74:84",
+            "targetVariableName": "yellow-lime/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -8815,6 +9792,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:42c4e072fa330a540702e501522d153308f72deb/121:80",
             "targetVariableName": "yellow-lime/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1595725268125534,
+            0.19419847428798676,
+            0.04580152779817581
+          ],
+          "alpha": 1,
+          "hex": "#29320C"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:43",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.yellowLime.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.yellowLime.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:32edd553f4f45306d1ba866c5595851700a96c50/121:75",
+            "targetVariableName": "yellow-lime/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -8951,6 +9959,38 @@
           }
         }
       },
+      "background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9137254953384399,
+            0.9058823585510254,
+            0.8901960849761963
+          ],
+          "alpha": 1,
+          "hex": "#E9E7E3"
+        },
+        "$description": "High-emphasis generic neutral surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:44",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.neutral.backgroundHigh",
+            "iOS": "LemonadeTheme.themed.neutral.backgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:3b11184460b5dad6bf35aa745af56e56c2378b54/424:2",
+            "targetVariableName": "neutral/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
       "border": {
         "$type": "color",
         "$value": {
@@ -9071,6 +10111,37 @@
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:c97bf8aac4abe5f86d9d48fdf23be25e851540b1/554:1",
             "targetVariableName": "neutral/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.125490203499794,
+            0.12156862765550613,
+            0.11372549086809158
+          ],
+          "alpha": 1,
+          "hex": "#201F1D"
+        },
+        "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5216:45",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.neutral.onBackgroundHigh",
+            "iOS": "LemonadeTheme.themed.neutral.onBackgroundHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:7d9595539067d82e8aadb39f37080c2221e2dbea/554:0",
+            "targetVariableName": "neutral/900",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }

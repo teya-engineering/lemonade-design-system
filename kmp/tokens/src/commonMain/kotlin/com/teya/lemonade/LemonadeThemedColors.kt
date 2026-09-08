@@ -132,7 +132,9 @@ public interface ThemedColor {
  */
 @ExperimentalLemonadeApi
 public interface ThemedPrimaryColor : ThemedColor {
+    public val backgroundHigh: Color
     public val content: Color
     public val contentInverse: Color
+    public val onBackgroundHigh: Color
     public val subtle: ThemedColor
 }
