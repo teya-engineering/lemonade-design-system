@@ -116,7 +116,7 @@ two does not touch it.
 
 ## Components
 
-Eighteen components per platform, hand-written and kept at parity. A few needed
+Twenty-one components per platform, hand-written and kept at parity. A few needed
 more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
@@ -137,6 +137,15 @@ more than a property lookup:
   `.constant("…")` — it keeps the designed text visible and compiles as written;
   swap it for real `@State` when wiring the screen up.
 
+- `SearchField`'s query and placeholder are text layers rather than properties,
+  read with `findText('Value')` / `findText('Placeholder')`. In the filled
+  variant Figma hides the placeholder layer, so the snippet carries no
+  `placeholder` there — faithful to the design, but a real field usually wants
+  one.
+- `BoxSelection`'s `◇ Background` includes `N/A`, which is the Outlined variant
+  where the background does not apply. That maps to omitting the argument rather
+  than inventing a value.
+
 ### Deliberately unmapped
 
 - `◇ Interaction State` and `📱 Device` everywhere — the former is runtime state
@@ -145,6 +154,10 @@ more than a property lookup:
   `CardHeaderConfig` / `CardFooterActionConfig` objects, which Figma models as
   nested components rather than properties.
 - `Link`'s `Show Indicator` — no code equivalent.
+- `Notice`'s icon swap — the code has `showIcon` only and derives the glyph from
+  the voice, so there is no parameter to map the swap onto.
+- `SearchField`'s trailing slot — it holds the clear button, which the code owns
+  through `dismissible` / `onInputClear` rather than exposing as content.
 - `optionalIndicator = "Optional"` maps Figma's boolean onto a `String?`.
   "Optional" is the literal every call site in the repo uses, on both platforms.
   Note the snippet therefore emits English copy that a consumer shipping in
