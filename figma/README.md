@@ -34,6 +34,11 @@ would catch a deleted asset but stay silent on an added one, which is the
 direction that actually happens: an icon lands in code and quietly has no
 mapping.
 
+The generated directories are marked `linguist-generated` in `.gitattributes`, so
+GitHub collapses them in diffs and leaves them out of language statistics. They
+stay committed on purpose — what is published to Figma should be inspectable in
+git, and `git diff --exit-code` after regenerating is what proves the two agree.
+
 A code enum entry with no Figma component is recorded in the manifest's
 `knownUnmapped` list, so the gap stays visible instead of being tolerated
 silently. Today that is one flag, `CD-congo-democratic-republic`.
