@@ -9645,14 +9645,14 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.9677966237068176,
-            0.9677966237068176,
-            0.652203381061554
+            0.8820960521697998,
+            0.8995633125305176,
+            0.10043667256832123
           ],
           "alpha": 1,
-          "hex": "#F7F7A6"
+          "hex": "#E1E51A"
         },
-        "$description": "High-emphasis generic yellow lime surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$description": "High-emphasis generic yellow lime surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Dark uses the brand step 500 rather than 200, which reads washed out for this hue. Pair with on-background-high.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5216:42",
           "com.figma.scopes": [
@@ -9665,8 +9665,8 @@
             "iOS": "LemonadeTheme.themed.yellowLime.backgroundHigh"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:4b78bb5bdcf11bff5a404c245dfff412dc77c23e/74:84",
-            "targetVariableName": "yellow-lime/200",
+            "targetVariableId": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87",
+            "targetVariableName": "yellow-lime/500",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }

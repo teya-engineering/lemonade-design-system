@@ -296,7 +296,7 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
     override val yellowLime: LemonadeThemedColors.YellowLimeColors =
         object : LemonadeThemedColors.YellowLimeColors {
             override val background = LemonadePrimitiveColors.Solid.YellowLime.yellowLime400
-            override val backgroundHigh = LemonadePrimitiveColors.Solid.YellowLime.yellowLime200
+            override val backgroundHigh = LemonadePrimitiveColors.Solid.YellowLime.yellowLime500
             override val border = LemonadePrimitiveColors.Solid.YellowLime.yellowLime400
             override val content = LemonadePrimitiveColors.Solid.YellowLime.yellowLime400
             override val contentInverse = LemonadePrimitiveColors.Solid.YellowLime.yellowLime700

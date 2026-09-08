@@ -9652,7 +9652,7 @@
           "alpha": 1,
           "hex": "#29320C"
         },
-        "$description": "High-emphasis generic yellow lime surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
+        "$description": "High-emphasis generic yellow lime surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Dark uses the brand step 500 rather than 200, which reads washed out for this hue. Pair with on-background-high.",
         "$extensions": {
           "com.figma.variableId": "VariableID:5216:42",
           "com.figma.scopes": [

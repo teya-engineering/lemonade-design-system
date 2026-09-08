@@ -78,6 +78,26 @@ class ThemedColorsTest {
     }
 
     @Test
+    fun yellowLimeTakesTheBrandStepForItsHighFillInDark() {
+        // Sixteen hues use <hue>/200 for the dark high fill. yellow-lime reads washed out
+        // there, so it uses 500 — the same step bg-brand uses — which still clears its
+        // label comfortably at 9.91:1. A deliberate exception, not drift.
+        assertEquals(
+            LemonadePrimitiveColors.Solid.YellowLime.yellowLime500,
+            LemonadeDarkThemedColors.yellowLime.backgroundHigh,
+        )
+        assertEquals(
+            LemonadePrimitiveColors.Solid.Blue.blue200,
+            LemonadeDarkThemedColors.blue.backgroundHigh,
+        )
+        // Light is unaffected — it follows the 900 rule like every other hue.
+        assertEquals(
+            LemonadePrimitiveColors.Solid.YellowLime.yellowLime900,
+            LemonadeLightThemedColors.yellowLime.backgroundHigh,
+        )
+    }
+
+    @Test
     fun backgroundHighNeedsItsOwnLabelBecauseOnBackgroundDoesNotCarry() {
         // onBackground is tuned for background. On a 900 fill it fails for the eight hues
         // whose label is itself dark — amber's is amber/950, which scores 1.66:1 there.
