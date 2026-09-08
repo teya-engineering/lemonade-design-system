@@ -6,3 +6,5 @@ connect/icons/**.figma.ts          linguist-generated=true
 connect/flags/**.figma.ts          linguist-generated=true
 connect-swiftui/icons/**.figma.ts  linguist-generated=true
 connect-swiftui/flags/**.figma.ts  linguist-generated=true
+connect/brand-logos/**.figma.ts          linguist-generated=true
+connect-swiftui/brand-logos/**.figma.ts  linguist-generated=true

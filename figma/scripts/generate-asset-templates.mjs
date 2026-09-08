@@ -36,6 +36,11 @@ const kotlinMembers = (src) =>
 const swiftMembers = (src) =>
   new Map([...src.matchAll(/^\s+case ([A-Za-z][A-Za-z0-9]*) = "([^"]+)"/gm)].map((m) => [m[2], m[1]]))
 
+// Some assets have more Figma components than enum entries. Brand logos ship a
+// -dark counterpart per brand, but the component resolves the dark artwork from
+// the theme, so both nodes reference the same enum entry.
+const stripDark = (name) => name.replace(/-dark$/, '')
+
 const PLATFORMS = {
   compose: { dir: 'connect', tag: 'kotlin' },
   swiftui: { dir: 'connect-swiftui', tag: 'swift' },
@@ -47,6 +52,7 @@ const ASSETS = {
     entries: 'icons',
     urlToken: '<LEMONADE_ICONS>',
     outSub: 'icons',
+    normalise: (name) => name,
     compose: {
       enumPath: 'kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeIcons.kt',
       members: kotlinMembers,
@@ -67,6 +73,7 @@ const ASSETS = {
     entries: 'flags',
     urlToken: '<LEMONADE_FLAGS>',
     outSub: 'flags',
+    normalise: (name) => name,
     compose: {
       enumPath: 'kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeCountryFlags.kt',
       members: kotlinMembers,
@@ -79,6 +86,27 @@ const ASSETS = {
       members: swiftMembers,
       keyFor: (name) => name,
       reference: (m) => `LemonadeCountryFlag.${m}`,
+      imports: [],
+    },
+  },
+  brandLogos: {
+    manifest: 'brand-logos.manifest.json',
+    entries: 'brandLogos',
+    urlToken: '<LEMONADE_COMPONENTS>',
+    outSub: 'brand-logos',
+    normalise: stripDark,
+    compose: {
+      enumPath: 'kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeBrandLogos.kt',
+      members: kotlinMembers,
+      keyFor: (name) => pascal(name),
+      reference: (m) => `LemonadeBrandLogos.${m}`,
+      imports: ['import com.teya.lemonade.core.LemonadeBrandLogos'],
+    },
+    swiftui: {
+      enumPath: 'swiftui/Sources/Lemonade/LemonadeBrandLogos.swift',
+      members: swiftMembers,
+      keyFor: (name) => name,
+      reference: (m) => `LemonadeBrandLogo.${m}`,
       imports: [],
     },
   },
@@ -106,12 +134,16 @@ for (const assetName of assets) {
   // the gap is visible and reviewable rather than silently tolerated. Stored as
   // Figma names, so each platform maps them into its own key space below.
   const knownUnmapped = manifest.knownUnmapped ?? []
+  // Enum entries served by another entry's component rather than one of their
+  // own, keyed Figma name -> the Figma name that covers it.
+  const aliases = manifest.aliases ?? {}
+  const normalise = asset.normalise ?? ((name) => name)
 
   for (const platformName of platforms) {
     const platform = PLATFORMS[platformName]
     const spec = asset[platformName]
     const members = spec.members(readFileSync(join(repo, spec.enumPath), 'utf8'))
-    const allowed = new Set(knownUnmapped.map(spec.keyFor))
+    const allowed = new Set([...knownUnmapped, ...Object.keys(aliases)].map(spec.keyFor))
 
     // Checked in BOTH directions on purpose. Only checking manifest -> enum
     // catches a deleted asset but stays silent on an added one, which is the
@@ -119,7 +151,7 @@ for (const assetName of assets) {
     const missingFromEnum = []
     const mapped = new Set()
     for (const name of Object.keys(items)) {
-      const member = members.get(spec.keyFor(name))
+      const member = members.get(spec.keyFor(normalise(name)))
       if (!member) missingFromEnum.push(name)
       else mapped.add(member)
     }
@@ -147,7 +179,7 @@ for (const assetName of assets) {
     mkdirSync(outDir, { recursive: true })
 
     for (const [name, nodeId] of Object.entries(items)) {
-      const member = members.get(spec.keyFor(name))
+      const member = members.get(spec.keyFor(normalise(name)))
       const reference = spec.reference(member)
       // Emits a bare enum reference, not a view or composable call: every
       // consumer takes the enum. Parents needing a rendered asset wrap it.
@@ -164,7 +196,7 @@ export default {
   metadata: { nestable: true },
 }
 `
-      writeFileSync(join(outDir, `${pascal(member)}.figma.ts`), body)
+      writeFileSync(join(outDir, `${pascal(name)}.figma.ts`), body)
     }
 
     console.log(
