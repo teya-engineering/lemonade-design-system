@@ -6,6 +6,13 @@
 // - Show declarations: true
 
 // Library unique name: <Lemonade:tokens>
+open annotation class com.teya.lemonade/ExperimentalLemonadeApi : kotlin/Annotation { // com.teya.lemonade/ExperimentalLemonadeApi|null[0]
+    constructor <init>(kotlin/String = ...) // com.teya.lemonade/ExperimentalLemonadeApi.<init>|<init>(kotlin.String){}[0]
+
+    final val message // com.teya.lemonade/ExperimentalLemonadeApi.message|{}message[0]
+        final fun <get-message>(): kotlin/String // com.teya.lemonade/ExperimentalLemonadeApi.message.<get-message>|<get-message>(){}[0]
+}
+
 open annotation class com.teya.lemonade/InternalLemonadeApi : kotlin/Annotation { // com.teya.lemonade/InternalLemonadeApi|null[0]
     constructor <init>(kotlin/String = ...) // com.teya.lemonade/InternalLemonadeApi.<init>|<init>(kotlin.String){}[0]
 

@@ -55,12 +55,16 @@ public object LemonadeTheme {
      * Generic, theme-aware hues for colour that carries application meaning the
      * design system does not model - chart series, categories, per-role accents.
      *
+     * Experimental: the shape of this layer is still settling, so opt in with
+     * `@OptIn(ExperimentalLemonadeApi::class)` and expect to revisit call sites.
+     *
      * Prefer [colors] whenever a semantic token fits. Resolved from
      * [LemonadeSemanticColors.isDark], so a custom palette gets the correct
      * themed hues without providing them - but [LemonadeSemanticColors.isDark]
      * defaults to `false`, so a custom dark palette must override it or this
      * silently resolves to the light themed hues.
      */
+    @ExperimentalLemonadeApi
     public val themed: LemonadeThemedColors
         @ReadOnlyComposable
         @Composable

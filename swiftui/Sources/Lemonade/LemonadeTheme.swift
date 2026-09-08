@@ -33,6 +33,11 @@ public enum LemonadeTheme {
     ///
     /// Prefer ``colors`` whenever a semantic token fits. Light and dark are
     /// resolved by the asset catalog, so no manual switching is needed.
+    ///
+    /// > Experimental: the shape of this layer is still settling and may change
+    /// > without a deprecation cycle. The KMP side gates this behind
+    /// > `@OptIn(ExperimentalLemonadeApi::class)`; Swift has no equivalent, so
+    /// > treat it as opt-in by convention and expect to revisit call sites.
     public static let themed: LemonadeThemedColors = LemonadeAdaptiveThemedColors()
 
     /// Spacing tokens

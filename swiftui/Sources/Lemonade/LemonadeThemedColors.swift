@@ -12,6 +12,11 @@ import SwiftUI
 ///
 /// Prefer a semantic token whenever one fits.
 ///
+/// > Experimental: the shape of this layer is still settling and may change
+/// > without a deprecation cycle. The KMP side gates this behind
+/// > `@OptIn(ExperimentalLemonadeApi::class)`; Swift has no equivalent, so
+/// > treat it as opt-in by convention and expect to revisit call sites.
+///
 ///  Auto-generated content.
 ///  
 ///  ⚠️ **DO NOT MODIFY THIS FILE MANUALLY** ⚠️

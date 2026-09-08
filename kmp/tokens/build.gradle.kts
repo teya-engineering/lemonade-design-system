@@ -14,6 +14,10 @@ android {
 }
 
 kotlin {
+    sourceSets.all {
+        // The themed colour layer is experimental for consumers; the module declares it.
+        languageSettings.optIn("com.teya.lemonade.ExperimentalLemonadeApi")
+    }
     sourceSets {
         commonMain.dependencies {
             implementation(compose.runtime)

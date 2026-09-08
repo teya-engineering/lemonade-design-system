@@ -162,8 +162,12 @@ private fun buildThemedInterfaceCode(
         appendLine(" * component can hold either as a [ThemedColor] and style itself from it.")
         appendLine(" *")
         appendLine(" * Prefer a semantic token whenever one fits.")
+        appendLine(" *")
+        appendLine(" * Experimental: the shape of this layer is still settling. Opt in with")
+        appendLine(" * `@OptIn(ExperimentalLemonadeApi::class)` and expect to revisit call sites.")
         append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
         appendLine(" */")
+        appendLine("@ExperimentalLemonadeApi")
         appendLine("public interface LemonadeThemedColors {")
         primary.keys.forEach { hue ->
             appendLine("    public val ${hue.sanitizedValueName()}: ${hue}Colors")
@@ -184,6 +188,7 @@ private fun buildThemedInterfaceCode(
         appendLine(" * ```")
         append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
         appendLine(" */")
+        appendLine("@ExperimentalLemonadeApi")
         appendLine("public interface ThemedColor {")
         commonSlots.forEach { appendLine("    public val $it: Color") }
         appendLine("}")
@@ -193,6 +198,7 @@ private fun buildThemedInterfaceCode(
         appendLine(" * plus its [subtle] counterpart.")
         append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
         appendLine(" */")
+        appendLine("@ExperimentalLemonadeApi")
         appendLine("public interface ThemedPrimaryColor : ThemedColor {")
         primaryOnlySlots.forEach { appendLine("    public val $it: Color") }
         appendLine("    public val subtle: ThemedColor")
@@ -219,6 +225,7 @@ private fun buildThemedObjectCode(
         append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
         appendLine(" */")
         appendLine("@Stable")
+        appendLine("@ExperimentalLemonadeApi")
         appendLine("public object $objectName : LemonadeThemedColors {")
         primary.entries.forEachIndexed { index, (hue, slots) ->
             if (index > 0) appendLine()

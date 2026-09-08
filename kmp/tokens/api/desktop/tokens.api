@@ -1,3 +1,7 @@
+public abstract interface annotation class com/teya/lemonade/ExperimentalLemonadeApi : java/lang/annotation/Annotation {
+	public abstract fun message ()Ljava/lang/String;
+}
+
 public abstract interface annotation class com/teya/lemonade/InternalLemonadeApi : java/lang/annotation/Annotation {
 	public abstract fun message ()Ljava/lang/String;
 }

@@ -139,6 +139,11 @@ private fun buildThemedProtocolCode(
         appendLine("///")
         appendLine("/// Prefer a semantic token whenever one fits.")
         appendLine("///")
+        appendLine("/// > Experimental: the shape of this layer is still settling and may change")
+        appendLine("/// > without a deprecation cycle. The KMP side gates this behind")
+        appendLine("/// > `@OptIn(ExperimentalLemonadeApi::class)`; Swift has no equivalent, so")
+        appendLine("/// > treat it as opt-in by convention and expect to revisit call sites.")
+        appendLine("///")
         defaultSwiftAutoGenerationMessage(scriptFilePath = scriptFilePath).lines().forEach { line ->
             appendLine("/// $line")
         }
