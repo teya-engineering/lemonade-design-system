@@ -1,0 +1,8 @@
+# Asset templates are build output of scripts/generate-asset-templates.mjs, not
+# hand-written source. Marking them generated collapses them in GitHub diffs and
+# keeps them out of the repository's language statistics. They stay committed on
+# purpose, so what is published to Figma remains inspectable in git.
+connect/icons/**.figma.ts          linguist-generated=true
+connect/flags/**.figma.ts          linguist-generated=true
+connect-swiftui/icons/**.figma.ts  linguist-generated=true
+connect-swiftui/flags/**.figma.ts  linguist-generated=true
