@@ -16,17 +16,43 @@ const size = instance.getEnum('◇ Size', {
   Small: 'Small',
 })
 
-// The segment labels are not exposed as properties, so only the count carries
-// over; the placeholders are meant to be replaced.
-const tabs = Array.from(
+// The tabs are named instances in document order, each carrying its own label
+// and icon, so they resolve through their own template rather than being
+// invented here. Five lookups covers the set's maximum.
+const tab = (n) => {
+  const child = instance.findInstance(`↪ Button ${n}`)
+  return child && child.type === 'INSTANCE' ? child.executeTemplate().example : undefined
+}
+const t1 = tab(1)
+const t2 = tab(2)
+const t3 = tab(3)
+const t4 = tab(4)
+const t5 = tab(5)
+
+// Only used when no tab resolves — an empty listOf() would be worse than saying
+// how many segments the design has.
+const placeholders = Array.from(
   { length: segments },
   (_, i) => `        TabButtonProperties.label(label = "Tab ${i + 1}"),`,
 ).join('\n')
 
 export default {
-  example: figma.kotlin`LemonadeUi.SegmentedControl(
+  example: t1
+    ? figma.kotlin`LemonadeUi.SegmentedControl(
+    properties = listOf(${t1 ? figma.kotlin`
+        ${t1},` : ''}${t2 ? figma.kotlin`
+        ${t2},` : ''}${t3 ? figma.kotlin`
+        ${t3},` : ''}${t4 ? figma.kotlin`
+        ${t4},` : ''}${t5 ? figma.kotlin`
+        ${t5},` : ''}
+    ),
+    selectedTab = ${selected},
+    onTabSelected = { },
+    size = LemonadeSegmentedControlSize.${size},
+)`
+    : figma.kotlin`LemonadeUi.SegmentedControl(
     properties = listOf(
-${tabs}
+${placeholders}
     ),
     selectedTab = ${selected},
     onTabSelected = { },

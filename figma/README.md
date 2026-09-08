@@ -73,10 +73,14 @@ not touch it.
   components (`GB-ENG-england`) that have no templates, so `flag = ...` would
   render an opaque instance where a `LemonadeCountryFlags` value belongs. The 265
   flags need their own generated set, like the icons.
-- `SegmentedControl` labels are not Figma properties, so only the segment *count*
-  carries over and the snippet emits `"Tab 1".."Tab n"` placeholders. Figma numbers
-  the selected segment from 1 while `selectedTab` is a 0-based index; the template
-  converts.
+- `SegmentedControl` numbers the selected segment from 1 in Figma while
+  `selectedTab` is a 0-based index; the template converts. Its tabs resolve
+  through `SegmentedControlTabLarge` / `SegmentedControlTabSmall`, which map the
+  internal `_Button` components onto `TabButtonProperties`, so the snippet carries
+  the designer's real labels and icons. Those two are the only internal `_`
+  components worth connecting: the child has a genuine code representation the
+  parent cannot otherwise obtain. The parent falls back to `"Tab 1".."Tab n"`
+  placeholders only if no tab resolves.
 - `Toast`'s message is a plain text layer rather than a property, read with
   `findText('Label')`. Its icon is baked into the Success and Error variants, so
   the swap is only emitted for Neutral.
