@@ -113,3 +113,39 @@ so a missing SwiftUI icon renders the *Kotlin* snippet inside a Swift call.
 The components file also carries an unrelated `React` label pointing at a
 personal exploration repo. Labels are independent namespaces; publishing these
 two does not touch it.
+
+## Components
+
+Eighteen components per platform, hand-written and kept at parity. A few needed
+more than a property lookup:
+
+- `SegmentedControl` numbers the selected segment from 1 in Figma while
+  `selectedTab` is a 0-based index; the template converts. Its tabs resolve
+  through `SegmentedControlTab{Large,Small}`, which map the internal `_Button`
+  components onto `TabButtonProperties`, so the snippet carries the designer's
+  real labels and icons. Those are the only internal `_` components worth
+  connecting — the child has a genuine code representation the parent cannot
+  otherwise obtain. It falls back to `"Tab 1".."Tab n"` if no tab resolves.
+- `Toast`'s message is a plain text layer rather than a property, read with
+  `findText('Label')`. Its icon is baked into the Success and Error variants, so
+  the swap is only emitted for Neutral.
+- `Chip` folds disabled into `Interaction State` instead of a separate flag, and
+  has no slot overload — its Figma slots map onto `leadingIcon`/`trailingIcon`.
+- SwiftUI rejects a trailing comma in an argument list, so those templates
+  compose optional arguments with a **leading** comma. Kotlin permits either.
+- `TextField.input` is a `Binding` on SwiftUI, so the snippet emits
+  `.constant("…")` — it keeps the designed text visible and compiles as written;
+  swap it for real `@State` when wiring the screen up.
+
+### Deliberately unmapped
+
+- `◇ Interaction State` and `📱 Device` everywhere — the former is runtime state
+  driven by `interactionSource`, the latter has no code equivalent.
+- `Card`'s `Show Heading` / `Show Footer Action` — the code takes
+  `CardHeaderConfig` / `CardFooterActionConfig` objects, which Figma models as
+  nested components rather than properties.
+- `Link`'s `Show Indicator` — no code equivalent.
+- `optionalIndicator = "Optional"` maps Figma's boolean onto a `String?`.
+  "Optional" is the literal every call site in the repo uses, on both platforms.
+  Note the snippet therefore emits English copy that a consumer shipping in
+  another locale has to replace.
