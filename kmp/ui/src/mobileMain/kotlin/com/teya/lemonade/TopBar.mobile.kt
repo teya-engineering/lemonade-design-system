@@ -91,18 +91,13 @@ public class TopBarState internal constructor(
         startCollapsed && lockGestureAnimation
     }
 
-    private val scrollOffsetAnimatable by derivedStateOf {
-        Animatable(
-            initialValue = if (startCollapsed) {
-                maxScrollOffset
-            } else {
-                0f
-            },
-        )
-    }
+    // A fraction, not a pixel offset: the collapsable height isn't known until the layout has
+    // measured, so a fraction is the only position meaningful on the first composition, and it
+    // survives a remeasure instead of being reset by one.
+    private val collapseFraction = Animatable(if (startCollapsed) 1f else 0f)
 
     internal val scrollOffset: Float
-        get() = scrollOffsetAnimatable.value
+        get() = collapseFraction.value * maxScrollOffset
     internal var maxScrollOffset: Float by mutableFloatStateOf(0f)
 
     private var scrolledOffsetPx: Float by mutableFloatStateOf(0f)
@@ -116,14 +111,7 @@ public class TopBarState internal constructor(
      * The current collapse progress as a value between `0f` (fully expanded) and `1f` (fully collapsed).
      */
     public val collapseProgress: Float by derivedStateOf {
-        if (maxScrollOffset > 0f) {
-            (scrollOffset / maxScrollOffset).coerceIn(
-                minimumValue = 0f,
-                maximumValue = 1f,
-            )
-        } else {
-            0f
-        }
+        collapseFraction.value
     }
 
     /**
@@ -149,10 +137,10 @@ public class TopBarState internal constructor(
      * @param animationSpec The animation specification to use. Defaults to a 300ms tween.
      */
     public fun collapse(animationSpec: AnimationSpec<Float> = tween(durationMillis = 300)) {
-        if (scrollOffset < maxScrollOffset) {
+        if (collapseFraction.value < 1f) {
             coroutineScope.launch {
-                scrollOffsetAnimatable.animateTo(
-                    targetValue = maxScrollOffset,
+                collapseFraction.animateTo(
+                    targetValue = 1f,
                     animationSpec = animationSpec,
                 )
             }
@@ -166,9 +154,9 @@ public class TopBarState internal constructor(
      * @param animationSpec The animation specification to use. Defaults to a 300ms tween.
      */
     public fun expand(animationSpec: AnimationSpec<Float> = tween(durationMillis = 300)) {
-        if (scrollOffset > 0f) {
+        if (collapseFraction.value > 0f) {
             coroutineScope.launch {
-                scrollOffsetAnimatable.animateTo(
+                collapseFraction.animateTo(
                     targetValue = 0f,
                     animationSpec = animationSpec,
                 )
@@ -227,7 +215,7 @@ public class TopBarState internal constructor(
                     maximumValue = maxScrollOffset,
                 )
                 coroutineScope.launch {
-                    scrollOffsetAnimatable.snapTo(targetValue = targetOffset)
+                    collapseFraction.snapTo(targetValue = targetOffset.asCollapseFraction())
                 }
                 return Offset(
                     x = 0f,
@@ -263,7 +251,7 @@ public class TopBarState internal constructor(
                     maximumValue = maxScrollOffset,
                 )
                 coroutineScope.launch {
-                    scrollOffsetAnimatable.snapTo(targetValue = targetOffset)
+                    collapseFraction.snapTo(targetValue = targetOffset.asCollapseFraction())
                 }
                 return Offset(
                     x = 0f,
@@ -278,6 +266,9 @@ public class TopBarState internal constructor(
         if (deltaY == 0f) return
         scrolledOffsetPx = (scrolledOffsetPx - deltaY).coerceAtLeast(minimumValue = 0f)
     }
+
+    /** Gestures arrive in pixels; the bar holds its position as a fraction of the collapsable height. */
+    private fun Float.asCollapseFraction(): Float = if (maxScrollOffset > 0f) this / maxScrollOffset else 0f
 }
 
 // 400ms tween over FastOutSlowInEasing — gentle enough that high-contrast transitions
