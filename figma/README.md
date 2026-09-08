@@ -69,6 +69,20 @@ not touch it.
 - `Card`'s `Show Heading` / `Show Footer Action` are unmapped: Compose takes
   `CardHeaderConfig` / `CardFooterActionConfig` objects, which Figma models as
   nested components rather than properties.
+- **Country Flag is deliberately not mapped.** Its `◇ Flag` swap pulls in flag
+  components (`GB-ENG-england`) that have no templates, so `flag = ...` would
+  render an opaque instance where a `LemonadeCountryFlags` value belongs. The 265
+  flags need their own generated set, like the icons.
+- `SegmentedControl` labels are not Figma properties, so only the segment *count*
+  carries over and the snippet emits `"Tab 1".."Tab n"` placeholders. Figma numbers
+  the selected segment from 1 while `selectedTab` is a 0-based index; the template
+  converts.
+- `Toast`'s message is a plain text layer rather than a property, read with
+  `findText('Label')`. Its icon is baked into the Success and Error variants, so
+  the swap is only emitted for Neutral.
+- `Chip` folds disabled into `Interaction State` instead of a separate flag, and
+  has no slot-based overload — its Figma slots map onto `leadingIcon`/`trailingIcon`.
+- `Link`'s `Show Indicator` has no code equivalent and is unmapped.
 - `optionalIndicator = "Optional"` maps Figma's boolean onto Compose's `String?`.
   "Optional" is the literal every call site in the repo uses, on both platforms.
   Note the snippet therefore emits English copy that a consumer shipping in
