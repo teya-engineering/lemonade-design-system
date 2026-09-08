@@ -30,11 +30,24 @@ const pascal = (name) =>
     .map((part) => part[0].toUpperCase() + part.slice(1))
     .join('')
 
-const missing = Object.keys(manifest.icons).filter((name) => !enumEntries.has(pascal(name)))
-if (missing.length) {
-  console.error(`${missing.length} Figma icon(s) have no LemonadeIcons entry:`)
-  for (const name of missing) console.error(`  ${name} -> ${pascal(name)}`)
-  console.error('\nRun the svg-asset-converter, or refresh icons.manifest.json from Figma.')
+// Checked in BOTH directions on purpose. Only checking manifest -> enum catches
+// a deleted icon but stays silent on an added one, which is the direction that
+// actually happens: an icon lands in code and quietly has no mapping.
+const missingFromEnum = Object.keys(manifest.icons).filter((name) => !enumEntries.has(pascal(name)))
+const mapped = new Set(Object.keys(manifest.icons).map(pascal))
+const missingFromManifest = [...enumEntries].filter((entry) => !mapped.has(entry))
+
+if (missingFromEnum.length || missingFromManifest.length) {
+  if (missingFromEnum.length) {
+    console.error(`${missingFromEnum.length} Figma icon(s) have no LemonadeIcons entry:`)
+    for (const name of missingFromEnum) console.error(`  ${name} -> ${pascal(name)}`)
+    console.error('\nRun the svg-asset-converter to add them to the enum.')
+  }
+  if (missingFromManifest.length) {
+    console.error(`${missingFromManifest.length} LemonadeIcons entr(ies) have no Code Connect mapping:`)
+    for (const entry of missingFromManifest) console.error(`  ${entry}`)
+    console.error('\nRefresh icons.manifest.json from Figma so these icons get templates.')
+  }
   process.exit(1)
 }
 
