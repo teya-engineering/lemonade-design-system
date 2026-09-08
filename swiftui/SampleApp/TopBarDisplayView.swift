@@ -152,9 +152,11 @@ private struct BasicTrailingSlotDemo: View {
             navigationAction: NavigationAction(action: .back, onAction: {})
         ) {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {}) {
-                    LemonadeUi.Icon(icon: .bell, contentDescription: "Notifications")
-                }
+                LemonadeUi.ToolbarIconButton(
+                    icon: .bell,
+                    contentDescription: "Notifications",
+                    action: {}
+                )
             }
             #if compiler(>=6.2)
             if #available(iOS 26, *) {
@@ -162,9 +164,11 @@ private struct BasicTrailingSlotDemo: View {
             }
             #endif
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {}) {
-                    LemonadeUi.Icon(icon: .ellipsisHorizontal, contentDescription: "More")
-                }
+                LemonadeUi.ToolbarIconButton(
+                    icon: .ellipsisHorizontal,
+                    contentDescription: "More",
+                    action: {}
+                )
             }
         }
     }
@@ -209,9 +213,11 @@ private struct BasicSubheadingDemo: View {
             navigationAction: NavigationAction(action: .back, onAction: {})
         ) {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {}) {
-                    LemonadeUi.Icon(icon: .bell, contentDescription: "Notifications")
-                }
+                LemonadeUi.ToolbarIconButton(
+                    icon: .bell,
+                    contentDescription: "Notifications",
+                    action: {}
+                )
             }
         }
     }
@@ -280,9 +286,11 @@ private struct SearchExpandedLabelDemo: View {
             navigationAction: NavigationAction(action: .back, onAction: {})
         ) {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {}) {
-                    LemonadeUi.Icon(icon: .filter, contentDescription: "Filter")
-                }
+                LemonadeUi.ToolbarIconButton(
+                    icon: .filter,
+                    contentDescription: "Filter",
+                    action: {}
+                )
             }
         }
     }
@@ -359,14 +367,11 @@ private struct CompactLargeCloseButton: ToolbarContent {
 
     var body: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
-            Button(action: { dismiss() }) {
-                LemonadeUi.Icon(icon: .times, contentDescription: "Close")
-                    .frame(
-                        minWidth: LemonadeSizes.size800.value,
-                        minHeight: LemonadeSizes.size800.value
-                    )
-                    .contentShape(Rectangle())
-            }
+            LemonadeUi.ToolbarIconButton(
+                icon: .times,
+                contentDescription: "Close",
+                action: { dismiss() }
+            )
         }
     }
 }
@@ -380,12 +385,16 @@ private struct CompactLargePillDemo: View {
         }
         .lemonadeTopBar(label: "Home", subheading: "Pill trailing") {
             ToolbarItemGroup(placement: .topBarTrailing) {
-                Button(action: {}) {
-                    LemonadeUi.Icon(icon: .bell, contentDescription: "Notifications")
-                }
-                Button(action: {}) {
-                    LemonadeUi.Icon(icon: .gear, contentDescription: "Settings")
-                }
+                LemonadeUi.ToolbarIconButton(
+                    icon: .bell,
+                    contentDescription: "Notifications",
+                    action: {}
+                )
+                LemonadeUi.ToolbarIconButton(
+                    icon: .gear,
+                    contentDescription: "Settings",
+                    action: {}
+                )
             }
             CompactLargeCloseButton(dismiss: dismiss)
         }
@@ -401,14 +410,18 @@ private struct CompactLargeDemo: View {
         }
         .lemonadeTopBar(label: "Home", subheading: nil) {
             ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {}) {
-                    LemonadeUi.Icon(icon: .bell, contentDescription: "Notifications")
-                }
+                LemonadeUi.ToolbarIconButton(
+                    icon: .bell,
+                    contentDescription: "Notifications",
+                    action: {}
+                )
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {}) {
-                    LemonadeUi.Icon(icon: .gear, contentDescription: "Settings")
-                }
+                LemonadeUi.ToolbarIconButton(
+                    icon: .gear,
+                    contentDescription: "Settings",
+                    action: {}
+                )
             }
             CompactLargeCloseButton(dismiss: dismiss)
         }
@@ -424,9 +437,11 @@ private struct CompactLargeSubheadingDemo: View {
         }
         .lemonadeTopBar(label: "Home", subheading: "Welcome back, John") {
             ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {}) {
-                    LemonadeUi.Icon(icon: .bell, contentDescription: "Notifications")
-                }
+                LemonadeUi.ToolbarIconButton(
+                    icon: .bell,
+                    contentDescription: "Notifications",
+                    action: {}
+                )
             }
             CompactLargeCloseButton(dismiss: dismiss)
         }
@@ -481,9 +496,11 @@ private struct CompactLargeSearchDemo: View {
             searchPrompt: "Search categories..."
         ) {
             ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {}) {
-                    LemonadeUi.Icon(icon: .ellipsisHorizontal, contentDescription: "More")
-                }
+                LemonadeUi.ToolbarIconButton(
+                    icon: .ellipsisHorizontal,
+                    contentDescription: "More",
+                    action: {}
+                )
             }
             CompactLargeCloseButton(dismiss: dismiss)
         }

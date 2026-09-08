@@ -62,13 +62,11 @@ private struct BasicTopBarModifier<Toolbar: ToolbarContent, BottomContent: View>
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     if let navigationAction, navigationAction.action == .close {
-                        Button(action: navigationAction.onAction) {
-                            LemonadeUi.Icon(
-                                icon: .times,
-                                contentDescription: "Close"
-                            )
-                            .clickableFrame(minSize: .size800)
-                        }
+                        LemonadeUi.ToolbarIconButton(
+                            icon: .times,
+                            contentDescription: "Close",
+                            action: navigationAction.onAction
+                        )
                     }
                 }
                 toolbarContent
@@ -104,13 +102,11 @@ private struct SearchTopBarModifier<Toolbar: ToolbarContent, BottomContent: View
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     if let navigationAction, navigationAction.action == .close {
-                        Button(action: navigationAction.onAction) {
-                            LemonadeUi.Icon(
-                                icon: .times,
-                                contentDescription: "Close"
-                            )
-                            .clickableFrame(minSize: .size800)
-                        }
+                        LemonadeUi.ToolbarIconButton(
+                            icon: .times,
+                            contentDescription: "Close",
+                            action: navigationAction.onAction
+                        )
                     }
                 }
                 toolbarContent

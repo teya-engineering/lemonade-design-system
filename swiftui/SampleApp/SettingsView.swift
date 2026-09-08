@@ -32,12 +32,11 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button(action: { dismiss() }) {
-                        LemonadeUi.Icon(
-                            icon: .times,
-                            contentDescription: "Close"
-                        )
-                    }
+                    LemonadeUi.ToolbarIconButton(
+                        icon: .times,
+                        contentDescription: "Close",
+                        action: { dismiss() }
+                    )
                 }
             }
         }
