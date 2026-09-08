@@ -844,6 +844,11 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             } catch {
                 return
             }
+            // The sleep only throws for a cancellation that lands while it is running; one that
+            // arrives as it returns leaves the task to run on. So the claim this woke for is
+            // checked rather than assumed — it may have ended, or a second drag may have taken
+            // its own by now, and neither is this task's to hand back.
+            guard !Task.isCancelled, dragOrigin == origin else { return }
             // `settleOrigin` is deliberately left alone: a finger that lifts without moving again
             // still gets the settle its drag earned, rather than having the gesture thrown away.
             guard swipeHoldReleasesClaim(travelSinceClaim: travel - origin, rowIsOpen: open)
