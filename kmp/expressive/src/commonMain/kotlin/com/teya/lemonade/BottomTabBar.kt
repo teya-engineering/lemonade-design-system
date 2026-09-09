@@ -18,8 +18,10 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -41,8 +43,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -77,6 +81,16 @@ public data class BottomTabBarItem(
  *
  * The component already applies `Modifier.navigationBarsPadding`, so callers do not need to pad
  * around the system navigation bar themselves.
+ *
+ * ## Large font scales
+ * Items grow with the user's font scale rather than clipping their label. When the labels no longer
+ * fit their slots the bar drops all of them at once and shows only icons, rather than ellipsising
+ * them down to a couple of meaningless characters. The labels are still announced by accessibility
+ * services, as each item's content description.
+ *
+ * The fit is measured, not pinned to a font-scale threshold, so how long the labels survive depends
+ * on the space actually available: a tablet keeps its labels at text sizes where a compact phone
+ * cannot.
  *
  * ## Usage
  * ```kotlin
@@ -207,10 +221,14 @@ internal fun CoreBottomTabBar(
             // of its content, and a SubcomposeLayout throws on intrinsic queries. The row width is
             // captured via onSizeChanged so the pill can be positioned in pixels.
             var rowWidthPx by remember { mutableIntStateOf(0) }
+            val showLabels = rememberLabelsFit(
+                items = items,
+                rowWidthPx = rowWidthPx,
+            )
             Box(
                 modifier = Modifier
                     .weight(weight = 1f)
-                    .height(height = ItemHeight)
+                    .height(intrinsicSize = IntrinsicSize.Min)
                     .onSizeChanged { rowWidthPx = it.width },
             ) {
                 if (rowWidthPx > 0) {
@@ -222,7 +240,7 @@ internal fun CoreBottomTabBar(
                         modifier = Modifier
                             .offset { IntOffset(x = (slotWidthPx * clampedPosition).roundToInt(), y = 0) }
                             .width(width = slotWidthDp)
-                            .height(height = ItemHeight)
+                            .fillMaxHeight()
                             .clip(shape = LemonadeTheme.shapes.radiusFull)
                             .background(color = LemonadeTheme.colors.background.bgElevated),
                     )
@@ -233,6 +251,7 @@ internal fun CoreBottomTabBar(
                         BottomTabBarItemContent(
                             item = item,
                             isSelected = index == selectedIndex,
+                            showLabel = showLabels,
                             onClick = { onItemSelected(index) },
                             modifier = Modifier.weight(weight = 1f),
                         )
@@ -243,10 +262,52 @@ internal fun CoreBottomTabBar(
     }
 }
 
+/**
+ * Whether every label fits its slot at the current text size, screen width and item count.
+ *
+ * A label ellipsised down to a couple of characters carries no meaning, so the bar drops all of
+ * them at once and lets the icons speak instead. The decision is measured rather than pinned to a
+ * font-scale threshold: how much room a label needs depends just as much on the label itself, the
+ * number of items and the width available — a tablet at 500dp keeps its labels at text sizes where
+ * a 320dp phone cannot.
+ *
+ * The measurement is uniform on purpose. Hiding only the labels that overflow would leave a bar
+ * with some items labelled and some not.
+ *
+ * Returns `true` until the row has been measured, so bars whose labels fit — the common case —
+ * never flash through a label-less first frame.
+ */
+@Composable
+private fun rememberLabelsFit(
+    items: List<BottomTabBarItem>,
+    rowWidthPx: Int,
+): Boolean {
+    val textMeasurer = rememberTextMeasurer()
+    val labelStyle = LemonadeTheme.typography.bodyXSmallMedium.textStyle
+    val density = LocalDensity.current
+    // Mirrors the horizontal padding the label itself carries, so neighbouring slots never touch.
+    val labelGutterPx = with(density) { (LemonadeTheme.spaces.spacing100 * 2).roundToPx() }
+
+    return remember(rowWidthPx, items, labelStyle, textMeasurer, labelGutterPx) {
+        if (rowWidthPx == 0) return@remember true
+
+        val availableWidthPx = rowWidthPx / items.size - labelGutterPx
+        items.all { item ->
+            val measured = textMeasurer.measure(
+                text = item.label,
+                style = labelStyle,
+                maxLines = 1,
+            )
+            measured.size.width <= availableWidthPx
+        }
+    }
+}
+
 @Composable
 private fun BottomTabBarItemContent(
     item: BottomTabBarItem,
     isSelected: Boolean,
+    showLabel: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -256,15 +317,19 @@ private fun BottomTabBarItemContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = modifier
-            .height(height = ItemHeight)
+            .fillMaxHeight()
+            .heightIn(min = ItemHeight)
             .clip(shape = LemonadeTheme.shapes.radiusFull)
             .clickable(
                 onClick = onClick,
                 role = Role.Tab,
                 interactionSource = interactionSource,
                 indication = LocalEffects.current.interactionIndication,
-            ).semantics { selected = isSelected }
-            .padding(vertical = LemonadeTheme.spaces.spacing200),
+            ).semantics {
+                selected = isSelected
+                // With the label hidden the tab itself has to carry the name.
+                if (!showLabel) contentDescription = item.label
+            }.padding(vertical = LemonadeTheme.spaces.spacing200),
     ) {
         val displayedIcon = if (isSelected) {
             item.selectedIcon
@@ -302,14 +367,17 @@ private fun BottomTabBarItemContent(
             }
         }
 
-        Spacer(modifier = Modifier.height(height = LemonadeTheme.spaces.spacing50))
+        if (showLabel) {
+            Spacer(modifier = Modifier.height(height = LemonadeTheme.spaces.spacing50))
 
-        LemonadeUi.Text(
-            text = item.label,
-            textStyle = LemonadeTheme.typography.bodyXSmallMedium,
-            color = LemonadeTheme.colors.content.contentPrimary,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
+            LemonadeUi.Text(
+                text = item.label,
+                modifier = Modifier.padding(horizontal = LemonadeTheme.spaces.spacing100),
+                textStyle = LemonadeTheme.typography.bodyXSmallMedium,
+                color = LemonadeTheme.colors.content.contentPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
     }
 }
