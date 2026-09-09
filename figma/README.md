@@ -116,7 +116,7 @@ two does not touch it.
 
 ## Components
 
-Twenty-two components per platform, hand-written and kept at parity. A few needed
+Twenty-three components per platform, hand-written and kept at parity. A few needed
 more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
@@ -145,6 +145,16 @@ more than a property lookup:
 - `BoxSelection`'s `◇ Background` includes `N/A`, which is the Outlined variant
   where the background does not apply. That maps to omitting the argument rather
   than inventing a value.
+
+- `SymbolContainer` has four content modes and both platforms have four matching
+  overloads, but they do not line up one-to-one. Icon and Text map directly;
+  **Brand Logo** has no overload of its own and renders through the content slot
+  as a nested `BrandLogo`; **Image** has no source in Figma to carry over, so the
+  slot is emitted with a TODO for the developer to fill.
+- Figma still calls SymbolContainer's amber voice **`Caution`** while the enum
+  calls it `Warning`. Tag had the same mismatch and was renamed in Figma; this
+  set was not. The template maps across it, but the two sets disagreeing is worth
+  fixing at the source.
 
 ### Deliberately unmapped
 
