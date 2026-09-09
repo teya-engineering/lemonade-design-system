@@ -55,6 +55,39 @@ final class LemonadeThemedColorTests: XCTestCase {
         XCTAssertEqual(style(LemonadeTheme.themed.violet.subtle).count, 3)
     }
 
+    /// `background-high` from `backgroundHigh`, `green-lime` from `greenLime`.
+    private func kebab(_ camel: String) -> String {
+        camel.reduce(into: "") { out, ch in
+            if ch.isUppercase { out += "-" + ch.lowercased() } else { out.append(ch) }
+        }
+    }
+
+    func testTheHardcodedListsStillMatchTheGeneratedPalette() {
+        // The lists above are hand-written, so they can drift from what the converter
+        // emits: a hue added to the Figma export would simply not be checked, and a hue
+        // dropped from it would keep passing. Deriving the same lists by reflection and
+        // comparing pins them to the generated palette in both directions.
+        let hues = Mirror(reflecting: LemonadeTheme.themed).children.compactMap(\.label).map(kebab)
+        XCTAssertEqual(
+            Set(hues), Set(Self.hues),
+            "themed hue list is stale - regenerate, then update LemonadeThemedColorTests.hues"
+        )
+
+        let blue = LemonadeTheme.themed.blue
+        let primary = Mirror(reflecting: blue).children.compactMap(\.label).map(kebab)
+            .filter { $0 != "subtle" }
+        XCTAssertEqual(
+            Set(primary), Set(Self.primarySlots),
+            "themed primary slots are stale - update LemonadeThemedColorTests.primarySlots"
+        )
+
+        let subtle = Mirror(reflecting: blue.subtle).children.compactMap(\.label).map(kebab)
+        XCTAssertEqual(
+            Set(subtle), Set(Self.subtleSlots),
+            "themed subtle slots are stale - update LemonadeThemedColorTests.subtleSlots"
+        )
+    }
+
     func testEveryThemedAssetResolvesInTheBundle() throws {
         // Bare SwiftPM does not run actool, so the .xcassets is not compiled and no
         // asset resolves — including pre-existing semantic ones. Use a semantic asset

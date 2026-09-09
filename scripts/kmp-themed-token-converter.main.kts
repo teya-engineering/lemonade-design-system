@@ -15,23 +15,21 @@ private val THEMED_GROUP = "Themed"
 /** The nested variant group inside each hue. */
 private val SUBTLE_GROUP = "Subtle"
 
-data class ThemedResourceData(
-    val valueGroup: String,
-    val valueName: String,
-)
-
-private fun primitiveReference(jsonObject: JSONObject): ThemedResourceData? {
+/**
+ * The primitive a themed token resolves to, as the full right-hand side of the
+ * generated property. Mirrors `themeValueReference` in the semantic converter, so both
+ * layers model a resolved value the same way.
+ */
+private fun primitiveReference(jsonObject: JSONObject): String? {
     val aliasName = jsonObject.optString("aliasName")
     val groups = aliasName?.sanitizedGroups().orEmpty()
     if (aliasName.isNullOrBlank() || groups.isEmpty()) return null
-    return ThemedResourceData(
-        valueName = aliasName.sanitizedValueName(),
-        valueGroup = if (groups.contains("Alpha")) {
-            "Alpha.${groups.first()}"
-        } else {
-            "Solid.${groups.first()}"
-        },
-    )
+    val valueGroup = if (groups.contains("Alpha")) {
+        "Alpha.${groups.first()}"
+    } else {
+        "Solid.${groups.first()}"
+    }
+    return "LemonadePrimitiveColors.$valueGroup.${aliasName.sanitizedValueName()}"
 }
 
 fun main() {
@@ -95,8 +93,8 @@ fun main() {
 
 /** Splits the themed resources into the per-hue primary slots and the nested subtle ones. */
 private fun partition(
-    resources: List<ResourceData<ThemedResourceData>>,
-): Pair<Map<String, List<ResourceData<ThemedResourceData>>>, Map<String, List<ResourceData<ThemedResourceData>>>> {
+    resources: List<ResourceData<String>>,
+): Pair<Map<String, List<ResourceData<String>>>, Map<String, List<ResourceData<String>>>> {
     val primary = resources.filter { it.groups.size == 2 }.groupBy { it.groups[1] }
     val subtle = resources.filter { it.groups.size == 3 && it.groups[2] == SUBTLE_GROUP }
         .groupBy { it.groups[1] }
@@ -118,10 +116,10 @@ private fun partition(
  * its own extra slot, say - fail loudly rather than emit types the groups do not satisfy.
  */
 private fun sharedSlots(
-    primary: Map<String, List<ResourceData<ThemedResourceData>>>,
-    subtle: Map<String, List<ResourceData<ThemedResourceData>>>,
+    primary: Map<String, List<ResourceData<String>>>,
+    subtle: Map<String, List<ResourceData<String>>>,
 ): Pair<List<String>, List<String>> {
-    fun uniform(groups: Map<String, List<ResourceData<ThemedResourceData>>>, what: String): List<String> {
+    fun uniform(groups: Map<String, List<ResourceData<String>>>, what: String): List<String> {
         val sets = groups.values.map { group -> group.map { it.name } }
         val first = sets.first()
         sets.forEach { slots ->
@@ -140,7 +138,7 @@ private fun sharedSlots(
 
 private fun buildThemedInterfaceCode(
     scriptFilePath: String,
-    resources: List<ResourceData<ThemedResourceData>>,
+    resources: List<ResourceData<String>>,
 ): String {
     val (primary, subtle) = partition(resources)
     val (commonSlots, primaryOnlySlots) = sharedSlots(primary, subtle)
@@ -207,7 +205,7 @@ private fun buildThemedInterfaceCode(
 private fun buildThemedObjectCode(
     objectName: String,
     scriptFilePath: String,
-    resources: List<ResourceData<ThemedResourceData>>,
+    resources: List<ResourceData<String>>,
     modeName: String,
 ): String {
     val (primary, subtle) = partition(resources)
@@ -230,12 +228,12 @@ private fun buildThemedObjectCode(
             appendLine("    override val ${hue.sanitizedValueName()}: ThemedPrimaryColor =")
             appendLine("        object : ThemedPrimaryColor {")
             slots.forEach { resource ->
-                appendLine("            override val ${resource.name} = LemonadePrimitiveColors.${resource.value.valueGroup}.${resource.value.valueName}")
+                appendLine("            override val ${resource.name} = ${resource.value}")
             }
             appendLine("            override val subtle: ThemedColor =")
             appendLine("                object : ThemedColor {")
             subtle.getValue(hue).forEach { resource ->
-                appendLine("                    override val ${resource.name} = LemonadePrimitiveColors.${resource.value.valueGroup}.${resource.value.valueName}")
+                appendLine("                    override val ${resource.name} = ${resource.value}")
             }
             appendLine("                }")
             appendLine("        }")

@@ -90,6 +90,11 @@ private fun <T> partition(
     val primary = resources.filter { it.groups.size == 2 }.groupBy { it.groups[1] }
     val subtle = resources.filter { it.groups.size == 3 && it.groups[2] == SUBTLE_GROUP }
         .groupBy { it.groups[1] }
+    val stray = resources.filter { it.groups.size > 2 && it.groups.getOrNull(2) != SUBTLE_GROUP }
+    require(stray.isEmpty()) {
+        "Unexpected themed nesting, only '$SUBTLE_GROUP' is supported: " +
+            stray.joinToString { (it.groups + it.name).joinToString("/") }
+    }
     require(primary.keys == subtle.keys) {
         "Every hue needs both a primary and a subtle group.\n" +
             "  primary only: ${primary.keys - subtle.keys}\n  subtle only: ${subtle.keys - primary.keys}"

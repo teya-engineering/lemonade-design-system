@@ -224,7 +224,6 @@ fun String.sanitizeSwiftName(): String {
 }
 
 /**
- * The asset-catalog name for a token path, e.g. `Background/bg-blue` with prefix
  * `themed` becomes `lemonade-themed-background-bg-blue`.
  *
  * Both the colorset folders and the `Color("...")` lookups must be built from
@@ -243,11 +242,11 @@ fun String.sanitizeSwiftName(): String {
  * runtime, not at build time. Renaming those folders is a separate change with
  * its own migration.
  */
-fun lemonadeAssetName(tokenPath: String, prefix: String? = null): String {
+fun lemonadeAssetName(tokenPath: String): String {
     val slug = tokenPath.split("/").joinToString("-") { part ->
         part.lowercase().replace("_", "-")
     }
-    return if (prefix == null) "lemonade-$slug" else "lemonade-$prefix-$slug"
+    return "lemonade-$slug"
 }
 
 // ---------------------------------------------------------------------------
@@ -427,7 +426,6 @@ fun tokenFile(name: String): File =
         ?: error("tokens/$name does not exist — copy it in from a Figma variable export")
 
 /**
- * All `tokens/` files whose name starts with [prefix], sorted by name.
  *
  * While both export formats coexist, a DTCG file supersedes the legacy plugin
  * file for the same collection: otherwise mode lookup can land on the legacy
