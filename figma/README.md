@@ -116,7 +116,7 @@ two does not touch it.
 
 ## Components
 
-Twenty-eight components per platform, hand-written and kept at parity. A few needed
+Twenty-nine components per platform, hand-written and kept at parity. A few needed
 more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
@@ -175,6 +175,13 @@ more than a property lookup:
   its rows through a `.History Item` template, which reads its text from the
   nested content instance and its voice from the nested indicator via
   `metadata.props`, then folds the current row into `currentIndex`.
+
+- `SwipeActionRow` maps little on purpose. `actions` is a list of `SwipeAction`
+  data objects with enum-typed icons, which a slot cannot resolve to, so the
+  snippet emits an empty list and a TODO. Figma also offers a **Leading**
+  actions placement that neither platform implements; rather than quietly
+  emitting a trailing row, the snippet carries a NOTE saying the design cannot
+  be built as drawn. That gap is worth closing on one side or the other.
 
 ### Deliberately unmapped
 
