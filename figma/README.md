@@ -125,7 +125,7 @@ acted on.
 
 ## Components
 
-Thirty-four components per platform, hand-written and kept at parity. A few needed
+Thirty-five components per platform, hand-written and kept at parity. A few needed
 more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
@@ -213,6 +213,15 @@ more than a property lookup:
 - `SelectListItem` is `Selection List Item` in Figma, and its borderless variant
   is `Ghost` there against `Plain` in the enum. Neither is a gap, but both are
   the kind of near-miss that a name-based audit reports as missing — see below.
+
+- `DatePicker` maps **nothing**. Its Figma component is a representative
+  rendering with two properties, `Device` and `View Type`, and neither has a code
+  counterpart — the code has no months view at all. The template exists purely so
+  a calendar in a design is recognised as `LemonadeUi.DatePicker` rather than
+  rebuilt from layers, and it says outright that the locale data is not carried.
+  A Months design gets a NOTE saying the component does not implement it. If the
+  Figma component is ever modelled properly, this template should be rewritten
+  rather than extended.
 
 ### Deliberately unmapped
 
