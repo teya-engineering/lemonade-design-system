@@ -1,12 +1,8 @@
 public final class com/teya/lemonade/BottomSheetKt {
-	public static final synthetic fun BottomSheet (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;ZZLcom/teya/lemonade/core/LemonadeBottomSheetVariant;Lcom/teya/lemonade/LemonadeBottomSheetProperties;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-	public static final synthetic fun BottomSheet (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;ZZLcom/teya/lemonade/core/LemonadeBottomSheetVariant;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun BottomSheet (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;ZZZLcom/teya/lemonade/core/LemonadeBottomSheetVariant;Lcom/teya/lemonade/LemonadeBottomSheetProperties;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/teya/lemonade/BottomSheet_androidKt {
-	public static final synthetic fun BottomSheet (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;ZZZLcom/teya/lemonade/core/LemonadeBottomSheetVariant;Lcom/teya/lemonade/LemonadeBottomSheetProperties;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-	public static final synthetic fun BottomSheet (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;ZZZLcom/teya/lemonade/core/LemonadeBottomSheetVariant;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun BottomSheet (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;ZZZZLcom/teya/lemonade/core/LemonadeBottomSheetVariant;Lcom/teya/lemonade/LemonadeBottomSheetProperties;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 

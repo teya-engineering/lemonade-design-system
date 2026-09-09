@@ -95,65 +95,6 @@ public fun LemonadeUi.BottomSheet(
     )
 }
 
-@Deprecated(
-    message = "Use the overload with a gesturesEnabled parameter.",
-    replaceWith = ReplaceWith(
-        expression = "BottomSheet(expanded, onDismissRequest, showDragHandle, skipPartiallyExpanded, " +
-            "true, background, properties, content)",
-    ),
-    level = DeprecationLevel.HIDDEN,
-)
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-public fun LemonadeUi.BottomSheet(
-    expanded: Boolean,
-    onDismissRequest: () -> Unit,
-    showDragHandle: Boolean = true,
-    skipPartiallyExpanded: Boolean = false,
-    background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
-    properties: LemonadeBottomSheetProperties = LemonadeBottomSheetProperties(),
-    content: @Composable ColumnScope.() -> Unit,
-) {
-    BottomSheet(
-        expanded = expanded,
-        onDismissRequest = onDismissRequest,
-        showDragHandle = showDragHandle,
-        skipPartiallyExpanded = skipPartiallyExpanded,
-        gesturesEnabled = true,
-        background = background,
-        properties = properties,
-        content = content,
-    )
-}
-
-@Deprecated(
-    message = "Use the overload with a properties parameter.",
-    replaceWith = ReplaceWith(
-        expression = "BottomSheet(expanded, onDismissRequest, showDragHandle, skipPartiallyExpanded, " +
-            "true, background, LemonadeBottomSheetProperties(), content)",
-    ),
-    level = DeprecationLevel.HIDDEN,
-)
-@Composable
-public fun LemonadeUi.BottomSheet(
-    expanded: Boolean,
-    onDismissRequest: () -> Unit,
-    showDragHandle: Boolean = true,
-    skipPartiallyExpanded: Boolean = false,
-    background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
-    content: @Composable ColumnScope.() -> Unit,
-) {
-    BottomSheet(
-        expanded = expanded,
-        onDismissRequest = onDismissRequest,
-        showDragHandle = showDragHandle,
-        skipPartiallyExpanded = skipPartiallyExpanded,
-        background = background,
-        properties = LemonadeBottomSheetProperties(),
-        content = content,
-    )
-}
-
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun CoreBottomSheet(
