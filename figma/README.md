@@ -116,7 +116,7 @@ two does not touch it.
 
 ## Components
 
-Twenty-nine components per platform, hand-written and kept at parity. A few needed
+Thirty-one components per platform, hand-written and kept at parity. A few needed
 more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
@@ -182,6 +182,16 @@ more than a property lookup:
   actions placement that neither platform implements; rather than quietly
   emitting a trailing row, the snippet carries a NOTE saying the design cannot
   be built as drawn. That gap is worth closing on one side or the other.
+
+- `Divider` is one Figma component over two composables: `Orientation` picks
+  between `HorizontalDivider` and `VerticalDivider` rather than being a
+  parameter. Only the horizontal one takes a label, which is why the labelled
+  variant has no vertical counterpart in code.
+- Connecting `ListItem` and `Divider` also fixed an import leak. Figma
+  aggregates imports from nested children, and both were previously mapped only
+  under the `React` label, so React imports were appearing in Kotlin snippets
+  for any component that nests them — `SwipeActionRow` most visibly. A component
+  left unmapped does not only lose its own snippet; it degrades its parents'.
 
 ### Deliberately unmapped
 
