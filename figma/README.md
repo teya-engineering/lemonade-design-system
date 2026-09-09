@@ -116,7 +116,7 @@ two does not touch it.
 
 ## Components
 
-Twenty-three components per platform, hand-written and kept at parity. A few needed
+Twenty-five components per platform, hand-written and kept at parity. A few needed
 more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
@@ -155,6 +155,13 @@ more than a property lookup:
   calls it `Warning`. Tag had the same mismatch and was renamed in Figma; this
   set was not. The template maps across it, but the two sets disagreeing is worth
   fixing at the source.
+
+- `Tabs` resolves its tab children the way SegmentedControl does, through a
+  `TabItem` template on the internal `_Tab Item` component. Its `◇ Items` variant
+  tops out at `5+`, but the tabs are real named instances, so the count comes
+  from resolving them — the `5+` variant lays out nine. Selection is a property
+  of each tab in Figma and an index on the parent, so the child surfaces it
+  through `metadata.props` and the parent folds it into `selectedIndex`.
 
 ### Deliberately unmapped
 
