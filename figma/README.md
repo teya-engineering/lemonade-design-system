@@ -114,9 +114,18 @@ The components file also carries an unrelated `React` label pointing at a
 personal exploration repo. Labels are independent namespaces; publishing these
 two does not touch it.
 
+## A note on auditing coverage
+
+Do not audit Figma-against-code by matching names. Several components differ in
+name between the two without being unmapped: `Selection List Item` is
+`SelectListItem` in code, and `Divider` is `HorizontalDivider` and
+`VerticalDivider`. A name-matching pass reports both as missing on one side. Any
+"this exists in Figma but not in code" claim needs checking by hand before it is
+acted on.
+
 ## Components
 
-Thirty-three components per platform, hand-written and kept at parity. A few needed
+Thirty-four components per platform, hand-written and kept at parity. A few needed
 more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
@@ -200,6 +209,10 @@ more than a property lookup:
   `findText`. The booleans beside them only toggle visibility. Layer names are
   case-sensitive and inconsistent — `Top label` and `Support text` are not
   title-cased the way `Label` and `Description` are.
+
+- `SelectListItem` is `Selection List Item` in Figma, and its borderless variant
+  is `Ghost` there against `Plain` in the enum. Neither is a gap, but both are
+  the kind of near-miss that a name-based audit reports as missing — see below.
 
 ### Deliberately unmapped
 
