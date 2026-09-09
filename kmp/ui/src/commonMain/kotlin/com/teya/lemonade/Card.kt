@@ -92,50 +92,7 @@ public data class CardHeaderConfig(
     val trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     val showNavigationIndicator: Boolean = false,
     val subtitle: String? = null,
-) {
-    // Restores the pre-subtitle constructor symbol <init>(String, LemonadeCardHeadingStyle,
-    // Function3, Function3, Z) so already-compiled consumers keep linking.
-    @Deprecated(
-        message = "kept for binary compatibility",
-        level = DeprecationLevel.HIDDEN,
-    )
-    public constructor(
-        title: String,
-        headingStyle: LemonadeCardHeadingStyle = LemonadeCardHeadingStyle.Default,
-        leadingSlot: (@Composable RowScope.() -> Unit)? = null,
-        trailingSlot: (@Composable RowScope.() -> Unit)? = null,
-        showNavigationIndicator: Boolean = false,
-    ) : this(
-        title = title,
-        headingStyle = headingStyle,
-        leadingSlot = leadingSlot,
-        trailingSlot = trailingSlot,
-        showNavigationIndicator = showNavigationIndicator,
-        subtitle = null,
-    )
-
-    // Restores the pre-subtitle copy(...) and copy$default(...) symbols. The default on the
-    // first parameter is what regenerates the old copy$default, keeping `copy()` callers linking.
-    @Deprecated(
-        message = "kept for binary compatibility",
-        level = DeprecationLevel.HIDDEN,
-    )
-    public fun copy(
-        title: String = this.title,
-        headingStyle: LemonadeCardHeadingStyle = this.headingStyle,
-        leadingSlot: (@Composable RowScope.() -> Unit)? = this.leadingSlot,
-        trailingSlot: (@Composable RowScope.() -> Unit)? = this.trailingSlot,
-        showNavigationIndicator: Boolean = this.showNavigationIndicator,
-    ): CardHeaderConfig =
-        copy(
-            title = title,
-            headingStyle = headingStyle,
-            leadingSlot = leadingSlot,
-            trailingSlot = trailingSlot,
-            showNavigationIndicator = showNavigationIndicator,
-            subtitle = this.subtitle,
-        )
-}
+)
 
 @Composable
 internal fun CardHeader(

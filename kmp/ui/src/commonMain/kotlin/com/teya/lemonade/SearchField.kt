@@ -214,40 +214,6 @@ private fun SearchCancelButton(
     }
 }
 
-// Kept only to preserve the binary symbol released before the cancel button existed. It delegates
-// with the current defaults, so already-compiled callers pick the cancel button up on upgrade just
-// like a recompiled one would. No `replaceWith`: a HIDDEN deprecation is invisible to source
-// resolution, so the quick-fix would never be offered.
-@Deprecated(
-    message = "Use the overload with dismissible, onCancel and cancelContentDescription parameters.",
-    level = DeprecationLevel.HIDDEN,
-)
-@Composable
-@ExperimentalLemonadeComponent
-public fun LemonadeUi.SearchField(
-    input: String,
-    onInputChanged: (String) -> Unit,
-    placeholder: String? = null,
-    onInputClear: () -> Unit = { onInputChanged("") },
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    keyboardActions: KeyboardActions = KeyboardActions(),
-    keyboardOptions: KeyboardOptions = KeyboardOptions(),
-    enabled: Boolean = true,
-    modifier: Modifier = Modifier,
-) {
-    SearchField(
-        input = input,
-        onInputChanged = onInputChanged,
-        placeholder = placeholder,
-        onInputClear = onInputClear,
-        interactionSource = interactionSource,
-        keyboardActions = keyboardActions,
-        keyboardOptions = keyboardOptions,
-        enabled = enabled,
-        modifier = modifier,
-    )
-}
-
 @Composable
 internal fun CoreSearchField(
     input: String,

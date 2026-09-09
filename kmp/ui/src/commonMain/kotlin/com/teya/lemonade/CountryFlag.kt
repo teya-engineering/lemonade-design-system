@@ -52,29 +52,6 @@ public fun LemonadeUi.CountryFlag(
     )
 }
 
-@Deprecated(
-    message = "Use the overload with a shape parameter.",
-    replaceWith = ReplaceWith(
-        expression = "CountryFlag(flag, contentDescription, size, modifier, CountryFlagShape.Circular)",
-    ),
-    level = DeprecationLevel.HIDDEN,
-)
-@Composable
-public fun LemonadeUi.CountryFlag(
-    flag: LemonadeCountryFlags,
-    contentDescription: String = flag.name,
-    size: LemonadeAssetSize = LemonadeAssetSize.Medium,
-    modifier: Modifier = Modifier,
-) {
-    CountryFlag(
-        flag = flag,
-        contentDescription = contentDescription,
-        size = size,
-        modifier = modifier,
-        shape = CountryFlagShape.Circular,
-    )
-}
-
 @Composable
 private fun CoreCountryFlag(
     flag: LemonadeCountryFlags,
