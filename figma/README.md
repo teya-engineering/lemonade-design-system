@@ -116,7 +116,7 @@ two does not touch it.
 
 ## Components
 
-Thirty-one components per platform, hand-written and kept at parity. A few needed
+Thirty-three components per platform, hand-written and kept at parity. A few needed
 more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
@@ -192,6 +192,15 @@ more than a property lookup:
   under the `React` label, so React imports were appearing in Kotlin snippets
   for any component that nests them — `SwipeActionRow` most visibly. A component
   left unmapped does not only lose its own snippet; it degrades its parents'.
+
+- The list-item family keeps its strings in **text layers**, not properties, so
+  `ListItem`, `ResourceListItem` and `ActionListItem` all read them with
+  `findText`. The booleans beside them only toggle visibility. Layer names are
+  case-sensitive and inconsistent — `Top label` and `Support text` are not
+  title-cased the way `Label` and `Description` are.
+- Figma calls `ActionListItem`'s red voice **`Danger`** while the enum calls it
+  `Critical` — the same shape of mismatch as SymbolContainer's `Caution`. Worth
+  settling on one vocabulary across the library.
 
 ### Deliberately unmapped
 
