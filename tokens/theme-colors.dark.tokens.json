@@ -2220,12 +2220,12 @@
       "$value": {
         "colorSpace": "srgb",
         "components": [
-          0.8820960521697998,
-          0.8995633125305176,
-          0.10043667256832123
+          1,
+          1,
+          1
         ],
-        "alpha": 1,
-        "hex": "#E1E51A"
+        "alpha": 0.8999999761581421,
+        "hex": "#FFFFFF"
       },
       "$description": "Use to indicate a selected or active state on components.",
       "$extensions": {
@@ -2240,8 +2240,8 @@
           "iOS": "LemonadeTheme.colors.border.borderSelected"
         },
         "com.figma.aliasData": {
-          "targetVariableId": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87",
-          "targetVariableName": "yellow-lime/500",
+          "targetVariableId": "VariableID:1cde25931e5330368f430707ddecf5da880df6d6/109:32",
+          "targetVariableName": "white/900",
           "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
           "targetVariableSetName": "Colors"
         }
