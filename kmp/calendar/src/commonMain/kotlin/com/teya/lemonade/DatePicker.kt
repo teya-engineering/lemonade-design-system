@@ -146,29 +146,6 @@ public fun rememberDatePickerState(
     }
 
 /**
- * Binary-compatibility shim: keeps the three-parameter [rememberDatePickerState] symbol linking.
- *
- * Delegates to the current overload with an empty disabled set, for consumers compiled before
- * `initialDisabledDates` existed.
- */
-@Deprecated(
-    message = "kept for binary compatibility",
-    level = DeprecationLevel.HIDDEN,
-)
-@Composable
-public fun rememberDatePickerState(
-    initialDate: LocalDate? = null,
-    minDate: LocalDate? = null,
-    maxDate: LocalDate? = null,
-): DatePickerState =
-    rememberDatePickerState(
-        initialDate = initialDate,
-        minDate = minDate,
-        maxDate = maxDate,
-        initialDisabledDates = emptySet(),
-    )
-
-/**
  * State holder for [LemonadeUi.DateRangePicker].
  *
  * Holds the selected start/end dates as observable state, plus the selectable range, the maximum
@@ -248,34 +225,6 @@ public fun rememberDateRangePickerState(
             initialDisabledDates = initialDisabledDates,
         )
     }
-
-/**
- * Binary-compatibility shim: keeps the five-parameter [rememberDateRangePickerState] symbol
- * linking.
- *
- * Delegates to the current overload with an empty disabled set, for consumers compiled before
- * `initialDisabledDates` existed.
- */
-@Deprecated(
-    message = "kept for binary compatibility",
-    level = DeprecationLevel.HIDDEN,
-)
-@Composable
-public fun rememberDateRangePickerState(
-    initialStartDate: LocalDate? = null,
-    initialEndDate: LocalDate? = null,
-    minDate: LocalDate? = null,
-    maxDate: LocalDate? = null,
-    maxRangeDays: Int? = null,
-): DateRangePickerState =
-    rememberDateRangePickerState(
-        initialStartDate = initialStartDate,
-        initialEndDate = initialEndDate,
-        minDate = minDate,
-        maxDate = maxDate,
-        maxRangeDays = maxRangeDays,
-        initialDisabledDates = emptySet(),
-    )
 
 /**
  * A single-date picker widget from the Lemonade Design System.

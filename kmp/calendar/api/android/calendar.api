@@ -3,9 +3,7 @@ public final class com/teya/lemonade/DatePickerKt {
 	public static final fun DatePicker (Lcom/teya/lemonade/LemonadeUi;Lkotlin/jvm/functions/Function1;Ljava/util/List;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/DatePickerState;Lkotlinx/datetime/DayOfWeek;Lkotlinx/datetime/LocalDate;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 	public static final fun DateRangePicker (Lcom/teya/lemonade/LemonadeUi;Lkotlin/jvm/functions/Function1;Ljava/util/List;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/DateRangePickerState;Lkotlinx/datetime/DayOfWeek;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 	public static final fun DateRangePicker (Lcom/teya/lemonade/LemonadeUi;Lkotlin/jvm/functions/Function1;Ljava/util/List;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/DateRangePickerState;Lkotlinx/datetime/DayOfWeek;Lkotlinx/datetime/LocalDate;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
-	public static final synthetic fun rememberDatePickerState (Lkotlinx/datetime/LocalDate;Lkotlinx/datetime/LocalDate;Lkotlinx/datetime/LocalDate;Landroidx/compose/runtime/Composer;II)Lcom/teya/lemonade/DatePickerState;
 	public static final fun rememberDatePickerState (Lkotlinx/datetime/LocalDate;Lkotlinx/datetime/LocalDate;Lkotlinx/datetime/LocalDate;Ljava/util/Set;Landroidx/compose/runtime/Composer;II)Lcom/teya/lemonade/DatePickerState;
-	public static final synthetic fun rememberDateRangePickerState (Lkotlinx/datetime/LocalDate;Lkotlinx/datetime/LocalDate;Lkotlinx/datetime/LocalDate;Lkotlinx/datetime/LocalDate;Ljava/lang/Integer;Landroidx/compose/runtime/Composer;II)Lcom/teya/lemonade/DateRangePickerState;
 	public static final fun rememberDateRangePickerState (Lkotlinx/datetime/LocalDate;Lkotlinx/datetime/LocalDate;Lkotlinx/datetime/LocalDate;Lkotlinx/datetime/LocalDate;Ljava/lang/Integer;Ljava/util/Set;Landroidx/compose/runtime/Composer;II)Lcom/teya/lemonade/DateRangePickerState;
 }
 
