@@ -112,7 +112,7 @@ private fun SwipeActionRowDisplayContent() {
                         id = account.id,
                         openId = openId,
                         onOpenIdChange = { openId = it },
-                        actions = listOf(
+                        trailingActions = listOf(
                             SwipeAction(
                                 icon = LemonadeIcons.Trash,
                                 contentDescription = "Remove ${account.name}",
@@ -161,7 +161,7 @@ private fun SwipeActionRowDisplayContent() {
                     id = "unread",
                     openId = openId,
                     onOpenIdChange = { openId = it },
-                    actions = listOf(
+                    trailingActions = listOf(
                         SwipeAction(
                             icon = LemonadeIcons.Envelope,
                             contentDescription = "Mark unread",
@@ -190,7 +190,7 @@ private fun SwipeActionRowDisplayContent() {
                 ),
             ) {
                 LemonadeUi.SwipeActionRow(
-                    actions = listOf(
+                    trailingActions = listOf(
                         SwipeAction(
                             icon = LemonadeIcons.Trash,
                             contentDescription = "Delete",
@@ -225,7 +225,7 @@ private fun SwipeActionRowDisplayContent() {
                 ),
             ) {
                 LemonadeUi.SwipeActionRow(
-                    actions = listOf(
+                    trailingActions = listOf(
                         SwipeAction(
                             icon = LemonadeIcons.Trash,
                             contentDescription = "Delete",
@@ -308,7 +308,7 @@ private fun SwipeActionRowDisplayContent() {
                             variant = LemonadeButtonVariant.Neutral,
                         ),
                     ),
-                    actions = listOf(
+                    trailingActions = listOf(
                         SwipeAction(
                             icon = LemonadeIcons.Trash,
                             contentDescription = "Delete",
@@ -341,7 +341,7 @@ private fun SwipeActionRowDisplayContent() {
                 ),
             ) {
                 LemonadeUi.SwipeActionRow(
-                    actions = listOf(
+                    trailingActions = listOf(
                         SwipeAction(
                             icon = LemonadeIcons.Pin,
                             contentDescription = "Pin",
@@ -376,7 +376,7 @@ private fun SwipeActionRowDisplayContent() {
                 ),
             ) {
                 LemonadeUi.SwipeActionRow(
-                    actions = listOf(
+                    trailingActions = listOf(
                         SwipeAction(
                             icon = LemonadeIcons.Trash,
                             contentDescription = "Delete",
@@ -416,7 +416,7 @@ private fun SwipeActionRowDisplayContent() {
                 ),
             ) {
                 LemonadeUi.SwipeActionRow(
-                    actions = listOf(
+                    trailingActions = listOf(
                         SwipeAction(
                             icon = LemonadeIcons.Trash,
                             contentDescription = "Delete",
@@ -439,7 +439,7 @@ private fun SwipeActionRowDisplayContent() {
                 ),
             ) {
                 LemonadeUi.SwipeActionRow(
-                    actions = listOf(
+                    trailingActions = listOf(
                         SwipeAction(
                             icon = LemonadeIcons.Trash,
                             contentDescription = "Delete",

@@ -475,8 +475,8 @@ public struct LemonadeSwipeAction {
 // MARK: - Row
 
 struct LemonadeSwipeActionRowView<Content: View>: View {
-    let actions: [LemonadeSwipeAction]
     let leadingActions: [LemonadeSwipeAction]
+    let trailingActions: [LemonadeSwipeAction]
     let enabled: Bool
     let allowsFullSwipe: Bool
     let showDivider: Bool
@@ -491,17 +491,17 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     let allActions: [LemonadeSwipeAction]
 
     init(
-        actions: [LemonadeSwipeAction],
         leadingActions: [LemonadeSwipeAction],
+        trailingActions: [LemonadeSwipeAction],
         enabled: Bool,
         allowsFullSwipe: Bool,
         showDivider: Bool,
         open: Binding<Bool>,
         @ViewBuilder content: () -> Content
     ) {
-        self.actions = actions
         self.leadingActions = leadingActions
-        self.allActions = leadingActions + actions
+        self.trailingActions = trailingActions
+        self.allActions = leadingActions + trailingActions
         self.enabled = enabled
         self.allowsFullSwipe = allowsFullSwipe
         self.showDivider = showDivider
@@ -563,7 +563,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     // MARK: - Sides
 
     private func actionsOn(_ side: SwipeActionSide) -> [LemonadeSwipeAction] {
-        side == .leading ? leadingActions : actions
+        side == .leading ? leadingActions : trailingActions
     }
 
     /// Where an open row rests on one side: every action of it, plus the padding they sit in.
@@ -593,7 +593,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     /// The side the row would open onto with nothing having said otherwise: whichever edge has
     /// actions, trailing first, so a row opened by its caller opens the way it always did.
     private var restingSide: SwipeActionSide {
-        openSide ?? (actions.isEmpty ? .leading : .trailing)
+        openSide ?? (trailingActions.isEmpty ? .leading : .trailing)
     }
 
     /// Where the row rests while open, signed: at the reveal, or wherever a commit is holding it.
@@ -677,7 +677,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
                 HStack(spacing: 0) {
                     if !leadingActions.isEmpty { strip(on: .leading) }
                     Spacer(minLength: 0)
-                    if !actions.isEmpty { strip(on: .trailing) }
+                    if !trailingActions.isEmpty { strip(on: .trailing) }
                 }
                 // Drained of colour and dimmed while something the action opened has the reader's
                 // attention: the actions are still there, and still where they were, but they are
@@ -740,7 +740,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
             // drops to `.subviews` rather than the gesture checking `enabled` inside.
             .highPriorityGesture(
                 drag,
-                including: enabled && !(actions.isEmpty && leadingActions.isEmpty)
+                including: enabled && !(leadingActions.isEmpty && trailingActions.isEmpty)
                     ? .all
                     : .subviews
             )
@@ -790,7 +790,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
         // reveal itself, which also moves when the side does — and a drag that settles open is
         // what sets the side, so that would restart every release's spring from rest. Never under
         // a live finger either, where it would fight the drag.
-        .onChange(of: [leadingActions.count, actions.count]) { _ in
+        .onChange(of: [leadingActions.count, trailingActions.count]) { _ in
             guard open, dragOrigin == nil, !held else { return }
             withAnimation(settle()) { travel = openReveal }
         }
@@ -1185,8 +1185,8 @@ public extension LemonadeUi {
     ///
     /// Actions may sit on either edge, or both. A drag takes the side it sets off towards and
     /// keeps it for the rest of the gesture, so one drag never reveals both. A row opened by its
-    /// caller rather than by a drag opens onto `actions`, falling back to `leadingActions` only
-    /// when there are none.
+    /// caller rather than by a drag opens onto `trailingActions`, falling back to `leadingActions`
+    /// only when there are none.
     ///
     /// The wrapped item must not draw its own divider — pass `showDivider: false` to it and set
     /// `showDivider` here instead. A list item draws its divider inside its own body, so it would
@@ -1195,7 +1195,7 @@ public extension LemonadeUi {
     /// ## Usage
     /// ```swift
     /// LemonadeUi.SwipeActionRow(
-    ///     actions: [
+    ///     trailingActions: [
     ///         LemonadeSwipeAction(icon: .trash, contentDescription: "Remove account", onClick: { })
     ///     ],
     ///     showDivider: true
@@ -1205,8 +1205,8 @@ public extension LemonadeUi {
     /// ```
     ///
     /// - Parameters:
-    ///   - actions: the actions revealed on the trailing edge, outermost first
     ///   - leadingActions: the actions revealed on the leading edge, outermost first
+    ///   - trailingActions: the actions revealed on the trailing edge, outermost first
     ///   - enabled: flag to define whether the drag is active
     ///   - allowsFullSwipe: whether dragging across the row fires the first action of whichever
     ///     edge is being dragged, on release
@@ -1214,16 +1214,16 @@ public extension LemonadeUi {
     ///   - content: the row this wraps
     @ViewBuilder
     static func SwipeActionRow<Content: View>(
-        actions: [LemonadeSwipeAction] = [],
         leadingActions: [LemonadeSwipeAction] = [],
+        trailingActions: [LemonadeSwipeAction] = [],
         enabled: Bool = true,
         allowsFullSwipe: Bool = true,
         showDivider: Bool = false,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View {
         LemonadeUncontrolledSwipeActionRow(
-            actions: actions,
             leadingActions: leadingActions,
+            trailingActions: trailingActions,
             enabled: enabled,
             allowsFullSwipe: allowsFullSwipe,
             showDivider: showDivider,
@@ -1246,16 +1246,16 @@ public extension LemonadeUi {
     static func SwipeActionRow<Content: View>(
         id: AnyHashable,
         openId: Binding<AnyHashable?>,
-        actions: [LemonadeSwipeAction] = [],
         leadingActions: [LemonadeSwipeAction] = [],
+        trailingActions: [LemonadeSwipeAction] = [],
         enabled: Bool = true,
         allowsFullSwipe: Bool = true,
         showDivider: Bool = false,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View {
         LemonadeSwipeActionRowView(
-            actions: actions,
             leadingActions: leadingActions,
+            trailingActions: trailingActions,
             enabled: enabled,
             allowsFullSwipe: allowsFullSwipe,
             showDivider: showDivider,
@@ -1290,7 +1290,7 @@ public extension LemonadeUi {
     /// ```swift
     /// LemonadeUi.SwipeActionGroup {
     ///     ForEach(accounts) { account in
-    ///         LemonadeUi.SwipeActionRow(actions: [remove(account)]) {
+    ///         LemonadeUi.SwipeActionRow(trailingActions: [remove(account)]) {
     ///             LemonadeUi.ActionListItem(label: account.name, onItemClicked: { })
     ///         }
     ///     }
@@ -1344,8 +1344,8 @@ private struct LemonadeSwipeActionGroupView<Content: View>: View {
 
 /// Holds its own open state, so a single row needs no ceremony at the call site.
 private struct LemonadeUncontrolledSwipeActionRow<Content: View>: View {
-    let actions: [LemonadeSwipeAction]
     let leadingActions: [LemonadeSwipeAction]
+    let trailingActions: [LemonadeSwipeAction]
     let enabled: Bool
     let allowsFullSwipe: Bool
     let showDivider: Bool
@@ -1355,8 +1355,8 @@ private struct LemonadeUncontrolledSwipeActionRow<Content: View>: View {
 
     var body: some View {
         LemonadeSwipeActionRowView(
-            actions: actions,
             leadingActions: leadingActions,
+            trailingActions: trailingActions,
             enabled: enabled,
             allowsFullSwipe: allowsFullSwipe,
             showDivider: showDivider,
@@ -1372,7 +1372,7 @@ struct LemonadeSwipeActionRow_Previews: PreviewProvider {
         VStack(alignment: .leading, spacing: .space.spacing600) {
             // One trailing action, full swipe on.
             LemonadeUi.SwipeActionRow(
-                actions: [
+                trailingActions: [
                     LemonadeSwipeAction(icon: .trash, contentDescription: "Remove", onClick: {})
                 ],
                 showDivider: true
@@ -1388,7 +1388,7 @@ struct LemonadeSwipeActionRow_Previews: PreviewProvider {
 
             // Two actions, no full swipe.
             LemonadeUi.SwipeActionRow(
-                actions: [
+                trailingActions: [
                     LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: {}),
                     LemonadeSwipeAction(
                         icon: .pencilLine,
@@ -1409,9 +1409,6 @@ struct LemonadeSwipeActionRow_Previews: PreviewProvider {
 
             // An action on each edge. One drag reveals one of them.
             LemonadeUi.SwipeActionRow(
-                actions: [
-                    LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: {})
-                ],
                 leadingActions: [
                     LemonadeSwipeAction(
                         icon: .check,
@@ -1419,6 +1416,9 @@ struct LemonadeSwipeActionRow_Previews: PreviewProvider {
                         onClick: {},
                         variant: .primary
                     )
+                ],
+                trailingActions: [
+                    LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: {})
                 ]
             ) {
                 LemonadeUi.ActionListItem(
@@ -1434,7 +1434,7 @@ struct LemonadeSwipeActionRow_Previews: PreviewProvider {
                 LemonadeUi.SwipeActionRow(
                     id: "row",
                     openId: openId,
-                    actions: [
+                    trailingActions: [
                         LemonadeSwipeAction(icon: .trash, contentDescription: "Remove", onClick: {})
                     ]
                 ) {

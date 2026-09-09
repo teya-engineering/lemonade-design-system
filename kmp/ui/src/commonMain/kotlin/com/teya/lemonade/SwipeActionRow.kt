@@ -190,7 +190,7 @@ private val LocalSwipeActionGroupAnnounce = compositionLocalOf<((Any?) -> Unit)?
  * LemonadeUi.SwipeActionGroup {
  *     Column {
  *         accounts.forEach { account ->
- *             LemonadeUi.SwipeActionRow(actions = listOf(remove(account))) {
+ *             LemonadeUi.SwipeActionRow(trailingActions = listOf(remove(account))) {
  *                 LemonadeUi.ActionListItem(label = account.name, onItemClicked = { })
  *             }
  *         }
@@ -509,8 +509,8 @@ private fun drained(
 private fun SwipeActionRowCore(
     open: Boolean,
     onOpenChange: (Boolean) -> Unit,
-    actions: List<SwipeAction>,
     leadingActions: List<SwipeAction>,
+    trailingActions: List<SwipeAction>,
     enabled: Boolean,
     allowsFullSwipe: Boolean,
     showDivider: Boolean,
@@ -589,12 +589,12 @@ private fun SwipeActionRowCore(
     }
 
     val leadingReveal = swipeRevealWidth(through = leadingActions.size)
-    val trailingReveal = swipeRevealWidth(through = actions.size)
+    val trailingReveal = swipeRevealWidth(through = trailingActions.size)
     val oneActionReveal = swipeRevealWidth(through = 1)
     val commitInset = with(density) { COMMIT_INSET.toPx() }
 
     val actionsOn = { side: SwipeActionSide ->
-        if (side == SwipeActionSide.Leading) leadingActions else actions
+        if (side == SwipeActionSide.Leading) leadingActions else trailingActions
     }
     val revealOn = { side: SwipeActionSide ->
         if (side == SwipeActionSide.Leading) leadingReveal else trailingReveal
@@ -607,7 +607,7 @@ private fun SwipeActionRowCore(
     // The side the row would open onto with nothing having said otherwise: whichever edge has
     // actions, trailing first, so a row opened by its caller opens the way it always did.
     val restingSide = openSide
-        ?: if (actions.isNotEmpty()) SwipeActionSide.Trailing else SwipeActionSide.Leading
+        ?: if (trailingActions.isNotEmpty()) SwipeActionSide.Trailing else SwipeActionSide.Leading
     // Where the row rests while open, signed: at the reveal, or wherever a commit is holding it.
     val restingTravel = restingSide.sign *
         if (held) commitTravelOn(restingSide) else revealOn(restingSide)
@@ -697,7 +697,7 @@ private fun SwipeActionRowCore(
     // which also moves when the side does — and a drag that settles open is what sets the side, so
     // that key would restart every release's spring from rest a frame after it began. Never under a
     // live finger either, where it would fight the drag.
-    LaunchedEffect(leadingActions.size, actions.size) {
+    LaunchedEffect(leadingActions.size, trailingActions.size) {
         if (open && !dragging && !held) {
             settleTo(restingSide.sign * revealOn(restingSide), 0f)
         }
@@ -784,7 +784,7 @@ private fun SwipeActionRowCore(
                 .draggable(
                     state = dragState,
                     orientation = Orientation.Horizontal,
-                    enabled = enabled && (actions.isNotEmpty() || leadingActions.isNotEmpty()),
+                    enabled = enabled && (leadingActions.isNotEmpty() || trailingActions.isNotEmpty()),
                     onDragStarted = {
                         // The finger outranks whatever the row was doing, and nothing is holding
                         // the row any more: this drag settles it wherever it asks.
@@ -868,7 +868,7 @@ private fun SwipeActionRowCore(
                     // Both edges in the order a reader would find them: the gesture is what is
                     // invisible here, not the side.
                     customActions = if (enabled && !holding) {
-                        (leadingActions + actions).map { action ->
+                        (leadingActions + trailingActions).map { action ->
                             CustomAccessibilityAction(action.contentDescription) {
                                 fired(action)
                                 true
@@ -968,7 +968,7 @@ private fun SwipeActionRowCore(
  * ## Usage
  * ```kotlin
  * LemonadeUi.SwipeActionRow(
- *     actions = listOf(
+ *     trailingActions = listOf(
  *         SwipeAction(
  *             icon = LemonadeIcons.Trash,
  *             contentDescription = "Remove account",
@@ -982,11 +982,12 @@ private fun SwipeActionRowCore(
  * ```
  * Actions may sit on either edge, or both. A drag takes the side it sets off towards and keeps it
  * for the rest of the gesture, so one drag never reveals both. A row opened by its caller rather
- * than by a drag opens onto [actions], falling back to [leadingActions] only when there are none.
+ * than by a drag opens onto [trailingActions], falling back to [leadingActions] only when there
+ * are none.
  *
- * @param actions - the actions revealed on the trailing edge, outermost first.
- * @param modifier - [Modifier] applied to the base container.
  * @param leadingActions - the actions revealed on the leading edge, outermost first.
+ * @param trailingActions - the actions revealed on the trailing edge, outermost first.
+ * @param modifier - [Modifier] applied to the base container.
  * @param enabled - flag to define whether the drag is active.
  * @param allowsFullSwipe - whether dragging across the row fires the first action of whichever
  *  edge is being dragged, on release.
@@ -995,9 +996,9 @@ private fun SwipeActionRowCore(
  */
 @Composable
 public fun LemonadeUi.SwipeActionRow(
-    actions: List<SwipeAction> = emptyList(),
-    modifier: Modifier = Modifier,
     leadingActions: List<SwipeAction> = emptyList(),
+    trailingActions: List<SwipeAction> = emptyList(),
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     allowsFullSwipe: Boolean = true,
     showDivider: Boolean = false,
@@ -1007,8 +1008,8 @@ public fun LemonadeUi.SwipeActionRow(
     SwipeActionRowCore(
         open = open,
         onOpenChange = { open = it },
-        actions = actions,
         leadingActions = leadingActions,
+        trailingActions = trailingActions,
         enabled = enabled,
         allowsFullSwipe = allowsFullSwipe,
         showDivider = showDivider,
@@ -1018,11 +1019,11 @@ public fun LemonadeUi.SwipeActionRow(
 }
 
 /**
- * Binary compatibility for callers compiled against the row before it had a leading edge. Keeps the
- * symbol that shipped, delegating to the overload above.
+ * Binary compatibility for callers compiled against the row when its only actions were the trailing
+ * ones. Keeps the symbol that shipped, delegating to the overload above.
  */
 @Deprecated(
-    message = "Use the overload with leadingActions.",
+    message = "Use trailingActions.",
     level = DeprecationLevel.HIDDEN,
 )
 @Composable
@@ -1035,9 +1036,9 @@ public fun LemonadeUi.SwipeActionRow(
     content: @Composable () -> Unit,
 ) {
     SwipeActionRow(
-        actions = actions,
-        modifier = modifier,
         leadingActions = emptyList(),
+        trailingActions = actions,
+        modifier = modifier,
         enabled = enabled,
         allowsFullSwipe = allowsFullSwipe,
         showDivider = showDivider,
@@ -1063,9 +1064,9 @@ public fun LemonadeUi.SwipeActionRow(
     id: Any,
     openId: Any?,
     onOpenIdChange: (Any?) -> Unit,
-    actions: List<SwipeAction> = emptyList(),
-    modifier: Modifier = Modifier,
     leadingActions: List<SwipeAction> = emptyList(),
+    trailingActions: List<SwipeAction> = emptyList(),
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     allowsFullSwipe: Boolean = true,
     showDivider: Boolean = false,
@@ -1081,8 +1082,8 @@ public fun LemonadeUi.SwipeActionRow(
                 openId == id -> onOpenIdChange(null)
             }
         },
-        actions = actions,
         leadingActions = leadingActions,
+        trailingActions = trailingActions,
         enabled = enabled,
         allowsFullSwipe = allowsFullSwipe,
         showDivider = showDivider,
@@ -1092,11 +1093,11 @@ public fun LemonadeUi.SwipeActionRow(
 }
 
 /**
- * Binary compatibility for callers compiled against the controlled row before it had a leading
- * edge. Keeps the symbol that shipped, delegating to the overload above.
+ * Binary compatibility for callers compiled against the controlled row when its only actions were
+ * the trailing ones. Keeps the symbol that shipped, delegating to the overload above.
  */
 @Deprecated(
-    message = "Use the overload with leadingActions.",
+    message = "Use trailingActions.",
     level = DeprecationLevel.HIDDEN,
 )
 @Composable
@@ -1115,9 +1116,9 @@ public fun LemonadeUi.SwipeActionRow(
         id = id,
         openId = openId,
         onOpenIdChange = onOpenIdChange,
-        actions = actions,
-        modifier = modifier,
         leadingActions = emptyList(),
+        trailingActions = actions,
+        modifier = modifier,
         enabled = enabled,
         allowsFullSwipe = allowsFullSwipe,
         showDivider = showDivider,
