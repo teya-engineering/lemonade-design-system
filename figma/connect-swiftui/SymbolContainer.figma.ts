@@ -58,7 +58,7 @@ const tail = `,
 
 // When content is the trailing closure, badgeSlot has to be a labelled argument.
 const badgeArg = badge ? figma.swift` {
-    ${badge}
+    /* accessory */
 }` : ''
 const badgeSlotArg = badge ? figma.swift`,
     badgeSlot: { ${badge} }` : ''

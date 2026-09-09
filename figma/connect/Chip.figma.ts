@@ -21,8 +21,8 @@ const counter = instance.getBoolean('◉ Shown Counter')
   ? instance.getString('↪ ✍️ Counter')
   : undefined
 
-// Both slots resolve through whatever they hold; in practice that is an icon,
-// which is what the leadingIcon/trailingIcon overload takes.
+// leadingIcon and trailingIcon are enum-typed, and a Figma slot cannot be
+// resolved to an enum value, so they are left out rather than guessed.
 const leading = instance.getBoolean('◉ Show Leading') ? instance.getSlot('↪ 🧩 Leading') : undefined
 const trailing = instance.getBoolean('◉ Show Trailing') ? instance.getSlot('↪ 🧩 Trailing') : undefined
 
@@ -30,13 +30,7 @@ export default {
   example: figma.kotlin`LemonadeUi.Chip(
     label = "${label}",
     selected = ${selected},
-    onChipClicked = { },${
-      leading ? figma.kotlin`
-    leadingIcon = ${leading},` : ''
-    }${
-      trailing ? figma.kotlin`
-    trailingIcon = ${trailing},` : ''
-    }${counter ? `
+    onChipClicked = { },${counter ? `
     counter = ${counter},` : ''}${error ? `
     error = true,` : ''}${disabled ? `
     enabled = false,` : ''}
