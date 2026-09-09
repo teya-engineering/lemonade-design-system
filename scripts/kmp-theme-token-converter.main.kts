@@ -8,9 +8,35 @@ import java.io.File
 private val THEMED_GROUP = "Themed"
 
 data class ThemeResourceData(
-    val valueGroup: String,
-    val valueName: String,
+    /** The full right-hand side of the generated property, receiver included. */
+    val reference: String,
 )
+
+/**
+ * Builds the value a semantic token resolves to.
+ *
+ * Most tokens alias a primitive. Since the themed layer moved into the Theme collection,
+ * a token can also alias a themed colour - Figma exports that as a same-collection
+ * reference, so it arrives here as `Themed/<hue>/<slot>`. Those resolve to the themed
+ * object for this mode rather than to [LemonadePrimitiveColors], which keeps the layering
+ * visible in the generated code instead of flattening it back to a primitive.
+ */
+private fun themeValueReference(aliasName: String, themedObjectName: String): String {
+    val groups = aliasName.sanitizedGroups()
+    if (groups.firstOrNull() == THEMED_GROUP) {
+        // Themed/green-lime/subtle/background -> greenLime.subtle.background
+        val path = aliasName.split("/").drop(1).joinToString(".") { segment ->
+            segment.sanitizedValueName()
+        }
+        return "$themedObjectName.$path"
+    }
+    val valueGroup = if (groups.contains("Alpha")) {
+        "Alpha.${groups.first()}"
+    } else {
+        "Solid.${groups.first()}"
+    }
+    return "LemonadePrimitiveColors.$valueGroup.${aliasName.sanitizedValueName()}"
+}
 
 fun main() {
     val colorTokensFile = tokenFile("theme-colors.light.tokens.json")
@@ -39,21 +65,23 @@ fun main() {
                 modeName.equals("Dark", ignoreCase = true) -> "LemonadeDarkTheme"
                 else -> "Lemonade${modeName}Theme"
             }
+            val themedObjectName = when {
+                modeName.equals("Light", ignoreCase = true) -> "LemonadeLightThemedColors"
+                modeName.equals("Dark", ignoreCase = true) -> "LemonadeDarkThemedColors"
+                else -> "Lemonade${modeName}ThemedColors"
+            }
 
             val themeResources = readFileResourceFileByMode(
                 files = themeFiles,
                 modeName = modeName,
                 resourceMap = { jsonObject ->
                     val aliasName = jsonObject.optString("aliasName")
-                    val groups = aliasName?.sanitizedGroups().orEmpty()
-                    if (!aliasName.isNullOrBlank() && groups.isNotEmpty()) {
+                    if (!aliasName.isNullOrBlank() && aliasName.sanitizedGroups().isNotEmpty()) {
                         ThemeResourceData(
-                            valueName = aliasName.sanitizedValueName(),
-                            valueGroup = if (groups.contains("Alpha")) {
-                                "Alpha.${groups.first()}"
-                            } else {
-                                "Solid.${groups.first()}"
-                            },
+                            reference = themeValueReference(
+                                aliasName = aliasName,
+                                themedObjectName = themedObjectName,
+                            ),
                         )
                     } else {
                         null
@@ -80,15 +108,12 @@ fun main() {
             modeName = modeNames.first { it.equals("Light", ignoreCase = true) },
             resourceMap = { jsonObject ->
                 val aliasName = jsonObject.optString("aliasName")
-                val groups = aliasName?.sanitizedGroups().orEmpty()
-                if (!aliasName.isNullOrBlank() && groups.isNotEmpty()) {
+                if (!aliasName.isNullOrBlank() && aliasName.sanitizedGroups().isNotEmpty()) {
                     ThemeResourceData(
-                        valueName = aliasName.sanitizedValueName(),
-                        valueGroup = if (groups.contains("Alpha")) {
-                            "Alpha.${groups.first()}"
-                        } else {
-                            "Solid.${groups.first()}"
-                        },
+                        reference = themeValueReference(
+                            aliasName = aliasName,
+                            themedObjectName = "LemonadeLightThemedColors",
+                        ),
                     )
                 } else {
                     null
@@ -221,7 +246,7 @@ private fun buildGroupClassCode(
         appendLine("    override val ${groupName.sanitizedValueName()}: LemonadeSemanticColors.${groupName}Colors =")
         appendLine("        object : LemonadeSemanticColors.${groupName}Colors {")
         resources.forEach { resource ->
-            appendLine("            override val ${resource.name} = LemonadePrimitiveColors.${resource.value.valueGroup}.${resource.value.valueName}")
+            appendLine("            override val ${resource.name} = ${resource.value.reference}")
         }
         appendLine("        }")
     }
