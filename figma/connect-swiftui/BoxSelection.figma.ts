@@ -31,7 +31,7 @@ export default {
     enabled: false` : ''},
     onClick: { }
 ) {
-    ${content}
+    /* content */
 }`,
   id: 'box-selection',
   metadata: { nestable: false },

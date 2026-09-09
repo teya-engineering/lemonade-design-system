@@ -31,7 +31,7 @@ export default {
     enabled = false,` : ''}
     onClick = { },
 ) {
-    ${content}
+    /* content */
 }`,
   imports: [
     'import com.teya.lemonade.BoxSelection',

@@ -46,10 +46,10 @@ export default {
     label: "${label}",
     onClick: { }${
       leadingSlot ? figma.swift`,
-    leadingSlot: { _ in ${leadingSlot} }` : ''
+    leadingSlot: { _ in /* leading content */ }` : ''
     }${
       trailingSlot ? figma.swift`,
-    trailingSlot: { _ in ${trailingSlot} }` : ''
+    trailingSlot: { _ in /* trailing content */ }` : ''
     },
     variant: .${variant},
     type: .${type},

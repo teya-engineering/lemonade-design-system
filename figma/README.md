@@ -116,7 +116,7 @@ two does not touch it.
 
 ## Components
 
-Twenty-five components per platform, hand-written and kept at parity. A few needed
+Twenty-eight components per platform, hand-written and kept at parity. A few needed
 more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
@@ -162,6 +162,19 @@ more than a property lookup:
   from resolving them — the `5+` variant lays out nine. Selection is a property
   of each tab in Figma and an index on the parent, so the child surfaces it
   through `metadata.props` and the parent folds it into `selectedIndex`.
+
+- **Slot content cannot be inlined.** Figma hoists an instance-bearing `SLOT`
+  into React-shaped nested functions, so `getSlot()` interpolated into a Kotlin
+  or Swift snippet emits `<LeadingSlot_1 />` rather than the child's code. Slots
+  are therefore used only as a presence signal: a lambda-typed parameter gets a
+  `/* … */` placeholder, and an enum-typed one is left out entirely, because a
+  slot cannot resolve to an enum value. That is why `Chip`'s leading and trailing
+  icons are omitted and `Tile`'s required `icon` emits a TODO instead of a guess.
+  `INSTANCE_SWAP` properties do not have this problem and inline correctly.
+- `Tooltip` maps all thirteen indicator placements. `History Timeline` resolves
+  its rows through a `.History Item` template, which reads its text from the
+  nested content instance and its voice from the nested indicator via
+  `metadata.props`, then folds the current row into `currentIndex`.
 
 ### Deliberately unmapped
 

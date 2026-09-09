@@ -56,7 +56,7 @@ const tail = `
     shape = SymbolContainerShape.${shape},`
 
 const badgeArg = badge ? figma.kotlin`
-    badgeSlot = { ${badge} },` : ''
+    badgeSlot = { /* accessory */ },` : ''
 
 // Brand Logo has no overload of its own — a brand renders through the content
 // slot. Image has no source in Figma to carry over, so the slot is left for the

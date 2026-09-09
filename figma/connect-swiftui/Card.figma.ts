@@ -25,7 +25,7 @@ export default {
     contentPadding: .${padding},
     background: .${background}
 ) {
-    ${content}
+    /* card content */
 }`,
   id: 'card',
   metadata: { nestable: false },

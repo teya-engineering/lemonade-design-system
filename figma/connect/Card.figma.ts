@@ -25,7 +25,7 @@ export default {
     background = LemonadeCardBackground.${background},
     contentPadding = LemonadeCardPadding.${padding},
 ) {
-    ${content}
+    /* card content */
 }`,
   imports: [
     'import com.teya.lemonade.Card',
