@@ -48,10 +48,10 @@ export default {
     type = LemonadeButtonType.${type},
     size = LemonadeButtonSize.${size},${
       leadingSlot ? figma.kotlin`
-    leadingSlot = { ${leadingSlot} },` : ''
+    leadingSlot = { /* leading content */ },` : ''
     }${
       trailingSlot ? figma.kotlin`
-    trailingSlot = { ${trailingSlot} },` : ''
+    trailingSlot = { /* trailing content */ },` : ''
     }${disabled ? `
     enabled = false,` : ''}${loading ? `
     loading = true,` : ''}

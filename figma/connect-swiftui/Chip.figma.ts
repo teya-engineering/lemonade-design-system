@@ -21,21 +21,15 @@ const counter = instance.getBoolean('◉ Shown Counter')
   ? instance.getString('↪ ✍️ Counter')
   : undefined
 
-// Both slots resolve through whatever they hold; in practice that is an icon,
-// which is what the leadingIcon/trailingIcon initialiser takes.
+// leadingIcon and trailingIcon are enum-typed, and a Figma slot cannot be
+// resolved to an enum value, so they are left out rather than guessed.
 const leading = instance.getBoolean('◉ Show Leading') ? instance.getSlot('↪ 🧩 Leading') : undefined
 const trailing = instance.getBoolean('◉ Show Trailing') ? instance.getSlot('↪ 🧩 Trailing') : undefined
 
 export default {
   example: figma.swift`LemonadeUi.Chip(
     label: "${label}",
-    selected: ${selected}${
-      leading ? figma.swift`,
-    leadingIcon: ${leading}` : ''
-    }${
-      trailing ? figma.swift`,
-    trailingIcon: ${trailing}` : ''
-    }${counter ? `,
+    selected: ${selected}${counter ? `,
     counter: ${counter}` : ''}${disabled ? `,
     enabled: false` : ''}${error ? `,
     error: true` : ''},

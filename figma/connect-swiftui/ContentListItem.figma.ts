@@ -38,13 +38,13 @@ export default {
     showDivider: true` : ''},
     density: .${density}${
       leadingSlot ? figma.swift`,
-    leadingSlot: { ${leadingSlot} }` : ''
+    leadingSlot: { /* leading content */ }` : ''
     }${
       trailingSlot ? figma.swift`,
-    trailingSlot: { ${trailingSlot} }` : ''
+    trailingSlot: { /* trailing content */ }` : ''
     }${
       contentSlot ? figma.swift`,
-    contentSlot: { ${contentSlot} }` : ''
+    contentSlot: { /* content */ }` : ''
     }
 )`,
   id: 'content-list-item',
