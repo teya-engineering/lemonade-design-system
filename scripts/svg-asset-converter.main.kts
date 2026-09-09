@@ -67,9 +67,6 @@ val packs = listOf(
         "LemonadeBrandLogos.swift",
         PackType.BRAND_LOGO,
         supportsDark = true,
-        // "dinners" is a misspelling of the Diners Club brand. The correctly spelled asset
-        // supersedes it; the old one stays so the published Dinners entry keeps working.
-        deprecations = mapOf("dinners" to "diners"),
     ),
 )
 

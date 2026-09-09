@@ -96,7 +96,6 @@ public final class com/teya/lemonade/core/LemonadeBrandLogos : java/lang/Enum, c
 	public static final field Bancomat Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field CartesBancaires Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Diners Lcom/teya/lemonade/core/LemonadeBrandLogos;
-	public static final field Dinners Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field DirectDebit Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Discover Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Edenred Lcom/teya/lemonade/core/LemonadeBrandLogos;

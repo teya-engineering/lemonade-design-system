@@ -131,7 +131,6 @@ final enum class com.teya.lemonade.core/LemonadeBrandLogos : com.teya.lemonade.c
     enum entry Bancomat // com.teya.lemonade.core/LemonadeBrandLogos.Bancomat|null[0]
     enum entry CartesBancaires // com.teya.lemonade.core/LemonadeBrandLogos.CartesBancaires|null[0]
     enum entry Diners // com.teya.lemonade.core/LemonadeBrandLogos.Diners|null[0]
-    enum entry Dinners // com.teya.lemonade.core/LemonadeBrandLogos.Dinners|null[0]
     enum entry DirectDebit // com.teya.lemonade.core/LemonadeBrandLogos.DirectDebit|null[0]
     enum entry Discover // com.teya.lemonade.core/LemonadeBrandLogos.Discover|null[0]
     enum entry Edenred // com.teya.lemonade.core/LemonadeBrandLogos.Edenred|null[0]
