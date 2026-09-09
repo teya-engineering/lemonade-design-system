@@ -15,8 +15,7 @@ const label = read('Label') ?? ''
 const topLabel = instance.getBoolean('◉ Show Top Label') ? read('Top label') : undefined
 const supportText = instance.getBoolean('◉ Show Support Text') ? read('Support text') : undefined
 
-// Figma calls the red voice "Danger"; the enum calls it critical.
-const voice = instance.getEnum('◇ Voice', { Neutral: 'neutral', Danger: 'critical' })
+const voice = instance.getEnum('◇ Voice', { Neutral: 'neutral', Critical: 'critical' })
 
 const navigationIndicator = instance.getBoolean('◉ Navigation Indicator')
 const isLoading = instance.getEnum('◉ Is Loading', { True: true, False: false })

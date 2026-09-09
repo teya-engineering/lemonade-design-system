@@ -152,9 +152,11 @@ more than a property lookup:
   as a nested `BrandLogo`; **Image** has no source in Figma to carry over, so the
   slot is emitted with a TODO for the developer to fill.
 - Figma still calls SymbolContainer's amber voice **`Caution`** while the enum
-  calls it `Warning`. Tag had the same mismatch and was renamed in Figma; this
-  set was not. The template maps across it, but the two sets disagreeing is worth
-  fixing at the source.
+  calls it `Warning`. Tag and ActionListItem both had this shape of mismatch and
+  were renamed in Figma; this set is the last one outstanding. The template maps
+  across it, but the library disagreeing with itself is worth fixing at source —
+  and note that a rename is exactly the change `getEnum` degrades to `undefined`
+  on, silently, until someone republishes.
 
 - `Tabs` resolves its tab children the way SegmentedControl does, through a
   `TabItem` template on the internal `_Tab Item` component. Its `◇ Items` variant
@@ -198,9 +200,6 @@ more than a property lookup:
   `findText`. The booleans beside them only toggle visibility. Layer names are
   case-sensitive and inconsistent — `Top label` and `Support text` are not
   title-cased the way `Label` and `Description` are.
-- Figma calls `ActionListItem`'s red voice **`Danger`** while the enum calls it
-  `Critical` — the same shape of mismatch as SymbolContainer's `Caution`. Worth
-  settling on one vocabulary across the library.
 
 ### Deliberately unmapped
 
