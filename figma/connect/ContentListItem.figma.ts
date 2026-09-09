@@ -38,13 +38,13 @@ export default {
     density = LemonadeContentListItemDensity.${density},${showDivider ? `
     showDivider = true,` : ''}${
       leadingSlot ? figma.kotlin`
-    leadingSlot = { ${leadingSlot} },` : ''
+    leadingSlot = { /* leading content */ },` : ''
     }${
       trailingSlot ? figma.kotlin`
-    trailingSlot = { ${trailingSlot} },` : ''
+    trailingSlot = { /* trailing content */ },` : ''
     }${
       contentSlot ? figma.kotlin`
-    contentSlot = { ${contentSlot} },` : ''
+    contentSlot = { /* content */ },` : ''
     }
 )`,
   imports: [
