@@ -37,6 +37,18 @@ the full decision table. The short version:
 
 Never move, rename, or delete a public declaration just to make the build green.
 
+## Comments
+
+Near-zero comments. A comment survives only when it says something the code
+can't: a non-obvious *why*, a real footgun or invariant, or public-API KDoc that
+adds what the signature can't show. Component KDoc `## Usage` blocks on the
+published modules are canonical documentation for downstream repos — keep them,
+keep them current. Never explain why something is absent or empty, and never
+narrate a change in a comment; rationale goes in the commit message and PR
+description. Generated files (the `DO NOT MODIFY THIS FILE MANUALLY` banner) are
+exempt — fix the generator, not the file. Full rules and cleanup procedure:
+`.claude/skills/comment-review/`.
+
 ## Opening a pull request
 
 CI runs `.github/workflows/kmp_ci.yml`. The **API Stability Review** job diffs the
