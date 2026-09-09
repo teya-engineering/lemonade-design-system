@@ -165,15 +165,10 @@ private fun buildThemedProtocolCode(
         appendLine("    var subtle: ThemedColor { get }")
         appendLine("}")
         appendLine()
-        primary.keys.forEach { hue ->
-            appendLine("/// Themed ${hue.lowercase()} color definitions")
-            appendLine("public protocol Themed${hue}Colors: ThemedPrimaryColor {}")
-            appendLine()
-        }
         appendLine("/// Protocol defining themed color categories")
         appendLine("public protocol LemonadeThemedColors {")
         primary.keys.forEach { hue ->
-            appendLine("    var ${hue.sanitizedSwiftValueName()}: Themed${hue}Colors { get }")
+            appendLine("    var ${hue.sanitizedSwiftValueName()}: ThemedPrimaryColor { get }")
         }
         appendLine("}")
     }
@@ -198,7 +193,7 @@ private fun buildAdaptiveThemedCode(
             }
             appendLine("}")
             appendLine()
-            appendLine("private struct AdaptiveThemed${hue}Colors: Themed${hue}Colors {")
+            appendLine("private struct AdaptiveThemed${hue}Colors: ThemedPrimaryColor {")
             primary.getValue(hue).forEach { resource ->
                 appendLine("    let ${resource.name} = Color(\"${asset(resource)}\", bundle: .lemonade)")
             }
@@ -211,7 +206,7 @@ private fun buildAdaptiveThemedCode(
         appendLine("    public init() {}")
         appendLine()
         primary.keys.forEach { hue ->
-            appendLine("    public let ${hue.sanitizedSwiftValueName()}: Themed${hue}Colors = AdaptiveThemed${hue}Colors()")
+            appendLine("    public let ${hue.sanitizedSwiftValueName()}: ThemedPrimaryColor = AdaptiveThemed${hue}Colors()")
         }
         appendLine("}")
     }

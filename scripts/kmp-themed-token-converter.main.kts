@@ -158,8 +158,10 @@ private fun buildThemedInterfaceCode(
         appendLine(" * categories, per-role or per-status accents - instead of reaching for")
         appendLine(" * [LemonadePrimitiveColors], which is not theme-aware.")
         appendLine(" *")
-        appendLine(" * Each hue carries a saturated palette and a [ThemedPrimaryColor.subtle] one, so a")
-        appendLine(" * component can hold either as a [ThemedColor] and style itself from it.")
+        appendLine(" * Every hue is a [ThemedPrimaryColor], carrying a saturated palette and a")
+        appendLine(" * [ThemedPrimaryColor.subtle] one, so a component can hold either as a [ThemedColor]")
+        appendLine(" * and style itself from it. Hues share one type deliberately: they differ in value,")
+        appendLine(" * not in shape, so a chart series or a per-role mapping can hold them together.")
         appendLine(" *")
         appendLine(" * Prefer a semantic token whenever one fits.")
         appendLine(" *")
@@ -170,11 +172,7 @@ private fun buildThemedInterfaceCode(
         appendLine("@ExperimentalLemonadeApi")
         appendLine("public interface LemonadeThemedColors {")
         primary.keys.forEach { hue ->
-            appendLine("    public val ${hue.sanitizedValueName()}: ${hue}Colors")
-        }
-        primary.keys.forEach { hue ->
-            appendLine()
-            appendLine("    public interface ${hue}Colors : ThemedPrimaryColor")
+            appendLine("    public val ${hue.sanitizedValueName()}: ThemedPrimaryColor")
         }
         appendLine("}")
         appendLine()
@@ -229,8 +227,8 @@ private fun buildThemedObjectCode(
         appendLine("public object $objectName : LemonadeThemedColors {")
         primary.entries.forEachIndexed { index, (hue, slots) ->
             if (index > 0) appendLine()
-            appendLine("    override val ${hue.sanitizedValueName()}: LemonadeThemedColors.${hue}Colors =")
-            appendLine("        object : LemonadeThemedColors.${hue}Colors {")
+            appendLine("    override val ${hue.sanitizedValueName()}: ThemedPrimaryColor =")
+            appendLine("        object : ThemedPrimaryColor {")
             slots.forEach { resource ->
                 appendLine("            override val ${resource.name} = LemonadePrimitiveColors.${resource.value.valueGroup}.${resource.value.valueName}")
             }

@@ -21,8 +21,8 @@ import androidx.compose.runtime.Stable
 @Stable
 @ExperimentalLemonadeApi
 public object LemonadeDarkThemedColors : LemonadeThemedColors {
-    override val amber: LemonadeThemedColors.AmberColors =
-        object : LemonadeThemedColors.AmberColors {
+    override val amber: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.Amber.amber400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Amber.amber200
             override val border = LemonadePrimitiveColors.Solid.Amber.amber400
@@ -38,8 +38,8 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
                 }
         }
 
-    override val blue: LemonadeThemedColors.BlueColors =
-        object : LemonadeThemedColors.BlueColors {
+    override val blue: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.Blue.blue400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Blue.blue200
             override val border = LemonadePrimitiveColors.Solid.Blue.blue400
@@ -55,8 +55,8 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
                 }
         }
 
-    override val cyan: LemonadeThemedColors.CyanColors =
-        object : LemonadeThemedColors.CyanColors {
+    override val cyan: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.Cyan.cyan400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Cyan.cyan200
             override val border = LemonadePrimitiveColors.Solid.Cyan.cyan400
@@ -72,8 +72,8 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
                 }
         }
 
-    override val fuchsia: LemonadeThemedColors.FuchsiaColors =
-        object : LemonadeThemedColors.FuchsiaColors {
+    override val fuchsia: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.Fuchsia.fuchsia400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Fuchsia.fuchsia200
             override val border = LemonadePrimitiveColors.Solid.Fuchsia.fuchsia400
@@ -89,8 +89,8 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
                 }
         }
 
-    override val green: LemonadeThemedColors.GreenColors =
-        object : LemonadeThemedColors.GreenColors {
+    override val green: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.Green.green400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Green.green200
             override val border = LemonadePrimitiveColors.Solid.Green.green400
@@ -106,8 +106,8 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
                 }
         }
 
-    override val greenLime: LemonadeThemedColors.GreenLimeColors =
-        object : LemonadeThemedColors.GreenLimeColors {
+    override val greenLime: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.GreenLime.greenLime400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.GreenLime.greenLime200
             override val border = LemonadePrimitiveColors.Solid.GreenLime.greenLime400
@@ -123,8 +123,8 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
                 }
         }
 
-    override val indigo: LemonadeThemedColors.IndigoColors =
-        object : LemonadeThemedColors.IndigoColors {
+    override val indigo: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.Indigo.indigo400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Indigo.indigo200
             override val border = LemonadePrimitiveColors.Solid.Indigo.indigo400
@@ -140,8 +140,8 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
                 }
         }
 
-    override val neutral: LemonadeThemedColors.NeutralColors =
-        object : LemonadeThemedColors.NeutralColors {
+    override val neutral: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.Neutral.neutral400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Neutral.neutral200
             override val border = LemonadePrimitiveColors.Solid.Neutral.neutral400
@@ -157,8 +157,8 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
                 }
         }
 
-    override val orange: LemonadeThemedColors.OrangeColors =
-        object : LemonadeThemedColors.OrangeColors {
+    override val orange: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.Orange.orange400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Orange.orange200
             override val border = LemonadePrimitiveColors.Solid.Orange.orange400
@@ -174,8 +174,8 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
                 }
         }
 
-    override val pink: LemonadeThemedColors.PinkColors =
-        object : LemonadeThemedColors.PinkColors {
+    override val pink: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.Pink.pink400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Pink.pink200
             override val border = LemonadePrimitiveColors.Solid.Pink.pink400
@@ -191,8 +191,8 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
                 }
         }
 
-    override val purple: LemonadeThemedColors.PurpleColors =
-        object : LemonadeThemedColors.PurpleColors {
+    override val purple: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.Purple.purple400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Purple.purple200
             override val border = LemonadePrimitiveColors.Solid.Purple.purple400
@@ -208,8 +208,8 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
                 }
         }
 
-    override val red: LemonadeThemedColors.RedColors =
-        object : LemonadeThemedColors.RedColors {
+    override val red: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.Red.red400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Red.red200
             override val border = LemonadePrimitiveColors.Solid.Red.red400
@@ -225,8 +225,8 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
                 }
         }
 
-    override val rose: LemonadeThemedColors.RoseColors =
-        object : LemonadeThemedColors.RoseColors {
+    override val rose: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.Rose.rose400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Rose.rose200
             override val border = LemonadePrimitiveColors.Solid.Rose.rose400
@@ -242,8 +242,8 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
                 }
         }
 
-    override val teal: LemonadeThemedColors.TealColors =
-        object : LemonadeThemedColors.TealColors {
+    override val teal: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.Teal.teal400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Teal.teal200
             override val border = LemonadePrimitiveColors.Solid.Teal.teal400
@@ -259,8 +259,8 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
                 }
         }
 
-    override val violet: LemonadeThemedColors.VioletColors =
-        object : LemonadeThemedColors.VioletColors {
+    override val violet: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.Violet.violet400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Violet.violet200
             override val border = LemonadePrimitiveColors.Solid.Violet.violet400
@@ -276,8 +276,8 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
                 }
         }
 
-    override val yellow: LemonadeThemedColors.YellowColors =
-        object : LemonadeThemedColors.YellowColors {
+    override val yellow: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.Yellow.yellow400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Yellow.yellow200
             override val border = LemonadePrimitiveColors.Solid.Yellow.yellow400
@@ -293,8 +293,8 @@ public object LemonadeDarkThemedColors : LemonadeThemedColors {
                 }
         }
 
-    override val yellowLime: LemonadeThemedColors.YellowLimeColors =
-        object : LemonadeThemedColors.YellowLimeColors {
+    override val yellowLime: ThemedPrimaryColor =
+        object : ThemedPrimaryColor {
             override val background = LemonadePrimitiveColors.Solid.YellowLime.yellowLime400
             override val backgroundHigh = LemonadePrimitiveColors.Solid.YellowLime.yellowLime500
             override val border = LemonadePrimitiveColors.Solid.YellowLime.yellowLime400

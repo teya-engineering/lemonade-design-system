@@ -11,8 +11,10 @@ import androidx.compose.ui.graphics.Color
  * categories, per-role or per-status accents - instead of reaching for
  * [LemonadePrimitiveColors], which is not theme-aware.
  *
- * Each hue carries a saturated palette and a [ThemedPrimaryColor.subtle] one, so a
- * component can hold either as a [ThemedColor] and style itself from it.
+ * Every hue is a [ThemedPrimaryColor], carrying a saturated palette and a
+ * [ThemedPrimaryColor.subtle] one, so a component can hold either as a [ThemedColor]
+ * and style itself from it. Hues share one type deliberately: they differ in value,
+ * not in shape, so a chart series or a per-role mapping can hold them together.
  *
  * Prefer a semantic token whenever one fits.
  *
@@ -33,57 +35,23 @@ import androidx.compose.ui.graphics.Color
  */
 @ExperimentalLemonadeApi
 public interface LemonadeThemedColors {
-    public val amber: AmberColors
-    public val blue: BlueColors
-    public val cyan: CyanColors
-    public val fuchsia: FuchsiaColors
-    public val green: GreenColors
-    public val greenLime: GreenLimeColors
-    public val indigo: IndigoColors
-    public val neutral: NeutralColors
-    public val orange: OrangeColors
-    public val pink: PinkColors
-    public val purple: PurpleColors
-    public val red: RedColors
-    public val rose: RoseColors
-    public val teal: TealColors
-    public val violet: VioletColors
-    public val yellow: YellowColors
-    public val yellowLime: YellowLimeColors
-
-    public interface AmberColors : ThemedPrimaryColor
-
-    public interface BlueColors : ThemedPrimaryColor
-
-    public interface CyanColors : ThemedPrimaryColor
-
-    public interface FuchsiaColors : ThemedPrimaryColor
-
-    public interface GreenColors : ThemedPrimaryColor
-
-    public interface GreenLimeColors : ThemedPrimaryColor
-
-    public interface IndigoColors : ThemedPrimaryColor
-
-    public interface NeutralColors : ThemedPrimaryColor
-
-    public interface OrangeColors : ThemedPrimaryColor
-
-    public interface PinkColors : ThemedPrimaryColor
-
-    public interface PurpleColors : ThemedPrimaryColor
-
-    public interface RedColors : ThemedPrimaryColor
-
-    public interface RoseColors : ThemedPrimaryColor
-
-    public interface TealColors : ThemedPrimaryColor
-
-    public interface VioletColors : ThemedPrimaryColor
-
-    public interface YellowColors : ThemedPrimaryColor
-
-    public interface YellowLimeColors : ThemedPrimaryColor
+    public val amber: ThemedPrimaryColor
+    public val blue: ThemedPrimaryColor
+    public val cyan: ThemedPrimaryColor
+    public val fuchsia: ThemedPrimaryColor
+    public val green: ThemedPrimaryColor
+    public val greenLime: ThemedPrimaryColor
+    public val indigo: ThemedPrimaryColor
+    public val neutral: ThemedPrimaryColor
+    public val orange: ThemedPrimaryColor
+    public val pink: ThemedPrimaryColor
+    public val purple: ThemedPrimaryColor
+    public val red: ThemedPrimaryColor
+    public val rose: ThemedPrimaryColor
+    public val teal: ThemedPrimaryColor
+    public val violet: ThemedPrimaryColor
+    public val yellow: ThemedPrimaryColor
+    public val yellowLime: ThemedPrimaryColor
 }
 
 /**

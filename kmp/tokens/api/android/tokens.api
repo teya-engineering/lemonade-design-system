@@ -1046,74 +1046,23 @@ public final class com/teya/lemonade/LemonadeSpacesExtensionKt {
 }
 
 public abstract interface class com/teya/lemonade/LemonadeThemedColors {
-	public abstract fun getAmber ()Lcom/teya/lemonade/LemonadeThemedColors$AmberColors;
-	public abstract fun getBlue ()Lcom/teya/lemonade/LemonadeThemedColors$BlueColors;
-	public abstract fun getCyan ()Lcom/teya/lemonade/LemonadeThemedColors$CyanColors;
-	public abstract fun getFuchsia ()Lcom/teya/lemonade/LemonadeThemedColors$FuchsiaColors;
-	public abstract fun getGreen ()Lcom/teya/lemonade/LemonadeThemedColors$GreenColors;
-	public abstract fun getGreenLime ()Lcom/teya/lemonade/LemonadeThemedColors$GreenLimeColors;
-	public abstract fun getIndigo ()Lcom/teya/lemonade/LemonadeThemedColors$IndigoColors;
-	public abstract fun getNeutral ()Lcom/teya/lemonade/LemonadeThemedColors$NeutralColors;
-	public abstract fun getOrange ()Lcom/teya/lemonade/LemonadeThemedColors$OrangeColors;
-	public abstract fun getPink ()Lcom/teya/lemonade/LemonadeThemedColors$PinkColors;
-	public abstract fun getPurple ()Lcom/teya/lemonade/LemonadeThemedColors$PurpleColors;
-	public abstract fun getRed ()Lcom/teya/lemonade/LemonadeThemedColors$RedColors;
-	public abstract fun getRose ()Lcom/teya/lemonade/LemonadeThemedColors$RoseColors;
-	public abstract fun getTeal ()Lcom/teya/lemonade/LemonadeThemedColors$TealColors;
-	public abstract fun getViolet ()Lcom/teya/lemonade/LemonadeThemedColors$VioletColors;
-	public abstract fun getYellow ()Lcom/teya/lemonade/LemonadeThemedColors$YellowColors;
-	public abstract fun getYellowLime ()Lcom/teya/lemonade/LemonadeThemedColors$YellowLimeColors;
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$AmberColors : com/teya/lemonade/ThemedPrimaryColor {
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$BlueColors : com/teya/lemonade/ThemedPrimaryColor {
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$CyanColors : com/teya/lemonade/ThemedPrimaryColor {
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$FuchsiaColors : com/teya/lemonade/ThemedPrimaryColor {
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$GreenColors : com/teya/lemonade/ThemedPrimaryColor {
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$GreenLimeColors : com/teya/lemonade/ThemedPrimaryColor {
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$IndigoColors : com/teya/lemonade/ThemedPrimaryColor {
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$NeutralColors : com/teya/lemonade/ThemedPrimaryColor {
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$OrangeColors : com/teya/lemonade/ThemedPrimaryColor {
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$PinkColors : com/teya/lemonade/ThemedPrimaryColor {
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$PurpleColors : com/teya/lemonade/ThemedPrimaryColor {
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$RedColors : com/teya/lemonade/ThemedPrimaryColor {
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$RoseColors : com/teya/lemonade/ThemedPrimaryColor {
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$TealColors : com/teya/lemonade/ThemedPrimaryColor {
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$VioletColors : com/teya/lemonade/ThemedPrimaryColor {
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$YellowColors : com/teya/lemonade/ThemedPrimaryColor {
-}
-
-public abstract interface class com/teya/lemonade/LemonadeThemedColors$YellowLimeColors : com/teya/lemonade/ThemedPrimaryColor {
+	public abstract fun getAmber ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getBlue ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getCyan ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getFuchsia ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getGreen ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getGreenLime ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getIndigo ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getNeutral ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getOrange ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getPink ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getPurple ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getRed ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getRose ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getTeal ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getViolet ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getYellow ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getYellowLime ()Lcom/teya/lemonade/ThemedPrimaryColor;
 }
 
 public class com/teya/lemonade/LemonadeTypographyProvider {

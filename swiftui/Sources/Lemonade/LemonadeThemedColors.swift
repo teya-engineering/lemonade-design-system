@@ -53,76 +53,25 @@ public protocol ThemedPrimaryColor: ThemedColor {
     var subtle: ThemedColor { get }
 }
 
-/// Themed amber color definitions
-public protocol ThemedAmberColors: ThemedPrimaryColor {}
-
-/// Themed blue color definitions
-public protocol ThemedBlueColors: ThemedPrimaryColor {}
-
-/// Themed cyan color definitions
-public protocol ThemedCyanColors: ThemedPrimaryColor {}
-
-/// Themed fuchsia color definitions
-public protocol ThemedFuchsiaColors: ThemedPrimaryColor {}
-
-/// Themed green color definitions
-public protocol ThemedGreenColors: ThemedPrimaryColor {}
-
-/// Themed greenlime color definitions
-public protocol ThemedGreenLimeColors: ThemedPrimaryColor {}
-
-/// Themed indigo color definitions
-public protocol ThemedIndigoColors: ThemedPrimaryColor {}
-
-/// Themed neutral color definitions
-public protocol ThemedNeutralColors: ThemedPrimaryColor {}
-
-/// Themed orange color definitions
-public protocol ThemedOrangeColors: ThemedPrimaryColor {}
-
-/// Themed pink color definitions
-public protocol ThemedPinkColors: ThemedPrimaryColor {}
-
-/// Themed purple color definitions
-public protocol ThemedPurpleColors: ThemedPrimaryColor {}
-
-/// Themed red color definitions
-public protocol ThemedRedColors: ThemedPrimaryColor {}
-
-/// Themed rose color definitions
-public protocol ThemedRoseColors: ThemedPrimaryColor {}
-
-/// Themed teal color definitions
-public protocol ThemedTealColors: ThemedPrimaryColor {}
-
-/// Themed violet color definitions
-public protocol ThemedVioletColors: ThemedPrimaryColor {}
-
-/// Themed yellow color definitions
-public protocol ThemedYellowColors: ThemedPrimaryColor {}
-
-/// Themed yellowlime color definitions
-public protocol ThemedYellowLimeColors: ThemedPrimaryColor {}
-
 /// Protocol defining themed color categories
 public protocol LemonadeThemedColors {
-    var amber: ThemedAmberColors { get }
-    var blue: ThemedBlueColors { get }
-    var cyan: ThemedCyanColors { get }
-    var fuchsia: ThemedFuchsiaColors { get }
-    var green: ThemedGreenColors { get }
-    var greenLime: ThemedGreenLimeColors { get }
-    var indigo: ThemedIndigoColors { get }
-    var neutral: ThemedNeutralColors { get }
-    var orange: ThemedOrangeColors { get }
-    var pink: ThemedPinkColors { get }
-    var purple: ThemedPurpleColors { get }
-    var red: ThemedRedColors { get }
-    var rose: ThemedRoseColors { get }
-    var teal: ThemedTealColors { get }
-    var violet: ThemedVioletColors { get }
-    var yellow: ThemedYellowColors { get }
-    var yellowLime: ThemedYellowLimeColors { get }
+    var amber: ThemedPrimaryColor { get }
+    var blue: ThemedPrimaryColor { get }
+    var cyan: ThemedPrimaryColor { get }
+    var fuchsia: ThemedPrimaryColor { get }
+    var green: ThemedPrimaryColor { get }
+    var greenLime: ThemedPrimaryColor { get }
+    var indigo: ThemedPrimaryColor { get }
+    var neutral: ThemedPrimaryColor { get }
+    var orange: ThemedPrimaryColor { get }
+    var pink: ThemedPrimaryColor { get }
+    var purple: ThemedPrimaryColor { get }
+    var red: ThemedPrimaryColor { get }
+    var rose: ThemedPrimaryColor { get }
+    var teal: ThemedPrimaryColor { get }
+    var violet: ThemedPrimaryColor { get }
+    var yellow: ThemedPrimaryColor { get }
+    var yellowLime: ThemedPrimaryColor { get }
 }
 
 private struct AdaptiveThemedAmberSubtleColors: ThemedColor {
@@ -131,7 +80,7 @@ private struct AdaptiveThemedAmberSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-amber-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedAmberColors: ThemedAmberColors {
+private struct AdaptiveThemedAmberColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-amber-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-amber-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-amber-border", bundle: .lemonade)
@@ -148,7 +97,7 @@ private struct AdaptiveThemedBlueSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-blue-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedBlueColors: ThemedBlueColors {
+private struct AdaptiveThemedBlueColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-blue-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-blue-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-blue-border", bundle: .lemonade)
@@ -165,7 +114,7 @@ private struct AdaptiveThemedCyanSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-cyan-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedCyanColors: ThemedCyanColors {
+private struct AdaptiveThemedCyanColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-cyan-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-cyan-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-cyan-border", bundle: .lemonade)
@@ -182,7 +131,7 @@ private struct AdaptiveThemedFuchsiaSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-fuchsia-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedFuchsiaColors: ThemedFuchsiaColors {
+private struct AdaptiveThemedFuchsiaColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-fuchsia-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-fuchsia-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-fuchsia-border", bundle: .lemonade)
@@ -199,7 +148,7 @@ private struct AdaptiveThemedGreenSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-green-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedGreenColors: ThemedGreenColors {
+private struct AdaptiveThemedGreenColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-green-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-green-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-green-border", bundle: .lemonade)
@@ -216,7 +165,7 @@ private struct AdaptiveThemedGreenLimeSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-green-lime-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedGreenLimeColors: ThemedGreenLimeColors {
+private struct AdaptiveThemedGreenLimeColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-green-lime-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-green-lime-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-green-lime-border", bundle: .lemonade)
@@ -233,7 +182,7 @@ private struct AdaptiveThemedIndigoSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-indigo-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedIndigoColors: ThemedIndigoColors {
+private struct AdaptiveThemedIndigoColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-indigo-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-indigo-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-indigo-border", bundle: .lemonade)
@@ -250,7 +199,7 @@ private struct AdaptiveThemedNeutralSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-neutral-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedNeutralColors: ThemedNeutralColors {
+private struct AdaptiveThemedNeutralColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-neutral-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-neutral-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-neutral-border", bundle: .lemonade)
@@ -267,7 +216,7 @@ private struct AdaptiveThemedOrangeSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-orange-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedOrangeColors: ThemedOrangeColors {
+private struct AdaptiveThemedOrangeColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-orange-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-orange-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-orange-border", bundle: .lemonade)
@@ -284,7 +233,7 @@ private struct AdaptiveThemedPinkSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-pink-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedPinkColors: ThemedPinkColors {
+private struct AdaptiveThemedPinkColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-pink-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-pink-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-pink-border", bundle: .lemonade)
@@ -301,7 +250,7 @@ private struct AdaptiveThemedPurpleSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-purple-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedPurpleColors: ThemedPurpleColors {
+private struct AdaptiveThemedPurpleColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-purple-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-purple-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-purple-border", bundle: .lemonade)
@@ -318,7 +267,7 @@ private struct AdaptiveThemedRedSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-red-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedRedColors: ThemedRedColors {
+private struct AdaptiveThemedRedColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-red-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-red-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-red-border", bundle: .lemonade)
@@ -335,7 +284,7 @@ private struct AdaptiveThemedRoseSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-rose-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedRoseColors: ThemedRoseColors {
+private struct AdaptiveThemedRoseColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-rose-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-rose-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-rose-border", bundle: .lemonade)
@@ -352,7 +301,7 @@ private struct AdaptiveThemedTealSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-teal-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedTealColors: ThemedTealColors {
+private struct AdaptiveThemedTealColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-teal-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-teal-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-teal-border", bundle: .lemonade)
@@ -369,7 +318,7 @@ private struct AdaptiveThemedVioletSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-violet-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedVioletColors: ThemedVioletColors {
+private struct AdaptiveThemedVioletColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-violet-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-violet-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-violet-border", bundle: .lemonade)
@@ -386,7 +335,7 @@ private struct AdaptiveThemedYellowSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-yellow-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedYellowColors: ThemedYellowColors {
+private struct AdaptiveThemedYellowColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-yellow-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-yellow-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-yellow-border", bundle: .lemonade)
@@ -403,7 +352,7 @@ private struct AdaptiveThemedYellowLimeSubtleColors: ThemedColor {
     let onBackground = Color("lemonade-themed-yellow-lime-subtle-on-background", bundle: .lemonade)
 }
 
-private struct AdaptiveThemedYellowLimeColors: ThemedYellowLimeColors {
+private struct AdaptiveThemedYellowLimeColors: ThemedPrimaryColor {
     let background = Color("lemonade-themed-yellow-lime-background", bundle: .lemonade)
     let backgroundHigh = Color("lemonade-themed-yellow-lime-background-high", bundle: .lemonade)
     let border = Color("lemonade-themed-yellow-lime-border", bundle: .lemonade)
@@ -418,21 +367,21 @@ private struct AdaptiveThemedYellowLimeColors: ThemedYellowLimeColors {
 public struct LemonadeAdaptiveThemedColors: LemonadeThemedColors {
     public init() {}
 
-    public let amber: ThemedAmberColors = AdaptiveThemedAmberColors()
-    public let blue: ThemedBlueColors = AdaptiveThemedBlueColors()
-    public let cyan: ThemedCyanColors = AdaptiveThemedCyanColors()
-    public let fuchsia: ThemedFuchsiaColors = AdaptiveThemedFuchsiaColors()
-    public let green: ThemedGreenColors = AdaptiveThemedGreenColors()
-    public let greenLime: ThemedGreenLimeColors = AdaptiveThemedGreenLimeColors()
-    public let indigo: ThemedIndigoColors = AdaptiveThemedIndigoColors()
-    public let neutral: ThemedNeutralColors = AdaptiveThemedNeutralColors()
-    public let orange: ThemedOrangeColors = AdaptiveThemedOrangeColors()
-    public let pink: ThemedPinkColors = AdaptiveThemedPinkColors()
-    public let purple: ThemedPurpleColors = AdaptiveThemedPurpleColors()
-    public let red: ThemedRedColors = AdaptiveThemedRedColors()
-    public let rose: ThemedRoseColors = AdaptiveThemedRoseColors()
-    public let teal: ThemedTealColors = AdaptiveThemedTealColors()
-    public let violet: ThemedVioletColors = AdaptiveThemedVioletColors()
-    public let yellow: ThemedYellowColors = AdaptiveThemedYellowColors()
-    public let yellowLime: ThemedYellowLimeColors = AdaptiveThemedYellowLimeColors()
+    public let amber: ThemedPrimaryColor = AdaptiveThemedAmberColors()
+    public let blue: ThemedPrimaryColor = AdaptiveThemedBlueColors()
+    public let cyan: ThemedPrimaryColor = AdaptiveThemedCyanColors()
+    public let fuchsia: ThemedPrimaryColor = AdaptiveThemedFuchsiaColors()
+    public let green: ThemedPrimaryColor = AdaptiveThemedGreenColors()
+    public let greenLime: ThemedPrimaryColor = AdaptiveThemedGreenLimeColors()
+    public let indigo: ThemedPrimaryColor = AdaptiveThemedIndigoColors()
+    public let neutral: ThemedPrimaryColor = AdaptiveThemedNeutralColors()
+    public let orange: ThemedPrimaryColor = AdaptiveThemedOrangeColors()
+    public let pink: ThemedPrimaryColor = AdaptiveThemedPinkColors()
+    public let purple: ThemedPrimaryColor = AdaptiveThemedPurpleColors()
+    public let red: ThemedPrimaryColor = AdaptiveThemedRedColors()
+    public let rose: ThemedPrimaryColor = AdaptiveThemedRoseColors()
+    public let teal: ThemedPrimaryColor = AdaptiveThemedTealColors()
+    public let violet: ThemedPrimaryColor = AdaptiveThemedVioletColors()
+    public let yellow: ThemedPrimaryColor = AdaptiveThemedYellowColors()
+    public let yellowLime: ThemedPrimaryColor = AdaptiveThemedYellowLimeColors()
 }
