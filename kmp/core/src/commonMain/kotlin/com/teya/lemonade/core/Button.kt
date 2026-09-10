@@ -6,10 +6,10 @@ public enum class LemonadeButtonVariant {
     Neutral,
     Critical,
 
-    /** For use on top of brand-filled surfaces. Rendered as a single Subtle treatment. */
+    /** Sits on top of brand-filled surfaces. Renders as a single Subtle treatment. */
     OnBrand,
 
-    /** For use on top of color-filled (voice) surfaces. Rendered as a single Subtle treatment. */
+    /** Sits on top of color-filled (voice) surfaces. Renders as a single Subtle treatment. */
     OnColor,
 }
 

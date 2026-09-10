@@ -1,7 +1,6 @@
 package com.teya.lemonade.core
 
 /**
- * Interface to be used in components in which the assets might not be restricted to [LemonadeIcons]
- *  or any other single asset.
+ * Asset a component can render when it accepts more than [LemonadeIcons].
  */
 public sealed interface LemonadeAsset

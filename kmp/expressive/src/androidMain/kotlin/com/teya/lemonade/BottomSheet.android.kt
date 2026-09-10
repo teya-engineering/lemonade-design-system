@@ -6,26 +6,25 @@ import androidx.compose.runtime.Composable
 import com.teya.lemonade.core.LemonadeBottomSheetVariant
 
 /**
- * Android-specific [BottomSheet][LemonadeUi.BottomSheet] variant that forces the system
- * navigation bar (back / home / recent buttons) hidden inside the sheet's dialog window.
+ * Android [BottomSheet][LemonadeUi.BottomSheet] that hides the system navigation bar.
  *
- * Every [LemonadeUi.BottomSheet] already keeps whichever system bars the host window hides, so an
- * app running fully immersive needs nothing from this overload. Reach for it only to hide the
+ * Forces the back / home / recent buttons hidden inside the sheet's own dialog window. Every
+ * [LemonadeUi.BottomSheet] already keeps whichever system bars the host window hides, so an app
+ * running fully immersive needs nothing from this overload. Reach for it only to hide the
  * navigation bar while the host window still shows it.
  *
- * @param expanded Whether the bottom sheet is currently visible.
- * @param onDismissRequest Callback invoked when the user requests to dismiss the bottom sheet.
- * @param hideNavigationBar Whether to hide the navigation bar even when the host window shows it.
- * @param showDragHandle Whether to display the drag handle at the top of the sheet.
- * @param skipPartiallyExpanded Whether the partially expanded state should be skipped.
- * @param gesturesEnabled Whether the sheet responds to swipe/drag gestures. When `false`, the
- *   drag handle is hidden (overriding [showDragHandle]) and the sheet cannot be dragged. Defaults
- *   to `true`.
- * @param background The background variant of the bottom sheet. Defaults to
- *   [LemonadeBottomSheetVariant.Default].
- * @param properties Dismissal behaviour for the bottom sheet (back press / scrim tap). Defaults
- *   to [LemonadeBottomSheetProperties] with both flags enabled.
- * @param content A composable lambda with [ColumnScope] receiver that defines the sheet's content.
+ * @param expanded whether the bottom sheet is currently visible
+ * @param onDismissRequest called when the user requests dismissal of the bottom sheet
+ * @param hideNavigationBar whether to hide the navigation bar even when the host window shows it
+ * @param showDragHandle whether to show the drag handle at the top of the sheet
+ * @param skipPartiallyExpanded whether to skip the half-expanded state and always open at full
+ *   height
+ * @param gesturesEnabled whether the sheet responds to swipe and drag gestures. When `false` the
+ *   drag handle is hidden, overriding [showDragHandle], and the sheet cannot be dragged. `true` by
+ *   default
+ * @param background background variant of the sheet, [LemonadeBottomSheetVariant.Default] by default
+ * @param properties dismissal behaviour for back press and scrim tap, both enabled by default
+ * @param content sheet body, composed in a [ColumnScope]
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,7 +55,7 @@ public fun LemonadeUi.BottomSheet(
 @Deprecated(
     message = "Use the overload with a gesturesEnabled parameter.",
     replaceWith = ReplaceWith(
-        "BottomSheet(expanded, onDismissRequest, hideNavigationBar, showDragHandle, " +
+        expression = "BottomSheet(expanded, onDismissRequest, hideNavigationBar, showDragHandle, " +
             "skipPartiallyExpanded, true, background, properties, content)",
     ),
     level = DeprecationLevel.HIDDEN,
@@ -89,7 +88,7 @@ public fun LemonadeUi.BottomSheet(
 @Deprecated(
     message = "Use the overload with a properties parameter.",
     replaceWith = ReplaceWith(
-        "BottomSheet(expanded, onDismissRequest, hideNavigationBar, showDragHandle, " +
+        expression = "BottomSheet(expanded, onDismissRequest, hideNavigationBar, showDragHandle, " +
             "skipPartiallyExpanded, true, background, LemonadeBottomSheetProperties(), content)",
     ),
     level = DeprecationLevel.HIDDEN,

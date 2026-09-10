@@ -53,13 +53,13 @@ import com.teya.lemonade.core.LemonadeShadow
 import kotlin.math.roundToInt
 
 /**
- * Represents a single item in a [LemonadeUi.BottomTabBar].
+ * A single item in [LemonadeUi.BottomTabBar].
  *
- * @param label The text label displayed below the icon.
- * @param icon The [LemonadeIcons] displayed above the label when the item is not selected.
- * @param selectedIcon Optional [LemonadeIcons] rendered while the item is selected. A common
- *   pattern is to pair an outline `icon` with its solid variant here (e.g. `Wallet` /
- *   `WalletSolid`). When `null`, [icon] is used for both states.
+ * @param label text label shown below the icon
+ * @param icon [LemonadeIcons] shown above the label while the item is not selected
+ * @param selectedIcon optional [LemonadeIcons] shown while the item is selected. Pair an outline
+ *   [icon] with its solid variant here — `Wallet` with `WalletSolid`, say. `null` uses [icon] for
+ *   both states
  */
 public data class BottomTabBarItem(
     val label: String,
@@ -75,8 +75,8 @@ public data class BottomTabBarItem(
  * a single elevated pill that slides between slots as the selection changes. The component paints a
  * soft scroll-edge gradient behind itself so it floats nicely over scrollable content.
  *
- * The component already applies `Modifier.navigationBarsPadding`, so callers do not need to pad
- * around the system navigation bar themselves.
+ * The component already applies [androidx.compose.foundation.layout.navigationBarsPadding], so
+ * callers do not have to pad around the system navigation bar themselves.
  *
  * ## Usage
  * ```kotlin
@@ -93,11 +93,11 @@ public data class BottomTabBarItem(
  * )
  * ```
  *
- * @param items A non-empty list of [BottomTabBarItem] to display.
- * @param selectedIndex The index of the currently selected item. Must be within [items] indices.
- *   The pill animates to this slot when it changes.
- * @param onItemSelected A callback invoked with the index of the item the user selected.
- * @param modifier The [Modifier] to be applied to the root container of the component.
+ * @param items non-empty list of [BottomTabBarItem] to show
+ * @param selectedIndex index of the currently selected item, which must be within [items] indices.
+ *   The pill animates to this slot when it changes
+ * @param onItemSelected called with the index of the item the user selected
+ * @param modifier [Modifier] applied to the root container
  */
 @Composable
 public fun LemonadeUi.BottomTabBar(
@@ -126,17 +126,18 @@ public fun LemonadeUi.BottomTabBar(
 }
 
 /**
- * Bottom tab bar whose selection pill is driven by a fractional slot position rather than a discrete
- * index — drive [selectionPosition] from a gesture or transition (e.g. Android predictive back) to
- * slide the pill in lock-step with the finger.
+ * Bottom tab bar whose pill follows a fractional slot position, not an index.
  *
- * At rest, pass the selected index as a float. The discrete selection used for the icon variant and
- * accessibility is derived by rounding [selectionPosition].
+ * Drive [selectionPosition] from a gesture or transition — Android predictive back, say — to slide
+ * the pill in lock-step with the finger.
  *
- * @param items A non-empty list of [BottomTabBarItem] to display.
- * @param selectionPosition The fractional slot index of the pill (resting = the selected index).
- * @param onItemSelected A callback invoked with the index of the item the user selected.
- * @param modifier The [Modifier] to be applied to the root container of the component.
+ * At rest, pass the selected index as a float. Rounding [selectionPosition] gives the discrete
+ * selection used for the icon variant and accessibility.
+ *
+ * @param items non-empty list of [BottomTabBarItem] to show
+ * @param selectionPosition fractional slot index of the pill, the selected index at rest
+ * @param onItemSelected called with the index of the item the user selected
+ * @param modifier [Modifier] applied to the root container
  */
 @Composable
 public fun LemonadeUi.BottomTabBar(
@@ -170,7 +171,12 @@ internal fun CoreBottomTabBar(
         lazyMessage = { "BottomTabBar items list should not be empty." },
     )
 
-    val selectedIndex = selectionPosition.roundToInt().coerceIn(0, items.size - 1)
+    val selectedIndex = selectionPosition
+        .roundToInt()
+        .coerceIn(
+            minimumValue = 0,
+            maximumValue = items.size - 1,
+        )
     val edgeColor = LemonadeTheme.colors.background.bgSubtle
 
     Row(
@@ -191,8 +197,10 @@ internal fun CoreBottomTabBar(
     ) {
         HorizontalFloatingToolbar(
             modifier = Modifier
-                .weight(weight = 1f, fill = false)
-                .widthIn(max = MaxBarWidth)
+                .weight(
+                    weight = 1f,
+                    fill = false,
+                ).widthIn(max = MaxBarWidth)
                 .lemonadeShadow(
                     shadow = LemonadeShadow.Xlarge,
                     shape = LemonadeTheme.shapes.radiusFull,
@@ -211,17 +219,24 @@ internal fun CoreBottomTabBar(
                 modifier = Modifier
                     .weight(weight = 1f)
                     .height(height = ItemHeight)
-                    .onSizeChanged { rowWidthPx = it.width },
+                    .onSizeChanged { size -> rowWidthPx = size.width },
             ) {
                 if (rowWidthPx > 0) {
                     val slotWidthPx = rowWidthPx.toFloat() / items.size
                     val slotWidthDp = with(LocalDensity.current) { slotWidthPx.toDp() }
-                    val clampedPosition = selectionPosition.coerceIn(0f, (items.size - 1).toFloat())
+                    val clampedPosition = selectionPosition.coerceIn(
+                        minimumValue = 0f,
+                        maximumValue = (items.size - 1).toFloat(),
+                    )
 
                     Box(
                         modifier = Modifier
-                            .offset { IntOffset(x = (slotWidthPx * clampedPosition).roundToInt(), y = 0) }
-                            .width(width = slotWidthDp)
+                            .offset {
+                                IntOffset(
+                                    x = (slotWidthPx * clampedPosition).roundToInt(),
+                                    y = 0,
+                                )
+                            }.width(width = slotWidthDp)
                             .height(height = ItemHeight)
                             .clip(shape = LemonadeTheme.shapes.radiusFull)
                             .background(color = LemonadeTheme.colors.background.bgElevated),
@@ -272,7 +287,6 @@ private fun BottomTabBarItemContent(
         } else {
             item.icon
         }
-        // Selected icon pops (spring) and crossfades to its variant.
         val iconScale by animateFloatAsState(
             targetValue = if (isSelected) SELECTED_ICON_SCALE else 1f,
             animationSpec = spring(

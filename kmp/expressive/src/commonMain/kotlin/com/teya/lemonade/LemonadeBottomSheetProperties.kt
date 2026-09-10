@@ -11,10 +11,8 @@ import androidx.compose.runtime.Stable
  * the Lemonade Design System free of Material 3 types, matching the naming used by
  * [LemonadeUi.Dialog].
  *
- * @param dismissOnBackPress Whether pressing the back button calls `onDismissRequest`. Defaults
- *   to `true`.
- * @param dismissOnClickOutside Whether tapping the scrim calls `onDismissRequest`. Defaults to
- *   `true`.
+ * @param dismissOnBackPress whether pressing the back button requests dismissal, `true` by default
+ * @param dismissOnClickOutside whether tapping the scrim requests dismissal, `true` by default
  */
 @Stable
 public class LemonadeBottomSheetProperties(

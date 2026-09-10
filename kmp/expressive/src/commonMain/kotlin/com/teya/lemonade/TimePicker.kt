@@ -33,13 +33,13 @@ import com.teya.lemonade.core.LemonadeButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
 
 /**
- * Whether a time is entered on the clock dial or typed into hour / minute fields.
- *
- * @property Dial The analog clock face — tap or drag to set the hour, then the minute.
- * @property Input Two numeric fields the merchant types into, plus the AM/PM toggle in 12-hour mode.
+ * How the merchant sets a time: the clock dial, or typed hour / minute fields.
  */
 public enum class LemonadeTimePickerDisplayMode {
+    /** The analog clock face — tap or drag to set the hour, then the minute. */
     Dial,
+
+    /** Two numeric fields the merchant types into, plus the AM/PM toggle in 12-hour mode. */
     Input,
 }
 
@@ -51,11 +51,11 @@ public enum class LemonadeTimePickerDisplayMode {
  * merchant's interaction writes them, and callers seed a new time by re-keying the state, which
  * [rememberLemonadeTimePickerState] does automatically when any of its arguments change.
  *
- * @param initialHour The initially selected hour, in the 0..23 range regardless of [is24Hour].
- * @param initialMinute The initially selected minute, in the 0..59 range.
- * @param is24Hour Whether the picker uses a 24-hour clock. The Lemonade Design System never reads
+ * @param initialHour initially selected hour, in the 0..23 range regardless of [is24Hour]
+ * @param initialMinute initially selected minute, in the 0..59 range
+ * @param is24Hour whether the picker uses a 24-hour clock. The Lemonade Design System never reads
  * the host platform's clock setting — pass the merchant's own preference (on Android that is
- * `DateFormat.is24HourFormat(context)`), so the same component behaves correctly on every target.
+ * `DateFormat.is24HourFormat(context)`), so the same component behaves correctly on every target
  * @see rememberLemonadeTimePickerState
  */
 @Stable
@@ -112,13 +112,13 @@ public class LemonadeTimePickerState internal constructor(
  * a freshly loaded time re-seeds the picker without any extra plumbing. The selection otherwise
  * survives configuration changes, so rotating the phone mid-edit keeps the time already chosen.
  *
- * @param initialHour The initially selected hour, in the 0..23 range.
- * @param initialMinute The initially selected minute, in the 0..59 range.
- * @param is24Hour Whether the picker uses a 24-hour clock — supplied by the caller, never read
- * from the platform.
+ * @param initialHour initially selected hour, in the 0..23 range
+ * @param initialMinute initially selected minute, in the 0..59 range
+ * @param is24Hour whether the picker uses a 24-hour clock — supplied by the caller, never read
+ * from the platform
  * @throws IllegalArgumentException if [initialHour] or [initialMinute] falls outside its range —
  * worth knowing for a caller that rounds a time before passing it, since rounding minutes up can
- * land on 60.
+ * land on 60
  */
 @Composable
 public fun rememberLemonadeTimePickerState(
@@ -166,11 +166,11 @@ public fun rememberLemonadeTimePickerState(
  * // Observe: state.hour, state.minute
  * ```
  *
- * @param state Configuration state created via [rememberLemonadeTimePickerState]. Observe
- * [LemonadeTimePickerState.hour] and [LemonadeTimePickerState.minute] to react to the selection.
- * @param modifier Optional [Modifier] for layout adjustments.
- * @see LemonadeUi.TimeInput For the typed-entry variant.
- * @see LemonadeUi.TimePickerDialog For the dial inside a confirm / cancel dialog.
+ * @param state state created by [rememberLemonadeTimePickerState]. Observe
+ * [LemonadeTimePickerState.hour] and [LemonadeTimePickerState.minute] to react to the selection
+ * @param modifier optional [Modifier] for layout adjustments
+ * @see LemonadeUi.TimeInput for the typed-entry variant
+ * @see LemonadeUi.TimePickerDialog for the dial inside a confirm / cancel dialog
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -178,7 +178,10 @@ public fun LemonadeUi.TimePicker(
     state: LemonadeTimePickerState,
     modifier: Modifier = Modifier,
 ) {
-    TimePickerDial(state = state, modifier = modifier)
+    TimePickerDial(
+        state = state,
+        modifier = modifier,
+    )
 }
 
 /**
@@ -209,14 +212,14 @@ public fun LemonadeUi.TimePicker(
  * - Material drops a typed value that falls outside 0..23 or 0..59 rather than reporting it: the
  *   field shows the out-of-range text and Material's own error beneath it, while
  *   [LemonadeTimePickerState.hour] and [LemonadeTimePickerState.minute] keep the last value that
- *   was in range. Material exposes no validity flag to read, so
- *   a caller that commits on a button press commits that last valid time. Seed the state from
- *   whatever the merchant confirmed rather than from the field.
+ *   was in range. Material exposes no validity flag to read, so a caller that commits on a button
+ *   press commits that last valid time. Seed the state from whatever the merchant confirmed rather
+ *   than from the field.
  *
- * @param state Configuration state created via [rememberLemonadeTimePickerState]. Observe
- * [LemonadeTimePickerState.hour] and [LemonadeTimePickerState.minute] to react to the selection.
- * @param modifier Optional [Modifier] for layout adjustments.
- * @see LemonadeUi.TimePicker For the clock-dial variant.
+ * @param state state created by [rememberLemonadeTimePickerState]. Observe
+ * [LemonadeTimePickerState.hour] and [LemonadeTimePickerState.minute] to react to the selection
+ * @param modifier optional [Modifier] for layout adjustments
+ * @see LemonadeUi.TimePicker for the clock-dial variant
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -236,7 +239,7 @@ public fun LemonadeUi.TimeInput(
 /**
  * A time picker inside a confirm / cancel dialog, following the Lemonade Design System.
  *
- * Wraps [LemonadeUi.TimePicker] or [LemonadeUi.TimeInput] — chosen with [displayMode] — in a
+ * Wraps [LemonadeUi.TimePicker] or [LemonadeUi.TimeInput] — chosen with [initialDisplayMode] — in a
  * [LemonadeUi.Dialog] carrying a title and a Cancel / Confirm button pair. The selection is only
  * reported through [onConfirm]: dismissing the dialog leaves the caller's time untouched, so a
  * merchant who backs out keeps whatever was set before.
@@ -269,7 +272,7 @@ public fun LemonadeUi.TimeInput(
  * ## Design Notes
  *
  * - Closing the dialog is the caller's job in both callbacks — the component never hides itself,
- *   matching the `expanded` contract of [LemonadeUi.Dialog] and [LemonadeUi.BottomSheet].
+ *   matching the [expanded] contract of [LemonadeUi.Dialog] and [LemonadeUi.BottomSheet].
  * - A toggle in the button row switches between the dial and the typed fields, the way Material's
  *   own dialog does. Both read the same [LemonadeTimePickerState], so the time in progress
  *   survives the switch.
@@ -282,22 +285,22 @@ public fun LemonadeUi.TimeInput(
  *   less than that once its edge margin binds on a narrow window — so it is worth re-checking the
  *   dial on a large font scale before widening anything inside this dialog.
  *
- * @param expanded Whether the dialog is currently visible. When `false`, nothing is composed.
- * @param title Heading shown above the picker, already localized.
- * @param confirmLabel Label of the confirming button, already localized.
- * @param cancelLabel Label of the dismissing button, already localized.
- * @param switchToInputLabel Accessibility label of the mode toggle while the dial is showing — it
- * switches to the typed fields. Already localized.
- * @param switchToDialLabel Accessibility label of the mode toggle while the typed fields are
- * showing — it switches to the dial. Already localized.
- * @param state Configuration state created via [rememberLemonadeTimePickerState].
- * @param onDismissRequest Called when the merchant cancels, taps outside, or presses back.
- * @param onConfirm Called with the chosen hour (0..23) and minute (0..59) when the merchant
- * confirms.
- * @param initialDisplayMode Which of the two the dialog opens on. The merchant can switch freely
- * while it is open, and every fresh opening starts here again rather than wherever the last one
- * was left. Defaults to [LemonadeTimePickerDisplayMode.Dial].
- * @see LemonadeUi.Dialog The underlying dialog.
+ * @param expanded whether the dialog is currently visible. When `false` nothing is composed
+ * @param title heading shown above the picker, already localized
+ * @param confirmLabel label of the confirming button, already localized
+ * @param cancelLabel label of the dismissing button, already localized
+ * @param switchToInputLabel accessibility label of the mode toggle while the dial is showing — it
+ * switches to the typed fields. Already localized
+ * @param switchToDialLabel accessibility label of the mode toggle while the typed fields are
+ * showing — it switches to the dial. Already localized
+ * @param state state created by [rememberLemonadeTimePickerState]
+ * @param onDismissRequest called when the merchant cancels, taps outside, or presses back
+ * @param onConfirm called with the chosen hour (0..23) and minute (0..59) when the merchant
+ * confirms
+ * @param initialDisplayMode which of the two the dialog opens on,
+ * [LemonadeTimePickerDisplayMode.Dial] by default. The merchant can switch freely while it is open,
+ * and every fresh opening starts here again rather than wherever the last one was left
+ * @see LemonadeUi.Dialog the underlying dialog
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("LongParameterList")
@@ -429,12 +432,14 @@ public fun LemonadeUi.TimePickerDialog(
 }
 
 /**
- * The clock dial itself: the Lemonade theme scope, the token colour mapping and Material's picker,
- * in one place so [LemonadeUi.TimePicker] and [LemonadeUi.TimePickerDialog] cannot drift apart.
+ * The clock dial itself.
  *
- * @param layoutType Which of Material's two dial layouts to draw. Defaults to Material's own
- * choice, which is right whenever the picker sits directly in the host window; the dialog resolves
- * it against that window instead and passes the answer in.
+ * Holds the Lemonade theme scope, the token colour mapping and Material's picker in one place, so
+ * [LemonadeUi.TimePicker] and [LemonadeUi.TimePickerDialog] cannot drift apart.
+ *
+ * @param layoutType which of Material's two dial layouts to draw, Material's own choice by default.
+ * That choice is right whenever the picker sits directly in the host window; the dialog resolves it
+ * against that window instead and passes the answer in
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -454,8 +459,9 @@ private fun TimePickerDial(
 }
 
 /**
- * Material reads three things from the ambient theme that [TimePickerColors] has no slot for and
- * that no parameter exposes, so they are re-pointed for the picker's subtree alone:
+ * Re-points, for the picker's subtree alone, three theme slots Material reads directly.
+ *
+ * [TimePickerColors] has no slot for them and no parameter exposes them:
  *
  * - `typography` carries the typeface of every label the picker draws — the clock numerals, the
  *   hour / minute values, the AM/PM toggle and the field captions. Left alone it is Material's
@@ -478,24 +484,28 @@ private fun TimePickerDial(
 @Composable
 private fun LemonadeTimePickerTheme(content: @Composable () -> Unit) {
     MaterialTheme(
-        colorScheme = lemonadeExpressiveColorScheme().copy(
-            primary = LemonadeTheme.colors.border.borderSelected,
-        ),
-        shapes = lemonadeExpressiveShapes().copy(
-            small = RoundedCornerShape(size = LemonadeTheme.radius.radius400),
-        ),
-        typography = lemonadeExpressiveTypography().copy(
-            bodyLarge = LemonadeTheme.typography.bodySmallRegular.textStyle,
-            titleMedium = LemonadeTheme.typography.bodySmallSemiBold.textStyle,
-        ),
+        colorScheme = lemonadeExpressiveColorScheme()
+            .copy(
+                primary = LemonadeTheme.colors.border.borderSelected,
+            ),
+        shapes = lemonadeExpressiveShapes()
+            .copy(
+                small = RoundedCornerShape(size = LemonadeTheme.radius.radius400),
+            ),
+        typography = lemonadeExpressiveTypography()
+            .copy(
+                bodyLarge = LemonadeTheme.typography.bodySmallRegular.textStyle,
+                titleMedium = LemonadeTheme.typography.bodySmallSemiBold.textStyle,
+            ),
         content = content,
     )
 }
 
 /**
- * Material 3's time picker carries its own colour scheme, so every one of its fourteen slots is
- * remapped onto a Lemonade token here. Kept private: [TimePickerColors] is a Material type, and
- * the Lemonade public surface stays free of them.
+ * Maps every slot of Material 3's own time picker colour scheme onto a Lemonade token.
+ *
+ * Kept private: [TimePickerColors] is a Material type, and the Lemonade public surface stays free
+ * of them.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

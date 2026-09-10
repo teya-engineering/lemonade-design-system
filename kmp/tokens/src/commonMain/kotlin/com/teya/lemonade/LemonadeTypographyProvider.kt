@@ -4,11 +4,10 @@ import com.teya.lemonade.core.LemonadeTextStyle
 import com.teya.lemonade.core.LemonadeTypography
 
 /**
- * Provides typography styles for the Lemonade theme.
- * Subclass to override specific styles while keeping defaults from [LemonadeTypography] enum.
+ * Typography styles for the Lemonade theme.
+ * Subclass to override specific styles while keeping the [LemonadeTypography] defaults.
  */
 public open class LemonadeTypographyProvider {
-    // Display styles
     public open val displayXSmall: LemonadeTextStyle get() = LemonadeTypography.DisplayXSmall.style
     public open val displaySmall: LemonadeTextStyle get() = LemonadeTypography.DisplaySmall.style
     public open val displayMedium: LemonadeTextStyle get() = LemonadeTypography.DisplayMedium.style
@@ -17,7 +16,6 @@ public open class LemonadeTypographyProvider {
     public open val display2XLarge: LemonadeTextStyle get() = LemonadeTypography.Display2XLarge.style
     public open val display3XLarge: LemonadeTextStyle get() = LemonadeTypography.Display3XLarge.style
 
-    // Heading styles
     public open val headingXLarge: LemonadeTextStyle get() = LemonadeTypography.HeadingXLarge.style
     public open val headingLarge: LemonadeTextStyle get() = LemonadeTypography.HeadingLarge.style
     public open val headingMedium: LemonadeTextStyle get() = LemonadeTypography.HeadingMedium.style
@@ -25,28 +23,23 @@ public open class LemonadeTypographyProvider {
     public open val headingXSmall: LemonadeTextStyle get() = LemonadeTypography.HeadingXSmall.style
     public open val headingXXSmall: LemonadeTextStyle get() = LemonadeTypography.HeadingXXSmall.style
 
-    // Body XLarge styles
     public open val bodyXLargeRegular: LemonadeTextStyle get() = LemonadeTypography.BodyXLargeRegular.style
     public open val bodyXLargeMedium: LemonadeTextStyle get() = LemonadeTypography.BodyXLargeMedium.style
     public open val bodyXLargeSemiBold: LemonadeTextStyle get() = LemonadeTypography.BodyXLargeSemiBold.style
 
-    // Body Large styles
     public open val bodyLargeRegular: LemonadeTextStyle get() = LemonadeTypography.BodyLargeRegular.style
     public open val bodyLargeMedium: LemonadeTextStyle get() = LemonadeTypography.BodyLargeMedium.style
     public open val bodyLargeSemiBold: LemonadeTextStyle get() = LemonadeTypography.BodyLargeSemiBold.style
 
-    // Body Medium styles
     public open val bodyMediumRegular: LemonadeTextStyle get() = LemonadeTypography.BodyMediumRegular.style
     public open val bodyMediumMedium: LemonadeTextStyle get() = LemonadeTypography.BodyMediumMedium.style
     public open val bodyMediumSemiBold: LemonadeTextStyle get() = LemonadeTypography.BodyMediumSemiBold.style
     public open val bodyMediumBold: LemonadeTextStyle get() = LemonadeTypography.BodyMediumBold.style
 
-    // Body Small styles
     public open val bodySmallRegular: LemonadeTextStyle get() = LemonadeTypography.BodySmallRegular.style
     public open val bodySmallMedium: LemonadeTextStyle get() = LemonadeTypography.BodySmallMedium.style
     public open val bodySmallSemiBold: LemonadeTextStyle get() = LemonadeTypography.BodySmallSemiBold.style
 
-    // Body XSmall styles
     public open val bodyXSmallRegular: LemonadeTextStyle get() = LemonadeTypography.BodyXSmallRegular.style
     public open val bodyXSmallMedium: LemonadeTextStyle get() = LemonadeTypography.BodyXSmallMedium.style
     public open val bodyXSmallSemiBold: LemonadeTextStyle get() = LemonadeTypography.BodyXSmallSemiBold.style

@@ -70,13 +70,18 @@ private fun Window.hideSystemBars(hidden: HiddenSystemBars) {
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
     )
     WindowCompat.setDecorFitsSystemWindows(this, false)
-    WindowCompat.getInsetsController(this, decorView).hideBars(hidden)
+    WindowCompat
+        .getInsetsController(this, decorView)
+        .hideBars(hidden)
     if (wasFocusable) {
         clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
     }
 }
 
-/** A Compose `Popup` is added straight to the [WindowManager], with no [Window] of its own. */
+/**
+ * A Compose [androidx.compose.ui.window.Popup] goes straight to the [WindowManager], with no
+ * [Window] of its own.
+ */
 private fun View.hidePopupSystemBars(hidden: HiddenSystemBars) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         hidePopupSystemBarsFromView(hidden)
@@ -88,7 +93,8 @@ private fun View.hidePopupSystemBars(hidden: HiddenSystemBars) {
 
 @RequiresApi(Build.VERSION_CODES.R)
 private fun View.hidePopupSystemBarsFromView(hidden: HiddenSystemBars) {
-    val controller = windowInsetsController ?: return
+    val controller = windowInsetsController
+        ?: return
     controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     controller.hide(hidden.insetTypes())
 }
