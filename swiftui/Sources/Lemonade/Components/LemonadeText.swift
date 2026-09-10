@@ -154,7 +154,6 @@ private struct LemonadeTextView: View {
 
     private var isOverlineStyle: Bool {
         guard let style = textStyle else { return false }
-        // Check if it's the overline style by checking for letter spacing
         return style.letterSpacing != nil && style.letterSpacing! > 0
     }
 

@@ -3,10 +3,8 @@ import Lemonade
 
 /// Shared medium-style date formatter.
 ///
-/// Defined at file scope so it is built exactly once for the process -
-/// `DateFormatter` initialization is expensive due to ObjC bridging and locale
-/// loading, and this view reads it ~9 times per body pass. Matches the precedent
-/// in `Sources/Lemonade/Components/Calendar/CalendarDayCell.swift`.
+/// `DateFormatter` initialisation is expensive, so this lives at file scope and is built
+/// once instead of on every view update.
 private let mediumDateFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateStyle = .medium

@@ -109,34 +109,33 @@ struct LemonadeToastContainerView<Content: View>: View {
     // MARK: - Toast Change Handling
 
     private func handleToastChange(newToastId: UUID?) {
-        if newToastId != nil {
-            // New toast requested
-            if displayedToast != nil {
-                // Replace current toast: fade out, then show new
-                exitCurrentToast(withFade: true) {
-                    enterNewToast()
-                }
-            } else {
-                // No current toast: show immediately
-                enterNewToast()
-            }
+        guard newToastId != nil else {
+            dismissDisplayedToast()
+            return
+        }
+        if displayedToast != nil {
+            replaceDisplayedToast()
         } else {
-            // Dismissal requested (no replacement)
-            if displayedToast != nil {
-                exitCurrentToast(withFade: false, completion: nil)
-            }
+            enterNewToast()
         }
     }
 
+    private func replaceDisplayedToast() {
+        exitCurrentToast(withFade: true) {
+            enterNewToast()
+        }
+    }
+
+    private func dismissDisplayedToast() {
+        guard displayedToast != nil else { return }
+        exitCurrentToast(withFade: false, completion: nil)
+    }
+
     private func enterNewToast() {
-        // Set up the new toast in entering state
         displayedToast = toastManager.currentToast
         animationPhase = .entering
-
-        // Trigger sensory feedback (iOS 17+)
         feedbackTrigger += 1
 
-        // Animate to visible - use spring for natural feel
         withAnimation(ToastAnimationConfig.spring) {
             animationPhase = .visible
         }
@@ -150,17 +149,18 @@ struct LemonadeToastContainerView<Content: View>: View {
             animationPhase = exitPhase
         }
 
-        // Cancel any previously scheduled exit task to prevent races
         exitTask?.cancel()
-
-        // Clean up after animation completes
         exitTask = Task { @MainActor in
             try? await Task.sleep(nanoseconds: ToastAnimationConfig.nanoseconds(from: ToastAnimationConfig.duration))
             guard !Task.isCancelled else { return }
-            displayedToast = nil
-            animationPhase = .hidden
-            completion?()
+            finishExit(completion: completion)
         }
+    }
+
+    private func finishExit(completion: (() -> Void)?) {
+        displayedToast = nil
+        animationPhase = .hidden
+        completion?()
     }
 
     // MARK: - Toast Overlay
@@ -177,15 +177,11 @@ struct LemonadeToastContainerView<Content: View>: View {
                     toastHeight = height
                 }
             )
-            // GPU-accelerated transforms for animation
             .scaleEffect(animationPhase.scale, anchor: .bottom)
-            // Animation offset (based on measured height) + drag offset
             .offset(y: animationPhase.offset(for: toastHeight) + dragOffset)
             .animatableBlur(radius: animationPhase.blur)
             .opacity(animationPhase.opacity)
-            // Animate phase changes
             .animation(ToastAnimationConfig.spring, value: animationPhase)
-            // Separate animation for drag (snappier)
             .animation(ToastAnimationConfig.interactiveSpring, value: dragOffset)
         }
     }
@@ -211,16 +207,13 @@ struct LemonadeToastContainerView<Content: View>: View {
     // MARK: - Drag Gesture Handling
 
     private func handleDragChanged(_ translation: CGFloat) {
-        // Only allow downward drag (positive translation)
         dragOffset = max(0, translation)
     }
 
     private func handleDragEnded(_ translation: CGFloat) {
         if translation > ToastAnimationConfig.dragDismissThreshold {
-            // Dismiss the toast
             toastManager.dismiss()
         }
-        // Reset drag offset with spring animation
         dragOffset = 0
     }
 }
@@ -239,7 +232,7 @@ struct ToastItemView: View {
     var body: some View {
         VStack {
             Spacer()
-                .allowsHitTesting(false) // Allow touches to pass through
+                .allowsHitTesting(false)
 
             toastContent
         }

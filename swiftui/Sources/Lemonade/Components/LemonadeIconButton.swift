@@ -136,8 +136,8 @@ private extension LemonadeButtonSize {
 
 // MARK: - Color Resolution (Variant x Type)
 
-/// Shared with `LemonadeUi.SwipeActionRow`, which draws its own stretchable capsule but has to
-/// stay in step with the solid icon button it stands in for.
+/// Internal rather than private: components that draw their own icon-button-shaped surface
+/// resolve their palette here so the two stay in step.
 func resolveIconButtonColors(
     variant: LemonadeButtonVariant,
     type: LemonadeButtonType
@@ -236,9 +236,8 @@ func resolveIconButtonColors(
         )
 
     // MARK: On Brand / On Color
-    // Designed as a single Subtle treatment for placing a button on top of a brand- or
-    // color-filled surface. They don't vary by type. Their pressed state mirrors the labeled
-    // LemonadeButton (the base), which uses the interactive token rather than a dedicated pressed one.
+    // These two variants ignore `type`, and reuse the interactive token for the pressed state:
+    // there is no dedicated pressed token for these backgrounds.
     case (.onBrand, _):
         return LemonadeIconButtonColors(
             backgroundColor: LemonadeTheme.colors.background.bgBrandElevated,
@@ -283,9 +282,8 @@ private struct LemonadeIconButtonView: View {
         let bgColor: Color = isHovering ? colors.backgroundHoverColor : colors.backgroundColor
         let buttonShape = RoundedRectangle(cornerRadius: cornerRadius)
 
-        // When disabled or loading, the whole button — fill and content together — dims to 50% via
-        // a single `.opacity` modifier on the SwiftUI.Button, matching the Figma disabled treatment
-        // (group opacity, letting the underlying surface show through).
+        // One `.opacity` on the whole SwiftUI.Button dims fill and content as a group; dimming
+        // them separately would stack and darken the content twice.
         let dimmed = !enabled || loading
         // Secondary Solid's opaque inverse fill dims to `opacity40` when dimmed, not
         // `opacityDisabled`. The `.opacity(… opacityDisabled)` below already dims the whole button,
@@ -312,8 +310,6 @@ private struct LemonadeIconButtonView: View {
                     .fill(bgColor.opacity(disabledFillScale))
                     .animation(.easeInOut(duration: 0.1), value: bgColor)
             )
-            // Keep the rounded hit target the removed .clipShape used to provide, without
-            // reintroducing its offscreen pass.
             .contentShape(buttonShape)
         }
         .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
@@ -334,111 +330,114 @@ struct LemonadeIconButton_Previews: PreviewProvider {
     static var previews: some View {
         ScrollView {
             VStack(spacing: 24) {
-                // Primary Solid
                 previewSection(title: "Primary Solid", variant: .primary, type: .solid)
 
-                // Secondary Solid
                 previewSection(title: "Secondary Solid", variant: .secondary, type: .solid)
 
-                // Neutral Subtle (default)
                 previewSection(title: "Neutral Subtle", variant: .neutral, type: .subtle)
 
-                // Neutral Ghost
                 previewSection(title: "Neutral Ghost", variant: .neutral, type: .ghost)
 
-                // Critical Subtle
                 previewSection(title: "Critical Subtle", variant: .critical, type: .subtle)
 
-                // Critical Solid
                 previewSection(title: "Critical Solid", variant: .critical, type: .solid)
 
-                // Loading states
-                HStack(spacing: 16) {
-                    LemonadeUi.IconButton(
-                        icon: .heart,
-                        contentDescription: "Loading",
-                        onClick: {},
-                        variant: .primary,
-                        type: .solid,
-                        loading: true
-                    )
-                    LemonadeUi.IconButton(
-                        icon: .heart,
-                        contentDescription: "Loading",
-                        onClick: {},
-                        variant: .neutral,
-                        type: .subtle,
-                        loading: true
-                    )
-                    LemonadeUi.IconButton(
-                        icon: .heart,
-                        contentDescription: "Loading",
-                        onClick: {},
-                        variant: .critical,
-                        type: .solid,
-                        loading: true
-                    )
-                }
+                loadingRow
 
-                // Circular shape
-                HStack(spacing: 16) {
-                    LemonadeUi.IconButton(
-                        icon: .heart,
-                        contentDescription: "Circular",
-                        onClick: {},
-                        variant: .primary,
-                        type: .solid,
-                        shape: .circular
-                    )
-                    LemonadeUi.IconButton(
-                        icon: .heart,
-                        contentDescription: "Circular",
-                        onClick: {},
-                        variant: .neutral,
-                        type: .subtle,
-                        shape: .circular
-                    )
-                    LemonadeUi.IconButton(
-                        icon: .heart,
-                        contentDescription: "Circular",
-                        onClick: {},
-                        variant: .critical,
-                        type: .solid,
-                        shape: .circular
-                    )
-                }
+                circularRow
 
-                // Disabled
-                HStack(spacing: 16) {
-                    LemonadeUi.IconButton(
-                        icon: .heart,
-                        contentDescription: "Disabled",
-                        onClick: {},
-                        enabled: false,
-                        variant: .primary,
-                        type: .solid
-                    )
-                    LemonadeUi.IconButton(
-                        icon: .heart,
-                        contentDescription: "Disabled",
-                        onClick: {},
-                        enabled: false,
-                        variant: .neutral,
-                        type: .subtle
-                    )
-                    LemonadeUi.IconButton(
-                        icon: .heart,
-                        contentDescription: "Disabled",
-                        onClick: {},
-                        enabled: false,
-                        variant: .neutral,
-                        type: .ghost
-                    )
-                }
+                disabledRow
             }
             .padding()
         }
         .previewLayout(.sizeThatFits)
+    }
+
+    private static var loadingRow: some View {
+        HStack(spacing: 16) {
+            LemonadeUi.IconButton(
+                icon: .heart,
+                contentDescription: "Loading",
+                onClick: {},
+                variant: .primary,
+                type: .solid,
+                loading: true
+            )
+            LemonadeUi.IconButton(
+                icon: .heart,
+                contentDescription: "Loading",
+                onClick: {},
+                variant: .neutral,
+                type: .subtle,
+                loading: true
+            )
+            LemonadeUi.IconButton(
+                icon: .heart,
+                contentDescription: "Loading",
+                onClick: {},
+                variant: .critical,
+                type: .solid,
+                loading: true
+            )
+        }
+    }
+
+    private static var circularRow: some View {
+        HStack(spacing: 16) {
+            LemonadeUi.IconButton(
+                icon: .heart,
+                contentDescription: "Circular",
+                onClick: {},
+                variant: .primary,
+                type: .solid,
+                shape: .circular
+            )
+            LemonadeUi.IconButton(
+                icon: .heart,
+                contentDescription: "Circular",
+                onClick: {},
+                variant: .neutral,
+                type: .subtle,
+                shape: .circular
+            )
+            LemonadeUi.IconButton(
+                icon: .heart,
+                contentDescription: "Circular",
+                onClick: {},
+                variant: .critical,
+                type: .solid,
+                shape: .circular
+            )
+        }
+    }
+
+    private static var disabledRow: some View {
+        HStack(spacing: 16) {
+            LemonadeUi.IconButton(
+                icon: .heart,
+                contentDescription: "Disabled",
+                onClick: {},
+                enabled: false,
+                variant: .primary,
+                type: .solid
+            )
+            LemonadeUi.IconButton(
+                icon: .heart,
+                contentDescription: "Disabled",
+                onClick: {},
+                enabled: false,
+                variant: .neutral,
+                type: .subtle
+            )
+            LemonadeUi.IconButton(
+                icon: .heart,
+                contentDescription: "Disabled",
+                onClick: {},
+                enabled: false,
+                variant: .neutral,
+                type: .ghost
+            )
+        }
     }
 
     private static func previewSection(

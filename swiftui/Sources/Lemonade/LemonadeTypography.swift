@@ -84,8 +84,8 @@ public struct LemonadeTextStyle: Sendable {
     public let font: Font
 
     /// The face asked for by the family name plus a weight modifier, which is how the string
-    /// overloads of ``LemonadeUi/Text(_:)`` resolve their font — a different expression from
-    /// ``font``, kept as-is here so this stays a pure caching change. Stored for the same reason.
+    /// overloads of ``LemonadeUi/Text(_:)`` resolve their font. Stored for the same reason as
+    /// ``font``.
     let weightedFont: Font
 
 #if canImport(UIKit)
@@ -93,8 +93,7 @@ public struct LemonadeTextStyle: Sendable {
     ///
     /// `registerFonts()` is idempotent and cheap after the first call. Calling it here means the
     /// `.systemFont` fallback is only ever reached if a face is genuinely missing from the bundle,
-    /// rather than because a consumer had not registered yet — which matters now that
-    /// ``lineSpacing`` resolves the metric once and keeps it.
+    /// rather than because a consumer had not registered yet.
     private static func resolvedUIFont(name: String, size: CGFloat) -> UIFont {
         LemonadeFonts.registerFonts()
         return UIFont(name: name, size: size) ?? .systemFont(ofSize: size)
@@ -109,7 +108,6 @@ public struct LemonadeTextStyle: Sendable {
 
 /// Protocol defining all available text styles in the Lemonade Design System.
 public protocol LemonadeTypographyProtocol {
-    // Display styles
     var displayXSmall: LemonadeTextStyle { get }
     var displaySmall: LemonadeTextStyle { get }
     var displayMedium: LemonadeTextStyle { get }
@@ -118,7 +116,6 @@ public protocol LemonadeTypographyProtocol {
     var display2XLarge: LemonadeTextStyle { get }
     var display3XLarge: LemonadeTextStyle { get }
 
-    // Heading styles
     var headingXLarge: LemonadeTextStyle { get }
     var headingLarge: LemonadeTextStyle { get }
     var headingMedium: LemonadeTextStyle { get }
@@ -126,28 +123,23 @@ public protocol LemonadeTypographyProtocol {
     var headingXSmall: LemonadeTextStyle { get }
     var headingXXSmall: LemonadeTextStyle { get }
 
-    // Body XLarge styles
     var bodyXLargeRegular: LemonadeTextStyle { get }
     var bodyXLargeMedium: LemonadeTextStyle { get }
     var bodyXLargeSemiBold: LemonadeTextStyle { get }
 
-    // Body Large styles
     var bodyLargeRegular: LemonadeTextStyle { get }
     var bodyLargeMedium: LemonadeTextStyle { get }
     var bodyLargeSemiBold: LemonadeTextStyle { get }
 
-    // Body Medium styles
     var bodyMediumRegular: LemonadeTextStyle { get }
     var bodyMediumMedium: LemonadeTextStyle { get }
     var bodyMediumSemiBold: LemonadeTextStyle { get }
     var bodyMediumBold: LemonadeTextStyle { get }
 
-    // Body Small styles
     var bodySmallRegular: LemonadeTextStyle { get }
     var bodySmallMedium: LemonadeTextStyle { get }
     var bodySmallSemiBold: LemonadeTextStyle { get }
 
-    // Body XSmall styles
     var bodyXSmallRegular: LemonadeTextStyle { get }
     var bodyXSmallMedium: LemonadeTextStyle { get }
     var bodyXSmallSemiBold: LemonadeTextStyle { get }
@@ -164,7 +156,6 @@ public struct LemonadeTypography: LemonadeTypographyProtocol {
 
     public init() {}
 
-    // Display styles
     public let displayXSmall = LemonadeTextStyle(
         fontSize: LemonadeFontSizes.fontSize600.value,
         lineHeight: LemonadeLineHeights.lineHeight800.value,
@@ -208,7 +199,6 @@ public struct LemonadeTypography: LemonadeTypographyProtocol {
         letterSpacing: -0.25
     )
 
-    // Heading styles
     public let headingXLarge = LemonadeTextStyle(
         fontSize: LemonadeFontSizes.fontSize1000.value,
         lineHeight: LemonadeLineHeights.lineHeight1200.value,
@@ -240,7 +230,6 @@ public struct LemonadeTypography: LemonadeTypographyProtocol {
         fontWeight: LemonadeFontWeights.semibold.value
     )
 
-    // Body XLarge styles
     public let bodyXLargeRegular = LemonadeTextStyle(
         fontSize: LemonadeFontSizes.fontSize500.value,
         lineHeight: LemonadeLineHeights.lineHeight700.value,
@@ -257,7 +246,6 @@ public struct LemonadeTypography: LemonadeTypographyProtocol {
         fontWeight: LemonadeFontWeights.semibold.value
     )
 
-    // Body Large styles
     public let bodyLargeRegular = LemonadeTextStyle(
         fontSize: LemonadeFontSizes.fontSize450.value,
         lineHeight: LemonadeLineHeights.lineHeight700.value,
@@ -274,7 +262,6 @@ public struct LemonadeTypography: LemonadeTypographyProtocol {
         fontWeight: LemonadeFontWeights.semibold.value
     )
 
-    // Body Medium styles
     public let bodyMediumRegular = LemonadeTextStyle(
         fontSize: LemonadeFontSizes.fontSize400.value,
         lineHeight: LemonadeLineHeights.lineHeight600.value,
@@ -297,7 +284,6 @@ public struct LemonadeTypography: LemonadeTypographyProtocol {
         fontWeight: LemonadeFontWeights.semibold.value
     )
 
-    // Body Small styles
     public let bodySmallRegular = LemonadeTextStyle(
         fontSize: LemonadeFontSizes.fontSize350.value,
         lineHeight: LemonadeLineHeights.lineHeight500.value,
@@ -314,7 +300,6 @@ public struct LemonadeTypography: LemonadeTypographyProtocol {
         fontWeight: LemonadeFontWeights.semibold.value
     )
 
-    // Body XSmall styles
     public let bodyXSmallRegular = LemonadeTextStyle(
         fontSize: LemonadeFontSizes.fontSize300.value,
         lineHeight: LemonadeLineHeights.lineHeight400.value,
@@ -341,7 +326,6 @@ public struct LemonadeTypography: LemonadeTypographyProtocol {
 // MARK: - Environment Key
 
 private struct LemonadeTypographyKey: EnvironmentKey {
-    // Reuses the shared instance rather than building a second full set of text styles.
     static let defaultValue: LemonadeTypographyProtocol = LemonadeTypography.shared
 }
 

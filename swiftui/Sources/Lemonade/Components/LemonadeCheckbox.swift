@@ -222,67 +222,74 @@ extension CheckboxStatus: CustomStringConvertible {
 
 #if DEBUG
 struct LemonadeCheckbox_Previews: PreviewProvider {
+    private static var unlabeledRow: some View {
+        HStack(spacing: 16) {
+            LemonadeUi.Checkbox(
+                status: .checked,
+                onCheckboxClicked: {}
+            )
+            LemonadeUi.Checkbox(
+                status: .unchecked,
+                onCheckboxClicked: {}
+            )
+            LemonadeUi.Checkbox(
+                status: .indeterminate,
+                onCheckboxClicked: {}
+            )
+        }
+    }
+
+    private static var disabledRow: some View {
+        HStack(spacing: 16) {
+            LemonadeUi.Checkbox(
+                status: .checked,
+                onCheckboxClicked: {},
+                enabled: false
+            )
+            LemonadeUi.Checkbox(
+                status: .unchecked,
+                onCheckboxClicked: {},
+                enabled: false
+            )
+            LemonadeUi.Checkbox(
+                status: .indeterminate,
+                onCheckboxClicked: {},
+                enabled: false
+            )
+        }
+    }
+
+    private static var labeledColumn: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            LemonadeUi.Checkbox(
+                status: .checked,
+                onCheckboxClicked: {},
+                label: "Label",
+                supportText: "Support text"
+            )
+
+            LemonadeUi.Checkbox(
+                status: .unchecked,
+                onCheckboxClicked: {},
+                label: "Label",
+                supportText: "Support text"
+            )
+
+            LemonadeUi.Checkbox(
+                status: .indeterminate,
+                onCheckboxClicked: {},
+                label: "Label",
+                supportText: "Support text",
+                enabled: false
+            )
+        }
+    }
+
     static var previews: some View {
         VStack(spacing: 24) {
-            // Unlabeled checkboxes
-            HStack(spacing: 16) {
-                LemonadeUi.Checkbox(
-                    status: .checked,
-                    onCheckboxClicked: {}
-                )
-                LemonadeUi.Checkbox(
-                    status: .unchecked,
-                    onCheckboxClicked: {}
-                )
-                LemonadeUi.Checkbox(
-                    status: .indeterminate,
-                    onCheckboxClicked: {}
-                )
-            }
-
-            // Disabled
-            HStack(spacing: 16) {
-                LemonadeUi.Checkbox(
-                    status: .checked,
-                    onCheckboxClicked: {},
-                    enabled: false
-                )
-                LemonadeUi.Checkbox(
-                    status: .unchecked,
-                    onCheckboxClicked: {},
-                    enabled: false
-                )
-                LemonadeUi.Checkbox(
-                    status: .indeterminate,
-                    onCheckboxClicked: {},
-                    enabled: false
-                )
-            }
-
-            // Labeled checkboxes
-            VStack(alignment: .leading, spacing: 16) {
-                LemonadeUi.Checkbox(
-                    status: .checked,
-                    onCheckboxClicked: {},
-                    label: "Label",
-                    supportText: "Support text"
-                )
-
-                LemonadeUi.Checkbox(
-                    status: .unchecked,
-                    onCheckboxClicked: {},
-                    label: "Label",
-                    supportText: "Support text"
-                )
-
-                LemonadeUi.Checkbox(
-                    status: .indeterminate,
-                    onCheckboxClicked: {},
-                    label: "Label",
-                    supportText: "Support text",
-                    enabled: false
-                )
-            }
+            unlabeledRow
+            disabledRow
+            labeledColumn
         }
         .padding()
         .previewLayout(.sizeThatFits)

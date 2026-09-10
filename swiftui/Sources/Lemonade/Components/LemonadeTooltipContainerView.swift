@@ -20,9 +20,7 @@ private enum LemonadeTooltipLayout {
 
     /// Entry spring. The damping is below 1 so the scale overshoots and settles — the "bubble" feel.
     ///
-    /// Matched to Compose's `spring(dampingRatio = 0.55, stiffness = StiffnessMediumLow)`: stiffness
-    /// 400 at unit mass gives ω = 20 rad/s, so response = 2π/ω ≈ 0.31s. Keeping them the same spring
-    /// rather than two hand-tuned ones stops the platforms drifting apart.
+    /// Stiffness 400 at unit mass gives ω = 20 rad/s, so response = 2π/ω ≈ 0.31s.
     static let enterAnimation: Animation = .spring(response: 0.31, dampingFraction: 0.55)
 
     /// Exit is a plain fade, with no scale.
@@ -115,8 +113,7 @@ struct LemonadeTooltipContainerView<Content: View>: View {
     var body: some View {
         // The overlay hangs off `content` rather than wrapping it in a ZStack: a NavigationStack
         // nested inside a GeometryReader/ZStack takes over the full screen through UIKit and paints
-        // over its SwiftUI siblings, so an overlay built that way never becomes visible. This is the
-        // same structure the toast container uses.
+        // over its SwiftUI siblings, so an overlay built that way never becomes visible.
         content
             .environmentObject(manager)
             .overlay {

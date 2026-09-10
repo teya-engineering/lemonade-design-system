@@ -140,67 +140,75 @@ private struct LemonadeSearchFieldView: View {
             isFocused = newValue
         }
         .onAppear {
-            // A host can hand the field focus before it ever renders — a search promoted into a
-            // toolbar does exactly that — so adopt what it asked for on the way in. Nothing is
-            // focused yet at this point, so only a requested `true` is worth acting on, and it has
-            // to wait a frame: a `@FocusState` set synchronously from `onAppear` lands before the
-            // field is in the hierarchy and is dropped. `LemonadePinCode` defers auto-focus for the
-            // same reason.
+            // A host can hand the field focus before it ever renders, so adopt what it asked for on
+            // the way in. Nothing is focused yet at this point, so only a requested `true` is worth
+            // acting on, and it has to wait a frame: a `@FocusState` set synchronously from
+            // `onAppear` lands before the field is in the hierarchy and is dropped.
             guard externalFocus?.wrappedValue == true else { return }
             DispatchQueue.main.async { isFocused = true }
         }
     }
 
+    private var searchIcon: some View {
+        LemonadeUi.Icon(
+            icon: .search,
+            contentDescription: nil,
+            size: .medium,
+            tint: LemonadeTheme.colors.content.contentPrimary
+        )
+    }
+
+    private var textInput: some View {
+        ZStack(alignment: .leading) {
+            if let placeholder = placeholder, input.isEmpty {
+                LemonadeUi.Text(
+                    placeholder,
+                    textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                    color: LemonadeTheme.colors.content.contentTertiary
+                )
+            }
+
+            SwiftUI.TextField("", text: $input)
+                .font(LemonadeTypography.shared.bodyMediumRegular.font)
+                .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
+                .tint(LemonadeTheme.colors.content.contentPrimary)
+                .focused($isFocused)
+                .disabled(!enabled)
+                .onChange(of: input) { newValue in
+                    onInputChanged?(newValue)
+                }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    @ViewBuilder
+    private var clearButton: some View {
+        if !input.isEmpty && enabled {
+            SwiftUI.Button(action: {
+                if let onInputClear = onInputClear {
+                    onInputClear()
+                } else {
+                    input = ""
+                }
+            }) {
+                LemonadeUi.Icon(
+                    icon: .circleXSolid,
+                    contentDescription: "Clear",
+                    size: .medium,
+                    tint: LemonadeTheme.colors.content.contentSecondary
+                )
+            }
+            .buttonStyle(PlainButtonStyle())
+        }
+    }
+
     private var searchField: some View {
         HStack(spacing: LemonadeTheme.spaces.spacing200) {
-            // Search icon
-            LemonadeUi.Icon(
-                icon: .search,
-                contentDescription: nil,
-                size: .medium,
-                tint: LemonadeTheme.colors.content.contentPrimary
-            )
+            searchIcon
 
-            // Text input
-            ZStack(alignment: .leading) {
-                if let placeholder = placeholder, input.isEmpty {
-                    LemonadeUi.Text(
-                        placeholder,
-                        textStyle: LemonadeTypography.shared.bodyMediumRegular,
-                        color: LemonadeTheme.colors.content.contentTertiary
-                    )
-                }
+            textInput
 
-                SwiftUI.TextField("", text: $input)
-                    .font(LemonadeTypography.shared.bodyMediumRegular.font)
-                    .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
-                    .tint(LemonadeTheme.colors.content.contentPrimary)
-                    .focused($isFocused)
-                    .disabled(!enabled)
-                    .onChange(of: input) { newValue in
-                        onInputChanged?(newValue)
-                    }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            // Clear button
-            if !input.isEmpty && enabled {
-                SwiftUI.Button(action: {
-                    if let onInputClear = onInputClear {
-                        onInputClear()
-                    } else {
-                        input = ""
-                    }
-                }) {
-                    LemonadeUi.Icon(
-                        icon: .circleXSolid,
-                        contentDescription: "Clear",
-                        size: .medium,
-                        tint: LemonadeTheme.colors.content.contentSecondary
-                    )
-                }
-                .buttonStyle(PlainButtonStyle())
-            }
+            clearButton
         }
         .padding(.horizontal, horizontalPadding)
         .frame(height: height)
@@ -226,6 +234,22 @@ private struct LemonadeSearchFieldView: View {
 
 #if DEBUG
 struct LemonadeSearchField_Previews: PreviewProvider {
+    private static var hostDrivenFocusField: some View {
+        StatefulPreviewWrapper(false) { focus in
+            StatefulPreviewWrapper("") { input in
+                VStack(alignment: .leading, spacing: 8) {
+                    LemonadeUi.SearchField(
+                        input: input,
+                        placeholder: "Host-driven focus...",
+                        isFocused: focus
+                    )
+
+                    SwiftUI.Button("Focus from the host") { focus.wrappedValue = true }
+                }
+            }
+        }
+    }
+
     static var previews: some View {
         VStack(spacing: 24) {
             StatefulPreviewWrapper("") { input in
@@ -267,20 +291,7 @@ struct LemonadeSearchField_Previews: PreviewProvider {
                 )
             }
 
-            // Host-owned focus: the button drives the field, the field reports back.
-            StatefulPreviewWrapper(false) { focus in
-                StatefulPreviewWrapper("") { input in
-                    VStack(alignment: .leading, spacing: 8) {
-                        LemonadeUi.SearchField(
-                            input: input,
-                            placeholder: "Host-driven focus...",
-                            isFocused: focus
-                        )
-
-                        SwiftUI.Button("Focus from the host") { focus.wrappedValue = true }
-                    }
-                }
-            }
+            hostDrivenFocusField
         }
         .padding()
         .previewLayout(.sizeThatFits)

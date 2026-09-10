@@ -204,58 +204,65 @@ private struct LemonadeCoreRadioButton: View {
 
 #if DEBUG
 struct LemonadeRadioButton_Previews: PreviewProvider {
+    private static var unlabeledRow: some View {
+        HStack(spacing: 16) {
+            LemonadeUi.RadioButton(
+                checked: true,
+                onRadioButtonClicked: {}
+            )
+            LemonadeUi.RadioButton(
+                checked: false,
+                onRadioButtonClicked: {}
+            )
+        }
+    }
+
+    private static var disabledRow: some View {
+        HStack(spacing: 16) {
+            LemonadeUi.RadioButton(
+                checked: true,
+                onRadioButtonClicked: {},
+                enabled: false
+            )
+            LemonadeUi.RadioButton(
+                checked: false,
+                onRadioButtonClicked: {},
+                enabled: false
+            )
+        }
+    }
+
+    private static var labeledColumn: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            LemonadeUi.RadioButton(
+                checked: true,
+                onRadioButtonClicked: {},
+                label: "Option 1",
+                supportText: "This is the first option"
+            )
+
+            LemonadeUi.RadioButton(
+                checked: false,
+                onRadioButtonClicked: {},
+                label: "Option 2",
+                supportText: "This is the second option"
+            )
+
+            LemonadeUi.RadioButton(
+                checked: false,
+                onRadioButtonClicked: {},
+                label: "Option 3 (Disabled)",
+                supportText: "This option is disabled",
+                enabled: false
+            )
+        }
+    }
+
     static var previews: some View {
         VStack(spacing: 24) {
-            // Unlabeled radio buttons
-            HStack(spacing: 16) {
-                LemonadeUi.RadioButton(
-                    checked: true,
-                    onRadioButtonClicked: {}
-                )
-                LemonadeUi.RadioButton(
-                    checked: false,
-                    onRadioButtonClicked: {}
-                )
-            }
-
-            // Disabled
-            HStack(spacing: 16) {
-                LemonadeUi.RadioButton(
-                    checked: true,
-                    onRadioButtonClicked: {},
-                    enabled: false
-                )
-                LemonadeUi.RadioButton(
-                    checked: false,
-                    onRadioButtonClicked: {},
-                    enabled: false
-                )
-            }
-
-            // Labeled radio buttons
-            VStack(alignment: .leading, spacing: 16) {
-                LemonadeUi.RadioButton(
-                    checked: true,
-                    onRadioButtonClicked: {},
-                    label: "Option 1",
-                    supportText: "This is the first option"
-                )
-
-                LemonadeUi.RadioButton(
-                    checked: false,
-                    onRadioButtonClicked: {},
-                    label: "Option 2",
-                    supportText: "This is the second option"
-                )
-
-                LemonadeUi.RadioButton(
-                    checked: false,
-                    onRadioButtonClicked: {},
-                    label: "Option 3 (Disabled)",
-                    supportText: "This option is disabled",
-                    enabled: false
-                )
-            }
+            unlabeledRow
+            disabledRow
+            labeledColumn
         }
         .padding()
         .previewLayout(.sizeThatFits)

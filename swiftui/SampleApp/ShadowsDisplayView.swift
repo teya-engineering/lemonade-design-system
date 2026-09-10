@@ -18,9 +18,8 @@ struct ShadowsDisplayView: View {
                     }
                 }
             }
-            // The largest token (.xlarge) draws 20pt below the swatch plus a 25pt blur,
-            // i.e. ~28pt outside the layout bounds. Anything less than that vertically
-            // and the ScrollView clips the bottom shadow of the last swatch.
+            // The vertical padding has to clear the largest shadow's offset and blur, or
+            // the ScrollView clips the bottom shadow of the last swatch.
             .padding(.horizontal, .space.spacing400)
             .padding(.vertical, .space.spacing800)
         }

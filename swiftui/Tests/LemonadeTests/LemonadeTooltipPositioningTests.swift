@@ -3,7 +3,7 @@ import XCTest
 
 final class LemonadeTooltipPositioningTests: XCTestCase {
 
-    /// A 393x852 iPhone container, matching the design frames.
+    /// A 393x852 iPhone container.
     private let container = CGSize(width: 393, height: 852)
 
     /// The store selector, in the top half of the screen.

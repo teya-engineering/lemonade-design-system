@@ -2,9 +2,6 @@ import SwiftUI
 import Lemonade
 
 struct SelectFieldDisplayView: View {
-    // A SelectField's whole job is to open a picker, so every enabled field here opens a
-    // real one and writes back to its own value. They previously all had `onClick: {}`,
-    // which left the screen looking interactive while nothing on it could change.
     private enum Picker: String, Identifiable {
         case basic, category, language, collection, required, country
 
@@ -43,83 +40,13 @@ struct SelectFieldDisplayView: View {
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing600) {
-                // Basic
-                sectionView(title: "Basic") {
-                    LemonadeUi.SelectField(
-                        onClick: { activePicker = .basic },
-                        selectedValue: basicValue,
-                        placeholderText: "Select an option"
-                    )
-                }
-
-                // With Label
-                sectionView(title: "With Label") {
-                    LemonadeUi.SelectField(
-                        onClick: { activePicker = .category },
-                        selectedValue: categoryValue,
-                        placeholderText: "Select a category",
-                        label: "Category"
-                    )
-                }
-
-                // Filled
-                sectionView(title: "Filled") {
-                    LemonadeUi.SelectField(
-                        onClick: { activePicker = .language },
-                        selectedValue: languageValue,
-                        label: "Language"
-                    )
-                }
-
-                // With Leading Icon
-                sectionView(title: "With Leading Icon") {
-                    LemonadeUi.SelectField(
-                        onClick: { activePicker = .collection },
-                        selectedValue: collectionValue,
-                        label: "Collection"
-                    ) {
-                        LemonadeUi.Icon(
-                            icon: .heart,
-                            contentDescription: nil,
-                            tint: LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-                }
-
-                // With Error — stays in the error state until something is picked, which is
-                // exactly what the error treatment is meant to show.
-                sectionView(title: "With Error") {
-                    LemonadeUi.SelectField(
-                        onClick: { activePicker = .required },
-                        selectedValue: requiredValue,
-                        placeholderText: "Select an option",
-                        label: "Required Field",
-                        errorMessage: "Please select an option",
-                        error: requiredValue == nil
-                    )
-                }
-
-                // With Support Text
-                sectionView(title: "With Support Text") {
-                    LemonadeUi.SelectField(
-                        onClick: { activePicker = .country },
-                        selectedValue: countryValue,
-                        placeholderText: "Select a country",
-                        label: "Country",
-                        optionalIndicator: "Optional",
-                        supportText: "Choose your country of residence"
-                    )
-                }
-
-                // Disabled
-                sectionView(title: "Disabled") {
-                    LemonadeUi.SelectField(
-                        onClick: {},
-                        selectedValue: "Locked value",
-                        label: "Disabled Field",
-                        enabled: false
-                    )
-                }
+                basicSection
+                withLabelSection
+                filledSection
+                withLeadingIconSection
+                withErrorSection
+                withSupportTextSection
+                disabledSection
             }
             .padding(LemonadeTheme.spaces.spacing400)
         }
@@ -138,6 +65,90 @@ struct SelectFieldDisplayView: View {
                 }
             }
             SwiftUI.Button("Cancel", role: .cancel) {}
+        }
+    }
+
+    private var basicSection: some View {
+        sectionView(title: "Basic") {
+            LemonadeUi.SelectField(
+                onClick: { activePicker = .basic },
+                selectedValue: basicValue,
+                placeholderText: "Select an option"
+            )
+        }
+    }
+
+    private var withLabelSection: some View {
+        sectionView(title: "With Label") {
+            LemonadeUi.SelectField(
+                onClick: { activePicker = .category },
+                selectedValue: categoryValue,
+                placeholderText: "Select a category",
+                label: "Category"
+            )
+        }
+    }
+
+    private var filledSection: some View {
+        sectionView(title: "Filled") {
+            LemonadeUi.SelectField(
+                onClick: { activePicker = .language },
+                selectedValue: languageValue,
+                label: "Language"
+            )
+        }
+    }
+
+    private var withLeadingIconSection: some View {
+        sectionView(title: "With Leading Icon") {
+            LemonadeUi.SelectField(
+                onClick: { activePicker = .collection },
+                selectedValue: collectionValue,
+                label: "Collection"
+            ) {
+                LemonadeUi.Icon(
+                    icon: .heart,
+                    contentDescription: nil,
+                    tint: LemonadeTheme.colors.content.contentSecondary
+                )
+            }
+        }
+    }
+
+    private var withErrorSection: some View {
+        sectionView(title: "With Error") {
+            LemonadeUi.SelectField(
+                onClick: { activePicker = .required },
+                selectedValue: requiredValue,
+                placeholderText: "Select an option",
+                label: "Required Field",
+                errorMessage: "Please select an option",
+                error: requiredValue == nil
+            )
+        }
+    }
+
+    private var withSupportTextSection: some View {
+        sectionView(title: "With Support Text") {
+            LemonadeUi.SelectField(
+                onClick: { activePicker = .country },
+                selectedValue: countryValue,
+                placeholderText: "Select a country",
+                label: "Country",
+                optionalIndicator: "Optional",
+                supportText: "Choose your country of residence"
+            )
+        }
+    }
+
+    private var disabledSection: some View {
+        sectionView(title: "Disabled") {
+            LemonadeUi.SelectField(
+                onClick: {},
+                selectedValue: "Locked value",
+                label: "Disabled Field",
+                enabled: false
+            )
         }
     }
 

@@ -79,9 +79,8 @@ struct TooltipDisplayView: View {
                 }
 
                 sectionView(title: "Anchored — beside the anchor") {
-                    // The anchors sit at opposite edges of the screen: a side placement needs a whole
-                    // tooltip's width of room beside its anchor, which is exactly what an edge-aligned
-                    // control has and a centred one does not.
+                    // A side placement needs a whole tooltip's width of room beside its anchor,
+                    // which only an edge-aligned control has.
                     HStack {
                         LemonadeUi.IconButton(
                             icon: .circleInfo,

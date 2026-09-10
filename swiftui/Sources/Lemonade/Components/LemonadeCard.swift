@@ -57,9 +57,9 @@ public enum LemonadeCardHeadingStyle {
         }
     }
 
-    /// The overline's own line box is only 16pt, so a header titled with just an overline would
-    /// sit tighter than one with a default heading. Holding the text box to a minimum of size500
-    /// evens that out. The default heading is already taller, so it keeps wrapping its own text.
+    /// An overline's line box is shorter than a default heading's, so a header titled with only
+    /// an overline would sit tighter. The minimum evens the two out; the default heading is
+    /// already taller and keeps wrapping its own text.
     var minTextBoxHeight: CGFloat? {
         switch self {
         case .default: return nil
@@ -96,7 +96,6 @@ public struct CardHeaderConfig<LeadingContent: View, TrailingContent: View> {
     }
 }
 
-// Convenience initializer without leading or trailing content
 extension CardHeaderConfig where LeadingContent == EmptyView, TrailingContent == EmptyView {
     public init(
         title: String,
@@ -113,7 +112,6 @@ extension CardHeaderConfig where LeadingContent == EmptyView, TrailingContent ==
     }
 }
 
-// Convenience initializer with only trailing content
 extension CardHeaderConfig where LeadingContent == EmptyView {
     public init(
         title: String,
@@ -131,7 +129,6 @@ extension CardHeaderConfig where LeadingContent == EmptyView {
     }
 }
 
-// Convenience initializer with only leading content
 extension CardHeaderConfig where TrailingContent == EmptyView {
     public init(
         title: String,
@@ -323,12 +320,10 @@ private struct LemonadeCardFooterAction: View {
 struct LemonadeCard_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 24) {
-            // Basic card
             LemonadeUi.Card(contentPadding: .medium) {
                 LemonadeUi.Text("This is card content")
             }
 
-            // Card with header
             LemonadeUi.Card(
                 contentPadding: .medium,
                 header: CardHeaderConfig(title: "Card Title")
@@ -336,7 +331,6 @@ struct LemonadeCard_Previews: PreviewProvider {
                 LemonadeUi.Text("Content with header")
             }
 
-            // Card with header and trailing slot
             LemonadeUi.Card(
                 contentPadding: .medium,
                 header: CardHeaderConfig(
@@ -349,7 +343,6 @@ struct LemonadeCard_Previews: PreviewProvider {
                 LemonadeUi.Text("Content with header and trailing tag")
             }
 
-            // Card with subtitle
             LemonadeUi.Card(
                 contentPadding: .medium,
                 header: CardHeaderConfig(
@@ -363,7 +356,6 @@ struct LemonadeCard_Previews: PreviewProvider {
                 LemonadeUi.Text("Content with subtitle")
             }
 
-            // Card with overline heading and subtitle
             LemonadeUi.Card(
                 contentPadding: .medium,
                 header: CardHeaderConfig(
@@ -378,7 +370,6 @@ struct LemonadeCard_Previews: PreviewProvider {
                 LemonadeUi.Text("Content with overline heading and subtitle")
             }
 
-            // Card with overline heading
             LemonadeUi.Card(
                 contentPadding: .medium,
                 header: CardHeaderConfig(
@@ -389,7 +380,6 @@ struct LemonadeCard_Previews: PreviewProvider {
                 LemonadeUi.Text("Content with overline heading")
             }
 
-            // Card with navigation indicator
             LemonadeUi.Card(
                 contentPadding: .medium,
                 header: CardHeaderConfig(
@@ -400,7 +390,6 @@ struct LemonadeCard_Previews: PreviewProvider {
                 LemonadeUi.Text("Card with navigation indicator")
             }
 
-            // Elevated background
             LemonadeUi.Card(
                 contentPadding: .medium,
                 background: .elevated

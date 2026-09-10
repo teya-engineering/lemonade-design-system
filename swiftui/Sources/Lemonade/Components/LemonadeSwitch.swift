@@ -141,59 +141,66 @@ private struct LemonadeSwitchWithLabel: View {
 struct LemonadeSwitch_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 24) {
-            // Unlabeled switches
-            HStack(spacing: 16) {
-                LemonadeUi.Switch(
-                    checked: true,
-                    onCheckedChange: { _ in }
-                )
-                LemonadeUi.Switch(
-                    checked: false,
-                    onCheckedChange: { _ in }
-                )
-            }
-
-            // Disabled
-            HStack(spacing: 16) {
-                LemonadeUi.Switch(
-                    checked: true,
-                    onCheckedChange: { _ in },
-                    enabled: false
-                )
-                LemonadeUi.Switch(
-                    checked: false,
-                    onCheckedChange: { _ in },
-                    enabled: false
-                )
-            }
-
-            // Labeled switches
-            VStack(alignment: .leading, spacing: 16) {
-                LemonadeUi.Switch(
-                    checked: true,
-                    onCheckedChange: { _ in },
-                    label: "Instant Settlements",
-                    supportText: "Enable instant settlement processing"
-                )
-
-                LemonadeUi.Switch(
-                    checked: false,
-                    onCheckedChange: { _ in },
-                    label: "Notifications",
-                    supportText: "Receive push notifications"
-                )
-
-                LemonadeUi.Switch(
-                    checked: true,
-                    onCheckedChange: { _ in },
-                    label: "Disabled Option",
-                    supportText: "This option cannot be changed",
-                    enabled: false
-                )
-            }
+            unlabeledSwitches
+            disabledSwitches
+            labeledSwitches
         }
         .padding()
         .previewLayout(.sizeThatFits)
+    }
+
+    private static var unlabeledSwitches: some View {
+        HStack(spacing: 16) {
+            LemonadeUi.Switch(
+                checked: true,
+                onCheckedChange: { _ in }
+            )
+            LemonadeUi.Switch(
+                checked: false,
+                onCheckedChange: { _ in }
+            )
+        }
+    }
+
+    private static var disabledSwitches: some View {
+        HStack(spacing: 16) {
+            LemonadeUi.Switch(
+                checked: true,
+                onCheckedChange: { _ in },
+                enabled: false
+            )
+            LemonadeUi.Switch(
+                checked: false,
+                onCheckedChange: { _ in },
+                enabled: false
+            )
+        }
+    }
+
+    private static var labeledSwitches: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            LemonadeUi.Switch(
+                checked: true,
+                onCheckedChange: { _ in },
+                label: "Instant Settlements",
+                supportText: "Enable instant settlement processing"
+            )
+
+            LemonadeUi.Switch(
+                checked: false,
+                onCheckedChange: { _ in },
+                label: "Notifications",
+                supportText: "Receive push notifications"
+            )
+
+            LemonadeUi.Switch(
+                checked: true,
+                onCheckedChange: { _ in },
+                label: "Disabled Option",
+                supportText: "This option cannot be changed",
+                enabled: false
+            )
+        }
     }
 }
 #endif

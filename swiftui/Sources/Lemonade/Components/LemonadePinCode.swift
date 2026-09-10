@@ -18,8 +18,8 @@ public enum LemonadePinCodeVariant {
 public extension LemonadeUi {
     /// A PIN code entry component rendering the entered characters as a row of boxes.
     ///
-    /// Each box mirrors the styling of ``LemonadeUi/TextField(input:onInputChanged:label:optionalIndicator:supportText:placeholderText:errorMessage:error:enabled:)``
-    /// — same border, focus ring, error and disabled states, font, and height.
+    /// Each box carries the same border, focus ring, error and disabled treatment as a text
+    /// field, at the same font and height.
     ///
     /// Input always comes from the device's system keyboard, surfaced through a hidden field
     /// overlaid on the boxes. The `variant` only selects which keyboard appears:
@@ -138,13 +138,12 @@ private struct LemonadePinCodeView: View {
             requestAutoFocusIfNeeded()
         }
         .onChange(of: value) { clampAndReport($0) }
-        // Mirror the KMP `LaunchedEffect(autoFocus, enabled)`: (re)request focus when the field
-        // becomes enabled (e.g. `submitting` clears) or `autoFocus` turns on, not just on appear.
+        // (Re)request focus when the field becomes enabled (e.g. `submitting` clears) or when
+        // `autoFocus` turns on, not just on appear.
         .onChange(of: submitting) { _ in requestAutoFocusIfNeeded() }
         .onChange(of: autoFocus) { _ in requestAutoFocusIfNeeded() }
     }
 
-    /// Focuses the hidden field when auto-focus is on and input is enabled, opening the keyboard.
     private func requestAutoFocusIfNeeded() {
         guard autoFocus, !submitting else { return }
         // Defer a frame so the field is in the hierarchy; setting @FocusState synchronously (e.g.
@@ -182,8 +181,7 @@ private struct PinCodeIndicator: View, Equatable {
     var body: some View {
         // Index the string once per render rather than re-walking it for every box.
         let characters = Array(value)
-        // Each box is `maxWidth: .infinity`, so the row stretches to fill the width it's given
-        // and the boxes split it evenly.
+        // The row stretches to fill the width it is given and the boxes split it evenly.
         HStack(spacing: LemonadeTheme.spaces.spacing200) {
             ForEach(0 ..< length, id: \.self) { index in
                 boxCell(character: index < characters.count ? characters[index] : nil, index: index)
@@ -237,13 +235,10 @@ private struct PinCodeHiddenField: View {
     let oneTimeCodeAutofill: Bool
     @FocusState.Binding var focused: Bool
 
-    // Local mirror of the entry that the field edits directly. Binding a plain String whose setter
-    // clamps to `length` leaves the characters typed past the limit sitting in UIKit's (invisible,
-    // `.clear`) field buffer with the cursor parked beyond them — because clamping to the unchanged
-    // `value` never pushes an update back to the field. Focus then drifts off the last box and
-    // backspace has to chew through those ghosts before it reaches a visible digit. Reassigning this
-    // @State to the clamped text forces SwiftUI to push it back into the field, dropping the overflow
-    // and collapsing the cursor to the end — mirroring the KMP `TextFieldValue` fix.
+    // Local mirror of the entry that the field edits directly. Clamping inside a binding to `value`
+    // leaves the overflow characters in the field's own buffer with the cursor parked beyond them,
+    // because an unchanged `value` pushes no update back. Reassigning this @State to the clamped
+    // text forces that push, dropping the overflow and collapsing the cursor to the end.
     @State private var text: String = ""
 
     var body: some View {

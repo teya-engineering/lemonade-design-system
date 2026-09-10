@@ -30,10 +30,9 @@ extension View {
     /// stays silent.
     ///
     /// Shared by every component that presents a selectable surface, so the feel of "this was
-    /// selected" is defined in one place. The Compose counterpart is `SelectionHapticEffect`.
+    /// selected" is defined in one place.
     ///
-    /// Relies on the iOS 17+ `sensoryFeedback` API with a graceful no-op fallback on older
-    /// versions, matching `ToastSensoryFeedbackModifier`.
+    /// Relies on the iOS 17+ `sensoryFeedback` API, with a no-op fallback on older versions.
     @ViewBuilder
     func selectionImpactFeedback(trigger: Bool) -> some View {
         if #available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *) {
@@ -49,8 +48,7 @@ extension View {
 extension View {
     /// Grows the view's layout frame to at least `minSize` on each side, centered on the
     /// content. Use on icon-only button labels whose rendered size is smaller than the
-    /// platform's minimum touch target, so the enclosing `Button`'s tappable area grows
-    /// with it instead of matching the icon's small visual bounds.
+    /// platform's minimum touch target, so the enclosing `Button`'s tappable area grows with it.
     ///
     /// ```swift
     /// Button(action: onClick) {

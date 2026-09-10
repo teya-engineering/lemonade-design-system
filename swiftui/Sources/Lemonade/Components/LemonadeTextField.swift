@@ -550,7 +550,8 @@ private struct LemonadeTextInputField: View {
             onReturnKey: onSubmit
         )
         .onChange(of: input) { newText in
-            // External text change (e.g. a programmatic reset): re-sync, cursor to end.
+            // A change arriving on the public String binding carries no cursor position, so the
+            // caret lands at the end of the new text.
             if newText != fieldValue.text {
                 fieldValue = LemonadeTextFieldValue(text: newText)
             }
@@ -615,50 +616,53 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
             TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
 
-            // Text field container
-            HStack(spacing: LemonadeTheme.spaces.spacing300) {
-                if let leadingContent = leadingContent {
-                    leadingContent()
-                }
-
-                ZStack(alignment: .leading) {
-                    if input.isEmpty, let placeholderText = placeholderText {
-                        LemonadeUi.Text(
-                            placeholderText,
-                            textStyle: LemonadeTypography.shared.bodyMediumRegular,
-                            color: LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-
-                    LemonadeTextInputField(
-                        input: $input,
-                        isSecure: isSecure,
-                        enabled: enabled,
-                        isFocused: $isFocused,
-                        onInputChanged: onInputChanged,
-                        onSubmit: onSubmit
-                    )
-                }
-
-                if let trailingContent = trailingContent {
-                    trailingContent()
-                }
-            }
-            .padding(.horizontal, TextFieldConstants.horizontalPadding)
-            .padding(.vertical, TextFieldConstants.verticalPadding)
-            .modifier(TextFieldContainerModifier(
-                backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
-                borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
-                enabled: enabled,
-                isFocused: isFocused,
-                cornerRadius: TextFieldConstants.cornerRadius,
-                isHovered: $isHovered
-            ))
+            fieldContainer
 
             TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }
         .animation(.easeInOut(duration: 0.15), value: isFocused)
         .animation(.easeInOut(duration: 0.15), value: error)
+    }
+
+    private var fieldContainer: some View {
+        HStack(spacing: LemonadeTheme.spaces.spacing300) {
+            if let leadingContent = leadingContent {
+                leadingContent()
+            }
+
+            ZStack(alignment: .leading) {
+                if input.isEmpty, let placeholderText = placeholderText {
+                    LemonadeUi.Text(
+                        placeholderText,
+                        textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                        color: LemonadeTheme.colors.content.contentSecondary
+                    )
+                }
+
+                LemonadeTextInputField(
+                    input: $input,
+                    isSecure: isSecure,
+                    enabled: enabled,
+                    isFocused: $isFocused,
+                    onInputChanged: onInputChanged,
+                    onSubmit: onSubmit
+                )
+            }
+
+            if let trailingContent = trailingContent {
+                trailingContent()
+            }
+        }
+        .padding(.horizontal, TextFieldConstants.horizontalPadding)
+        .padding(.vertical, TextFieldConstants.verticalPadding)
+        .modifier(TextFieldContainerModifier(
+            backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
+            borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
+            enabled: enabled,
+            isFocused: isFocused,
+            cornerRadius: TextFieldConstants.cornerRadius,
+            isHovered: $isHovered
+        ))
     }
 }
 
@@ -686,73 +690,71 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
             TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
 
-            // Text field container with selector
-            HStack(spacing: 0) {
-                // Selector button
-                SwiftUI.Button(action: leadingAction) {
-                    leadingContent()
-                        .padding(LemonadeTheme.spaces.spacing400)
-                }
-                .buttonStyle(PlainButtonStyle())
-                .disabled(!enabled)
-                .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-
-                // Divider
-                Rectangle()
-                    .fill(LemonadeTheme.colors.border.borderNeutralMedium)
-                    .frame(width: LemonadeTheme.borderWidth.base.border25)
-                    .frame(minHeight: TextFieldConstants.minHeight)
-
-                // Text input area
-                HStack(spacing: LemonadeTheme.spaces.spacing300) {
-                    ZStack(alignment: .leading) {
-                        if input.isEmpty, let placeholderText = placeholderText {
-                            LemonadeUi.Text(
-                                placeholderText,
-                                textStyle: LemonadeTypography.shared.bodyMediumRegular,
-                                color: LemonadeTheme.colors.content.contentSecondary
-                            )
-                        }
-
-                        LemonadeTextInputField(
-                            input: $input,
-                            isSecure: isSecure,
-                            enabled: enabled,
-                            isFocused: $isFocused,
-                            onInputChanged: onInputChanged,
-                            onSubmit: nil
-                        )
-                    }
-
-                    if let trailingContent = trailingContent {
-                        trailingContent()
-                    }
-                }
-                .padding(.horizontal, TextFieldConstants.horizontalPadding)
-                .padding(.vertical, TextFieldConstants.verticalPadding)
-                .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-            }
-            .modifier(TextFieldContainerModifier(
-                backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
-                borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
-                enabled: enabled,
-                isFocused: isFocused,
-                cornerRadius: TextFieldConstants.cornerRadius,
-                applyOpacity: false,
-                isHovered: $isHovered
-            ))
+            fieldContainer
 
             TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }
         .animation(.easeInOut(duration: 0.15), value: isFocused)
         .animation(.easeInOut(duration: 0.15), value: error)
     }
+
+    private var fieldContainer: some View {
+        HStack(spacing: 0) {
+            TextFieldSelectorButton(
+                leadingAction: leadingAction,
+                leadingContent: leadingContent,
+                enabled: enabled
+            )
+
+            TextFieldSelectorDivider()
+
+            textInputArea
+        }
+        .modifier(TextFieldContainerModifier(
+            backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
+            borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
+            enabled: enabled,
+            isFocused: isFocused,
+            cornerRadius: TextFieldConstants.cornerRadius,
+            applyOpacity: false,
+            isHovered: $isHovered
+        ))
+    }
+
+    private var textInputArea: some View {
+        HStack(spacing: LemonadeTheme.spaces.spacing300) {
+            ZStack(alignment: .leading) {
+                if input.isEmpty, let placeholderText = placeholderText {
+                    LemonadeUi.Text(
+                        placeholderText,
+                        textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                        color: LemonadeTheme.colors.content.contentSecondary
+                    )
+                }
+
+                LemonadeTextInputField(
+                    input: $input,
+                    isSecure: isSecure,
+                    enabled: enabled,
+                    isFocused: $isFocused,
+                    onInputChanged: onInputChanged,
+                    onSubmit: nil
+                )
+            }
+
+            if let trailingContent = trailingContent {
+                trailingContent()
+            }
+        }
+        .padding(.horizontal, TextFieldConstants.horizontalPadding)
+        .padding(.vertical, TextFieldConstants.verticalPadding)
+        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+    }
 }
 
 // MARK: - Internal TextField Value View (Platform-specific)
 
 #if canImport(UIKit)
-// iOS: Full cursor position control via UITextField
 private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent: View>: View {
     @Binding var value: LemonadeTextFieldValue
     let onValueChange: ((LemonadeTextFieldValue) -> Void)?
@@ -784,55 +786,58 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
             TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
 
-            // Text field container
-            HStack(spacing: LemonadeTheme.spaces.spacing300) {
-                if let leadingContent = leadingContent {
-                    leadingContent()
-                }
-
-                ZStack(alignment: .leading) {
-                    if value.text.isEmpty, let placeholderText = placeholderText {
-                        LemonadeUi.Text(
-                            placeholderText,
-                            textStyle: LemonadeTypography.shared.bodyMediumRegular,
-                            color: LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-
-                    LemonadeUITextField(
-                        value: $value,
-                        isFocused: $isFocused,
-                        isEnabled: enabled,
-                        textStyle: LemonadeTypography.shared.bodyMediumRegular,
-                        textColor: LemonadeTheme.colors.content.contentPrimary,
-                        keyboardType: resolvedKeyboardType,
-                        textContentType: textContentType,
-                        autocapitalizationType: autocapitalizationType,
-                        autocorrectionType: autocorrectionType,
-                        isSecure: isSecure,
-                        onValueChange: onValueChange
-                    )
-                }
-
-                if let trailingContent = trailingContent {
-                    trailingContent()
-                }
-            }
-            .padding(.horizontal, TextFieldConstants.horizontalPadding)
-            .padding(.vertical, TextFieldConstants.verticalPadding)
-            .modifier(TextFieldContainerModifier(
-                backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
-                borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
-                enabled: enabled,
-                isFocused: isFocused,
-                cornerRadius: TextFieldConstants.cornerRadius,
-                isHovered: $isHovered
-            ))
+            fieldContainer
 
             TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }
         .animation(.easeInOut(duration: 0.15), value: isFocused)
         .animation(.easeInOut(duration: 0.15), value: error)
+    }
+
+    private var fieldContainer: some View {
+        HStack(spacing: LemonadeTheme.spaces.spacing300) {
+            if let leadingContent = leadingContent {
+                leadingContent()
+            }
+
+            ZStack(alignment: .leading) {
+                if value.text.isEmpty, let placeholderText = placeholderText {
+                    LemonadeUi.Text(
+                        placeholderText,
+                        textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                        color: LemonadeTheme.colors.content.contentSecondary
+                    )
+                }
+
+                LemonadeUITextField(
+                    value: $value,
+                    isFocused: $isFocused,
+                    isEnabled: enabled,
+                    textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                    textColor: LemonadeTheme.colors.content.contentPrimary,
+                    keyboardType: resolvedKeyboardType,
+                    textContentType: textContentType,
+                    autocapitalizationType: autocapitalizationType,
+                    autocorrectionType: autocorrectionType,
+                    isSecure: isSecure,
+                    onValueChange: onValueChange
+                )
+            }
+
+            if let trailingContent = trailingContent {
+                trailingContent()
+            }
+        }
+        .padding(.horizontal, TextFieldConstants.horizontalPadding)
+        .padding(.vertical, TextFieldConstants.verticalPadding)
+        .modifier(TextFieldContainerModifier(
+            backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
+            borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
+            enabled: enabled,
+            isFocused: isFocused,
+            cornerRadius: TextFieldConstants.cornerRadius,
+            isHovered: $isHovered
+        ))
     }
 }
 #else
@@ -885,7 +890,6 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
 #if canImport(UIKit)
 import UIKit
 
-// iOS: Full cursor position control via UITextField
 private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, TrailingContent: View>: View {
     @Binding var value: LemonadeTextFieldValue
     let onValueChange: ((LemonadeTextFieldValue) -> Void)?
@@ -918,71 +922,70 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
             TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
 
-            // Text field container with selector
-            HStack(spacing: 0) {
-                // Selector button
-                SwiftUI.Button(action: leadingAction) {
-                    leadingContent()
-                        .padding(LemonadeTheme.spaces.spacing400)
-                }
-                .buttonStyle(PlainButtonStyle())
-                .disabled(!enabled)
-                .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-
-                // Divider
-                Rectangle()
-                    .fill(LemonadeTheme.colors.border.borderNeutralMedium)
-                    .frame(width: LemonadeTheme.borderWidth.base.border25)
-                    .frame(minHeight: TextFieldConstants.minHeight)
-
-                // Text input area
-                HStack(spacing: LemonadeTheme.spaces.spacing300) {
-                    ZStack(alignment: .leading) {
-                        if value.text.isEmpty, let placeholderText = placeholderText {
-                            LemonadeUi.Text(
-                                placeholderText,
-                                textStyle: LemonadeTypography.shared.bodyMediumRegular,
-                                color: LemonadeTheme.colors.content.contentSecondary
-                            )
-                        }
-
-                        LemonadeUITextField(
-                            value: $value,
-                            isFocused: $isFocused,
-                            isEnabled: enabled,
-                            textStyle: LemonadeTypography.shared.bodyMediumRegular,
-                            textColor: LemonadeTheme.colors.content.contentPrimary,
-                            keyboardType: resolvedKeyboardType,
-                            textContentType: textContentType,
-                            autocapitalizationType: autocapitalizationType,
-                            autocorrectionType: autocorrectionType,
-                            isSecure: isSecure,
-                            onValueChange: onValueChange
-                        )
-                    }
-
-                    if let trailingContent = trailingContent {
-                        trailingContent()
-                    }
-                }
-                .padding(.horizontal, TextFieldConstants.horizontalPadding)
-                .padding(.vertical, TextFieldConstants.verticalPadding)
-                .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-            }
-            .modifier(TextFieldContainerModifier(
-                backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
-                borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
-                enabled: enabled,
-                isFocused: isFocused,
-                cornerRadius: TextFieldConstants.cornerRadius,
-                applyOpacity: false,
-                isHovered: $isHovered
-            ))
+            fieldContainer
 
             TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }
         .animation(.easeInOut(duration: 0.15), value: isFocused)
         .animation(.easeInOut(duration: 0.15), value: error)
+    }
+
+    private var fieldContainer: some View {
+        HStack(spacing: 0) {
+            TextFieldSelectorButton(
+                leadingAction: leadingAction,
+                leadingContent: leadingContent,
+                enabled: enabled
+            )
+
+            TextFieldSelectorDivider()
+
+            textInputArea
+        }
+        .modifier(TextFieldContainerModifier(
+            backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
+            borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
+            enabled: enabled,
+            isFocused: isFocused,
+            cornerRadius: TextFieldConstants.cornerRadius,
+            applyOpacity: false,
+            isHovered: $isHovered
+        ))
+    }
+
+    private var textInputArea: some View {
+        HStack(spacing: LemonadeTheme.spaces.spacing300) {
+            ZStack(alignment: .leading) {
+                if value.text.isEmpty, let placeholderText = placeholderText {
+                    LemonadeUi.Text(
+                        placeholderText,
+                        textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                        color: LemonadeTheme.colors.content.contentSecondary
+                    )
+                }
+
+                LemonadeUITextField(
+                    value: $value,
+                    isFocused: $isFocused,
+                    isEnabled: enabled,
+                    textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                    textColor: LemonadeTheme.colors.content.contentPrimary,
+                    keyboardType: resolvedKeyboardType,
+                    textContentType: textContentType,
+                    autocapitalizationType: autocapitalizationType,
+                    autocorrectionType: autocorrectionType,
+                    isSecure: isSecure,
+                    onValueChange: onValueChange
+                )
+            }
+
+            if let trailingContent = trailingContent {
+                trailingContent()
+            }
+        }
+        .padding(.horizontal, TextFieldConstants.horizontalPadding)
+        .padding(.vertical, TextFieldConstants.verticalPadding)
+        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
     }
 }
 #else
@@ -1037,96 +1040,109 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
 struct LemonadeTextField_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 24) {
-            // Basic text field
-            StatefulPreviewWrapper("") { input in
-                LemonadeUi.TextField(
-                    input: input,
-                    label: "Label",
-                    optionalIndicator: "Optional",
-                    supportText: "Support text",
-                    placeholderText: "Enter text..."
-                )
-            }
-
-            // With error
-            StatefulPreviewWrapper("Invalid input") { input in
-                LemonadeUi.TextField(
-                    input: input,
-                    label: "Email",
-                    placeholderText: "Enter email",
-                    errorMessage: "Please enter a valid email",
-                    error: true
-                )
-            }
-
-            // Disabled
-            StatefulPreviewWrapper("Disabled text") { input in
-                LemonadeUi.TextField(
-                    input: input,
-                    label: "Disabled",
-                    enabled: false
-                )
-            }
-
-            // With leading/trailing content
-            StatefulPreviewWrapper("") { input in
-                LemonadeUi.TextField(
-                    input: input,
-                    label: "Password",
-                    placeholderText: "Enter password"
-                ) {
-                    LemonadeUi.Icon(
-                        icon: .padlock,
-                        contentDescription: nil,
-                        size: .medium,
-                        tint: LemonadeTheme.colors.content.contentSecondary
-                    )
-                } trailingContent: {
-                    LemonadeUi.Icon(
-                        icon: .eyeClosed,
-                        contentDescription: nil,
-                        size: .medium,
-                        tint: LemonadeTheme.colors.content.contentSecondary
-                    )
-                }
-            }
-
-            // Secure / password field (native masking)
-            StatefulPreviewWrapper("hunter2") { input in
-                LemonadeUi.TextField(
-                    input: input,
-                    label: "Password",
-                    placeholderText: "Enter password"
-                )
-                .secureTextEntry()
-            }
-
-            // TextField with selector
-            StatefulPreviewWrapper("") { input in
-                LemonadeUi.TextFieldWithSelector(
-                    input: input,
-                    leadingAction: { print("Selector tapped") },
-                    leadingContent: {
-                        HStack(spacing: LemonadeTheme.spaces.spacing200) {
-                            LemonadeUi.Text(
-                                "+1",
-                                textStyle: LemonadeTypography.shared.bodyMediumMedium
-                            )
-                            LemonadeUi.Icon(
-                                icon: .chevronDown,
-                                contentDescription: nil,
-                                size: .small,
-                                tint: LemonadeTheme.colors.content.contentPrimary
-                            )
-                        }
-                    },
-                    label: "Phone Number",
-                    placeholderText: "Enter phone number"
-                )
-            }
+            basicField
+            fieldWithError
+            disabledField
+            fieldWithLeadingAndTrailingContent
+            secureField
+            fieldWithSelector
         }
         .padding()
         .previewLayout(.sizeThatFits)
+    }
+
+    private static var basicField: some View {
+        StatefulPreviewWrapper("") { input in
+            LemonadeUi.TextField(
+                input: input,
+                label: "Label",
+                optionalIndicator: "Optional",
+                supportText: "Support text",
+                placeholderText: "Enter text..."
+            )
+        }
+    }
+
+    private static var fieldWithError: some View {
+        StatefulPreviewWrapper("Invalid input") { input in
+            LemonadeUi.TextField(
+                input: input,
+                label: "Email",
+                placeholderText: "Enter email",
+                errorMessage: "Please enter a valid email",
+                error: true
+            )
+        }
+    }
+
+    private static var disabledField: some View {
+        StatefulPreviewWrapper("Disabled text") { input in
+            LemonadeUi.TextField(
+                input: input,
+                label: "Disabled",
+                enabled: false
+            )
+        }
+    }
+
+    private static var fieldWithLeadingAndTrailingContent: some View {
+        StatefulPreviewWrapper("") { input in
+            LemonadeUi.TextField(
+                input: input,
+                label: "Password",
+                placeholderText: "Enter password"
+            ) {
+                LemonadeUi.Icon(
+                    icon: .padlock,
+                    contentDescription: nil,
+                    size: .medium,
+                    tint: LemonadeTheme.colors.content.contentSecondary
+                )
+            } trailingContent: {
+                LemonadeUi.Icon(
+                    icon: .eyeClosed,
+                    contentDescription: nil,
+                    size: .medium,
+                    tint: LemonadeTheme.colors.content.contentSecondary
+                )
+            }
+        }
+    }
+
+    private static var secureField: some View {
+        StatefulPreviewWrapper("hunter2") { input in
+            LemonadeUi.TextField(
+                input: input,
+                label: "Password",
+                placeholderText: "Enter password"
+            )
+            .secureTextEntry()
+        }
+    }
+
+    private static var fieldWithSelector: some View {
+        StatefulPreviewWrapper("") { input in
+            LemonadeUi.TextFieldWithSelector(
+                input: input,
+                leadingAction: { print("Selector tapped") },
+                leadingContent: {
+                    HStack(spacing: LemonadeTheme.spaces.spacing200) {
+                        LemonadeUi.Text(
+                            "+1",
+                            textStyle: LemonadeTypography.shared.bodyMediumMedium
+                        )
+                        LemonadeUi.Icon(
+                            icon: .chevronDown,
+                            contentDescription: nil,
+                            size: .small,
+                            tint: LemonadeTheme.colors.content.contentPrimary
+                        )
+                    }
+                },
+                label: "Phone Number",
+                placeholderText: "Enter phone number"
+            )
+        }
     }
 }
 

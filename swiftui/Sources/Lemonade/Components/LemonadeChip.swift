@@ -308,19 +308,16 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
 struct LemonadeChip_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 16) {
-            // Basic chips
             HStack(spacing: 8) {
                 LemonadeUi.Chip(label: "Unselected", selected: false)
                 LemonadeUi.Chip(label: "Selected", selected: true)
             }
             
-            // With counter
             HStack(spacing: 8) {
                 LemonadeUi.Chip(label: "Label", selected: false, counter: 5)
                 LemonadeUi.Chip(label: "Label", selected: true, counter: 12)
             }
             
-            // With icons
             HStack(spacing: 8) {
                 LemonadeUi.Chip(
                     label: "Leading",
@@ -334,7 +331,6 @@ struct LemonadeChip_Previews: PreviewProvider {
                 )
             }
             
-            // With both icons
             LemonadeUi.Chip(
                 label: "Both Icons",
                 selected: false,
@@ -342,13 +338,11 @@ struct LemonadeChip_Previews: PreviewProvider {
                 trailingIcon: .circleX
             )
             
-            // Disabled
             HStack(spacing: 8) {
                 LemonadeUi.Chip(label: "Disabled", selected: false, enabled: false)
                 LemonadeUi.Chip(label: "Disabled", selected: true, enabled: false)
             }
 
-            // Error
             HStack(spacing: 8) {
                 LemonadeUi.Chip(label: "Error", selected: false, error: true)
                 LemonadeUi.Chip(label: "Error Disabled", selected: false, enabled: false, error: true)

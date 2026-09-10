@@ -19,7 +19,6 @@ public extension View {
     /// Renders `LemonadeUi.Button` views in this hierarchy with a pill (full
     /// corner radius) shape. Has no effect on other views.
     ///
-    /// Mirrors the Compose API `Modifier.clip(Shape.Full)` available on Android.
     /// Pass `false` to opt back into the per-size default radius after the
     /// modifier has been applied higher up the hierarchy.
     ///

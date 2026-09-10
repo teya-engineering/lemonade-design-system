@@ -1,7 +1,6 @@
 import Foundation
 
 /// Represents a text field value with cursor position control.
-/// This mirrors Compose's TextFieldValue for feature parity with KMP.
 ///
 /// ## Usage
 /// ```swift
@@ -19,9 +18,9 @@ import Foundation
 /// )
 /// ```
 ///
-/// - Note: `cursorPosition` is measured in UTF-16 code units for compatibility with
-///   UIKit (iOS) and Kotlin/Compose (Android). For most ASCII text, this equals character count.
-///   For emoji and combined characters, use `text.utf16.count` to calculate positions.
+/// - Note: `cursorPosition` is measured in UTF-16 code units, the same units `NSRange` and
+///   `UITextPosition` use. For most ASCII text this equals the character count; for emoji and
+///   combined characters, use `text.utf16.count` to calculate positions.
 public struct LemonadeTextFieldValue: Equatable {
     /// The text content of the text field
     public var text: String

@@ -2,11 +2,9 @@ import SwiftUI
 import Lemonade
 
 struct SkeletonDisplayView: View {
-    /// Every skeleton kicks off a `repeatForever` shimmer from its own `onAppear`, and the
-    /// library gives the caller no handle to stop it. Removing the skeletons from the
-    /// hierarchy when the screen goes away is the only teardown available here — without
-    /// it the fourteen shimmers on this screen keep animating, and keep invalidating,
-    /// while the screen is buried in the navigation stack.
+    /// Every skeleton starts a `repeatForever` shimmer from its own `onAppear` and offers no
+    /// handle to stop it, so dropping them from the hierarchy is the only way to stop the
+    /// animations while this screen is buried in the navigation stack.
     @State private var isOnScreen = false
 
     var body: some View {

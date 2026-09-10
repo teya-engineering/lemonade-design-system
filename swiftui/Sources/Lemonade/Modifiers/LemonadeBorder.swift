@@ -29,8 +29,7 @@ public struct ShadowBorderModifier<S: Shape>: ViewModifier {
 public extension View {
     /// Applies a shadow-based border to the view.
     ///
-    /// This modifier creates a border effect using an overlay stroke,
-    /// matching the KMP shadowBorder functionality.
+    /// The border is drawn as an overlay stroke, so it does not affect layout.
     ///
     /// ## Usage
     /// ```swift
@@ -115,7 +114,6 @@ public extension View {
 struct LemonadeBorder_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 24) {
-            // Rounded rectangle border
             SwiftUI.Text("Rounded Rectangle")
                 .padding()
                 .shadowBorder(
@@ -124,7 +122,6 @@ struct LemonadeBorder_Previews: PreviewProvider {
                     cornerRadius: 8
                 )
 
-            // Capsule border
             SwiftUI.Text("Capsule")
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
@@ -133,7 +130,6 @@ struct LemonadeBorder_Previews: PreviewProvider {
                     color: LemonadeTheme.colors.border.borderSelected
                 )
 
-            // Circle border
             SwiftUI.Text("C")
                 .frame(width: 40, height: 40)
                 .shadowBorderCircle(
@@ -141,7 +137,6 @@ struct LemonadeBorder_Previews: PreviewProvider {
                     color: LemonadeTheme.colors.border.borderBrand
                 )
 
-            // Custom shape
             SwiftUI.Text("Custom Shape")
                 .padding()
                 .shadowBorder(

@@ -5,8 +5,8 @@ struct ChipDisplayView: View {
     @State private var selectedChips: Set<String> = ["Option 1"]
 
     var body: some View {
-        // No NavigationStack here: this screen is pushed onto HomeView's stack, and
-        // nesting a second stack renders a second nav bar with the wrong insets.
+        // This view is presented inside a navigation stack the caller owns; adding one here
+        // would draw a second nav bar with the wrong insets.
         ScrollView(.vertical) {
             LazyVStack(alignment: .leading, spacing: .space.spacing800) {
                 statesSection
@@ -155,10 +155,8 @@ struct ChipDisplayView: View {
         }
     }
 
-    // Error styling takes precedence over `selected`, so wiring these up would produce no
-    // visible change on tap. They stay fixed specimens with no `onChipClicked` — exactly
-    // like the States / Counter / Icons galleries above — so the chip renders as a swatch
-    // with no press affordance instead of a button that silently does nothing.
+    // Error styling wins over `selected`, so these chips carry no tap handler: a tap would
+    // change the state without changing anything on screen.
     private var errorSection: some View {
         sectionView(title: "Error") {
             VStack(alignment: .leading, spacing: 12) {

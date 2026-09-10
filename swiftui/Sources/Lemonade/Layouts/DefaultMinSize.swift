@@ -10,8 +10,8 @@ struct DefaultMinSize: Layout {
 
         let idealSize = child.sizeThatFits(.unspecified)
 
-        // childSize is only needed in the tight-container branch (proposed < minimum).
-        // Avoid the second layout pass in the common case.
+        // A second layout pass is expensive, and `childSize` is read only in the tight-container
+        // branch.
         let inTightContainer = (proposal.width ?? .infinity) < minWidth
                             || (proposal.height ?? .infinity) < minHeight
         let childSize = inTightContainer ? child.sizeThatFits(proposal) : .zero

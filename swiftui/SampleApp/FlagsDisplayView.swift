@@ -3,10 +3,8 @@ import Lemonade
 
 /// A country flag with its display strings and search haystack resolved up front.
 ///
-/// `LemonadeCountryFlag.countryCode` / `.countryName` are *computed* - they
-/// `split`, `capitalized` and `joined` the raw value on every access. Doing that
-/// for 265 cases on every keystroke (and again per visible cell) is pure waste,
-/// so it is done once per process here.
+/// The code, name and haystack are derived values, and resolving them once here keeps that
+/// work off every keystroke and off every visible cell.
 private struct FlagEntry: Identifiable {
     let flag: LemonadeCountryFlag
     let code: String
@@ -82,7 +80,6 @@ struct FlagsDisplayView: View {
     }
 
     var body: some View {
-        // Evaluated once per body pass and reused by both the grid and the title.
         let flags = filteredFlags(matching: searchText)
 
         return VStack(spacing: 0) {

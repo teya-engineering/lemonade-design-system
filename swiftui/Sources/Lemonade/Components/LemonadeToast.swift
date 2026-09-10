@@ -106,7 +106,6 @@ private struct LemonadeToastView: View {
         case .success, .error:
             return voice.icon
         case .loading:
-            // The leading element is a spinner, not a static icon.
             return nil
         }
     }

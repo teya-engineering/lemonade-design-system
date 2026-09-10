@@ -121,6 +121,9 @@ private let centerIndex = totalDays / 2
 /// recognition margin.
 private let scrollIntentAbandonNanos: UInt64 = 600_000_000
 
+/// Settle delay after the initial scroll jump, so the jump itself does not fire a haptic.
+private let initialScrollSettleNanos: UInt64 = 50_000_000
+
 /// Estimated height of the weekday label text (bodyXSmallOverline metrics).
 private let calendarWeekdayLabelHeight: CGFloat = 16
 
@@ -178,8 +181,7 @@ private struct LemonadeInlineCalendarView<TrailingContent: View>: View {
     /// suppresses its scroll-driven haptic (the tap already fired one).
     @State private var pendingSelectionMonthChange: DateComponents?
 
-    /// Pinned at view init so the index space stays stable across midnight,
-    /// matching the Compose reference's `remember { today }`.
+    /// Pinned at view init so the index space stays stable across midnight.
     /// Re-derived from the environment calendar in the initial scroll `.task`.
     @State private var anchorDate: Date = Date()
 
@@ -204,7 +206,7 @@ private struct LemonadeInlineCalendarView<TrailingContent: View>: View {
     // MARK: - Index-Date Mapping
 
     /// Clipped to the `minDate`/`maxDate` window with one viewport of disabled
-    /// padding (matches Compose `rangePadding = visibleCells`).
+    /// padding on each side.
     private var indexRange: Range<Int> {
         let padding = Int(visibleCellCount)
         var lower = 0
@@ -352,7 +354,6 @@ private struct LemonadeInlineCalendarView<TrailingContent: View>: View {
                 return
             }
 
-            // Only fire callback after initial scroll is done
             onMonthDisplayed?(newMonth)
 
             let shouldSuppressMonthHaptic = pendingSelectionMonthChange
@@ -372,8 +373,8 @@ private struct LemonadeInlineCalendarView<TrailingContent: View>: View {
 
             lastObservedHeaderMonth = newMonth
         }
-        // Abandon stale programmatic scroll intent if the user drags away
-        // before the animation reaches the target.
+        // A drag can pull away before the animation reaches the target, leaving the
+        // intent stale.
         .task(id: programmaticScrollTarget?.id) {
             guard programmaticScrollTarget != nil else { return }
             do {
@@ -410,16 +411,14 @@ private struct LemonadeInlineCalendarView<TrailingContent: View>: View {
                 observedScrollPositionIndex = initialIdx
                 offsetCalibration = nil
                 proxy.scrollTo(initialIdx, anchor: .center)
-                // Let layout settle so the initial jump doesn't fire a spurious haptic.
-                try? await Task.sleep(nanoseconds: 50_000_000)
+                try? await Task.sleep(nanoseconds: initialScrollSettleNanos)
                 didInitialScroll = true
             }
             .onChange(of: observedScrollPositionIndex) { newIndex in
                 guard let newIndex else { return }
                 let clamped = clampedIndex(newIndex)
 
-                // Only update visibleCenterIndex on month boundaries during free drag;
-                // per-day updates cause unnecessary churn and hurt scroll FPS.
+                // Updating on every day costs scroll FPS during a free drag.
                 let currentMonth = calendar.dateComponents([.year, .month], from: indexToDate(visibleCenterIndex))
                 let candidateMonth = calendar.dateComponents([.year, .month], from: indexToDate(clamped))
                 let isProgrammatic = programmaticScrollTarget != nil
@@ -449,8 +448,8 @@ private struct LemonadeInlineCalendarView<TrailingContent: View>: View {
         }
     }
 
-    /// Maps a measured content offset back to a virtual index and updates
-    /// `visibleCenterIndex`. Used by the legacy iOS 15-16 path.
+    /// Maps a measured content offset back to a virtual index for the iOS 15-16 path,
+    /// which has no `.scrollPosition` to report the centered cell.
     private func updateVisibleCenterFromOffset(contentOffset: CGFloat, cellWidth: CGFloat) {
         guard cellWidth > 0 else { return }
 
@@ -518,8 +517,7 @@ private struct LemonadeInlineCalendarView<TrailingContent: View>: View {
                 visibleCenterIndex = initialIdx
                 offsetCalibration = nil
                 proxy.scrollTo(initialIdx, anchor: .center)
-                // Let layout settle so the initial jump doesn't fire a spurious haptic.
-                try? await Task.sleep(nanoseconds: 50_000_000)
+                try? await Task.sleep(nanoseconds: initialScrollSettleNanos)
                 didInitialScroll = true
             }
             .onChange(of: state.selectedDate) { newDate in

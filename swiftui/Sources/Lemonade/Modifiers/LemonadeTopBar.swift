@@ -6,7 +6,6 @@ import CoreImage.CIFilterBuiltins
 // MARK: - TopBarAction
 
 /// The type of navigation action displayed in the leading slot of a top bar.
-/// Mirrors the KMP `TopBarAction` enum.
 ///
 /// - Note: On iOS, `.back` defers to the native `NavigationStack` back button so the
 ///   system swipe-to-go-back gesture keeps working. The `NavigationAction.onAction`
@@ -20,7 +19,6 @@ public enum TopBarAction {
 // MARK: - NavigationAction
 
 /// Configuration for the navigation action in the leading slot of a top bar.
-/// Mirrors the KMP `NavigationAction` data class.
 public struct NavigationAction {
     public let action: TopBarAction
     let onAction: () -> Void
@@ -153,7 +151,8 @@ private struct ScrollOffsetObserver: UIViewRepresentable {
         override func didMoveToWindow() {
             super.didMoveToWindow()
             guard observation == nil, window != nil else { return }
-            // Delay slightly to let SwiftUI finish building the view hierarchy
+            // The scroll view is not in the hierarchy yet on this pass; the delay lets SwiftUI
+            // finish building it.
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
                 self?.attachToScrollView()
             }
@@ -161,8 +160,8 @@ private struct ScrollOffsetObserver: UIViewRepresentable {
 
         private func attachToScrollView() {
             guard observation == nil else { return }
-            // Walk up ancestors; at each level search that subtree for a UIScrollView.
-            // This finds sibling scroll views that aren't direct ancestors.
+            // Searching each ancestor's whole subtree, rather than the ancestor chain alone, is
+            // what finds a scroll view that is a sibling instead of a direct ancestor.
             var current: UIView? = superview
             while let ancestor = current {
                 if let scrollView = findScrollView(in: ancestor) {
@@ -224,7 +223,8 @@ private class VariableBlurUIView: UIVisualEffectView {
     private static let ciContext = CIContext()
 
     init(maxBlurRadius: CGFloat, direction: VariableBlurDirection) {
-        // Falls back to standard .regular blur if the private API is unavailable
+        // Every guard below returns early when the private API is missing, leaving this plain
+        // `.regular` blur in place.
         super.init(effect: UIBlurEffect(style: .regular))
 
         let clsName = String("retliFAC".reversed())
@@ -254,8 +254,7 @@ private class VariableBlurUIView: UIVisualEffectView {
         backdropLayer.setValue(window.traitCollection.displayScale, forKey: "scale")
     }
 
-    // Intentionally empty — suppresses crash in super on trait changes.
-    // Deprecated in iOS 17; the blur filter does not need trait-driven updates.
+    // Never call super here: it crashes on a trait change.
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {}
 
     private static func makeGradientImage(
@@ -327,20 +326,27 @@ private struct NativeSearchBar: UIViewRepresentable {
 
         func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
             searchBar.setShowsCancelButton(true, animated: true)
-            // Remove custom background — lets UIKit render default glass-like style
-            UIView.animate(withDuration: 0.2) {
-                searchBar.searchTextField.backgroundColor = nil
-            }
+            restoreSystemFieldBackground(on: searchBar)
             onFocusChange(true)
         }
 
         func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
             searchBar.setShowsCancelButton(false, animated: true)
-            // Restore gray background to match native .searchable unfocused
+            applyUnfocusedFieldBackground(on: searchBar)
+            onFocusChange(false)
+        }
+
+        /// Clearing the colour is what lets UIKit draw the field's own focused style.
+        private func restoreSystemFieldBackground(on searchBar: UISearchBar) {
+            UIView.animate(withDuration: 0.2) {
+                searchBar.searchTextField.backgroundColor = nil
+            }
+        }
+
+        private func applyUnfocusedFieldBackground(on searchBar: UISearchBar) {
             UIView.animate(withDuration: 0.2) {
                 searchBar.searchTextField.backgroundColor = UIColor.systemGray6
             }
-            onFocusChange(false)
         }
 
         func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -395,8 +401,8 @@ private extension View {
 
 // MARK: - Compact Large TopBar Header
 
-/// Custom header row matching KMP `CompactLargeTopBarHeading` — title left, trailing slot right,
-/// on the same line. No navigation bar involvement.
+/// Custom header row — title left, trailing slot right, on the same line. No navigation bar
+/// involvement.
 private struct CompactLargeHeader<TrailingContent: View>: View {
     let label: String
     let subheading: String?
@@ -438,7 +444,6 @@ private struct CompactLargeHeader<TrailingContent: View>: View {
 
 /// Shared layout for compact-large variants: ZStack with scrollable content,
 /// progressive blur layer, and a measured header slot.
-///
 private struct CompactLargeBlurLayout<HeaderContent: View>: View {
     let scrollableContent: AnyView
     let onScrollOffsetChange: ((CGFloat) -> Void)?
@@ -631,10 +636,9 @@ private extension View {
     /// Applies the navigation title and, on iOS 26, the native `.navigationSubtitle`
     /// (preserves the large-title morph). On iOS < 26 a non-nil subheading switches
     /// to inline display mode so `lemonadeFallbackPrincipalTitle` can render a
-    /// stacked `title` + `subheading` in the principal toolbar slot — matching the
-    /// platform convention (Mail, Messages, Settings) for pre-iOS 26 two-line nav
-    /// bars at the cost of losing the large-title morph. The native `.navigationTitle`
-    /// is kept (not emptied) so pushed screens still inherit a back button label.
+    /// stacked `title` + `subheading` in the principal toolbar slot, at the cost of
+    /// losing the large-title morph. The native `.navigationTitle` is kept (not
+    /// emptied) so pushed screens still inherit a back button label.
     @ViewBuilder
     func lemonadeNavigationTitle(title: String, subheading: String?) -> some View {
         #if compiler(>=6.2)
@@ -672,10 +676,8 @@ private extension View {
 
 private extension View {
     /// iOS < 26 fallback: attaches a principal toolbar item that renders
-    /// `label` + `subheading` stacked vertically (matches the Mail / Messages
-    /// pattern used before `.navigationSubtitle` existed). No-op on iOS 26,
-    /// where the native API handles the subheading in both expanded and
-    /// collapsed states.
+    /// `label` + `subheading` stacked vertically. No-op on iOS 26, where the
+    /// native API handles the subheading in both expanded and collapsed states.
     @ViewBuilder
     func lemonadeFallbackPrincipalTitle(label: String, subheading: String?) -> some View {
         #if compiler(>=6.2)
@@ -827,7 +829,7 @@ private struct CompactLargeTopBarModifier<TrailingContent: View, BottomContent: 
 /// and an integrated search field. Content scrolls behind the header with blur.
 ///
 /// When the search field gains focus, the title animates out (shrinks vertically)
-/// and only the search field remains — matching KMP behavior.
+/// and only the search field remains.
 private struct CompactLargeSearchTopBarModifier<TrailingContent: View>: ViewModifier {
     let label: String
     let subheading: String?
@@ -840,7 +842,7 @@ private struct CompactLargeSearchTopBarModifier<TrailingContent: View>: ViewModi
     @State private var scrollOffset: CGFloat = 0
     @State private var initialOffset: CGFloat?
 
-    /// 0 (fully expanded) to 1 (fully collapsed)
+    /// How far the search bar has collapsed, from 0 (fully expanded) to 1 (fully collapsed).
     private var collapseProgress: CGFloat {
         guard !isSearchFocused else { return 0 }
         let delta = scrollOffset - (initialOffset ?? 0)
@@ -890,7 +892,7 @@ private struct CompactLargeSearchTopBarModifier<TrailingContent: View>: ViewModi
 
 public extension View {
 
-    // MARK: 1. Basic TopBar
+    // MARK: Basic TopBar
 
     /// Applies a Lemonade-styled navigation bar with a collapsible large title.
     ///
@@ -963,7 +965,7 @@ public extension View {
         ))
     }
 
-    // MARK: 2. Search TopBar
+    // MARK: Search TopBar
 
     /// Applies a Lemonade-styled navigation bar with an integrated search field.
     ///
@@ -1048,14 +1050,12 @@ public extension View {
         ))
     }
 
-    // MARK: 3. Compact Large TopBar
+    // MARK: Compact Large TopBar
 
     /// Applies a Lemonade-styled large left-aligned title bar with optional subheading.
     ///
     /// Designed for top-level screens without navigation actions.
     /// When `bottomSlot` is provided, the title scrolls away and the slot becomes sticky.
-    ///
-    /// Mirrors KMP `LemonadeUi.TopBar(label, subheading, trailingSlot, bottomSlot)`.
     ///
     /// ## Usage
     /// ```swift
@@ -1106,13 +1106,11 @@ public extension View {
         }
     }
 
-    // MARK: 4. Compact Large Search TopBar
+    // MARK: Compact Large Search TopBar
 
     /// Applies a Lemonade-styled large title bar with subheading and search.
     ///
     /// The title stays fixed while the search field collapses on scroll.
-    ///
-    /// Mirrors KMP `LemonadeUi.TopBar(label, subheading, searchInput, onSearchChanged, trailingSlot)`.
     ///
     /// ## Usage
     /// ```swift

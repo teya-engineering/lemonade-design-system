@@ -454,8 +454,8 @@ struct LemonadeTooltipView: View {
                     )
             }
         }
-        // Matches the `isolate` on Figma's tooltip root: without its own compositing group the close
-        // button's blend would reach through to whatever is behind the tooltip.
+        // Without its own compositing group the close button's blend reaches through to whatever is
+        // behind the tooltip.
         .compositingGroup()
     }
 
@@ -489,9 +489,9 @@ struct LemonadeTooltipView: View {
     ///
     /// `lemonadeShadow` builds its shadow by masking a solid colour with the view it is applied to,
     /// so applying it to the tooltip scaled the shadow by the surface's ~74% alpha and roughly
-    /// halved it — measured at 4.7% against Compose's 10% at the same edge. Casting it from an
-    /// opaque copy of the shape keeps the token at full strength, and punching that shape back out
-    /// stops the shadow from tinting the translucent fill sitting in front of it.
+    /// halved it. Casting it from an opaque copy of the shape keeps the token at full strength, and
+    /// punching that shape back out stops the shadow from tinting the translucent fill sitting in
+    /// front of it.
     private var shadowLayer: some View {
         let shape = LemonadeTooltipShape(
             indicatorPlacement: indicatorPlacement,
@@ -666,8 +666,7 @@ private struct LemonadeTooltipShape: Shape {
     /// The triangle is appended as a second sub-path and unioned by the non-zero fill rule. That works
     /// because the canonical path is wound the same way as CoreGraphics winds `addRoundedRect`, and a
     /// rotation preserves winding, so every edge joins cleanly; reverse either and they cancel where
-    /// they overlap, leaving a hairline hole across the join. Compose needs an explicit boolean union
-    /// for exactly that reason — Skia winds its round rect the other way.
+    /// they overlap, leaving a hairline hole across the join.
     private func canonicalIndicatorPath() -> Path {
         let halfBase = LemonadeTooltipMetrics.indicatorBaseWidth / 2
         let apexY = -LemonadeTooltipMetrics.indicatorApexHeight

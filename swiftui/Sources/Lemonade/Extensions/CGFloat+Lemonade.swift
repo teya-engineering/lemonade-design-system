@@ -79,7 +79,6 @@ public struct LemonadeRadiusShorthand {
 public struct LemonadeBorderWidthShorthand {
     private let tokens = LemonadeBorderWidthTokens()
 
-    // Base border widths
     public var border0: CGFloat { tokens.base.border0 }
     public var border25: CGFloat { tokens.base.border25 }
     public var border40: CGFloat { tokens.base.border40 }
@@ -87,7 +86,6 @@ public struct LemonadeBorderWidthShorthand {
     public var border75: CGFloat { tokens.base.border75 }
     public var border100: CGFloat { tokens.base.border100 }
 
-    // State border widths
     public var focusRing: CGFloat { tokens.state.focusRing }
     public var borderSelected: CGFloat { tokens.state.borderSelected }
 }

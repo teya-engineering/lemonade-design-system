@@ -42,8 +42,6 @@ private struct SizeItem: Identifiable {
         value == value.rounded() ? "\(Int(value))pt" : String(format: "%gpt", Double(value))
     }
 
-    /// Reads the names and values straight off the shipped token object, so the
-    /// gallery always lists every `LemonadeSizes` case, not a hand-picked subset.
     static func items(reflecting tokens: Any) -> [SizeItem] {
         Mirror(reflecting: tokens).children.compactMap { child in
             guard let name = child.label, let value = child.value as? CGFloat else { return nil }

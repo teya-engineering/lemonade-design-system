@@ -88,11 +88,10 @@ private struct LemonadeTabsView: View {
     @State private var didInitialScroll = false
     @State private var contentWrapperWidths: [Int: CGFloat] = [:]
 
-    // Mirrors KMP's `scrollState.canScrollForward`: the fade only applies when
-    // the strip is scrollable AND there is still content beyond the trailing
-    // edge. `scrollOffset` is observed live from the underlying UIScrollView
-    // via `ScrollViewOffsetObserver`, since SwiftUI's ScrollView doesn't
-    // expose offset directly on the iOS 15 deployment target.
+    // The fade applies only when the strip is scrollable and there is still content past the
+    // trailing edge. `scrollOffset` is observed live from the underlying UIScrollView via
+    // `ScrollViewOffsetObserver`, since SwiftUI's ScrollView doesn't expose offset directly on the
+    // iOS 15 deployment target.
     private var showTrailingFade: Bool {
         let scrollThreshold: CGFloat = 1
         guard contentWidth > containerWidth, containerWidth > 0 else { return false }
@@ -424,56 +423,65 @@ private struct ScrollViewOffsetObserver: UIViewRepresentable {
 struct LemonadeTabs_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: LemonadeTheme.spaces.spacing800) {
-            // Basic
-            LemonadeUi.Tabs(
-                tabs: [
-                    LemonadeTabItem(label: "Overview"),
-                    LemonadeTabItem(label: "Details"),
-                    LemonadeTabItem(label: "Reviews")
-                ],
-                selectedIndex: 1,
-                onTabSelected: { _ in }
-            )
-
-            // With icons
-            LemonadeUi.Tabs(
-                tabs: [
-                    LemonadeTabItem(label: "Home", icon: .home),
-                    LemonadeTabItem(label: "Search", icon: .search),
-                    LemonadeTabItem(label: "Profile", icon: .user)
-                ],
-                selectedIndex: 0,
-                onTabSelected: { _ in }
-            )
-
-            // Many tabs (scrollable)
-            LemonadeUi.Tabs(
-                tabs: [
-                    LemonadeTabItem(label: "Dashboard"),
-                    LemonadeTabItem(label: "Analytics"),
-                    LemonadeTabItem(label: "Reports"),
-                    LemonadeTabItem(label: "Settings"),
-                    LemonadeTabItem(label: "Users"),
-                    LemonadeTabItem(label: "Activity")
-                ],
-                selectedIndex: 2,
-                onTabSelected: { _ in }
-            )
-
-            // Stretch mode, without the bottom divider
-            LemonadeUi.Tabs(
-                tabs: [
-                    LemonadeTabItem(label: "Tab A"),
-                    LemonadeTabItem(label: "Tab B"),
-                    LemonadeTabItem(label: "Tab C")
-                ],
-                selectedIndex: 0,
-                onTabSelected: { _ in },
-                itemsSize: .stretch,
-                showDivider: false
-            )
+            basicTabs
+            tabsWithIcons
+            scrollableTabs
+            stretchedTabsWithoutDivider
         }
         .previewLayout(.sizeThatFits)
+    }
+
+    private static var basicTabs: some View {
+        LemonadeUi.Tabs(
+            tabs: [
+                LemonadeTabItem(label: "Overview"),
+                LemonadeTabItem(label: "Details"),
+                LemonadeTabItem(label: "Reviews")
+            ],
+            selectedIndex: 1,
+            onTabSelected: { _ in }
+        )
+    }
+
+    private static var tabsWithIcons: some View {
+        LemonadeUi.Tabs(
+            tabs: [
+                LemonadeTabItem(label: "Home", icon: .home),
+                LemonadeTabItem(label: "Search", icon: .search),
+                LemonadeTabItem(label: "Profile", icon: .user)
+            ],
+            selectedIndex: 0,
+            onTabSelected: { _ in }
+        )
+    }
+
+    private static var scrollableTabs: some View {
+        LemonadeUi.Tabs(
+            tabs: [
+                LemonadeTabItem(label: "Dashboard"),
+                LemonadeTabItem(label: "Analytics"),
+                LemonadeTabItem(label: "Reports"),
+                LemonadeTabItem(label: "Settings"),
+                LemonadeTabItem(label: "Users"),
+                LemonadeTabItem(label: "Activity")
+            ],
+            selectedIndex: 2,
+            onTabSelected: { _ in }
+        )
+    }
+
+    private static var stretchedTabsWithoutDivider: some View {
+        LemonadeUi.Tabs(
+            tabs: [
+                LemonadeTabItem(label: "Tab A"),
+                LemonadeTabItem(label: "Tab B"),
+                LemonadeTabItem(label: "Tab C")
+            ],
+            selectedIndex: 0,
+            onTabSelected: { _ in },
+            itemsSize: .stretch,
+            showDivider: false
+        )
     }
 }
 #endif

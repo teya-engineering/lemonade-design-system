@@ -33,19 +33,15 @@ public enum LemonadeFonts {
         _ = _registerFontsOnce
     }
 
+    /// The font file's URL: under `Fonts/` in an SPM build, at the bundle root in an Xcode
+    /// project build.
+    private static func fontURL(named fontName: String) -> URL? {
+        Bundle.lemonade.url(forResource: fontName, withExtension: "ttf", subdirectory: "Fonts")
+            ?? Bundle.lemonade.url(forResource: fontName, withExtension: "ttf")
+    }
+
     private static func registerFont(named fontName: String) {
-        // Try multiple paths to find the font file
-        var fontURL: URL?
-
-        // Try with Fonts subdirectory (SPM structure)
-        fontURL = Bundle.lemonade.url(forResource: fontName, withExtension: "ttf", subdirectory: "Fonts")
-
-        // Try without subdirectory (Xcode project structure)
-        if fontURL == nil {
-            fontURL = Bundle.lemonade.url(forResource: fontName, withExtension: "ttf")
-        }
-
-        guard let url = fontURL else {
+        guard let url = fontURL(named: fontName) else {
             #if DEBUG
             print("Lemonade: Could not find font file: \(fontName).ttf")
             #endif
@@ -68,10 +64,8 @@ public enum LemonadeFonts {
 
         var error: Unmanaged<CFError>?
         if !CTFontManagerRegisterGraphicsFont(font, &error) {
-            // Font might already be registered, which is fine
             if let error = error?.takeRetainedValue() {
                 let errorDescription = CFErrorCopyDescription(error)
-                // Only print if it's not "already registered" error
                 if let desc = errorDescription as String?, !desc.contains("already registered") {
                     #if DEBUG
                     print("Lemonade: Error registering font \(fontName): \(desc)")

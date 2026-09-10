@@ -102,58 +102,61 @@ private struct LemonadeSelectFieldView<LeadingContent: View>: View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
             TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
 
-            // Select field container
-            SwiftUI.Button(action: onClick) {
-                HStack(spacing: LemonadeTheme.spaces.spacing300) {
-                    if let leadingContent = leadingContent {
-                        leadingContent()
-                    }
-
-                    if let text = selectedValue.flatMap({ $0.trimmingCharacters(in: .whitespaces).isEmpty ? nil : $0 }) {
-                        LemonadeUi.Text(
-                            text,
-                            textStyle: LemonadeTypography.shared.bodyMediumRegular,
-                            color: LemonadeTheme.colors.content.contentPrimary
-                        )
-                        .lineLimit(1)
-                    } else if let placeholderText = placeholderText {
-                        LemonadeUi.Text(
-                            placeholderText,
-                            textStyle: LemonadeTypography.shared.bodyMediumRegular,
-                            color: LemonadeTheme.colors.content.contentSecondary
-                        )
-                        .lineLimit(1)
-                    }
-
-                    Spacer(minLength: 0)
-
-                    LemonadeUi.Icon(
-                        icon: .chevronDown,
-                        contentDescription: nil,
-                        tint: LemonadeTheme.colors.content.contentSecondary
-                    )
-                }
-                .padding(.horizontal, TextFieldConstants.horizontalPadding)
-                .padding(.vertical, TextFieldConstants.verticalPadding)
-                // Hit-test the whole field, not just the opaque text + chevron. Without this the
-                // empty space around the Spacer falls through and taps there don't register.
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(PlainButtonStyle())
-            .disabled(!enabled)
-            .modifier(SelectFieldContainerModifier(
-                backgroundColor: selectFieldBackgroundColor(enabled: enabled, error: error, isHovered: isHovered),
-                borderColor: selectFieldBorderColor(enabled: enabled, error: error),
-                enabled: enabled,
-                cornerRadius: TextFieldConstants.cornerRadius,
-                isHovered: $isHovered
-            ))
-            .accessibilityAddTraits(.isButton)
-            .accessibilityRemoveTraits(.isStaticText)
+            fieldContainer
 
             TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }
         .animation(.easeInOut(duration: 0.15), value: error)
+    }
+
+    private var fieldContainer: some View {
+        SwiftUI.Button(action: onClick) {
+            HStack(spacing: LemonadeTheme.spaces.spacing300) {
+                if let leadingContent = leadingContent {
+                    leadingContent()
+                }
+
+                if let text = selectedValue.flatMap({ $0.trimmingCharacters(in: .whitespaces).isEmpty ? nil : $0 }) {
+                    LemonadeUi.Text(
+                        text,
+                        textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                        color: LemonadeTheme.colors.content.contentPrimary
+                    )
+                    .lineLimit(1)
+                } else if let placeholderText = placeholderText {
+                    LemonadeUi.Text(
+                        placeholderText,
+                        textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                        color: LemonadeTheme.colors.content.contentSecondary
+                    )
+                    .lineLimit(1)
+                }
+
+                Spacer(minLength: 0)
+
+                LemonadeUi.Icon(
+                    icon: .chevronDown,
+                    contentDescription: nil,
+                    tint: LemonadeTheme.colors.content.contentSecondary
+                )
+            }
+            .padding(.horizontal, TextFieldConstants.horizontalPadding)
+            .padding(.vertical, TextFieldConstants.verticalPadding)
+            // Hit-test the whole field, not just the opaque text + chevron. Without this the
+            // empty space around the Spacer falls through and taps there don't register.
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(PlainButtonStyle())
+        .disabled(!enabled)
+        .modifier(SelectFieldContainerModifier(
+            backgroundColor: selectFieldBackgroundColor(enabled: enabled, error: error, isHovered: isHovered),
+            borderColor: selectFieldBorderColor(enabled: enabled, error: error),
+            enabled: enabled,
+            cornerRadius: TextFieldConstants.cornerRadius,
+            isHovered: $isHovered
+        ))
+        .accessibilityAddTraits(.isButton)
+        .accessibilityRemoveTraits(.isStaticText)
     }
 }
 

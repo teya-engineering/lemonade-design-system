@@ -12,19 +12,22 @@ private let lemonadeBundle: Bundle = {
     #if SWIFT_PACKAGE
     return .module
     #else
-    // For framework builds, find the bundle containing this class
-    let bundle = Bundle(for: BundleFinder.self)
-
-    // If resources are in a separate bundle (e.g., Lemonade.bundle inside the framework)
-    if let resourceBundleURL = bundle.url(forResource: "Lemonade", withExtension: "bundle"),
-       let resourceBundle = Bundle(url: resourceBundleURL) {
-        return resourceBundle
-    }
-
-    // Otherwise, resources are directly in the framework bundle
-    return bundle
+    return frameworkResourceBundle()
     #endif
 }()
+
+#if !SWIFT_PACKAGE
+/// The bundle carrying Lemonade's resources in a framework build: a nested `Lemonade.bundle` when
+/// one was produced, and the framework bundle itself otherwise.
+private func frameworkResourceBundle() -> Bundle {
+    let bundle = Bundle(for: BundleFinder.self)
+    guard let resourceBundleURL = bundle.url(forResource: "Lemonade", withExtension: "bundle"),
+          let resourceBundle = Bundle(url: resourceBundleURL) else {
+        return bundle
+    }
+    return resourceBundle
+}
+#endif
 
 /// Bundle accessor that works for both SPM and XcodeGen builds.
 /// SPM generates a `Bundle.module` accessor, while framework builds need to find the bundle differently.
@@ -33,5 +36,4 @@ public extension Bundle {
     static var lemonade: Bundle { lemonadeBundle }
 }
 
-/// Private class used to locate the framework bundle
 private class BundleFinder {}

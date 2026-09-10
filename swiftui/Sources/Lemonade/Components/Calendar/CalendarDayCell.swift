@@ -4,12 +4,8 @@ import SwiftUI
 
 /// Shared date formatter for generating VoiceOver-friendly date labels.
 ///
-/// Produces full date strings such as "Thursday, April 2, 2026". Defined at
-/// file scope so it is allocated exactly once for the process - `DateFormatter`
-/// initialization is expensive due to ObjC bridging and locale loading. Cannot
-/// live as a static stored property on `CalendarDayCell` because that struct
-/// is generic over `TrailingContent`, and Swift forbids static stored properties
-/// on generic types.
+/// Produces full date strings such as "Thursday, April 2, 2026". File scope keeps
+/// it to a single allocation; `DateFormatter` initialization is expensive.
 private let calendarDayCellAccessibilityFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateStyle = .full
@@ -86,10 +82,6 @@ struct CalendarDayCell<TrailingContent: View>: View {
         self.trailingContent = trailingContent
     }
 
-    /// Returns a VoiceOver-friendly label for the cell.
-    ///
-    /// If a `date` is provided, returns the full date string (e.g. "Thursday, April 2, 2026").
-    /// Otherwise falls back to the display text (day number).
     private var cellAccessibilityLabel: String {
         if let date = date {
             return calendarDayCellAccessibilityFormatter.string(from: date)
@@ -97,12 +89,6 @@ struct CalendarDayCell<TrailingContent: View>: View {
         return text
     }
 
-    /// The text color for the weekday label, adapting to selection state.
-    ///
-    /// When the cell is selected and `expandSelectionToLabel` is `true`, the label
-    /// switches to an inverse color so it remains legible against the dark selection
-    /// background. When `expandSelectionToLabel` is `false`, the brand background
-    /// only covers the day number, so the weekday label keeps its default color.
     private var weekdayLabelColor: Color {
         if isSelected && expandSelectionToLabel {
             return selectionContentColor ?? LemonadeTheme.colors.content.contentOnBrandHigh
@@ -110,7 +96,6 @@ struct CalendarDayCell<TrailingContent: View>: View {
         return LemonadeTheme.colors.content.contentPrimary
     }
 
-    /// Renders the selected-state brand background when `active` is true.
     @ViewBuilder
     private func selectionBackground(active: Bool, inset: CGFloat = 0) -> some View {
         if active {
@@ -119,6 +104,33 @@ struct CalendarDayCell<TrailingContent: View>: View {
                 .padding(.horizontal, inset)
                 .padding(.vertical, inset)
         }
+    }
+
+    private var dayNumberGroup: some View {
+        VStack(spacing: 0) {
+            ContentCellView(
+                text: text,
+                accessibilityLabel: cellAccessibilityLabel,
+                isCurrent: isCurrent,
+                isSelected: isSelected,
+                isEnabled: isEnabled,
+                isOutsideVisibleRange: isOutsideVisibleRange,
+                isInsideSelectedRange: isInsideSelectedRange,
+                showSelectionBackground: false,
+                showTodayIndicator: showTodayIndicator,
+                selectionContentColor: selectionContentColor,
+                onClick: onClick
+            )
+
+            trailingContent()
+        }
+        .padding(.vertical, !expandSelectionToLabel ? LemonadeTheme.spaces.spacing100 : 0)
+        .background(
+            selectionBackground(
+                active: !expandSelectionToLabel && isSelected,
+                inset: -LemonadeTheme.spaces.spacing100
+            )
+        )
     }
 
     var body: some View {
@@ -132,33 +144,7 @@ struct CalendarDayCell<TrailingContent: View>: View {
                 .frame(maxWidth: .infinity)
             }
 
-            // When expandSelectionToLabel is false, wrap the day number +
-            // trailing content in their own selection background so the weekday
-            // label stays outside the highlight.
-            VStack(spacing: 0) {
-                ContentCellView(
-                    text: text,
-                    accessibilityLabel: cellAccessibilityLabel,
-                    isCurrent: isCurrent,
-                    isSelected: isSelected,
-                    isEnabled: isEnabled,
-                    isOutsideVisibleRange: isOutsideVisibleRange,
-                    isInsideSelectedRange: isInsideSelectedRange,
-                    showSelectionBackground: false,
-                    showTodayIndicator: showTodayIndicator,
-                    selectionContentColor: selectionContentColor,
-                    onClick: onClick
-                )
-
-                trailingContent()
-            }
-            .padding(.vertical, !expandSelectionToLabel ? LemonadeTheme.spaces.spacing100 : 0)
-            .background(
-                selectionBackground(
-                    active: !expandSelectionToLabel && isSelected,
-                    inset: -LemonadeTheme.spaces.spacing100
-                )
-            )
+            dayNumberGroup
         }
         .padding(showWeekdayLabel ? LemonadeTheme.spaces.spacing100 : 0)
         .background(

@@ -60,7 +60,8 @@ struct SwipeActionRowDisplayView: View {
                                     label: account.name,
                                     supportText: account.email,
                                     showNavigationIndicator: true,
-                                    // The container draws the divider: an item's own would travel with it.
+                                    // Content inside a SwipeActionRow never draws its own divider:
+                                    // it would travel with the row as the row opens.
                                     showDivider: false,
                                     onItemClicked: { },
                                     leadingSlot: {
@@ -76,10 +77,6 @@ struct SwipeActionRowDisplayView: View {
                         }
                     }
 
-                    // The caller decides which row is open, including before anyone has touched
-                    // one. The row has to be drawn open from the first frame and stay that way —
-                    // it has no measured position yet, and mistaking the screen settling into
-                    // place for having been scrolled away closes it again.
                     LemonadeUi.Card(
                         header: CardHeaderConfig(
                             title: "Opened by the caller",
@@ -129,7 +126,6 @@ struct SwipeActionRowDisplayView: View {
                             LemonadeUi.ActionListItem(
                                 label: "Two actions",
                                 supportText: "Outermost action first",
-                                // The SwipeActionRow draws the divider: one drawn here would travel with the row.
                                 showDivider: false,
                                 onItemClicked: { }
                             )
@@ -161,7 +157,6 @@ struct SwipeActionRowDisplayView: View {
                                 label: "Two actions",
                                 // Counted rather than removed, so the swipe can be tried again.
                                 supportText: fired == 0 ? "Drag across to fire Delete" : "Delete fired \(fired)×",
-                                // The SwipeActionRow draws the divider: one drawn here would travel with the row.
                                 showDivider: false,
                                 onItemClicked: { }
                             )
@@ -340,14 +335,13 @@ struct SwipeActionRowDisplayView: View {
         }
         .background(.bg.bgSubtle)
         .navigationTitle("SwipeActionRow")
-        // The swipe asks; it does not decide. A destructive action fired by a gesture is the one
-        // most easily fired by accident, so the row hands it on rather than carrying it out.
+        // A destructive action fired by a gesture is the one most easily fired by accident,
+        // so the swipe asks for confirmation instead of removing the row itself.
         .confirmationDialog(
             "This will be deleted and you will not be able to recover it.",
             isPresented: Binding(
                 get: { pendingRemoval != nil },
-                // The row held itself open for this, so closing it again is the caller's to do:
-                // the row cannot see the confirmation go, however it went.
+                // The row cannot see the confirmation dismissed, so closing it is the caller's job.
                 set: { presented in
                     if !presented {
                         pendingRemoval = nil

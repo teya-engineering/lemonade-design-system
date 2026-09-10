@@ -409,50 +409,61 @@ private struct LemonadeSymbolContainerView<Content: View, Badge: View>: View {
 struct LemonadeSymbolContainer_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 24) {
-            // Icon variant - all sizes
-            HStack(spacing: 8) {
-                LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .xSmall)
-                LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .small)
-                LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .medium)
-                LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .large)
-                LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .xLarge)
-                LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .xxLarge)
-            }
-
-            // Text variant - all voices
-            HStack(spacing: 8) {
-                LemonadeUi.SymbolContainer(text: "A", voice: .neutral)
-                LemonadeUi.SymbolContainer(text: "B", voice: .critical)
-                LemonadeUi.SymbolContainer(text: "C", voice: .warning)
-                LemonadeUi.SymbolContainer(text: "D", voice: .info)
-                LemonadeUi.SymbolContainer(text: "E", voice: .positive)
-            }
-
-            // Shapes
-            HStack(spacing: 8) {
-                LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Circle", shape: .circle)
-                LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Rounded", shape: .rounded)
-            }
-
-            // Brand voices
-            HStack(spacing: 8) {
-                LemonadeUi.SymbolContainer(icon: .star, contentDescription: "Star", voice: .brand)
-                LemonadeUi.SymbolContainer(icon: .star, contentDescription: "Star", voice: .brandSubtle)
-            }
-
-            // With badge
-            HStack(spacing: 16) {
-                LemonadeUi.SymbolContainer(
-                    icon: .heart,
-                    contentDescription: "Heart",
-                    size: .medium
-                ) {
-                    LemonadeUi.Badge(text: "3", size: .xSmall)
-                }
-            }
+            iconSizes
+            textVoices
+            shapes
+            brandVoices
+            withBadge
         }
         .padding()
         .previewLayout(.sizeThatFits)
+    }
+
+    private static var iconSizes: some View {
+        HStack(spacing: 8) {
+            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .xSmall)
+            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .small)
+            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .medium)
+            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .large)
+            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .xLarge)
+            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .xxLarge)
+        }
+    }
+
+    private static var textVoices: some View {
+        HStack(spacing: 8) {
+            LemonadeUi.SymbolContainer(text: "A", voice: .neutral)
+            LemonadeUi.SymbolContainer(text: "B", voice: .critical)
+            LemonadeUi.SymbolContainer(text: "C", voice: .warning)
+            LemonadeUi.SymbolContainer(text: "D", voice: .info)
+            LemonadeUi.SymbolContainer(text: "E", voice: .positive)
+        }
+    }
+
+    private static var shapes: some View {
+        HStack(spacing: 8) {
+            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Circle", shape: .circle)
+            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Rounded", shape: .rounded)
+        }
+    }
+
+    private static var brandVoices: some View {
+        HStack(spacing: 8) {
+            LemonadeUi.SymbolContainer(icon: .star, contentDescription: "Star", voice: .brand)
+            LemonadeUi.SymbolContainer(icon: .star, contentDescription: "Star", voice: .brandSubtle)
+        }
+    }
+
+    private static var withBadge: some View {
+        HStack(spacing: 16) {
+            LemonadeUi.SymbolContainer(
+                icon: .heart,
+                contentDescription: "Heart",
+                size: .medium
+            ) {
+                LemonadeUi.Badge(text: "3", size: .xSmall)
+            }
+        }
     }
 }
 #endif
