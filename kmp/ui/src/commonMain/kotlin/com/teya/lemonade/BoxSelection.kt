@@ -37,9 +37,11 @@ import com.teya.lemonade.core.LemonadeRadius
 import com.teya.lemonade.core.LemonadeSpaces
 
 /**
- * Lemonade box selection component. A selectable container used to present options and capture
- * user choice, supporting single or multiple selection. It only renders the box - what goes
- * inside it is entirely up to the caller.
+ * Presents an option as a selectable container and captures the user's choice.
+ *
+ * Supports single or multiple selection. Renders only the box; what goes inside it is entirely
+ * up to the caller.
+ *
  * ## Usage
  * ```kotlin
  * LemonadeUi.BoxSelection(
@@ -49,21 +51,22 @@ import com.teya.lemonade.core.LemonadeSpaces
  *   LemonadeUi.Text(text = "Option")
  * }
  * ```
- * @param modifier - [Modifier] to be applied to the box.
- * @param variant - [LemonadeBoxSelectionVariant] to style the box accordingly.
- * @param background - [LemonadeBoxSelectionBackground] behind the content. Only applied by
+ *
+ * @param modifier [Modifier] applied to the box
+ * @param variant [LemonadeBoxSelectionVariant] styling the box
+ * @param background [LemonadeBoxSelectionBackground] behind the content. Only applied by
  *  [LemonadeBoxSelectionVariant.Filled]; a selected box always falls back to the default
- *  background, as per the design.
- * @param isSelected - [Boolean] flag to apply selected styling to the box. Changing it plays a
- *  selection haptic.
- * @param enabled - [Boolean] flag to enable or disable the box.
- * @param contentPadding - [LemonadeSpaces] token applied between the box and its content.
- * @param radius - [LemonadeRadius] token applied to the box corners.
- * @param onClick - Callback to be invoked when the box is clicked. When null the box is not
- *  clickable, leaving the interaction to the content.
- * @param interactionSource - [MutableInteractionSource] to be applied to the box.
- * @param content - Composable content rendered inside the box, laid out from the top-start
- *  corner. Use [BoxScope.align] to place it elsewhere when the box is wider than its content.
+ *  background
+ * @param isSelected whether the box shows the selected styling. Changing it plays a selection
+ *  haptic
+ * @param enabled whether the box responds to clicks
+ * @param contentPadding [LemonadeSpaces] token applied between the box and its content
+ * @param radius [LemonadeRadius] token applied to the box corners
+ * @param onClick called when the box is clicked. When null the box is not clickable, leaving the
+ *  interaction to the content
+ * @param interactionSource [MutableInteractionSource] applied to the box
+ * @param content content rendered inside the box, laid out from the top-start corner. Use
+ *  [BoxScope.align] to place it elsewhere when the box is wider than its content
  */
 @Suppress("LongParameterList")
 @Composable
@@ -118,13 +121,15 @@ public fun LemonadeUi.BoxSelection(
                 width = animatedBorderWidth,
                 color = animatedBorderColor,
                 shape = shape,
-            ) // The slot content is arbitrary, so it cannot be relied on to carry the selected
-            // state. Publish it here or a screen reader announces the box without saying
-            // whether it is the chosen one. Role stays Button rather than RadioButton/Checkbox
-            // because the box serves both single and multiple selection.
+            )
+            // The slot content is arbitrary, so it cannot be relied on to carry the selected
+            // state. Publish it here or a screen reader announces the box without saying whether
+            // it is the chosen one.
             .semantics { selected = isSelected }
             .then(
                 other = if (onClick != null) {
+                    // Role stays Button rather than RadioButton or Checkbox because the box
+                    // serves both single and multiple selection.
                     Modifier.clickable(
                         onClick = onClick,
                         enabled = enabled,
@@ -204,18 +209,20 @@ private class BoxSelectionPreviewProvider : PreviewParameterProvider<BoxSelectio
         buildList {
             LemonadeBoxSelectionVariant.entries.forEach { variant ->
                 LemonadeBoxSelectionBackground.entries.forEach { background ->
-                    listOf(true, false).forEach { isSelected ->
-                        listOf(true, false).forEach { enabled ->
-                            add(
-                                BoxSelectionPreviewData(
-                                    variant = variant,
-                                    background = background,
-                                    isSelected = isSelected,
-                                    enabled = enabled,
-                                ),
-                            )
+                    listOf(true, false)
+                        .forEach { isSelected ->
+                            listOf(true, false)
+                                .forEach { enabled ->
+                                    add(
+                                        BoxSelectionPreviewData(
+                                            variant = variant,
+                                            background = background,
+                                            isSelected = isSelected,
+                                            enabled = enabled,
+                                        ),
+                                    )
+                                }
                         }
-                    }
                 }
             }
         }.asSequence()

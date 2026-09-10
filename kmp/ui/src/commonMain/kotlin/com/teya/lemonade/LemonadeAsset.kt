@@ -10,7 +10,7 @@ import com.teya.lemonade.core.LemonadeCountryFlags
 import com.teya.lemonade.core.LemonadeIcons
 
 /**
- * Generic Asset component, to display the available assets in standardized way.
+ * Displays any [LemonadeAsset] at a standard size.
  *
  * ## Usage
  * ```kotlin
@@ -21,12 +21,13 @@ import com.teya.lemonade.core.LemonadeIcons
  * )
  * ```
  *
- * @param asset - The [LemonadeAsset] to be displayed.
- *  e.g.: [LemonadeIcons], [LemonadeCountryFlags], [LemonadeBrandLogos], ...
- * @param contentDescription - The localizable message to description for the asset.
- * @param size - The [LemonadeAssetSize] to be applied to the flag. Defaults to [LemonadeAssetSize.Medium]
- * @param Modifier - Optional [Modifier] for additional styling and layout adjustments.
- * @param tint - Optional [Color] for tinting the asset. The tint is only applied if the corresponding asset allows it.
+ * @param asset [LemonadeAsset] to display, e.g. [LemonadeIcons], [LemonadeCountryFlags] or
+ *  [LemonadeBrandLogos]
+ * @param size [LemonadeAssetSize] applied to the asset
+ * @param contentDescription localized description of the asset. Brand logos and country flags
+ *  fall back to the asset name when this is `null`
+ * @param modifier optional [Modifier] for additional styling and layout adjustments
+ * @param tint optional [Color] tint, applied only when the asset allows tinting
  */
 @Composable
 public fun LemonadeUi.Asset(
@@ -50,7 +51,8 @@ public fun LemonadeUi.Asset(
         is LemonadeBrandLogos -> {
             LemonadeUi.BrandLogo(
                 logo = asset,
-                contentDescription = contentDescription ?: asset.name,
+                contentDescription = contentDescription
+                    ?: asset.name,
                 size = size,
                 modifier = modifier,
             )
@@ -59,7 +61,8 @@ public fun LemonadeUi.Asset(
         is LemonadeCountryFlags -> {
             LemonadeUi.CountryFlag(
                 flag = asset,
-                contentDescription = contentDescription ?: asset.name,
+                contentDescription = contentDescription
+                    ?: asset.name,
                 size = size,
                 modifier = modifier,
             )

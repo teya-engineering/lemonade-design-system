@@ -45,45 +45,43 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTextStyle
 
 /**
- * The Text Field component allows users to enter or edit text and adapts seamlessly across both
- *  mobile and web platforms. It supports multiple interaction states, sizes, and configurations
- *  to accommodate a wide range of design contexts. The component ensures consistency in form
- *  design, maintaining clarity, accessibility, and usability across devices.
+ * Shows a single-line text input with optional label, support text, and error state.
  *
  * ## Usage
  * ```kotlin
  * LemonadeUi.TextField(
  *     input = "Sample text",
- *     onInputChange = { /* Nothing */ },
+ *     onInputChanged = { /* Nothing */ },
  *     enabled = true,
  *     error = false,
  *     label = "Label",
  *     supportText = "Support Text",
  *     optionalIndicator = "Optional",
  *     leadingContent = {
- * *       LemonadeUi.Icon(
- * *           icon = LemonadeIcons.PadlockOpen,
- * *           contentDescription = null,
- * *       )
- * *   },
+ *         LemonadeUi.Icon(
+ *             icon = LemonadeIcons.PadlockOpen,
+ *             contentDescription = null,
+ *         )
+ *     },
  * )
  * ```
- * @param input - The inputted text
- * @param onInputChanged - The callback called when the user inputs content into the text box
- * @param label - Label to be displayed on the top left of the text field
- * @param optionalIndicator - Optional text to be displayed on the top right of the text field
- * @param supportText - Support text to be displayed below the text field
- * @param placeholderText - Placeholder text to be displayed when the text field is empty
- * @param errorMessage - Error message to be displayed when the text field has an error
- * @param interactionSource - [MutableInteractionSource] to be applied to the text field
- * @param keyboardActions - [KeyboardActions] to be applied to the text field
- * @param keyboardOptions - [KeyboardOptions] to be applied to the text field
- * @param visualTransformation - [VisualTransformation] to be applied to the text field
- * @param error - Whether the text field has an error
- * @param enabled - Whether the text field is enabled
- * @param leadingContent - Content to be displayed on the top left of the text field
- * @param trailingContent - Content to be displayed on the top right of the text field
- * @param modifier - [Modifier] to be applied to the root container of the text field
+ *
+ * @param input current text
+ * @param onInputChanged callback run with the new text whenever the user types
+ * @param label text shown above the field, on the left
+ * @param optionalIndicator text shown above the field, on the right
+ * @param supportText text shown below the field
+ * @param placeholderText text shown inside the field while [input] is empty
+ * @param errorMessage text shown below the field while [error] is `true`
+ * @param interactionSource [MutableInteractionSource] applied to the field
+ * @param keyboardActions [KeyboardActions] applied to the field
+ * @param keyboardOptions [KeyboardOptions] applied to the field
+ * @param visualTransformation [VisualTransformation] applied to the field
+ * @param error `true` when the field shows its error state
+ * @param enabled `false` dims the field and blocks input
+ * @param leadingContent content shown before the input
+ * @param trailingContent content shown after the input
+ * @param modifier [Modifier] applied to the root container of the text field
  */
 @Composable
 public fun LemonadeUi.TextField(
@@ -141,10 +139,7 @@ public fun LemonadeUi.TextField(
 }
 
 /**
- * The Text Field component allows users to enter or edit text and adapts seamlessly across both
- *  mobile and web platforms. It supports multiple interaction states, sizes, and configurations
- *  to accommodate a wide range of design contexts. The component ensures consistency in form
- *  design, maintaining clarity, accessibility, and usability across devices.
+ * Shows a single-line text input with optional label, support text, and error state.
  *
  * This overload accepts a [TextFieldValue] for cursor position control.
  *
@@ -154,28 +149,29 @@ public fun LemonadeUi.TextField(
  *
  * LemonadeUi.TextField(
  *     value = textFieldValue,
- *     onValueChange = { textFieldValue = it },
+ *     onValueChange = { newValue -> textFieldValue = newValue },
  *     enabled = true,
  *     error = false,
  *     label = "Label",
  * )
  * ```
- * @param value - The [TextFieldValue] containing the text and selection state
- * @param onValueChange - The callback called when the value changes (text or selection)
- * @param label - Label to be displayed on the top left of the text field
- * @param optionalIndicator - Optional text to be displayed on the top right of the text field
- * @param supportText - Support text to be displayed below the text field
- * @param placeholderText - Placeholder text to be displayed when the text field is empty
- * @param errorMessage - Error message to be displayed when the text field has an error
- * @param interactionSource - [MutableInteractionSource] to be applied to the text field
- * @param keyboardActions - [KeyboardActions] to be applied to the text field
- * @param keyboardOptions - [KeyboardOptions] to be applied to the text field
- * @param visualTransformation - [VisualTransformation] to be applied to the text field
- * @param error - Whether the text field has an error
- * @param enabled - Whether the text field is enabled
- * @param leadingContent - Content to be displayed on the top left of the text field
- * @param trailingContent - Content to be displayed on the top right of the text field
- * @param modifier - [Modifier] to be applied to the root container of the text field
+ *
+ * @param value [TextFieldValue] holding the text and its selection
+ * @param onValueChange callback run when the text or the selection changes
+ * @param label text shown above the field, on the left
+ * @param optionalIndicator text shown above the field, on the right
+ * @param supportText text shown below the field
+ * @param placeholderText text shown inside the field while [value] is empty
+ * @param errorMessage text shown below the field while [error] is `true`
+ * @param interactionSource [MutableInteractionSource] applied to the field
+ * @param keyboardActions [KeyboardActions] applied to the field
+ * @param keyboardOptions [KeyboardOptions] applied to the field
+ * @param visualTransformation [VisualTransformation] applied to the field
+ * @param error `true` when the field shows its error state
+ * @param enabled `false` dims the field and blocks input
+ * @param leadingContent content shown before the input
+ * @param trailingContent content shown after the input
+ * @param modifier [Modifier] applied to the root container of the text field
  */
 @Composable
 public fun LemonadeUi.TextField(
@@ -233,10 +229,9 @@ public fun LemonadeUi.TextField(
 }
 
 /**
- * A text input combined with a selectable element, allowing users to choose a prefix or
- *  category (e.g., country code) before entering text. Ideal for structured inputs like phone
- *  numbers or units.
+ * Pairs a text input with a tappable prefix selector, such as a country code.
  *
+ * Suited to structured inputs like phone numbers or units.
  *
  * ## Usage
  * ```kotlin
@@ -265,23 +260,24 @@ public fun LemonadeUi.TextField(
  *     },
  * )
  * ```
- * @param input - The inputted text
- * @param onInputChanged - The callback called when the user inputs content into the text box
- * @param leadingAction - Action triggered when the leading [leadingContent] is clicked
- * @param leadingContent - Content to be displayed on the top left of the text field
- * @param label - Label to be displayed on the top left of the text field
- * @param optionalIndicator - Optional text to be displayed on the top right of the text field
- * @param supportText - Support text to be displayed below the text field
- * @param placeholderText - Placeholder text to be displayed when the text field is empty
- * @param errorMessage - Error message to be displayed when the text field has an error
- * @param interactionSource - [MutableInteractionSource] to be applied to the text field
- * @param keyboardActions - [KeyboardActions] to be applied to the text field
- * @param keyboardOptions - [KeyboardOptions] to be applied to the text field
- * @param visualTransformation - [VisualTransformation] to be applied to the text field
- * @param error - Whether the text field has an error
- * @param enabled - Whether the text field is enabled
- * @param trailingContent - Content to be displayed on the top right of the text field
- * @param modifier - [Modifier] to be applied to the root container of the text field
+ *
+ * @param input current text
+ * @param onInputChanged callback run with the new text whenever the user types
+ * @param leadingAction callback run when [leadingContent] is tapped
+ * @param leadingContent selector content shown before the input
+ * @param label text shown above the field, on the left
+ * @param optionalIndicator text shown above the field, on the right
+ * @param supportText text shown below the field
+ * @param placeholderText text shown inside the field while [input] is empty
+ * @param errorMessage text shown below the field while [error] is `true`
+ * @param interactionSource [MutableInteractionSource] applied to the field
+ * @param keyboardActions [KeyboardActions] applied to the field
+ * @param keyboardOptions [KeyboardOptions] applied to the field
+ * @param visualTransformation [VisualTransformation] applied to the field
+ * @param error `true` when the field shows its error state
+ * @param enabled `false` dims the field and blocks input
+ * @param trailingContent content shown after the input
+ * @param modifier [Modifier] applied to the root container of the text field
  */
 @Composable
 public fun LemonadeUi.TextFieldWithSelector(
@@ -335,9 +331,9 @@ public fun LemonadeUi.TextFieldWithSelector(
 }
 
 /**
- * A text input combined with a selectable element, allowing users to choose a prefix or
- *  category (e.g., country code) before entering text. Ideal for structured inputs like phone
- *  numbers or units.
+ * Pairs a text input with a tappable prefix selector, such as a country code.
+ *
+ * Suited to structured inputs like phone numbers or units.
  *
  * This overload accepts a [TextFieldValue] for cursor position control, which is useful when
  * formatting text dynamically (e.g., phone numbers) and you need to control cursor placement.
@@ -376,23 +372,24 @@ public fun LemonadeUi.TextFieldWithSelector(
  *     },
  * )
  * ```
- * @param value - The [TextFieldValue] containing the text and selection state
- * @param onValueChange - The callback called when the value changes (text or selection)
- * @param leadingAction - Action triggered when the leading [leadingContent] is clicked
- * @param leadingContent - Content to be displayed on the top left of the text field
- * @param label - Label to be displayed on the top left of the text field
- * @param optionalIndicator - Optional text to be displayed on the top right of the text field
- * @param supportText - Support text to be displayed below the text field
- * @param placeholderText - Placeholder text to be displayed when the text field is empty
- * @param errorMessage - Error message to be displayed when the text field has an error
- * @param interactionSource - [MutableInteractionSource] to be applied to the text field
- * @param keyboardActions - [KeyboardActions] to be applied to the text field
- * @param keyboardOptions - [KeyboardOptions] to be applied to the text field
- * @param visualTransformation - [VisualTransformation] to be applied to the text field
- * @param error - Whether the text field has an error
- * @param enabled - Whether the text field is enabled
- * @param trailingContent - Content to be displayed on the top right of the text field
- * @param modifier - [Modifier] to be applied to the root container of the text field
+ *
+ * @param value [TextFieldValue] holding the text and its selection
+ * @param onValueChange callback run when the text or the selection changes
+ * @param leadingAction callback run when [leadingContent] is tapped
+ * @param leadingContent selector content shown before the input
+ * @param label text shown above the field, on the left
+ * @param optionalIndicator text shown above the field, on the right
+ * @param supportText text shown below the field
+ * @param placeholderText text shown inside the field while [value] is empty
+ * @param errorMessage text shown below the field while [error] is `true`
+ * @param interactionSource [MutableInteractionSource] applied to the field
+ * @param keyboardActions [KeyboardActions] applied to the field
+ * @param keyboardOptions [KeyboardOptions] applied to the field
+ * @param visualTransformation [VisualTransformation] applied to the field
+ * @param error `true` when the field shows its error state
+ * @param enabled `false` dims the field and blocks input
+ * @param trailingContent content shown after the input
+ * @param modifier [Modifier] applied to the root container of the text field
  */
 @Composable
 public fun LemonadeUi.TextFieldWithSelector(
@@ -446,8 +443,8 @@ public fun LemonadeUi.TextFieldWithSelector(
 }
 
 /**
- * String-based CoreTextField using BasicTextField's String API directly.
- * This preserves cursor position and selection state managed internally by BasicTextField.
+ * Wraps the [BasicTextField] `String` API, which keeps cursor position and selection state
+ * internally.
  */
 @Composable
 internal fun CoreTextField(
@@ -499,8 +496,8 @@ internal fun CoreTextField(
 }
 
 /**
- * TextFieldValue-based CoreTextField for cursor position control.
- * Use this when you need to control cursor position or selection externally.
+ * Wraps the [BasicTextField] [TextFieldValue] API. Use it to drive cursor position or selection
+ * from outside the field.
  */
 @Composable
 internal fun CoreTextField(
@@ -804,7 +801,7 @@ internal fun BoxScope.DefaultTextBox(
 }
 
 /**
- * This is only used for desktop environment. On mobile, it defaults to the null variant.
+ * Desktop only; mobile falls back to the null variant.
  */
 internal val TextFieldSize?.data: TextFieldData
     @Composable get() {
@@ -878,26 +875,31 @@ private class TextFieldPreviewProvider : PreviewParameterProvider<TextFieldPrevi
 
     private fun buildAllVariants(): Sequence<TextFieldPreviewData> =
         buildList {
-            listOf(true, false).forEach { withOuterContent ->
-                listOf(true, false).forEach { enabled ->
-                    listOf(true, false).forEach { error ->
-                        listOf(true, false).forEach { leading ->
-                            listOf(true, false).forEach { trailing ->
-                                add(
-                                    element = TextFieldPreviewData(
-                                        enabled = enabled,
-                                        error = error,
-                                        withLeadingIcon = leading,
-                                        withTrailingIcon = trailing,
-                                        withOuterContent = withOuterContent,
-                                        size = null,
-                                    ),
-                                )
-                            }
+            listOf(true, false)
+                .forEach { withOuterContent ->
+                    listOf(true, false)
+                        .forEach { enabled ->
+                            listOf(true, false)
+                                .forEach { error ->
+                                    listOf(true, false)
+                                        .forEach { leading ->
+                                            listOf(true, false)
+                                                .forEach { trailing ->
+                                                    add(
+                                                        element = TextFieldPreviewData(
+                                                            enabled = enabled,
+                                                            error = error,
+                                                            withLeadingIcon = leading,
+                                                            withTrailingIcon = trailing,
+                                                            withOuterContent = withOuterContent,
+                                                            size = null,
+                                                        ),
+                                                    )
+                                                }
+                                        }
+                                }
                         }
-                    }
                 }
-            }
         }.asSequence()
 }
 
@@ -910,7 +912,7 @@ private fun TextInputPreview(
     Column(verticalArrangement = Arrangement.spacedBy(space = 4.dp)) {
         LemonadeUi.TextField(
             input = "Sample text",
-            onInputChanged = { /* Nothing */ },
+            onInputChanged = { },
             enabled = previewData.enabled,
             error = previewData.error,
             label = "Label".takeIf { previewData.withOuterContent },
@@ -950,14 +952,14 @@ private fun TextInputWithSelectorPreview(
     Column(verticalArrangement = Arrangement.spacedBy(space = 4.dp)) {
         LemonadeUi.TextFieldWithSelector(
             input = "Sample text",
-            onInputChanged = { /* Nothing */ },
+            onInputChanged = { },
             enabled = previewData.enabled,
             error = previewData.error,
             label = "Label".takeIf { previewData.withOuterContent },
             supportText = "Support Text".takeIf { previewData.withOuterContent },
             optionalIndicator = "Optional".takeIf { previewData.withOuterContent },
             errorMessage = "This is an error message".takeIf { previewData.withOuterContent },
-            leadingAction = { /**/ },
+            leadingAction = { },
             leadingContent = {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),
@@ -981,8 +983,11 @@ private fun TextInputWithSelectorPreview(
 private fun TextInputWithTextFieldValuePreview() {
     Column(verticalArrangement = Arrangement.spacedBy(space = 4.dp)) {
         LemonadeUi.TextField(
-            value = TextFieldValue(text = "Sample text", selection = TextRange(11)),
-            onValueChange = { /* Nothing */ },
+            value = TextFieldValue(
+                text = "Sample text",
+                selection = TextRange(11),
+            ),
+            onValueChange = { },
             label = "TextField with TextFieldValue",
             supportText = "Cursor position control enabled",
         )
@@ -994,11 +999,14 @@ private fun TextInputWithTextFieldValuePreview() {
 private fun TextInputWithSelectorTextFieldValuePreview() {
     Column(verticalArrangement = Arrangement.spacedBy(space = 4.dp)) {
         LemonadeUi.TextFieldWithSelector(
-            value = TextFieldValue(text = "912 345 678", selection = TextRange(11)),
-            onValueChange = { /* Nothing */ },
+            value = TextFieldValue(
+                text = "912 345 678",
+                selection = TextRange(11),
+            ),
+            onValueChange = { },
             label = "TextFieldWithSelector with TextFieldValue",
             supportText = "Cursor position control enabled",
-            leadingAction = { /**/ },
+            leadingAction = { },
             leadingContent = {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),

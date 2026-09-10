@@ -28,25 +28,23 @@ import androidx.compose.ui.util.fastFirst
 import com.teya.lemonade.core.LemonadeBadgeSize
 
 /**
- * Badge component to highlight new or unread items, or to indicate status or categories.
+ * Highlights new or unread items, or shows a status or category.
  *
- * Badges are small, rounded indicators that can be used to draw attention to specific elements
- * within an interface. They are typically used to display counts, statuses, or categories.
+ * Small rounded indicator that draws attention to an element, usually showing a count, a status
+ * or a category.
  *
  * ## Usage
  * ```kotlin
  * LemonadeUi.Badge(
  *     text = "New",
- *     size = LemonadeLabelSize.Small
+ *     size = LemonadeBadgeSize.Small
  * )
  * ```
  *
- * ## Parameters
- * - `text`: The text to be displayed inside the badge.
- * - `modifier`: Optional [Modifier] for additional styling and layout adjustments.
- * - `size`: The size of the badge, defined by [LemonadeBadgeSize]. Defaults to [LemonadeBadgeSize.Small].
+ * @param text text shown inside the badge
+ * @param modifier optional [Modifier] for styling and layout
+ * @param size badge size, defaults to [LemonadeBadgeSize.Small]
  */
-
 @Composable
 public fun LemonadeUi.Badge(
     text: String,
@@ -74,16 +72,16 @@ private fun CoreBadge(
             .height(props.height)
             .clip(LocalShapes.current.radiusFull)
             .drawWithCache {
-                // Per design: a bg-default → transparent highlight composited over the brand
-                // fill in Overlay blend mode. The design specifies a ~106.6° sweep; a
-                // corner-to-corner gradient approximates that closely on the badge's short,
-                // wide shape without size-dependent angle math. drawWithCache rebuilds the
-                // brush only when the size changes, not every frame.
+                // A corner-to-corner gradient approximates the angled highlight sweep on this
+                // short, wide shape without size-dependent angle math.
                 val overlay = Brush.linearGradient(
                     0f to overlayColor,
                     1f to overlayColor.copy(alpha = 0f),
                     start = Offset.Zero,
-                    end = Offset(x = size.width, y = size.height),
+                    end = Offset(
+                        x = size.width,
+                        y = size.height,
+                    ),
                 )
                 onDrawBehind {
                     drawRect(color = brandColor)

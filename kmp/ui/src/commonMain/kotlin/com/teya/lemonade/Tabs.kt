@@ -3,6 +3,7 @@ package com.teya.lemonade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -11,6 +12,7 @@ import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -50,11 +52,11 @@ import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 
 /**
- * Represents a single tab with its label, optional icon, and disabled state.
+ * A single tab: its label, optional icon, and disabled state.
  *
- * @param label The text label for the tab.
- * @param icon Optional [LemonadeIcons] displayed before the label.
- * @param isDisabled Whether the tab is disabled and non-interactive.
+ * @param label text shown on the tab
+ * @param icon [LemonadeIcons] shown before the label
+ * @param isDisabled `true` when the tab is dimmed and ignores input
  */
 public data class TabItem(
     val label: String,
@@ -63,7 +65,7 @@ public data class TabItem(
 )
 
 /**
- * Defines how tab items are sized within the Tabs component.
+ * Sizing strategy for the tab items in [LemonadeUi.Tabs].
  */
 public enum class TabsItemSize {
     /** Each tab hugs its content. Scrollable when items overflow. */
@@ -90,13 +92,13 @@ public enum class TabsItemSize {
  * )
  * ```
  *
- * @param tabs A list of [TabItem] instances to display. An empty list renders nothing, so a host
- *   whose tabs are still loading can pass one straight through.
- * @param selectedIndex The index of the currently selected tab. Clamped into [tabs]' indices — an
- *   index left over from a longer list selects the nearest tab instead of failing.
- * @param onTabSelected A callback invoked when a tab is selected with the tab index.
- * @param modifier The [Modifier] to be applied to the root container of the component.
- * @param itemsSize The sizing strategy for tab items, defaults to [TabsItemSize.Hug].
+ * @param tabs [TabItem]s to show; an empty list renders nothing, so a host whose tabs are still
+ *   loading can pass one straight through
+ * @param selectedIndex index of the selected tab, clamped into [tabs]' indices — an index left
+ *   over from a longer list selects the nearest tab instead of failing
+ * @param onTabSelected callback run with the index of the tab the user selected
+ * @param modifier [Modifier] applied to the root container
+ * @param itemsSize sizing strategy for the tab items
  */
 @Composable
 public fun LemonadeUi.Tabs(
@@ -126,16 +128,12 @@ internal fun CoreTabs(
     modifier: Modifier = Modifier,
     itemsSize: TabsItemSize = TabsItemSize.Hug,
 ) {
-    // Nothing to draw, not even the separator — a bare rule under an empty strip reads as a
-    // rendering glitch. Hosts routinely pass an empty list for a frame while the tabs they are
-    // derived from load, and a composable body re-runs on every recomposition, so throwing here
-    // would turn that transient state into a crash of the host app.
+    // Not even the separator: a bare rule under an empty strip reads as a rendering glitch.
     if (tabs.isEmpty()) {
         return
     }
 
-    // A stale index outlives its list whenever the two are held apart — the list shrinks, and the
-    // index catches up a frame later. Clamp rather than throw, matching CoreSegmentedControl.
+    // The index and the list arrive separately, so a shrunk list can leave a stale index behind.
     val resolvedIndex = selectedIndex.coerceIn(
         minimumValue = 0,
         maximumValue = tabs.lastIndex,
@@ -152,7 +150,6 @@ internal fun CoreTabs(
         contentWidths.keys.removeAll { key -> key >= tabs.size }
     }
 
-    // Snap to position on first measurement, animate on subsequent changes
     var hasInitialMeasurement by remember { mutableStateOf(value = false) }
     val animationSpec = if (hasInitialMeasurement) {
         tween<Dp>(durationMillis = INDICATOR_ANIMATION_DURATION_MS)
@@ -166,14 +163,12 @@ internal fun CoreTabs(
         }
     }
 
-    // Indicator width = content wrapper width (text + icon only)
     val indicatorWidth by animateDpAsState(
         targetValue = contentWidths[resolvedIndex]
             ?: tabWidths[resolvedIndex]
             ?: 0.dp,
         animationSpec = animationSpec,
     )
-    // Indicator offset = tab offset + centering within the tab
     val selectedTabWidth = tabWidths[resolvedIndex]
         ?: 0.dp
     val selectedContentWidth = contentWidths[resolvedIndex]
@@ -272,7 +267,6 @@ private fun HugModeTabs(
         }
     }
 
-    // Alpha-mask fade: only applied when content is meaningfully scrollable
     val isScrollable = scrollState.maxValue > 0
     Box(
         modifier = Modifier
@@ -304,57 +298,101 @@ private fun HugModeTabs(
                 },
             ),
     ) {
-        // Scrollable area — indicator is INSIDE so it scrolls with content
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(state = scrollState),
+        ScrollableTabsWithIndicator(
+            tabs = tabs,
+            selectedIndex = selectedIndex,
+            onTabSelected = onTabSelected,
+            density = density,
+            scrollState = scrollState,
+            tabWidths = tabWidths,
+            tabOffsets = tabOffsets,
+            contentWidths = contentWidths,
+            indicatorWidth = indicatorWidth,
+            indicatorOffset = indicatorOffset,
+            indicatorHeight = indicatorHeight,
+            indicatorColor = indicatorColor,
+        )
+    }
+}
+
+@Composable
+private fun ScrollableTabsWithIndicator(
+    tabs: List<TabItem>,
+    selectedIndex: Int,
+    onTabSelected: (Int) -> Unit,
+    density: Density,
+    scrollState: ScrollState,
+    tabWidths: SnapshotStateMap<Int, Dp>,
+    tabOffsets: SnapshotStateMap<Int, Dp>,
+    contentWidths: SnapshotStateMap<Int, Dp>,
+    indicatorWidth: Dp,
+    indicatorOffset: Dp,
+    indicatorHeight: Dp,
+    indicatorColor: Color,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(state = scrollState),
+    ) {
+        Row(
+            verticalAlignment = Alignment.Bottom,
         ) {
-            Row(
-                verticalAlignment = Alignment.Bottom,
-            ) {
-                tabs.forEachIndexed { index, tab ->
-                    TabItemContent(
-                        tab = tab,
-                        isSelected = index == selectedIndex,
-                        onClick = { onTabSelected(index) },
-                        modifier = Modifier
-                            .onGloballyPositioned { coordinates ->
-                                tabWidths[index] = with(density) {
-                                    coordinates.size.width.toDp()
-                                }
-                                tabOffsets[index] = with(density) {
-                                    coordinates.positionInParent().x.toDp()
-                                }
-                            },
-                        onContentPositioned = { coordinates ->
-                            contentWidths[index] = with(density) {
+            tabs.forEachIndexed { index, tab ->
+                TabItemContent(
+                    tab = tab,
+                    isSelected = index == selectedIndex,
+                    onClick = { onTabSelected(index) },
+                    modifier = Modifier
+                        .onGloballyPositioned { coordinates ->
+                            tabWidths[index] = with(density) {
                                 coordinates.size.width.toDp()
                             }
+                            tabOffsets[index] = with(density) {
+                                coordinates.positionInParent().x.toDp()
+                            }
                         },
-                    )
-                }
-            }
-
-            // Animated indicator — scrolls with tabs
-            if (tabWidths.containsKey(selectedIndex)) {
-                Box(
-                    modifier = Modifier
-                        .align(alignment = Alignment.BottomStart)
-                        .offset(x = indicatorOffset)
-                        .width(width = indicatorWidth)
-                        .height(height = indicatorHeight)
-                        .background(
-                            color = indicatorColor,
-                            shape = RoundedCornerShape(
-                                topStart = 2.dp,
-                                topEnd = 2.dp,
-                            ),
-                        ),
+                    onContentPositioned = { coordinates ->
+                        contentWidths[index] = with(density) {
+                            coordinates.size.width.toDp()
+                        }
+                    },
                 )
             }
         }
+
+        if (tabWidths.containsKey(selectedIndex)) {
+            TabIndicator(
+                offset = indicatorOffset,
+                width = indicatorWidth,
+                height = indicatorHeight,
+                color = indicatorColor,
+            )
+        }
     }
+}
+
+@Composable
+private fun BoxScope.TabIndicator(
+    offset: Dp,
+    width: Dp,
+    height: Dp,
+    color: Color,
+) {
+    Box(
+        modifier = Modifier
+            .align(alignment = Alignment.BottomStart)
+            .offset(x = offset)
+            .width(width = width)
+            .height(height = height)
+            .background(
+                color = color,
+                shape = RoundedCornerShape(
+                    topStart = 2.dp,
+                    topEnd = 2.dp,
+                ),
+            ),
+    )
 }
 
 @Composable
@@ -405,19 +443,11 @@ private fun StretchModeTabs(
         }
 
         if (tabWidths.containsKey(selectedIndex)) {
-            Box(
-                modifier = Modifier
-                    .align(alignment = Alignment.BottomStart)
-                    .offset(x = indicatorOffset)
-                    .width(width = indicatorWidth)
-                    .height(height = indicatorHeight)
-                    .background(
-                        color = indicatorColor,
-                        shape = RoundedCornerShape(
-                            topStart = 2.dp,
-                            topEnd = 2.dp,
-                        ),
-                    ),
+            TabIndicator(
+                offset = indicatorOffset,
+                width = indicatorWidth,
+                height = indicatorHeight,
+                color = indicatorColor,
             )
         }
     }
@@ -526,7 +556,7 @@ private fun TabItemContent(
                 )
             }
 
-            // Reserve space with the heavier font to prevent layout shift on selection
+            // Reserve space with the heavier font to prevent layout shift on selection.
             Box {
                 LemonadeUi.Text(
                     text = tab.label,
@@ -558,7 +588,7 @@ private fun TabsPreview() {
             TabItem(label = "Reviews"),
         ),
         selectedIndex = 1,
-        onTabSelected = { /* preview only */ },
+        onTabSelected = { },
     )
 }
 
@@ -568,12 +598,21 @@ private fun TabsPreview() {
 private fun TabsWithIconsPreview() {
     LemonadeUi.Tabs(
         tabs = listOf(
-            TabItem(label = "Overview", icon = LemonadeIcons.Home),
-            TabItem(label = "Details", icon = LemonadeIcons.CircleInfo),
-            TabItem(label = "Reviews", icon = LemonadeIcons.Star),
+            TabItem(
+                label = "Overview",
+                icon = LemonadeIcons.Home,
+            ),
+            TabItem(
+                label = "Details",
+                icon = LemonadeIcons.CircleInfo,
+            ),
+            TabItem(
+                label = "Reviews",
+                icon = LemonadeIcons.Star,
+            ),
         ),
         selectedIndex = 0,
-        onTabSelected = { /* preview only */ },
+        onTabSelected = { },
     )
 }
 
@@ -588,7 +627,7 @@ private fun TabsStretchPreview() {
             TabItem(label = "Tab C"),
         ),
         selectedIndex = 0,
-        onTabSelected = { /* preview only */ },
+        onTabSelected = { },
         itemsSize = TabsItemSize.Stretch,
     )
 }
@@ -607,6 +646,6 @@ private fun TabsManyItemsPreview() {
             TabItem(label = "Activity"),
         ),
         selectedIndex = 2,
-        onTabSelected = { /* preview only */ },
+        onTabSelected = { },
     )
 }

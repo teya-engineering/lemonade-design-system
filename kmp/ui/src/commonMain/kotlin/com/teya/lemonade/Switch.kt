@@ -34,28 +34,22 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeShadow
 
 /**
- * This composable provides the fundamental visual and interactive elements of a toggle switch,
- * including the track and thumb. It handles animations for state changes like checked, enabled,
- * hover, and press. It is designed to be the internal building block for a higher-level,
- * public-facing switch component.
+ * Shows a toggle switch with an animated track and thumb.
  *
  * ## Usage
  * ```kotlin
  * LemonadeUi.Switch(
- *  checked: Boolean = false,
- *  onCheckedChange = { setTo -> ...},
+ *  checked = false,
+ *  onCheckedChange = { setTo -> ... },
  * )
  * ```
  *
- * ## Parameters
- * @param checked `true` if the switch is in the "on" state, `false` otherwise.
- * @param onCheckedChange A callback invoked when the user interacts with the switch
- *  to change its state.
- * @param enabled Optional - controls the enabled state of the switch. When `false`,
- *  interaction is disabled and it is visually styled as such. Defaults to true.
- * @param interactionSource Optional [MutableInteractionSource] used to observe interaction
- *  states like hover and press to drive visual feedback.
- * @param modifier Optional [Modifier] to be applied to the root container of the switch.
+ * @param checked `true` when the switch is on
+ * @param onCheckedChange callback run with the new state when the user toggles the switch
+ * @param enabled when `false` the switch ignores input and renders as disabled
+ * @param interactionSource [MutableInteractionSource] observed for the hover and press states
+ *  that drive the visual feedback
+ * @param modifier [Modifier] applied to the root container of the switch
  */
 @Composable
 public fun LemonadeUi.Switch(
@@ -75,35 +69,26 @@ public fun LemonadeUi.Switch(
 }
 
 /**
- * This composable provides the fundamental visual and interactive elements of a toggle switch,
- * including the track and thumb. It handles animations for state changes like checked, enabled,
- * hover, and press. It is designed to be the internal building block for a higher-level,
- * public-facing switch component.
- * This includes the possibility of having label and support text.
+ * Shows a toggle switch with a label and optional support text.
  *
  * ## Usage
  * ```kotlin
  * LemonadeUi.Switch(
  *  checked = false,
- *  label = "Instant Settlements"
+ *  label = "Instant Settlements",
  *  supportText = "This is a feature that instantiate the settlements? idk",
  *  onCheckedChange = { setTo -> ... },
  * )
  * ```
  *
- * ## Parameters
- * @param checked `true` if the switch is in the "on" state, `false` otherwise.
- * @param onCheckedChange A callback invoked when the user interacts with the switch
- *  to change its state.
- * @param label A [String] to be shown as the label for the component.
- * @param supportText Optional - [String] shown as a support text for the label on
- *  the component.
- * @param enabled Optional - controls the enabled state of the switch. When `false`,
- *  interaction is disabled and it is visually styled as such. Defaults to true.
- * @param interactionSource Optional [MutableInteractionSource] used to observe
- *  interaction states like hover and press to drive visual feedback.
- * @param modifier Optional [Modifier] to be applied to the root container of
- *  the switch.
+ * @param checked `true` when the switch is on
+ * @param onCheckedChange callback run with the new state when the user toggles the switch
+ * @param label text shown next to the switch
+ * @param supportText secondary text shown under [label]
+ * @param enabled when `false` the switch ignores input and renders as disabled
+ * @param interactionSource [MutableInteractionSource] observed for the hover and press states
+ *  that drive the visual feedback
+ * @param modifier [Modifier] applied to the root container of the switch
  */
 @Composable
 public fun LemonadeUi.Switch(
@@ -302,28 +287,32 @@ private class SwitchPreviewProvider : PreviewParameterProvider<SwitchPreviewData
 
     private fun buildAllVariants(): Sequence<SwitchPreviewData> =
         buildList {
-            listOf(true, false).forEach { checked ->
-                listOf(true, false).forEach { enabled ->
-                    listOf(true, false).forEach { withLabel ->
-                        listOf(true, false).forEach { withSupportText ->
-                            add(
-                                SwitchPreviewData(
-                                    checked = checked,
-                                    label = "Label".takeIf { withLabel },
-                                    supportText = "Support Text".takeIf { withSupportText },
-                                    enabled = enabled,
-                                ),
-                            )
+            listOf(true, false)
+                .forEach { checked ->
+                    listOf(true, false)
+                        .forEach { enabled ->
+                            listOf(true, false)
+                                .forEach { withLabel ->
+                                    listOf(true, false)
+                                        .forEach { withSupportText ->
+                                            add(
+                                                SwitchPreviewData(
+                                                    checked = checked,
+                                                    label = "Label".takeIf { withLabel },
+                                                    supportText = "Support Text".takeIf { withSupportText },
+                                                    enabled = enabled,
+                                                ),
+                                            )
+                                        }
+                                }
                         }
-                    }
                 }
-            }
         }.asSequence()
 }
 
 @LemonadePreview
 @Composable
-private fun LemonadeLabeledRadioButtonPreview(
+private fun LemonadeSwitchPreview(
     @PreviewParameter(SwitchPreviewProvider::class)
     previewData: SwitchPreviewData,
 ) {
@@ -333,13 +322,13 @@ private fun LemonadeLabeledRadioButtonPreview(
             supportText = previewData.supportText,
             checked = previewData.checked,
             enabled = previewData.enabled,
-            onCheckedChange = { /* Nothing */ },
+            onCheckedChange = { },
         )
     } else {
         LemonadeUi.Switch(
             checked = previewData.checked,
             enabled = previewData.enabled,
-            onCheckedChange = { /* Nothing */ },
+            onCheckedChange = { },
         )
     }
 }

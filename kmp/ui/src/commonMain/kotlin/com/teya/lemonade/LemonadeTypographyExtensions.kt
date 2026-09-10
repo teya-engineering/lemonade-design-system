@@ -11,19 +11,24 @@ import com.teya.lemonade.core.LemonadeTypography
 import org.jetbrains.compose.resources.Font
 
 /**
- * This font family is based on the Figtree font, which is a modern sans-serif typeface.
- * It is used throughout the app for various text styles, providing a clean and readable
- * typography that aligns with the Lemonade design system.
- *
- * See [Lemonade  typography](https://www.figma.com/design/mmSKfenwtw1xujWwXvs9wJ/Lemonade-DS---Foundations?node-id=207-17406&t=OWFace9zKbJJOo1E-4)
+ * Figtree font family every Lemonade text style renders with.
  *
  * See [Figtree font](https://fonts.google.com/specimen/Figtree)
  */
 public val lemonadeFontFamily: FontFamily
     @Composable get() {
-        val regular = Font(LemonadeRes.font.Figtree_Regular, FontWeight.Normal)
-        val medium = Font(LemonadeRes.font.Figtree_Medium, FontWeight.Medium)
-        val semiBold = Font(LemonadeRes.font.Figtree_SemiBold, FontWeight.SemiBold)
+        val regular = Font(
+            resource = LemonadeRes.font.Figtree_Regular,
+            weight = FontWeight.Normal,
+        )
+        val medium = Font(
+            resource = LemonadeRes.font.Figtree_Medium,
+            weight = FontWeight.Medium,
+        )
+        val semiBold = Font(
+            resource = LemonadeRes.font.Figtree_SemiBold,
+            weight = FontWeight.SemiBold,
+        )
         return remember(regular, medium, semiBold) {
             FontFamily(regular, medium, semiBold)
         }
@@ -65,7 +70,7 @@ public val LemonadeTextStyle.textStyle: TextStyle
     }
 
 /**
- * Convenience extension to convert a [LemonadeTypography] enum value directly to a Compose [TextStyle].
+ * Converts [LemonadeTypography] to a Compose [TextStyle].
  */
 public val LemonadeTypography.textStyle: TextStyle
     @Composable get() = style.textStyle

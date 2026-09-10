@@ -20,21 +20,23 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TagVoice
 
 /**
- * A compact label used to categorise, organise, or annotate content.
- *  Typically static and non-interactive.
+ * Shows a compact label that categorises or annotates content.
+ *
+ * The tag is static and does not react to input.
+ *
  * ## Usage
  * ```kotlin
  * LemonadeUi.Tag(
  *     icon = LemonadeIcons.Warning,
  *     label = "WARNING",
- *     voice = TagVoice.Caution,
+ *     voice = TagVoice.Warning,
  * )
  * ```
- * @param label - [String] to be displayed in the tag.
- * @param modifier - [Modifier] to be applied to the root container of the tag.
- * @param icon - optional [LemonadeIcons] to show as leading icon in the tag.
- * @param voice - [TagVoice] to define the tone of voice. This will effectively define
- *  color of the background alongside the text's and icon's tints. Defaults to [TagVoice.Neutral].
+ *
+ * @param label text shown in the tag
+ * @param modifier [Modifier] applied to the root container of the tag
+ * @param icon [LemonadeIcons] shown before the label
+ * @param voice [TagVoice] driving the background color and the label and icon tints
  */
 @Composable
 public fun LemonadeUi.Tag(
@@ -144,22 +146,23 @@ private class TagPreviewProvider :
 
     private fun buildAllVariants(): Sequence<TagPreviewData> =
         buildList {
-            listOf(true, false).forEach { withIcon ->
-                TagVoice.entries.forEach { voice ->
-                    add(
-                        element = TagPreviewData(
-                            voice = voice,
-                            withIcon = withIcon,
-                        ),
-                    )
+            listOf(true, false)
+                .forEach { withIcon ->
+                    TagVoice.entries.forEach { voice ->
+                        add(
+                            element = TagPreviewData(
+                                voice = voice,
+                                withIcon = withIcon,
+                            ),
+                        )
+                    }
                 }
-            }
         }.asSequence()
 }
 
 @Composable
 @LemonadePreview
-private fun SymbolContainerPreview(
+private fun LemonadeTagPreview(
     @PreviewParameter(TagPreviewProvider::class)
     previewData: TagPreviewData,
 ) {

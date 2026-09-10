@@ -25,7 +25,6 @@ import com.teya.lemonade.core.LemonadeListItemVoice
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-/** The default spring of `animateColorAsState`, which the highlight previously animated with. */
 private val HighlightAnimationSpec: SpringSpec<Float> = spring()
 
 /** Press/hover fill indication for interactive list items, handled entirely in the draw phase. */
@@ -93,9 +92,10 @@ private class ListItemHighlightNode(
         }
         highlightTarget = target
         val animatable = highlightFraction
-            ?: Animatable(initialValue = 0f).also { created ->
-                highlightFraction = created
-            }
+            ?: Animatable(initialValue = 0f)
+                .also { created ->
+                    highlightFraction = created
+                }
         animationJob?.cancel()
         animationJob = coroutineScope.launch {
             animatable.animateTo(

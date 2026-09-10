@@ -36,11 +36,17 @@ class SwipeRevealTest {
     @Test
     fun `nothing is drawn until the last half of the action`() {
         assertEquals(
-            expected = SwipeStripReveal(scale = 0f, stretch = 0f),
+            expected = SwipeStripReveal(
+                scale = 0f,
+                stretch = 0f,
+            ),
             actual = reveal(travel = 51f),
         )
         assertEquals(
-            expected = SwipeStripReveal(scale = 0f, stretch = 0f),
+            expected = SwipeStripReveal(
+                scale = 0f,
+                stretch = 0f,
+            ),
             actual = reveal(travel = 52f),
         )
     }
@@ -48,7 +54,10 @@ class SwipeRevealTest {
     @Test
     fun `the action grows with the row over that last half`() {
         assertEquals(
-            expected = SwipeStripReveal(scale = 0.5f, stretch = 0f),
+            expected = SwipeStripReveal(
+                scale = 0.5f,
+                stretch = 0f,
+            ),
             actual = reveal(travel = 64f),
         )
     }
@@ -56,7 +65,10 @@ class SwipeRevealTest {
     @Test
     fun `the action is at full size when the row rests open`() {
         assertEquals(
-            expected = SwipeStripReveal(scale = 1f, stretch = 0f),
+            expected = SwipeStripReveal(
+                scale = 1f,
+                stretch = 0f,
+            ),
             actual = reveal(travel = 76f),
         )
     }
@@ -64,7 +76,10 @@ class SwipeRevealTest {
     @Test
     fun `travel past the reveal stretches the action instead of scaling it`() {
         assertEquals(
-            expected = SwipeStripReveal(scale = 1f, stretch = 40f),
+            expected = SwipeStripReveal(
+                scale = 1f,
+                stretch = 40f,
+            ),
             actual = reveal(travel = 116f),
         )
     }
@@ -81,7 +96,11 @@ class SwipeRevealTest {
             val revealed = reveal(travel = travel)
             val leadingEdge = trailingPad + actionWidth / 2f +
                 actionWidth / 2f * revealed.scale + revealed.stretch
-            assertEquals(expected = travel - 12f, actual = leadingEdge, absoluteTolerance = 0.001f)
+            assertEquals(
+                expected = travel - 12f,
+                actual = leadingEdge,
+                absoluteTolerance = 0.001f,
+            )
             travel += 5f
         }
     }
@@ -93,12 +112,26 @@ class SwipeRevealTest {
     @Test
     fun `the outermost action waits for the whole strip before stretching`() {
         assertEquals(
-            expected = SwipeStripReveal(scale = 1f, stretch = 0f),
-            actual = reveal(travel = 132f, revealWidth = 76f, stripReveal = 132f),
+            expected = SwipeStripReveal(
+                scale = 1f,
+                stretch = 0f,
+            ),
+            actual = reveal(
+                travel = 132f,
+                revealWidth = 76f,
+                stripReveal = 132f,
+            ),
         )
         assertEquals(
-            expected = SwipeStripReveal(scale = 1f, stretch = 40f),
-            actual = reveal(travel = 172f, revealWidth = 76f, stripReveal = 132f),
+            expected = SwipeStripReveal(
+                scale = 1f,
+                stretch = 40f,
+            ),
+            actual = reveal(
+                travel = 172f,
+                revealWidth = 76f,
+                stripReveal = 132f,
+            ),
         )
     }
 
@@ -111,23 +144,65 @@ class SwipeRevealTest {
     fun `displaced actions dim as the swipe takes the row over`() {
         val rowWidth = 400f
         val tolerance = 0.001f
-        assertEquals(1f, resolveSwipeDisplacedOpacity(travel = 0f, rowWidth = rowWidth), tolerance)
-        assertEquals(1f, resolveSwipeDisplacedOpacity(travel = 220f, rowWidth = rowWidth), tolerance)
-        assertEquals(0.6f, resolveSwipeDisplacedOpacity(travel = 310f, rowWidth = rowWidth), tolerance)
-        assertEquals(0.2f, resolveSwipeDisplacedOpacity(travel = 400f, rowWidth = rowWidth), tolerance)
+        assertEquals(
+            expected = 1f,
+            actual = resolveSwipeDisplacedOpacity(
+                travel = 0f,
+                rowWidth = rowWidth,
+            ),
+            absoluteTolerance = tolerance,
+        )
+        assertEquals(
+            expected = 1f,
+            actual = resolveSwipeDisplacedOpacity(
+                travel = 220f,
+                rowWidth = rowWidth,
+            ),
+            absoluteTolerance = tolerance,
+        )
+        assertEquals(
+            expected = 0.6f,
+            actual = resolveSwipeDisplacedOpacity(
+                travel = 310f,
+                rowWidth = rowWidth,
+            ),
+            absoluteTolerance = tolerance,
+        )
+        assertEquals(
+            expected = 0.2f,
+            actual = resolveSwipeDisplacedOpacity(
+                travel = 400f,
+                rowWidth = rowWidth,
+            ),
+            absoluteTolerance = tolerance,
+        )
     }
 
     /** A row that has not measured yet must not dim anything. */
     @Test
     fun `nothing dims before the row has a width`() {
-        assertEquals(1f, resolveSwipeDisplacedOpacity(travel = 0f, rowWidth = 0f), 0.001f)
+        assertEquals(
+            expected = 1f,
+            actual = resolveSwipeDisplacedOpacity(
+                travel = 0f,
+                rowWidth = 0f,
+            ),
+            absoluteTolerance = 0.001f,
+        )
     }
 
     @Test
     fun `an empty strip is never drawn`() {
         assertEquals(
-            expected = SwipeStripReveal(scale = 0f, stretch = 0f),
-            actual = reveal(travel = 200f, actionWidth = 0f, revealWidth = 0f),
+            expected = SwipeStripReveal(
+                scale = 0f,
+                stretch = 0f,
+            ),
+            actual = reveal(
+                travel = 200f,
+                actionWidth = 0f,
+                revealWidth = 0f,
+            ),
         )
     }
 
@@ -138,16 +213,34 @@ class SwipeRevealTest {
     @Test
     fun `an action behind another is revealed against its own share`() {
         assertEquals(
-            expected = SwipeStripReveal(scale = 0f, stretch = 0f),
-            actual = reveal(travel = 108f, revealWidth = 132f),
+            expected = SwipeStripReveal(
+                scale = 0f,
+                stretch = 0f,
+            ),
+            actual = reveal(
+                travel = 108f,
+                revealWidth = 132f,
+            ),
         )
         assertEquals(
-            expected = SwipeStripReveal(scale = 0.5f, stretch = 0f),
-            actual = reveal(travel = 120f, revealWidth = 132f),
+            expected = SwipeStripReveal(
+                scale = 0.5f,
+                stretch = 0f,
+            ),
+            actual = reveal(
+                travel = 120f,
+                revealWidth = 132f,
+            ),
         )
         assertEquals(
-            expected = SwipeStripReveal(scale = 1f, stretch = 0f),
-            actual = reveal(travel = 132f, revealWidth = 132f),
+            expected = SwipeStripReveal(
+                scale = 1f,
+                stretch = 0f,
+            ),
+            actual = reveal(
+                travel = 132f,
+                revealWidth = 132f,
+            ),
         )
     }
 
@@ -166,10 +259,26 @@ class SwipeRevealTest {
                 padding = padding,
             )
         }
-        assertEquals(expected = 0f, actual = through(0), absoluteTolerance = 0.001f)
-        assertEquals(expected = 76f, actual = through(1), absoluteTolerance = 0.001f)
-        assertEquals(expected = 132f, actual = through(2), absoluteTolerance = 0.001f)
-        assertEquals(expected = 188f, actual = through(3), absoluteTolerance = 0.001f)
+        assertEquals(
+            expected = 0f,
+            actual = through(0),
+            absoluteTolerance = 0.001f,
+        )
+        assertEquals(
+            expected = 76f,
+            actual = through(1),
+            absoluteTolerance = 0.001f,
+        )
+        assertEquals(
+            expected = 132f,
+            actual = through(2),
+            absoluteTolerance = 0.001f,
+        )
+        assertEquals(
+            expected = 188f,
+            actual = through(3),
+            absoluteTolerance = 0.001f,
+        )
     }
 
     /** A row with no actions has nothing to open onto. */
@@ -177,7 +286,12 @@ class SwipeRevealTest {
     fun `a reveal with no actions is closed`() {
         assertEquals(
             expected = 0f,
-            actual = resolveSwipeRevealWidth(count = -1, actionWidth = 48f, gap = 8f, padding = 28f),
+            actual = resolveSwipeRevealWidth(
+                count = -1,
+                actionWidth = 48f,
+                gap = 8f,
+                padding = 28f,
+            ),
             absoluteTolerance = 0.001f,
         )
     }

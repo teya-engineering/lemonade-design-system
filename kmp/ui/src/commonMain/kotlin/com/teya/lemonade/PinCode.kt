@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadePinCodeVariant
 
 /**
- * A PIN code entry component rendering the entered characters as a row of boxes.
+ * Collects a PIN code, showing each entered character in its own box.
  *
  * Each box mirrors the styling of [LemonadeUi.TextField] — the same container shape, border,
  * focus ring, error and disabled states, font and height.
@@ -73,22 +73,22 @@ import com.teya.lemonade.core.LemonadePinCodeVariant
  * )
  * ```
  *
- * @param value The current entry. The component keeps it clamped to [length].
- * @param onValueChange Called whenever the entry changes.
- * @param variant Which system keyboard to request for input.
- * @param length The number of characters to enter. Defaults to 6.
- * @param error When true the boxes turn critical and shake. Re-triggers on each rising edge.
- * @param submitting When true the boxes show the disabled style and input is disabled.
- * @param autoFocus When true the field requests focus, opening the keyboard without a tap. Focus
+ * @param value current entry, kept clamped to [length]
+ * @param onValueChange called whenever the entry changes
+ * @param variant which system keyboard to request for input
+ * @param length number of characters to enter; defaults to 6
+ * @param error when true the boxes turn critical and shake, re-triggering on each rising edge
+ * @param submitting when true the boxes show the disabled style and input is disabled
+ * @param autoFocus when true the field requests focus, opening the keyboard without a tap. Focus
  *   is requested on first composition and again whenever the field becomes enabled (e.g. after
- *   [submitting] clears). Use for a screen whose only purpose is entering this code.
- * @param contentDescription Accessibility label for the input, announced by screen readers. The
- *   boxes carry no visible label, so set this to what the code is for (e.g. "Verification code").
- * @param oneTimeCodeAutofill When true the field offers the OS one-time-code autofill suggestion.
+ *   [submitting] clears). Use for a screen whose only purpose is entering this code
+ * @param contentDescription accessibility label for the input, announced by screen readers. The
+ *   boxes carry no visible label, so set this to what the code is for (e.g. "Verification code")
+ * @param oneTimeCodeAutofill when true the field offers the OS one-time-code autofill suggestion.
  *   Set false to suppress it on flows where the suggestion is unwanted (the keyboard's plain
- *   numeric/character input still works).
- * @param onComplete Called once when [value] reaches [length].
- * @param modifier The [Modifier] applied to the root container of the component.
+ *   numeric/character input still works)
+ * @param onComplete called once when [value] reaches [length]
+ * @param modifier optional [Modifier] applied to the root container
  */
 @ExperimentalLemonadeComponent
 @Composable
@@ -105,7 +105,10 @@ public fun LemonadeUi.PinCode(
     onComplete: ((String) -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
-    require(value = length > 0, lazyMessage = { "PinCode length must be greater than zero." })
+    require(
+        value = length > 0,
+        lazyMessage = { "PinCode length must be greater than zero." },
+    )
 
     val haptic = LocalHapticFeedback.current
     val shakeOffset = remember { Animatable(initialValue = 0f) }
@@ -118,26 +121,28 @@ public fun LemonadeUi.PinCode(
             ShakeKeyframes.forEach { target ->
                 shakeOffset.animateTo(
                     targetValue = target,
-                    animationSpec = tween(durationMillis = SHAKE_STEP_MILLIS, easing = LinearEasing),
+                    animationSpec = tween(
+                        durationMillis = SHAKE_STEP_MILLIS,
+                        easing = LinearEasing,
+                    ),
                 )
             }
         }
     }
 
     LaunchedEffect(value) {
-        // Keep [value] clamped to [length] even when set externally (e.g. restoring state),
-        // then report completion off the clamped result.
-        val clamped = value.take(n = length)
-        if (clamped != value) {
-            // The write-back re-runs this effect with the clamped value and reports there;
-            // returning avoids firing onComplete twice for one externally-set oversized value.
-            onValueChange(clamped)
-            return@LaunchedEffect
-        }
-        if (clamped.length == length) onComplete?.invoke(clamped)
+        clampToLengthAndReportCompletion(
+            value = value,
+            length = length,
+            onValueChange = onValueChange,
+            onComplete = onComplete,
+        )
     }
 
-    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
+    ) {
         PinCodeIndicator(
             value = value,
             length = length,
@@ -155,7 +160,7 @@ public fun LemonadeUi.PinCode(
             autoFocus = autoFocus,
             contentDescription = contentDescription,
             oneTimeCodeAutofill = oneTimeCodeAutofill,
-            onFocusChanged = { focused = it },
+            onFocusChanged = { hasFocus -> focused = hasFocus },
             modifier = Modifier.matchParentSize(),
         )
     }
@@ -280,14 +285,16 @@ private fun PinCodeIndicator(
 
     Row(
         modifier = modifier
-            .offset { IntOffset(x = shakeOffset.dp.roundToPx(), y = 0) }
-            .fillMaxWidth(),
+            .offset {
+                IntOffset(
+                    x = shakeOffset.dp.roundToPx(),
+                    y = 0,
+                )
+            }.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         repeat(times = length) { index ->
-            // The "active" cell — the next one to fill — shows the focus ring while the
-            // keyboard is up, matching a focused text field.
             val isActive = enabled && focused && index == filledCount
             PinCodeBox(
                 character = value.getOrNull(index = index),
@@ -354,9 +361,17 @@ private fun PinCodeBox(
                     Modifier
                 },
             ).clip(shape = shape)
-            .border(color = borderColor, width = LocalBorderWidths.current.base.border25, shape = shape)
-            .background(color = LocalColors.current.background.bgDefault, shape = shape)
-            .background(color = backgroundColor, shape = shape),
+            .border(
+                color = borderColor,
+                width = LocalBorderWidths.current.base.border25,
+                shape = shape,
+            ).background(
+                color = LocalColors.current.background.bgDefault,
+                shape = shape,
+            ).background(
+                color = backgroundColor,
+                shape = shape,
+            ),
         contentAlignment = Alignment.Center,
     ) {
         if (character != null) {
@@ -404,8 +419,7 @@ private fun PinCodeHiddenField(
     var fieldValue by remember { mutableStateOf(value = pinnedToEnd(text = clamped)) }
     // Resync from an effect — not during composition — when the entry changes underneath us: an
     // external write, or the parent clamping an oversized value. Overflow typing is already pinned
-    // in onValueChange below, so this only needs to track [clamped]. Mirrors the
-    // `LaunchedEffect(displayText)` idiom documented on LemonadeUi.TextFieldWithSelector.
+    // in onValueChange below, so this only needs to track [clamped].
     LaunchedEffect(clamped) {
         if (fieldValue.text != clamped) fieldValue = pinnedToEnd(text = clamped)
     }
@@ -431,13 +445,32 @@ private fun PinCodeHiddenField(
             .semantics {
                 if (contentDescription != null) this.contentDescription = contentDescription
                 if (!oneTimeCodeAutofill) contentDataType = ContentDataType.None
-            }.onFocusChanged { onFocusChanged(it.isFocused) },
+            }.onFocusChanged { focusState -> onFocusChanged(focusState.isFocused) },
     )
 }
 
-// A [TextFieldValue] holding [text] with the cursor collapsed to its end — the state the hidden
-// field is always driven to, so rejected overflow never leaves the caret parked past the digits.
-private fun pinnedToEnd(text: String): TextFieldValue = TextFieldValue(text = text, selection = TextRange(text.length))
+private fun clampToLengthAndReportCompletion(
+    value: String,
+    length: Int,
+    onValueChange: (String) -> Unit,
+    onComplete: ((String) -> Unit)?,
+) {
+    val clamped = value.take(n = length)
+    if (clamped != value) {
+        // The write-back re-runs the effect with the clamped value and reports there;
+        // returning avoids firing onComplete twice for one externally-set oversized value.
+        onValueChange(clamped)
+        return
+    }
+    if (clamped.length == length) onComplete?.invoke(clamped)
+}
+
+/** Collapses the caret to the end so rejected overflow never parks it past the digits. */
+private fun pinnedToEnd(text: String): TextFieldValue =
+    TextFieldValue(
+        text = text,
+        selection = TextRange(text.length),
+    )
 
 private const val FIELD_TEST_ID = "pin_code_field"
 
@@ -450,7 +483,7 @@ private const val SHAKE_STEP_MILLIS = 35
 private fun PinCodeNumericPreview() {
     LemonadeUi.PinCode(
         value = "123",
-        onValueChange = { /* preview only */ },
+        onValueChange = { },
     )
 }
 
@@ -459,7 +492,7 @@ private fun PinCodeNumericPreview() {
 private fun PinCodeNumericErrorPreview() {
     LemonadeUi.PinCode(
         value = "123",
-        onValueChange = { /* preview only */ },
+        onValueChange = { },
         error = true,
     )
 }
@@ -469,7 +502,7 @@ private fun PinCodeNumericErrorPreview() {
 private fun PinCodeNumericSubmittingPreview() {
     LemonadeUi.PinCode(
         value = "12",
-        onValueChange = { /* preview only */ },
+        onValueChange = { },
         submitting = true,
     )
 }
@@ -479,7 +512,7 @@ private fun PinCodeNumericSubmittingPreview() {
 private fun PinCodeAlphanumericPreview() {
     LemonadeUi.PinCode(
         value = "aB3",
-        onValueChange = { /* preview only */ },
+        onValueChange = { },
         variant = LemonadePinCodeVariant.Alphanumeric,
     )
 }

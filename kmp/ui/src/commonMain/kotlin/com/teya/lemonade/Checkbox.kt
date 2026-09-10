@@ -41,8 +41,9 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTextStyle
 
 /**
- * A form control that lets users select one or more options from a set.
- *  Supports checked, unchecked, and indeterminate states for flexible selection logic.
+ * Selects one or more options from a set.
+ *
+ * Supports checked, unchecked and indeterminate states.
  *
  * ## Usage
  * ```kotlin
@@ -55,14 +56,14 @@ import com.teya.lemonade.core.LemonadeTextStyle
  * )
  * ```
  *
- * @param status The current [CheckboxStatus] of the checkbox.
- * @param onCheckboxClicked A lambda that is invoked when the user clicks the checkbox.
- * @param label The primary text label displayed next to the checkbox.
- * @param modifier The [Modifier] to be applied to the entire component.
- * @param interactionSource Optional [MutableInteractionSource] used to observe interaction states
- *  like hover and press to drive visual feedback.
- * @param supportText Optional secondary text displayed below the label. If null, it is not shown.
- * @param enabled A boolean that controls the enabled state of the checkbox.
+ * @param status current [CheckboxStatus] of the checkbox
+ * @param onCheckboxClicked called when the user clicks the checkbox
+ * @param label primary text shown next to the checkbox
+ * @param modifier [Modifier] applied to the whole component
+ * @param interactionSource optional [MutableInteractionSource] observing hover and press to drive
+ *  the visual feedback
+ * @param supportText optional secondary text shown below the label, hidden when null
+ * @param enabled whether the checkbox responds to clicks
  */
 @Composable
 public fun LemonadeUi.Checkbox(
@@ -74,7 +75,8 @@ public fun LemonadeUi.Checkbox(
     supportText: String? = null,
     enabled: Boolean = true,
 ) {
-    val props = defaultPlatformCheckboxProps().copy(focusVisible = true)
+    val props = defaultPlatformCheckboxProps()
+        .copy(focusVisible = true)
     Row(
         horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),
         modifier = modifier
@@ -118,8 +120,9 @@ public fun LemonadeUi.Checkbox(
 }
 
 /**
- * This composable displays only the visual checkbox element. It's useful for custom layouts
- * where the label is handled separately.
+ * Shows the checkbox box on its own, without a label.
+ *
+ * Use it in custom layouts that place the label separately.
  *
  * ## Usage
  * ```kotlin
@@ -130,12 +133,12 @@ public fun LemonadeUi.Checkbox(
  * )
  * ```
  *
- * @param status The current [CheckboxStatus] of the checkbox.
- * @param onCheckboxClicked A lambda that is invoked when the user clicks the checkbox.
- * @param modifier The [Modifier] to be applied to the checkbox.
- * @param interactionSource Optional [MutableInteractionSource] used to observe interaction states
- *  like hover and press to drive visual feedback.
- * @param enabled A boolean that controls the enabled state of the checkbox.
+ * @param status current [CheckboxStatus] of the checkbox
+ * @param onCheckboxClicked called when the user clicks the checkbox
+ * @param modifier [Modifier] applied to the checkbox
+ * @param interactionSource optional [MutableInteractionSource] observing hover and press to drive
+ *  the visual feedback
+ * @param enabled whether the checkbox responds to clicks
  */
 @Suppress("UnusedParameter")
 @Composable
@@ -290,12 +293,12 @@ internal fun LemonadeCheckboxPreview() {
         CheckboxStatus.entries.forEach { status ->
             LemonadeUi.Checkbox(
                 status = status,
-                onCheckboxClicked = { /* Nothing */ },
+                onCheckboxClicked = { },
                 enabled = true,
             )
             LemonadeUi.Checkbox(
                 status = status,
-                onCheckboxClicked = { /* Nothing */ },
+                onCheckboxClicked = { },
                 enabled = false,
             )
         }
@@ -318,14 +321,14 @@ internal fun LemonadeLabeledCheckboxPreview() {
                 label = "Label",
                 supportText = "Support text",
                 status = status,
-                onCheckboxClicked = { /* Nothing */ },
+                onCheckboxClicked = { },
                 enabled = true,
             )
             LemonadeUi.Checkbox(
                 label = "Label",
                 supportText = "Support text",
                 status = status,
-                onCheckboxClicked = { /* Nothing */ },
+                onCheckboxClicked = { },
                 enabled = false,
             )
         }

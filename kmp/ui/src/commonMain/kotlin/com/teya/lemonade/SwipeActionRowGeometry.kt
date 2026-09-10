@@ -14,13 +14,13 @@ import kotlin.math.abs
 /**
  * Fraction of the row's width a drag must cross for a full swipe to commit.
  *
- * Measured off iOS frame by frame: a 440pt row commits as the drag passes 240pt, which is 0.546 of
- * it. Far enough past halfway that the reader has to mean it.
+ * Far enough past halfway that the reader has to mean it: a 440px row commits as the drag passes
+ * 242px of it.
  */
 private const val COMMIT_FRACTION = 0.55f
 
 /**
- * Travel a drag has to cross for a full swipe to commit, for a row [rowWidth] px wide.
+ * Travel a drag must cross to commit, on a row [rowWidth] px wide.
  *
  * One place, because everything hangs off it: the haptic, the icon's slide, the strip's dimming,
  * where the row parks, and whether a release fires the action. Restating it is how the five drift.
@@ -131,8 +131,9 @@ internal fun swipeCrossedCommit(
 private const val DECELERATION_RATE = 0.998f
 
 /**
- * Travel that rests the row on the first [count] actions: the whole reveal at every action, and one
- * action's own share of it at its index plus one.
+ * Travel that rests the row on its first [count] actions.
+ *
+ * The whole reveal at every action, and one action's own share of it at its index plus one.
  *
  * Computed rather than measured: the strip changes width as the first action stretches, so anything
  * measured off it would move under the model driving it.
@@ -155,8 +156,10 @@ internal fun resolveSwipeRevealWidth(
 }
 
 /**
- * Where a drag that let go at [velocity] px/s would have come to rest: the distance a second of that
- * speed covers, scaled by how long the deceleration takes to eat it.
+ * Where a drag that let go at [velocity] px/s would have come to rest.
+ *
+ * The distance a second of that speed covers, scaled by how long [DECELERATION_RATE] takes to eat
+ * it.
  */
 private fun projectedTravel(
     travel: Float,
@@ -184,7 +187,10 @@ internal fun resolveSwipeReleasedTravel(
     if (threshold <= 0f) {
         return travel
     }
-    return minOf(travel * (commitTravel / threshold), commitTravel)
+    return minOf(
+        a = travel * (commitTravel / threshold),
+        b = commitTravel,
+    )
 }
 
 /** Where a released drag lands. */
@@ -241,7 +247,8 @@ internal fun resolveSwipeSettle(
     }
 
 /**
- * Opacity an action being pushed along has dimmed to once the row has travelled its whole width.
+ * Opacity a displaced action dims to once the row has travelled its full width.
+ *
  * `opacity20`, held as a plain number so the reveal stays resolvable without a theme.
  */
 private const val DISPLACED_FLOOR = 0.2f
@@ -264,7 +271,11 @@ internal fun resolveSwipeDisplacedOpacity(
     if (rowWidth <= takeover) {
         return 1f
     }
-    val progress = ((travel - takeover) / (rowWidth - takeover)).coerceIn(0f, 1f)
+    val progress = ((travel - takeover) / (rowWidth - takeover))
+        .coerceIn(
+            minimumValue = 0f,
+            maximumValue = 1f,
+        )
     return 1f - (1f - DISPLACED_FLOOR) * progress
 }
 
@@ -275,7 +286,7 @@ internal data class SwipeStripReveal(
      * arriving grows and appears as one movement.
      */
     val scale: Float,
-    /** Width added to the leading side of the first action once the strip is at full size. */
+    /** Width added to the first action's leading side once the strip is full size. */
     val stretch: Float,
 )
 
@@ -312,7 +323,10 @@ internal fun resolveSwipeStripReveal(
     actionWidth: Float,
 ): SwipeStripReveal {
     if (actionWidth <= 0f) {
-        return SwipeStripReveal(scale = 0f, stretch = 0f)
+        return SwipeStripReveal(
+            scale = 0f,
+            stretch = 0f,
+        )
     }
     // An action grows over the last half of its own width. Scaling about its centre, that walks its
     // leading edge out at exactly the rate the row is travelling — so from nothing to full size,
@@ -320,7 +334,10 @@ internal fun resolveSwipeStripReveal(
     // of the row. The action *is* the gap the row has opened, at every point of the drag.
     val growth = actionWidth / 2f
     val scale = ((travel - (actionReveal - growth)) / growth)
-        .coerceIn(minimumValue = 0f, maximumValue = 1f)
+        .coerceIn(
+            minimumValue = 0f,
+            maximumValue = 1f,
+        )
     return SwipeStripReveal(
         scale = scale,
         stretch = (travel - stripReveal).coerceAtLeast(minimumValue = 0f),

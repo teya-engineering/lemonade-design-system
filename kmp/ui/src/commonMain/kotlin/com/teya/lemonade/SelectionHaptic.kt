@@ -14,7 +14,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
  * emission seeds the initial state without buzzing.
  *
  * Shared by every component that presents a selectable surface, so the feel of "this was
- * selected" is defined in one place. The SwiftUI counterpart is `selectionImpactFeedback`.
+ * selected" is defined in one place.
  */
 @Composable
 internal fun SelectionHapticEffect(selected: Boolean) {

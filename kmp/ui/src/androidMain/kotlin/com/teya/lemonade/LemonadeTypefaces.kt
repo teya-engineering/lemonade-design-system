@@ -13,13 +13,10 @@ import org.jetbrains.compose.resources.getSystemResourceEnvironment
 
 /**
  * Returns the Android [Typeface] matching this text style's font weight.
- * Typefaces are cached after first load.
  *
- * This is the Android equivalent of the iOS `LemonadeTextStyle.uiFont` property,
- * intended for native SDK integrations that require [android.graphics.Typeface]
- * outside of Compose context.
- *
- * For Compose usage, prefer [lemonadeFontFamily] and [textStyle] instead.
+ * Typefaces are cached after first load. Use this for native SDK integrations that need an
+ * [android.graphics.Typeface] outside a Compose context; in Compose, prefer [lemonadeFontFamily] and
+ * [textStyle].
  */
 public fun LemonadeTextStyle.androidTypeface(context: Context): Typeface {
     val fontResource = fontWeight.toFontResource()

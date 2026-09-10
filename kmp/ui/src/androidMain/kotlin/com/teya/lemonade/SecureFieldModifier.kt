@@ -37,15 +37,18 @@ private tailrec fun Context.findActivity(): Activity? =
     }
 
 /**
- * Reference-counts `FLAG_SECURE` per window so that, with several secure regions
- * on screen, disposing one does not clear the flag while others remain. Only
- * touched from the main (composition) thread, so no synchronisation is needed.
+ * Reference-counts `FLAG_SECURE` per window.
+ *
+ * With several secure regions on screen, disposing one does not clear the flag while others remain.
+ * Only touched from the main (composition) thread, so no synchronisation is needed.
  */
 private object SecureFlag {
     private val counts = mutableMapOf<Window, Int>()
 
     fun acquire(window: Window) {
-        val count = (counts[window] ?: 0) + 1
+        val previous = counts[window]
+            ?: 0
+        val count = previous + 1
         counts[window] = count
         if (count == 1) {
             window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
@@ -53,7 +56,8 @@ private object SecureFlag {
     }
 
     fun release(window: Window) {
-        val count = counts[window] ?: return // never acquired here — leave the host's flag untouched
+        val count = counts[window]
+            ?: return // never acquired here — leave the host's flag untouched
         if (count <= 1) {
             counts.remove(window)
             window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)

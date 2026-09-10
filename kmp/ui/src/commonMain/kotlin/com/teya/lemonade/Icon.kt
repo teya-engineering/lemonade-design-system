@@ -16,28 +16,26 @@ import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 
 /**
- * Icon component, to indication status and possible actions via iconography
+ * Shows status and possible actions through iconography.
  *
- * Icons are small images with predefined sizes that can or cannot be clickable and explains
- *  behaviour to the users visually.
+ * Icons come in predefined sizes and can be made clickable by the caller.
  *
  * ## Usage
  * ```kotlin
  * LemonadeUi.Icon(
- *     text = LemonadeIcons.Close,
+ *     icon = LemonadeIcons.Close,
  *     contentDescription = "Close icon",
- *     size = LemonadeIconSize.Medium,
+ *     size = LemonadeAssetSize.Medium,
  *     tint = LocalColors.current.content.contentPrimary,
  * )
  * ```
  *
- * ## Parameters
- * @param icon: The [LemonadeIcons] to be displayed.
- * @param contentDescription A **localized** text that describes the icon or its action.
- *  Optional, but strongly recommended.
- * @param size: The [LemonadeAssetSize] to be applied to the icon. Defaults to [LemonadeAssetSize.Medium]
- * @param tint: The tint color to be applied to the icon. Defaults to the primary color of the [LemonadeTheme]
- * @param Modifier: Optional [Modifier] for additional styling and layout adjustments.
+ * @param icon [LemonadeIcons] to display
+ * @param contentDescription a **localized** text that describes the icon or its action.
+ *  Optional, but strongly recommended
+ * @param size [LemonadeAssetSize] applied to the icon, defaults to [LemonadeAssetSize.Medium]
+ * @param tint tint color applied to the icon, defaults to the primary content color of [LemonadeTheme]
+ * @param modifier optional [Modifier] for additional styling and layout adjustments
  */
 @Composable
 public fun LemonadeUi.Icon(

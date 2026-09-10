@@ -47,7 +47,8 @@ import com.teya.lemonade.core.LemonadeTextStyle
 import com.teya.lemonade.core.TabButtonProperties
 
 /**
- * A horizontal control used to select a single option from a set of two or more segments.
+ * Selects a single option from two or more horizontal segments.
+ *
  * Ideal for toggling between views or filtering content.
  *
  * ## Usage
@@ -63,11 +64,11 @@ import com.teya.lemonade.core.TabButtonProperties
  * )
  * ```
  *
- * @param properties A list of [TabButtonProperties] that represent the tab buttons' information.
- * @param selectedTab [Int] that indicates what is the index of the selected tab.
- * @param onTabSelected A callback invoked when a tab is selected.
- * @param size The size of the segmented control. Defaults to [LemonadeSegmentedControlSize.Large].
- * @param modifier The [Modifier] to be applied to the root container of the component.
+ * @param properties the tab buttons to draw
+ * @param selectedTab index of the selected tab
+ * @param onTabSelected called with the index of the newly selected tab
+ * @param size size of the control; defaults to [LemonadeSegmentedControlSize.Large]
+ * @param modifier optional [Modifier] applied to the root container
  */
 @Composable
 public fun LemonadeUi.SegmentedControl(
@@ -145,7 +146,6 @@ internal fun CoreSegmentedControl(
         maximumValue = tabCount - 1,
     )
 
-    // Find which non-selected tab is being pressed (for sticky expand)
     val pressedNonSelectedIndex by remember {
         derivedStateOf {
             pressedTabIndex.entries
@@ -161,7 +161,6 @@ internal fun CoreSegmentedControl(
         }
     }
 
-    // Indicator stretches toward the pressed tab
     val baseWidth = tabWidths[selectedIndex]
         ?: 0.dp
     val baseOffset = tabOffsets[selectedIndex]
@@ -173,11 +172,9 @@ internal fun CoreSegmentedControl(
         val pressedOffset = tabOffsets[pressedNonSelectedIndex]
             ?: baseOffset
         if (pressedOffset > baseOffset) {
-            // Pressed tab is to the right — stretch right edge
             targetWidth = baseWidth + stretchAmount
             targetOffset = baseOffset
         } else {
-            // Pressed tab is to the left — stretch left edge
             targetWidth = baseWidth + stretchAmount
             targetOffset = baseOffset - stretchAmount
         }
@@ -214,28 +211,15 @@ internal fun CoreSegmentedControl(
             ).clip(shape = pillShape)
             .padding(all = size.containerPadding()),
     ) {
-        // Sliding indicator
         if (hasMeasurements) {
-            Box(
-                modifier = Modifier
-                    .offset {
-                        IntOffset(
-                            x = with(density) { indicatorOffset.roundToPx() },
-                            y = 0,
-                        )
-                    }.width(width = indicatorWidth)
-                    .fillMaxHeight()
-                    .animateLemonadeShadow(
-                        shape = pillShape,
-                        shadow = LemonadeShadow.Xsmall,
-                    ).background(
-                        color = LocalColors.current.background.bgDefault,
-                        shape = pillShape,
-                    ),
+            SlidingIndicator(
+                indicatorOffset = indicatorOffset,
+                indicatorWidth = indicatorWidth,
+                density = density,
+                pillShape = pillShape,
             )
         }
 
-        // Tab buttons
         SegmentedControlTabRow(
             tabCount = tabCount,
             selectedTab = selectedTab,
@@ -249,6 +233,33 @@ internal fun CoreSegmentedControl(
             content = content,
         )
     }
+}
+
+@Composable
+private fun SlidingIndicator(
+    indicatorOffset: Dp,
+    indicatorWidth: Dp,
+    density: Density,
+    pillShape: RoundedCornerShape,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .offset {
+                IntOffset(
+                    x = with(density) { indicatorOffset.roundToPx() },
+                    y = 0,
+                )
+            }.width(width = indicatorWidth)
+            .fillMaxHeight()
+            .animateLemonadeShadow(
+                shape = pillShape,
+                shadow = LemonadeShadow.Xsmall,
+            ).background(
+                color = LocalColors.current.background.bgDefault,
+                shape = pillShape,
+            ),
+    )
 }
 
 @Composable
@@ -409,11 +420,17 @@ private val IndicatorSpringSpec = spring<Dp>(
 @Composable
 private fun SegmentedControlPreview() {
     LemonadeUi.SegmentedControl(
-        onTabSelected = { /* preview only */ },
+        onTabSelected = { },
         selectedTab = 1,
         properties = listOf(
-            TabButtonProperties.labelAndIcon(label = "Tab 1", icon = LemonadeIcons.Heart),
-            TabButtonProperties.labelAndIcon(label = "Tab 2", icon = LemonadeIcons.Laptop),
+            TabButtonProperties.labelAndIcon(
+                label = "Tab 1",
+                icon = LemonadeIcons.Heart,
+            ),
+            TabButtonProperties.labelAndIcon(
+                label = "Tab 2",
+                icon = LemonadeIcons.Laptop,
+            ),
             TabButtonProperties.label(label = "Tab 3"),
         ),
     )

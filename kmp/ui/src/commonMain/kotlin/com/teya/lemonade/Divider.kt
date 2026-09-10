@@ -34,9 +34,9 @@ import com.teya.lemonade.core.DividerVariant
  * LemonadeUi.HorizontalDivider(variant = DividerVariant.Dashed)
  * ```
  *
- * @param modifier - [Modifier] to be applied to the divider.
- * @param label - Optional [String] label to display in the center of the divider.
- * @param variant - [DividerVariant] of the divider. Defaults to [DividerVariant.Solid].
+ * @param modifier [Modifier] applied to the divider
+ * @param label optional label shown in the center of the divider
+ * @param variant [DividerVariant] of the divider, defaults to [DividerVariant.Solid]
  */
 @Composable
 public fun LemonadeUi.HorizontalDivider(
@@ -107,8 +107,14 @@ private fun CoreHorizontalDivider(
 
         drawLine(
             color = color,
-            start = Offset(0f, size.height / 2),
-            end = Offset(size.width, size.height / 2),
+            start = Offset(
+                x = 0f,
+                y = size.height / 2,
+            ),
+            end = Offset(
+                x = size.width,
+                y = size.height / 2,
+            ),
             strokeWidth = thickness.toPx(),
             pathEffect = pathEffect,
         )
@@ -127,8 +133,8 @@ private fun CoreHorizontalDivider(
  * LemonadeUi.VerticalDivider(variant = DividerVariant.Dashed)
  * ```
  *
- * @param modifier - [Modifier] to be applied to the divider.
- * @param variant - [DividerVariant] of the divider. Defaults to [DividerVariant.Solid].
+ * @param modifier [Modifier] applied to the divider
+ * @param variant [DividerVariant] of the divider, defaults to [DividerVariant.Solid]
  */
 @Composable
 public fun LemonadeUi.VerticalDivider(
@@ -172,15 +178,19 @@ private fun CoreVerticalDivider(
 
         drawLine(
             color = color,
-            start = Offset(size.width / 2, 0f),
-            end = Offset(size.width / 2, size.height),
+            start = Offset(
+                x = size.width / 2,
+                y = 0f,
+            ),
+            end = Offset(
+                x = size.width / 2,
+                y = size.height,
+            ),
             strokeWidth = thickness.toPx(),
             pathEffect = pathEffect,
         )
     }
 }
-
-// region Previews
 
 private data class HorizontalDividerPreviewData(
     val label: String?,
@@ -193,16 +203,17 @@ private class HorizontalDividerPreviewProvider :
 
     private fun buildAllVariants(): Sequence<HorizontalDividerPreviewData> =
         buildList {
-            listOf(null, "OR").forEach { label ->
-                DividerVariant.entries.forEach { variant ->
-                    add(
-                        HorizontalDividerPreviewData(
-                            label = label,
-                            variant = variant,
-                        ),
-                    )
+            listOf(null, "OR")
+                .forEach { label ->
+                    DividerVariant.entries.forEach { variant ->
+                        add(
+                            HorizontalDividerPreviewData(
+                                label = label,
+                                variant = variant,
+                            ),
+                        )
+                    }
                 }
-            }
         }.asSequence()
 }
 
@@ -244,5 +255,3 @@ private fun VerticalDividerPreview(
         variant = previewData.variant,
     )
 }
-
-// endregion

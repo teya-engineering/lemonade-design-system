@@ -11,27 +11,73 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class TooltipPositioningTest {
-    private val host = Size(width = 393f, height = 852f)
-    private val topAnchor = Rect(offset = Offset(x = 142f, y = 185f), size = Size(109f, 36f))
-    private val bottomAnchor = Rect(offset = Offset(x = 123f, y = 461f), size = Size(146f, 36f))
+    private val host = Size(
+        width = 393f,
+        height = 852f,
+    )
+    private val topAnchor = Rect(
+        offset = Offset(
+            x = 142f,
+            y = 185f,
+        ),
+        size = Size(
+            width = 109f,
+            height = 36f,
+        ),
+    )
+    private val bottomAnchor = Rect(
+        offset = Offset(
+            x = 123f,
+            y = 461f,
+        ),
+        size = Size(
+            width = 146f,
+            height = 36f,
+        ),
+    )
 
     /** A leading-edge icon, with room beside it for a tooltip pointing left at it. */
-    private val leadingAnchor = Rect(offset = Offset(x = 16f, y = 400f), size = Size(40f, 40f))
+    private val leadingAnchor = Rect(
+        offset = Offset(
+            x = 16f,
+            y = 400f,
+        ),
+        size = Size(
+            width = 40f,
+            height = 40f,
+        ),
+    )
 
     /** The same icon on the trailing edge, for a tooltip pointing right at it. */
-    private val trailingAnchor = Rect(offset = Offset(x = 337f, y = 400f), size = Size(40f, 40f))
+    private val trailingAnchor = Rect(
+        offset = Offset(
+            x = 337f,
+            y = 400f,
+        ),
+        size = Size(
+            width = 40f,
+            height = 40f,
+        ),
+    )
 
     /** 1:1 so the expected values below can be read straight off the dp constants. */
     private val density = Density(density = 1f)
 
     /** A title-and-content tooltip: 280dp of body plus the 8dp the side indicator adds. */
-    private val sideTooltip = Size(width = 288f, height = 76f)
+    private val sideTooltip = Size(
+        width = 288f,
+        height = 76f,
+    )
 
     @Test
     fun `auto placement puts the tooltip below an anchor in the top half`() {
         assertEquals(
             expected = TooltipIndicatorEdge.Top,
-            actual = resolveTooltipEdge(anchor = topAnchor, hostSize = host, forcedPlacement = null),
+            actual = resolveTooltipEdge(
+                anchor = topAnchor,
+                hostSize = host,
+                forcedPlacement = null,
+            ),
         )
     }
 
@@ -111,8 +157,14 @@ class TooltipPositioningTest {
         )
 
         // Anchor right edge plus the 4dp gap, and centred on the anchor vertically.
-        assertEquals(expected = 60, actual = offset.x)
-        assertEquals(expected = 420 - 76 / 2, actual = offset.y)
+        assertEquals(
+            expected = 60,
+            actual = offset.x,
+        )
+        assertEquals(
+            expected = 420 - 76 / 2,
+            actual = offset.y,
+        )
     }
 
     @Test
@@ -126,8 +178,14 @@ class TooltipPositioningTest {
         )
 
         // Anchor left edge, less the 4dp gap and the tooltip's own width.
-        assertEquals(expected = 337 - 4 - 288, actual = offset.x)
-        assertEquals(expected = 420 - 76 / 2, actual = offset.y)
+        assertEquals(
+            expected = 337 - 4 - 288,
+            actual = offset.x,
+        )
+        assertEquals(
+            expected = 420 - 76 / 2,
+            actual = offset.y,
+        )
     }
 
     @Test
@@ -153,8 +211,14 @@ class TooltipPositioningTest {
         // Both point at the anchor's centre, 420dp down: the offset from the tooltip's top edge to
         // the indicator is 24dp of inset plus half of the 15dp base for the top variant, and 13dp
         // further down for the bottom one.
-        assertEquals(expected = 389, actual = top.y)
-        assertEquals(expected = 376, actual = bottom.y)
+        assertEquals(
+            expected = 389,
+            actual = top.y,
+        )
+        assertEquals(
+            expected = 376,
+            actual = bottom.y,
+        )
     }
 
     @Test
@@ -174,6 +238,9 @@ class TooltipPositioningTest {
             )
         }
 
-        assertEquals(expected = listOf(20f, 20f, 20f), actual = positions)
+        assertEquals(
+            expected = listOf(20f, 20f, 20f),
+            actual = positions,
+        )
     }
 }

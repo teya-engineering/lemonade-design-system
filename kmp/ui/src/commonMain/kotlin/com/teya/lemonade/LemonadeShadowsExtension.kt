@@ -76,7 +76,8 @@ private fun Modifier.dropShadow(
         dropShadow(
             shape = shape,
             shadow = Shadow(
-                color = shadowColor ?: LocalColors.current.shadow.shadowDefault,
+                color = shadowColor
+                    ?: LocalColors.current.shadow.shadowDefault,
                 radius = lemonadeShadow.blur.dp,
                 spread = lemonadeShadow.spread.dp,
                 offset = DpOffset(
