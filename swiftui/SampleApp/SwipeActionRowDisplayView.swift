@@ -19,6 +19,9 @@ struct SwipeActionRowDisplayView: View {
     @State private var removed: Set<String> = []
     @State private var fired = 0
     @State private var pinned = false
+    @State private var read = false
+    @State private var bothEdgesRead = false
+    @State private var deleted = 0
     /// The caller decides which row is open, including before anyone has touched one.
     @State private var startsOpenId: AnyHashable? = "unread"
     /// The row a swipe has asked to remove, held until the reader confirms it.
@@ -41,7 +44,7 @@ struct SwipeActionRowDisplayView: View {
                             LemonadeUi.SwipeActionRow(
                                 id: account.id,
                                 openId: $openId,
-                                actions: [
+                                trailingActions: [
                                     LemonadeSwipeAction(
                                         icon: .trash,
                                         contentDescription: "Remove \(account.name)",
@@ -86,7 +89,7 @@ struct SwipeActionRowDisplayView: View {
                         LemonadeUi.SwipeActionRow(
                             id: "unread",
                             openId: $startsOpenId,
-                            actions: [
+                            trailingActions: [
                                 LemonadeSwipeAction(
                                     icon: .envelope,
                                     contentDescription: "Mark unread",
@@ -112,7 +115,7 @@ struct SwipeActionRowDisplayView: View {
                         )
                     ) {
                         LemonadeUi.SwipeActionRow(
-                            actions: [
+                            trailingActions: [
                                 LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: { }),
                                 LemonadeSwipeAction(
                                     icon: .pencilLine,
@@ -140,7 +143,7 @@ struct SwipeActionRowDisplayView: View {
                         )
                     ) {
                         LemonadeUi.SwipeActionRow(
-                            actions: [
+                            trailingActions: [
                                 LemonadeSwipeAction(
                                     icon: .trash,
                                     contentDescription: "Delete",
@@ -166,12 +169,78 @@ struct SwipeActionRowDisplayView: View {
                     }
                     LemonadeUi.Card(
                         header: CardHeaderConfig(
+                            title: "Leading actions",
+                            subtitle: "Drag right. Nothing sits on the trailing edge, so dragging left does nothing."
+                        )
+                    ) {
+                        LemonadeUi.SwipeActionRow(
+                            leadingActions: [
+                                LemonadeSwipeAction(
+                                    icon: .check,
+                                    contentDescription: "Mark as read",
+                                    onClick: { read.toggle() },
+                                    variant: .primary
+                                )
+                            ]
+                        ) {
+                            LemonadeUi.ActionListItem(
+                                label: "Leading only",
+                                supportText: read ? "Read" : "Unread",
+                                showDivider: false,
+                                onItemClicked: { }
+                            )
+                        }
+                    }
+
+                    LemonadeUi.Card(
+                        header: CardHeaderConfig(
+                            title: "Both edges",
+                            subtitle: "Each edge has its own actions. One drag reveals one edge, and can fire it."
+                        )
+                    ) {
+                        LemonadeUi.SwipeActionRow(
+                            leadingActions: [
+                                LemonadeSwipeAction(
+                                    icon: .check,
+                                    contentDescription: "Mark as read",
+                                    onClick: { bothEdgesRead.toggle() },
+                                    variant: .primary
+                                ),
+                                LemonadeSwipeAction(
+                                    icon: .star,
+                                    contentDescription: "Star",
+                                    onClick: { },
+                                    variant: .neutral
+                                )
+                            ],
+                            trailingActions: [
+                                LemonadeSwipeAction(
+                                    icon: .trash,
+                                    contentDescription: "Delete",
+                                    onClick: { deleted += 1 }
+                                )
+                            ]
+                        ) {
+                            LemonadeUi.ActionListItem(
+                                label: "Both edges",
+                                // Counted rather than removed, so either swipe can be tried again.
+                                supportText: deleted > 0
+                                    ? "Delete fired \(deleted)×"
+                                    : (bothEdgesRead ? "Read" : "Unread"),
+                                showDivider: false,
+                                onItemClicked: { }
+                            )
+                        }
+                    }
+
+                    LemonadeUi.Card(
+                        header: CardHeaderConfig(
                             title: "Any icon, any variant",
                             subtitle: "An action is an icon, a description and a closure. Nothing here removes the row."
                         )
                     ) {
                         LemonadeUi.SwipeActionRow(
-                            actions: [
+                            trailingActions: [
                                 LemonadeSwipeAction(
                                     icon: .pin,
                                     contentDescription: "Pin",
@@ -203,7 +272,7 @@ struct SwipeActionRowDisplayView: View {
                         )
                     ) {
                         LemonadeUi.SwipeActionRow(
-                            actions: [
+                            trailingActions: [
                                 LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: { }),
                                 LemonadeSwipeAction(
                                     icon: .pin,
@@ -236,7 +305,7 @@ struct SwipeActionRowDisplayView: View {
                         )
                     ) {
                         LemonadeUi.SwipeActionRow(
-                            actions: [
+                            trailingActions: [
                                 LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: { })
                             ],
                             allowsFullSwipe: false
@@ -252,7 +321,7 @@ struct SwipeActionRowDisplayView: View {
                         )
                     ) {
                         LemonadeUi.SwipeActionRow(
-                            actions: [
+                            trailingActions: [
                                 LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: { })
                             ],
                             enabled: false
