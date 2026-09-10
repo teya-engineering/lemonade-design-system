@@ -40,6 +40,9 @@ can be added to an existing app without affecting any current component.
 | `@teya/lemonade-ds/icon.css` | The `.lmnd-icon` mask utility |
 | `@teya/lemonade-ds/lemonade.css` | Everything in one self-contained file, for prototypes |
 | `@teya/lemonade-ds/llms.txt` | Token reference for AI tools |
+| `@teya/lemonade-ds/icons/*.svg` | 286 icons, `currentColor` |
+| `@teya/lemonade-ds/flags/*.svg` | 265 flags |
+| `@teya/lemonade-ds/brand-logos/*.svg` | 39 brand logos |
 
 ## Repository layout — generated vs built
 
@@ -47,7 +50,7 @@ Two different kinds of output live here, and the distinction matters:
 
 | | Where | Committed? | Written by |
 |---|---|---|---|
-| **Generated** | `styles/*.css`, `src/*.generated.ts`, `llms.txt`, `tokens.json` | **yes** | `scripts/web-*.main.kts` (Kotlin) |
+| **Generated** | `styles/*.css`, `src/*.generated.ts`, `assets/**`, `llms.txt`, `tokens.json` | **yes** | `scripts/web-*.main.kts` (Kotlin) |
 | **Built** | `dist/**` — bundled JS, type declarations, `fonts.css`, optimized `assets/**` | no (gitignored) | `npm run build` |
 
 Generated files are committed on purpose: `token_drift.yml` regenerates them and fails

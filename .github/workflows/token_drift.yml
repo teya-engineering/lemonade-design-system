@@ -19,6 +19,7 @@ on:
       - 'web/src/*.generated.ts'
       - 'web/llms.txt'
       - 'web/tokens.json'
+      - 'web/assets/**'
       - '.claude/skills/generate-tokens/**'
       - '.github/workflows/token_drift.yml'
 
