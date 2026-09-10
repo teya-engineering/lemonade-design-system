@@ -1,0 +1,220 @@
+[
+  {
+    "css": "display-xsmall",
+    "name": "displayXSmall",
+    "letterSpacing": -0.25,
+    "fontSize": "font-size-600",
+    "lineHeight": "line-height-800",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "display-small",
+    "name": "displaySmall",
+    "letterSpacing": -0.25,
+    "fontSize": "font-size-700",
+    "lineHeight": "line-height-900",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "display-medium",
+    "name": "displayMedium",
+    "letterSpacing": -0.25,
+    "fontSize": "font-size-900",
+    "lineHeight": "line-height-1100",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "display-large",
+    "name": "displayLarge",
+    "letterSpacing": -0.25,
+    "fontSize": "font-size-1200",
+    "lineHeight": "line-height-1400",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "display-xlarge",
+    "name": "displayXLarge",
+    "letterSpacing": -0.25,
+    "fontSize": "font-size-1400",
+    "lineHeight": "line-height-1600",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "display-2xlarge",
+    "name": "display2XLarge",
+    "letterSpacing": -0.25,
+    "fontSize": "font-size-1600",
+    "lineHeight": "line-height-1800",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "display-3xlarge",
+    "name": "display3XLarge",
+    "letterSpacing": -0.25,
+    "fontSize": "font-size-1800",
+    "lineHeight": "line-height-2000",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "heading-xlarge",
+    "name": "headingXLarge",
+    "fontSize": "font-size-1000",
+    "lineHeight": "line-height-1200",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "heading-large",
+    "name": "headingLarge",
+    "fontSize": "font-size-800",
+    "lineHeight": "line-height-1000",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "heading-medium",
+    "name": "headingMedium",
+    "fontSize": "font-size-700",
+    "lineHeight": "line-height-900",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "heading-small",
+    "name": "headingSmall",
+    "fontSize": "font-size-600",
+    "lineHeight": "line-height-800",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "heading-xsmall",
+    "name": "headingXSmall",
+    "fontSize": "font-size-450",
+    "lineHeight": "line-height-650",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "heading-xxsmall",
+    "name": "headingXXSmall",
+    "fontSize": "font-size-400",
+    "lineHeight": "line-height-600",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "body-xlarge-regular",
+    "name": "bodyXLargeRegular",
+    "fontSize": "font-size-500",
+    "lineHeight": "line-height-700",
+    "fontWeight": "regular"
+  },
+  {
+    "css": "body-xlarge-medium",
+    "name": "bodyXLargeMedium",
+    "fontSize": "font-size-500",
+    "lineHeight": "line-height-700",
+    "fontWeight": "medium"
+  },
+  {
+    "css": "body-xlarge-semibold",
+    "name": "bodyXLargeSemiBold",
+    "fontSize": "font-size-500",
+    "lineHeight": "line-height-700",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "body-large-regular",
+    "name": "bodyLargeRegular",
+    "fontSize": "font-size-450",
+    "lineHeight": "line-height-700",
+    "fontWeight": "regular"
+  },
+  {
+    "css": "body-large-medium",
+    "name": "bodyLargeMedium",
+    "fontSize": "font-size-450",
+    "lineHeight": "line-height-700",
+    "fontWeight": "medium"
+  },
+  {
+    "css": "body-large-semibold",
+    "name": "bodyLargeSemiBold",
+    "fontSize": "font-size-450",
+    "lineHeight": "line-height-700",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "body-medium-regular",
+    "name": "bodyMediumRegular",
+    "fontSize": "font-size-400",
+    "lineHeight": "line-height-600",
+    "fontWeight": "regular"
+  },
+  {
+    "css": "body-medium-medium",
+    "name": "bodyMediumMedium",
+    "fontSize": "font-size-400",
+    "lineHeight": "line-height-600",
+    "fontWeight": "medium"
+  },
+  {
+    "css": "body-medium-semibold",
+    "name": "bodyMediumSemiBold",
+    "fontSize": "font-size-400",
+    "lineHeight": "line-height-600",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "body-medium-bold",
+    "name": "bodyMediumBold",
+    "fontSize": "font-size-400",
+    "lineHeight": "line-height-600",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "body-small-regular",
+    "name": "bodySmallRegular",
+    "fontSize": "font-size-350",
+    "lineHeight": "line-height-500",
+    "fontWeight": "regular"
+  },
+  {
+    "css": "body-small-medium",
+    "name": "bodySmallMedium",
+    "fontSize": "font-size-350",
+    "lineHeight": "line-height-500",
+    "fontWeight": "medium"
+  },
+  {
+    "css": "body-small-semibold",
+    "name": "bodySmallSemiBold",
+    "fontSize": "font-size-350",
+    "lineHeight": "line-height-500",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "body-xsmall-regular",
+    "name": "bodyXSmallRegular",
+    "fontSize": "font-size-300",
+    "lineHeight": "line-height-400",
+    "fontWeight": "regular"
+  },
+  {
+    "css": "body-xsmall-medium",
+    "name": "bodyXSmallMedium",
+    "fontSize": "font-size-300",
+    "lineHeight": "line-height-400",
+    "fontWeight": "medium"
+  },
+  {
+    "css": "body-xsmall-semibold",
+    "name": "bodyXSmallSemiBold",
+    "fontSize": "font-size-300",
+    "lineHeight": "line-height-400",
+    "fontWeight": "semibold"
+  },
+  {
+    "css": "body-xsmall-overline",
+    "name": "bodyXSmallOverline",
+    "letterSpacing": 1.5,
+    "fontSize": "font-size-300",
+    "lineHeight": "line-height-400",
+    "fontWeight": "semibold"
+  }
+]

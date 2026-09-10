@@ -35,6 +35,7 @@ Lemonade Design System is a comprehensive, multi-platform solution that enables 
 | **Kotlin Multiplatform** | Android, iOS, JVM Desktop | [KMP Documentation](./kmp/README.md) |
 | **Flutter** | Android, iOS, Web | [Flutter Documentation](./flutter/README.md) |
 | **SwiftUI** | iOS 15+, macOS 12+ | [SwiftUI Documentation](./swiftui/README.md) |
+| **Web** | Design tokens, typography, icons (npm) | [Web Documentation](./web/README.md) |
 
 ### Version Tags
 
@@ -45,6 +46,7 @@ Each platform has its own versioning scheme:
 | KMP | `lemonade-kmp-vX.Y.Z` | `lemonade-kmp-v1.0.0` |
 | Flutter | `lemonade-flutter-vX.Y.Z` | `lemonade-flutter-v0.1.0` |
 | SwiftUI | `lemonade-swiftui-vX.Y.Z` | `lemonade-swiftui-v1.0.0` |
+| Web | `lemonade-web-vX.Y.Z` | `lemonade-web-v0.1.0` |
 
 ---
 

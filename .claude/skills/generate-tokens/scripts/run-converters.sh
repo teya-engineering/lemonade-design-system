@@ -35,19 +35,26 @@ ensure_kotlin() {
 }
 
 # token file -> space-separated converter basenames (no extension).
-# Flutter converters are intentionally excluded — this repo generates KMP + SwiftUI only.
+# Flutter converters are intentionally excluded — this repo generates KMP + SwiftUI + web.
+#
+# The web converters are consolidated into a single tokens.css artifact rather than
+# one converter per category, so every token file maps to the same three web
+# converters: web-token-converter and web-llms-txt-converter must run before
+# web-css-bundle, which concatenates their output. Each web converter reads all of
+# tokens/*.tokens.json itself and is idempotent, so listing them under every case
+# below is correct even though multiple changed files re-run them.
 converters_for() {
   case "$1" in
-    primitive-colors.tokens.json) echo "kmp-color-token-converter swiftui-color-token-converter" ;;
+    primitive-colors.tokens.json) echo "kmp-color-token-converter swiftui-color-token-converter web-token-converter web-llms-txt-converter web-css-bundle" ;;
     theme-colors.light.tokens.json|theme-colors.dark.tokens.json)
-                                  echo "kmp-theme-token-converter swiftui-theme-token-converter swiftui-color-assets-generator" ;;
-    radius.tokens.json)           echo "kmp-radius-token-converter swiftui-radius-token-converter" ;;
-    spacing.tokens.json)          echo "kmp-spacing-token-converter swiftui-spacing-token-converter" ;;
-    size.tokens.json)             echo "kmp-dimension-token-converter swiftui-size-token-converter" ;;
-    opacity.tokens.json)          echo "kmp-opacity-token-converter swiftui-opacity-token-converter" ;;
-    border-width.tokens.json)     echo "kmp-border-width-token-converter swiftui-border-token-converter" ;;
-    shadow.tokens.json)           echo "kmp-shadow-token-converter swiftui-shadow-token-converter" ;;
-    typography.tokens.json)       echo "kmp-typography-token-converter swiftui-typography-token-converter" ;;
+                                  echo "kmp-theme-token-converter swiftui-theme-token-converter swiftui-color-assets-generator web-token-converter web-llms-txt-converter web-css-bundle" ;;
+    radius.tokens.json)           echo "kmp-radius-token-converter swiftui-radius-token-converter web-token-converter web-llms-txt-converter web-css-bundle" ;;
+    spacing.tokens.json)          echo "kmp-spacing-token-converter swiftui-spacing-token-converter web-token-converter web-llms-txt-converter web-css-bundle" ;;
+    size.tokens.json)             echo "kmp-dimension-token-converter swiftui-size-token-converter web-token-converter web-llms-txt-converter web-css-bundle" ;;
+    opacity.tokens.json)          echo "kmp-opacity-token-converter swiftui-opacity-token-converter web-token-converter web-llms-txt-converter web-css-bundle" ;;
+    border-width.tokens.json)     echo "kmp-border-width-token-converter swiftui-border-token-converter web-token-converter web-llms-txt-converter web-css-bundle" ;;
+    shadow.tokens.json)           echo "kmp-shadow-token-converter swiftui-shadow-token-converter web-token-converter web-llms-txt-converter web-css-bundle" ;;
+    typography.tokens.json)       echo "kmp-typography-token-converter swiftui-typography-token-converter web-token-converter web-llms-txt-converter web-css-bundle" ;;
     *) echo "" ;;
   esac
 }
