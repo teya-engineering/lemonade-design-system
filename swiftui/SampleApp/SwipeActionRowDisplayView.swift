@@ -309,6 +309,8 @@ struct SwipeActionRowDisplayView: View {
                         }
                     }
 
+                    swipeOrHoldCard
+
                     LemonadeUi.Card(
                         header: CardHeaderConfig(
                             title: "enabled: false",
@@ -358,6 +360,55 @@ struct SwipeActionRowDisplayView: View {
             // Plain rather than `.cancel`: iOS leaves a cancel-role button out of this
             // presentation, where tapping away is the way out.
             Button("Cancel") { pendingRemoval = nil }
+        }
+    }
+
+    /// Both affordances on one row: the swipe and the hold. A press drifts far enough to claim the
+    /// drag on its way to the menu, and the row has to give that claim back rather than sit offset
+    /// behind the menu until it goes.
+    ///
+    /// Held apart from `body` rather than written inline with the other cards: the screen is one
+    /// expression, and one card more is further than the type checker will follow.
+    private var swipeOrHoldCard: some View {
+        LemonadeUi.Card(
+            header: CardHeaderConfig(
+                title: "Swipe or hold",
+                subtitle: "The row carries a context menu. Holding it leaves it where it is."
+            )
+        ) {
+            LemonadeUi.SwipeActionRow(
+                trailingActions: [
+                    LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: { })
+                ],
+                allowsFullSwipe: false
+            ) {
+                LemonadeUi.ActionListItem(
+                    label: "Swipe or hold",
+                    supportText: "Both reach Delete",
+                    showDivider: false,
+                    onItemClicked: { }
+                )
+            }
+            // Around the row rather than inside it. The lift a context menu does is a
+            // snapshot of the view it is attached to, and a list item's own fill is
+            // clear — so something has to give the snapshot a surface. Putting that
+            // surface in the content would bury the row's own press tint, which is
+            // translucent and drawn behind whatever the content is: the row would
+            // stop filling in under a swipe, alone among the rows on this screen.
+            .background(
+                RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
+                    .fill(LemonadeTheme.colors.background.bgDefault)
+            )
+            // The fill alone is not enough: the preview is otherwise clipped to iOS's
+            // own corner radius, so the lift starts on one shape and settles on
+            // another, and the row flickers as it goes.
+            .contentShape(
+                .contextMenuPreview,
+                RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
+            )
+            .contextMenu {
+                Button("Delete", role: .destructive) { }
+            }
         }
     }
 }

@@ -158,6 +158,40 @@ private let scrollSlack: CGFloat = 4
 /// touch. Losing the race is the only way to give it back.
 private let claimDistance: CGFloat = 24
 
+/// How long a claimed drag has to go quiet before the touch reads as a press rather than a swipe.
+///
+/// Timed from the claim rather than from the touch, because that is the only clock the row has: a
+/// gesture that loses its touch to a context menu stops delivering, so the row is never told.
+private let holdDelayNanos: UInt64 = 300_000_000
+
+/// How far a claimed drag has to have carried the row, over `holdDelayNanos`, to still read as a
+/// swipe.
+///
+/// Its own number rather than `claimDistance`, which answers a different question — how far a
+/// finger travels before the row takes the touch at all. This one is a speed floor: 24pt in 0.3s
+/// is 80pt/s, slower than any swipe that means it. It is also well short of the 52pt where the
+/// first action starts to be drawn, so a claim handed back was never showing the reader anything.
+private let holdTravel: CGFloat = 24
+
+/// Whether a claimed drag that has turned out to be a press should hand its claim back.
+///
+/// Holding a row long enough to raise a context menu rolls the finger further than the row needs
+/// to claim the drag, and the menu then takes the touch — so the drag never ends, and the claim
+/// would otherwise sit on the row until the menu is dismissed.
+///
+/// Only a closed row hands a claim back, and only one the claim has taken nowhere. A press cannot
+/// be told apart from a finger that has simply paused, so the row gives up a claim only where
+/// being wrong about that costs nothing: under `holdTravel` on a closed row nothing of the first
+/// action is drawn, and a finger still on the row claims again on its next move, from where the
+/// row is being drawn.
+///
+/// An open row is left alone whichever way its drag is going. It is already showing a reveal the
+/// reader can act on, and `releaseClaim` would spring it back open — so a drag pulling it closed,
+/// paused halfway, would have the close taken off it and be left to start again.
+func swipeHoldReleasesClaim(travelSinceClaim: CGFloat, rowIsOpen: Bool) -> Bool {
+    !rowIsOpen && abs(travelSinceClaim) < holdTravel
+}
+
 /// Deceleration a released row is left to coast on, `UIScrollView`'s normal rate.
 private let decelerationRate: CGFloat = 0.998
 
@@ -795,16 +829,46 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
         }
         .onChange(of: isDragging) { dragging in
             // A cancelled gesture never delivers `onEnded`, so the snap back has to happen here.
-            // Only the claim is released: `settleOrigin` is what `onEnded` guards on, and the
-            // order these two are observed in is not documented.
-            guard !dragging, dragOrigin != nil else { return }
-            dragOrigin = nil
-            gestureSide = nil
-            committedSide = nil
-            withAnimation(settle()) {
-                travel = open ? restingTravel : 0
-                holding = false
+            guard !dragging else { return }
+            releaseClaim()
+        }
+        // Restarted by every claim and cancelled by every release, because `dragOrigin` is what
+        // both of those write. A gesture of its own would be the obvious way to time the touch,
+        // and is the wrong one: a long press that recognises first takes the touch off the
+        // context menu the row is trying to stay out of the way of.
+        .task(id: dragOrigin) {
+            guard let origin = dragOrigin else { return }
+            do {
+                try await Task.sleep(nanoseconds: holdDelayNanos)
+            } catch {
+                return
             }
+            // The sleep only throws for a cancellation that lands while it is running; one that
+            // arrives as it returns leaves the task to run on. So the claim this woke for is
+            // checked rather than assumed — it may have ended, or a second drag may have taken
+            // its own by now, and neither is this task's to hand back.
+            guard !Task.isCancelled, dragOrigin == origin else { return }
+            // `settleOrigin` is deliberately left alone: a finger that lifts without moving again
+            // still gets the settle its drag earned, rather than having the gesture thrown away.
+            guard swipeHoldReleasesClaim(travelSinceClaim: travel - origin, rowIsOpen: open)
+            else { return }
+            releaseClaim()
+        }
+    }
+
+    /// Gives a claim back and settles the row where it belongs, without waiting on a gesture that
+    /// may not end for a while — or at all.
+    ///
+    /// Only the claim is released: `settleOrigin` is what `onEnded` guards on, so a drag that does
+    /// come back keeps its settle, and the order the two are observed in is not documented.
+    private func releaseClaim() {
+        guard dragOrigin != nil else { return }
+        dragOrigin = nil
+        gestureSide = nil
+        committedSide = nil
+        withAnimation(settle()) {
+            travel = open ? restingTravel : 0
+            holding = false
         }
     }
 
