@@ -142,6 +142,7 @@ internal object DisplayRegistry {
             title = "Foundations",
             items = listOf(
                 Displays.Colors,
+                Displays.SemanticColors,
                 Displays.ThemedColors,
                 Displays.Spacing,
                 Displays.Radius,

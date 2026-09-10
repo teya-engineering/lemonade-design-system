@@ -2,21 +2,9 @@
 
 package com.teya.lemonade
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-
-private val SwatchHeight: Dp = 162.dp
 
 private val UppercaseLetter = Regex(pattern = "[A-Z]")
 
@@ -33,82 +21,12 @@ internal fun ThemedColorsDisplay() {
             items = hues,
             key = { hue -> hue.title },
         ) { hue ->
-            ThemedHueSection(hue = hue)
+            ColorSwatchSection(group = hue)
         }
     }
 }
 
-@Composable
-private fun ThemedHueSection(hue: ThemedHue) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
-        modifier = Modifier.padding(vertical = LemonadeTheme.spaces.spacing400),
-    ) {
-        LemonadeUi.Text(
-            text = hue.title,
-            textStyle = LemonadeTheme.typography.headingXXSmall,
-            modifier = Modifier.padding(horizontal = LemonadeTheme.spaces.spacing100),
-        )
-        hue.swatches
-            .chunked(size = 2)
-            .forEach { row ->
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
-                ) {
-                    row.forEach { swatch ->
-                        ThemedSwatchBlock(
-                            swatch = swatch,
-                            modifier = Modifier.weight(weight = 1f),
-                        )
-                    }
-                }
-            }
-    }
-}
-
-@Composable
-private fun ThemedSwatchBlock(
-    swatch: ThemedSwatch,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        verticalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier
-            .height(height = SwatchHeight)
-            .background(
-                color = swatch.fill,
-                shape = LemonadeTheme.shapes.radius600,
-            ).padding(
-                horizontal = LemonadeTheme.spaces.spacing400,
-                vertical = LemonadeTheme.spaces.spacing500,
-            ),
-    ) {
-        LemonadeUi.Text(
-            text = swatch.path,
-            textStyle = LemonadeTheme.typography.bodyXSmallRegular,
-            color = swatch.label.copy(alpha = swatch.label.alpha * LemonadeTheme.opacities.base.opacity70),
-        )
-        LemonadeUi.Text(
-            text = swatch.slot,
-            textStyle = LemonadeTheme.typography.bodyXSmallMedium,
-            color = swatch.label,
-        )
-    }
-}
-
-private data class ThemedSwatch(
-    val path: String,
-    val slot: String,
-    val fill: Color,
-    val label: Color,
-)
-
-private data class ThemedHue(
-    val title: String,
-    val swatches: List<ThemedSwatch>,
-)
-
-private fun themedHues(themed: LemonadeThemedColors): List<ThemedHue> =
+private fun themedHues(themed: LemonadeThemedColors): List<ColorSwatchGroup> =
     listOf(
         "amber" to themed.amber,
         "blue" to themed.blue,
@@ -128,7 +46,7 @@ private fun themedHues(themed: LemonadeThemedColors): List<ThemedHue> =
         "yellow" to themed.yellow,
         "yellowLime" to themed.yellowLime,
     ).map { (name, color) ->
-        ThemedHue(
+        ColorSwatchGroup(
             title = name
                 .replace(
                     regex = UppercaseLetter,
@@ -147,47 +65,47 @@ private fun themedHues(themed: LemonadeThemedColors): List<ThemedHue> =
 private fun primarySwatches(
     name: String,
     color: ThemedPrimaryColor,
-): List<ThemedSwatch> =
+): List<ColorSwatch> =
     listOf(
-        ThemedSwatch(
+        ColorSwatch(
             path = name,
-            slot = "background",
+            name = "background",
             fill = color.background,
             label = color.onBackground,
         ),
-        ThemedSwatch(
+        ColorSwatch(
             path = name,
-            slot = "border",
+            name = "border",
             fill = color.border,
             label = color.onBackground,
         ),
-        ThemedSwatch(
+        ColorSwatch(
             path = name,
-            slot = "content",
+            name = "content",
             fill = color.content,
             label = color.contentInverse,
         ),
-        ThemedSwatch(
+        ColorSwatch(
             path = name,
-            slot = "contentInverse",
+            name = "contentInverse",
             fill = color.contentInverse,
             label = color.onBackground,
         ),
-        ThemedSwatch(
+        ColorSwatch(
             path = name,
-            slot = "onBackground",
+            name = "onBackground",
             fill = color.onBackground,
             label = color.content,
         ),
-        ThemedSwatch(
+        ColorSwatch(
             path = name,
-            slot = "backgroundHigh",
+            name = "backgroundHigh",
             fill = color.backgroundHigh,
             label = color.contentInverse,
         ),
-        ThemedSwatch(
+        ColorSwatch(
             path = name,
-            slot = "onBackgroundHigh",
+            name = "onBackgroundHigh",
             fill = color.onBackgroundHigh,
             label = color.content,
         ),
@@ -196,23 +114,23 @@ private fun primarySwatches(
 private fun subtleSwatches(
     name: String,
     color: ThemedPrimaryColor,
-): List<ThemedSwatch> =
+): List<ColorSwatch> =
     listOf(
-        ThemedSwatch(
+        ColorSwatch(
             path = "$name.subtle",
-            slot = "background",
+            name = "background",
             fill = color.subtle.background,
             label = color.subtle.onBackground,
         ),
-        ThemedSwatch(
+        ColorSwatch(
             path = "$name.subtle",
-            slot = "border",
+            name = "border",
             fill = color.subtle.border,
             label = color.subtle.onBackground,
         ),
-        ThemedSwatch(
+        ColorSwatch(
             path = "$name.subtle",
-            slot = "onBackground",
+            name = "onBackground",
             fill = color.subtle.onBackground,
             label = color.contentInverse,
         ),

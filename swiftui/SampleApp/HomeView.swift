@@ -9,7 +9,7 @@ import Lemonade
 /// building an `AnyView` per entry) means a destination view is only constructed
 /// when the user actually pushes it. The raw value doubles as the display title.
 private enum Demo: String, CaseIterable, Identifiable, Hashable {
-    case colors = "Colors"
+    case colors = "Semantic Colors"
     case themedColors = "Themed Colors"
     case spacing = "Spacing"
     case radius = "Radius"

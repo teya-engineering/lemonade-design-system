@@ -34,6 +34,7 @@ import com.teya.lemonade.SearchFieldDisplay
 import com.teya.lemonade.SegmentedControlDisplay
 import com.teya.lemonade.SelectFieldDisplay
 import com.teya.lemonade.SelectListItemDisplay
+import com.teya.lemonade.SemanticColorsDisplay
 import com.teya.lemonade.ShadowDisplay
 import com.teya.lemonade.SizesDisplay
 import com.teya.lemonade.SkeletonDisplay
@@ -60,6 +61,7 @@ internal expect val platformScreens: Map<Displays, @Composable (onNavigate: (Dis
 internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit) -> Unit> = platformScreens + mapOf(
     Displays.Home to { onNavigate -> HomeDisplay(onNavigate = onNavigate) },
     Displays.Colors to { _ -> ColorsDisplay() },
+    Displays.SemanticColors to { _ -> SemanticColorsDisplay() },
     Displays.ThemedColors to { _ -> ThemedColorsDisplay() },
     Displays.Icons to { _ -> IconsDisplay() },
     Displays.CountryFlag to { _ -> CountryFlagDisplay() },
