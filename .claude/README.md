@@ -37,8 +37,6 @@ frontmatter decides when it triggers, so that line is the important one to get r
 
 **Comments and docs** — `comment-review`, `ktdoc-quality`, `writing-docs`
 
-**KMP toolchain** — `kotlin-language-version-features`
-
 **Swift** — `swift-concurrency-expert`, `swiftui-performance-audit`, `swiftui-liquid-glass`
 
 A module-scoped skill also lives at `kmp/.claude/skills/kotlin-conventions/` and loads only when

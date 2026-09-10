@@ -25,11 +25,9 @@ A future engineer or AI session reading a skill cold should come away knowing:
 
 Not every skill needs all six. A procedure skill (`publish-version`,
 `export-icons`) is mostly steps and guardrails. A judgement skill
-(`binary-compatibility`) is mostly decisions and
-anti-patterns. A reference skill (`kotlin-language-version-features`) is mostly a
-lookup protocol over `references/`. Write the sections that carry weight for the
-skill in front of you and skip the rest — an empty section under a mandated
-heading teaches nothing.
+(`binary-compatibility`) is mostly decisions and anti-patterns. Write the
+sections that carry weight for the skill in front of you and skip the rest — an
+empty section under a mandated heading teaches nothing.
 
 ---
 
@@ -47,10 +45,10 @@ description: <what it does>. <concrete trigger contexts>. <when NOT to use, nami
 The description is the only part the model sees before deciding whether to load
 the skill, so it is the highest-leverage line in the file.
 
-- One paragraph. The library runs from ~20 to ~100 words; longer is fine when the
-  trigger surface is genuinely wide (`kotlin-language-version-features` is the
-  longest at ~96 words, because it has to fence off Kotlin ≤2.1 and deprecation
-  queries).
+- One paragraph. The library runs from ~20 to ~65 words; longer is fine when the
+  trigger surface is genuinely wide (`writing-docs` is the longest at ~64 words,
+  because it has to enumerate the file kinds and change kinds that should
+  trigger it).
 - Lead with what the skill does, then list concrete trigger contexts: "Use when
   X, Y, or Z", "Use even if the user doesn't say <pattern name>".
 - Be pushy. Skills under-trigger far more often than they over-trigger.
@@ -71,7 +69,7 @@ my-skill/
 └── scripts/          # executables the body invokes by path
 ```
 
-Seven skills carry `references/`, six carry `scripts/`. A reference file is a
+Four skills carry `references/`, four carry `scripts/`. A reference file is a
 standalone read; cite it from the body with a one-line description of *when* to
 open it, so the reader can decide without loading it.
 
