@@ -29,6 +29,7 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+      - run: npm run build-storybook
       # Proves the published tarball is installable — the gate before any publish.
       - name: Pack and install into a scratch project
         run: |
