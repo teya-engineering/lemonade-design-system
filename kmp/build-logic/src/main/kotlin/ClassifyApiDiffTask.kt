@@ -45,10 +45,12 @@ public abstract class ClassifyApiDiffTask : DefaultTask() {
         val body = buildString {
             appendLine(token)
             if (verdict is Verdict.Breaking) {
-                verdict.reasons.forEach { appendLine("  - $it") }
+                verdict.reasons.forEach { reason -> appendLine("  - $reason") }
             }
         }
-        verdictFile.get().asFile.apply { parentFile.mkdirs() }.writeText(body)
+        verdictFile.get().asFile
+            .apply { parentFile.mkdirs() }
+            .writeText(body)
 
         when (verdict) {
             Verdict.NoChanges ->
@@ -57,7 +59,7 @@ public abstract class ClassifyApiDiffTask : DefaultTask() {
                 logger.lifecycle("API stability: additions-only — no maintainer approval required.")
             is Verdict.Breaking -> {
                 logger.warn("API stability: BREAKING change detected:")
-                verdict.reasons.forEach { logger.warn("  - $it") }
+                verdict.reasons.forEach { reason -> logger.warn("  - $reason") }
             }
         }
     }

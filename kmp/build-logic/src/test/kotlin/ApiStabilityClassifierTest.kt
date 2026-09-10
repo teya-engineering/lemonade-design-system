@@ -22,47 +22,48 @@ class ApiStabilityClassifierTest {
 
     @TestFactory
     fun `additions-only fixtures classify as AdditionsOnly`(): List<DynamicTest> =
-        loadBucket("additions-only").map { fixture ->
-            DynamicTest.dynamicTest(fixture.name) {
-                val verdict = ApiStabilityClassifier.classify(fixture.diff)
-                assertEquals(
-                    Verdict.AdditionsOnly,
-                    verdict,
-                    "Expected ${fixture.name} to classify as AdditionsOnly but got $verdict",
-                )
+        loadBucket("additions-only")
+            .map { fixture ->
+                DynamicTest.dynamicTest(fixture.name) {
+                    val verdict = ApiStabilityClassifier.classify(fixture.diff)
+                    assertEquals(
+                        expected = Verdict.AdditionsOnly,
+                        actual = verdict,
+                        message = "Expected ${fixture.name} to classify as AdditionsOnly but got $verdict",
+                    )
+                }
             }
-        }
 
     @TestFactory
     fun `breaking fixtures classify as Breaking`(): List<DynamicTest> =
-        loadBucket("breaking").map { fixture ->
-            DynamicTest.dynamicTest(fixture.name) {
-                val verdict = ApiStabilityClassifier.classify(fixture.diff)
-                assertIs<Verdict.Breaking>(
-                    verdict,
-                    "Expected ${fixture.name} to classify as Breaking but got $verdict",
-                )
-                assertTrue(
-                    verdict.reasons.isNotEmpty(),
-                    "Breaking verdict for ${fixture.name} produced no reasons",
-                )
+        loadBucket("breaking")
+            .map { fixture ->
+                DynamicTest.dynamicTest(fixture.name) {
+                    val verdict = ApiStabilityClassifier.classify(fixture.diff)
+                    assertIs<Verdict.Breaking>(
+                        value = verdict,
+                        message = "Expected ${fixture.name} to classify as Breaking but got $verdict",
+                    )
+                    assertTrue(
+                        actual = verdict.reasons.isNotEmpty(),
+                        message = "Breaking verdict for ${fixture.name} produced no reasons",
+                    )
+                }
             }
-        }
 
     @TestFactory
     fun `no-changes fixtures classify as NoChanges`(): List<DynamicTest> =
-        loadBucket("no-changes").map { fixture ->
-            DynamicTest.dynamicTest(fixture.name) {
-                val verdict = ApiStabilityClassifier.classify(fixture.diff)
-                assertEquals(
-                    Verdict.NoChanges,
-                    verdict,
-                    "Expected ${fixture.name} to classify as NoChanges but got $verdict",
-                )
+        loadBucket("no-changes")
+            .map { fixture ->
+                DynamicTest.dynamicTest(fixture.name) {
+                    val verdict = ApiStabilityClassifier.classify(fixture.diff)
+                    assertEquals(
+                        expected = Verdict.NoChanges,
+                        actual = verdict,
+                        message = "Expected ${fixture.name} to classify as NoChanges but got $verdict",
+                    )
+                }
             }
-        }
-
-    /** Targeted assertions on specific reasons — guards against the easy-to-regress cases. */
 
     @Test
     fun `abstract member added to existing interface mentions abstract in reasons`() {
@@ -70,8 +71,13 @@ class ApiStabilityClassifierTest {
         val verdict = ApiStabilityClassifier.classify(fixture)
         assertIs<Verdict.Breaking>(verdict)
         assertTrue(
-            verdict.reasons.any { it.contains("abstract", ignoreCase = true) },
-            "Expected an 'abstract member' reason. Reasons: ${verdict.reasons}",
+            actual = verdict.reasons.any { reason ->
+                reason.contains(
+                    other = "abstract",
+                    ignoreCase = true,
+                )
+            },
+            message = "Expected an 'abstract member' reason. Reasons: ${verdict.reasons}",
         )
     }
 
@@ -81,8 +87,13 @@ class ApiStabilityClassifierTest {
         val verdict = ApiStabilityClassifier.classify(fixture)
         assertIs<Verdict.Breaking>(verdict)
         assertTrue(
-            verdict.reasons.any { it.contains("abstract", ignoreCase = true) },
-            "Expected an 'abstract member' reason. Reasons: ${verdict.reasons}",
+            actual = verdict.reasons.any { reason ->
+                reason.contains(
+                    other = "abstract",
+                    ignoreCase = true,
+                )
+            },
+            message = "Expected an 'abstract member' reason. Reasons: ${verdict.reasons}",
         )
     }
 
@@ -92,8 +103,13 @@ class ApiStabilityClassifierTest {
         val verdict = ApiStabilityClassifier.classify(fixture)
         assertIs<Verdict.Breaking>(verdict)
         assertTrue(
-            verdict.reasons.any { it.contains("removed", ignoreCase = true) },
-            "Expected a 'removed' reason. Reasons: ${verdict.reasons}",
+            actual = verdict.reasons.any { reason ->
+                reason.contains(
+                    other = "removed",
+                    ignoreCase = true,
+                )
+            },
+            message = "Expected a 'removed' reason. Reasons: ${verdict.reasons}",
         )
     }
 
@@ -108,14 +124,20 @@ class ApiStabilityClassifierTest {
     fun `brand-new interface with abstract members is additions-only despite abstract keyword`() {
         val fixture = loadFixture("additions-only/05-brand-new-iface-with-abstracts.diff")
         val verdict = ApiStabilityClassifier.classify(fixture)
-        assertEquals(Verdict.AdditionsOnly, verdict)
+        assertEquals(
+            expected = Verdict.AdditionsOnly,
+            actual = verdict,
+        )
     }
 
     @Test
     fun `default-body method on existing interface is additions-only (open or non-abstract)`() {
         val fixture = loadFixture("additions-only/06-add-default-method-existing-iface.diff")
         val verdict = ApiStabilityClassifier.classify(fixture)
-        assertEquals(Verdict.AdditionsOnly, verdict)
+        assertEquals(
+            expected = Verdict.AdditionsOnly,
+            actual = verdict,
+        )
     }
 
     @Test
@@ -131,13 +153,14 @@ class ApiStabilityClassifierTest {
             +${"\t"}public static synthetic fun bcvHiddenOverload${'$'}default (Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
              }
         """.trimIndent()
-        assertEquals(Verdict.AdditionsOnly, ApiStabilityClassifier.classify(diff))
+        assertEquals(
+            expected = Verdict.AdditionsOnly,
+            actual = ApiStabilityClassifier.classify(diff),
+        )
     }
 
     @Test
     fun `real removal is not masked by a synthetic addition in a different file`() {
-        // android drops bcvGone entirely (a real break); desktop merely hides it.
-        // Per-file matching must keep the android removal flagged as breaking.
         val diff = """
             --- a/kmp/core/api/android/core.api
             +++ b/kmp/core/api/android/core.api
@@ -156,16 +179,13 @@ class ApiStabilityClassifierTest {
         val verdict = ApiStabilityClassifier.classify(diff)
         assertIs<Verdict.Breaking>(verdict)
         assertTrue(
-            verdict.reasons.any { it.contains("bcvGone") },
-            "Expected the android-only removal to be flagged. Reasons: ${verdict.reasons}",
+            actual = verdict.reasons.any { reason -> reason.contains("bcvGone") },
+            message = "Expected the android-only removal to be flagged. Reasons: ${verdict.reasons}",
         )
     }
 
     @Test
     fun `data class grown with HIDDEN constructor and copy shims is additions-only`() {
-        // Appended property `b`, with @Deprecated(HIDDEN) secondary constructor and a
-        // default-param copy() shim. Old <init>(String) and copy(String) flip to
-        // synthetic; the old copy$default(...) is regenerated unchanged (context line).
         val diff = """
             --- a/kmp/core/api/android/core.api
             +++ b/kmp/core/api/android/core.api
@@ -185,13 +205,14 @@ class ApiStabilityClassifierTest {
             +${"\t"}public final fun getB ()I
              }
         """.trimIndent()
-        assertEquals(Verdict.AdditionsOnly, ApiStabilityClassifier.classify(diff))
+        assertEquals(
+            expected = Verdict.AdditionsOnly,
+            actual = ApiStabilityClassifier.classify(diff),
+        )
     }
 
     @Test
     fun `data class grown WITHOUT the copy shim is still breaking`() {
-        // No copy shim: the generated copy(String) is replaced by copy(String, int),
-        // so the old copy descriptor is gone with no synthetic-only match. Breaking.
         val diff = """
             --- a/kmp/core/api/android/core.api
             +++ b/kmp/core/api/android/core.api
@@ -204,16 +225,14 @@ class ApiStabilityClassifierTest {
         val verdict = ApiStabilityClassifier.classify(diff)
         assertIs<Verdict.Breaking>(verdict)
         assertTrue(
-            verdict.reasons.any { it.contains("copy") },
-            "Expected the unshimmed copy change to be flagged. Reasons: ${verdict.reasons}",
+            actual = verdict.reasons.any { reason -> reason.contains("copy") },
+            message = "Expected the unshimmed copy change to be flagged. Reasons: ${verdict.reasons}",
         )
     }
 
     @Test
     fun `re-hashed Compose getLambda singleton on desktop is additions-only`() {
-        // The PR #224 scenario: adding a parameter to the @Composable that encloses
-        // `{ BottomSheetDefaults.DragHandle() }` re-hashes the ComposableSingletons
-        // lambda key. The symbol is internal (mangled `$expressive`), so it is not a break.
+        // Adding a parameter to the enclosing @Composable re-hashes the ComposableSingletons lambda key.
         val diff = """
             --- a/kmp/expressive/api/desktop/expressive.api
             +++ b/kmp/expressive/api/desktop/expressive.api
@@ -224,12 +243,14 @@ class ApiStabilityClassifierTest {
             +${"\t"}public final fun getLambda${'$'}1980115960${'$'}expressive ()Lkotlin/jvm/functions/Function2;
              }
         """.trimIndent()
-        assertEquals(Verdict.AdditionsOnly, ApiStabilityClassifier.classify(diff))
+        assertEquals(
+            expected = Verdict.AdditionsOnly,
+            actual = ApiStabilityClassifier.classify(diff),
+        )
     }
 
     @Test
     fun `re-hashed Compose getLambda singleton on android (variant-suffixed module) is additions-only`() {
-        // Android mangles with the build variant: `$expressive_release`. Still internal.
         val diff = """
             --- a/kmp/expressive/api/android/expressive.api
             +++ b/kmp/expressive/api/android/expressive.api
@@ -239,13 +260,14 @@ class ApiStabilityClassifierTest {
             +${"\t"}public final fun getLambda${'$'}1980115960${'$'}expressive_release ()Lkotlin/jvm/functions/Function2;
              }
         """.trimIndent()
-        assertEquals(Verdict.AdditionsOnly, ApiStabilityClassifier.classify(diff))
+        assertEquals(
+            expected = Verdict.AdditionsOnly,
+            actual = ApiStabilityClassifier.classify(diff),
+        )
     }
 
     @Test
     fun `removing a mangled internal symbol outright is additions-only`() {
-        // Even with no replacement, dropping an internal-mangled member is not a
-        // consumer-visible ABI break.
         val diff = """
             --- a/kmp/core/api/desktop/core.api
             +++ b/kmp/core/api/desktop/core.api
@@ -254,13 +276,16 @@ class ApiStabilityClassifierTest {
             -${"\t"}public final fun getLambda${'$'}123456${'$'}core ()Lkotlin/jvm/functions/Function2;
              }
         """.trimIndent()
-        assertEquals(Verdict.AdditionsOnly, ApiStabilityClassifier.classify(diff))
+        assertEquals(
+            expected = Verdict.AdditionsOnly,
+            actual = ApiStabilityClassifier.classify(diff),
+        )
     }
 
     @Test
     fun `removing a default-argument synthetic is still breaking (not mistaken for mangling)`() {
-        // `foo$default` ends in `default`, not the module name, so the mangling
-        // carve-out must NOT swallow it — removing it breaks defaulted call sites.
+        // `foo$default` ends in `default`, not the module name, so it falls outside the
+        // mangling carve-out — removing one breaks defaulted call sites.
         val diff = """
             --- a/kmp/core/api/android/core.api
             +++ b/kmp/core/api/android/core.api
@@ -272,35 +297,50 @@ class ApiStabilityClassifierTest {
         val verdict = ApiStabilityClassifier.classify(diff)
         assertIs<Verdict.Breaking>(verdict)
         assertTrue(
-            verdict.reasons.any { it.contains("foo\$default") },
-            "Expected the removed default-arg synthetic to stay flagged. Reasons: ${verdict.reasons}",
+            actual = verdict.reasons.any { reason -> reason.contains("foo\$default") },
+            message = "Expected the removed default-arg synthetic to stay flagged. Reasons: ${verdict.reasons}",
         )
     }
 
     @Test
     fun `empty input is NoChanges`() {
-        assertEquals(Verdict.NoChanges, ApiStabilityClassifier.classify(""))
-        assertEquals(Verdict.NoChanges, ApiStabilityClassifier.classify("   \n  \n"))
+        assertEquals(
+            expected = Verdict.NoChanges,
+            actual = ApiStabilityClassifier.classify(""),
+        )
+        assertEquals(
+            expected = Verdict.NoChanges,
+            actual = ApiStabilityClassifier.classify("   \n  \n"),
+        )
     }
 
-    // --- helpers ---
-
-    private data class Fixture(val name: String, val diff: String)
+    private data class Fixture(
+        val name: String,
+        val diff: String,
+    )
 
     private fun loadBucket(bucket: String): List<Fixture> {
-        val dir = fixtureDir().resolve(bucket)
+        val dir = fixtureDir()
+            .resolve(bucket)
         check(dir.isDirectory) { "Fixture directory missing: $dir" }
         return dir.listFiles { _, name -> name.endsWith(".diff") }
             .orEmpty()
-            .sortedBy { it.name }
-            .map { Fixture(name = it.name, diff = it.readText()) }
-            .also {
-                check(it.isNotEmpty()) { "No .diff fixtures in $dir" }
+            .sortedBy { file -> file.name }
+            .map { file ->
+                Fixture(
+                    name = file.name,
+                    diff = file.readText(),
+                )
+            }
+            .also { fixtures ->
+                check(fixtures.isNotEmpty()) { "No .diff fixtures in $dir" }
             }
     }
 
     private fun loadFixture(relative: String): String =
-        fixtureDir().resolve(relative).readText()
+        fixtureDir()
+            .resolve(relative)
+            .readText()
 
     private fun fixtureDir(): File {
         val resource = checkNotNull(this::class.java.classLoader.getResource("fixtures")) {

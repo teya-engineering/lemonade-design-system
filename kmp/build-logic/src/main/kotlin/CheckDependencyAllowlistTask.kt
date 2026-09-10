@@ -106,7 +106,10 @@ private fun parseDependencyLine(rawLine: String): String? {
         return null
     }
     val keyword = CONFIG_KEYWORDS.firstOrNull { candidate ->
-        matchesKeyword(text = trimmed, keyword = candidate)
+        matchesKeyword(
+            text = trimmed,
+            keyword = candidate,
+        )
     }
     if (keyword == null) {
         return null
@@ -130,7 +133,10 @@ private fun stripLineComment(line: String): String {
     return line.take(commentIdx)
 }
 
-private fun matchesKeyword(text: String, keyword: String): Boolean {
+private fun matchesKeyword(
+    text: String,
+    keyword: String,
+): Boolean {
     if (!text.startsWith(keyword)) {
         return false
     }
@@ -160,7 +166,10 @@ private fun extractParenExpression(text: String): String? {
         return null
     }
     return text
-        .substring(startIndex = 1, endIndex = endIdx)
+        .substring(
+            startIndex = 1,
+            endIndex = endIdx,
+        )
         .trim()
 }
 
@@ -184,7 +193,10 @@ private fun stripHashComment(line: String): String {
     if (commentIdx < 0) {
         return line
     }
-    return line.substring(startIndex = 0, endIndex = commentIdx)
+    return line.substring(
+        startIndex = 0,
+        endIndex = commentIdx,
+    )
 }
 
 private fun buildErrorMessage(
@@ -216,7 +228,7 @@ private fun buildErrorMessage(
         builder.appendLine()
     }
     builder.appendLine(
-        ":core, :tokens, and :ui are kept lean — every dependency added to these",
+        value = ":core, :tokens, and :ui are kept lean — every dependency added to these",
     )
     builder.appendLine("modules ships to consumers and inflates the public API surface.")
     builder.appendLine()

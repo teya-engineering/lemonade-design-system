@@ -30,7 +30,8 @@ class LemonadePlugin : Plugin<Project> {
                 .create("lemonadePublishing", LemonadePublishingPluginExtension::class.java)
 
             afterEvaluate {
-                val artifactId = extension.artifactId.orNull ?: return@afterEvaluate
+                val artifactId = extension.artifactId.orNull
+                    ?: return@afterEvaluate
                 configurePublishing(artifactId)
             }
         }
@@ -89,15 +90,19 @@ class LemonadePlugin : Plugin<Project> {
             allowlistFile.set(allowlist)
             markerFile.set(layout.buildDirectory.file("dep-allowlist/ok"))
         }
-        tasks.named("check").configure {
-            dependsOn(task)
-        }
+        tasks.named("check")
+            .configure {
+                dependsOn(task)
+            }
     }
 
     private fun Project.configurePublishing(artifactId: String) {
         extensions.configure<MavenPublishBaseExtension> {
             @Suppress("UnstableApiUsage")
-            configureBasedOnAppliedPlugins(sourcesJar = true, javadocJar = true)
+            configureBasedOnAppliedPlugins(
+                sourcesJar = true,
+                javadocJar = true,
+            )
         }
 
         extensions.configure<MavenPublishBaseExtension> {
@@ -148,7 +153,8 @@ class LemonadePlugin : Plugin<Project> {
 }
 
 private fun hasSigningKey(): Boolean {
-    val hasSigningKey = !System.getenv("ORG_GRADLE_PROJECT_signingInMemoryKey").isNullOrEmpty()
+    val hasSigningKey = !System.getenv("ORG_GRADLE_PROJECT_signingInMemoryKey")
+        .isNullOrEmpty()
     return hasSigningKey
 }
 
@@ -170,7 +176,10 @@ private fun Project.findVersionInt(name: String): Int {
     val catalog = extensions.getByType(
         org.gradle.api.artifacts.VersionCatalogsExtension::class.java
     ).named("libs")
-    return catalog.findVersion(name).get().requiredVersion.toInt()
+    return catalog.findVersion(name)
+        .get()
+        .requiredVersion
+        .toInt()
 }
 
 abstract class LemonadePublishingPluginExtension {

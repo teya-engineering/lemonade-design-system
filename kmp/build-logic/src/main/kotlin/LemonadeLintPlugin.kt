@@ -31,9 +31,10 @@ private fun Project.configureDetekt() {
         parallel = true
     }
 
-    tasks.withType<Detekt>().configureEach {
-        exclude { it.file.absolutePath.contains("/build/") }
-    }
+    tasks.withType<Detekt>()
+        .configureEach {
+            exclude { element -> element.file.absolutePath.contains("/build/") }
+        }
 }
 
 private fun Project.configureKtlint() {
@@ -43,7 +44,8 @@ private fun Project.configureKtlint() {
         outputToConsole.set(true)
     }
 
-    tasks.withType<BaseKtLintCheckTask>().configureEach {
-        exclude { it.file.absolutePath.contains("/build/") }
-    }
+    tasks.withType<BaseKtLintCheckTask>()
+        .configureEach {
+            exclude { element -> element.file.absolutePath.contains("/build/") }
+        }
 }

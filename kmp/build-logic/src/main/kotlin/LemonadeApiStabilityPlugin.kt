@@ -21,13 +21,13 @@ public class LemonadeApiStabilityPlugin : Plugin<Project> {
         val verdictPath = target.providers.gradleProperty("apiVerdictFile")
             .orElse(
                 target.layout.buildDirectory.file("api-verdict.txt")
-                    .map { it.asFile.absolutePath }
+                    .map { verdictLocation -> verdictLocation.asFile.absolutePath },
             )
         val rootDir = target.layout.projectDirectory
 
         target.tasks.register<ClassifyApiDiffTask>("classifyApiDiff") {
-            diffFile.set(diffPath.map { rootDir.file(it) })
-            verdictFile.set(verdictPath.map { rootDir.file(it) })
+            diffFile.set(diffPath.map { path -> rootDir.file(path) })
+            verdictFile.set(verdictPath.map { path -> rootDir.file(path) })
         }
     }
 }
