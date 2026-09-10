@@ -1,6 +1,7 @@
 package com.teya.lemonade
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,7 +33,10 @@ internal data class ColorSwatchGroup(
 )
 
 @Composable
-internal fun ColorSwatchSection(group: ColorSwatchGroup) {
+internal fun ColorSwatchSection(
+    group: ColorSwatchGroup,
+    outlined: Boolean = false,
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
         modifier = Modifier.padding(vertical = LemonadeTheme.spaces.spacing400),
@@ -49,6 +53,7 @@ internal fun ColorSwatchSection(group: ColorSwatchGroup) {
                 row.forEach { swatch ->
                     ColorSwatchBlock(
                         swatch = swatch,
+                        outlined = outlined,
                         modifier = Modifier.weight(weight = 1f),
                     )
                 }
@@ -63,6 +68,7 @@ internal fun ColorSwatchSection(group: ColorSwatchGroup) {
 @Composable
 private fun ColorSwatchBlock(
     swatch: ColorSwatch,
+    outlined: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -71,7 +77,17 @@ private fun ColorSwatchBlock(
             .height(height = SwatchHeight)
             .clip(shape = LemonadeTheme.shapes.radius600)
             .background(color = swatch.fill)
-            .padding(
+            .then(
+                if (outlined) {
+                    Modifier.border(
+                        width = LemonadeTheme.borderWidths.base.border25,
+                        color = LemonadeTheme.colors.border.borderNeutralLow,
+                        shape = LemonadeTheme.shapes.radius600,
+                    )
+                } else {
+                    Modifier
+                },
+            ).padding(
                 horizontal = LemonadeTheme.spaces.spacing400,
                 vertical = LemonadeTheme.spaces.spacing500,
             ),

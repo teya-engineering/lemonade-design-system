@@ -17,6 +17,7 @@ struct ColorSwatchGroup: Identifiable {
 
 struct ColorSwatchSection: View {
     let group: ColorSwatchGroup
+    var outlined: Bool = false
 
     private let columns = [
         GridItem(.flexible(), spacing: LemonadeTheme.spaces.spacing200),
@@ -33,7 +34,7 @@ struct ColorSwatchSection: View {
 
             LazyVGrid(columns: columns, spacing: LemonadeTheme.spaces.spacing200) {
                 ForEach(group.swatches) { swatch in
-                    ColorSwatchView(swatch: swatch)
+                    ColorSwatchView(swatch: swatch, outlined: outlined)
                 }
             }
         }
@@ -43,6 +44,7 @@ struct ColorSwatchSection: View {
 
 private struct ColorSwatchView: View {
     let swatch: ColorSwatch
+    let outlined: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -67,5 +69,11 @@ private struct ColorSwatchView: View {
         .frame(height: 162)
         .background(swatch.fill)
         .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius600))
+        .overlay {
+            if outlined {
+                RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius600)
+                    .strokeBorder(.border.borderNeutralLow, lineWidth: LemonadeTheme.borderWidth.base.border25)
+            }
+        }
     }
 }

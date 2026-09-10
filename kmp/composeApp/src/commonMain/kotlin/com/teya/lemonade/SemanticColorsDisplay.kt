@@ -23,7 +23,10 @@ internal fun SemanticColorsDisplay() {
             items = groups,
             key = { group -> group.title },
         ) { group ->
-            ColorSwatchSection(group = group)
+            ColorSwatchSection(
+                group = group,
+                outlined = true,
+            )
         }
     }
 }

@@ -9,7 +9,7 @@ struct ColorsDisplayView: View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 0) {
                 ForEach(semanticGroups) { group in
-                    ColorSwatchSection(group: group)
+                    ColorSwatchSection(group: group, outlined: true)
                 }
             }
         }
