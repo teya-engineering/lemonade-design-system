@@ -49,8 +49,8 @@ working under `kmp/`.
 - **New skill:** `skills/<name>/SKILL.md` with `name` and `description` frontmatter. Write the
   description for *when to trigger*, not what it contains. Follow `skills/SKILL_STYLE_GUIDE.md`;
   split anything long into `references/`.
-- **New command, agent, or hook:** none exist yet. A command (`commands/<name>.md`) is a thin typed
-  entry point that delegates to a skill; an agent is an autonomous multi-step job that needs its
-  own context window; a hook belongs only to a consequence that is non-obvious and file-specific.
+- **New command, agent, or hook:** a command (`commands/<name>.md`) is a thin typed entry point that
+  delegates to a skill; an agent is an autonomous multi-step job that needs its own context window;
+  a hook belongs only to a consequence that is non-obvious and file-specific.
 - **New gotcha:** add it to the root `CLAUDE.md` only if it would cause a wrong action before any
   skill could trigger. Otherwise it belongs in a skill.

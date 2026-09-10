@@ -13,25 +13,37 @@ All modules use Kotlin explicit API mode (`-Xexplicit-api=strict`). This require
 
 ## Formatting Rules
 
-**1. Named Parameters Required**
-Always use named parameters when calling functions, class constructors, and enum entries.
+**1. Named Parameters for Two or More Arguments**
+A call passing two or more arguments names every one of them. This covers
+functions, class constructors, and enum entries.
+
+A single argument stays positional. Naming it adds nothing — the parameter it
+binds to is unambiguous.
+
+Invocations of a function-typed value take no names at all; `onClick()` has no
+parameter name to use.
 
 ```kotlin
-// Correct - class constructor
+// Correct - two or more arguments, all named
 Person(
     name = "Alice",
     age = 30,
 )
 
-// Correct - enum entry
+// Correct - enum entry with one argument stays positional
 enum class Color(val hex: String) {
-    Red(hex = "#FF0000"),
-    Blue(hex = "#0000FF"),
+    Red("#FF0000"),
+    Blue("#0000FF"),
 }
 
-// Wrong
+// Correct - single argument
+Modifier.padding(LemonadeTheme.spaces.spacing100)
+
+// Correct - invoking a function-typed value
+onCheckedChange(true)
+
+// Wrong - two arguments, neither named
 Person("Alice", 30)
-Red("#FF0000")
 ```
 
 **2. One Parameter Per Line**
@@ -49,31 +61,58 @@ Address(
 Address(street = "Main St", city = "Springfield", zipCode = "12345")
 ```
 
-**3. No Single-Expression Functions**
-Always use block body with explicit return statement.
+**3. Expression Body for Single-Statement Functions**
+A function whose body is a single statement uses expression-body form. ktlint
+enforces this and fails the build on a block body wrapping one `return`.
+
+Block bodies are for functions with two or more statements.
 
 ```kotlin
 // Correct
-public fun getData(): String {
-    return "data"
+public fun getData(): String = "data"
+
+// Correct - two statements, so a block body
+public fun getTrimmedData(): String {
+    val raw = loadData()
+    return raw.trim()
 }
 
 // Wrong
-public fun getData(): String = "data"
+public fun getData(): String {
+    return "data"
+}
 ```
 
 **4. Chain Calls on Separate Lines**
-When chaining function calls, break the line on each call.
+Two or more chained calls written inline on one line get broken, one call per
+line.
+
+A call attached to a closing paren or brace — `).method(…)` or `}.method(…)` —
+is the continuation ktlint's `android_studio` code style produces for Compose
+`Modifier` chains and multi-line builders. That is house style; leave it.
 
 ```kotlin
 // Correct
 listOf(1, 2, 3)
-    .filter { it > 1 }
-    .map { it * 2 }
+    .filter { value -> value > 1 }
+    .map { value -> value * 2 }
     .toSet()
 
+// Correct - continuation off a closing brace or paren
+items
+    .groupBy { item -> item.key }
+    .mapValues { entry -> entry.value.size }
+    .filterValues { count ->
+        count > 1
+    }.asSequence()
+
+Modifier
+    .background(
+        color = LemonadeTheme.colors.background.bgDefault,
+    ).clip(shape = LemonadeTheme.shapes.radiusFull)
+
 // Wrong
-listOf(1, 2, 3).filter { it > 1 }.map { it * 2 }.toSet()
+listOf(1, 2, 3).filter { value -> value > 1 }.map { value -> value * 2 }.toSet()
 ```
 
 **5. Elvis Operator on Separate Line**

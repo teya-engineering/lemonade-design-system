@@ -3,7 +3,7 @@
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
 [![Powered by Mason][mason_badge]][mason_link]
 
-A comprehensive Flutter package that delivers a complete set of production-ready UI components, theming capabilities, and design tokens from the Lemonade Design System.
+A Flutter package carrying the Lemonade Design System's UI components, theming, and design tokens.
 
 ---
 
@@ -47,13 +47,13 @@ dependencies:
   lemonade_design_system:
     git:
       url: git@github.com:saltpay/lemonade-design-system.git
-      ref: lemonade-flutter-v0.1.0  # Use the latest version tag
+      ref: lemonade-flutter-v0.8.3  # Use the latest version tag
       path: flutter
 ```
 
 ### Version Selection
 
-Always use a specific version tag (e.g., `lemonade-flutter-v0.1.0`) rather than a branch to ensure stability. Version tags follow the pattern `lemonade-flutter-vX.Y.Z`.
+Always use a specific version tag (e.g., `lemonade-flutter-v0.8.3`) rather than a branch to ensure stability. Version tags follow the pattern `lemonade-flutter-vX.Y.Z`; `git tag -l 'lemonade-flutter-*'` lists them.
 
 After adding the dependency, run:
 
@@ -347,7 +347,7 @@ For public components:
 - Component exists in Figma with "Ready for Dev" status
 - Design team approval obtained
 - Uses foundation tokens (colors, spacing, typography)
-- Has comprehensive documentation with examples
+- Has documentation with examples
 - Includes unit and widget tests
 - Exported from `lemonade_design_system.dart`
 

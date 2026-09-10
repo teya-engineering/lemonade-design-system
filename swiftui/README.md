@@ -4,14 +4,6 @@ A native SwiftUI library for UI components, styling, and theming — enabling co
 
 ---
 
-## Status
-
-> **Work in Progress**
->
-> This documentation is currently being developed. Check back soon for complete installation instructions, usage guides, and API references.
-
----
-
 ## Supported Platforms
 
 | Platform | Minimum Version |
@@ -23,7 +15,58 @@ A native SwiftUI library for UI components, styling, and theming — enabling co
 
 ## Quick Start
 
-*Coming soon*
+The package manifest lives at the repository root and builds `swiftui/Sources/Lemonade`
+from source. Add it to `Package.swift`:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/saltpay/lemonade-design-system.git", from: "0.9.1"),
+],
+targets: [
+    .target(
+        name: "MyApp",
+        dependencies: [.product(name: "Lemonade", package: "lemonade-design-system")]
+    ),
+]
+```
+
+In Xcode, use **File → Add Package Dependencies** with the same URL. The second
+manifest, `swiftui/Package.swift`, is for building and testing this directory in
+isolation; consumers resolve the root one.
+
+SwiftUI consumers resolve the plain `X.Y.Z` tag, not the `lemonade-swiftui-X.Y.Z`
+one. `git tag -l 'lemonade-swiftui-*'` lists the releases; strip the prefix to get
+the version to pin.
+
+There is no theme provider to install — `LemonadeTheme` is a static enum and its
+colors adapt to light and dark mode through the asset catalog. Import the module
+and call components off `LemonadeUi`:
+
+```swift
+import Lemonade
+import SwiftUI
+
+struct ContentView: View {
+    @State private var enabled = false
+
+    var body: some View {
+        VStack(spacing: LemonadeTheme.spaces.spacing200) {
+            LemonadeUi.Text("Welcome to Lemonade")
+
+            LemonadeUi.Button(
+                label: "Click me!",
+                onClick: { print("Button clicked!") }
+            )
+
+            LemonadeUi.Switch(
+                checked: enabled,
+                onCheckedChange: { newValue in enabled = newValue }
+            )
+        }
+        .padding(LemonadeTheme.spaces.spacing400)
+    }
+}
+```
 
 ---
 
@@ -83,18 +126,50 @@ belong to.
 
 ## Components
 
-*Coming soon*
+Every component is a static function on `LemonadeUi`, so typing `LemonadeUi.` and
+letting auto-complete run lists the whole catalogue. Each one carries a `## Usage`
+doc comment with a runnable snippet; source lives in `Sources/Lemonade/Components/`.
+
+| Category | Components |
+|----------|------------|
+| **Actions** | Button, IconButton, Link, Chip |
+| **Form Controls** | TextField, TextFieldWithSelector, SearchField, SelectField, PinCode, Switch, Checkbox, RadioButton, SegmentedControl, BoxSelection |
+| **Display** | Text, Icon, Badge, Tag, Card, Tile, SymbolContainer, HorizontalDivider, VerticalDivider, BrandLogo, CountryFlag |
+| **Lists & Navigation** | ListItem, ContentListItem, ActionListItem, ResourceListItem, SelectListItem, SwipeActionRow, SwipeActionGroup, Tabs, HistoryTimeline |
+| **Feedback** | Toast, Tooltip, Notice, Spinner, LineSkeleton, BlockSkeleton, CircleSkeleton |
+| **Date** | DatePicker, DateRangePicker, InlineCalendar |
 
 ---
 
 ## Design Tokens
 
-*Coming soon*
+`LemonadeTheme` is the entry point. The values behind it live in generated files
+under `Sources/Lemonade/` — `LemonadeSpacing.swift`, `LemonadeRadius.swift`,
+`LemonadeSizes.swift`, `LemonadeOpacity.swift`, `LemonadeBorderWidth.swift`,
+`LemonadeShadow.swift`, `LemonadeFontSizes.swift`, `LemonadeFontWeights.swift`,
+`LemonadeLineHeights.swift`, `LemonadePrimitiveColors.swift`,
+`LemonadeSemanticColors.swift` and `LemonadeAdaptiveTheme.swift`. Each is rebuilt
+from the Figma exports in `tokens/` by a converter in `scripts/`, carries a
+"DO NOT MODIFY THIS FILE MANUALLY" banner, and must never be hand-edited.
+
+| Accessor | Holds |
+|----------|-------|
+| `LemonadeTheme.colors` | semantic colors, resolved light/dark through the asset catalog |
+| `LemonadeTheme.spaces` | spacing scale (`spacing100`, `spacing200`, …) |
+| `LemonadeTheme.radius` | border radius values |
+| `LemonadeTheme.shapes` | rounded rectangles at the predefined radii |
+| `LemonadeTheme.sizes` | component sizing values |
+| `LemonadeTheme.opacity` | opacity levels |
+| `LemonadeTheme.borderWidth` | border widths |
+
+Typography is reached through `LemonadeTypography.shared` or the
+`\.lemonadeTypography` environment value.
 
 ---
 
 ## Contributing
 
-For contribution guidelines, please refer to the main repository documentation.
+See [Contributing](../README.md#contributing) in the root README.
 
----
+Regenerating token or icon code is not a hand edit — use the `generate-tokens` and
+`export-icons` skills under `.claude/skills/`.

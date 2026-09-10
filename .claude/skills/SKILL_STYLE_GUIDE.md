@@ -1,63 +1,98 @@
 # Skill Style Guide
 
-> **Audience:** anyone writing or editing a skill in `.claude/skills/`. AI assistants and humans both. Read this once before writing/editing any skill.
+> **Audience:** anyone writing or editing a skill in `.claude/skills/` or
+> `kmp/.claude/skills/`. AI assistants and humans both. Read this once before
+> writing or editing a skill.
 
-This guide locks in the structure every skill in this library follows. The goal is a *teaching* knowledge base — readers come to a skill for the **concept and decisions**, not just file paths. Use this as a checklist when authoring or reviewing skills.
-
----
-
-## What a "good skill" does
-
-Concretely, a future engineer or AI session reading the skill cold should be able to answer all of these without re-asking the team:
-
-1. **What is this pattern, in one paragraph?**
-2. **When do I use it? When do I NOT use it (what's the alternative)?**
-3. **Who owns what?** (the ownership table — component vs consumer vs generator vs CI)
-4. **What are the variants/shapes of the pattern, and when do I pick each?**
-5. **Why was X decided over Y?** (the Q&A section — captured grilling answers)
-6. **What are common mistakes the pattern lets engineers make?** (anti-patterns)
-7. **Where can I see this pattern in real code?** (worked example with file paths)
-
-If a reader has to crawl the codebase to answer any of these, the skill failed.
+A skill exists so a future session can act correctly on a task without
+re-deriving the team's decisions. It teaches the concept and the judgement calls,
+not just the file paths.
 
 ---
 
-## The 11-section template (every SKILL.md follows this)
+## What a good skill does
 
-Order matters. Section names are fixed. Sections may be empty/omitted only when explicitly noted.
+A future engineer or AI session reading a skill cold should come away knowing:
 
-### 1. YAML frontmatter
+1. **What this is**, in one paragraph.
+2. **When to reach for it, and when not to** — including which skill or tool
+   handles the case this one doesn't.
+3. **Who owns what** — component vs consumer vs generator vs CI, wherever that
+   split is the thing people get wrong.
+4. **The decisions that already have answers**, so nobody relitigates them.
+5. **What the pattern lets people get wrong**, and the correct alternative.
+6. **Where to see it in real code**, cited by path.
+
+Not every skill needs all six. A procedure skill (`publish-version`,
+`export-icons`) is mostly steps and guardrails. A judgement skill
+(`binary-compatibility`) is mostly decisions and
+anti-patterns. A reference skill (`kotlin-language-version-features`) is mostly a
+lookup protocol over `references/`. Write the sections that carry weight for the
+skill in front of you and skip the rest — an empty section under a mandated
+heading teaches nothing.
+
+---
+
+## The two things every skill must get right
+
+### Frontmatter
 
 ```yaml
 ---
 name: <skill-name>
-description: <what + when>. <pushy trigger phrasing>. <when NOT to use, with alternative skill named>.
+description: <what it does>. <concrete trigger contexts>. <when NOT to use, naming the alternative>.
 ---
 ```
 
-**Description rules:**
-- One paragraph. ~80–150 words.
-- Lead with what the skill does. Follow with concrete trigger contexts ("Use when X, Y, or Z", "Use even if the user doesn't explicitly say 'pattern name'").
-- Be **pushy** — Claude tends to under-trigger skills. Over-specify the contexts.
-- If there's a sister skill the reader might confuse this with, name it: "Not for X — use `other-skill` for that."
-- If the skill is NOT the default in this repo, say so prominently in the description.
+The description is the only part the model sees before deciding whether to load
+the skill, so it is the highest-leverage line in the file.
 
-### 2. Title + TL;DR
+- One paragraph. The library runs from ~20 to ~100 words; longer is fine when the
+  trigger surface is genuinely wide (`kotlin-language-version-features` is the
+  longest at ~96 words, because it has to fence off Kotlin ≤2.1 and deprecation
+  queries).
+- Lead with what the skill does, then list concrete trigger contexts: "Use when
+  X, Y, or Z", "Use even if the user doesn't say <pattern name>".
+- Be pushy. Skills under-trigger far more often than they over-trigger.
+- Name the sister skill a reader might confuse this with: "Not for X — use
+  `other-skill`."
+- If the skill is not the default behaviour in this repo, say so in the
+  description, not just in the body.
 
-```markdown
-# <Pattern Name>
+### Progressive disclosure
 
-<3–5 line TL;DR. The pattern in one sentence + the single rule that matters most + a pointer
-to the When-To-Use table below.>
+`SKILL.md` is what gets loaded. Everything that is only needed once the task is
+already underway goes in `references/`, and the body points at it.
+
+```
+my-skill/
+├── SKILL.md          # the body — loaded on trigger
+├── references/       # deep dives — loaded only when the task reaches them
+└── scripts/          # executables the body invokes by path
 ```
 
-The TL;DR is what the reader sees in the first 10 seconds. Make it count.
+Seven skills carry `references/`, six carry `scripts/`. A reference file is a
+standalone read; cite it from the body with a one-line description of *when* to
+open it, so the reader can decide without loading it.
 
-### 3. When to use this pattern
+---
 
-A table or short list with at least 2 columns: **scenario** + **use this pattern? (yes / no — use X instead)**.
+## Sections that have earned their place
 
-Always include negative cases. If you only document positive cases, readers misuse the pattern.
+These are the sections that keep proving useful. Treat this as a menu, not a
+running order — pick the ones that carry weight, and name them however the skill
+reads best.
+
+**Title + opening.** Three to five lines: the pattern in one sentence, the single
+rule that matters most, and a pointer to the when-to-use table. This is what the
+reader sees in the first ten seconds. Most skills here run it as an unlabelled
+paragraph straight under the title; `generate-tokens` and `export-icons` give it a
+`## TL;DR` heading, because for those the one-command answer is what most sessions
+come for.
+
+**When to use.** A table with at least two columns — scenario, and whether this
+pattern applies. Always include negative cases; a skill that documents only the
+positive path gets misapplied.
 
 ```markdown
 | Scenario | Pattern? |
@@ -67,34 +102,24 @@ Always include negative cases. If you only document positive cases, readers misu
 | Renaming a public property | No — real ABI break; stop and escalate per `binary-compatibility` |
 ```
 
-### 4. Mental model
+**Mental model.** Plain English, no code. The ownership table — who owns what
+across the layers — is usually the most valuable table in the skill.
 
-Explain the pattern in plain English. No code in this section. Three sub-parts:
-
-- **The core concept** — one paragraph, plain language.
-- **Ownership table** — who owns what across the layers (typical columns: Concern / Owner / Why). This is the most important table in the skill.
-- **State category → primitive mapping** — when relevant (e.g., config enum → the component's `when`, slot content → trailing lambda). A 3-column table.
-
-### 5. Anatomy
-
-The pattern in code.
-
-- File / class layout (tree diagram)
-- Annotated code skeletons for each role
-- Skeletons show enough to teach intent, not so much that we duplicate the codebase
+**Anatomy.** The pattern in code: file layout, then annotated skeletons for each
+role. Show enough to teach intent, not so much that the skill duplicates the
+codebase.
 
 ```markdown
 For a component named `Foo`:
 
-kmp/ui/src/commonMain/kotlin/com/teya/lemonade/Foo.kt   # public composable + KDoc `## Usage` block
-kmp/ui/api/ui.api                                       # BCV baseline picks up the new symbols
-swiftui/Sources/Lemonade/Foo.swift                      # SwiftUI counterpart
-kmp/composeApp/…/FooScreen.kt                           # sample-app showcase screen
+kmp/ui/src/commonMain/kotlin/com/teya/lemonade/Foo.kt        # public composable + KDoc `## Usage` block
+kmp/ui/api/{android,desktop}/ui.api, kmp/ui/api/ui.klib.api  # BCV baselines pick up the new symbols
+swiftui/Sources/Lemonade/Components/LemonadeFoo.swift        # SwiftUI counterpart
+kmp/composeApp/src/commonMain/kotlin/com/teya/lemonade/FooDisplay.kt   # sample-app showcase
 ```
 
-### 6. Variants & alternatives
-
-Most patterns have at least two shapes. Document them with a decision rule.
+**Variants & alternatives.** Most patterns have more than one shape. Give the
+decision rule, not just the list. If there is genuinely one shape, say so.
 
 ```markdown
 | Variant | Use when | Trade-offs |
@@ -103,32 +128,17 @@ Most patterns have at least two shapes. Document them with a decision rule.
 | Variant B — lazy retention | UI decides which children to render | Cheaper; needs `key()` discipline |
 ```
 
-If the pattern has no variants, say so explicitly: "This pattern has one canonical shape. No variants."
-
-### 7. Pre-answered decisions (Q&A)
-
-The grilling-answer log. Free-form Q/A/Why. Group by sub-topic when the section grows long.
-
-Provenance doesn't matter — questions answered in grilling sessions, PR reviews, Slack, design docs, all live here. One section per skill, regardless of source.
+**Pre-answered decisions.** Free-form Q/A. Provenance doesn't matter — grilling
+sessions, PR reviews, Slack, design docs all land here.
 
 ```markdown
 **Q: Why keep the old signature as a `@Deprecated(HIDDEN)` overload instead of just removing it?**
 A: Removing a public symbol breaks every compiled consumer at link time. The hidden overload keeps
 the binary symbol alive while hiding it from new source code, so the classifier reads the change
 as additive and consumers recompile on their own schedule.
-
-**Q: Why append new `data class` properties instead of inserting them in a sensible position?**
-A: `copy$default` and the constructor descriptor encode parameter order. Inserting shifts every
-later parameter and breaks the ABI even though the source API looks unchanged.
-
-**Why this matters:** both answers exist because a change that compiles fine against the source can
-still crash a consumer built against the previous binary. The skill captures them so nobody has to
-re-derive the rule from a broken release.
 ```
 
-### 8. Anti-patterns
-
-Things engineers/AI try and shouldn't. One bullet per anti-pattern, each with the **correct alternative**.
+**Anti-patterns.** One bullet each, every one naming the correct alternative.
 
 ```markdown
 - **Regenerating the baseline to silence `apiCheck` on a rename.** The baseline is the contract,
@@ -137,93 +147,73 @@ Things engineers/AI try and shouldn't. One bullet per anti-pattern, each with th
   Figma export instead.
 ```
 
-### 9. Worked example
-
-One concrete case from this repo, cited by file path. No code repeated — just point to the file and explain what role it plays.
+**Worked example.** One concrete case from this repo, cited by path. Point at the
+file; don't paste it back.
 
 ```markdown
-**CountryFlag:** `kmp/ui/src/commonMain/kotlin/com/teya/lemonade/CountryFlag.kt:60` is the canonical
-`@Deprecated(HIDDEN)` overload: the pre-release signature delegates to the new one, so the binary
-symbol survives while new source only sees the current API.
+**CountryFlag:** `kmp/ui/src/commonMain/kotlin/com/teya/lemonade/CountryFlag.kt:55` is the canonical
+`@Deprecated(HIDDEN)` overload — the pre-release signature delegates to the current one, so the
+binary symbol survives while new source only sees the current API.
 ```
 
-### 10. References
-
-Pointers, not content. Link to:
-
-- Other skills that complement or extend this one
-- The root `CLAUDE.md` when a rule there is the trigger
-- `.claude/README.md` for how the whole configuration fits together
-
-If the skill has bundled `references/` deep dives, list them here with a one-line description of when to read each.
-
-### 11. (Optional) Bundled references
-
-`SKILL.md` body should be **<500 lines**. When that's not enough, split into a `references/` folder.
-
-```
-my-skill/
-├── SKILL.md          # 300–500 lines, sections 1–10
-└── references/
-    ├── deep-dive-A.md
-    └── deep-dive-B.md
-```
-
-Each reference file: standalone read, ~150–300 lines, with its own ToC if >300 lines. Cite them from §10.
+**References.** Pointers, not content: sibling skills, the root `CLAUDE.md` when a
+rule there is the trigger, `.claude/README.md` for how the configuration fits
+together, and each bundled `references/` file with a line on when to read it.
 
 ---
 
 ## Voice & style conventions
 
 - **Imperative for instructions.** "Use X." Not "You should use X."
-- **Active voice.** "The component owns the `when`." Not "The `when` is owned by the component."
-- **Prefer concrete examples over abstract claims.** "The icons page has two sibling frames" beats "The Figma file has a specific structure."
-- **Cite real files with line numbers** when referencing specific patterns. E.g., `CountryFlag.kt:60`.
-- **Tables for structured data.** When data is "thing → property → property", use a table. When it's prose, use prose.
-- **Headings sentence case.** Not Title Case. Match the rest of the repo's docs.
-- **Avoid throat-clearing.** "It's important to note that…" → just say it.
+- **Active voice.** "The component owns the `when`." Not "The `when` is owned by
+  the component."
+- **Concrete over abstract.** "The icons page has two sibling frames" beats "The
+  Figma file has a specific structure."
+- **Cite real files, with line numbers** where a specific declaration is the
+  point. Line numbers drift — re-verify them when you touch the skill.
+- **Tables for structured data**, prose for prose.
+- **Sentence case headings.** Matches the rest of the repo's docs.
+- **No throat-clearing.** "It's important to note that…" → just say it.
 
 ## Code snippet conventions
 
-- **Skeletons for novel concepts.** Show class signatures, the 1–2 method bodies that teach intent, omit boilerplate.
-- **Full snippets for small standalone pieces** that are self-contained and worth showing whole.
-- **No method bodies that are >5 lines unless they teach a non-obvious flow.**
-- **No imports in skill snippets** unless the import itself is the lesson. Imports rot first.
-- **Cite a real file path** alongside any non-trivial snippet so the reader can read the actual implementation.
+- **Skeletons for novel concepts.** Signatures plus the one or two bodies that
+  teach intent; omit boilerplate.
+- **Full snippets only for small standalone pieces** worth showing whole.
+- **No method body over ~5 lines** unless it teaches a non-obvious flow.
+- **No imports** unless the import is the lesson. Imports rot first.
+- **Cite a real file path** beside any non-trivial snippet.
 
-## Length targets
+## Length
 
-| Skill type | Target SKILL.md lines |
-|---|---|
-| Foundation skill (cited by many) | 300–500 |
-| Pattern-specific skill | 200–400 |
-| Cross-cutting concern (testing, lint, etc.) | 150–250 |
-
-Going over 500 is a smell — split into `references/`. Going under 100 is a smell — the skill probably underexplains and needs to absorb a couple of decisions/Q&As.
+`SKILL.md` bodies in this library run from 79 to 310 lines. Over ~500 is a smell —
+the material that only some tasks need belongs in `references/`. There is no floor:
+`comment-review` says what it needs in 79 lines because the detail lives in its
+`references/`, and padding it out would only cost tokens on every trigger.
 
 ## Cross-skill etiquette
 
-- **Don't redefine concepts another skill owns.** If `binary-compatibility` defines the `@Deprecated(HIDDEN)` shim pattern, don't redefine it; cite it.
-- **One canonical home per concept.** If two skills both want to teach concept X, one is canonical and the other points.
+- **Don't redefine a concept another skill owns.** `binary-compatibility` defines
+  the `@Deprecated(HIDDEN)` shim; other skills cite it.
+- **One canonical home per concept.** When two skills both want to teach X, one is
+  canonical and the other points at it.
 
-## When to amend this style guide
+## When to amend this guide
 
-When you discover the template doesn't fit a real skill. Don't bend the skill — amend the guide and re-apply across the library. The guide is a working document; treat it like code.
+When you find a rule here that a real skill has good reason to break. Amend the
+guide to match what works, and re-apply it across the library.
 
 ---
 
 ## Checklist (use when authoring or reviewing)
 
-- [ ] Frontmatter is pushy with concrete trigger contexts and names alternative skills
-- [ ] TL;DR fits in 5 lines
-- [ ] When-to-use table includes negative cases
-- [ ] Mental-model section has the ownership table; no code
-- [ ] Anatomy uses skeletons (not duplicate codebase)
-- [ ] At least one variant, OR explicit "no variants" note
-- [ ] Pre-answered decisions section has at least 3 Q/A entries
+- [ ] Description leads with what the skill does and lists concrete trigger contexts
+- [ ] Description names the alternative for the cases this skill does not cover
+- [ ] The opening lines say what the skill is and the one rule that matters most
+- [ ] Negative cases are documented, not just the happy path
 - [ ] Anti-patterns each name the correct alternative
-- [ ] Worked example cites a real file path with line numbers
-- [ ] References section, no orphan dangling pointers
-- [ ] SKILL.md under 500 lines (or split into `references/`)
-- [ ] Voice: imperative, active, sentence case headings
-- [ ] No throat-clearing, no "it's important to note"
+- [ ] Every file path, script name, task name and line number is current — you checked
+- [ ] Nothing here is already owned by another skill; overlaps cite instead of restate
+- [ ] Detail only some tasks need lives in `references/`, cited with when to read it
+- [ ] No dangling pointer: every referenced file, script and skill exists
+- [ ] Voice: imperative, active, sentence case headings, no throat-clearing

@@ -85,8 +85,8 @@ for stability and mode** for every covered feature. Use it for any query
 that does not require a usage example or enablement snippet — that includes
 status checks ("is X stable in 2.3?"), flag/mode questions ("what flag does
 Y need?"), and delta surveys ("what's new in 2.3.20?", filter the matching
-section by the `Version` column). Version-guide files no longer carry their
-own status tables.
+section by the `Version` column). Status and mode live only in
+`status-index.md`.
 
 Load `kotlin-X-feature-guide.md` only when the user's request needs a
 usage example, an enablement snippet, agent notes, or a source URL. Each

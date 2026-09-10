@@ -1,10 +1,9 @@
 # Migrating the token export from the Figma plugin to Figma's native export
 
 **Date:** 2026-08-19
-**Status:** Approved design, ready for implementation planning
+**Status:** Implemented and merged — this is the token pipeline in use today
 
-> **Status:** implemented and merged as the token pipeline in use today. One
-> part of this design did not survive to merge: the `ingest-tokens.sh` script
+> One part of this design did not survive to merge: the `ingest-tokens.sh` script
 > described under [Ingest](#ingest) was removed in favour of a documented manual
 > copy. Everything else describes the pipeline as it currently works.
 >
@@ -22,10 +21,10 @@ the Kotlin, Swift and Dart sources that consumers of the SDK compile against.
 [plugin]: https://www.figma.com/community/plugin/1256972111705530093
 
 The plugin is a liability. It carries bugs of its own — every re-export injects a
-phantom mode id (historically `3932:0`) into `theme-colors.json` that has to be
-stripped before conversion, a workaround currently living in
-`.claude/skills/generate-tokens/scripts/strip-stray-modes.py`. It also has to
-keep pace with Figma's own changes, and there is no guarantee it will.
+phantom mode id (historically `3932:0`) into `theme-colors.json`, which a
+`strip-stray-modes.py` workaround in the converter runner had to strip before
+conversion. It also has to keep pace with Figma's own changes, and there is no
+guarantee it will.
 
 Figma now ships a native variable export producing [DTCG][dtcg]-format files.
 Moving to it removes the third-party dependency and the class of bugs that comes
@@ -322,20 +321,22 @@ The remaining converters change by zero lines.
 
 ### CI
 
-`kmp_ci.yml` currently runs detekt, ktlint, the dependency allowlist, `apiCheck`
-and the API Stability Review. **No workflow runs the token converters.** Nothing
-verifies that committed generated code corresponds to committed tokens: a
-forgotten regeneration or a hand-edited generated file passes CI silently, and
-`apiCheck` compares signatures only, so a changed colour value is invisible to it.
+At design time `kmp_ci.yml` ran detekt, ktlint, the dependency allowlist,
+`apiCheck` and the API Stability Review, and no workflow ran the token converters.
+Nothing verified that committed generated code corresponded to committed tokens: a
+forgotten regeneration or a hand-edited generated file passed CI silently, and
+`apiCheck` compares signatures only, so a changed colour value was invisible to it.
 
-A **Token Drift** job is added: gated on changes to `tokens/**` or
-`scripts/*token*`, it runs `run-converters.sh --changed` and fails if the working
-tree is dirty afterwards. This makes the migration's central claim — the input
-format changed and the output did not — a permanently enforced invariant, and it
-catches a bad ingest, a stale regeneration, and hand-edited generated files.
+A **Token Drift** job closes that gap — `.github/workflows/token_drift.yml`. It is
+gated on changes to `tokens/**`, the token scripts and this skill directory; it
+regenerates and fails if `kmp/` or `swiftui/` is dirty afterwards. This makes the
+migration's central claim — the input format changed and the output did not — a
+permanently enforced invariant, and it catches a bad ingest, a stale regeneration,
+and hand-edited generated files.
 
-Gating on changed paths keeps the cost proportionate; the `.main.kts` scripts
-compile before running, so an unconditional `--all` run would be slow.
+Gating on changed paths keeps the cost proportionate: the `.main.kts` scripts
+compile before running, so the job is slow enough that it should not run on every
+PR.
 
 ## Verification
 
