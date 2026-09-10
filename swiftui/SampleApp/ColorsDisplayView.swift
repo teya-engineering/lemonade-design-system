@@ -44,6 +44,7 @@ struct ColorsDisplayView: View {
             subgroups: subgroups.map { subgroup in
                 let path = (subgroup.title ?? title).lowercased()
                 return SemanticSubgroup(
+                    id: "\(title)/\(subgroup.title ?? "")",
                     title: subgroup.title,
                     swatches: subgroup.tokens.map { name, color in
                         ColorSwatch(path: path, name: name, fill: color, label: labelColor(for: color))
@@ -101,8 +102,10 @@ private struct SemanticGroup: Identifiable {
     let subgroups: [SemanticSubgroup]
 }
 
+/// Sub-group titles repeat across groups, and the lazy stack flattens every group's
+/// sub-groups into one list, so the id has to carry the group too.
 private struct SemanticSubgroup: Identifiable {
-    var id: String { title ?? "" }
+    let id: String
     let title: String?
     let swatches: [ColorSwatch]
 }
