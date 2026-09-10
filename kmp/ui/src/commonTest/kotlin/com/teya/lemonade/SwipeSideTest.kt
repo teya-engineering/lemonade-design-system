@@ -15,8 +15,6 @@ class SwipeSideTest {
     private val revealWidth = 76f
     private val rowWidth = 361f
 
-    // resolveSwipeGestureSide
-
     @Test
     fun `a closed row takes the side the finger sets off towards`() {
         assertEquals(
@@ -49,8 +47,6 @@ class SwipeSideTest {
     fun `nothing is decided while nothing has moved`() {
         assertNull(actual = resolveSwipeGestureSide(travel = 0f, delta = 0f))
     }
-
-    // resolveSwipeCeiling
 
     /**
      * The one case the trailing-only row never had: a row with actions on one edge only is still
@@ -91,8 +87,6 @@ class SwipeSideTest {
             ),
         )
     }
-
-    // resolveSwipeTravel
 
     private fun travel(
         travel: Float,
@@ -174,8 +168,6 @@ class SwipeSideTest {
         assertEquals(expected = 0f, actual = held, absoluteTolerance = 0f)
         assertNull(actual = swipeTravelSide(travel = held))
     }
-
-    // swipeCrossedCommit
 
     @Test
     fun `a drag past the threshold crosses, either way`() {
