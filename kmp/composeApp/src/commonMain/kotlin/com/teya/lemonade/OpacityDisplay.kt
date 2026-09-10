@@ -25,23 +25,65 @@ private data class OpacityItem(
 )
 
 private val baseOpacityItems = listOf(
-    OpacityItem("opacity0", 0.0f),
-    OpacityItem("opacity5", 0.05f),
-    OpacityItem("opacity10", 0.1f),
-    OpacityItem("opacity20", 0.2f),
-    OpacityItem("opacity30", 0.3f),
-    OpacityItem("opacity40", 0.4f),
-    OpacityItem("opacity50", 0.5f),
-    OpacityItem("opacity60", 0.6f),
-    OpacityItem("opacity70", 0.7f),
-    OpacityItem("opacity80", 0.8f),
-    OpacityItem("opacity90", 0.9f),
-    OpacityItem("opacity100", 1.0f),
+    OpacityItem(
+        name = "opacity0",
+        value = 0.0f,
+    ),
+    OpacityItem(
+        name = "opacity5",
+        value = 0.05f,
+    ),
+    OpacityItem(
+        name = "opacity10",
+        value = 0.1f,
+    ),
+    OpacityItem(
+        name = "opacity20",
+        value = 0.2f,
+    ),
+    OpacityItem(
+        name = "opacity30",
+        value = 0.3f,
+    ),
+    OpacityItem(
+        name = "opacity40",
+        value = 0.4f,
+    ),
+    OpacityItem(
+        name = "opacity50",
+        value = 0.5f,
+    ),
+    OpacityItem(
+        name = "opacity60",
+        value = 0.6f,
+    ),
+    OpacityItem(
+        name = "opacity70",
+        value = 0.7f,
+    ),
+    OpacityItem(
+        name = "opacity80",
+        value = 0.8f,
+    ),
+    OpacityItem(
+        name = "opacity90",
+        value = 0.9f,
+    ),
+    OpacityItem(
+        name = "opacity100",
+        value = 1.0f,
+    ),
 )
 
 private val stateOpacityItems = listOf(
-    OpacityItem("opacityPressed", 0.2f),
-    OpacityItem("opacityDisabled", 0.4f),
+    OpacityItem(
+        name = "opacityPressed",
+        value = 0.2f,
+    ),
+    OpacityItem(
+        name = "opacityDisabled",
+        value = 0.4f,
+    ),
 )
 
 @Composable
@@ -70,7 +112,7 @@ internal fun OpacityDisplay() {
             )
         }
 
-        items(baseOpacityItems) { item ->
+        items(items = baseOpacityItems) { item ->
             OpacityRow(item)
         }
 
@@ -82,7 +124,7 @@ internal fun OpacityDisplay() {
             )
         }
 
-        items(stateOpacityItems) { item ->
+        items(items = stateOpacityItems) { item ->
             OpacityRow(item)
         }
     }

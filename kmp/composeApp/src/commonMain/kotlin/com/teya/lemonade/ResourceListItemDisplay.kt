@@ -61,7 +61,10 @@ internal fun ResourceListItemDisplay() {
                     showDivider = false,
                     supportText = "Yesterday",
                     addonSlot = {
-                        LemonadeUi.Tag(label = "Pending", voice = TagVoice.Warning)
+                        LemonadeUi.Tag(
+                            label = "Pending",
+                            voice = TagVoice.Warning,
+                        )
                     },
                     leadingSlot = {
                         LemonadeUi.SymbolContainer(

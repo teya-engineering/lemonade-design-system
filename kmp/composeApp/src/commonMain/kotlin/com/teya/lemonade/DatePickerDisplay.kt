@@ -56,12 +56,30 @@ internal fun DatePickerDisplay() {
 
     val monthNumber = today.month.number
     val customRangeState = rememberDatePickerState(
-        minDate = LocalDate(today.year, monthNumber, 1),
-        maxDate = LocalDate(today.year, monthNumber, daysInMonth(today.year, monthNumber)),
+        minDate = LocalDate(
+            year = today.year,
+            month = monthNumber,
+            day = 1,
+        ),
+        maxDate = LocalDate(
+            year = today.year,
+            month = monthNumber,
+            day = daysInMonth(
+                year = today.year,
+                month = monthNumber,
+            ),
+        ),
     )
 
     val dynamicState = rememberDatePickerState(initialDate = today)
-    var currentMonth by remember { mutableStateOf(value = YearMonth(today.year, today.month.number)) }
+    var currentMonth by remember {
+        mutableStateOf(
+            value = YearMonth(
+                year = today.year,
+                month = today.month.number,
+            ),
+        )
+    }
 
     // Simulated per-month "sparse" API: every 3rd, 8th, 14th, 21st and 27th of any month
     // comes back as disabled. Swap for a repository call in real usage.
@@ -209,9 +227,17 @@ private const val FAKE_FETCH_DELAY_MS = 200L
 private val FAKE_DISABLED_DAY_OFFSETS = intArrayOf(2, 7, 13, 20, 26)
 
 private fun disabledDatesFor(yearMonth: YearMonth): Set<LocalDate> {
-    val firstOfMonth = LocalDate(yearMonth.year, yearMonth.month.number, 1)
+    val firstOfMonth = LocalDate(
+        year = yearMonth.year,
+        month = yearMonth.month.number,
+        day = 1,
+    )
     return FAKE_DISABLED_DAY_OFFSETS
-        .map { offset -> firstOfMonth.plus(offset, DateTimeUnit.DAY) }
-        .filter { it.month == yearMonth.month }
+        .map { offset ->
+            firstOfMonth.plus(
+                value = offset,
+                unit = DateTimeUnit.DAY,
+            )
+        }.filter { date -> date.month == yearMonth.month }
         .toSet()
 }

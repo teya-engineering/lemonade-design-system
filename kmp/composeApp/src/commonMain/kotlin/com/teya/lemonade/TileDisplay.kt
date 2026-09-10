@@ -306,18 +306,20 @@ internal fun TileDisplay() {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 ) {
-                    quickActions.chunked(size = QUICK_ACTIONS_PER_ROW).forEach { rowActions ->
-                        TileRow {
-                            rowActions.forEach { action ->
-                                LemonadeUi.Tile(
-                                    label = action.label,
-                                    icon = action.icon,
-                                    onClick = { toasts.show(label = "${action.label} tapped") },
-                                    variant = LemonadeTileVariant.Filled,
-                                )
+                    quickActions
+                        .chunked(size = QUICK_ACTIONS_PER_ROW)
+                        .forEach { rowActions ->
+                            TileRow {
+                                rowActions.forEach { action ->
+                                    LemonadeUi.Tile(
+                                        label = action.label,
+                                        icon = action.icon,
+                                        onClick = { toasts.show(label = "${action.label} tapped") },
+                                        variant = LemonadeTileVariant.Filled,
+                                    )
+                                }
                             }
                         }
-                    }
                 }
             }
         }
@@ -327,18 +329,20 @@ internal fun TileDisplay() {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 ) {
-                    dashboardActions.chunked(size = DASHBOARD_ACTIONS_PER_ROW).forEach { rowActions ->
-                        TileRow {
-                            rowActions.forEach { action ->
-                                LemonadeUi.Tile(
-                                    label = action.label,
-                                    icon = action.icon,
-                                    onClick = { toasts.show(label = "${action.label} tapped") },
-                                    variant = LemonadeTileVariant.Outlined,
-                                )
+                    dashboardActions
+                        .chunked(size = DASHBOARD_ACTIONS_PER_ROW)
+                        .forEach { rowActions ->
+                            TileRow {
+                                rowActions.forEach { action ->
+                                    LemonadeUi.Tile(
+                                        label = action.label,
+                                        icon = action.icon,
+                                        onClick = { toasts.show(label = "${action.label} tapped") },
+                                        variant = LemonadeTileVariant.Outlined,
+                                    )
+                                }
                             }
                         }
-                    }
                 }
             }
         }
@@ -378,19 +382,49 @@ private val menuListActions: List<TileAction> = listOf(
 )
 
 private val quickActions: List<TileAction> = listOf(
-    TileAction(label = "Transfer", icon = LemonadeIcons.ArrowLeftRight),
-    TileAction(label = "Pay", icon = LemonadeIcons.Card),
-    TileAction(label = "Request", icon = LemonadeIcons.Download),
-    TileAction(label = "Scan", icon = LemonadeIcons.QrCode),
-    TileAction(label = "Top Up", icon = LemonadeIcons.Plus),
-    TileAction(label = "More", icon = LemonadeIcons.EllipsisHorizontal),
+    TileAction(
+        label = "Transfer",
+        icon = LemonadeIcons.ArrowLeftRight,
+    ),
+    TileAction(
+        label = "Pay",
+        icon = LemonadeIcons.Card,
+    ),
+    TileAction(
+        label = "Request",
+        icon = LemonadeIcons.Download,
+    ),
+    TileAction(
+        label = "Scan",
+        icon = LemonadeIcons.QrCode,
+    ),
+    TileAction(
+        label = "Top Up",
+        icon = LemonadeIcons.Plus,
+    ),
+    TileAction(
+        label = "More",
+        icon = LemonadeIcons.EllipsisHorizontal,
+    ),
 )
 
 private val dashboardActions: List<TileAction> = listOf(
-    TileAction(label = "Orders", icon = LemonadeIcons.ShoppingBag),
-    TileAction(label = "Inventory", icon = LemonadeIcons.Package),
-    TileAction(label = "Reports", icon = LemonadeIcons.Chart),
-    TileAction(label = "Settings", icon = LemonadeIcons.Gear),
+    TileAction(
+        label = "Orders",
+        icon = LemonadeIcons.ShoppingBag,
+    ),
+    TileAction(
+        label = "Inventory",
+        icon = LemonadeIcons.Package,
+    ),
+    TileAction(
+        label = "Reports",
+        icon = LemonadeIcons.Chart,
+    ),
+    TileAction(
+        label = "Settings",
+        icon = LemonadeIcons.Gear,
+    ),
 )
 
 @Composable

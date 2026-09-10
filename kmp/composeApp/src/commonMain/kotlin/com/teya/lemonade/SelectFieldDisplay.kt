@@ -10,7 +10,6 @@ import com.teya.lemonade.core.LemonadeIcons
 @Composable
 internal fun SelectFieldDisplay() {
     SampleScreenDisplayLazyColumn(title = "SelectField") {
-        // Basic
         item(key = "Basic") {
             SelectFieldSection(title = "Basic") {
                 LemonadeUi.SelectField(
@@ -21,7 +20,6 @@ internal fun SelectFieldDisplay() {
             }
         }
 
-        // With Label
         item(key = "With Label") {
             SelectFieldSection(title = "With Label") {
                 LemonadeUi.SelectField(
@@ -33,7 +31,6 @@ internal fun SelectFieldDisplay() {
             }
         }
 
-        // Filled
         item(key = "Filled") {
             SelectFieldSection(title = "Filled") {
                 LemonadeUi.SelectField(
@@ -44,7 +41,6 @@ internal fun SelectFieldDisplay() {
             }
         }
 
-        // With Leading Icon
         item(key = "With Leading Icon") {
             SelectFieldSection(title = "With Leading Icon") {
                 LemonadeUi.SelectField(
@@ -62,7 +58,6 @@ internal fun SelectFieldDisplay() {
             }
         }
 
-        // With Error
         item(key = "With Error") {
             SelectFieldSection(title = "With Error") {
                 LemonadeUi.SelectField(
@@ -76,7 +71,6 @@ internal fun SelectFieldDisplay() {
             }
         }
 
-        // With Support Text
         item(key = "With Support Text") {
             SelectFieldSection(title = "With Support Text") {
                 LemonadeUi.SelectField(
@@ -90,7 +84,6 @@ internal fun SelectFieldDisplay() {
             }
         }
 
-        // Disabled
         item(key = "Disabled") {
             SelectFieldSection(title = "Disabled") {
                 LemonadeUi.SelectField(

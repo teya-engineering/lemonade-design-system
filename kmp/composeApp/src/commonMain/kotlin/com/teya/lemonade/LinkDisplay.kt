@@ -36,7 +36,7 @@ private fun BasicLinkSection() {
     LinkSection(title = "Basic") {
         LemonadeUi.Link(
             text = "Learn more",
-            onClick = { /* Nothing */ },
+            onClick = { },
         )
     }
 }
@@ -49,12 +49,12 @@ private fun WithIconLinkSection() {
         ) {
             LemonadeUi.Link(
                 text = "Open in browser",
-                onClick = { /* Nothing */ },
+                onClick = { },
                 icon = LemonadeIcons.ExternalLink,
             )
             LemonadeUi.Link(
                 text = "Continue reading",
-                onClick = { /* Nothing */ },
+                onClick = { },
                 icon = LemonadeIcons.ArrowRight,
             )
         }
@@ -69,12 +69,12 @@ private fun DisabledLinkSection() {
         ) {
             LemonadeUi.Link(
                 text = "Unavailable link",
-                onClick = { /* Nothing */ },
+                onClick = { },
                 enabled = false,
             )
             LemonadeUi.Link(
                 text = "Unavailable link with icon",
-                onClick = { /* Nothing */ },
+                onClick = { },
                 enabled = false,
                 icon = LemonadeIcons.ExternalLink,
             )
@@ -108,12 +108,12 @@ private fun InContextLinkSection() {
             ) {
                 LemonadeUi.Link(
                     text = "Terms of Service",
-                    onClick = { /* Nothing */ },
+                    onClick = { },
                     icon = LemonadeIcons.ExternalLink,
                 )
                 LemonadeUi.Link(
                     text = "Privacy Policy",
-                    onClick = { /* Nothing */ },
+                    onClick = { },
                     icon = LemonadeIcons.ExternalLink,
                 )
             }

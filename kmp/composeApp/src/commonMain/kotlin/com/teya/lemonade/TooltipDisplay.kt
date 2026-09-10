@@ -31,23 +31,23 @@ internal fun TooltipDisplay() {
     // bgDefault rather than the usual bgSubtle: the tooltip's surface is bgDefaultInverse, so this
     // is the background it is designed to sit against.
     SampleScreenDisplayColumn(
-        "Tooltip",
+        title = "Tooltip",
         itemsSpacing = LemonadeTheme.spaces.spacing600,
         background = LemonadeTheme.colors.background.bgDefault,
     ) {
-        TooltipSection("Anchored — on-demand help") {
+        TooltipSection(title = "Anchored — on-demand help") {
             TooltipOnDemandHelpExample()
         }
 
-        TooltipSection("Anchored — guided tour") {
+        TooltipSection(title = "Anchored — guided tour") {
             TooltipTourManagerExample()
         }
 
-        TooltipSection("Anchored — beside the anchor") {
+        TooltipSection(title = "Anchored — beside the anchor") {
             TooltipBesideAnchorExample()
         }
 
-        TooltipSection("Indicator Placements") {
+        TooltipSection(title = "Indicator Placements") {
             TooltipIndicatorPlacement.entries.forEach { placement ->
                 LemonadeUi.Tooltip(
                     content = "Tap here to see everything you sold today.",
@@ -57,18 +57,18 @@ internal fun TooltipDisplay() {
             }
         }
 
-        TooltipSection("Content Only") {
+        TooltipSection(title = "Content Only") {
             LemonadeUi.Tooltip(
                 content = "A tooltip with no title, no cover and no footer.",
                 indicatorPlacement = TooltipIndicatorPlacement.TopCenter,
             )
         }
 
-        TooltipSection("With Close Button") {
+        TooltipSection(title = "With Close Button") {
             TooltipWithCloseButton()
         }
 
-        TooltipSection("With Cover") {
+        TooltipSection(title = "With Cover") {
             LemonadeUi.Tooltip(
                 content = "The cover slot takes any composable — an illustration, a screenshot, a video.",
                 title = "Cover slot",
@@ -83,11 +83,11 @@ internal fun TooltipDisplay() {
             )
         }
 
-        TooltipSection("With Footer") {
+        TooltipSection(title = "With Footer") {
             TooltipTourExample()
         }
 
-        TooltipSection("Footer Without Step Counter") {
+        TooltipSection(title = "Footer Without Step Counter") {
             LemonadeUi.Tooltip(
                 content = "A footer can hold actions on their own — the step counter is optional.",
                 title = "Actions only",
@@ -174,7 +174,12 @@ private fun TooltipTourManagerExample() {
                             content = "Tap here whenever you want the fee breakdown.",
                         ),
                     ),
-                    onFinish = { toasts.show(label = "Tour finished", voice = ToastVoice.Success) },
+                    onFinish = {
+                        toasts.show(
+                            label = "Tour finished",
+                            voice = ToastVoice.Success,
+                        )
+                    },
                     onSkip = { toasts.show(label = "Tour skipped") },
                 )
             },
@@ -186,9 +191,8 @@ private fun TooltipTourManagerExample() {
 private fun TooltipBesideAnchorExample() {
     val tooltips = LocalLemonadeTooltipState.current
 
-    // The anchors sit at opposite edges of the screen: a side placement needs a whole tooltip's width
-    // of room beside its anchor, which is exactly what an edge-aligned control has and a centred one
-    // does not.
+    // A side placement needs a whole tooltip's width of room beside its anchor, so the anchors sit
+    // at opposite edges of the screen.
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,

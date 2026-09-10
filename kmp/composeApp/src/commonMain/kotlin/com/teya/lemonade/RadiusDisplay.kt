@@ -27,17 +27,50 @@ private data class RadiusItem(
 )
 
 private val radiusItems = listOf(
-    RadiusItem("radius0", LemonadeRadius.Radius0.dp),
-    RadiusItem("radius50", LemonadeRadius.Radius50.dp),
-    RadiusItem("radius100", LemonadeRadius.Radius100.dp),
-    RadiusItem("radius150", LemonadeRadius.Radius150.dp),
-    RadiusItem("radius200", LemonadeRadius.Radius200.dp),
-    RadiusItem("radius300", LemonadeRadius.Radius300.dp),
-    RadiusItem("radius400", LemonadeRadius.Radius400.dp),
-    RadiusItem("radius500", LemonadeRadius.Radius500.dp),
-    RadiusItem("radius600", LemonadeRadius.Radius600.dp),
-    RadiusItem("radius800", LemonadeRadius.Radius800.dp),
-    RadiusItem("radiusFull", LemonadeRadius.RadiusFull.dp),
+    RadiusItem(
+        name = "radius0",
+        value = LemonadeRadius.Radius0.dp,
+    ),
+    RadiusItem(
+        name = "radius50",
+        value = LemonadeRadius.Radius50.dp,
+    ),
+    RadiusItem(
+        name = "radius100",
+        value = LemonadeRadius.Radius100.dp,
+    ),
+    RadiusItem(
+        name = "radius150",
+        value = LemonadeRadius.Radius150.dp,
+    ),
+    RadiusItem(
+        name = "radius200",
+        value = LemonadeRadius.Radius200.dp,
+    ),
+    RadiusItem(
+        name = "radius300",
+        value = LemonadeRadius.Radius300.dp,
+    ),
+    RadiusItem(
+        name = "radius400",
+        value = LemonadeRadius.Radius400.dp,
+    ),
+    RadiusItem(
+        name = "radius500",
+        value = LemonadeRadius.Radius500.dp,
+    ),
+    RadiusItem(
+        name = "radius600",
+        value = LemonadeRadius.Radius600.dp,
+    ),
+    RadiusItem(
+        name = "radius800",
+        value = LemonadeRadius.Radius800.dp,
+    ),
+    RadiusItem(
+        name = "radiusFull",
+        value = LemonadeRadius.RadiusFull.dp,
+    ),
 )
 
 @Composable
@@ -58,7 +91,7 @@ internal fun RadiusDisplay() {
             )
         }
 
-        items(radiusItems) { item ->
+        items(items = radiusItems) { item ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),

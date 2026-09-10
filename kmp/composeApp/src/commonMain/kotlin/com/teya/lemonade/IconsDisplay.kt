@@ -36,7 +36,12 @@ internal fun IconsDisplay() {
             if (searchQuery.isBlank()) {
                 allIcons
             } else {
-                allIcons.filter { it.name.contains(searchQuery, ignoreCase = true) }
+                allIcons.filter { icon ->
+                    icon.name.contains(
+                        other = searchQuery,
+                        ignoreCase = true,
+                    )
+                }
             }
         }
     }
@@ -50,7 +55,7 @@ internal fun IconsDisplay() {
         @OptIn(ExperimentalLemonadeComponent::class)
         LemonadeUi.SearchField(
             input = searchQuery,
-            onInputChanged = { searchQuery = it },
+            onInputChanged = { input -> searchQuery = input },
             placeholder = "Search icons...",
             modifier = Modifier
                 .fillMaxWidth()
@@ -64,7 +69,10 @@ internal fun IconsDisplay() {
             color = LemonadeTheme.colors.content.contentSecondary,
             modifier = Modifier
                 .padding(horizontal = LemonadeTheme.spaces.spacing400)
-                .padding(top = LemonadeTheme.spaces.spacing200, bottom = LemonadeTheme.spaces.spacing100),
+                .padding(
+                    top = LemonadeTheme.spaces.spacing200,
+                    bottom = LemonadeTheme.spaces.spacing100,
+                ),
         )
 
         LazyVerticalGrid(
@@ -76,7 +84,7 @@ internal fun IconsDisplay() {
         ) {
             items(
                 items = filteredIcons,
-                key = { it.ordinal },
+                key = { icon -> icon.ordinal },
             ) { icon ->
                 Column(
                     modifier = Modifier

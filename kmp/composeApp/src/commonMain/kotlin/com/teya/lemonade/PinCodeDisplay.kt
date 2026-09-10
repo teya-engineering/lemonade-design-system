@@ -22,14 +22,14 @@ internal fun PinCodeDisplay() {
         background = LemonadeTheme.colors.background.bgDefault,
     ) {
         item(key = "Numeric") {
-            PinCodeSection("Numeric") {
+            PinCodeSection(title = "Numeric") {
                 var pin by remember { mutableStateOf("") }
                 var error by remember { mutableStateOf(false) }
 
                 LemonadeUi.PinCode(
                     value = pin,
-                    onValueChange = {
-                        pin = it
+                    onValueChange = { value ->
+                        pin = value
                         error = false
                     },
                     error = error,
@@ -43,22 +43,22 @@ internal fun PinCodeDisplay() {
         }
 
         item(key = "Alphanumeric") {
-            PinCodeSection("Alphanumeric (system keyboard)") {
+            PinCodeSection(title = "Alphanumeric (system keyboard)") {
                 var pin by remember { mutableStateOf("") }
                 LemonadeUi.PinCode(
                     value = pin,
-                    onValueChange = { pin = it },
+                    onValueChange = { value -> pin = value },
                     variant = LemonadePinCodeVariant.Alphanumeric,
                 )
             }
         }
 
         item(key = "Autofill disabled") {
-            PinCodeSection("Autofill disabled") {
+            PinCodeSection(title = "Autofill disabled") {
                 var pin by remember { mutableStateOf("") }
                 LemonadeUi.PinCode(
                     value = pin,
-                    onValueChange = { pin = it },
+                    onValueChange = { value -> pin = value },
                     oneTimeCodeAutofill = false,
                 )
                 LemonadeUi.Text(
@@ -69,10 +69,10 @@ internal fun PinCodeDisplay() {
         }
 
         item(key = "Submitting") {
-            PinCodeSection("Submitting") {
+            PinCodeSection(title = "Submitting") {
                 LemonadeUi.PinCode(
                     value = SAMPLE_PIN,
-                    onValueChange = { /* no-op */ },
+                    onValueChange = { },
                     submitting = true,
                 )
             }

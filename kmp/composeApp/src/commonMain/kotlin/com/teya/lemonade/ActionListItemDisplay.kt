@@ -15,7 +15,6 @@ import com.teya.lemonade.core.TagVoice
 @Composable
 internal fun ActionListItemDisplay() {
     SampleScreenDisplayLazyColumn(title = "ActionListItem") {
-        // ListItem - Layout Priority (priority = Trailing, default)
         item(key = "priority-trailing") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -40,7 +39,6 @@ internal fun ActionListItemDisplay() {
             }
         }
 
-        // ListItem - Layout Priority (priority = Label)
         item(key = "priority-label") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -65,8 +63,7 @@ internal fun ActionListItemDisplay() {
                     },
                 )
 
-                // Edge case: a label long enough to fill the row keeps the trailing at its
-                // readable floor instead of letting it vanish.
+                // A label wide enough to fill the row keeps the trailing content at its readable floor.
                 LemonadeUi.ListItem(
                     label = "Beneficiary account holder full legal registered name",
                     priority = LemonadeListItemPriority.Label,
@@ -84,7 +81,6 @@ internal fun ActionListItemDisplay() {
             }
         }
 
-        // ActionListItem - Truncation
         item(key = "truncation") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -128,7 +124,6 @@ internal fun ActionListItemDisplay() {
             }
         }
 
-        // ActionListItem
         item(key = "action-list-item") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -179,7 +174,6 @@ internal fun ActionListItemDisplay() {
             }
         }
 
-        // ActionListItem - Top Label
         item(key = "top-label") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -229,13 +223,15 @@ internal fun ActionListItemDisplay() {
                         )
                     },
                     trailingSlot = {
-                        LemonadeUi.Tag(label = "New", voice = TagVoice.Positive)
+                        LemonadeUi.Tag(
+                            label = "New",
+                            voice = TagVoice.Positive,
+                        )
                     },
                 )
             }
         }
 
-        // ActionListItem - Trailing Alignment
         item(key = "trailing-alignment") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -249,7 +245,10 @@ internal fun ActionListItemDisplay() {
                     trailingVerticalAlignment = Alignment.Top,
                     onItemClicked = {},
                     trailingSlot = {
-                        LemonadeUi.Tag(label = "Top", voice = TagVoice.Info)
+                        LemonadeUi.Tag(
+                            label = "Top",
+                            voice = TagVoice.Info,
+                        )
                     },
                 )
 
@@ -261,7 +260,10 @@ internal fun ActionListItemDisplay() {
                     trailingVerticalAlignment = Alignment.CenterVertically,
                     onItemClicked = {},
                     trailingSlot = {
-                        LemonadeUi.Tag(label = "Center", voice = TagVoice.Positive)
+                        LemonadeUi.Tag(
+                            label = "Center",
+                            voice = TagVoice.Positive,
+                        )
                     },
                 )
 
@@ -273,13 +275,15 @@ internal fun ActionListItemDisplay() {
                     trailingVerticalAlignment = Alignment.Bottom,
                     onItemClicked = {},
                     trailingSlot = {
-                        LemonadeUi.Tag(label = "Bottom", voice = TagVoice.Warning)
+                        LemonadeUi.Tag(
+                            label = "Bottom",
+                            voice = TagVoice.Warning,
+                        )
                     },
                 )
             }
         }
 
-        // ActionListItem - Leading Alignment
         item(key = "leading-alignment") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -335,7 +339,6 @@ internal fun ActionListItemDisplay() {
             }
         }
 
-        // ActionListItem - Slot Content (below support text)
         item(key = "slot-content") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -407,7 +410,6 @@ internal fun ActionListItemDisplay() {
             }
         }
 
-        // ActionListItem with Trailing Slot
         item(key = "with-trailing") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -426,7 +428,10 @@ internal fun ActionListItemDisplay() {
                     },
                     showDivider = true,
                     trailingSlot = {
-                        LemonadeUi.Badge(text = "3", size = LemonadeBadgeSize.Small)
+                        LemonadeUi.Badge(
+                            text = "3",
+                            size = LemonadeBadgeSize.Small,
+                        )
                     },
                 )
 
@@ -443,7 +448,10 @@ internal fun ActionListItemDisplay() {
                     },
                     showDivider = true,
                     trailingSlot = {
-                        LemonadeUi.Tag(label = "New", voice = TagVoice.Positive)
+                        LemonadeUi.Tag(
+                            label = "New",
+                            voice = TagVoice.Positive,
+                        )
                     },
                 )
             }

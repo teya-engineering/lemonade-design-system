@@ -29,7 +29,6 @@ internal fun DropdownSampleDisplay() {
     var selectedItem by remember { mutableStateOf("Select an option") }
 
     SampleScreenDisplayLazyColumn(title = "Dropdown") {
-        // Basic
         item(key = "Basic") {
             DropdownSection(title = "Basic") {
                 Box {
@@ -61,7 +60,6 @@ internal fun DropdownSampleDisplay() {
             }
         }
 
-        // With Leading Icons
         item(key = "With Leading Icons") {
             DropdownSection(title = "With Leading Icons") {
                 Box {
@@ -96,7 +94,6 @@ internal fun DropdownSampleDisplay() {
             }
         }
 
-        // With Trailing Icons
         item(key = "With Trailing Icons") {
             DropdownSection(title = "With Trailing Icons") {
                 Box {
@@ -131,7 +128,6 @@ internal fun DropdownSampleDisplay() {
             }
         }
 
-        // With Trailing Slot
         item(key = "With Trailing Slot") {
             DropdownSection(title = "With Trailing Slot") {
                 Box {
@@ -174,7 +170,6 @@ internal fun DropdownSampleDisplay() {
             }
         }
 
-        // With Disabled Items
         item(key = "With Disabled Items") {
             DropdownSection(title = "With Disabled Items") {
                 Box {
@@ -207,7 +202,6 @@ internal fun DropdownSampleDisplay() {
             }
         }
 
-        // Non-Dismissable
         item(key = "Non-Dismissable") {
             DropdownSection(title = "Non-Dismissable") {
                 LemonadeUi.Text(
@@ -243,7 +237,6 @@ internal fun DropdownSampleDisplay() {
             }
         }
 
-        // Interactive
         item(key = "Interactive Selection") {
             DropdownSection(title = "Interactive Selection") {
                 Row(

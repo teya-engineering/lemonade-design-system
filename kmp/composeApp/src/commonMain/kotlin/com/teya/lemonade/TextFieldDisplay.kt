@@ -183,7 +183,6 @@ internal fun TextFieldDisplay() {
                 LemonadeUi.TextFieldWithSelector(
                     value = phoneTextFieldValue,
                     onValueChange = { newValue ->
-                        // Simulate formatting: add a space after every 3 digits and keep the caret at the end.
                         val formatted = formatPhoneNumber(raw = newValue.text)
                         phoneTextFieldValue = TextFieldValue(
                             text = formatted,

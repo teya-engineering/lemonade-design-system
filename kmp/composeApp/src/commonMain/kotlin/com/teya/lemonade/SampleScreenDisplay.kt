@@ -53,7 +53,10 @@ private fun collapseProgress(
     } else {
         firstVisibleItemScrollOffset.toFloat()
     }
-    return (offset / collapsePx).coerceIn(minimumValue = 0f, maximumValue = 1f)
+    return (offset / collapsePx).coerceIn(
+        minimumValue = 0f,
+        maximumValue = 1f,
+    )
 }
 
 @Composable
@@ -118,7 +121,11 @@ internal fun SampleScreenDisplayLazyColumn(
     background: Color = LemonadeTheme.colors.background.bgSubtle,
     action: (@Composable () -> Unit)? = null,
     header: @Composable (progress: State<Float>) -> Unit = { progress ->
-        SampleScreenHeader(title = title, progress = progress, action = action)
+        SampleScreenHeader(
+            title = title,
+            progress = progress,
+            action = action,
+        )
     },
     content: LazyListScope.() -> Unit,
 ) {
@@ -165,7 +172,10 @@ internal fun SampleScreenDisplayLazyGrid(
     contentHorizontalPadding: Dp = LemonadeTheme.spaces.spacing400,
     background: Color = LemonadeTheme.colors.background.bgSubtle,
     header: @Composable (progress: State<Float>) -> Unit = { progress ->
-        SampleScreenHeader(title = title, progress = progress)
+        SampleScreenHeader(
+            title = title,
+            progress = progress,
+        )
     },
     columns: GridCells = GridCells.Adaptive(minSize = 100.dp),
     columnsGap: Dp = LemonadeTheme.spaces.spacing200,
@@ -229,7 +239,10 @@ internal fun SampleScreenDisplayColumn(
     background: Color = LemonadeTheme.colors.background.bgSubtle,
     itemsSpacing: Dp = LemonadeTheme.spaces.spacing300,
     header: @Composable (progress: State<Float>) -> Unit = { progress ->
-        SampleScreenHeader(title = title, progress = progress)
+        SampleScreenHeader(
+            title = title,
+            progress = progress,
+        )
     },
     content: @Composable ColumnScope.() -> Unit,
 ) {

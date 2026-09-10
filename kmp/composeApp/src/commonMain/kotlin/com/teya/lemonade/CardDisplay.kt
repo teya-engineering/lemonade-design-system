@@ -20,7 +20,6 @@ import com.teya.lemonade.core.TagVoice
 @Composable
 internal fun CardDisplay() {
     SampleScreenDisplayLazyColumn(title = "Card") {
-        // Background Variants
         item(key = "Backgrounds") {
             CardSection(title = "Backgrounds") {
                 Column(
@@ -59,7 +58,6 @@ internal fun CardDisplay() {
             }
         }
 
-        // Spacing Variants
         item(key = "Spacing") {
             CardSection(title = "Spacing") {
                 Column(
@@ -77,7 +75,6 @@ internal fun CardDisplay() {
             }
         }
 
-        // Heading Styles
         item(key = "Heading Styles") {
             CardSection(title = "Heading Styles") {
                 Column(
@@ -88,7 +85,10 @@ internal fun CardDisplay() {
                         header = CardHeaderConfig(
                             title = "Default Heading",
                             trailingSlot = {
-                                LemonadeUi.Tag(label = "Tag", voice = TagVoice.Neutral)
+                                LemonadeUi.Tag(
+                                    label = "Tag",
+                                    voice = TagVoice.Neutral,
+                                )
                             },
                         ),
                     ) {
@@ -104,7 +104,10 @@ internal fun CardDisplay() {
                             title = "Default Heading",
                             subtitle = "Subtitle",
                             trailingSlot = {
-                                LemonadeUi.Tag(label = "Tag", voice = TagVoice.Neutral)
+                                LemonadeUi.Tag(
+                                    label = "Tag",
+                                    voice = TagVoice.Neutral,
+                                )
                             },
                         ),
                     ) {
@@ -120,7 +123,10 @@ internal fun CardDisplay() {
                             title = "Overline Heading",
                             headingStyle = LemonadeCardHeadingStyle.Overline,
                             trailingSlot = {
-                                LemonadeUi.Tag(label = "Tag", voice = TagVoice.Neutral)
+                                LemonadeUi.Tag(
+                                    label = "Tag",
+                                    voice = TagVoice.Neutral,
+                                )
                             },
                         ),
                     ) {
@@ -137,7 +143,10 @@ internal fun CardDisplay() {
                             subtitle = "Subtitle",
                             headingStyle = LemonadeCardHeadingStyle.Overline,
                             trailingSlot = {
-                                LemonadeUi.Tag(label = "Tag", voice = TagVoice.Neutral)
+                                LemonadeUi.Tag(
+                                    label = "Tag",
+                                    voice = TagVoice.Neutral,
+                                )
                             },
                         ),
                     ) {
@@ -150,7 +159,6 @@ internal fun CardDisplay() {
             }
         }
 
-        // Header Slots
         item(key = "Header Slots") {
             CardSection(title = "Header Slots") {
                 Column(
@@ -200,7 +208,10 @@ internal fun CardDisplay() {
                                 )
                             },
                             trailingSlot = {
-                                LemonadeUi.Tag(label = "Active", voice = TagVoice.Positive)
+                                LemonadeUi.Tag(
+                                    label = "Active",
+                                    voice = TagVoice.Positive,
+                                )
                             },
                             showNavigationIndicator = true,
                         ),
@@ -214,7 +225,6 @@ internal fun CardDisplay() {
             }
         }
 
-        // Footer Action
         item(key = "Footer Action") {
             CardSection(title = "Footer Action") {
                 Column(
@@ -241,8 +251,6 @@ internal fun CardDisplay() {
     }
 }
 
-// A card whose rows are emitted straight into the host LazyColumn, so each row
-// composes lazily as it scrolls into view instead of all at once.
 private fun LazyListScope.lazyGroupedCardSection() {
     item(key = "Lazy Grouped List title") {
         CardSectionTitle(

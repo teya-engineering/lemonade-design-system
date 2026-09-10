@@ -59,7 +59,7 @@ internal fun ImmersiveOverlaysSampleDisplay() {
 
         LemonadeUi.Switch(
             checked = hideHostSystemBars,
-            onCheckedChange = { hideHostSystemBars = it },
+            onCheckedChange = { checked -> hideHostSystemBars = checked },
             label = "Hide host system bars",
             supportText = "Turn off to check that overlays leave visible bars alone.",
         )

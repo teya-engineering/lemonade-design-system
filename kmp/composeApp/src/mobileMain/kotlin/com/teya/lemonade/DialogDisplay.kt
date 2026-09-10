@@ -21,7 +21,6 @@ internal fun DialogSampleDisplay() {
     var showNonDismissableDialog by remember { mutableStateOf(false) }
 
     SampleScreenDisplayLazyColumn(title = "Dialog") {
-        // Basic Dialog
         item(key = "Basic Dialog") {
             DialogSection(title = "Basic Dialog") {
                 LemonadeUi.Button(
@@ -33,7 +32,6 @@ internal fun DialogSampleDisplay() {
             }
         }
 
-        // Non-Dismissable Dialog
         item(key = "Non-Dismissable Dialog") {
             DialogSection(title = "Non-Dismissable Dialog") {
                 LemonadeUi.Text(
@@ -51,7 +49,6 @@ internal fun DialogSampleDisplay() {
         }
     }
 
-    // Basic Dialog
     LemonadeUi.Dialog(
         expanded = showBasicDialog,
         onDismissRequest = { showBasicDialog = false },
@@ -93,7 +90,6 @@ internal fun DialogSampleDisplay() {
         }
     }
 
-    // Non-Dismissable Dialog
     LemonadeUi.Dialog(
         expanded = showNonDismissableDialog,
         onDismissRequest = { showNonDismissableDialog = false },

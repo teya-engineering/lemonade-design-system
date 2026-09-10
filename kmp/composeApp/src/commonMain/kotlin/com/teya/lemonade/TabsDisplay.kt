@@ -21,9 +21,18 @@ private val basicTabs: List<TabItem> = listOf(
 )
 
 private val iconTabs: List<TabItem> = listOf(
-    TabItem(label = "Home", icon = LemonadeIcons.Home),
-    TabItem(label = "Analytics", icon = LemonadeIcons.Chart),
-    TabItem(label = "Settings", icon = LemonadeIcons.Gear),
+    TabItem(
+        label = "Home",
+        icon = LemonadeIcons.Home,
+    ),
+    TabItem(
+        label = "Analytics",
+        icon = LemonadeIcons.Chart,
+    ),
+    TabItem(
+        label = "Settings",
+        icon = LemonadeIcons.Gear,
+    ),
 )
 
 private val stretchTabs: List<TabItem> = listOf(
@@ -35,7 +44,10 @@ private val stretchTabs: List<TabItem> = listOf(
 private val disabledTabs: List<TabItem> = listOf(
     TabItem(label = "Active"),
     TabItem(label = "Also Active"),
-    TabItem(label = "Disabled", isDisabled = true),
+    TabItem(
+        label = "Disabled",
+        isDisabled = true,
+    ),
 )
 
 private val manyTabs: List<TabItem> = listOf(
@@ -116,7 +128,11 @@ private fun LazyListScope.tabsSection(
     itemsSize: TabsItemSize = TabsItemSize.Hug,
     isFirst: Boolean = false,
 ) {
-    sectionTitle(key = key, title = title, isFirst = isFirst)
+    sectionTitle(
+        key = key,
+        title = title,
+        isFirst = isFirst,
+    )
     item(key = key) {
         var selectedTab by rememberSaveable { mutableIntStateOf(value = 0) }
 
@@ -130,7 +146,10 @@ private fun LazyListScope.tabsSection(
 }
 
 private fun LazyListScope.interactiveTabsSection() {
-    sectionTitle(key = "interactive", title = "Interactive with Content")
+    sectionTitle(
+        key = "interactive",
+        title = "Interactive with Content",
+    )
     item(key = "interactive") {
         var selectedTab by rememberSaveable { mutableIntStateOf(value = 0) }
 

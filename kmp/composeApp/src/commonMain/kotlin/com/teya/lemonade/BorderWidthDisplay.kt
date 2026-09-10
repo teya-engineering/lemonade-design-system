@@ -26,12 +26,30 @@ private fun rememberBorderWidthItems(): List<BorderWidthItem> {
     val borderWidths = LemonadeTheme.borderWidths.base
     return remember(borderWidths) {
         listOf(
-            BorderWidthItem(name = "border0", value = borderWidths.border0),
-            BorderWidthItem(name = "border25", value = borderWidths.border25),
-            BorderWidthItem(name = "border40", value = borderWidths.border40),
-            BorderWidthItem(name = "border50", value = borderWidths.border50),
-            BorderWidthItem(name = "border75", value = borderWidths.border75),
-            BorderWidthItem(name = "border100", value = borderWidths.border100),
+            BorderWidthItem(
+                name = "border0",
+                value = borderWidths.border0,
+            ),
+            BorderWidthItem(
+                name = "border25",
+                value = borderWidths.border25,
+            ),
+            BorderWidthItem(
+                name = "border40",
+                value = borderWidths.border40,
+            ),
+            BorderWidthItem(
+                name = "border50",
+                value = borderWidths.border50,
+            ),
+            BorderWidthItem(
+                name = "border75",
+                value = borderWidths.border75,
+            ),
+            BorderWidthItem(
+                name = "border100",
+                value = borderWidths.border100,
+            ),
         )
     }
 }

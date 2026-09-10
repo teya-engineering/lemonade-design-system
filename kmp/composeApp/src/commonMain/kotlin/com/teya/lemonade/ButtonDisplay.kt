@@ -29,9 +29,7 @@ private data class ButtonSectionSpec(
     val type: LemonadeButtonType,
 ) {
     val key: String
-        get() {
-            return "$variant+$type"
-        }
+        get() = "$variant+$type"
 }
 
 // OnBrand / OnColor (the variants that need a backdrop) only have a Subtle treatment and ignore the
@@ -186,7 +184,7 @@ private fun DualActionTrailingSlot(colors: LemonadeButtonColors) {
         tint = colors.contentColor,
         modifier = Modifier
             .clickable(
-                onClick = { /* Nothing */ },
+                onClick = { },
                 interactionSource = interactionSource,
             ).background(color = backgroundColor)
             .fillMaxHeight()

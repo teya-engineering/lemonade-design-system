@@ -38,7 +38,7 @@ internal fun TopBarSampleDisplay() {
             state = topBarState,
             navigationAction = NavigationAction(
                 navigationAction = TopBarAction.Close,
-                onNavigationActionClicked = { /* Action Clicked */ },
+                onNavigationActionClicked = { },
             ),
             trailingSlot = {
                 LemonadeUi.IconButton(

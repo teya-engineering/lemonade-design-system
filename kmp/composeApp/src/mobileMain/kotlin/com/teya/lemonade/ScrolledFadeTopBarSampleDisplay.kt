@@ -40,7 +40,7 @@ internal fun ScrolledFadeTopBarSampleDisplay() {
             scrolledBackgroundColor = LemonadeTheme.colors.background.bgDefault,
             navigationAction = NavigationAction(
                 navigationAction = TopBarAction.Close,
-                onNavigationActionClicked = { /* Action Clicked */ },
+                onNavigationActionClicked = { },
             ),
         )
 

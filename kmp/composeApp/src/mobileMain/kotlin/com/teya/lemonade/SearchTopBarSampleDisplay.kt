@@ -54,7 +54,12 @@ internal fun SearchTopBarSampleDisplay() {
         if (searchInput.isBlank()) {
             sampleItems
         } else {
-            sampleItems.filter { it.contains(searchInput, ignoreCase = true) }
+            sampleItems.filter { item ->
+                item.contains(
+                    other = searchInput,
+                    ignoreCase = true,
+                )
+            }
         }
     }
 
@@ -69,10 +74,10 @@ internal fun SearchTopBarSampleDisplay() {
             state = topBarState,
             searchInput = searchInput,
             searchPlaceholder = "Search",
-            onSearchChanged = { searchInput = it },
+            onSearchChanged = { input -> searchInput = input },
             navigationAction = NavigationAction(
                 navigationAction = TopBarAction.Close,
-                onNavigationActionClicked = { /* Action Clicked */ },
+                onNavigationActionClicked = { },
             ),
             trailingSlot = {
                 LemonadeUi.IconButton(

@@ -19,38 +19,74 @@ private const val TIME_FIELD_DIGITS = 2
 internal fun TimePickerDisplay() {
     // The picker states are hoisted above the lazy list so a selection survives the item being
     // scrolled out of the viewport and disposed.
-    val dial24State = rememberLemonadeTimePickerState(SAMPLE_HOUR, SAMPLE_MINUTE, is24Hour = true)
-    val dial12State = rememberLemonadeTimePickerState(SAMPLE_HOUR, SAMPLE_MINUTE, is24Hour = false)
-    val input24State = rememberLemonadeTimePickerState(SAMPLE_HOUR, SAMPLE_MINUTE, is24Hour = true)
-    val input12State = rememberLemonadeTimePickerState(SAMPLE_HOUR, SAMPLE_MINUTE, is24Hour = false)
+    val dial24State = rememberLemonadeTimePickerState(
+        initialHour = SAMPLE_HOUR,
+        initialMinute = SAMPLE_MINUTE,
+        is24Hour = true,
+    )
+    val dial12State = rememberLemonadeTimePickerState(
+        initialHour = SAMPLE_HOUR,
+        initialMinute = SAMPLE_MINUTE,
+        is24Hour = false,
+    )
+    val input24State = rememberLemonadeTimePickerState(
+        initialHour = SAMPLE_HOUR,
+        initialMinute = SAMPLE_MINUTE,
+        is24Hour = true,
+    )
+    val input12State = rememberLemonadeTimePickerState(
+        initialHour = SAMPLE_HOUR,
+        initialMinute = SAMPLE_MINUTE,
+        is24Hour = false,
+    )
 
-    val dialogState = rememberLemonadeTimePickerState(SAMPLE_HOUR, SAMPLE_MINUTE, is24Hour = true)
-    val inputDialogState = rememberLemonadeTimePickerState(SAMPLE_HOUR, SAMPLE_MINUTE, is24Hour = false)
+    val dialogState = rememberLemonadeTimePickerState(
+        initialHour = SAMPLE_HOUR,
+        initialMinute = SAMPLE_MINUTE,
+        is24Hour = true,
+    )
+    val inputDialogState = rememberLemonadeTimePickerState(
+        initialHour = SAMPLE_HOUR,
+        initialMinute = SAMPLE_MINUTE,
+        is24Hour = false,
+    )
 
     var expandedDialog by remember { mutableStateOf<LemonadeTimePickerDisplayMode?>(value = null) }
     var confirmedTime by remember { mutableStateOf(value = "—") }
 
     SampleScreenDisplayLazyColumn(title = "TimePicker") {
         item(key = "dial-24h") {
-            TimePickerSample(title = "Dial — 24-hour", state = dial24State) {
+            TimePickerSample(
+                title = "Dial — 24-hour",
+                state = dial24State,
+            ) {
                 LemonadeUi.TimePicker(state = dial24State)
             }
         }
 
         item(key = "dial-12h") {
-            TimePickerSample(title = "Dial — 12-hour (AM/PM)", state = dial12State) {
+            TimePickerSample(
+                title = "Dial — 12-hour (AM/PM)",
+                state = dial12State,
+            ) {
                 LemonadeUi.TimePicker(state = dial12State)
             }
         }
 
         item(key = "input-24h") {
-            TimePickerSample(title = "Input — 24-hour", state = input24State) {
+            TimePickerSample(
+                title = "Input — 24-hour",
+                state = input24State,
+            ) {
                 LemonadeUi.TimeInput(state = input24State)
             }
         }
 
         item(key = "input-12h") {
-            TimePickerSample(title = "Input — 12-hour (AM/PM)", state = input12State) {
+            TimePickerSample(
+                title = "Input — 12-hour (AM/PM)",
+                state = input12State,
+            ) {
                 LemonadeUi.TimeInput(state = input12State)
             }
         }
@@ -85,7 +121,10 @@ internal fun TimePickerDisplay() {
         state = dialogState,
         onDismissRequest = { expandedDialog = null },
         onConfirm = { hour, minute ->
-            confirmedTime = formatTime(hour, minute)
+            confirmedTime = formatTime(
+                hour = hour,
+                minute = minute,
+            )
             expandedDialog = null
         },
     )
@@ -100,7 +139,10 @@ internal fun TimePickerDisplay() {
         state = inputDialogState,
         onDismissRequest = { expandedDialog = null },
         onConfirm = { hour, minute ->
-            confirmedTime = formatTime(hour, minute)
+            confirmedTime = formatTime(
+                hour = hour,
+                minute = minute,
+            )
             expandedDialog = null
         },
         initialDisplayMode = LemonadeTimePickerDisplayMode.Input,
@@ -113,10 +155,15 @@ private fun TimePickerSample(
     state: LemonadeTimePickerState,
     content: @Composable () -> Unit,
 ) {
+    val selectedTime = formatTime(
+        hour = state.hour,
+        minute = state.minute,
+    )
+
     TimePickerSection(title = title) {
         content()
         LemonadeUi.Text(
-            text = "Selected: ${formatTime(state.hour, state.minute)}",
+            text = "Selected: $selectedTime",
             textStyle = LemonadeTheme.typography.bodySmallRegular,
             color = LemonadeTheme.colors.content.contentSecondary,
         )
@@ -141,7 +188,14 @@ private fun TimePickerSection(
     }
 }
 
+private fun Int.padToTimeField(): String =
+    toString()
+        .padStart(
+            length = TIME_FIELD_DIGITS,
+            padChar = '0',
+        )
+
 private fun formatTime(
     hour: Int,
     minute: Int,
-): String = "${hour.toString().padStart(TIME_FIELD_DIGITS, '0')}:${minute.toString().padStart(TIME_FIELD_DIGITS, '0')}"
+): String = "${hour.padToTimeField()}:${minute.padToTimeField()}"
