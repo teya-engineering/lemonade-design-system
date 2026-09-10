@@ -1,3 +1,7 @@
+public abstract interface annotation class com/teya/lemonade/ExperimentalLemonadeApi : java/lang/annotation/Annotation {
+	public abstract fun message ()Ljava/lang/String;
+}
+
 public abstract interface annotation class com/teya/lemonade/InternalLemonadeApi : java/lang/annotation/Annotation {
 	public abstract fun message ()Ljava/lang/String;
 }
@@ -36,6 +40,7 @@ public final class com/teya/lemonade/LemonadeLocalsKt {
 	public static final fun getLocalSizes ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalSpaces ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalTextStyles ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalThemedColors ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalTypographies ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
 
@@ -1040,6 +1045,26 @@ public final class com/teya/lemonade/LemonadeSpacesExtensionKt {
 	public static final fun getDp (Lcom/teya/lemonade/core/LemonadeSpaces;)F
 }
 
+public abstract interface class com/teya/lemonade/LemonadeThemedColors {
+	public abstract fun getAmber ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getBlue ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getCyan ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getFuchsia ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getGreen ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getGreenLime ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getIndigo ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getNeutral ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getOrange ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getPink ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getPurple ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getRed ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getRose ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getTeal ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getViolet ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getYellow ()Lcom/teya/lemonade/ThemedPrimaryColor;
+	public abstract fun getYellowLime ()Lcom/teya/lemonade/ThemedPrimaryColor;
+}
+
 public class com/teya/lemonade/LemonadeTypographyProvider {
 	public static final field $stable I
 	public fun <init> ()V
@@ -1073,5 +1098,19 @@ public class com/teya/lemonade/LemonadeTypographyProvider {
 	public fun getHeadingXLarge ()Lcom/teya/lemonade/core/LemonadeTextStyle;
 	public fun getHeadingXSmall ()Lcom/teya/lemonade/core/LemonadeTextStyle;
 	public fun getHeadingXXSmall ()Lcom/teya/lemonade/core/LemonadeTextStyle;
+}
+
+public abstract interface class com/teya/lemonade/ThemedColor {
+	public abstract fun getBackground-0d7_KjU ()J
+	public abstract fun getBorder-0d7_KjU ()J
+	public abstract fun getOnBackground-0d7_KjU ()J
+}
+
+public abstract interface class com/teya/lemonade/ThemedPrimaryColor : com/teya/lemonade/ThemedColor {
+	public abstract fun getBackgroundHigh-0d7_KjU ()J
+	public abstract fun getContent-0d7_KjU ()J
+	public abstract fun getContentInverse-0d7_KjU ()J
+	public abstract fun getOnBackgroundHigh-0d7_KjU ()J
+	public abstract fun getSubtle ()Lcom/teya/lemonade/ThemedColor;
 }
 

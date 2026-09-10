@@ -1,0 +1,205 @@
+{
+  "Themed": {
+    "blue": {
+      "background": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.082,
+            0.365,
+            0.988
+          ],
+          "alpha": 1,
+          "hex": "#155DFC"
+        },
+        "$description": "Generic blue surface.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5196:30",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.blue.background",
+            "iOS": "LemonadeTheme.themed.blue.background"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:8606e789d83dbafb138cbb989a290014dd9416b1/72:133",
+            "targetVariableName": "blue/600",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "background-subtle": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.169,
+            0.498,
+            1.0
+          ],
+          "alpha": 0.1,
+          "hex": "#2B7FFF"
+        },
+        "$description": "Subtle generic blue surface.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5196:31",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.blue.backgroundSubtle",
+            "iOS": "LemonadeTheme.themed.blue.backgroundSubtle"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315",
+            "targetVariableName": "blue/alpha/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "on-background": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Text drawn on top of background.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5196:106",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.blue.onBackground",
+            "iOS": "LemonadeTheme.themed.blue.onBackground"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/1:2",
+            "targetVariableName": "white/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      }
+    },
+    "green-lime": {
+      "border": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.369,
+            0.647,
+            0.0
+          ],
+          "alpha": 1,
+          "hex": "#5EA500"
+        },
+        "$description": "Generic green lime border.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5196:70",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE_COLOR",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.greenLime.border",
+            "iOS": "LemonadeTheme.themed.greenLime.border"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:aaaaaaaa/1:1",
+            "targetVariableName": "green-lime/600",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      }
+    },
+    "amber": {
+      "on-background": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.035,
+            0.031,
+            0.024
+          ],
+          "alpha": 0.925,
+          "hex": "#090806"
+        },
+        "$description": "Text drawn on top of background.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5196:79",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.themed.amber.onBackground",
+            "iOS": "LemonadeTheme.themed.amber.onBackground"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+            "targetVariableName": "neutral/alpha/900",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      }
+    }
+  },
+  "Background": {
+    "bg-default": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          1,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#FFFFFF"
+      },
+      "$description": "Default surface.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:3037:1",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.colors.background.bgDefault",
+          "iOS": "LemonadeTheme.colors.background.bgDefault"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/1:2",
+          "targetVariableName": "white/950",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "Light"
+  }
+}

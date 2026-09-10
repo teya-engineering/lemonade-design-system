@@ -44,6 +44,9 @@ jobs:
       - name: DTCG loader unit test
         run: '"$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/kmp-loader-dtcg-test.main.kts'
 
+      - name: Themed loader unit test
+        run: '"$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/kmp-themed-loader-test.main.kts'
+
       - name: Fail if generated code drifted
         run: |
           if [ -n "$(git status --porcelain -- kmp/ swiftui/)" ]; then
