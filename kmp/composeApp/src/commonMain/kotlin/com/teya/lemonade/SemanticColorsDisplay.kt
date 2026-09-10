@@ -70,11 +70,13 @@ private fun semanticGroups(colors: LemonadeSemanticColors): List<SemanticGroup> 
         SemanticGroup(
             title = title,
             subgroups = subgroups.map { (subgroupTitle, tokens) ->
+                val path = subgroupTitle
+                    ?: title
                 SemanticSubgroup(
                     title = subgroupTitle,
                     swatches = tokens.map { (name, color) ->
                         ColorSwatch(
-                            path = title.lowercase(),
+                            path = path.lowercase(),
                             name = name,
                             fill = color,
                             label = labelColor(

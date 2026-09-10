@@ -42,10 +42,11 @@ struct ColorsDisplayView: View {
         SemanticGroup(
             title: title,
             subgroups: subgroups.map { subgroup in
-                SemanticSubgroup(
+                let path = (subgroup.title ?? title).lowercased()
+                return SemanticSubgroup(
                     title: subgroup.title,
                     swatches: subgroup.tokens.map { name, color in
-                        ColorSwatch(path: title.lowercased(), name: name, fill: color, label: labelColor(for: color))
+                        ColorSwatch(path: path, name: name, fill: color, label: labelColor(for: color))
                     }
                 )
             }
