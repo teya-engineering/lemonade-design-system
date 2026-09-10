@@ -9,25 +9,26 @@ struct ColorSwatch: Identifiable {
     let label: Color
 }
 
+/// Titles repeat across a page (every semantic group has a "Brand"), and a lazy stack
+/// flattens nested `ForEach`es into one list, so the id must be unique page-wide.
 struct ColorSwatchGroup: Identifiable {
-    var id: String { title }
-    let title: String
+    let id: String
+    let title: String?
     let swatches: [ColorSwatch]
 }
 
 struct ColorSwatchSection: View {
-    let title: String?
-    let swatches: [ColorSwatch]
+    let group: ColorSwatchGroup
     var outlined: Bool = false
 
-    private let columns = [
-        GridItem(.flexible(), spacing: LemonadeTheme.spaces.spacing200),
-        GridItem(.flexible(), spacing: LemonadeTheme.spaces.spacing200),
-    ]
+    private let columns = Array(
+        repeating: GridItem(.flexible(), spacing: LemonadeTheme.spaces.spacing200),
+        count: 2
+    )
 
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing200) {
-            if let title {
+            if let title = group.title {
                 LemonadeUi.Text(
                     title,
                     textStyle: LemonadeTypography.shared.headingXXSmall
@@ -36,7 +37,7 @@ struct ColorSwatchSection: View {
             }
 
             LazyVGrid(columns: columns, spacing: LemonadeTheme.spaces.spacing200) {
-                ForEach(swatches) { swatch in
+                ForEach(group.swatches) { swatch in
                     ColorSwatchView(swatch: swatch, outlined: outlined)
                 }
             }
@@ -48,6 +49,10 @@ struct ColorSwatchSection: View {
 private struct ColorSwatchView: View {
     let swatch: ColorSwatch
     let outlined: Bool
+
+    private var shape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius600)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -70,12 +75,10 @@ private struct ColorSwatchView: View {
         .padding(.horizontal, LemonadeTheme.spaces.spacing400)
         .padding(.vertical, LemonadeTheme.spaces.spacing500)
         .frame(height: 162)
-        .background(swatch.fill)
-        .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius600))
+        .background(swatch.fill, in: shape)
         .overlay {
             if outlined {
-                RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius600)
-                    .strokeBorder(.border.borderNeutralLow, lineWidth: LemonadeTheme.borderWidth.base.border25)
+                shape.strokeBorder(.border.borderNeutralLow, lineWidth: LemonadeTheme.borderWidth.base.border25)
             }
         }
     }

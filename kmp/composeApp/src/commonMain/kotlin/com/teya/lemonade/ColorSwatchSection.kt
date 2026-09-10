@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -28,28 +26,28 @@ internal data class ColorSwatch(
 )
 
 internal data class ColorSwatchGroup(
-    val title: String,
+    val id: String,
+    val title: String?,
     val swatches: List<ColorSwatch>,
 )
 
 @Composable
 internal fun ColorSwatchSection(
-    title: String?,
-    swatches: List<ColorSwatch>,
+    group: ColorSwatchGroup,
     outlined: Boolean = false,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
         modifier = Modifier.padding(vertical = LemonadeTheme.spaces.spacing400),
     ) {
-        if (title != null) {
+        if (group.title != null) {
             LemonadeUi.Text(
-                text = title,
+                text = group.title,
                 textStyle = LemonadeTheme.typography.headingXXSmall,
                 modifier = Modifier.padding(horizontal = LemonadeTheme.spaces.spacing100),
             )
         }
-        swatches.chunked(size = COLUMNS).forEach { row ->
+        group.swatches.chunked(size = COLUMNS).forEach { row ->
             Row(
                 horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
             ) {
@@ -78,9 +76,10 @@ private fun ColorSwatchBlock(
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .height(height = SwatchHeight)
-            .clip(shape = LemonadeTheme.shapes.radius600)
-            .background(color = swatch.fill)
-            .then(
+            .background(
+                color = swatch.fill,
+                shape = LemonadeTheme.shapes.radius600,
+            ).then(
                 if (outlined) {
                     Modifier.border(
                         width = LemonadeTheme.borderWidths.base.border25,
@@ -98,8 +97,7 @@ private fun ColorSwatchBlock(
         LemonadeUi.Text(
             text = swatch.path,
             textStyle = LemonadeTheme.typography.bodyXSmallRegular,
-            color = swatch.label,
-            modifier = Modifier.alpha(alpha = LemonadeTheme.opacities.base.opacity70),
+            color = swatch.label.copy(alpha = swatch.label.alpha * LemonadeTheme.opacities.base.opacity70),
         )
         LemonadeUi.Text(
             text = swatch.name,

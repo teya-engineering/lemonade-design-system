@@ -12,16 +12,11 @@ import androidx.compose.ui.graphics.luminance
 /** Where contrast against black overtakes contrast against white. */
 private const val DARK_LABEL_LUMINANCE_THRESHOLD = 0.179f
 
-private typealias TokenSubgroups = List<Pair<String?, List<Pair<String, Color>>>>
+private typealias TokenSubgroups = Map<String?, Map<String, Color>>
 
 private data class SemanticGroup(
     val title: String,
-    val subgroups: List<SemanticSubgroup>,
-)
-
-private data class SemanticSubgroup(
-    val title: String?,
-    val swatches: List<ColorSwatch>,
+    val subgroups: List<ColorSwatchGroup>,
 )
 
 @Composable
@@ -46,11 +41,10 @@ internal fun SemanticColorsDisplay() {
             }
             items(
                 items = group.subgroups,
-                key = { subgroup -> "${group.title}/${subgroup.title}" },
+                key = { subgroup -> subgroup.id },
             ) { subgroup ->
                 ColorSwatchSection(
-                    title = subgroup.title,
-                    swatches = subgroup.swatches,
+                    group = subgroup,
                     outlined = true,
                 )
             }
@@ -71,12 +65,14 @@ private fun semanticGroups(colors: LemonadeSemanticColors): List<SemanticGroup> 
             title = title,
             subgroups = subgroups.map { (subgroupTitle, tokens) ->
                 val path = subgroupTitle
-                    ?: title
-                SemanticSubgroup(
+                    ?.lowercase()
+                    ?: title.lowercase()
+                ColorSwatchGroup(
+                    id = "$title/$subgroupTitle",
                     title = subgroupTitle,
                     swatches = tokens.map { (name, color) ->
                         ColorSwatch(
-                            path = path.lowercase(),
+                            path = path,
                             name = name,
                             fill = color,
                             label = labelColor(
@@ -109,20 +105,20 @@ private fun labelColor(
 }
 
 private fun backgroundTokens(colors: LemonadeSemanticColors.BackgroundColors): TokenSubgroups =
-    listOf(
-        null to listOf(
+    mapOf(
+        null to mapOf(
             "bgDefault" to colors.bgDefault,
             "bgSubtle" to colors.bgSubtle,
             "bgElevated" to colors.bgElevated,
             "bgElevatedHigh" to colors.bgElevatedHigh,
         ),
-        "Brand" to listOf(
+        "Brand" to mapOf(
             "bgBrand" to colors.bgBrand,
             "bgBrandElevated" to colors.bgBrandElevated,
             "bgBrandSubtle" to colors.bgBrandSubtle,
             "bgBrandHigh" to colors.bgBrandHigh,
         ),
-        "Voice" to listOf(
+        "Voice" to mapOf(
             "bgCritical" to colors.bgCritical,
             "bgCaution" to colors.bgCaution,
             "bgInfo" to colors.bgInfo,
@@ -136,12 +132,12 @@ private fun backgroundTokens(colors: LemonadeSemanticColors.BackgroundColors): T
             "bgFeaturedSubtle" to colors.bgFeaturedSubtle,
             "bgNeutralSubtle" to colors.bgNeutralSubtle,
         ),
-        "Inverse" to listOf(
+        "Inverse" to mapOf(
             "bgDefaultInverse" to colors.bgDefaultInverse,
             "bgSubtleInverse" to colors.bgSubtleInverse,
             "bgElevatedInverse" to colors.bgElevatedInverse,
         ),
-        "Fixed" to listOf(
+        "Fixed" to mapOf(
             "bgAlwaysDark" to colors.bgAlwaysDark,
             "bgAlwaysDarkHigh" to colors.bgAlwaysDarkHigh,
             "bgAlwaysDarkMedium" to colors.bgAlwaysDarkMedium,
@@ -154,20 +150,20 @@ private fun backgroundTokens(colors: LemonadeSemanticColors.BackgroundColors): T
     )
 
 private fun borderTokens(colors: LemonadeSemanticColors.BorderColors): TokenSubgroups =
-    listOf(
-        null to listOf(
+    mapOf(
+        null to mapOf(
             "borderNeutralLow" to colors.borderNeutralLow,
             "borderNeutralMedium" to colors.borderNeutralMedium,
             "borderNeutralHigh" to colors.borderNeutralHigh,
             "borderSelected" to colors.borderSelected,
         ),
-        "Brand" to listOf(
+        "Brand" to mapOf(
             "borderBrand" to colors.borderBrand,
             "borderOnBrandLow" to colors.borderOnBrandLow,
             "borderOnBrandMedium" to colors.borderOnBrandMedium,
             "borderOnBrandHigh" to colors.borderOnBrandHigh,
         ),
-        "Voice" to listOf(
+        "Voice" to mapOf(
             "borderCritical" to colors.borderCritical,
             "borderCaution" to colors.borderCaution,
             "borderInfo" to colors.borderInfo,
@@ -179,14 +175,14 @@ private fun borderTokens(colors: LemonadeSemanticColors.BorderColors): TokenSubg
             "borderPositiveSubtle" to colors.borderPositiveSubtle,
             "borderFeaturedSubtle" to colors.borderFeaturedSubtle,
         ),
-        "Inverse" to listOf(
+        "Inverse" to mapOf(
             "borderNeutralLowInverse" to colors.borderNeutralLowInverse,
             "borderNeutralMediumInverse" to colors.borderNeutralMediumInverse,
             "borderNeutralHighInverse" to colors.borderNeutralHighInverse,
             "borderSelectedInverse" to colors.borderSelectedInverse,
             "borderBrandInverse" to colors.borderBrandInverse,
         ),
-        "Fixed" to listOf(
+        "Fixed" to mapOf(
             "borderAlwaysLight" to colors.borderAlwaysLight,
             "borderAlwaysLightLow" to colors.borderAlwaysLightLow,
             "borderAlwaysLightMedium" to colors.borderAlwaysLightMedium,
@@ -199,19 +195,19 @@ private fun borderTokens(colors: LemonadeSemanticColors.BorderColors): TokenSubg
     )
 
 private fun contentTokens(colors: LemonadeSemanticColors.ContentColors): TokenSubgroups =
-    listOf(
-        null to listOf(
+    mapOf(
+        null to mapOf(
             "contentPrimary" to colors.contentPrimary,
             "contentSecondary" to colors.contentSecondary,
             "contentTertiary" to colors.contentTertiary,
         ),
-        "Brand" to listOf(
+        "Brand" to mapOf(
             "contentBrand" to colors.contentBrand,
             "contentBrandHigh" to colors.contentBrandHigh,
             "contentOnBrandHigh" to colors.contentOnBrandHigh,
             "contentOnBrandLow" to colors.contentOnBrandLow,
         ),
-        "Voice" to listOf(
+        "Voice" to mapOf(
             "contentCritical" to colors.contentCritical,
             "contentCaution" to colors.contentCaution,
             "contentInfo" to colors.contentInfo,
@@ -219,7 +215,7 @@ private fun contentTokens(colors: LemonadeSemanticColors.ContentColors): TokenSu
             "contentFeatured" to colors.contentFeatured,
             "contentNeutral" to colors.contentNeutral,
         ),
-        "Voice / On Color" to listOf(
+        "Voice / On Color" to mapOf(
             "contentCriticalOnColor" to colors.contentCriticalOnColor,
             "contentCautionOnColor" to colors.contentCautionOnColor,
             "contentInfoOnColor" to colors.contentInfoOnColor,
@@ -227,13 +223,13 @@ private fun contentTokens(colors: LemonadeSemanticColors.ContentColors): TokenSu
             "contentFeaturedOnColor" to colors.contentFeaturedOnColor,
             "contentNeutralOnColor" to colors.contentNeutralOnColor,
         ),
-        "Inverse" to listOf(
+        "Inverse" to mapOf(
             "contentPrimaryInverse" to colors.contentPrimaryInverse,
             "contentSecondaryInverse" to colors.contentSecondaryInverse,
             "contentTertiaryInverse" to colors.contentTertiaryInverse,
             "contentBrandInverse" to colors.contentBrandInverse,
         ),
-        "Fixed" to listOf(
+        "Fixed" to mapOf(
             "contentAlwaysLight" to colors.contentAlwaysLight,
             "contentAlwaysDark" to colors.contentAlwaysDark,
             "contentCriticalAlwaysOnColor" to colors.contentCriticalAlwaysOnColor,
@@ -245,8 +241,8 @@ private fun contentTokens(colors: LemonadeSemanticColors.ContentColors): TokenSu
     )
 
 private fun interactionTokens(colors: LemonadeSemanticColors.InteractionColors): TokenSubgroups =
-    listOf(
-        "Interactive / Background" to listOf(
+    mapOf(
+        "Interactive / Background" to mapOf(
             "bgDefaultInteractive" to colors.bgDefaultInteractive,
             "bgSubtleInteractive" to colors.bgSubtleInteractive,
             "bgElevatedInteractive" to colors.bgElevatedInteractive,
@@ -273,7 +269,7 @@ private fun interactionTokens(colors: LemonadeSemanticColors.InteractionColors):
             "bgAlwaysLightMediumInteractive" to colors.bgAlwaysLightMediumInteractive,
             "bgAlwaysLightLowInteractive" to colors.bgAlwaysLightLowInteractive,
         ),
-        "Pressed / Background" to listOf(
+        "Pressed / Background" to mapOf(
             "bgDefaultPressed" to colors.bgDefaultPressed,
             "bgSubtlePressed" to colors.bgSubtlePressed,
             "bgElevatedPressed" to colors.bgElevatedPressed,
@@ -296,8 +292,8 @@ private fun interactionTokens(colors: LemonadeSemanticColors.InteractionColors):
     )
 
 private fun scopedTokens(colors: LemonadeSemanticColors.ScopedColors): TokenSubgroups =
-    listOf(
-        "Settlements" to listOf(
+    mapOf(
+        "Settlements" to mapOf(
             "bgSettlementInstant" to colors.bgSettlementInstant,
             "bgSettlementBusinessDays" to colors.bgSettlementBusinessDays,
             "bgSettlementEveryday" to colors.bgSettlementEveryday,
@@ -310,8 +306,8 @@ private fun scopedTokens(colors: LemonadeSemanticColors.ScopedColors): TokenSubg
     )
 
 private fun shadowTokens(colors: LemonadeSemanticColors.ShadowColors): TokenSubgroups =
-    listOf(
-        null to listOf(
+    mapOf(
+        null to mapOf(
             "shadowDefault" to colors.shadowDefault,
         ),
     )

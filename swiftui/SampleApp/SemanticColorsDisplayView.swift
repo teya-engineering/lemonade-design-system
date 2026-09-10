@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 import Lemonade
 
-struct ColorsDisplayView: View {
+struct SemanticColorsDisplayView: View {
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
@@ -17,7 +17,7 @@ struct ColorsDisplayView: View {
                     .padding(.top, LemonadeTheme.spaces.spacing600)
 
                     ForEach(group.subgroups) { subgroup in
-                        ColorSwatchSection(title: subgroup.title, swatches: subgroup.swatches, outlined: true)
+                        ColorSwatchSection(group: subgroup, outlined: true)
                     }
                 }
             }
@@ -43,7 +43,7 @@ struct ColorsDisplayView: View {
             title: title,
             subgroups: subgroups.map { subgroup in
                 let path = (subgroup.title ?? title).lowercased()
-                return SemanticSubgroup(
+                return ColorSwatchGroup(
                     id: "\(title)/\(subgroup.title ?? "")",
                     title: subgroup.title,
                     swatches: subgroup.tokens.map { name, color in
@@ -99,19 +99,10 @@ struct ColorsDisplayView: View {
 private struct SemanticGroup: Identifiable {
     var id: String { title }
     let title: String
-    let subgroups: [SemanticSubgroup]
-}
-
-/// Sub-group titles repeat across groups, and the lazy stack flattens every group's
-/// sub-groups into one list, so the id has to carry the group too.
-private struct SemanticSubgroup: Identifiable {
-    let id: String
-    let title: String?
-    let swatches: [ColorSwatch]
+    let subgroups: [ColorSwatchGroup]
 }
 
 private typealias TokenSubgroup = (title: String?, tokens: [(String, Color)])
-
 
 private func backgroundTokens(_ colors: BackgroundColors) -> [TokenSubgroup] {
     [
@@ -332,6 +323,6 @@ private func shadowTokens(_ colors: ShadowColors) -> [TokenSubgroup] {
 
 #Preview {
     NavigationStack {
-        ColorsDisplayView()
+        SemanticColorsDisplayView()
     }
 }

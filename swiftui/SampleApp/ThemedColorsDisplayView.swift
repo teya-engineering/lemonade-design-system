@@ -6,7 +6,7 @@ struct ThemedColorsDisplayView: View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 0) {
                 ForEach(themedHues) { hue in
-                    ColorSwatchSection(title: hue.title, swatches: hue.swatches)
+                    ColorSwatchSection(group: hue)
                 }
             }
         }
@@ -20,6 +20,7 @@ struct ThemedColorsDisplayView: View {
 private func themedHue(title: String, name: String, color: ThemedPrimaryColor) -> ColorSwatchGroup {
     let subtle = "\(name).subtle"
     return ColorSwatchGroup(
+        id: name,
         title: title,
         swatches: [
             ColorSwatch(path: name, name: "background", fill: color.background, label: color.onBackground),

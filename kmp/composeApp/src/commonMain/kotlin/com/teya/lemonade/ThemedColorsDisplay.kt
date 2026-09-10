@@ -19,12 +19,9 @@ internal fun ThemedColorsDisplay() {
     ) {
         items(
             items = hues,
-            key = { hue -> hue.title },
+            key = { hue -> hue.id },
         ) { hue ->
-            ColorSwatchSection(
-                title = hue.title,
-                swatches = hue.swatches,
-            )
+            ColorSwatchSection(group = hue)
         }
     }
 }
@@ -50,6 +47,7 @@ private fun themedHues(themed: LemonadeThemedColors): List<ColorSwatchGroup> =
         "yellowLime" to themed.yellowLime,
     ).map { (name, color) ->
         ColorSwatchGroup(
+            id = name,
             title = name
                 .replace(
                     regex = UppercaseLetter,
