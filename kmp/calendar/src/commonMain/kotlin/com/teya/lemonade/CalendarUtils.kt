@@ -7,10 +7,7 @@ import kotlinx.datetime.minusMonth
 import kotlinx.datetime.onDay
 import kotlinx.datetime.plusMonth
 
-/**
- * Computes the number of leading cells from the previous month needed before
- * [month]'s first day, given that the calendar grid starts on [firstDayOfWeek].
- */
+/** Counts the previous-month cells before [month]'s first day when the grid starts on [firstDayOfWeek]. */
 private fun leadingOffset(
     month: YearMonth,
     firstDayOfWeek: DayOfWeek,
@@ -21,86 +18,84 @@ private fun leadingOffset(
 }
 
 /**
- * Generates the full grid of [LocalDate] values for a calendar month page,
- * including leading days from the previous month and trailing days from the
- * next month so that the grid starts on [firstDayOfWeek] and fills 6 complete
- * weeks (42 cells).
+ * Builds the 42-cell grid for [month], padded with adjacent-month days.
  *
- * @param month The target [YearMonth].
- * @param firstDayOfWeek The day that should appear in the first column
- *   (e.g. [DayOfWeek.MONDAY] for ISO locales).
- * @return A list of exactly 42 [LocalDate] values.
+ * @param month target [YearMonth]
+ * @param firstDayOfWeek day shown in the first column (e.g. [DayOfWeek.MONDAY] for ISO locales)
+ * @return exactly 42 [LocalDate] values in grid order
  */
 internal fun daysForMonth(
     month: YearMonth,
     firstDayOfWeek: DayOfWeek = DayOfWeek.MONDAY,
 ): List<LocalDate> {
-    val offset = leadingOffset(month = month, firstDayOfWeek = firstDayOfWeek)
+    val previousDays = previousMonthTrailingDays(
+        month = month,
+        firstDayOfWeek = firstDayOfWeek,
+    )
+    val nextDays = nextMonthLeadingDays(
+        month = month,
+        firstDayOfWeek = firstDayOfWeek,
+    )
+    return previousDays + currentMonthDays(month = month) + nextDays
+}
 
-    return buildList {
-        // Previous month trailing days
-        val previousMonth = month.minusMonth()
-        val prevMonthLength = previousMonth.numberOfDays
-        for (day in prevMonthLength - offset + 1..prevMonthLength) {
-            add(previousMonth.onDay(day))
-        }
-
-        // Current month
-        for (day in 1..month.numberOfDays) {
-            add(month.onDay(day))
-        }
-
-        // Next month leading days
-        val nextMonth = month.plusMonth()
-        val remaining = CALENDAR_GRID_CELLS - size
-        for (day in 1..remaining) {
-            add(nextMonth.onDay(day))
-        }
+private fun previousMonthTrailingDays(
+    month: YearMonth,
+    firstDayOfWeek: DayOfWeek,
+): List<LocalDate> {
+    val offset = leadingOffset(
+        month = month,
+        firstDayOfWeek = firstDayOfWeek,
+    )
+    val previousMonth = month.minusMonth()
+    val lastDay = previousMonth.numberOfDays
+    return (lastDay - offset + 1..lastDay).map { day ->
+        previousMonth.onDay(day)
     }
 }
 
-/**
- * Returns the days from the previous month that appear before [month]'s first
- * day when the calendar starts on [firstDayOfWeek].
- */
+private fun currentMonthDays(month: YearMonth): List<LocalDate> =
+    (1..month.numberOfDays).map { day ->
+        month.onDay(day)
+    }
+
+private fun nextMonthLeadingDays(
+    month: YearMonth,
+    firstDayOfWeek: DayOfWeek,
+): List<LocalDate> {
+    val offset = leadingOffset(
+        month = month,
+        firstDayOfWeek = firstDayOfWeek,
+    )
+    val remaining = CALENDAR_GRID_CELLS - offset - month.numberOfDays
+    val nextMonth = month.plusMonth()
+    return (1..remaining).map { day ->
+        nextMonth.onDay(day)
+    }
+}
+
+/** Returns the previous-month days that pad [month]'s first week. */
 internal fun peekDaysBefore(
     month: YearMonth,
     firstDayOfWeek: DayOfWeek = DayOfWeek.MONDAY,
-): List<LocalDate> {
-    val offset = leadingOffset(month = month, firstDayOfWeek = firstDayOfWeek)
+): List<LocalDate> =
+    previousMonthTrailingDays(
+        month = month,
+        firstDayOfWeek = firstDayOfWeek,
+    )
 
-    val previousMonth = month.minusMonth()
-    val prevMonthLength = previousMonth.numberOfDays
-
-    return buildList {
-        for (day in prevMonthLength - offset + 1..prevMonthLength) {
-            add(previousMonth.onDay(day))
-        }
-    }
-}
-
-/**
- * Returns the days from the next month that appear after [month]'s last
- * day to fill the remaining grid cells.
- */
+/** Returns the next-month days that fill the grid after [month]'s last day. */
 internal fun peekDaysAfter(
     month: YearMonth,
     firstDayOfWeek: DayOfWeek = DayOfWeek.MONDAY,
-): List<LocalDate> {
-    val totalBeforeAndCurrent =
-        leadingOffset(month = month, firstDayOfWeek = firstDayOfWeek) + month.numberOfDays
-    val remaining = CALENDAR_GRID_CELLS - totalBeforeAndCurrent
-
-    val nextMonth = month.plusMonth()
-    return buildList {
-        for (day in 1..remaining) {
-            add(nextMonth.onDay(day))
-        }
-    }
-}
+): List<LocalDate> =
+    nextMonthLeadingDays(
+        month = month,
+        firstDayOfWeek = firstDayOfWeek,
+    )
 
 /**
- * Produces an ordered list of [DayOfWeek] entries starting from [firstDayOfWeek].
+ * Orders the [DayOfWeek] entries starting from [firstDayOfWeek].
  *
  * For example, if [firstDayOfWeek] is [DayOfWeek.MONDAY], the result is
  * `[MONDAY, TUESDAY, ..., SUNDAY]`.
@@ -108,7 +103,7 @@ internal fun peekDaysAfter(
 internal fun weekdayOrder(firstDayOfWeek: DayOfWeek = DayOfWeek.MONDAY): List<DayOfWeek> {
     val all = DayOfWeek.entries
     val startIndex = all.indexOf(firstDayOfWeek)
-    return all.subList(startIndex, all.size) + all.subList(0, startIndex)
+    return all.drop(startIndex) + all.take(startIndex)
 }
 
 /** Number of cells in a 6-week calendar grid. */

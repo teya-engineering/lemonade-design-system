@@ -24,8 +24,9 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.NoticeVoice
 
 /**
- * A banner used to display brief, important messages within content.
- * Can include an icon and action to draw attention to contextual information or status updates.
+ * Shows a brief, important message inside content.
+ *
+ * Optionally carries an icon and an action for contextual information or status updates.
  *
  * ## Usage
  * ```kotlin
@@ -43,15 +44,13 @@ import com.teya.lemonade.core.NoticeVoice
  * )
  * ```
  *
- * @param content The body text displayed in the notice.
- * @param voice [NoticeVoice] defining the semantic tone. Controls background, icon tint,
- *  and action text colors.
- * @param modifier [Modifier] applied to the root container.
- * @param title Optional bold heading displayed above the content.
- * @param showIcon Whether to display the leading icon. The icon is automatically
- *  chosen based on [voice]. Defaults to `true`.
- * @param actionLabel Optional text for the action button below the content.
- * @param onActionClick Callback invoked when the action is tapped.
+ * @param content body text shown in the notice
+ * @param voice semantic tone, driving the background, icon tint and action text colors
+ * @param modifier optional [Modifier] applied to the root container
+ * @param title optional bold heading shown above [content]
+ * @param showIcon whether to show the leading icon, chosen from [voice]; defaults to `true`
+ * @param actionLabel optional text for the action button below [content]
+ * @param onActionClick called when the action is tapped
  */
 @Composable
 public fun LemonadeUi.Notice(
@@ -219,20 +218,23 @@ private class NoticePreviewProvider : PreviewParameterProvider<NoticePreviewData
     private fun buildAllVariants(): Sequence<NoticePreviewData> =
         buildList {
             NoticeVoice.entries.forEach { voice ->
-                listOf(true, false).forEach { withTitle ->
-                    listOf(true, false).forEach { withAction ->
-                        listOf(true, false).forEach { withIcon ->
-                            add(
-                                element = NoticePreviewData(
-                                    voice = voice,
-                                    withTitle = withTitle,
-                                    withAction = withAction,
-                                    withIcon = withIcon,
-                                ),
-                            )
-                        }
+                listOf(true, false)
+                    .forEach { withTitle ->
+                        listOf(true, false)
+                            .forEach { withAction ->
+                                listOf(true, false)
+                                    .forEach { withIcon ->
+                                        add(
+                                            element = NoticePreviewData(
+                                                voice = voice,
+                                                withTitle = withTitle,
+                                                withAction = withAction,
+                                                withIcon = withIcon,
+                                            ),
+                                        )
+                                    }
+                            }
                     }
-                }
             }
         }.asSequence()
 }

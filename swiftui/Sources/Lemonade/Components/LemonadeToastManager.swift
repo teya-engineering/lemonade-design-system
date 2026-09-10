@@ -86,7 +86,7 @@ public enum LemonadeToastPolicy: Sendable, Equatable {
     ///
     /// Suits a repeated action reporting its running state — a till adding items to a basket —
     /// where only the newest message is worth reading and a backlog would outlive the taps that
-    /// produced it. Compose and Flutter behave this way for every toast, having no queue at all.
+    /// produced it.
     ///
     /// The queue is cleared rather than kept, so nothing older can surface after the message that
     /// replaced it.
@@ -186,10 +186,8 @@ public final class LemonadeToastManager: ObservableObject {
     /// The currently displayed toast, if any.
     @Published public private(set) var currentToast: LemonadeToastItem?
 
-    /// Queue of pending toasts.
     private var pendingToasts: [LemonadeToastItem] = []
 
-    /// Timer for auto-dismissal.
     private var dismissTask: Task<Void, Never>?
 
     /// Monotonic timestamp of when the current toast was put on screen, used to hold it there
@@ -281,14 +279,12 @@ public final class LemonadeToastManager: ObservableObject {
         let hadPending = !pendingToasts.isEmpty
 
         if hadPending {
-            // Show next toast immediately (overlapping animations)
             showNextToastIfAvailable()
         } else {
             currentToast = nil
         }
     }
 
-    /// Displays a toast immediately.
     private func displayToast(_ toast: LemonadeToastItem) {
         dismissTask?.cancel()
         currentToast = toast
@@ -297,7 +293,6 @@ public final class LemonadeToastManager: ObservableObject {
         // A loading toast persists until explicitly dismissed or replaced — skip the auto-dismiss timer.
         guard toast.voice != .loading else { return }
 
-        // Wait for entry animation to complete, then start visibility timer
         let totalDelay = ToastAnimationConfig.duration + toast.duration.timeInterval
         scheduleAutoDismiss(after: totalDelay)
     }
@@ -322,7 +317,6 @@ public final class LemonadeToastManager: ObservableObject {
         scheduleAutoDismiss(after: remainingMinimumVisible)
     }
 
-    /// Shows the next pending toast if available.
     private func showNextToastIfAvailable() {
         guard !pendingToasts.isEmpty else {
             return

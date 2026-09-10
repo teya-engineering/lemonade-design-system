@@ -38,7 +38,7 @@ import androidx.compose.ui.window.DialogWindowProvider
 import kotlinx.coroutines.delay
 import android.graphics.Color as AndroidColor
 
-// Let the window's flags/size/gravity settle before animating, else the enter flicks.
+/** Lets the window's flags, size and gravity settle before animating, else the enter flicks. */
 private const val SHOW_DELAY_MS = 100L
 
 @Composable
@@ -52,9 +52,11 @@ internal actual fun PlatformToastHost(
 }
 
 /**
- * Draws the toast in its own [Dialog] window so it z-orders above any open ModalBottomSheet / Dialog.
- * `FLAG_NOT_FOCUSABLE` (implies `FLAG_NOT_TOUCH_MODAL`) passes touches outside the window through to the
- * content beneath and never takes input focus.
+ * Draws the toast in its own [Dialog] window, above any open modal.
+ *
+ * It z-orders above an [androidx.compose.material3.ModalBottomSheet] or another [Dialog].
+ * `FLAG_NOT_FOCUSABLE` (implies `FLAG_NOT_TOUCH_MODAL`) passes touches outside the window through to
+ * the content beneath and never takes input focus.
  *
  * Pass-through is bounded by the *window*, not the pill. The window spans the full width (see
  * [ConfigureToastWindow]), so while a toast is visible, taps in the horizontal band it occupies are
@@ -80,7 +82,8 @@ private fun ToastOverlayWindow(toastState: LemonadeToastState) {
         if (toast == null && animationSettled) lastToast = null
     }
 
-    val displayToast = lastToast ?: return
+    val displayToast = lastToast
+        ?: return
 
     Dialog(
         onDismissRequest = { toastState.dismiss() },
@@ -91,15 +94,13 @@ private fun ToastOverlayWindow(toastState: LemonadeToastState) {
         ),
     ) {
         val layoutDirection = LocalLayoutDirection.current
-        val margins = rememberToastPadding(displayToast.paddingValues, layoutDirection)
+        val margins = rememberToastPadding(
+            override = displayToast.paddingValues,
+            layoutDirection = layoutDirection,
+        )
         val startInset = margins.calculateStartPadding(layoutDirection)
         val endInset = margins.calculateEndPadding(layoutDirection)
         ConfigureToastWindow(bottomInset = margins.calculateBottomPadding())
-        // The window spans the full width and the insets are applied here, in Compose. Sizing the window
-        // to WRAP_CONTENT instead would re-apply the platform's 320dp dialog width cap that
-        // `usePlatformDefaultWidth = false` exists to remove, which stops a wrapped label from ever
-        // reaching the full width. Unlike the inline host the insets don't shift the toast horizontally —
-        // a bottom-centered toast has no caller that needs asymmetric horizontal positioning.
 
         LaunchedEffect(toast) {
             if (toast != null) {
@@ -110,23 +111,33 @@ private fun ToastOverlayWindow(toastState: LemonadeToastState) {
             }
         }
 
-        // Keep the toast always composed so the window measures one fixed size. Animating it in with
-        // AnimatedVisibility resized the window as the content appeared, which made the entrance drift
-        // in from the side. Drive enter/exit as a draw-only alpha + vertical translation instead —
-        // those never re-measure the window.
+        // Keep the toast always composed so the window measures one fixed size. Enter and exit are a
+        // draw-only alpha and vertical translation, which never re-measure the window.
         var toastHeightPx by remember { mutableIntStateOf(0) }
-        val transition = updateTransition(animState, label = "toast")
+        val transition = updateTransition(
+            transitionState = animState,
+            label = "toast",
+        )
         val alpha by transition.animateFloat(label = "alpha") { visible -> if (visible) 1f else 0f }
         val translationY by transition.animateFloat(
-            transitionSpec = { spring(dampingRatio = 0.8f, stiffness = Spring.StiffnessMediumLow) },
+            transitionSpec = {
+                spring(
+                    dampingRatio = 0.8f,
+                    stiffness = Spring.StiffnessMediumLow,
+                )
+            },
             label = "translationY",
         ) { visible -> if (visible) 0f else toastHeightPx.toFloat() }
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = startInset, end = endInset)
-                .onSizeChanged { toastHeightPx = it.height }
+                // The horizontal margins go on the content: the window itself has to stay
+                // `MATCH_PARENT` wide, see [ConfigureToastWindow].
+                .padding(
+                    start = startInset,
+                    end = endInset,
+                ).onSizeChanged { size -> toastHeightPx = size.height }
                 .graphicsLayer {
                     this.alpha = alpha
                     this.translationY = translationY
@@ -142,14 +153,15 @@ private fun ToastOverlayWindow(toastState: LemonadeToastState) {
 }
 
 /**
- * Spans the dialog window across the screen and lifts it [bottomInset] (plus the navigation-bar inset)
- * above the bottom via a window attribute, not padding — so the frame hugs the pill vertically and taps
- * above and below it fall through (but not beside it — see [ToastOverlayWindow]). `MATCH_PARENT` is
- * deliberate: `WRAP_CONTENT` re-applies the platform's 320dp dialog width cap that
- * `usePlatformDefaultWidth = false` exists to remove, which caps the toast well short of the screen.
- * The navigation-bar inset resolves to zero when the window already
- * sits above the bars and to the bar height on edge-to-edge screens, so the toast never lands under
- * the navigation bar.
+ * Spans the dialog window across the screen and lifts it [bottomInset] above the bottom.
+ *
+ * The lift is a window attribute plus the navigation-bar inset, not padding, so the frame hugs the
+ * pill vertically and taps above and below it fall through (but not beside it — see
+ * [ToastOverlayWindow]). `MATCH_PARENT` is deliberate: `WRAP_CONTENT` re-applies the platform's 320dp
+ * dialog width cap that `usePlatformDefaultWidth = false` exists to remove, which caps the toast well
+ * short of the screen. The navigation-bar inset resolves to zero when the window already sits above
+ * the bars and to the bar height on edge-to-edge screens, so the toast never lands under the
+ * navigation bar.
  */
 @Composable
 private fun ConfigureToastWindow(bottomInset: Dp) {

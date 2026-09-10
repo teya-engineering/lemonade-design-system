@@ -1,11 +1,10 @@
 import SwiftUI
 import Lemonade
 
-/// All ~280 icons, each paired with a pre-lowercased search haystack.
+/// Every icon, each paired with a pre-lowercased search haystack.
 ///
-/// Built once per process at file scope so a keystroke costs a plain `contains`
-/// per case instead of re-deriving the haystack (and paying for
-/// `localizedCaseInsensitiveContains`, which bridges to ICU on every call).
+/// Lives at file scope so a keystroke costs a plain `contains` against the prebuilt
+/// haystacks instead of lowercasing every name again.
 private let iconIndex: [(icon: LemonadeIcon, haystack: String)] =
     LemonadeIcon.allCases.map { ($0, $0.rawValue.lowercased()) }
 
@@ -25,7 +24,6 @@ struct IconsDisplayView: View {
     ]
 
     var body: some View {
-        // Evaluated once per body pass and reused by both the grid and the title.
         let icons = filteredIcons(matching: searchText)
 
         return ScrollView {

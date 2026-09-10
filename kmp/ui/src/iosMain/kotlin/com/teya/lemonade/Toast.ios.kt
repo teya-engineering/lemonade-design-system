@@ -9,5 +9,9 @@ internal actual fun PlatformToastHost(
     toastState: LemonadeToastState,
     content: @Composable () -> Unit,
 ) {
-    InlineToastHost(modifier = modifier, toastState = toastState, content = content)
+    InlineToastHost(
+        modifier = modifier,
+        toastState = toastState,
+        content = content,
+    )
 }

@@ -20,10 +20,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.TextFieldValue
 
 /**
- * The Text Field component allows users to enter or edit text and adapts seamlessly across both
- *  mobile and web platforms. It supports multiple interaction states, sizes, and configurations
- *  to accommodate a wide range of design contexts. The component ensures consistency in form
- *  design, maintaining clarity, accessibility, and usability across devices.
+ * Shows a single-line text input with optional label, support text, and error state.
  *
  * This overload takes a [TextFieldState], which owns the text and the selection itself. Prefer it
  * over the [String] and [TextFieldValue] overloads for anything that filters or formats input.
@@ -50,22 +47,22 @@ import androidx.compose.ui.text.input.TextFieldValue
  * Pass stable [inputTransformation] and [outputTransformation] instances — a new instance on each
  * recomposition rebuilds the field's internal transformed state and can strand the input session.
  *
- * @param state - The [TextFieldState] holding the text and selection
- * @param label - Label to be displayed on the top left of the text field
- * @param optionalIndicator - Optional text to be displayed on the top right of the text field
- * @param supportText - Support text to be displayed below the text field
- * @param placeholderText - Placeholder text to be displayed when the text field is empty
- * @param errorMessage - Error message to be displayed when the text field has an error
- * @param interactionSource - [MutableInteractionSource] to be applied to the text field
- * @param keyboardOptions - [KeyboardOptions] to be applied to the text field
- * @param onKeyboardAction - Handler for the keyboard's action key
- * @param inputTransformation - Filters or rewrites each edit before it reaches the buffer
- * @param outputTransformation - Decorates the text for display only
- * @param error - Whether the text field has an error
- * @param enabled - Whether the text field is enabled
- * @param leadingContent - Content to be displayed on the top left of the text field
- * @param trailingContent - Content to be displayed on the top right of the text field
- * @param modifier - [Modifier] to be applied to the root container of the text field
+ * @param state [TextFieldState] holding the text and its selection
+ * @param label text shown above the field, on the left
+ * @param optionalIndicator text shown above the field, on the right
+ * @param supportText text shown below the field
+ * @param placeholderText text shown inside the field while [state] is empty
+ * @param errorMessage text shown below the field while [error] is `true`
+ * @param interactionSource [MutableInteractionSource] applied to the field
+ * @param keyboardOptions [KeyboardOptions] applied to the field
+ * @param onKeyboardAction handler for the keyboard's action key
+ * @param inputTransformation filters or rewrites each edit before it reaches the buffer
+ * @param outputTransformation decorates the text for display only
+ * @param error `true` when the field shows its error state
+ * @param enabled `false` dims the field and blocks input
+ * @param leadingContent content shown before the input
+ * @param trailingContent content shown after the input
+ * @param modifier [Modifier] applied to the root container of the text field
  */
 @Composable
 public fun LemonadeUi.TextField(
@@ -123,10 +120,11 @@ public fun LemonadeUi.TextField(
 }
 
 /**
- * [TextFieldState]-based CoreTextField.
+ * Wraps the [BasicTextField] [TextFieldState] API.
  *
- * The decoration is the same tree the other two overloads use — BasicTextField's `decorationBox`
- * and `TextFieldDecorator` are the same inverted slot, so only the wrapper type differs.
+ * The decoration is the same tree the other two overloads use — [BasicTextField]'s `decorationBox`
+ * and [androidx.compose.foundation.text.input.TextFieldDecorator] are the same inverted slot, so
+ * only the wrapper type differs.
  */
 @Composable
 internal fun CoreTextField(

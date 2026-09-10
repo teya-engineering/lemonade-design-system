@@ -1,16 +1,9 @@
 package com.teya.lemonade.core
 
 /**
- * Variants available for dividers.
+ * Divider line styles.
  */
 public enum class DividerVariant {
-    /**
-     * Solid line divider.
-     */
     Solid,
-
-    /**
-     * Dashed line divider.
-     */
     Dashed,
 }

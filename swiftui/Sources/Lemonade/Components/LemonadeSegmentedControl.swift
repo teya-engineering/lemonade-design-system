@@ -42,16 +42,16 @@ public enum LemonadeSegmentedControlSize {
 private extension LemonadeSegmentedControlSize {
     var containerHeight: CGFloat {
         switch self {
-        case .small: return LemonadeTheme.sizes.size800   // 32
-        case .medium: return LemonadeTheme.sizes.size1000  // 40
-        case .large: return LemonadeTheme.sizes.size1200   // 48
+        case .small: return LemonadeTheme.sizes.size800
+        case .medium: return LemonadeTheme.sizes.size1000
+        case .large: return LemonadeTheme.sizes.size1200
         }
     }
 
     var buttonContentGap: CGFloat {
         switch self {
-        case .small: return LemonadeTheme.spaces.spacing50   // 2
-        case .medium, .large: return LemonadeTheme.spaces.spacing100  // 4
+        case .small: return LemonadeTheme.spaces.spacing50
+        case .medium, .large: return LemonadeTheme.spaces.spacing100
         }
     }
 
@@ -272,11 +272,7 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
         control.selectedSegmentIndex = min(selectedIndex, segmentLabels.count - 1)
         control.backgroundColor = .clear
         control.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-
-        // Hide native text — custom SwiftUI overlay handles visuals
-        let clearAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.clear]
-        control.setTitleTextAttributes(clearAttributes, for: .normal)
-        control.setTitleTextAttributes(clearAttributes, for: .selected)
+        hideNativeTitlesBehindOverlay(on: control)
 
         control.addTarget(
             context.coordinator,
@@ -284,21 +280,11 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
             for: .valueChanged
         )
 
-        // Inset the control by containerPadding so its segments align with the overlay buttons
         control.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(control)
-
-        let leading = control.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: containerPadding)
-        let trailing = control.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -containerPadding)
-        let top = control.topAnchor.constraint(equalTo: container.topAnchor, constant: containerPadding)
-        let bottom = control.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -containerPadding)
-        NSLayoutConstraint.activate([leading, trailing, top, bottom])
+        insetControlToAlignWithOverlay(control, in: container, storingIn: context.coordinator)
 
         context.coordinator.control = control
-        context.coordinator.leadingConstraint = leading
-        context.coordinator.trailingConstraint = trailing
-        context.coordinator.topConstraint = top
-        context.coordinator.bottomConstraint = bottom
         return container
     }
 
@@ -306,23 +292,56 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
         guard let control = context.coordinator.control else { return }
         context.coordinator.onSelectionChanged = onSelectionChanged
 
-        // Update padding constraints if size changed
-        context.coordinator.leadingConstraint?.constant = containerPadding
-        context.coordinator.trailingConstraint?.constant = -containerPadding
-        context.coordinator.topConstraint?.constant = containerPadding
-        context.coordinator.bottomConstraint?.constant = -containerPadding
+        syncContainerPadding(in: context.coordinator)
+        syncSegments(of: control)
+        syncSelectedIndex(of: control)
+    }
 
-        // Reconcile segment count if properties changed
-        if control.numberOfSegments != segmentLabels.count {
-            control.removeAllSegments()
-            for (index, label) in segmentLabels.enumerated() {
-                control.insertSegment(withTitle: label, at: index, animated: false)
-            }
-            let clearAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.clear]
-            control.setTitleTextAttributes(clearAttributes, for: .normal)
-            control.setTitleTextAttributes(clearAttributes, for: .selected)
+    @MainActor
+    private func hideNativeTitlesBehindOverlay(on control: UISegmentedControl) {
+        let clearAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.clear]
+        control.setTitleTextAttributes(clearAttributes, for: .normal)
+        control.setTitleTextAttributes(clearAttributes, for: .selected)
+    }
+
+    @MainActor
+    private func insetControlToAlignWithOverlay(
+        _ control: UISegmentedControl,
+        in container: UIView,
+        storingIn coordinator: Coordinator
+    ) {
+        let leading = control.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: containerPadding)
+        let trailing = control.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -containerPadding)
+        let top = control.topAnchor.constraint(equalTo: container.topAnchor, constant: containerPadding)
+        let bottom = control.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -containerPadding)
+        NSLayoutConstraint.activate([leading, trailing, top, bottom])
+
+        coordinator.leadingConstraint = leading
+        coordinator.trailingConstraint = trailing
+        coordinator.topConstraint = top
+        coordinator.bottomConstraint = bottom
+    }
+
+    @MainActor
+    private func syncContainerPadding(in coordinator: Coordinator) {
+        coordinator.leadingConstraint?.constant = containerPadding
+        coordinator.trailingConstraint?.constant = -containerPadding
+        coordinator.topConstraint?.constant = containerPadding
+        coordinator.bottomConstraint?.constant = -containerPadding
+    }
+
+    @MainActor
+    private func syncSegments(of control: UISegmentedControl) {
+        guard control.numberOfSegments != segmentLabels.count else { return }
+        control.removeAllSegments()
+        for (index, label) in segmentLabels.enumerated() {
+            control.insertSegment(withTitle: label, at: index, animated: false)
         }
+        hideNativeTitlesBehindOverlay(on: control)
+    }
 
+    @MainActor
+    private func syncSelectedIndex(of control: UISegmentedControl) {
         let clampedIndex = min(selectedIndex, segmentLabels.count - 1)
         if control.selectedSegmentIndex != clampedIndex {
             control.selectedSegmentIndex = clampedIndex
@@ -366,7 +385,6 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
 struct LemonadeSegmentedControl_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 24) {
-            // Large (default)
             LemonadeUi.SegmentedControl(
                 properties: [
                     .label("Tab 1"),
@@ -377,7 +395,6 @@ struct LemonadeSegmentedControl_Previews: PreviewProvider {
                 onTabSelected: { _ in }
             )
 
-            // Medium
             LemonadeUi.SegmentedControl(
                 properties: [
                     .label("Tab 1"),
@@ -389,7 +406,6 @@ struct LemonadeSegmentedControl_Previews: PreviewProvider {
                 onTabSelected: { _ in }
             )
 
-            // Small
             LemonadeUi.SegmentedControl(
                 properties: [
                     .label("Tab 1"),
@@ -400,7 +416,6 @@ struct LemonadeSegmentedControl_Previews: PreviewProvider {
                 onTabSelected: { _ in }
             )
 
-            // Icon only (small)
             LemonadeUi.SegmentedControl(
                 properties: [
                     .icon(.heart),

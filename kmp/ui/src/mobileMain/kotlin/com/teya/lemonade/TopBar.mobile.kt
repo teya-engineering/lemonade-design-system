@@ -73,10 +73,10 @@ import kotlin.math.roundToInt
  *
  * Use [rememberTopBarState] to create and remember an instance.
  *
- * @param coroutineScope The [CoroutineScope] used to launch scroll-offset animations.
- * @param startCollapsed When `true`, the top bar starts in the collapsed state.
- * @param lockGestureAnimation When `true`, scroll gestures will not collapse or expand the
- *        top bar; only programmatic calls to [collapse] and [expand] will work.
+ * @param coroutineScope [CoroutineScope] used to launch scroll-offset animations
+ * @param startCollapsed when `true`, the top bar starts in the collapsed state
+ * @param lockGestureAnimation when `true`, scroll gestures will not collapse or expand the
+ *        top bar; only programmatic calls to [collapse] and [expand] work
  * @see rememberTopBarState
  */
 @Stable
@@ -107,14 +107,12 @@ public class TopBarState internal constructor(
 
     private var scrolledOffsetPx: Float by mutableFloatStateOf(0f)
 
-    /** Whether the top bar is fully collapsed (`collapseProgress == 1f`). */
+    /** `true` when [collapseProgress] is `1f`. */
     public val isCollapsed: Boolean by derivedStateOf {
         collapseProgress == 1f
     }
 
-    /**
-     * The current collapse progress as a value between `0f` (fully expanded) and `1f` (fully collapsed).
-     */
+    /** Collapse progress from `0f` (fully expanded) to `1f` (fully collapsed). */
     public val collapseProgress: Float by derivedStateOf {
         if (maxScrollOffset > 0f) {
             (scrollOffset / maxScrollOffset).coerceIn(
@@ -127,11 +125,11 @@ public class TopBarState internal constructor(
     }
 
     /**
-     * `true` when the scrollable content has moved off its top, `false` when it sits at the top.
+     * `true` when the scrollable content has moved off its top.
      *
      * Tracked from `onPostScroll(consumed)` so it follows the content, not bar-consumed scroll
      * or overscroll. Independent of [collapseProgress] and updated regardless of
-     * `lockGestureAnimation`, so a permanently-collapsed bar can still react to scroll — see
+     * [lockGestureAnimation], so a permanently-collapsed bar can still react to scroll — see
      * the `scrolledBackgroundColor` parameter on [TopBar][LemonadeUi.TopBar].
      */
     public val isScrolled: Boolean by derivedStateOf {
@@ -146,7 +144,7 @@ public class TopBarState internal constructor(
      * Animates the top bar to the fully collapsed state.
      * Does nothing if already fully collapsed.
      *
-     * @param animationSpec The animation specification to use. Defaults to a 300ms tween.
+     * @param animationSpec animation to run. Defaults to a 300ms tween
      */
     public fun collapse(animationSpec: AnimationSpec<Float> = tween(durationMillis = 300)) {
         if (scrollOffset < maxScrollOffset) {
@@ -163,7 +161,7 @@ public class TopBarState internal constructor(
      * Animates the top bar to the fully expanded state.
      * Does nothing if already fully expanded.
      *
-     * @param animationSpec The animation specification to use. Defaults to a 300ms tween.
+     * @param animationSpec animation to run. Defaults to a 300ms tween
      */
     public fun expand(animationSpec: AnimationSpec<Float> = tween(durationMillis = 300)) {
         if (scrollOffset > 0f) {
@@ -182,7 +180,7 @@ public class TopBarState internal constructor(
      * When [locked] is `true`, nested-scroll gestures will not change the collapse state;
      * only programmatic calls to [collapse] and [expand] will have effect.
      *
-     * @param locked `true` to lock gesture animations, `false` to unlock.
+     * @param locked `true` to lock gesture animations, `false` to unlock
      */
     public fun setAnimationGesturesLock(locked: Boolean) {
         lockGestureAnimation = locked
@@ -190,7 +188,9 @@ public class TopBarState internal constructor(
 
     /**
      * [NestedScrollConnection] that captures scroll events from child scrollable content.
-     * Apply this to your scrollable content using [Modifier.nestedScroll][androidx.compose.ui.input.nestedscroll.nestedScroll].
+     *
+     * Apply it to your scrollable content with
+     * [Modifier.nestedScroll][androidx.compose.ui.input.nestedscroll.nestedScroll].
      *
      * The scroll behavior is:
      * - **Collapse (scroll down)**: Top bar collapses first, then list scrolls
@@ -280,10 +280,8 @@ public class TopBarState internal constructor(
     }
 }
 
-// 400ms tween over FastOutSlowInEasing — gentle enough that high-contrast transitions
-// (e.g. Color.Transparent → bgDefault on a details screen) read as a fade rather than a snap.
-// The default `animateColorAsState` spring (StiffnessMedium = 1500f) completes in ~150ms which
-// looked like a hard jump on the bar background.
+// Slow enough that a high-contrast transition (Color.Transparent to bgDefault on a details screen)
+// reads as a fade rather than a snap.
 private val TopBarBackgroundAnimationSpec: AnimationSpec<Color> = tween(
     durationMillis = 400,
     easing = FastOutSlowInEasing,
@@ -292,16 +290,15 @@ private val TopBarBackgroundAnimationSpec: AnimationSpec<Color> = tween(
 /**
  * Creates and remembers a [TopBarState] instance.
  *
- * @param startCollapsed When `true`, the top bar starts in the collapsed state.
- *        The collapsable content will be hidden and the inline title will be visible immediately.
- *        Defaults to `false`.
- * @param coroutineScope The [CoroutineScope] used for scroll-offset animations. Defaults to
- *        [rememberCoroutineScope].
- * @param lockGestureAnimation When `true`, scroll gestures from nested scrollable content
+ * @param startCollapsed when `true`, the top bar starts in the collapsed state. The collapsable
+ *        content is hidden and the inline title is visible immediately. Defaults to `false`
+ * @param coroutineScope [CoroutineScope] used for scroll-offset animations. Defaults to
+ *        [rememberCoroutineScope]
+ * @param lockGestureAnimation when `true`, scroll gestures from nested scrollable content
  *        will not collapse or expand the top bar. The bar can still be collapsed or
  *        expanded programmatically via [TopBarState.collapse] and [TopBarState.expand].
- *        Defaults to `false`.
- * @return A remembered [TopBarState] instance.
+ *        Defaults to `false`
+ * @return a remembered [TopBarState] instance
  *
  * ## Usage
  * ```kotlin
@@ -324,7 +321,6 @@ private val TopBarBackgroundAnimationSpec: AnimationSpec<Color> = tween(
  * }
  * ```
  */
-
 @Composable
 public fun rememberTopBarState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
@@ -340,11 +336,11 @@ public fun rememberTopBarState(
     }
 
 /**
- * Holds the configuration for the navigation action displayed in the leading slot of a [TopBar][LemonadeUi.TopBar].
+ * Navigation action shown in the leading slot of a [TopBar][LemonadeUi.TopBar].
  *
- * @property navigationAction The visual action type (e.g. [TopBarAction.Back] or [TopBarAction.Close]).
- * @property onNavigationActionClicked Callback invoked when the navigation action button is clicked.
- * @property filled Whether the action button uses a filled background style. Defaults to `false`.
+ * @property navigationAction visual action type (e.g. [TopBarAction.Back] or [TopBarAction.Close])
+ * @property onNavigationActionClicked callback run when the navigation action button is clicked
+ * @property filled whether the action button uses a filled background style. Defaults to `false`
  */
 public data class NavigationAction(
     val navigationAction: TopBarAction,
@@ -353,11 +349,10 @@ public data class NavigationAction(
 )
 
 /**
- * A collapsible top bar component that displays a large title which collapses
- * into a smaller inline title as the user scrolls through content.
+ * A collapsible top bar whose large title shrinks to an inline title on scroll.
  *
- * The TopBar works with external scrollable content through [NestedScrollConnection].
- * Use [rememberTopBarState] to create the state and apply its [TopBarState.nestedScrollConnection]
+ * The [TopBar][LemonadeUi.TopBar] works with external scrollable content through
+ * [NestedScrollConnection]. Use [rememberTopBarState] to create the state and apply its
  * [TopBarState.nestedScrollConnection] to your scrollable content via
  * [Modifier.nestedScroll][androidx.compose.ui.input.nestedscroll.nestedScroll].
  *
@@ -392,22 +387,24 @@ public data class NavigationAction(
  * }
  * ```
  *
- * @param label The title text displayed in both expanded (large) and collapsed (small - if [collapsedLabel] is null) states.
- * @param collapsedLabel The title text displayed in collapsed (small) state. If not set it will display [label] instead.
- * @param subtitle Optional secondary text displayed below the title in both expanded (left-aligned) and collapsed (centered) states.
- * @param state The [TopBarState] that manages collapse behavior. Create with [rememberTopBarState].
- * @param backgroundColor The background color of the top bar when the scrollable content is at the top.
- * @param scrolledBackgroundColor The background color the top bar fades to once the scrollable
+ * @param label title text shown in the expanded (large) state, and in the collapsed (small) state
+ *        unless [collapsedLabel] is set
+ * @param collapsedLabel title text shown in the collapsed (small) state. Falls back to [label]
+ * @param subtitle optional secondary text below the title, left-aligned when expanded and centered
+ *        when collapsed
+ * @param state [TopBarState] that manages collapse behavior. Create with [rememberTopBarState]
+ * @param backgroundColor background color of the top bar while the scrollable content is at the top
+ * @param scrolledBackgroundColor background color the top bar fades to once the scrollable
  *        content has moved off the top. Defaults to a fully transparent copy of [backgroundColor];
  *        pass [backgroundColor] to keep the bar opaque at all times and disable the fade.
  *        The fade is driven by [TopBarState.isScrolled] and works even when
- *        `lockGestureAnimation = true`, so a permanently-collapsed bar can sit on a transparent gradient
- *        at the top and switch to a solid theme color while the user scrolls.
- * @param modifier [Modifier] applied to the top bar container.
- * @param navigationAction Optional [NavigationAction] displayed in the leading slot (e.g. back or close button).
- * @param trailingSlot Optional composable displayed at the end of the fixed header (typically action buttons).
- * @param bottomSlot Optional composable displayed below the expanded title. This content remains
- *        visible and acts as a sticky area when fully collapsed.
+ *        `lockGestureAnimation = true`, so a permanently-collapsed bar can sit on a transparent
+ *        gradient at the top and switch to a solid theme color while the user scrolls
+ * @param modifier [Modifier] applied to the top bar container
+ * @param navigationAction optional [NavigationAction] in the leading slot (e.g. back or close)
+ * @param trailingSlot optional composable at the end of the fixed header (typically action buttons)
+ * @param bottomSlot optional composable below the expanded title. It stays visible and acts as a
+ *        sticky area when fully collapsed
  */
 @Composable
 public fun LemonadeUi.TopBar(
@@ -443,7 +440,8 @@ public fun LemonadeUi.TopBar(
                     }
                 },
                 trailingSlot = trailingSlot,
-                label = collapsedLabel ?: label,
+                label = collapsedLabel
+                    ?: label,
                 subtitle = subtitle,
                 isCollapsed = state.isCollapsed,
                 modifier = fixedHeaderModifier
@@ -521,7 +519,8 @@ public fun LemonadeUi.TopBar(
                     }
                 },
                 trailingSlot = trailingSlot,
-                label = collapsedLabel ?: label,
+                label = collapsedLabel
+                    ?: label,
                 subtitle = subtitle,
                 isCollapsed = state.isCollapsed,
                 modifier = fixedHeaderModifier
@@ -563,8 +562,7 @@ public fun LemonadeUi.TopBar(
 }
 
 /**
- * A collapsible top bar with an integrated search field that collapses into the bar
- * as the user scrolls through content.
+ * A collapsible top bar with an integrated search field that collapses on scroll.
  *
  * When the search field gains focus, the fixed header (title and actions) animates out,
  * scroll-gesture animations are locked, the top bar expands, and the [bottomSlot] becomes visible.
@@ -600,23 +598,24 @@ public fun LemonadeUi.TopBar(
  * }
  * ```
  *
- * @param label The title text displayed in the fixed header.
- * @param searchInput The current search query text.
- * @param onSearchChanged Callback invoked when the search query changes.
- * @param modifier [Modifier] applied to the top bar container.
- * @param state The [TopBarState] that manages collapse behavior. Create with [rememberTopBarState].
- * @param backgroundColor The background color of the top bar when the scrollable content is at the top.
- * @param scrolledBackgroundColor The background color the top bar fades to once the scrollable
+ * @param label title text shown in the fixed header
+ * @param searchInput current search query text
+ * @param onSearchChanged callback run when the search query changes
+ * @param modifier [Modifier] applied to the top bar container
+ * @param state [TopBarState] that manages collapse behavior. Create with [rememberTopBarState]
+ * @param backgroundColor background color of the top bar while the scrollable content is at the top
+ * @param scrolledBackgroundColor background color the top bar fades to once the scrollable
  *        content has moved off the top. Defaults to a fully transparent copy of [backgroundColor];
  *        pass [backgroundColor] to keep the bar opaque at all times and disable the fade.
- *        See [TopBarState.isScrolled].
- * @param expandedLabel Optional large title displayed above the search field in the collapsable area.
- * @param subtitle Optional secondary text displayed below the title in both expanded (below [expandedLabel], left-aligned) and collapsed (below [label], centered) states.
- * @param searchPlaceholder Optional placeholder text shown in the search field while it is empty.
- * @param navigationAction Optional [NavigationAction] displayed in the leading slot (e.g. back or close button).
- * @param trailingSlot Optional composable displayed at the end of the fixed header.
- * @param bottomSlot Optional composable shown below the search field when focused
- *        (e.g. search suggestions or filters).
+ *        See [TopBarState.isScrolled]
+ * @param expandedLabel optional large title above the search field in the collapsable area
+ * @param subtitle optional secondary text below the title — below [expandedLabel] and left-aligned
+ *        when expanded, below [label] and centered when collapsed
+ * @param searchPlaceholder optional placeholder shown in the search field while it is empty
+ * @param navigationAction optional [NavigationAction] in the leading slot (e.g. back or close)
+ * @param trailingSlot optional composable at the end of the fixed header
+ * @param bottomSlot optional composable shown below the search field when focused
+ *        (e.g. search suggestions or filters)
  */
 @Composable
 @OptIn(ExperimentalLemonadeComponent::class)
@@ -690,7 +689,10 @@ public fun LemonadeUi.TopBar(
                         bottom = LocalSpaces.current.spacing200,
                     ),
             ) {
-                SearchFocusDecoy(focusRequester = searchDismissRequester, claimFocusOnEntry = true)
+                SearchFocusDecoy(
+                    focusRequester = searchDismissRequester,
+                    claimFocusOnEntry = true,
+                )
 
                 AnimatedContent(
                     targetState = expandedLabel != null && !isSearchFocused,
@@ -854,8 +856,9 @@ public fun LemonadeUi.TopBar(
 }
 
 /**
- * A top bar with a large left-aligned title, optional subheading,
- * and trailing action slot — designed for top-level screens without navigation.
+ * A top bar with a large left-aligned title, optional subheading and trailing action slot.
+ *
+ * Designed for top-level screens without navigation.
  *
  * When [bottomSlot] is provided, the title row scrolls away on scroll and the
  * bottom slot becomes sticky. When [bottomSlot] is `null`, the title is fixed
@@ -896,18 +899,18 @@ public fun LemonadeUi.TopBar(
  * ) { /* content */ }
  * ```
  *
- * @param label The large title text displayed in the heading.
- * @param subheading Optional secondary text displayed below the title.
- * @param modifier [Modifier] applied to the top bar container.
- * @param state The [TopBarState] that manages scroll behavior. Create with [rememberTopBarState].
- * @param backgroundColor The background color of the top bar when the scrollable content is at the top.
- * @param scrolledBackgroundColor The background color the top bar fades to once the scrollable
+ * @param label large title text shown in the heading
+ * @param subheading optional secondary text below the title
+ * @param modifier [Modifier] applied to the top bar container
+ * @param state [TopBarState] that manages scroll behavior. Create with [rememberTopBarState]
+ * @param backgroundColor background color of the top bar while the scrollable content is at the top
+ * @param scrolledBackgroundColor background color the top bar fades to once the scrollable
  *        content has moved off the top. Defaults to a fully transparent copy of [backgroundColor];
  *        pass [backgroundColor] to keep the bar opaque at all times and disable the fade.
- *        See [TopBarState.isScrolled].
- * @param trailingSlot Optional composable displayed at the end of the title row (typically action buttons).
- * @param bottomSlot Optional composable displayed below the title. When provided, the title scrolls
- *        away and this slot becomes sticky. When `null`, the title is fixed.
+ *        See [TopBarState.isScrolled]
+ * @param trailingSlot optional composable at the end of the title row (typically action buttons)
+ * @param bottomSlot optional composable below the title. When provided, the title scrolls away and
+ *        this slot becomes sticky. When `null`, the title is fixed
  */
 @Composable
 public fun LemonadeUi.TopBar(
@@ -1010,10 +1013,10 @@ public fun LemonadeUi.TopBar(
 }
 
 /**
- * A top bar with a large left-aligned title, optional subheading,
- * trailing action slot, and an integrated search field — designed for top-level
- * screens with search capability. The title remains fixed while the search area
- * collapses on scroll.
+ * A top bar with a large left-aligned title, subheading, trailing slot and search field.
+ *
+ * Designed for top-level screens with search. The title stays fixed while the search area collapses
+ * on scroll.
  *
  * On scroll, the search field collapses away while the title remains fixed.
  * When the search field gains focus, the title animates out and only the search
@@ -1046,19 +1049,19 @@ public fun LemonadeUi.TopBar(
  * }
  * ```
  *
- * @param label The large title text displayed in the fixed heading.
- * @param subheading Optional secondary text displayed below the title.
- * @param searchInput The current search query text.
- * @param onSearchChanged Callback invoked when the search query changes.
- * @param modifier [Modifier] applied to the top bar container.
- * @param state The [TopBarState] that manages scroll behavior. Create with [rememberTopBarState].
- * @param backgroundColor The background color of the top bar when the scrollable content is at the top.
- * @param scrolledBackgroundColor The background color the top bar fades to once the scrollable
+ * @param label large title text shown in the fixed heading
+ * @param subheading optional secondary text below the title
+ * @param searchInput current search query text
+ * @param onSearchChanged callback run when the search query changes
+ * @param modifier [Modifier] applied to the top bar container
+ * @param state [TopBarState] that manages scroll behavior. Create with [rememberTopBarState]
+ * @param backgroundColor background color of the top bar while the scrollable content is at the top
+ * @param scrolledBackgroundColor background color the top bar fades to once the scrollable
  *        content has moved off the top. Defaults to a fully transparent copy of [backgroundColor];
  *        pass [backgroundColor] to keep the bar opaque at all times and disable the fade.
- *        See [TopBarState.isScrolled].
- * @param searchPlaceholder Optional placeholder text shown in the search field while it is empty.
- * @param trailingSlot Optional composable displayed at the end of the title row (typically action buttons).
+ *        See [TopBarState.isScrolled]
+ * @param searchPlaceholder optional placeholder shown in the search field while it is empty
+ * @param trailingSlot optional composable at the end of the title row (typically action buttons)
  */
 @Composable
 @OptIn(ExperimentalLemonadeComponent::class)
@@ -1107,7 +1110,10 @@ public fun LemonadeUi.TopBar(
         },
         collapsableSlot = { collapsableSlotModifier ->
             Box(modifier = collapsableSlotModifier) {
-                SearchFocusDecoy(focusRequester = searchDismissRequester, claimFocusOnEntry = true)
+                SearchFocusDecoy(
+                    focusRequester = searchDismissRequester,
+                    claimFocusOnEntry = true,
+                )
 
                 CoreSearchField(
                     input = searchInput,
@@ -1373,10 +1379,13 @@ internal fun TopBarLayout(
                     .coerceAtLeast(minimumValue = 0f)
                     .roundToInt()
 
+            val bottomSlotHeight = bottomSlotPlaceable?.height
+                ?: 0
+
             val totalHeight = fixedHeaderPlaceable.height +
                 dividerPlaceable.height +
                 visibleCollapsablePlaceableHeight +
-                (bottomSlotPlaceable?.height ?: 0)
+                bottomSlotHeight
 
             layout(
                 width = constraints.maxWidth,
@@ -1400,7 +1409,7 @@ internal fun TopBarLayout(
                     x = 0,
                     y = yPosition,
                 )
-                yPosition += bottomSlotPlaceable?.height ?: 0
+                yPosition += bottomSlotHeight
 
                 dividerPlaceable.placeRelative(
                     x = 0,
@@ -1534,7 +1543,10 @@ internal fun CoreTopBarContent(
                 maximumValue = constraints.maxHeight,
             )
 
-            layout(width = fullWidth, height = fullHeight) {
+            layout(
+                width = fullWidth,
+                height = fullHeight,
+            ) {
                 leadingPlaceable.placeRelative(
                     x = 0,
                     y = (fullHeight - leadingPlaceable.height) / 2,
@@ -1620,28 +1632,33 @@ private class TopBarPreviewProvider : PreviewParameterProvider<TopBarPreviewData
 
     private fun buildAllVariants(): Sequence<TopBarPreviewData> =
         buildList {
-            listOf(true, false).forEach { filled ->
-                listOf(true, false).forEach { collapsed ->
-                    listOf(TopBarAction.Back, TopBarAction.Close).forEach { action ->
-                        listOf(0, 1, 2).forEach { trailingIconCount ->
-                            listOf(false, true).forEach { longLabel ->
-                                add(
-                                    element = TopBarPreviewData(
-                                        collapsed = collapsed,
-                                        action = NavigationAction(
-                                            navigationAction = action,
-                                            onNavigationActionClicked = { /* nothing */ },
-                                            filled = filled,
-                                        ),
-                                        trailingIconCount = trailingIconCount,
-                                        longLabel = longLabel,
-                                    ),
-                                )
-                            }
+            listOf(true, false)
+                .forEach { filled ->
+                    listOf(true, false)
+                        .forEach { collapsed ->
+                            listOf(TopBarAction.Back, TopBarAction.Close)
+                                .forEach { action ->
+                                    listOf(0, 1, 2)
+                                        .forEach { trailingIconCount ->
+                                            listOf(false, true)
+                                                .forEach { longLabel ->
+                                                    add(
+                                                        element = TopBarPreviewData(
+                                                            collapsed = collapsed,
+                                                            action = NavigationAction(
+                                                                navigationAction = action,
+                                                                onNavigationActionClicked = { },
+                                                                filled = filled,
+                                                            ),
+                                                            trailingIconCount = trailingIconCount,
+                                                            longLabel = longLabel,
+                                                        ),
+                                                    )
+                                                }
+                                        }
+                                }
                         }
-                    }
                 }
-            }
         }.asSequence()
 }
 
@@ -1682,7 +1699,7 @@ private fun SearchableTopBarPreview(
         label = label,
         navigationAction = previewData.action,
         searchInput = "Search",
-        onSearchChanged = { /* Search Callback */ },
+        onSearchChanged = { },
         state = rememberTopBarState(
             startCollapsed = previewData.collapsed,
         ),
@@ -1751,14 +1768,16 @@ private fun Int.toPreviewTrailingSlot(): @Composable (RowScope.() -> Unit)? {
     }
     val icons = listOf(LemonadeIcons.Bell, LemonadeIcons.EllipsisVertical)
     return {
-        icons.take(this@toPreviewTrailingSlot).forEach { icon ->
-            LemonadeUi.IconButton(
-                icon = icon,
-                contentDescription = null,
-                onClick = {},
-                type = LemonadeButtonType.Ghost,
-            )
-        }
+        icons
+            .take(this@toPreviewTrailingSlot)
+            .forEach { icon ->
+                LemonadeUi.IconButton(
+                    icon = icon,
+                    contentDescription = null,
+                    onClick = {},
+                    type = LemonadeButtonType.Ghost,
+                )
+            }
     }
 }
 

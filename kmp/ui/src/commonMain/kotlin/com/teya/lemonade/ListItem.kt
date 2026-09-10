@@ -64,18 +64,18 @@ import com.teya.lemonade.core.TagVoice
  *     addonSlot = { /* slot composable for any item */ },
  * )
  * ```
- * @param leadingSlot - slot component to be placed in the leading position of the list item.
- * @param label - main [String] to be displayed.
- * @param value - value [String] to be displayed in the trailing position.
- * @param modifier - [Modifier] to be applied to the base container of component.
- * @param addonSlot - slot to be displayed below the [value] parameter.
- * @param interactionSource - [MutableInteractionSource] of the component.
- * @param onItemClicked - callback called when component is tapped.
- * @param isLoading - shows a skeleton loading placeholder instead of content.
- * @param enabled - flag to define if the component is enabled or not. If disabled, click interactions
- *  and visual states are disabled.
- * @param supportText - [String] to be displayed as support text.
- * @param showDivider - flag to show a divider below the list item.
+ * @param leadingSlot slot placed in the leading position of the list item
+ * @param label main text shown in the list item
+ * @param value text shown in the trailing position
+ * @param modifier [Modifier] applied to the base container of the component
+ * @param addonSlot slot shown below the [value]
+ * @param interactionSource [MutableInteractionSource] of the component
+ * @param onItemClicked callback invoked when the component is tapped
+ * @param isLoading shows a skeleton loading placeholder instead of content
+ * @param enabled whether the component is enabled. When disabled, click interactions and visual
+ *  states are off
+ * @param supportText text shown as support text
+ * @param showDivider whether to show a divider below the list item
  */
 @Composable
 public fun LemonadeUi.ResourceListItem(
@@ -282,38 +282,38 @@ public fun LemonadeUi.ActionListItem(
  *     trailingSlot = { /* slot composable for any item */ },
  * )
  * ```
- * @param label - label [String] to be displayed in the list item.
- * @param modifier - [Modifier] to be applied to the base container of component.
- * @param topLabel - Optional label [String] displayed above the [label].
- * @param supportText - text [String] to be displayed as Support Text.
- * @param leadingSlot - slot content to be placed in the leading position of the component.
- * @param trailingSlot - slot content to be placed in the trailing position of the component.
- * @param voice - [LemonadeListItemVoice] to define the tone of voice. This will effectively
- *  define color of the background while it's hovered or pressed, alongside the content's
- *  tints. Defaults to [LemonadeListItemVoice.Neutral].
- * @param showNavigationIndicator - [Boolean] indicates navigation visually.
- * @param enabled - [Boolean] flag to define if the component is enabled or not. If disabled, click interactions
- *  and visual states are disabled.
- * @param onItemClicked - callback called when component is tapped.
- * @param role - [Role] interaction semantics.
- * @param interactionSource - [MutableInteractionSource] to be had within the component.
- * @param showDivider - [Boolean] flag to show a divider below the list item.
- * @param trailingVerticalAlignment - Vertical alignment of the trailing slot and navigation
- *  indicator against the label/supportText column. Defaults to [Alignment.CenterVertically].
- * @param leadingVerticalAlignment - Vertical alignment of the leading slot against the
+ * @param label label shown in the list item
+ * @param modifier [Modifier] applied to the base container of the component
+ * @param topLabel optional label shown above the [label]
+ * @param supportText text shown as support text
+ * @param leadingSlot slot content placed in the leading position of the component
+ * @param trailingSlot slot content placed in the trailing position of the component
+ * @param voice [LemonadeListItemVoice] setting the tone of voice. It drives the background color
+ *  while hovered or pressed, alongside the content tints. Defaults to
+ *  [LemonadeListItemVoice.Neutral]
+ * @param showNavigationIndicator whether to indicate navigation visually
+ * @param enabled whether the component is enabled. When disabled, click interactions and visual
+ *  states are off
+ * @param onItemClicked callback invoked when the component is tapped
+ * @param role [Role] interaction semantics
+ * @param interactionSource [MutableInteractionSource] used within the component
+ * @param showDivider whether to show a divider below the list item
+ * @param trailingVerticalAlignment vertical alignment of the trailing slot and navigation
+ *  indicator against the label/supportText column. Defaults to [Alignment.CenterVertically]
+ * @param leadingVerticalAlignment vertical alignment of the leading slot against the
  *  label/supportText column. Defaults to [Alignment.CenterVertically] for single-line content
- *  (no [topLabel] or [supportText]) and [Alignment.Top] otherwise.
- * @param slotContent - Optional slot rendered below the support text, inside the label column
+ *  (no [topLabel] or [supportText]) and [Alignment.Top] otherwise
+ * @param slotContent optional slot rendered below the support text, inside the label column
  *  so it stays aligned with the leading/trailing slots. Use for secondary content like an
- *  inline status text, badge, or compact widget that should sit under the row's text.
- * @param labelMaxLines - Maximum number of lines for the [label] before it truncates. Defaults to
- *  [Int.MAX_VALUE] (no limit).
- * @param labelOverflow - [TextOverflow] strategy applied to the [label] when it exceeds
- *  [labelMaxLines]. Defaults to [TextOverflow.Clip].
- * @param supportTextMaxLines - Maximum number of lines for the [supportText] before it truncates.
- *  Defaults to [Int.MAX_VALUE] (no limit).
- * @param supportTextOverflow - [TextOverflow] strategy applied to the [supportText] when it exceeds
- *  [supportTextMaxLines]. Defaults to [TextOverflow.Clip].
+ *  inline status text, badge, or compact widget that should sit under the row's text
+ * @param labelMaxLines maximum number of lines for the [label] before it truncates. Defaults to
+ *  [Int.MAX_VALUE] (no limit)
+ * @param labelOverflow [TextOverflow] strategy applied to the [label] when it exceeds
+ *  [labelMaxLines]. Defaults to [TextOverflow.Clip]
+ * @param supportTextMaxLines maximum number of lines for the [supportText] before it truncates.
+ *  Defaults to [Int.MAX_VALUE] (no limit)
+ * @param supportTextOverflow [TextOverflow] strategy applied to the [supportText] when it exceeds
+ *  [supportTextMaxLines]. Defaults to [TextOverflow.Clip]
  */
 @Composable
 public fun LemonadeUi.ActionListItem(
@@ -332,10 +332,11 @@ public fun LemonadeUi.ActionListItem(
     showNavigationIndicator: Boolean = false,
     showDivider: Boolean = false,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
-    // slotContent is declared below and can't be referenced in this default, so an ActionListItem with
-    // only slotContent centers its leading slot (a minor divergence from the slotContent-aware ListItem).
     leadingVerticalAlignment: Alignment.Vertical =
-        singleLineLeadingAlignment(topLabel, supportText),
+        singleLineLeadingAlignment(
+            topLabel = topLabel,
+            supportText = supportText,
+        ),
     slotContent: (@Composable ColumnScope.() -> Unit)? = null,
     labelMaxLines: Int = Int.MAX_VALUE,
     labelOverflow: TextOverflow = TextOverflow.Clip,
@@ -612,39 +613,38 @@ public fun LemonadeUi.ListItem(
 }
 
 /**
- * Convenience overload that composes standard label and support-text content from string parameters
- * and delegates to the content-slot variant of [ListItem].
+ * Composes label and support-text content from strings for a standard list item.
  *
- * @param label - Label [String] to be displayed in the list item.
- * @param topLabel - Optional label [String] displayed above the [label].
- * @param supportText - Optional support text [String] displayed below the [label].
- * @param leadingSlot - A slot to be placed in the leading position of the list item.
- * @param trailingSlot - A slot to be placed in the trailing position of the list item.
- * @param voice - [LemonadeListItemVoice] that defines the visual voice of the list item.
- * @param navigationIndicator - Shows a chevron-right navigation indicator.
- * @param onListItemClick - Optional callback triggered on click interaction with the list item.
- * @param role - Optional semantic [Role] applied to the list item for accessibility.
- * @param enabled - Flag that defines if the component is enabled or not. If disabled, click
- *  interactions and visual states are disabled.
- * @param modifier - [Modifier] to be applied to the base container of the component.
- * @param showDivider - Flag to show a divider below the list item.
- * @param interactionSource - [MutableInteractionSource] for interaction events.
- * @param slotContent - Optional slot content below the label and support text.
- * @param trailingVerticalAlignment - Vertical alignment of the trailing slot and navigation
- *  indicator against the label/supportText column. Defaults to [Alignment.CenterVertically].
- * @param leadingVerticalAlignment - Vertical alignment of the leading slot against the
+ * @param label label shown in the list item
+ * @param topLabel optional label shown above the [label]
+ * @param supportText optional support text shown below the [label]
+ * @param leadingSlot slot placed in the leading position of the list item
+ * @param trailingSlot slot placed in the trailing position of the list item
+ * @param voice [LemonadeListItemVoice] setting the visual voice of the list item
+ * @param navigationIndicator whether to show a chevron-right navigation indicator
+ * @param onListItemClick optional callback triggered on click interaction with the list item
+ * @param role optional semantic [Role] applied to the list item for accessibility
+ * @param enabled whether the component is enabled. When disabled, click interactions and visual
+ *  states are off
+ * @param modifier [Modifier] applied to the base container of the component
+ * @param showDivider whether to show a divider below the list item
+ * @param interactionSource [MutableInteractionSource] for interaction events
+ * @param slotContent optional slot content below the label and support text
+ * @param trailingVerticalAlignment vertical alignment of the trailing slot and navigation
+ *  indicator against the label/supportText column. Defaults to [Alignment.CenterVertically]
+ * @param leadingVerticalAlignment vertical alignment of the leading slot against the
  *  label/supportText column. Defaults to [Alignment.CenterVertically] for single-line content
- *  (no [topLabel], [supportText], or [slotContent]) and [Alignment.Top] otherwise.
- * @param labelMaxLines - Maximum number of lines for the [label] before it truncates. Defaults to
- *  [Int.MAX_VALUE] (no limit).
- * @param labelOverflow - [TextOverflow] strategy applied to the [label] when it exceeds
- *  [labelMaxLines]. Defaults to [TextOverflow.Clip].
- * @param supportTextMaxLines - Maximum number of lines for the [supportText] before it truncates.
- *  Defaults to [Int.MAX_VALUE] (no limit).
- * @param supportTextOverflow - [TextOverflow] strategy applied to the [supportText] when it exceeds
- *  [supportTextMaxLines]. Defaults to [TextOverflow.Clip].
- * @param priority - [LemonadeListItemPriority] deciding which slot claims layout space first when
- *  the label and trailing slots compete for width. Defaults to [LemonadeListItemPriority.Trailing].
+ *  (no [topLabel], [supportText], or [slotContent]) and [Alignment.Top] otherwise
+ * @param labelMaxLines maximum number of lines for the [label] before it truncates. Defaults to
+ *  [Int.MAX_VALUE] (no limit)
+ * @param labelOverflow [TextOverflow] strategy applied to the [label] when it exceeds
+ *  [labelMaxLines]. Defaults to [TextOverflow.Clip]
+ * @param supportTextMaxLines maximum number of lines for the [supportText] before it truncates.
+ *  Defaults to [Int.MAX_VALUE] (no limit)
+ * @param supportTextOverflow [TextOverflow] strategy applied to the [supportText] when it exceeds
+ *  [supportTextMaxLines]. Defaults to [TextOverflow.Clip]
+ * @param priority [LemonadeListItemPriority] deciding which slot claims layout space first when
+ *  the label and trailing slots compete for width. Defaults to [LemonadeListItemPriority.Trailing]
  */
 @Composable
 public fun LemonadeUi.ListItem(
@@ -665,7 +665,11 @@ public fun LemonadeUi.ListItem(
     slotContent: (@Composable ColumnScope.() -> Unit)? = null,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     leadingVerticalAlignment: Alignment.Vertical =
-        singleLineLeadingAlignment(topLabel, supportText, slotContent),
+        singleLineLeadingAlignment(
+            topLabel = topLabel,
+            supportText = supportText,
+            slotContent = slotContent,
+        ),
     labelMaxLines: Int = Int.MAX_VALUE,
     labelOverflow: TextOverflow = TextOverflow.Clip,
     supportTextMaxLines: Int = Int.MAX_VALUE,
@@ -794,27 +798,26 @@ public fun LemonadeUi.ListItem(
 }
 
 /**
- * Foundational list-item overload that accepts a generic content slot for custom content,
- * delegating layout and interaction handling to [CoreListItem].
+ * List item that takes a generic content slot for its main body.
  *
- * @param contentSlot - Composable content slot for the main body of the list item.
- * @param leadingSlot - A slot to be placed in the leading position of the list item.
- * @param trailingSlot - A slot to be placed in the trailing position of the list item.
- * @param voice - [LemonadeListItemVoice] that defines the visual voice of the list item.
- * @param navigationIndicator - Shows a chevron-right navigation indicator.
- * @param onListItemClick - Optional callback triggered on click interaction with the list item.
- * @param role - Optional semantic [Role] applied to the list item for accessibility.
- * @param enabled - Flag that defines if the component is enabled or not. If disabled, click
- *  interactions and visual states are disabled.
- * @param modifier - [Modifier] to be applied to the base container of the component.
- * @param showDivider - Flag to show a divider below the list item.
- * @param interactionSource - [MutableInteractionSource] for interaction events.
- * @param trailingVerticalAlignment - Vertical alignment of the trailing slot and navigation
- *  indicator against the content slot. Defaults to [Alignment.CenterVertically].
- * @param leadingVerticalAlignment - Vertical alignment of the leading slot against the
- *  content slot. Defaults to [Alignment.Top].
- * @param priority - [LemonadeListItemPriority] deciding which slot claims layout space first when
- *  the content and trailing slots compete for width. Defaults to [LemonadeListItemPriority.Trailing].
+ * @param contentSlot composable content slot for the main body of the list item
+ * @param leadingSlot slot placed in the leading position of the list item
+ * @param trailingSlot slot placed in the trailing position of the list item
+ * @param voice [LemonadeListItemVoice] setting the visual voice of the list item
+ * @param navigationIndicator whether to show a chevron-right navigation indicator
+ * @param onListItemClick optional callback triggered on click interaction with the list item
+ * @param role optional semantic [Role] applied to the list item for accessibility
+ * @param enabled whether the component is enabled. When disabled, click interactions and visual
+ *  states are off
+ * @param modifier [Modifier] applied to the base container of the component
+ * @param showDivider whether to show a divider below the list item
+ * @param interactionSource [MutableInteractionSource] for interaction events
+ * @param trailingVerticalAlignment vertical alignment of the trailing slot and navigation
+ *  indicator against the content slot. Defaults to [Alignment.CenterVertically]
+ * @param leadingVerticalAlignment vertical alignment of the leading slot against the
+ *  content slot. Defaults to [Alignment.Top]
+ * @param priority [LemonadeListItemPriority] deciding which slot claims layout space first when
+ *  the content and trailing slots compete for width. Defaults to [LemonadeListItemPriority.Trailing]
  */
 @Composable
 public fun LemonadeUi.ListItem(
@@ -852,8 +855,7 @@ public fun LemonadeUi.ListItem(
 }
 
 /**
- * Vertical alignment for a list item's leading slot: centered against single-line content (nothing
- * stacked below the label), top-aligned otherwise so it lines up with the label's first line.
+ * Centers a leading slot against single-line content, top-aligns it against stacked content.
  */
 private fun singleLineLeadingAlignment(
     topLabel: String?,
@@ -1011,7 +1013,7 @@ private fun CoreListItem(
     }
 }
 
-/** Measures the list-item body: the content column at index 0 and the trailing content at index 1. */
+/** Measures the list-item body: content column at index 0, trailing content at index 1. */
 private data class ListItemBodyMeasurePolicy(
     private val priority: LemonadeListItemPriority,
     private val trailingAlignment: Alignment.Vertical,
@@ -1022,7 +1024,10 @@ private data class ListItemBodyMeasurePolicy(
         measurables: List<Measurable>,
         constraints: Constraints,
     ): MeasureResult {
-        val loose = constraints.copy(minWidth = 0, minHeight = 0)
+        val loose = constraints.copy(
+            minWidth = 0,
+            minHeight = 0,
+        )
         val gapPx = trailingGap.roundToPx()
         val content: Placeable
         val trailing: Placeable
@@ -1049,15 +1054,29 @@ private data class ListItemBodyMeasurePolicy(
         }
         val gapUsed = if (priority == LemonadeListItemPriority.Label) gapPx else 0
         val width = constraints.constrainWidth(width = content.width + gapUsed + trailing.width)
-        val height = constraints.constrainHeight(height = maxOf(content.height, trailing.height))
-        return layout(width = width, height = height) {
+        val height = constraints.constrainHeight(
+            height = maxOf(
+                a = content.height,
+                b = trailing.height,
+            ),
+        )
+        return layout(
+            width = width,
+            height = height,
+        ) {
             content.placeRelative(
                 x = 0,
-                y = trailingAlignment.align(size = content.height, space = height),
+                y = trailingAlignment.align(
+                    size = content.height,
+                    space = height,
+                ),
             )
             trailing.placeRelative(
                 x = width - trailing.width,
-                y = trailingAlignment.align(size = trailing.height, space = height),
+                y = trailingAlignment.align(
+                    size = trailing.height,
+                    space = height,
+                ),
             )
         }
     }
@@ -1097,7 +1116,10 @@ private data class ListItemBodyMeasurePolicy(
     ): Placeable {
         val remainder = if (loose.hasBoundedWidth) {
             val contentWidth = (loose.maxWidth - trailingWidth).coerceAtLeast(0)
-            loose.copy(minWidth = contentWidth, maxWidth = contentWidth)
+            loose.copy(
+                minWidth = contentWidth,
+                maxWidth = contentWidth,
+            )
         } else {
             loose
         }
@@ -1133,7 +1155,7 @@ private fun RowScope.ListItemTrailingContent(
     }
 }
 
-/** The outer treatment of a list-item row: the gutter padding and the optional divider below it. */
+/** Adds the gutter padding of a list-item row and the optional divider below it. */
 @Composable
 private fun Modifier.listItemSafeArea(showDivider: Boolean): Modifier {
     val withDivider = if (showDivider) {
@@ -1153,12 +1175,20 @@ private fun Modifier.listItemDivider(): Modifier {
     return this
         .drawBehind {
             val reserved = thickness.roundToPx()
-            val insetPx = inset.roundToPx().toFloat()
+            val insetPx = inset
+                .roundToPx()
+                .toFloat()
             val centerY = size.height - reserved / 2f
             drawLine(
                 color = color,
-                start = Offset(x = insetPx, y = centerY),
-                end = Offset(x = size.width - insetPx, y = centerY),
+                start = Offset(
+                    x = insetPx,
+                    y = centerY,
+                ),
+                end = Offset(
+                    x = size.width - insetPx,
+                    y = centerY,
+                ),
                 strokeWidth = thickness.toPx(),
             )
         }.padding(bottom = thickness)
@@ -1231,19 +1261,22 @@ private class ResourceListItemPreviewProvider :
 
     private fun buildAllVariants(): Sequence<ResourceListItemPreviewData> =
         buildList {
-            listOf(true, false).forEach { addonSlot ->
-                listOf(true, false).forEach { enabled ->
-                    listOf(true, false).forEach { withSupportText ->
-                        add(
-                            ResourceListItemPreviewData(
-                                withAddonSlot = addonSlot,
-                                enabled = enabled,
-                                supportText = withSupportText,
-                            ),
-                        )
-                    }
+            listOf(true, false)
+                .forEach { addonSlot ->
+                    listOf(true, false)
+                        .forEach { enabled ->
+                            listOf(true, false)
+                                .forEach { withSupportText ->
+                                    add(
+                                        ResourceListItemPreviewData(
+                                            withAddonSlot = addonSlot,
+                                            enabled = enabled,
+                                            supportText = withSupportText,
+                                        ),
+                                    )
+                                }
+                        }
                 }
-            }
         }.asSequence()
 }
 
@@ -1295,28 +1328,34 @@ private class ActionListItemPreviewProvider :
 
     private fun buildAllVariants(): Sequence<ActionListItemPreviewData> =
         buildList {
-            listOf(true, false).forEach { voice ->
-                listOf(true, false).forEach { enabled ->
-                    listOf(true, false).forEach { topLabel ->
-                        listOf(true, false).forEach { withSupportText ->
-                            listOf(true, false).forEach { trailingSlot ->
-                                listOf(true, false).forEach { showNavigationIndicator ->
-                                    add(
-                                        ActionListItemPreviewData(
-                                            voice = voice,
-                                            enabled = enabled,
-                                            topLabel = topLabel,
-                                            supportText = withSupportText,
-                                            trailingSlot = trailingSlot,
-                                            showNavigationIndicator = showNavigationIndicator,
-                                        ),
-                                    )
+            listOf(true, false)
+                .forEach { voice ->
+                    listOf(true, false)
+                        .forEach { enabled ->
+                            listOf(true, false)
+                                .forEach { topLabel ->
+                                    listOf(true, false)
+                                        .forEach { withSupportText ->
+                                            listOf(true, false)
+                                                .forEach { trailingSlot ->
+                                                    listOf(true, false)
+                                                        .forEach { showNavigationIndicator ->
+                                                            add(
+                                                                ActionListItemPreviewData(
+                                                                    voice = voice,
+                                                                    enabled = enabled,
+                                                                    topLabel = topLabel,
+                                                                    supportText = withSupportText,
+                                                                    trailingSlot = trailingSlot,
+                                                                    showNavigationIndicator = showNavigationIndicator,
+                                                                ),
+                                                            )
+                                                        }
+                                                }
+                                        }
                                 }
-                            }
                         }
-                    }
                 }
-            }
         }.asSequence()
 }
 

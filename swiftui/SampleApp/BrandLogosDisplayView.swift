@@ -2,7 +2,9 @@ import SwiftUI
 import Lemonade
 
 /// All brand logos, each paired with a pre-lowercased search haystack.
-/// Built once per process at file scope - see `IconsDisplayView` for the rationale.
+///
+/// Lives at file scope so a keystroke filters against the prebuilt haystacks instead of
+/// lowercasing every name again.
 private let brandLogoIndex: [(logo: LemonadeBrandLogo, haystack: String)] =
     LemonadeBrandLogo.allCases.map { ($0, $0.rawValue.lowercased()) }
 
@@ -22,7 +24,6 @@ struct BrandLogosDisplayView: View {
     ]
 
     var body: some View {
-        // Evaluated once per body pass and reused by both the grid and the title.
         let logos = filteredBrandLogos(matching: searchText)
 
         return ScrollView {

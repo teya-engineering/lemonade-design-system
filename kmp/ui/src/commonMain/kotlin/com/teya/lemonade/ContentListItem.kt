@@ -21,7 +21,7 @@ import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.SymbolContainerVoice
 
 /**
- * A display-only list item for showing label-value pairs.
+ * Shows a label-value pair as a display-only list item.
  *
  * Supports horizontal (label left, value right) and vertical (label top, value bottom) layouts.
  * In vertical layout, providing a [contentSlot] switches the value to a larger typography.
@@ -41,26 +41,24 @@ import com.teya.lemonade.core.SymbolContainerVoice
  * )
  * ```
  *
- * @param label - Label [String] describing the data field.
- * @param value - Value [String] to display.
- * @param layout - [LemonadeContentListItemLayout] horizontal or vertical arrangement.
- * @param modifier - [Modifier] to be applied to the root container.
- * @param showDivider - Whether to display a bottom divider below the item.
- * @param density - [LemonadeContentListItemDensity] controlling the vertical padding. Defaults to
- *   [LemonadeContentListItemDensity.Comfortable].
- * @param leadingSlot - Optional slot for a leading element (e.g. SymbolContainer).
- * @param trailingSlot - Optional slot for a trailing element (e.g. icon action).
- * @param contentSlot - Optional slot for additional content. In vertical layout, this also
- *   switches the value typography to bodyXLargeSemiBold.
- * @param verticalAlignment - Vertical alignment for horizontal layout (default [Alignment.CenterVertically]).
- * @param labelMaxLines - Maximum number of lines for the [label] before it truncates. Defaults to
- *   [Int.MAX_VALUE] (no limit).
- * @param labelOverflow - [TextOverflow] strategy applied to the [label] when it exceeds
- *   [labelMaxLines]. Defaults to [TextOverflow.Clip].
- * @param valueMaxLines - Maximum number of lines for the [value] before it truncates. Defaults to
- *   [Int.MAX_VALUE] (no limit).
- * @param valueOverflow - [TextOverflow] strategy applied to the [value] when it exceeds
- *   [valueMaxLines]. Defaults to [TextOverflow.Clip].
+ * @param label label describing the data field
+ * @param value value shown next to or below the label
+ * @param layout [LemonadeContentListItemLayout] horizontal or vertical arrangement
+ * @param modifier [Modifier] applied to the root container
+ * @param showDivider whether a divider shows below the item
+ * @param density [LemonadeContentListItemDensity] controlling the vertical padding, defaults to
+ *  [LemonadeContentListItemDensity.Comfortable]
+ * @param verticalAlignment vertical alignment used by the horizontal layout, defaults to
+ *  [Alignment.CenterVertically]
+ * @param leadingSlot optional slot for a leading element, for example a
+ *  [LemonadeUi.SymbolContainer]
+ * @param trailingSlot optional slot for a trailing element, for example an icon action
+ * @param contentSlot optional slot for extra content. In vertical layout it also switches the
+ *  value typography to bodyXLargeSemiBold
+ * @param labelMaxLines maximum lines the [label] takes before it truncates, unlimited by default
+ * @param labelOverflow [TextOverflow] applied to the [label] when it exceeds [labelMaxLines]
+ * @param valueMaxLines maximum lines the [value] takes before it truncates, unlimited by default
+ * @param valueOverflow [TextOverflow] applied to the [value] when it exceeds [valueMaxLines]
  */
 @Composable
 public fun LemonadeUi.ContentListItem(
@@ -240,8 +238,6 @@ private fun HorizontalContentListItem(
             }
         }
 
-        // Only reserve space for the value/trailing side when there is something to
-        // show; otherwise the label fills the full available width.
         if (value.isNotEmpty() || trailingSlot != null) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -299,8 +295,6 @@ private fun VerticalContentListItem(
                 overflow = labelOverflow,
             )
 
-            // Skip the value/trailing row entirely when there is nothing to show, so a
-            // label-only item doesn't leave a blank line under the label.
             if (value.isNotEmpty() || trailingSlot != null) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -347,24 +341,28 @@ private class ContentListItemPreviewProvider :
         buildList {
             LemonadeContentListItemLayout.entries.forEach { layout ->
                 LemonadeContentListItemDensity.entries.forEach { density ->
-                    listOf(true, false).forEach { leading ->
-                        listOf(true, false).forEach { trailing ->
-                            listOf(true, false).forEach { contentSlot ->
-                                listOf(true, false).forEach { divider ->
-                                    add(
-                                        ContentListItemPreviewData(
-                                            layout = layout,
-                                            density = density,
-                                            hasLeading = leading,
-                                            hasTrailing = trailing,
-                                            hasContentSlot = contentSlot,
-                                            showDivider = divider,
-                                        ),
-                                    )
+                    listOf(true, false)
+                        .forEach { leading ->
+                            listOf(true, false)
+                                .forEach { trailing ->
+                                    listOf(true, false)
+                                        .forEach { contentSlot ->
+                                            listOf(true, false)
+                                                .forEach { divider ->
+                                                    add(
+                                                        ContentListItemPreviewData(
+                                                            layout = layout,
+                                                            density = density,
+                                                            hasLeading = leading,
+                                                            hasTrailing = trailing,
+                                                            hasContentSlot = contentSlot,
+                                                            showDivider = divider,
+                                                        ),
+                                                    )
+                                                }
+                                        }
                                 }
-                            }
                         }
-                    }
                 }
             }
         }.asSequence()

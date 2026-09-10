@@ -442,10 +442,9 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
             guard enabled else { return }
             handleSelectTap(type: type, checked: checked, onItemClicked: onItemClicked)
         }
-        // `children: .combine` gathers the label, support text, and slotContent into a single
-        // announcement. We intentionally do NOT override the label/value here so slotContent's
-        // own semantics are included; selection state is conveyed via the `.isSelected` trait
-        // (the control itself is `accessibilityHidden`).
+        // `children: .combine` folds the label, support text, and slotContent into one
+        // announcement; an explicit label or value here would drop slotContent's own semantics.
+        // Selection rides on the `.isSelected` trait because the control is accessibilityHidden.
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(checked ? .isSelected : [])
         .animation(.easeInOut(duration: 0.15), value: checked)
@@ -457,7 +456,6 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
 struct LemonadeSelectListItem_Previews: PreviewProvider {
     static var previews: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // SelectListItem - Single with divider
             LemonadeUi.SelectListItem(
                 label: "Single Selection",
                 type: .single,

@@ -81,7 +81,7 @@ public object ApiStabilityClassifier {
 
         fun flushFile() {
             for (removedLine in removed) {
-                // Mangled internal members are not part of the public ABI (Exception B).
+                // Name-mangled internal members are invisible outside their module, so removing one breaks nothing.
                 if (removedLine.isInternalMangled(module)) continue
                 val removedSignature = removedLine.stripSyntheticModifier()
                 val syntheticOnly = added.any { addedLine ->
@@ -97,15 +97,17 @@ public object ApiStabilityClassifier {
             when {
                 line.startsWith("---") -> {
                     flushFile()
-                    moduleFromHeader(line)?.let { module = it }
+                    moduleFromHeader(line)?.let { moduleName -> module = moduleName }
                 }
-                line.startsWith("+++") -> moduleFromHeader(line)?.let { module = it }
+                line.startsWith("+++") -> moduleFromHeader(line)?.let { moduleName -> module = moduleName }
                 line.startsWith("+") -> {
-                    val body = line.removePrefix("+").trim()
+                    val body = line.removePrefix("+")
+                        .trim()
                     if (body.isNotEmpty()) added += body
                 }
                 line.startsWith("-") -> {
-                    val body = line.removePrefix("-").trim()
+                    val body = line.removePrefix("-")
+                        .trim()
                     if (body.isNotEmpty()) removed += body
                 }
             }
@@ -141,8 +143,12 @@ public object ApiStabilityClassifier {
      */
     private fun String.isInternalMangled(module: String): Boolean {
         if (module.isEmpty()) return false
-        val name = jvmMemberNameRegex.find(trim())?.groupValues?.get(1) ?: return false
-        val mangleSuffix = name.substringAfterLast('$', missingDelimiterValue = "")
+        val name = jvmMemberNameRegex.find(trim())?.groupValues?.get(1)
+            ?: return false
+        val mangleSuffix = name.substringAfterLast(
+            delimiter = '$',
+            missingDelimiterValue = "",
+        )
         return mangleSuffix == module || mangleSuffix.startsWith("${module}_")
     }
 
@@ -153,7 +159,13 @@ public object ApiStabilityClassifier {
      * binary descriptor and differ only in whether the symbol is hidden.
      */
     private fun String.stripSyntheticModifier(): String =
-        replace(syntheticModifierRegex, "").replace(whitespaceRegex, " ").trim()
+        replace(
+            regex = syntheticModifierRegex,
+            replacement = "",
+        ).replace(
+            regex = whitespaceRegex,
+            replacement = " ",
+        ).trim()
 
     private fun collectAbstractMembersAddedToExistingTypes(diff: String): List<String> {
         val results = mutableListOf<String>()
@@ -174,7 +186,8 @@ public object ApiStabilityClassifier {
                 }
                 else -> {
                     if (!sawFileHeader) continue
-                    val (prefix, body) = rawLine.takeIfDiffLine() ?: continue
+                    val (prefix, body) = rawLine.takeIfDiffLine()
+                        ?: continue
 
                     val typeAddition = body.matchTypeDeclaration()
                     if (typeAddition != null) {
@@ -250,7 +263,8 @@ public object ApiStabilityClassifier {
 
     private fun List<String>.summarize(limit: Int = 5): String {
         if (size <= limit) return joinToString("; ")
-        val head = take(limit).joinToString("; ")
+        val head = take(limit)
+            .joinToString("; ")
         return "$head; … (${size - limit} more)"
     }
 }

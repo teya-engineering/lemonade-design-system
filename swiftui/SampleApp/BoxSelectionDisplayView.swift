@@ -44,170 +44,185 @@ struct BoxSelectionDisplayView: View {
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing600) {
-                // MARK: - Variants
-                sectionView(title: "Variants") {
-                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
-                        LemonadeUi.BoxSelection(variant: .filled, stretched: true) {
-                            sampleContent(label: "Filled")
-                        }
-                        LemonadeUi.BoxSelection(variant: .outlined, stretched: true) {
-                            sampleContent(label: "Outlined")
-                        }
-                    }
-                }
-
-                // MARK: - Background
-                sectionView(title: "Background") {
-                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
-                        LemonadeUi.BoxSelection(background: .default, stretched: true) {
-                            sampleContent(label: "Default")
-                        }
-                        LemonadeUi.BoxSelection(background: .elevated, stretched: true) {
-                            sampleContent(label: "Elevated")
-                        }
-                    }
-                }
-
-                // MARK: - Selected
-                sectionView(title: "Selected") {
-                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
-                        LemonadeUi.BoxSelection(
-                            variant: .filled,
-                            isSelected: isFilledSelected,
-                            stretched: true,
-                            onClick: { isFilledSelected.toggle() }
-                        ) {
-                            sampleContent(label: "Filled")
-                        }
-                        LemonadeUi.BoxSelection(
-                            variant: .outlined,
-                            isSelected: isOutlinedSelected,
-                            stretched: true,
-                            onClick: { isOutlinedSelected.toggle() }
-                        ) {
-                            sampleContent(label: "Outlined")
-                        }
-                    }
-                }
-
-                // MARK: - Disabled
-                sectionView(title: "Disabled") {
-                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
-                        LemonadeUi.BoxSelection(
-                            variant: .filled,
-                            enabled: false,
-                            stretched: true,
-                            onClick: {}
-                        ) {
-                            sampleContent(label: "Filled")
-                        }
-                        LemonadeUi.BoxSelection(
-                            variant: .outlined,
-                            enabled: false,
-                            stretched: true,
-                            onClick: {}
-                        ) {
-                            sampleContent(label: "Outlined")
-                        }
-                    }
-                }
-
-                // MARK: - Content Padding
-                sectionView(title: "Content Padding") {
-                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
-                        LemonadeUi.BoxSelection(
-                            variant: .outlined,
-                            contentPadding: .spacing100,
-                            stretched: true
-                        ) {
-                            sampleContent(label: "Spacing100")
-                        }
-                        LemonadeUi.BoxSelection(variant: .outlined, stretched: true) {
-                            sampleContent(label: "Spacing300")
-                        }
-                        LemonadeUi.BoxSelection(
-                            variant: .outlined,
-                            contentPadding: .spacing600,
-                            stretched: true
-                        ) {
-                            sampleContent(label: "Spacing600")
-                        }
-                    }
-                }
-
-                // MARK: - Radius
-                sectionView(title: "Radius") {
-                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
-                        LemonadeUi.BoxSelection(
-                            variant: .outlined,
-                            radius: .radius0,
-                            stretched: true
-                        ) {
-                            sampleContent(label: "Radius0")
-                        }
-                        LemonadeUi.BoxSelection(variant: .outlined, stretched: true) {
-                            sampleContent(label: "Radius500")
-                        }
-                        LemonadeUi.BoxSelection(
-                            variant: .outlined,
-                            radius: .radius800,
-                            stretched: true
-                        ) {
-                            sampleContent(label: "Radius800")
-                        }
-                    }
-                }
-
-                // MARK: - Use Case: Plan Cards
-                // A full-width box holding a whole card layout, showing that the slot is not
-                // limited to the small icon-and-label content a Tile would carry.
-                sectionView(title: "Use Case: Plan Cards") {
-                    VStack(spacing: LemonadeTheme.spaces.spacing300) {
-                        ForEach(plans) { plan in
-                            let isPlanSelected = selectedPlan == plan.name
-                            let selectPlan = { selectedPlan = plan.name }
-
-                            LemonadeUi.BoxSelection(
-                                isSelected: isPlanSelected,
-                                contentPadding: .spacing400,
-                                radius: .radius600,
-                                stretched: true,
-                                onClick: selectPlan
-                            ) {
-                                planCardContent(
-                                    plan: plan,
-                                    isSelected: isPlanSelected,
-                                    onSelect: selectPlan
-                                )
-                            }
-                        }
-                    }
-                }
-
-                // MARK: - Use Case: Single Selection
-                sectionView(title: "Use Case: Single Selection") {
-                    HStack(spacing: LemonadeTheme.spaces.spacing300) {
-                        ForEach(frequencyOptions, id: \.self) { option in
-                            LemonadeUi.BoxSelection(
-                                variant: .outlined,
-                                isSelected: selectedOption == option,
-                                stretched: true,
-                                onClick: { selectedOption = option }
-                            ) {
-                                LemonadeUi.Text(
-                                    option,
-                                    textStyle: LemonadeTypography.shared.bodySmallMedium
-                                )
-                                .frame(maxWidth: .infinity)
-                            }
-                        }
-                    }
-                }
+                variantsSection
+                backgroundSection
+                selectedSection
+                disabledSection
+                contentPaddingSection
+                radiusSection
+                planCardsSection
+                singleSelectionSection
             }
             .padding(LemonadeTheme.spaces.spacing400)
         }
         .background(.bg.bgSubtle)
         .navigationTitle("BoxSelection")
+    }
+
+    private var variantsSection: some View {
+        sectionView(title: "Variants") {
+            HStack(spacing: LemonadeTheme.spaces.spacing400) {
+                LemonadeUi.BoxSelection(variant: .filled, stretched: true) {
+                    sampleContent(label: "Filled")
+                }
+                LemonadeUi.BoxSelection(variant: .outlined, stretched: true) {
+                    sampleContent(label: "Outlined")
+                }
+            }
+        }
+    }
+
+    private var backgroundSection: some View {
+        sectionView(title: "Background") {
+            HStack(spacing: LemonadeTheme.spaces.spacing400) {
+                LemonadeUi.BoxSelection(background: .default, stretched: true) {
+                    sampleContent(label: "Default")
+                }
+                LemonadeUi.BoxSelection(background: .elevated, stretched: true) {
+                    sampleContent(label: "Elevated")
+                }
+            }
+        }
+    }
+
+    private var selectedSection: some View {
+        sectionView(title: "Selected") {
+            HStack(spacing: LemonadeTheme.spaces.spacing400) {
+                LemonadeUi.BoxSelection(
+                    variant: .filled,
+                    isSelected: isFilledSelected,
+                    stretched: true,
+                    onClick: { isFilledSelected.toggle() }
+                ) {
+                    sampleContent(label: "Filled")
+                }
+                LemonadeUi.BoxSelection(
+                    variant: .outlined,
+                    isSelected: isOutlinedSelected,
+                    stretched: true,
+                    onClick: { isOutlinedSelected.toggle() }
+                ) {
+                    sampleContent(label: "Outlined")
+                }
+            }
+        }
+    }
+
+    private var disabledSection: some View {
+        sectionView(title: "Disabled") {
+            HStack(spacing: LemonadeTheme.spaces.spacing400) {
+                LemonadeUi.BoxSelection(
+                    variant: .filled,
+                    enabled: false,
+                    stretched: true,
+                    onClick: {}
+                ) {
+                    sampleContent(label: "Filled")
+                }
+                LemonadeUi.BoxSelection(
+                    variant: .outlined,
+                    enabled: false,
+                    stretched: true,
+                    onClick: {}
+                ) {
+                    sampleContent(label: "Outlined")
+                }
+            }
+        }
+    }
+
+    private var contentPaddingSection: some View {
+        sectionView(title: "Content Padding") {
+            HStack(spacing: LemonadeTheme.spaces.spacing400) {
+                LemonadeUi.BoxSelection(
+                    variant: .outlined,
+                    contentPadding: .spacing100,
+                    stretched: true
+                ) {
+                    sampleContent(label: "Spacing100")
+                }
+                LemonadeUi.BoxSelection(variant: .outlined, stretched: true) {
+                    sampleContent(label: "Spacing300")
+                }
+                LemonadeUi.BoxSelection(
+                    variant: .outlined,
+                    contentPadding: .spacing600,
+                    stretched: true
+                ) {
+                    sampleContent(label: "Spacing600")
+                }
+            }
+        }
+    }
+
+    private var radiusSection: some View {
+        sectionView(title: "Radius") {
+            HStack(spacing: LemonadeTheme.spaces.spacing400) {
+                LemonadeUi.BoxSelection(
+                    variant: .outlined,
+                    radius: .radius0,
+                    stretched: true
+                ) {
+                    sampleContent(label: "Radius0")
+                }
+                LemonadeUi.BoxSelection(variant: .outlined, stretched: true) {
+                    sampleContent(label: "Radius500")
+                }
+                LemonadeUi.BoxSelection(
+                    variant: .outlined,
+                    radius: .radius800,
+                    stretched: true
+                ) {
+                    sampleContent(label: "Radius800")
+                }
+            }
+        }
+    }
+
+    private var planCardsSection: some View {
+        sectionView(title: "Use Case: Plan Cards") {
+            VStack(spacing: LemonadeTheme.spaces.spacing300) {
+                ForEach(plans) { plan in
+                    let isPlanSelected = selectedPlan == plan.name
+                    let selectPlan = { selectedPlan = plan.name }
+
+                    LemonadeUi.BoxSelection(
+                        isSelected: isPlanSelected,
+                        contentPadding: .spacing400,
+                        radius: .radius600,
+                        stretched: true,
+                        onClick: selectPlan
+                    ) {
+                        planCardContent(
+                            plan: plan,
+                            isSelected: isPlanSelected,
+                            onSelect: selectPlan
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private var singleSelectionSection: some View {
+        sectionView(title: "Use Case: Single Selection") {
+            HStack(spacing: LemonadeTheme.spaces.spacing300) {
+                ForEach(frequencyOptions, id: \.self) { option in
+                    LemonadeUi.BoxSelection(
+                        variant: .outlined,
+                        isSelected: selectedOption == option,
+                        stretched: true,
+                        onClick: { selectedOption = option }
+                    ) {
+                        LemonadeUi.Text(
+                            option,
+                            textStyle: LemonadeTypography.shared.bodySmallMedium
+                        )
+                        .frame(maxWidth: .infinity)
+                    }
+                }
+            }
+        }
     }
 
     private func planCardContent(

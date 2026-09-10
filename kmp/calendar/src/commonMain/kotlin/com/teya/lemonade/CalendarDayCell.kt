@@ -11,31 +11,31 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 
 /**
- * A single day cell that optionally displays a weekday label above the
- * [ContentCell] and an optional trailing content slot below.
+ * Renders one day cell with an optional weekday label above the [ContentCell] and a trailing slot
+ * below.
  *
- * Used by both the full-month grid (DatePicker) and the inline calendar strip.
+ * Backs both the [LemonadeUi.DatePicker] month grid and the [LemonadeUi.InlineCalendar] strip.
  *
- * @param text Day-of-month text (e.g. "14").
- * @param isCurrent Whether the date is today.
- * @param isSelected Whether the date is currently selected.
- * @param isEnabled Whether the cell is interactive.
- * @param isOutsideVisibleRange Whether the date falls outside the displayed month.
- * @param isInsideSelectedRange Whether the date is within a selected range.
- * @param onClick Called when the cell is tapped.
- * @param modifier Optional [Modifier] for the root container.
- * @param contentDescription Optional accessibility description for the cell.
- *   When provided, screen readers announce this instead of just the day number.
- * @param showWeekdayLabel Whether to display the weekday label above the day number.
- * @param weekdayLabel The short weekday text (e.g. "M", "Mon").
- * @param expandSelectionToLabel When `true` (default), the selection background covers the
- *   entire cell column including the weekday label and trailing content. When `false`, only
- *   the day number circle carries the brand background (DatePicker style).
- * @param selectionBackgroundColor When non-null, overrides the default brand background color
- *   used for selected cells.
- * @param selectionContentColor When non-null, overrides the default text color used on
- *   selected cells. Also applied to the weekday label when [expandSelectionToLabel] is `true`.
- * @param trailingContent Optional composable rendered below the day cell.
+ * @param text day-of-month text (e.g. "14")
+ * @param isCurrent whether the date is today
+ * @param isSelected whether the date is currently selected
+ * @param isEnabled whether the cell is interactive
+ * @param isOutsideVisibleRange whether the date falls outside the displayed month
+ * @param isInsideSelectedRange whether the date is within a selected range
+ * @param onClick called when the cell is tapped
+ * @param modifier [Modifier] for the root container
+ * @param contentDescription when non-null, what screen readers announce instead of the bare day
+ *   number
+ * @param showWeekdayLabel whether to show the weekday label above the day number
+ * @param weekdayLabel short weekday text (e.g. "M", "Mon")
+ * @param expandSelectionToLabel when `true` (default), the selection background covers the whole
+ *   cell column including the weekday label and trailing content; when `false`, only the day
+ *   number circle carries the brand background ([LemonadeUi.DatePicker] style)
+ * @param selectionBackgroundColor when non-null, overrides the brand background color of selected
+ *   cells
+ * @param selectionContentColor when non-null, overrides the text color on selected cells; also
+ *   applied to the weekday label when [expandSelectionToLabel] is `true`
+ * @param trailingContent composable rendered below the day cell
  */
 @Composable
 internal fun CalendarDayCell(

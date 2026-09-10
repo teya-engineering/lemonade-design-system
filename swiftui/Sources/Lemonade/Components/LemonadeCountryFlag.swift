@@ -15,13 +15,13 @@ public enum LemonadeCountryFlagSize {
     /// Returns the CGFloat value for this size
     public var value: CGFloat {
         switch self {
-        case .small: return LemonadeTheme.sizes.size400      // 16
-        case .medium: return LemonadeTheme.sizes.size500     // 20
-        case .large: return LemonadeTheme.sizes.size600      // 24
-        case .xLarge: return LemonadeTheme.sizes.size800     // 32
-        case .xxLarge: return LemonadeTheme.sizes.size1000   // 40
-        case .xxxLarge: return LemonadeTheme.sizes.size1200  // 48
-        case .xxxxLarge: return LemonadeTheme.sizes.size1400 // 56
+        case .small: return LemonadeTheme.sizes.size400
+        case .medium: return LemonadeTheme.sizes.size500
+        case .large: return LemonadeTheme.sizes.size600
+        case .xLarge: return LemonadeTheme.sizes.size800
+        case .xxLarge: return LemonadeTheme.sizes.size1000
+        case .xxxLarge: return LemonadeTheme.sizes.size1200
+        case .xxxxLarge: return LemonadeTheme.sizes.size1400
         }
     }
 }
@@ -100,16 +100,15 @@ private struct LemonadeCountryFlagView: View {
             )
     }
 
-    /// Corner radius applied when the flag uses `LemonadeCountryFlagShape.rounded`.
     private func roundedRadius(for size: LemonadeCountryFlagSize) -> CGFloat {
         switch size {
-        case .small: return LemonadeTheme.radius.radius100      // 4
-        case .medium: return LemonadeTheme.radius.radius150     // 6
-        case .large: return LemonadeTheme.radius.radius200      // 8
-        case .xLarge: return LemonadeTheme.radius.radius250     // 10
-        case .xxLarge: return LemonadeTheme.radius.radius300    // 12
-        case .xxxLarge: return LemonadeTheme.radius.radius400   // 16
-        case .xxxxLarge: return LemonadeTheme.radius.radius500  // 20
+        case .small: return LemonadeTheme.radius.radius100
+        case .medium: return LemonadeTheme.radius.radius150
+        case .large: return LemonadeTheme.radius.radius200
+        case .xLarge: return LemonadeTheme.radius.radius250
+        case .xxLarge: return LemonadeTheme.radius.radius300
+        case .xxxLarge: return LemonadeTheme.radius.radius400
+        case .xxxxLarge: return LemonadeTheme.radius.radius500
         }
     }
 

@@ -36,8 +36,9 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeTextStyle
 
 /**
- * A form control that allows users to select a single option from a group.
- *  Selecting one option automatically deselects any previously selected option.
+ * Selects a single option from a group.
+ *
+ * Selecting one option deselects any previously selected option.
  *
  * ## Usage
  * ```kotlin
@@ -50,14 +51,14 @@ import com.teya.lemonade.core.LemonadeTextStyle
  * )
  * ```
  *
- * @param checked The selected state of the radio button. `true` if this option is selected, `false` otherwise.
- * @param onRadioButtonClicked A lambda that is invoked when the user clicks the radio button.
- * @param label The primary text label displayed next to the radio button.
- * @param modifier The [Modifier] to be applied to the entire component.
- * @param interactionSource Optional [MutableInteractionSource] used to observe interaction states
- *  like hover and press to drive visual feedback.
- * @param supportText Optional secondary text displayed below the label. If null, it is not shown.
- * @param enabled A boolean that controls the enabled state of the radio button.
+ * @param checked whether this option is selected
+ * @param onRadioButtonClicked called when the user clicks the radio button
+ * @param label primary text shown next to the radio button
+ * @param modifier optional [Modifier] applied to the entire component
+ * @param interactionSource optional [MutableInteractionSource] observing hover and press to drive
+ *   visual feedback
+ * @param supportText optional secondary text shown below [label]; hidden when null
+ * @param enabled whether the radio button responds to input
  */
 @Composable
 public fun LemonadeUi.RadioButton(
@@ -120,8 +121,9 @@ public fun LemonadeUi.RadioButton(
 }
 
 /**
- * A form control that allows users to select a single option from a group.
- *  Selecting one option automatically deselects any previously selected option.
+ * Selects a single option from a group.
+ *
+ * Selecting one option deselects any previously selected option.
  *
  * ## Usage
  * ```kotlin
@@ -132,12 +134,12 @@ public fun LemonadeUi.RadioButton(
  * )
  * ```
  *
- * @param checked The selected state of the radio button. `true` if this option is selected, `false` otherwise.
- * @param onRadioButtonClicked A lambda that is invoked when the user clicks the radio button.
- * @param modifier The [Modifier] to be applied to the radio button.
- * @param interactionSource Optional [MutableInteractionSource] used to observe interaction states
- *  like hover and press to drive visual feedback.
- * @param enabled A boolean that controls the enabled state of the radio button.
+ * @param checked whether this option is selected
+ * @param onRadioButtonClicked called when the user clicks the radio button
+ * @param modifier optional [Modifier] applied to the radio button
+ * @param interactionSource optional [MutableInteractionSource] observing hover and press to drive
+ *   visual feedback
+ * @param enabled whether the radio button responds to input
  */
 @Composable
 public fun LemonadeUi.RadioButton(
@@ -294,22 +296,26 @@ private class RadioPreviewProvider : PreviewParameterProvider<RadioPreviewData> 
 
     private fun buildAllVariants(): Sequence<RadioPreviewData> =
         buildList {
-            listOf(true, false).forEach { checked ->
-                listOf(true, false).forEach { enabled ->
-                    listOf(true, false).forEach { withLabel ->
-                        listOf(true, false).forEach { withSupportText ->
-                            add(
-                                RadioPreviewData(
-                                    checked = checked,
-                                    label = "Label".takeIf { withLabel },
-                                    supportText = "Support Text".takeIf { withSupportText },
-                                    enabled = enabled,
-                                ),
-                            )
+            listOf(true, false)
+                .forEach { checked ->
+                    listOf(true, false)
+                        .forEach { enabled ->
+                            listOf(true, false)
+                                .forEach { withLabel ->
+                                    listOf(true, false)
+                                        .forEach { withSupportText ->
+                                            add(
+                                                element = RadioPreviewData(
+                                                    checked = checked,
+                                                    label = "Label".takeIf { withLabel },
+                                                    supportText = "Support Text".takeIf { withSupportText },
+                                                    enabled = enabled,
+                                                ),
+                                            )
+                                        }
+                                }
                         }
-                    }
                 }
-            }
         }.asSequence()
 }
 
@@ -325,13 +331,13 @@ private fun LemonadeLabeledRadioButtonPreview(
             supportText = previewData.supportText,
             checked = previewData.checked,
             enabled = previewData.enabled,
-            onRadioButtonClicked = { /* Nothing */ },
+            onRadioButtonClicked = { },
         )
     } else {
         LemonadeUi.RadioButton(
             checked = previewData.checked,
             enabled = previewData.enabled,
-            onRadioButtonClicked = { /* Nothing */ },
+            onRadioButtonClicked = { },
         )
     }
 }

@@ -145,9 +145,8 @@ private struct LemonadeBoxSelectionView<Content: View>: View {
     let onClick: (() -> Void)?
     let content: () -> Content
 
-    // Resolved once per body pass and passed down: every `LemonadeTheme.colors.*` read is a
-    // named asset-catalog lookup, so recomputing this for each of the three call sites below
-    // would triple them for every box on screen.
+    // Resolved once and shared by both branches of `body`; every `LemonadeTheme.colors.*`
+    // read is a named asset-catalog lookup.
     private var styledContent: some View {
         let style = variant.resolvedStyle(background: background, isSelected: isSelected)
         let shape = radius.shape
@@ -156,14 +155,12 @@ private struct LemonadeBoxSelectionView<Content: View>: View {
             .padding(contentPadding.value)
             .applyIf(stretched) {
                 // .leading, not the default .center: a stretched box lays its content out from
-                // the top-leading corner, matching the Compose `Box` default. Callers that want
-                // it centred say so in their own content.
+                // the top-leading corner. Callers that want it centred say so in their content.
                 $0.frame(maxWidth: .infinity, alignment: .leading)
             }
             .background(shape.fill(style.backgroundColor))
             .clipShape(shape)
-            // strokeBorder, not stroke: the border sits inside the box the way Figma draws it,
-            // instead of straddling the edge.
+            // strokeBorder, not stroke: the border sits inside the edge, not straddling it.
             .overlay(shape.strokeBorder(style.borderColor, lineWidth: style.borderWidth))
             .opacity(enabled ? .opacity.opacity100 : LemonadeTheme.opacity.state.opacityDisabled)
             .contentShape(shape)
@@ -192,63 +189,74 @@ private struct LemonadeBoxSelectionView<Content: View>: View {
 
 #if DEBUG
 struct LemonadeBoxSelection_Previews: PreviewProvider {
+    private static var variantsRow: some View {
+        HStack(spacing: 16) {
+            LemonadeUi.BoxSelection(variant: .filled) {
+                LemonadeUi.Text("Filled")
+            }
+            LemonadeUi.BoxSelection(variant: .outlined) {
+                LemonadeUi.Text("Outlined")
+            }
+        }
+    }
+
+    private static var backgroundsRow: some View {
+        HStack(spacing: 16) {
+            LemonadeUi.BoxSelection(background: .default) {
+                LemonadeUi.Text("Default")
+            }
+            LemonadeUi.BoxSelection(background: .elevated) {
+                LemonadeUi.Text("Elevated")
+            }
+        }
+    }
+
+    private static var selectedRow: some View {
+        HStack(spacing: 16) {
+            LemonadeUi.BoxSelection(variant: .filled, isSelected: true, onClick: {}) {
+                LemonadeUi.Text("Filled")
+            }
+            LemonadeUi.BoxSelection(variant: .outlined, isSelected: true, onClick: {}) {
+                LemonadeUi.Text("Outlined")
+            }
+        }
+    }
+
+    private static var disabledRow: some View {
+        HStack(spacing: 16) {
+            LemonadeUi.BoxSelection(variant: .filled, enabled: false, onClick: {}) {
+                LemonadeUi.Text("Filled")
+            }
+            LemonadeUi.BoxSelection(variant: .outlined, enabled: false, onClick: {}) {
+                LemonadeUi.Text("Outlined")
+            }
+        }
+    }
+
+    private static var paddingAndRadiusRow: some View {
+        HStack(spacing: 16) {
+            LemonadeUi.BoxSelection(
+                variant: .outlined,
+                contentPadding: .spacing600
+            ) {
+                LemonadeUi.Text("Spacing600")
+            }
+            LemonadeUi.BoxSelection(
+                variant: .outlined,
+                radius: .radius0
+            ) {
+                LemonadeUi.Text("Radius0")
+            }
+        }
+    }
+
     static var previews: some View {
         VStack(spacing: 24) {
-            // Variants
-            HStack(spacing: 16) {
-                LemonadeUi.BoxSelection(variant: .filled) {
-                    LemonadeUi.Text("Filled")
-                }
-                LemonadeUi.BoxSelection(variant: .outlined) {
-                    LemonadeUi.Text("Outlined")
-                }
-            }
-
-            // Background
-            HStack(spacing: 16) {
-                LemonadeUi.BoxSelection(background: .default) {
-                    LemonadeUi.Text("Default")
-                }
-                LemonadeUi.BoxSelection(background: .elevated) {
-                    LemonadeUi.Text("Elevated")
-                }
-            }
-
-            // Selected
-            HStack(spacing: 16) {
-                LemonadeUi.BoxSelection(variant: .filled, isSelected: true, onClick: {}) {
-                    LemonadeUi.Text("Filled")
-                }
-                LemonadeUi.BoxSelection(variant: .outlined, isSelected: true, onClick: {}) {
-                    LemonadeUi.Text("Outlined")
-                }
-            }
-
-            // Disabled
-            HStack(spacing: 16) {
-                LemonadeUi.BoxSelection(variant: .filled, enabled: false, onClick: {}) {
-                    LemonadeUi.Text("Filled")
-                }
-                LemonadeUi.BoxSelection(variant: .outlined, enabled: false, onClick: {}) {
-                    LemonadeUi.Text("Outlined")
-                }
-            }
-
-            // Padding and radius
-            HStack(spacing: 16) {
-                LemonadeUi.BoxSelection(
-                    variant: .outlined,
-                    contentPadding: .spacing600
-                ) {
-                    LemonadeUi.Text("Spacing600")
-                }
-                LemonadeUi.BoxSelection(
-                    variant: .outlined,
-                    radius: .radius0
-                ) {
-                    LemonadeUi.Text("Radius0")
-                }
-            }
+            variantsRow
+            backgroundsRow
+            selectedRow
+            disabledRow
+            paddingAndRadiusRow
         }
         .padding()
         .background(LemonadeTheme.colors.background.bgSubtle)

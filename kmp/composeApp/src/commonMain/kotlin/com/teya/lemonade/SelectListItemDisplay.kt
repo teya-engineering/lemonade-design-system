@@ -32,18 +32,39 @@ private data class TrailingPreset(
 )
 
 private val outlinedOptions: List<OutlinedOption> = listOf(
-    OutlinedOption(label = "Option A", icon = LemonadeIcons.Heart),
-    OutlinedOption(label = "Option B", icon = LemonadeIcons.Star),
-    OutlinedOption(label = "Option C", icon = LemonadeIcons.Sparkles),
-    OutlinedOption(label = "Option D", icon = LemonadeIcons.Gift),
+    OutlinedOption(
+        label = "Option A",
+        icon = LemonadeIcons.Heart,
+    ),
+    OutlinedOption(
+        label = "Option B",
+        icon = LemonadeIcons.Star,
+    ),
+    OutlinedOption(
+        label = "Option C",
+        icon = LemonadeIcons.Sparkles,
+    ),
+    OutlinedOption(
+        label = "Option D",
+        icon = LemonadeIcons.Gift,
+    ),
 )
 
 private val outlinedOptionsFirstThree: List<OutlinedOption> = outlinedOptions.take(n = 3)
 
 private val trailingPresets: List<TrailingPreset> = listOf(
-    TrailingPreset(label = "New", voice = TagVoice.Info),
-    TrailingPreset(label = "Recommended", voice = TagVoice.Positive),
-    TrailingPreset(label = "Popular", voice = TagVoice.Neutral),
+    TrailingPreset(
+        label = "New",
+        voice = TagVoice.Info,
+    ),
+    TrailingPreset(
+        label = "Recommended",
+        voice = TagVoice.Positive,
+    ),
+    TrailingPreset(
+        label = "Popular",
+        voice = TagVoice.Neutral,
+    ),
 )
 
 private fun Set<Int>.toggle(index: Int): Set<Int> =
@@ -171,7 +192,7 @@ internal fun SelectListItemDisplay() {
                     label = "Disabled option",
                     type = SelectListItemType.Single,
                     checked = false,
-                    onItemClicked = { /* Disabled — never invoked */ },
+                    onItemClicked = { },
                     enabled = false,
                 )
 
@@ -179,7 +200,7 @@ internal fun SelectListItemDisplay() {
                     label = "Disabled toggle",
                     type = SelectListItemType.Toggle,
                     checked = true,
-                    onItemClicked = { /* Disabled — never invoked */ },
+                    onItemClicked = { },
                     enabled = false,
                 )
             }
@@ -341,7 +362,7 @@ internal fun SelectListItemDisplay() {
                         variant = SelectListItemVariant.Outlined,
                         checked = false,
                         enabled = false,
-                        onItemClicked = { /* Disabled — never invoked */ },
+                        onItemClicked = { },
                     )
 
                     LemonadeUi.SelectListItem(
@@ -350,7 +371,7 @@ internal fun SelectListItemDisplay() {
                         variant = SelectListItemVariant.Outlined,
                         checked = false,
                         enabled = false,
-                        onItemClicked = { /* Disabled — never invoked */ },
+                        onItemClicked = { },
                         leadingSlot = {
                             OptionSymbol(
                                 icon = LemonadeIcons.Padlock,
@@ -365,7 +386,7 @@ internal fun SelectListItemDisplay() {
                         variant = SelectListItemVariant.Outlined,
                         checked = false,
                         enabled = false,
-                        onItemClicked = { /* Disabled — never invoked */ },
+                        onItemClicked = { },
                         leadingSlot = {
                             OptionSymbol(
                                 icon = LemonadeIcons.Bell,

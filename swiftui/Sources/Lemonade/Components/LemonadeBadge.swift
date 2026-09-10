@@ -92,8 +92,8 @@ private struct LemonadeBadgeView: View {
                 .init(color: highlight, location: 0),
                 .init(color: highlight.opacity(0), location: 1)
             ],
-            // The design specifies a ~106.6° sweep; topLeading→bottomTrailing approximates
-            // that on the badge's short, wide shape without size-dependent angle math.
+            // A fixed diagonal keeps the sweep free of size-dependent angle math on the
+            // badge's short, wide shape.
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
@@ -108,17 +108,11 @@ private struct LemonadeBadgeView: View {
             .padding(.vertical, size.textVerticalPadding)
             .padding(.horizontal, size.horizontalPadding)
             .frame(height: size.height)
-            // The two Capsule fills already define the pill, and the label is inset by padding
-            // so it never reaches the ends. A clipShape over this gradient background only adds
-            // an offscreen render pass (the composited subtree can't fold into a layer corner
-            // radius), so the shaped fills do the rounding instead. Badges render densely
-            // (one per notification dot/count), so the per-instance pass adds up while scrolling.
+            // No clipShape: the capsule fills already round the badge, and clipping the
+            // composited subtree would only add an offscreen render pass.
             .background(
-                // Per design: brand fill with a bg-default → transparent highlight composited
-                // in `.overlay` blend mode. compositingGroup() isolates the blend so the gradient
-                // reacts to the brand fill below it, not whatever sits behind the badge. This is a
-                // bounded compositing pass over two coincident capsules — much cheaper than the
-                // clipShape avoided above, which would composite the whole shaped subtree.
+                // compositingGroup() isolates the blend so the gradient reacts to the brand
+                // fill below it, not to whatever sits behind the badge.
                 ZStack {
                     Capsule()
                         .fill(LemonadeTheme.colors.background.bgBrand)

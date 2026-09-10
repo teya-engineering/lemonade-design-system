@@ -24,9 +24,10 @@ import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 
 /**
- * A clickable text component styled as a hyperlink.
- * Displays underlined text in brand color with optional trailing icon,
- * and provides animated color feedback for hover and pressed states.
+ * Clickable text styled as a hyperlink.
+ *
+ * Shows underlined text in the brand color with an optional trailing icon, and animates that color
+ * on hover and press.
  *
  * ## Usage
  * ```kotlin
@@ -36,12 +37,12 @@ import com.teya.lemonade.core.LemonadeIcons
  * )
  * ```
  *
- * @param text - [String] to be displayed as the link label.
- * @param onClick - Callback to be invoked when the link is clicked.
- * @param modifier - [Modifier] to be applied to the root container of the link.
- * @param enabled - [Boolean] flag to enable or disable the link. Defaults to true.
- * @param icon - Optional trailing [LemonadeIcons] shown after the text (e.g., an external link icon).
- * @param interactionSource - [MutableInteractionSource] to observe interaction states.
+ * @param text label shown as the link
+ * @param onClick callback invoked when the link is clicked
+ * @param modifier [Modifier] applied to the root container of the link
+ * @param enabled whether the link accepts clicks, defaults to `true`
+ * @param icon optional trailing [LemonadeIcons] shown after the text, e.g. an external link icon
+ * @param interactionSource [MutableInteractionSource] observing the interaction states
  */
 @Composable
 public fun LemonadeUi.Link(
@@ -140,16 +141,18 @@ private class LinkPreviewProvider : PreviewParameterProvider<LinkPreviewData> {
 
     private fun buildAllVariants(): Sequence<LinkPreviewData> =
         buildList {
-            listOf(true, false).forEach { enabled ->
-                listOf(true, false).forEach { withIcon ->
-                    add(
-                        element = LinkPreviewData(
-                            enabled = enabled,
-                            withIcon = withIcon,
-                        ),
-                    )
+            listOf(true, false)
+                .forEach { enabled ->
+                    listOf(true, false)
+                        .forEach { withIcon ->
+                            add(
+                                element = LinkPreviewData(
+                                    enabled = enabled,
+                                    withIcon = withIcon,
+                                ),
+                            )
+                        }
                 }
-            }
         }.asSequence()
 }
 
@@ -163,7 +166,7 @@ private fun LinkPreview(
     Column(verticalArrangement = Arrangement.spacedBy(space = 4.dp)) {
         LemonadeUi.Link(
             text = "Learn more",
-            onClick = { /* Nothing */ },
+            onClick = { },
             enabled = previewData.enabled,
             icon = LemonadeIcons.ExternalLink.takeIf { previewData.withIcon },
         )

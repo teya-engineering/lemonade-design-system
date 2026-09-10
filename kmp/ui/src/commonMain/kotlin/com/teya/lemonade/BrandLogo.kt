@@ -11,22 +11,22 @@ import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeBrandLogos
 
 /**
- * Brand logo component, to indication of Card Schemes in standardized way.
+ * Shows a card scheme logo at a standard size.
  *
  * ## Usage
  * ```kotlin
  * LemonadeUi.BrandLogo(
- *     logo = LemonadeBrandLogo.Visa,
- *     size = LemonadeBrandLogoSize.Medium,
- *     modifier = Modifier.clickable{ ... },
+ *     logo = LemonadeBrandLogos.Visa,
+ *     size = LemonadeAssetSize.Medium,
+ *     modifier = Modifier.clickable { ... },
  * )
  * ```
  *
- * @param logo - The [LemonadeBrandLogos] to be displayed.
- * @param contentDescription - The localizable content description for the [logo].
- *  Defaults to [LemonadeBrandLogos.name].
- * @param size - The [LemonadeAssetSize] to be applied to the logo. Defaults to [LemonadeAssetSize.Medium]
- * @param Modifier - Optional [Modifier] for additional styling and layout adjustments.
+ * @param logo [LemonadeBrandLogos] to show
+ * @param contentDescription localizable content description for the [logo], defaults to
+ *  [LemonadeBrandLogos.name]
+ * @param size [LemonadeAssetSize] applied to the logo, defaults to [LemonadeAssetSize.Medium]
+ * @param modifier optional [Modifier] for styling and layout
  */
 @Composable
 public fun LemonadeUi.BrandLogo(
@@ -88,16 +88,18 @@ private class BrandLogoPreviewProvider : PreviewParameterProvider<BrandLogoPrevi
 
     private fun buildAllVariants(): Sequence<BrandLogoPreviewData> =
         buildList {
-            LemonadeBrandLogos.entries.take(5).forEach { logo ->
-                LemonadeAssetSize.entries.forEach { size ->
-                    add(
-                        BrandLogoPreviewData(
-                            logo = logo,
-                            size = size,
-                        ),
-                    )
+            LemonadeBrandLogos.entries
+                .take(5)
+                .forEach { logo ->
+                    LemonadeAssetSize.entries.forEach { size ->
+                        add(
+                            BrandLogoPreviewData(
+                                logo = logo,
+                                size = size,
+                            ),
+                        )
+                    }
                 }
-            }
         }.asSequence()
 }
 

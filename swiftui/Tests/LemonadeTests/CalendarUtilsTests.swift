@@ -4,10 +4,8 @@ import XCTest
 
 final class CalendarUtilsTests: XCTestCase {
 
-    // The DatePicker header renders the caller's Sunday-first abbreviations, while
-    // generateMonthDays places day cells starting at the calendar's firstWeekday.
-    // These tests pin the invariant that keeps the two aligned: the label at column c
-    // must name the weekday of the dates in column c.
+    // These tests pin the invariant that keeps the header and the grid aligned: the label at
+    // column c must name the weekday of the dates in column c.
 
     private let sundayFirst = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
@@ -45,8 +43,6 @@ final class CalendarUtilsTests: XCTestCase {
 
     // MARK: - Header/grid alignment
 
-    // The reported bug: on a Monday-first device, July 13 2026 (a Monday) rendered under
-    // the "S" header because the labels were not rotated to match the grid's columns.
     func testJuly13th2026RendersUnderMondayOnAMondayFirstCalendar() {
         let calendar = gregorian(firstWeekday: 2)
         let labels = CalendarUtils.orderedWeekdayAbbreviations(sundayFirst, calendar: calendar)

@@ -1,9 +1,8 @@
 import SwiftUI
 
-// MARK: - Icon Size (matching KMP API)
+// MARK: - Icon Size
 
 /// Icon sizes following the Lemonade Design System.
-/// These sizes match the KMP implementation exactly.
 public enum LemonadeUiIconSize {
     case xSmall
     case small

@@ -36,7 +36,8 @@ import com.teya.lemonade.core.LemonadeTileOrientation
 import com.teya.lemonade.core.LemonadeTileVariant
 
 /**
- * Lemonade tile component. Used for displaying an icon with a label in a selectable card layout.
+ * Shows an icon and a label in a selectable card.
+ *
  * ## Usage
  * ```kotlin
  * LemonadeUi.Tile(
@@ -45,19 +46,19 @@ import com.teya.lemonade.core.LemonadeTileVariant
  *   onClick = { println("tile tapped!") },
  * )
  * ```
- * @param label - [String] to be displayed as the Tile's label.
- * @param icon - [LemonadeIcons] displayed in the leading position.
- * @param modifier - [Modifier] to be applied to the Tile.
- * @param enabled - [Boolean] flag to enable or disable the Tile.
- * @param isSelected - [Boolean] flag to apply selected styling to the Tile.
- * @param supportText - Optional [String] to be displayed below the label.
- * @param topAccessory - Optional composable rendered at the top-right of the tile.
- *  Only visible in [LemonadeTileOrientation.Vertical].
- * @param onClick - Callback to be invoked when the Tile is clicked.
- * @param interactionSource - [MutableInteractionSource] to be applied to the Tile.
- * @param variant - [LemonadeTileVariant] to style the Tile accordingly.
- * @param orientation - [LemonadeTileOrientation] to set the layout direction.
- *  Defaults to [LemonadeTileOrientation.Vertical].
+ *
+ * @param label text shown as the tile's label
+ * @param icon [LemonadeIcons] shown in the leading position
+ * @param modifier [Modifier] applied to the tile
+ * @param enabled `false` dims the tile and blocks clicks
+ * @param isSelected `true` applies the selected styling
+ * @param supportText text shown below the label
+ * @param topAccessory composable shown at the top-right, only in
+ *  [LemonadeTileOrientation.Vertical]
+ * @param onClick callback run when the tile is clicked; `null` leaves the tile non-clickable
+ * @param interactionSource [MutableInteractionSource] applied to the tile
+ * @param variant [LemonadeTileVariant] driving the tile's fill and border
+ * @param orientation [LemonadeTileOrientation] driving the layout direction
  */
 @Suppress("LongParameterList")
 @Composable
@@ -190,7 +191,8 @@ public fun LemonadeUi.Tile(
 }
 
 /**
- * Lemonade tile component with a custom leading slot instead of an icon.
+ * Shows a custom leading slot and a label in a selectable card.
+ *
  * ## Usage
  * ```kotlin
  * LemonadeUi.Tile(
@@ -200,19 +202,19 @@ public fun LemonadeUi.Tile(
  *   },
  * )
  * ```
- * @param label - [String] to be displayed as the Tile's label.
- * @param leadingSlot - Custom composable content displayed in the leading position.
- * @param modifier - [Modifier] to be applied to the Tile.
- * @param enabled - [Boolean] flag to enable or disable the Tile.
- * @param isSelected - [Boolean] flag to apply selected styling to the Tile.
- * @param supportText - Optional [String] to be displayed below the label.
- * @param topAccessory - Optional composable rendered at the top-right of the Tile.
- *  Only visible in [LemonadeTileOrientation.Vertical].
- * @param onClick - Callback to be invoked when the Tile is clicked.
- * @param interactionSource - [MutableInteractionSource] to be applied to the Tile.
- * @param variant - [LemonadeTileVariant] to style the Tile accordingly.
- * @param orientation - [LemonadeTileOrientation] to set the layout direction.
- *  Defaults to [LemonadeTileOrientation.Vertical].
+ *
+ * @param label text shown as the tile's label
+ * @param leadingSlot composable shown in the leading position
+ * @param modifier [Modifier] applied to the tile
+ * @param enabled `false` dims the tile and blocks clicks
+ * @param isSelected `true` applies the selected styling
+ * @param supportText text shown below the label
+ * @param topAccessory composable shown at the top-right, only in
+ *  [LemonadeTileOrientation.Vertical]
+ * @param onClick callback run when the tile is clicked; `null` leaves the tile non-clickable
+ * @param interactionSource [MutableInteractionSource] applied to the tile
+ * @param variant [LemonadeTileVariant] driving the tile's fill and border
+ * @param orientation [LemonadeTileOrientation] driving the layout direction
  */
 @Suppress("LongParameterList")
 @Composable
@@ -343,8 +345,10 @@ private fun HorizontalTileContent(
         horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .defaultMinSize(minWidth = 120.dp, minHeight = LocalSizes.current.size1600)
-            .fillMaxWidth()
+            .defaultMinSize(
+                minWidth = 120.dp,
+                minHeight = LocalSizes.current.size1600,
+            ).fillMaxWidth()
             .padding(all = LocalSpaces.current.spacing300),
     ) {
         leadingSlot()
@@ -487,28 +491,30 @@ private class TilePreviewProvider : PreviewParameterProvider<TilePreviewData> {
 
     private fun buildAllVariants(): Sequence<TilePreviewData> =
         buildList {
-            listOf(true, false).forEach { enabled ->
-                listOf(
-                    LemonadeTileVariant.Filled,
-                    LemonadeTileVariant.Outlined,
-                ).forEach { variant ->
-                    listOf(true, false).forEach { selected ->
-                        listOf(
-                            LemonadeTileOrientation.Vertical,
-                            LemonadeTileOrientation.Horizontal,
-                        ).forEach { orientation ->
-                            add(
-                                TilePreviewData(
-                                    enabled = enabled,
-                                    variant = variant,
-                                    isSelected = selected,
-                                    orientation = orientation,
-                                ),
-                            )
-                        }
+            listOf(true, false)
+                .forEach { enabled ->
+                    listOf(
+                        LemonadeTileVariant.Filled,
+                        LemonadeTileVariant.Outlined,
+                    ).forEach { variant ->
+                        listOf(true, false)
+                            .forEach { selected ->
+                                listOf(
+                                    LemonadeTileOrientation.Vertical,
+                                    LemonadeTileOrientation.Horizontal,
+                                ).forEach { orientation ->
+                                    add(
+                                        TilePreviewData(
+                                            enabled = enabled,
+                                            variant = variant,
+                                            isSelected = selected,
+                                            orientation = orientation,
+                                        ),
+                                    )
+                                }
+                            }
                     }
                 }
-            }
         }.asSequence()
 }
 

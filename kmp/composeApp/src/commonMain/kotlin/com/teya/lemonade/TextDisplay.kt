@@ -36,7 +36,7 @@ internal fun TextDisplay() {
             }
         }
 
-        // Text Colors — not part of the typography enum, kept manual
+        // These colours are not in the typography enum, so the section is written out by hand.
         item(key = "Colors") {
             TextSection(title = "Colors") {
                 TextSectionColumn {
@@ -74,7 +74,7 @@ internal fun TextDisplay() {
             }
         }
 
-        // Line Spacing — additional space between lines on top of the natural line height
+        // lineSpacing adds space between lines on top of the natural line height.
         item(key = "Line Spacing") {
             TextSection(title = "Line Spacing") {
                 TextSectionColumn {
@@ -109,7 +109,7 @@ internal fun TextDisplay() {
             }
         }
 
-        // Overflow — behavioural examples, kept manual
+        // Overflow is a behaviour rather than a style, so the section is written out by hand.
         item(key = "Overflow") {
             TextSection(title = "Overflow") {
                 TextSectionColumn {
@@ -158,9 +158,9 @@ private fun TextSectionColumn(content: @Composable () -> Unit) {
     }
 }
 
-// Splits the enum name into words by inserting spaces before uppercase letters/digits
-// that follow a lowercase letter (e.g. "BodyXLargeRegular" → ["Body", "XLarge", "Regular"]).
-private val typographyLabelRegex = Regex("([a-z])([A-Z0-9])")
+// Matches the boundary between a lowercase letter and the uppercase letter or digit that
+// starts the next word: "BodyXLargeRegular" becomes "Body XLarge Regular".
+private val camelCaseBoundaryRegex = Regex("([a-z])([A-Z0-9])")
 
 private data class TypographyLabelInfo(
     val displayLabel: String,
@@ -170,7 +170,11 @@ private data class TypographyLabelInfo(
 
 private val typographyLabels: Map<LemonadeTypography, TypographyLabelInfo> =
     LemonadeTypography.entries.associateWith { typography ->
-        val parts = typography.name.replace(typographyLabelRegex, "$1 $2").split(" ")
+        val parts = typography.name
+            .replace(
+                regex = camelCaseBoundaryRegex,
+                replacement = "$1 $2",
+            ).split(" ")
         TypographyLabelInfo(
             displayLabel = parts.joinToString(" "),
             category = parts.first(),
@@ -182,8 +186,7 @@ private fun LemonadeTypography.toDisplayLabel(): String = typographyLabels.getVa
 
 private fun LemonadeTypography.category(): String = typographyLabels.getValue(this).category
 
-// Returns non-null only for styles with weight variants (e.g. Body),
-// so callers can insert dividers between size groups.
+/** Returns the weight-variant group, or null for styles that have none. */
 private fun LemonadeTypography.subCategory(): String? = typographyLabels.getValue(this).subCategory
 
 @Composable

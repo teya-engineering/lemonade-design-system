@@ -39,9 +39,8 @@ struct ColorsDisplayView: View {
     }
 
     /// Picks black or white for the swatch label, whichever has the higher WCAG contrast
-    /// against the swatch. `.primary` cannot be used here: it flips with the colour
-    /// scheme, not with the swatch, so it disappears on every token whose lightness runs
-    /// against the current scheme (`bgBrand`, `bgCritical`, `contentPrimary`, …).
+    /// against the swatch. `.primary` flips with the colour scheme rather than with the
+    /// swatch, so it disappears on any token whose lightness runs against the scheme.
     private func textColor(for backgroundColor: Color) -> Color {
         let traits = UITraitCollection(userInterfaceStyle: colorScheme == .dark ? .dark : .light)
         let swatch = UIColor(backgroundColor).resolvedColor(with: traits)
@@ -55,8 +54,8 @@ struct ColorsDisplayView: View {
             return .primary
         }
 
-        // Translucent tokens are drawn over the page background, so composite before
-        // measuring — otherwise their own luminance is not the one the eye sees.
+        // Translucent tokens are drawn over the page background, so the luminance that
+        // matters is the composite, not the token's own.
         let composited = (
             red: red * alpha + pageRed * (1 - alpha),
             green: green * alpha + pageGreen * (1 - alpha),

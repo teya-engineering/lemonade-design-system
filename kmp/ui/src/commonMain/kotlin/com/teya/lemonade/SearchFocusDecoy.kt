@@ -9,10 +9,11 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 
 /**
- * Invisible focus target for dismissing text fields on Android 8.1 and below, where the framework
- * undoes `clearFocus` within the same frame and focuses the first field when a window opens.
- * Dismissal moves focus here instead of clearing it, and [claimFocusOnEntry] absorbs the
- * window-open grant.
+ * Invisible focus target for dismissing text fields on Android 8.1 and below.
+ *
+ * There the framework undoes [androidx.compose.ui.focus.FocusManager.clearFocus] within the same
+ * frame and focuses the first field when a window opens. Dismissal moves focus here instead of
+ * clearing it, and [claimFocusOnEntry] absorbs the window-open grant.
  */
 @Composable
 internal fun SearchFocusDecoy(

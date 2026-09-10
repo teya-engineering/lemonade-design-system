@@ -27,21 +27,66 @@ private data class SpacingItem(
 )
 
 private val spacingItems = listOf(
-    SpacingItem("spacing0", LemonadeSpaces.Spacing0.dp),
-    SpacingItem("spacing50", LemonadeSpaces.Spacing50.dp),
-    SpacingItem("spacing100", LemonadeSpaces.Spacing100.dp),
-    SpacingItem("spacing200", LemonadeSpaces.Spacing200.dp),
-    SpacingItem("spacing300", LemonadeSpaces.Spacing300.dp),
-    SpacingItem("spacing400", LemonadeSpaces.Spacing400.dp),
-    SpacingItem("spacing500", LemonadeSpaces.Spacing500.dp),
-    SpacingItem("spacing600", LemonadeSpaces.Spacing600.dp),
-    SpacingItem("spacing800", LemonadeSpaces.Spacing800.dp),
-    SpacingItem("spacing1000", LemonadeSpaces.Spacing1000.dp),
-    SpacingItem("spacing1200", LemonadeSpaces.Spacing1200.dp),
-    SpacingItem("spacing1400", LemonadeSpaces.Spacing1400.dp),
-    SpacingItem("spacing1600", LemonadeSpaces.Spacing1600.dp),
-    SpacingItem("spacing1800", LemonadeSpaces.Spacing1800.dp),
-    SpacingItem("spacing2000", LemonadeSpaces.Spacing2000.dp),
+    SpacingItem(
+        name = "spacing0",
+        value = LemonadeSpaces.Spacing0.dp,
+    ),
+    SpacingItem(
+        name = "spacing50",
+        value = LemonadeSpaces.Spacing50.dp,
+    ),
+    SpacingItem(
+        name = "spacing100",
+        value = LemonadeSpaces.Spacing100.dp,
+    ),
+    SpacingItem(
+        name = "spacing200",
+        value = LemonadeSpaces.Spacing200.dp,
+    ),
+    SpacingItem(
+        name = "spacing300",
+        value = LemonadeSpaces.Spacing300.dp,
+    ),
+    SpacingItem(
+        name = "spacing400",
+        value = LemonadeSpaces.Spacing400.dp,
+    ),
+    SpacingItem(
+        name = "spacing500",
+        value = LemonadeSpaces.Spacing500.dp,
+    ),
+    SpacingItem(
+        name = "spacing600",
+        value = LemonadeSpaces.Spacing600.dp,
+    ),
+    SpacingItem(
+        name = "spacing800",
+        value = LemonadeSpaces.Spacing800.dp,
+    ),
+    SpacingItem(
+        name = "spacing1000",
+        value = LemonadeSpaces.Spacing1000.dp,
+    ),
+    SpacingItem(
+        name = "spacing1200",
+        value = LemonadeSpaces.Spacing1200.dp,
+    ),
+    SpacingItem(
+        name = "spacing1400",
+        value = LemonadeSpaces.Spacing1400.dp,
+    ),
+    SpacingItem(
+        name = "spacing1600",
+        value = LemonadeSpaces.Spacing1600.dp,
+    ),
+    SpacingItem(
+        name = "spacing1800",
+        value = LemonadeSpaces.Spacing1800.dp,
+    ),
+    SpacingItem(
+        name = "spacing2000",
+        value = LemonadeSpaces.Spacing2000.dp,
+    ),
 )
 
 @Composable
@@ -62,7 +107,7 @@ internal fun SpacingDisplay() {
             )
         }
 
-        items(spacingItems) { item ->
+        items(items = spacingItems) { item ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),

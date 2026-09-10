@@ -9,7 +9,7 @@ A shared **Kotlin Multiplatform** library for UI components, styling, and themin
 - [Overview](#overview)
 - [Supported Platforms](#supported-platforms)
 - [Getting Started](#getting-started)
-  - [Step 1: Add to libs.toml](#step-1-add-to-libstoml)
+  - [Step 1: Add to libs.versions.toml](#step-1-add-to-libsversionstoml)
   - [Step 2: Apply in build.gradle.kts](#step-2-apply-in-buildgradlekts)
 - [Configuring the Theme](#configuring-the-theme)
 - [Using Components](#using-components)
@@ -17,6 +17,7 @@ A shared **Kotlin Multiplatform** library for UI components, styling, and themin
 - [Design Tokens](#design-tokens)
 - [Assets](#assets)
 - [Contributing](#contributing)
+  - [Pull request flow](#pull-request-flow)
   - [Documentation Standards](#documentation-standards)
 
 ---
@@ -45,24 +46,29 @@ By the end of this guide, you will have:
 
 ## Getting Started
 
-You'll need to add the library to your project's build files. We recommend using the version catalog (`libs.toml`).
+You'll need to add the library to your project's build files. We recommend using the version catalog (`libs.versions.toml`).
 
-### Step 1: Add to `libs.toml`
+### Step 1: Add to `libs.versions.toml`
 
-Add the library to your `gradle/libs.toml` file. You can find the latest version by checking for tags with `lemonade-kmp-v*`.
+Add the library to your `gradle/libs.versions.toml` file. You can find the latest version by checking for tags matching `lemonade-kmp-*` — the version is the part after the prefix, for example `lemonade-kmp-0.9.0` publishes `0.9.0`.
 
 ```toml
 [versions]
 lemonade = "latest-version"
 
 [libraries]
-# Main UI library
+# Main UI library — exposes lemonade-core and lemonade-tokens transitively
 lemonade-ui = { module = "com.teya.foundation:lemonade-ui", version.ref = "lemonade" }
 
-# Core definitions (included in lemonade-ui)
-# Contains core component definitions for server-driven UI support
-lemonade-core = { module = "com.teya.foundation:lemonade-core", version.ref = "lemonade" }
+# Overlays and expressive surfaces: BottomSheet, Dialog, Dropdown, BottomTabBar, TimePicker
+lemonade-expressive = { module = "com.teya.foundation:lemonade-expressive", version.ref = "lemonade" }
+
+# Date pickers and the inline calendar
+lemonade-calendar = { module = "com.teya.foundation:lemonade-calendar", version.ref = "lemonade" }
 ```
+
+`lemonade-expressive` and `lemonade-calendar` both depend on `lemonade-ui`, so
+adding either one is enough on its own.
 
 ### Step 2: Apply in `build.gradle.kts`
 
@@ -93,12 +99,12 @@ To make all the colors, typography, shapes, and other design tokens available to
 This is typically done once at the root of your application, usually in your `commonMain` entry point (e.g., `App.kt`):
 
 ```kotlin
-import com.teya.lemonade
+import com.teya.lemonade.LemonadeTheme
 
 @Composable
 fun App() {
     LemonadeTheme(
-        // All options are overrideable to adapt to your app's needs
+        // Every parameter is defaulted and overrideable to adapt to your app's needs
         colors = LemonadeTheme.colors,
         typography = LemonadeTheme.typography,
         radius = LemonadeTheme.radius,
@@ -106,12 +112,17 @@ fun App() {
         opacities = LemonadeTheme.opacities,
         spaces = LemonadeTheme.spaces,
         borderWidths = LemonadeTheme.borderWidths,
+        sizes = LemonadeTheme.sizes,
+        effects = LemonadeTheme.effects,
     ) {
         // Your application's content goes here
         MyScreenContent()
     }
 }
 ```
+
+`colors` defaults to `LemonadeLightTheme` or `LemonadeDarkTheme` depending on
+`isSystemInDarkTheme()`.
 
 ---
 
@@ -152,11 +163,21 @@ fun MyScreenContent() {
 
 ## Components
 
-| Category | Examples |
-|----------|----------|
-| **Form Controls** | Switch, Input, Checkbox |
-| **Display** | Text, Badge, Avatar |
-| **Selection & Lists** | List, Dropdown |
+Every component is an extension on `LemonadeUi`, so `LemonadeUi.` plus
+auto-complete lists the whole catalogue.
+
+| Artifact | Category | Components |
+|----------|----------|------------|
+| `lemonade-ui` | Actions | Button, IconButton, Link, Chip |
+| `lemonade-ui` | Form Controls | TextField, TextFieldWithSelector, SearchField, SelectField, PinCode, Switch, Checkbox, RadioButton, SegmentedControl, BoxSelection |
+| `lemonade-ui` | Display | Text, Icon, Asset, Badge, Tag, Card, Tile, SymbolContainer, HorizontalDivider, VerticalDivider, BrandLogo, CountryFlag |
+| `lemonade-ui` | Lists & Navigation | ListItem, ContentListItem, ActionListItem, ResourceListItem, SelectListItem, SwipeActionRow, SwipeActionGroup, Tabs, TopBar (Android/iOS only), HistoryTimeline |
+| `lemonade-ui` | Feedback | Toast, Tooltip, Notice, Spinner, LineSkeleton, BlockSkeleton, CircleSkeleton |
+| `lemonade-expressive` | Overlays & Navigation | BottomSheet, Dialog, Dropdown, DropdownItem, BottomTabBar, TimePicker, TimeInput, TimePickerDialog |
+| `lemonade-calendar` | Date | DatePicker, DateRangePicker, InlineCalendar |
+
+`Toast` and `Tooltip` render through `LemonadeToastHost` and
+`LemonadeTooltipHost`; place those once near the root of your composition.
 
 ---
 
@@ -171,24 +192,58 @@ fun MyScreenContent() {
 | **Shapes** | Pre-defined shape configurations |
 | **Opacities** | Opacity level tokens |
 | **Border Widths** | Border width tokens |
+| **Sizes** | Component sizing tokens |
+| **Effects** | Shadow and elevation effects |
 
 ---
 
 ## Assets
 
-| Asset Type | Description |
-|------------|-------------|
-| **BrandLogo** | Brand logo assets |
-| **CountryFlag** | Country flag icons |
-| **SVG Icons** | Comprehensive icon library |
+Assets are enums in `lemonade-core`, rendered through `LemonadeUi.Asset`,
+`LemonadeUi.Icon`, `LemonadeUi.BrandLogo` and `LemonadeUi.CountryFlag`.
+
+| Asset Type | Enum |
+|------------|------|
+| **Icons** | `LemonadeIcons` |
+| **CountryFlag** | `LemonadeCountryFlags` |
+| **BrandLogo** | `LemonadeBrandLogos` |
 
 ---
 
 ## Contributing
 
+### Pull request flow
+
+1. Branch off `main`. Never commit straight to it.
+2. Make the change. `composeApp` is the sample app — a new component gets a
+   `<Name>Display.kt` showcase there, registered in
+   `composeApp/src/commonMain/kotlin/com/teya/lemonade/app/App.kt`.
+3. If the change touches public API in `core`, `tokens`, `ui`, `expressive` or
+   `calendar`, run `./gradlew apiDump` from `kmp/` and commit the regenerated
+   `api/*.api` and `*.klib.api` files.
+4. Run the API stability classifier before opening the PR, so you know the verdict
+   ahead of CI:
+
+   ```bash
+   .claude/skills/binary-compatibility/scripts/bcv-check.sh --ci
+   ```
+
+5. Fill in the **API Dump** section of the PR description. It is mandatory whenever
+   the baseline files change: state the verdict (`NO_CHANGES`, `ADDITIONS_ONLY` or
+   `BREAKING`), which entries are not a concern and why, and — for a `BREAKING`
+   verdict — who needs to approve it and why it is acceptable. If the baseline
+   didn't change, write "No public API changes".
+6. A `BREAKING` verdict blocks merge until a named maintainer approves the exact
+   head commit.
+
+Never move, rename or delete a public declaration just to make `apiCheck` pass.
+The root `CLAUDE.md` and the `binary-compatibility` skill carry the full decision
+table.
+
 ### Documentation Standards
 
-All public APIs must be thoroughly documented. Clear documentation helps other developers understand and use the components correctly.
+Every public API carries KDoc. The `## Usage` block on a published component is
+the canonical documentation downstream repos read, so keep it current.
 
 #### Don't
 
@@ -210,31 +265,27 @@ public fun LemonadeUi.Switch(
 
 #### Do
 
-Write clear, comprehensive KDoc for all public APIs:
+Open with one line saying what the component shows, follow with a `## Usage`
+block, and document every parameter:
 
-```kotlin
+````kotlin
 /**
- * This composable provides the fundamental visual and interactive elements of a toggle switch,
- * including the track and thumb. It handles animations for state changes like checked, enabled,
- * hover, and press. It is designed to be the internal building block for a higher-level,
- * public-facing switch component.
+ * Shows a toggle switch with an animated track and thumb.
  *
  * ## Usage
  * ```kotlin
  * LemonadeUi.Switch(
- *     checked = true,
- *     onCheckedChange = { isChecked -> /* ... */ },
+ *  checked = false,
+ *  onCheckedChange = { setTo -> ... },
  * )
  * ```
  *
- * ## Parameters
- * @param checked `true` if the switch is in the "on" state, `false` otherwise.
- * @param onCheckedChange A callback invoked when the user interacts with the switch to change its state.
- * @param enabled Optional - controls the enabled state of the switch. When `false`, interaction is
- *   disabled and it is visually styled as such. Defaults to true.
- * @param interactionSource Optional [MutableInteractionSource] used to observe interaction states
- *   like hover and press to drive visual feedback.
- * @param modifier Optional [Modifier] to be applied to the root container of the switch.
+ * @param checked `true` when the switch is on
+ * @param onCheckedChange callback run with the new state when the user toggles the switch
+ * @param enabled when `false` the switch ignores input and renders as disabled
+ * @param interactionSource [MutableInteractionSource] observed for the hover and press states
+ *  that drive the visual feedback
+ * @param modifier [Modifier] applied to the root container of the switch
  */
 @Composable
 public fun LemonadeUi.Switch(
@@ -246,4 +297,7 @@ public fun LemonadeUi.Switch(
 ) {
     // ...
 }
-```
+````
+
+This is the shipped KDoc for `Switch` —
+`kmp/ui/src/commonMain/kotlin/com/teya/lemonade/Switch.kt`.

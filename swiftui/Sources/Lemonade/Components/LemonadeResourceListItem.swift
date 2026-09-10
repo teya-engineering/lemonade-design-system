@@ -47,11 +47,8 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
-            // No support text ⇒ treat the row as single-line and center the value (and the
-            // auto-centered leading slot) against the text. SwiftUI drives the content's vertical
-            // position from this alignment, so it must be `.center` for the single-line fix — this
-            // assumes a short, non-wrapping label. With support text, pin to `.top` to align the
-            // value with the label's first line.
+            // The content's vertical position follows this alignment, so a row with no support
+            // text only centres correctly while its label is short enough not to wrap.
             trailingAlignment: supportText == nil ? .center : .top,
             onListItemClick: onItemClicked,
             leadingSlot: {

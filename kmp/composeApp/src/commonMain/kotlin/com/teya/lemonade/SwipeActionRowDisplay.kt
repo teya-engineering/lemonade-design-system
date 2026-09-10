@@ -24,7 +24,10 @@ private fun RemovalConfirmation(
     onDelete: () -> Unit,
     onCancel: () -> Unit,
 ) {
-    LemonadeUi.Dialog(expanded = true, onDismissRequest = onCancel) {
+    LemonadeUi.Dialog(
+        expanded = true,
+        onDismissRequest = onCancel,
+    ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             modifier = Modifier
@@ -58,18 +61,36 @@ private fun RemovalConfirmation(
     }
 }
 
-private data class SampleAccount(val id: String, val name: String, val email: String, val initials: String)
+private data class SampleAccount(
+    val id: String,
+    val name: String,
+    val email: String,
+    val initials: String,
+)
 
 private val sampleAccounts = listOf(
-    SampleAccount("1", "Kathryn Murphy", "kathryn.murphy@mail.com", "KM"),
-    SampleAccount("2", "Marvin McKinney", "marvin.mckinney@mail.com", "MM"),
-    SampleAccount("3", "Jenny Wilson", "jenny.wilson@mail.com", "JW"),
+    SampleAccount(
+        id = "1",
+        name = "Kathryn Murphy",
+        email = "kathryn.murphy@mail.com",
+        initials = "KM",
+    ),
+    SampleAccount(
+        id = "2",
+        name = "Marvin McKinney",
+        email = "marvin.mckinney@mail.com",
+        initials = "MM",
+    ),
+    SampleAccount(
+        id = "3",
+        name = "Jenny Wilson",
+        email = "jenny.wilson@mail.com",
+        initials = "JW",
+    ),
 )
 
 @Composable
 internal fun SwipeActionRowDisplay() {
-    // Everything on the screen is one group: opening a row closes the last one, and a tap anywhere
-    // closes whichever is open.
     LemonadeUi.SwipeActionGroup {
         SwipeActionRowDisplayContent()
     }
@@ -81,9 +102,8 @@ private fun SwipeActionRowDisplayContent() {
         item(key = "single-open") {
             var openId by remember { mutableStateOf<Any?>(null) }
             var removed by remember { mutableStateOf(emptySet<String>()) }
-            // The swipe asks; it does not decide. A destructive action fired by a gesture is the
-            // one most easily fired by accident, so the row hands it on rather than carrying it
-            // out.
+            // A destructive action fired by a gesture is the one most easily fired by accident,
+            // so the row raises a confirmation instead of deleting.
             var pendingRemoval by remember { mutableStateOf<SampleAccount?>(null) }
             pendingRemoval?.let { account ->
                 RemovalConfirmation(
@@ -106,19 +126,17 @@ private fun SwipeActionRowDisplayContent() {
                     subtitle = "Drag a row left. Dragging across it fires the first action.",
                 ),
             ) {
-                val visible = sampleAccounts.filterNot { it.id in removed }
+                val visible = sampleAccounts.filterNot { account -> account.id in removed }
                 visible.forEachIndexed { index, account ->
                     LemonadeUi.SwipeActionRow(
                         id = account.id,
                         openId = openId,
-                        onOpenIdChange = { openId = it },
+                        onOpenIdChange = { id -> openId = id },
                         trailingActions = listOf(
                             SwipeAction(
                                 icon = LemonadeIcons.Trash,
                                 contentDescription = "Remove ${account.name}",
                                 onClick = { pendingRemoval = account },
-                                // The row is what the confirmation is about, so it stays open
-                                // behind it.
                                 keepsRowOpen = true,
                             ),
                         ),
@@ -128,7 +146,6 @@ private fun SwipeActionRowDisplayContent() {
                             label = account.name,
                             supportText = account.email,
                             showNavigationIndicator = true,
-                            // The container draws the divider: an item's own would travel with it.
                             showDivider = false,
                             onItemClicked = { },
                             leadingSlot = {
@@ -146,9 +163,8 @@ private fun SwipeActionRowDisplayContent() {
         }
 
         item(key = "starts-open") {
-            // The caller decides which row is open, including before anyone has touched one. The
-            // row has to be drawn open from the first frame and stay that way — it has no measured
-            // position yet, and mistaking that for having been scrolled away closes it again.
+            // This row is open before it has ever been measured, so an unmeasured position must
+            // not be mistaken for the row having been scrolled away.
             var openId by remember { mutableStateOf<Any?>("unread") }
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -160,7 +176,7 @@ private fun SwipeActionRowDisplayContent() {
                 LemonadeUi.SwipeActionRow(
                     id = "unread",
                     openId = openId,
-                    onOpenIdChange = { openId = it },
+                    onOpenIdChange = { id -> openId = id },
                     trailingActions = listOf(
                         SwipeAction(
                             icon = LemonadeIcons.Envelope,
@@ -425,7 +441,10 @@ private fun SwipeActionRowDisplayContent() {
                     ),
                     allowsFullSwipe = false,
                 ) {
-                    LemonadeUi.ContentListItem(label = "Balance", value = "£1,204.00")
+                    LemonadeUi.ContentListItem(
+                        label = "Balance",
+                        value = "£1,204.00",
+                    )
                 }
             }
         }

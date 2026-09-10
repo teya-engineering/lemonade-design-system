@@ -6,7 +6,6 @@ import UIKit
 // MARK: - Environment
 
 private struct LemonadeAutocorrectionTypeKey: EnvironmentKey {
-    // Matches UITextField's own default so an un-modified field behaves identically.
     static let defaultValue: UITextAutocorrectionType = .default
 }
 

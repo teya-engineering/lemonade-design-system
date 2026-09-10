@@ -35,18 +35,19 @@ private const val NATURAL_LINE_HEIGHT_RATIO: Float = 1.20f
 /**
  * Displays styled text using the Lemonade Design System typography tokens.
  *
- * @param text The text to display.
- * @param fontSize Optional font size override. When [TextUnit.Unspecified], the size from [textStyle] is used.
- * @param modifier Modifier to apply to the text layout.
- * @param textStyle The Lemonade typography token to apply. Defaults to the current local text style.
- * @param textAlign The alignment of the text within its container.
- * @param color The text color. When [Color.Unspecified], the color from [textStyle] is used.
- * @param overflow How text overflow is handled.
- * @param maxLines Maximum number of lines to display.
- * @param minLines Minimum number of lines to display.
- * @param autoSize Optional auto-sizing configuration for the text.
- * @param onTextLayout Callback invoked when text layout is computed.
- * @param lineSpacing Optional additional space between lines, on top of the font's natural line height.
+ * @param text text to show
+ * @param fontSize font size override; when [TextUnit.Unspecified] the size from [textStyle] is used
+ * @param modifier [Modifier] applied to the text layout
+ * @param textStyle Lemonade typography token to apply
+ * @param textAlign alignment of the text within its container
+ * @param color text color; when [Color.Unspecified] the color from [textStyle] is used
+ * @param overflow how text overflow is handled
+ * @param maxLines maximum number of lines to show
+ * @param minLines minimum number of lines to show
+ * @param autoSize auto-sizing configuration for the text
+ * @param onTextLayout callback run with the [TextLayoutResult] once the text layout is computed
+ * @param lineSpacing extra space added on top of the font's natural line height; it and the
+ *   resolved font size must both be in sp
  */
 @Composable
 public fun LemonadeUi.Text(
@@ -133,18 +134,19 @@ public fun LemonadeUi.Text(
  * Use this overload to render text with inline styling such as the output of
  * [String.toLemonadeMarkdown].
  *
- * @param text The [AnnotatedString] to display.
- * @param fontSize Optional font size override. When [TextUnit.Unspecified], the size from [textStyle] is used.
- * @param modifier Modifier to apply to the text layout.
- * @param textStyle The Lemonade typography token to apply. Defaults to the current local text style.
- * @param textAlign The alignment of the text within its container.
- * @param color The text color. When [Color.Unspecified], the color from [textStyle] is used.
- * @param overflow How text overflow is handled.
- * @param maxLines Maximum number of lines to display.
- * @param minLines Minimum number of lines to display.
- * @param autoSize Optional auto-sizing configuration for the text.
- * @param onTextLayout Callback invoked when text layout is computed.
- * @param lineSpacing Optional additional space between lines, on top of the font's natural line height.
+ * @param text [AnnotatedString] to show
+ * @param fontSize font size override; when [TextUnit.Unspecified] the size from [textStyle] is used
+ * @param modifier [Modifier] applied to the text layout
+ * @param textStyle Lemonade typography token to apply
+ * @param textAlign alignment of the text within its container
+ * @param color text color; when [Color.Unspecified] the color from [textStyle] is used
+ * @param overflow how text overflow is handled
+ * @param maxLines maximum number of lines to show
+ * @param minLines minimum number of lines to show
+ * @param autoSize auto-sizing configuration for the text
+ * @param onTextLayout callback run with the [TextLayoutResult] once the text layout is computed
+ * @param lineSpacing extra space added on top of the font's natural line height; it and the
+ *   resolved font size must both be in sp
  */
 @Composable
 public fun LemonadeUi.Text(
@@ -223,14 +225,14 @@ public fun LemonadeUi.Text(
  * Use this overload when you need full control over the text style rather than
  * using Lemonade typography tokens.
  *
- * @param text The text to display.
- * @param modifier Modifier to apply to the text layout.
- * @param textStyle The Compose [TextStyle] to apply.
- * @param overflow How text overflow is handled.
- * @param maxLines Maximum number of lines to display.
- * @param minLines Minimum number of lines to display.
- * @param autoSize Optional auto-sizing configuration for the text.
- * @param onTextLayout Callback invoked when text layout is computed.
+ * @param text text to show
+ * @param modifier [Modifier] applied to the text layout
+ * @param textStyle Compose [TextStyle] to apply
+ * @param overflow how text overflow is handled
+ * @param maxLines maximum number of lines to show
+ * @param minLines minimum number of lines to show
+ * @param autoSize auto-sizing configuration for the text
+ * @param onTextLayout callback run with the [TextLayoutResult] once the text layout is computed
  */
 @Composable
 public fun LemonadeUi.Text(
@@ -261,14 +263,14 @@ public fun LemonadeUi.Text(
  * Use this overload when you need full control over the text style and want to
  * render an [AnnotatedString] with inline styling.
  *
- * @param text The [AnnotatedString] to display.
- * @param modifier Modifier to apply to the text layout.
- * @param textStyle The Compose [TextStyle] to apply.
- * @param overflow How text overflow is handled.
- * @param maxLines Maximum number of lines to display.
- * @param minLines Minimum number of lines to display.
- * @param autoSize Optional auto-sizing configuration for the text.
- * @param onTextLayout Callback invoked when text layout is computed.
+ * @param text [AnnotatedString] to show
+ * @param modifier [Modifier] applied to the text layout
+ * @param textStyle Compose [TextStyle] to apply
+ * @param overflow how text overflow is handled
+ * @param maxLines maximum number of lines to show
+ * @param minLines minimum number of lines to show
+ * @param autoSize auto-sizing configuration for the text
+ * @param onTextLayout callback run with the [TextLayoutResult] once the text layout is computed
  */
 @Composable
 public fun LemonadeUi.Text(
@@ -332,7 +334,7 @@ private fun LemonadeTextStyle.resolveStyle(
 }
 
 /**
- * Defines the supported inline style markers for Lemonade text formatting.
+ * Inline style markers for Lemonade text formatting.
  *
  * Style markers use symmetric delimiters:
  * - `**text**` for [SemiBold]
@@ -348,7 +350,7 @@ private fun LemonadeTextStyle.resolveStyle(
  * Use [String.toLemonadeMarkdown] to parse a string containing these markers
  * into an [AnnotatedString] with the corresponding styles applied.
  *
- * @param key The delimiter used to open and close a formatted span.
+ * @param key delimiter that opens and closes a formatted span
  */
 public sealed class LemonadeMarkdown(
     public val key: String,

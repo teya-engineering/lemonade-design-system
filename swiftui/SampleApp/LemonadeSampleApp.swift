@@ -6,23 +6,29 @@ struct LemonadeSampleApp: App {
     @StateObject private var styleHandler = LemonadeStyleHandler()
 
     init() {
-        // Register Lemonade fonts at app startup.
         // `registerFonts()` deliberately swallows failures, so never force-unwrap
-        // the result of `UIFont(name:size:)` here - a resource-bundling regression
-        // would turn a cosmetic problem into a launch crash.
+        // `UIFont(name:size:)` afterwards - a resource-bundling regression would turn a
+        // cosmetic problem into a launch crash.
         LemonadeFonts.registerFonts()
 
-        // Customize the font for large titles
+        Self.applyLargeTitleFont()
+        Self.applyInlineTitleFont()
+        Self.applySearchBarFont()
+    }
+
+    private static func applyLargeTitleFont() {
         UINavigationBar.appearance().largeTitleTextAttributes = [
-            .font: Self.figtreeSemibold(size: LemonadeTypography.shared.headingLarge.fontSize)
+            .font: figtreeSemibold(size: LemonadeTypography.shared.headingLarge.fontSize)
         ]
+    }
 
-        // Customize the font for inline titles
+    private static func applyInlineTitleFont() {
         UINavigationBar.appearance().titleTextAttributes = [
-            .font: Self.figtreeSemibold(size: LemonadeTypography.shared.headingXXSmall.fontSize)
+            .font: figtreeSemibold(size: LemonadeTypography.shared.headingXXSmall.fontSize)
         ]
+    }
 
-        // Customize the font for the search bar
+    private static func applySearchBarFont() {
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).font = UIFont(
             name: "Figtree",
             size: LemonadeTypography.shared.bodyMediumMedium.fontSize
@@ -37,7 +43,7 @@ struct LemonadeSampleApp: App {
         }
         return .systemFont(ofSize: size, weight: .semibold)
     }
-    
+
     var body: some Scene {
         WindowGroup {
             ContentView()

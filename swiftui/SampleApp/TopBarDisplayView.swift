@@ -327,7 +327,6 @@ private struct SearchSubheadingDemo: View {
 
 // MARK: - 3. Compact Large Demos
 
-/// Helper: groups buttons in a pill (capsule) with glass effect.
 private struct GlassPill<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
@@ -357,11 +356,8 @@ private struct GlassCapsuleModifier: ViewModifier {
     }
 }
 
-/// The compact-large top bar is built for top-level screens: it hides the native back
-/// button and fills the leading slot with its own title. Pushed onto a NavigationStack —
-/// which is how the sample reaches these demos — that leaves no way back, so every
-/// compact-large demo adds an explicit close button. It goes in the trailing group
-/// because the leading slot is already occupied by the compact-large title.
+/// Trailing close button for the compact-large demos, which hide the native back button and
+/// fill the leading slot with their own title.
 private struct CompactLargeCloseButton: ToolbarContent {
     let dismiss: DismissAction
 

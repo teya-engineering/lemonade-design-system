@@ -15,13 +15,13 @@ public enum LemonadeBrandLogoSize {
     /// Returns the CGFloat value for this size
     public var value: CGFloat {
         switch self {
-        case .small: return LemonadeTheme.sizes.size400      // 16
-        case .medium: return LemonadeTheme.sizes.size500     // 20
-        case .large: return LemonadeTheme.sizes.size600      // 24
-        case .xLarge: return LemonadeTheme.sizes.size800     // 32
-        case .xxLarge: return LemonadeTheme.sizes.size1000   // 40
-        case .xxxLarge: return LemonadeTheme.sizes.size1200  // 48
-        case .xxxxLarge: return LemonadeTheme.sizes.size1400 // 56
+        case .small: return LemonadeTheme.sizes.size400
+        case .medium: return LemonadeTheme.sizes.size500
+        case .large: return LemonadeTheme.sizes.size600
+        case .xLarge: return LemonadeTheme.sizes.size800
+        case .xxLarge: return LemonadeTheme.sizes.size1000
+        case .xxxLarge: return LemonadeTheme.sizes.size1200
+        case .xxxxLarge: return LemonadeTheme.sizes.size1400
         }
     }
 }

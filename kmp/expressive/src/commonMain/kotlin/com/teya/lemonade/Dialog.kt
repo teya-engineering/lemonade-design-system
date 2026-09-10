@@ -18,38 +18,11 @@ import androidx.compose.ui.window.DialogProperties
 /**
  * A free-content dialog following the Lemonade Design System.
  *
- * This composable provides a flexible dialog that displays custom content inside a styled [Surface]
- * with Lemonade design tokens for shape, color, and elevation. The dialog visibility is controlled
- * by the [expanded] flag, following the same pattern used by [LemonadeUi.Dropdown] and
+ * Shows custom content inside a styled [Surface], using Lemonade design tokens for shape, color,
+ * and elevation. [expanded] controls visibility, the same pattern used by [LemonadeUi.Dropdown] and
  * [LemonadeUi.BottomSheet].
  *
- * @param expanded Whether the dialog is currently visible. When `false`, the dialog is not composed.
- * @param onDismissRequest Callback invoked when the user requests to dismiss the dialog
- *   (e.g., by tapping outside or pressing back, depending on [dismissOnClickOutside]
- *   and [dismissOnBackPress]).
- * @param dismissOnClickOutside Whether tapping outside the dialog dismisses it. Defaults to `true`.
- * @param dismissOnBackPress Whether pressing the back button dismisses the dialog. Defaults to `true`.
- * @param sizeToContent Whether the dialog takes the width of its content rather than the
- *   platform's default dialog width. Defaults to `false`, which is the right choice for the
- *   text-and-buttons dialogs that width was sized for, and keeps every dialog a familiar size.
- *   Pass `true` for content that carries a width of its own, such as a side-by-side picker on a
- *   landscape phone or a tablet — the content must have a width of its own rather than filling
- *   whatever it is given.
- *
- *   The content decides only between 280.dp and 560.dp: [BasicAlertDialog] clamps to that range
- *   whatever this is set to. Anything narrower is padded out to 280.dp, and anything wider is
- *   clipped at 560.dp rather than growing, so content approaching that ceiling has little room
- *   left for a larger font scale or a longer translation.
- *
- *   A width that fits at the default display size is not proof it fits at the largest one: the
- *   dialog is narrowed further to keep its margin from the window edge, per the Design Notes.
- *
- *   Sizing to the content means measuring its intrinsic width, which not every layout can answer:
- *   a `LazyColumn`, `LazyRow` or anything else built on `SubcomposeLayout` throws when asked. Keep
- *   this `false` for content that scrolls lazily.
- * @param content A composable lambda that defines the dialog's content.
- *
- * ## Usage Example
+ * ## Usage
  *
  * ```kotlin
  * var showDialog by remember { mutableStateOf(false) }
@@ -72,21 +45,44 @@ import androidx.compose.ui.window.DialogProperties
  *
  * ## Design Notes
  *
- * - The dialog surface uses [LemonadeTheme.radius] `semantic.radiusContainerDefault` for rounded
+ * - The dialog surface uses [LemonadeTheme.radius.semantic.radiusContainerDefault] for rounded
  *   corners.
  * - Background color is [LemonadeTheme.colors.background.bgDefault].
- * - The dialog keeps `spacing600` (24.dp) between itself and each window edge wherever the window
- *   is wide enough to allow it. Below roughly 328.dp of window it is not: [BasicAlertDialog]'s own
- *   280.dp minimum width outranks the margin, and the dialog stays 280.dp wide with whatever is
- *   left over as its margin.
- * - Tonal elevation is set to 0.dp; the dialog relies on Lemonade color tokens for visual hierarchy.
+ * - The dialog keeps [LemonadeTheme.spaces.spacing600] (24.dp) between itself and each window edge
+ *   wherever the window is wide enough to allow it. Below roughly 328.dp of window it is not:
+ *   [BasicAlertDialog]'s own 280.dp minimum width outranks the margin, and the dialog stays 280.dp
+ *   wide with whatever is left over as its margin.
+ * - Tonal elevation is 0.dp; the dialog relies on Lemonade color tokens for visual hierarchy.
  * - The dialog keeps whichever system bars the host window hides, never shows one the host hides.
- * - For overlay components with a unified visibility API, see also [LemonadeUi.Dropdown] and
- *   [LemonadeUi.BottomSheet], which share the same `expanded` flag pattern.
  *
- * @see LemonadeUi.BottomSheet For a bottom sheet overlay with the same visibility pattern.
- * @see LemonadeUi.Dropdown For a dropdown menu overlay with the same visibility pattern.
- * @see BasicAlertDialog The underlying component.
+ * @param expanded whether the dialog is currently visible. When `false` the dialog is not composed
+ * @param onDismissRequest called when the user requests dismissal, by tapping outside or pressing
+ *   back, depending on [dismissOnClickOutside] and [dismissOnBackPress]
+ * @param dismissOnClickOutside whether tapping outside the dialog dismisses it, `true` by default
+ * @param dismissOnBackPress whether pressing the back button dismisses the dialog, `true` by default
+ * @param sizeToContent whether the dialog takes the width of its content rather than the platform's
+ *   default dialog width. `false` by default, which is the right choice for the text-and-buttons
+ *   dialogs that width was sized for, and keeps every dialog a familiar size. Pass `true` for
+ *   content that carries a width of its own, such as a side-by-side picker on a landscape phone or
+ *   a tablet — the content must have a width of its own rather than filling whatever it is given.
+ *
+ *   The content decides only between 280.dp and 560.dp: [BasicAlertDialog] clamps to that range
+ *   whatever this is set to. Anything narrower is padded out to 280.dp, and anything wider is
+ *   clipped at 560.dp rather than growing, so content approaching that ceiling has little room
+ *   left for a larger font scale or a longer translation.
+ *
+ *   A width that fits at the default display size is not proof it fits at the largest one: the
+ *   dialog is narrowed further to keep its margin from the window edge, per the Design Notes.
+ *
+ *   Sizing to the content means measuring its intrinsic width, which not every layout can answer:
+ *   an [androidx.compose.foundation.lazy.LazyColumn], [androidx.compose.foundation.lazy.LazyRow] or
+ *   anything else built on [androidx.compose.ui.layout.SubcomposeLayout] throws when asked. Keep
+ *   this `false` for content that scrolls lazily
+ * @param content dialog body
+ *
+ * @see LemonadeUi.BottomSheet for a bottom sheet overlay with the same visibility pattern
+ * @see LemonadeUi.Dropdown for a dropdown menu overlay with the same visibility pattern
+ * @see BasicAlertDialog the underlying component
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

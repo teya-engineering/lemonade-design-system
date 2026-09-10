@@ -120,6 +120,35 @@ struct TextFieldLabelRow: View {
     }
 }
 
+// MARK: - Selector
+
+/// The tappable prefix element at the leading edge of a text field with selector.
+struct TextFieldSelectorButton<LeadingContent: View>: View {
+    let leadingAction: () -> Void
+    let leadingContent: () -> LeadingContent
+    let enabled: Bool
+
+    var body: some View {
+        SwiftUI.Button(action: leadingAction) {
+            leadingContent()
+                .padding(LemonadeTheme.spaces.spacing400)
+        }
+        .buttonStyle(PlainButtonStyle())
+        .disabled(!enabled)
+        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+    }
+}
+
+/// The vertical rule between a selector and the text input area beside it.
+struct TextFieldSelectorDivider: View {
+    var body: some View {
+        Rectangle()
+            .fill(LemonadeTheme.colors.border.borderNeutralMedium)
+            .frame(width: LemonadeTheme.borderWidth.base.border25)
+            .frame(minHeight: TextFieldConstants.minHeight)
+    }
+}
+
 // MARK: - Support / Error Text
 
 /// Displays the support text or error message below a text/select field.

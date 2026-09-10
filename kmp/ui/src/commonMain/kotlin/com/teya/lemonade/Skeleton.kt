@@ -30,9 +30,6 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeSkeletonSize
 
-/**
- * Internal skeleton shape variant used to differentiate rendering logic.
- */
 private enum class SkeletonVariant {
     Line,
     Circle,
@@ -42,16 +39,12 @@ private enum class SkeletonVariant {
 /**
  * A skeleton loading placeholder displayed as a horizontal line with a shimmer animation.
  *
- * [LineSkeleton] is used to indicate that text content is loading. It displays a
- * horizontal rectangle with an animated fade effect that cycles smoothly, providing
- * a visual cue that data is being fetched or processed.
- *
- * The height of the skeleton is determined by the [size] parameter, while the width
- * can be controlled through the [modifier] parameter.
+ * Marks text content as loading: a horizontal rectangle carries a sweeping highlight that signals
+ * data is being fetched or processed.
  *
  * ## Animation
- * The skeleton animates with a fade in/out effect cycling over 1000ms using an ease-in-out curve.
- * The opacity oscillates between 20% and 60% to create a subtle shimmer effect.
+ * A highlight gradient sweeps across the placeholder, reversing every 1000ms on an ease-in-out
+ * curve.
  *
  * ## Variants
  * For circular placeholders, use [CircleSkeleton].
@@ -74,9 +67,9 @@ private enum class SkeletonVariant {
  * )
  * ```
  *
- * ## Parameters
- * @param modifier Optional [Modifier] for layout adjustments. Width can be customized here.
- * @param size The height of the skeleton line. Defaults to [LemonadeSkeletonSize.Medium].
+ * @param modifier optional [Modifier] for layout adjustments; set the width here
+ * @param size height of the skeleton line, resolved to a dp size token; defaults to
+ *   [LemonadeSkeletonSize.Medium]
  */
 @Composable
 public fun LemonadeUi.LineSkeleton(
@@ -93,16 +86,14 @@ public fun LemonadeUi.LineSkeleton(
 /**
  * A skeleton loading placeholder displayed as a circle with a shimmer animation.
  *
- * [CircleSkeleton] is used to indicate that avatar or circular images are loading.
- * It displays a perfect circle with an animated fade effect that cycles smoothly,
- * providing a visual cue that data is being fetched or processed.
+ * Marks an avatar or circular image as loading: a circle carries a sweeping highlight that signals
+ * data is being fetched or processed.
  *
- * The size of the circular skeleton is determined by the [size] parameter.
- * All dimensions (width and height) are equal to maintain a perfect circle.
+ * Width and height are always equal, so the placeholder stays a perfect circle.
  *
  * ## Animation
- * The skeleton animates with a fade in/out effect cycling over 1000ms using an ease-in-out curve.
- * The opacity oscillates between 20% and 60% to create a subtle shimmer effect.
+ * A highlight gradient sweeps across the placeholder, reversing every 1000ms on an ease-in-out
+ * curve.
  *
  * ## Variants
  * For text line placeholders, use [LineSkeleton].
@@ -121,9 +112,9 @@ public fun LemonadeUi.LineSkeleton(
  * )
  * ```
  *
- * ## Parameters
- * @param modifier Optional [Modifier] for additional positioning or layout adjustments.
- * @param size The diameter of the circular skeleton. Defaults to [LemonadeSkeletonSize.Medium].
+ * @param modifier optional [Modifier] for positioning or layout adjustments
+ * @param size diameter of the circular skeleton, resolved to a dp size token; defaults to
+ *   [LemonadeSkeletonSize.Medium]
  */
 @Composable
 public fun LemonadeUi.CircleSkeleton(
@@ -140,18 +131,15 @@ public fun LemonadeUi.CircleSkeleton(
 /**
  * A skeleton loading placeholder displayed as a large block/card with a shimmer animation.
  *
- * [BlockSkeleton] is used to indicate that card content, image content, or other
- * large block elements are loading. It displays a tall rectangle with an animated
- * fade effect that cycles smoothly, providing a visual cue that data is being
- * fetched or processed.
+ * Marks card content, image content, or other large blocks as loading: a tall rectangle carries a
+ * sweeping highlight that signals data is being fetched or processed.
  *
- * The block skeleton has a fixed height (via the size1600 design token) suitable for
- * card or image placeholders, while the width can be controlled through the [modifier]
- * parameter. It uses a large rounded corner radius appropriate for prominent content areas.
+ * The height is fixed to the size1600 design token and the corner radius is a large one suited to
+ * prominent content areas; set the width through [modifier].
  *
  * ## Animation
- * The skeleton animates with a fade in/out effect cycling over 1000ms using an ease-in-out curve.
- * The opacity oscillates between 20% and 60% to create a subtle shimmer effect.
+ * A highlight gradient sweeps across the placeholder, reversing every 1000ms on an ease-in-out
+ * curve.
  *
  * ## Variants
  * For text line placeholders, use [LineSkeleton].
@@ -174,10 +162,9 @@ public fun LemonadeUi.CircleSkeleton(
  * )
  * ```
  *
- * ## Parameters
- * @param modifier Optional [Modifier] for layout adjustments. Width can be customized here.
- * @param size Currently unused for BlockSkeleton but kept for API consistency.
- *   Defaults to [LemonadeSkeletonSize.Medium].
+ * @param modifier optional [Modifier] for layout adjustments; set the width here
+ * @param size unused by [BlockSkeleton], kept for API consistency; defaults to
+ *   [LemonadeSkeletonSize.Medium]
  */
 @Composable
 public fun LemonadeUi.BlockSkeleton(
@@ -236,15 +223,24 @@ private fun CoreSkeleton(
                     ?: CornerRadius.Zero
                 val brush = Brush.linearGradient(
                     colors = listOf(baseColor, highlightColor, baseColor),
-                    start = Offset(x = -drawSize.width / 2f, y = 0f),
-                    end = Offset(x = drawSize.width / 2f, y = 0f),
+                    start = Offset(
+                        x = -drawSize.width / 2f,
+                        y = 0f,
+                    ),
+                    end = Offset(
+                        x = drawSize.width / 2f,
+                        y = 0f,
+                    ),
                 )
                 onDrawBehind {
                     val panX = drawSize.width * shimmerOffset
                     translate(left = panX) {
                         drawRoundRect(
                             brush = brush,
-                            topLeft = Offset(x = -panX, y = 0f),
+                            topLeft = Offset(
+                                x = -panX,
+                                y = 0f,
+                            ),
                             size = drawSize,
                             cornerRadius = cornerRadius,
                         )

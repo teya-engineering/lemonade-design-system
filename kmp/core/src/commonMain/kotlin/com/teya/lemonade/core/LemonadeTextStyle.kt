@@ -1,12 +1,12 @@
 package com.teya.lemonade.core
 
 /**
- * Represents a text style with typographic properties.
+ * Font metrics that define a text style.
  *
- * @property fontSize The font size in sp (scale-independent pixels)
- * @property lineHeight The line height in sp
- * @property fontWeight The font weight (400 = Normal, 500 = Medium, 600 = SemiBold, 700 = Bold)
- * @property letterSpacing The letter spacing in sp, null if default
+ * @property fontSize font size in sp (scale-independent pixels)
+ * @property lineHeight line height in sp
+ * @property fontWeight font weight (400 = Normal, 500 = Medium, 600 = SemiBold, 700 = Bold)
+ * @property letterSpacing letter spacing in sp, or null for the font default
  */
 public data class LemonadeTextStyle(
     val fontSize: Float,
@@ -16,14 +16,11 @@ public data class LemonadeTextStyle(
 )
 
 /**
- * Enum defining all available text styles in the Lemonade Design System.
- * Each case carries its default [LemonadeTextStyle]. Exported via SKIE as a
- * `@frozen` Swift enum for easy iOS mapping.
+ * Every text style in the Lemonade Design System, each carrying its default [LemonadeTextStyle].
  */
 public enum class LemonadeTypography(public val style: LemonadeTextStyle) {
-    // Display styles
     DisplayXSmall(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize600.value,
             lineHeight = LemonadeLineHeights.LineHeight800.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
@@ -31,7 +28,7 @@ public enum class LemonadeTypography(public val style: LemonadeTextStyle) {
         ),
     ),
     DisplaySmall(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize700.value,
             lineHeight = LemonadeLineHeights.LineHeight900.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
@@ -39,7 +36,7 @@ public enum class LemonadeTypography(public val style: LemonadeTextStyle) {
         ),
     ),
     DisplayMedium(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize900.value,
             lineHeight = LemonadeLineHeights.LineHeight1100.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
@@ -47,7 +44,7 @@ public enum class LemonadeTypography(public val style: LemonadeTextStyle) {
         ),
     ),
     DisplayLarge(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize1200.value,
             lineHeight = LemonadeLineHeights.LineHeight1400.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
@@ -55,7 +52,7 @@ public enum class LemonadeTypography(public val style: LemonadeTextStyle) {
         ),
     ),
     DisplayXLarge(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize1400.value,
             lineHeight = LemonadeLineHeights.LineHeight1600.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
@@ -63,7 +60,7 @@ public enum class LemonadeTypography(public val style: LemonadeTextStyle) {
         ),
     ),
     Display2XLarge(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize1600.value,
             lineHeight = LemonadeLineHeights.LineHeight1800.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
@@ -71,7 +68,7 @@ public enum class LemonadeTypography(public val style: LemonadeTextStyle) {
         ),
     ),
     Display3XLarge(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize1800.value,
             lineHeight = LemonadeLineHeights.LineHeight2000.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
@@ -79,173 +76,167 @@ public enum class LemonadeTypography(public val style: LemonadeTextStyle) {
         ),
     ),
 
-    // Heading styles
     HeadingXLarge(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize1000.value,
             lineHeight = LemonadeLineHeights.LineHeight1200.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
         ),
     ),
     HeadingLarge(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize800.value,
             lineHeight = LemonadeLineHeights.LineHeight1000.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
         ),
     ),
     HeadingMedium(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize700.value,
             lineHeight = LemonadeLineHeights.LineHeight900.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
         ),
     ),
     HeadingSmall(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize600.value,
             lineHeight = LemonadeLineHeights.LineHeight800.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
         ),
     ),
     HeadingXSmall(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize450.value,
             lineHeight = LemonadeLineHeights.LineHeight650.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
         ),
     ),
     HeadingXXSmall(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize400.value,
             lineHeight = LemonadeLineHeights.LineHeight600.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
         ),
     ),
 
-    // Body XLarge styles
     BodyXLargeRegular(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize500.value,
             lineHeight = LemonadeLineHeights.LineHeight700.value,
             fontWeight = LemonadeFontWeights.Regular.weight,
         ),
     ),
     BodyXLargeMedium(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize500.value,
             lineHeight = LemonadeLineHeights.LineHeight700.value,
             fontWeight = LemonadeFontWeights.Medium.weight,
         ),
     ),
     BodyXLargeSemiBold(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize500.value,
             lineHeight = LemonadeLineHeights.LineHeight700.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
         ),
     ),
 
-    // Body Large styles
     BodyLargeRegular(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize450.value,
             lineHeight = LemonadeLineHeights.LineHeight700.value,
             fontWeight = LemonadeFontWeights.Regular.weight,
         ),
     ),
     BodyLargeMedium(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize450.value,
             lineHeight = LemonadeLineHeights.LineHeight700.value,
             fontWeight = LemonadeFontWeights.Medium.weight,
         ),
     ),
     BodyLargeSemiBold(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize450.value,
             lineHeight = LemonadeLineHeights.LineHeight700.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
         ),
     ),
 
-    // Body Medium styles
     BodyMediumRegular(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize400.value,
             lineHeight = LemonadeLineHeights.LineHeight600.value,
             fontWeight = LemonadeFontWeights.Regular.weight,
         ),
     ),
     BodyMediumMedium(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize400.value,
             lineHeight = LemonadeLineHeights.LineHeight600.value,
             fontWeight = LemonadeFontWeights.Medium.weight,
         ),
     ),
     BodyMediumSemiBold(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize400.value,
             lineHeight = LemonadeLineHeights.LineHeight600.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
         ),
     ),
     BodyMediumBold(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize400.value,
             lineHeight = LemonadeLineHeights.LineHeight600.value,
             fontWeight = LemonadeFontWeights.Bold.weight,
         ),
     ),
 
-    // Body Small styles
     BodySmallRegular(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize350.value,
             lineHeight = LemonadeLineHeights.LineHeight500.value,
             fontWeight = LemonadeFontWeights.Regular.weight,
         ),
     ),
     BodySmallMedium(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize350.value,
             lineHeight = LemonadeLineHeights.LineHeight500.value,
             fontWeight = LemonadeFontWeights.Medium.weight,
         ),
     ),
     BodySmallSemiBold(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize350.value,
             lineHeight = LemonadeLineHeights.LineHeight500.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
         ),
     ),
 
-    // Body XSmall styles
     BodyXSmallRegular(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize300.value,
             lineHeight = LemonadeLineHeights.LineHeight400.value,
             fontWeight = LemonadeFontWeights.Regular.weight,
         ),
     ),
     BodyXSmallMedium(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize300.value,
             lineHeight = LemonadeLineHeights.LineHeight400.value,
             fontWeight = LemonadeFontWeights.Medium.weight,
         ),
     ),
     BodyXSmallSemiBold(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize300.value,
             lineHeight = LemonadeLineHeights.LineHeight400.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,
         ),
     ),
     BodyXSmallOverline(
-        LemonadeTextStyle(
+        style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize300.value,
             lineHeight = LemonadeLineHeights.LineHeight400.value,
             fontWeight = LemonadeFontWeights.Semibold.weight,

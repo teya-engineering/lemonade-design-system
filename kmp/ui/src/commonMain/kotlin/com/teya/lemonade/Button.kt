@@ -34,7 +34,8 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTextStyle
 
 /**
- * Lemonade labeled button component. Used for simple click actions with a text and optional icons.
+ * Runs a click action from a labelled button with optional leading and trailing icons.
+ *
  * ## Usage
  * ```kotlin
  * LemonadeUi.Button(
@@ -42,19 +43,20 @@ import com.teya.lemonade.core.LemonadeTextStyle
  *   onClick = { println("button clicked!") },
  * )
  * ```
- * @param label - [String] to be displayed as the Button's label.
- * @param onClick - Callback to be invoked when the Button is clicked.
- * @param leadingIcon - [LemonadeIcons] shown before the label.
- * @param trailingIcon - [LemonadeIcons] shown after the label.
- * @param variant - [LemonadeButtonVariant] for the color palette (Primary, Secondary, Neutral,
- * Critical, OnBrand, OnColor). OnBrand and OnColor are single Subtle treatments for placing a
- * button on top of a brand- or color-filled surface; they ignore [type].
- * @param type - [LemonadeButtonType] for the fill treatment (Solid, Subtle, Ghost).
- * @param size - [LemonadeButtonSize] to size the Button accordingly.
- * @param modifier - [Modifier] to be applied to the Button.
- * @param enabled - [Boolean] flag to enable or disable the Button.
- * @param loading - [Boolean] flag to enable the loading state.
- * @param interactionSource - [MutableInteractionSource] to be applied to the Button.
+ *
+ * @param label text shown as the button's label
+ * @param onClick called when the button is clicked
+ * @param leadingIcon [LemonadeIcons] shown before the label
+ * @param trailingIcon [LemonadeIcons] shown after the label
+ * @param variant [LemonadeButtonVariant] for the color palette.
+ *  [LemonadeButtonVariant.OnBrand] and [LemonadeButtonVariant.OnColor] are single Subtle
+ *  treatments for a button sitting on a brand- or color-filled surface; they ignore [type]
+ * @param type [LemonadeButtonType] for the fill treatment
+ * @param size [LemonadeButtonSize] applied to the button
+ * @param modifier [Modifier] applied to the button
+ * @param enabled whether the button responds to clicks
+ * @param loading whether the button shows its loading state
+ * @param interactionSource [MutableInteractionSource] applied to the button
  */
 @Composable
 public fun LemonadeUi.Button(
@@ -73,7 +75,11 @@ public fun LemonadeUi.Button(
     val colors = resolveButtonColors(
         variant = variant,
         type = type,
-    ).adjustedForDisabledFill(dimmed = !enabled || loading, variant = variant, type = type)
+    ).adjustedForDisabledFill(
+        dimmed = !enabled || loading,
+        variant = variant,
+        type = type,
+    )
     CoreButton(
         colors = colors,
         size = size,
@@ -122,22 +128,22 @@ public fun LemonadeUi.Button(
 }
 
 /**
- * Lemonade labeled button component with slot-based leading and trailing content.
+ * Runs a click action from a labelled button with leading and trailing content slots.
  *
- * @param label - [String] to be displayed as the Button's label.
- * @param onClick - Callback to be invoked when the Button is clicked.
- * @param modifier - [Modifier] to be applied to the Button.
- * @param variant - [LemonadeButtonVariant] for the color palette (Primary, Secondary, Neutral,
- * Critical, OnBrand, OnColor). OnBrand and OnColor are single Subtle treatments for placing a
- * button on top of a brand- or color-filled surface; they ignore [type].
- * @param type - [LemonadeButtonType] for the fill treatment (Solid, Subtle, Ghost).
- * @param size - [LemonadeButtonSize] to size the Button accordingly.
- * @param leadingSlot - Optional composable slot shown before the label.
- * @param trailingSlot - Optional composable slot shown after the label.
- * @param expandContents - [Boolean] flag to expand the content area.
- * @param enabled - [Boolean] flag to enable or disable the Button.
- * @param loading - [Boolean] flag to enable the loading state.
- * @param interactionSource - [MutableInteractionSource] to be applied to the Button.
+ * @param label text shown as the button's label
+ * @param onClick called when the button is clicked
+ * @param modifier [Modifier] applied to the button
+ * @param variant [LemonadeButtonVariant] for the color palette.
+ *  [LemonadeButtonVariant.OnBrand] and [LemonadeButtonVariant.OnColor] are single Subtle
+ *  treatments for a button sitting on a brand- or color-filled surface; they ignore [type]
+ * @param type [LemonadeButtonType] for the fill treatment
+ * @param size [LemonadeButtonSize] applied to the button
+ * @param leadingSlot optional slot shown before the label
+ * @param trailingSlot optional slot shown after the label
+ * @param expandContents whether the label area stretches to fill the button's width
+ * @param enabled whether the button responds to clicks
+ * @param loading whether the button shows its loading state
+ * @param interactionSource [MutableInteractionSource] applied to the button
  */
 @Composable
 public fun LemonadeUi.Button(
@@ -157,7 +163,11 @@ public fun LemonadeUi.Button(
     val colors = resolveButtonColors(
         variant = variant,
         type = type,
-    ).adjustedForDisabledFill(dimmed = !enabled || loading, variant = variant, type = type)
+    ).adjustedForDisabledFill(
+        dimmed = !enabled || loading,
+        variant = variant,
+        type = type,
+    )
     CoreButton(
         colors = colors,
         size = size,
@@ -252,8 +262,6 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
         }
     }
 
-// MARK: - Color Resolution
-
 @Composable
 private fun resolveButtonColors(
     variant: LemonadeButtonVariant,
@@ -268,11 +276,10 @@ private fun resolveButtonColors(
         LemonadeButtonVariant.OnColor -> resolveOnColorButtonColors()
     }
 
-// Secondary Solid's fill is an opaque dark inverse. Figma dims it to `opacity40` when dimmed
-// (disabled or loading), while every other variant — and all content — dims to `opacityDisabled`.
-// The dimming [Modifier.alpha] in [CoreButton] already multiplies the whole button by
-// `opacityDisabled`, so pre-scale just this fill by the ratio of the two, letting them multiply out
-// to `opacity40`.
+// Secondary Solid's opaque inverse fill dims to `opacity40`, while every other variant — and all
+// content — dims to `opacityDisabled`. The dimming [Modifier.alpha] in [CoreButton] already
+// multiplies the whole button by `opacityDisabled`, so pre-scale just this fill by the ratio of the
+// two, letting them multiply out to `opacity40`.
 @Composable
 private fun LemonadeButtonColors.adjustedForDisabledFill(
     dimmed: Boolean,
@@ -381,9 +388,8 @@ private fun resolveCriticalButtonColors(type: LemonadeButtonType): LemonadeButto
         )
     }
 
-// On Brand / On Color are designed as a single Subtle treatment, meant to sit on top of a
-// brand- or color-filled surface. They don't vary by [LemonadeButtonType], so the type is
-// ignored and every type resolves to the same colors.
+// A single Subtle treatment for a button sitting on a brand- or color-filled surface, so these
+// variants take no [LemonadeButtonType].
 @Composable
 private fun resolveOnBrandButtonColors(): LemonadeButtonColors =
     LemonadeButtonColors(
@@ -422,9 +428,8 @@ private fun CoreButton(
             colors.solidBackgroundColor
         },
     )
-    // When disabled or loading, wrap the fill and content in a single alpha graphics layer so the
-    // whole button — container and content together — dims to 50% as one group, matching the Figma
-    // disabled treatment (group opacity, letting the underlying surface show through).
+    // One alpha layer over fill and content together, so the button dims as a single group and the
+    // surface underneath shows through instead of each part dimming on its own.
     val disabledModifier = if (!enabled || loading) {
         Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
     } else {
@@ -468,8 +473,6 @@ private fun CoreButton(
     )
 }
 
-// MARK: - Previews
-
 private data class ButtonPreviewData(
     val leadingIcon: Boolean,
     val trailingIcon: Boolean,
@@ -488,25 +491,29 @@ private class ButtonPreviewProvider : PreviewParameterProvider<ButtonPreviewData
             LemonadeButtonSize.entries.forEach { size ->
                 LemonadeButtonVariant.entries.forEach { variant ->
                     LemonadeButtonType.entries.forEach { type ->
-                        listOf(true, false).forEach { leadingIcon ->
-                            listOf(true, false).forEach { trailingIcon ->
-                                listOf(true, false).forEach { loading ->
-                                    listOf(true, false).forEach { enabled ->
-                                        add(
-                                            element = ButtonPreviewData(
-                                                leadingIcon = leadingIcon,
-                                                trailingIcon = trailingIcon,
-                                                enabled = enabled,
-                                                loading = loading,
-                                                size = size,
-                                                variant = variant,
-                                                type = type,
-                                            ),
-                                        )
+                        listOf(true, false)
+                            .forEach { leadingIcon ->
+                                listOf(true, false)
+                                    .forEach { trailingIcon ->
+                                        listOf(true, false)
+                                            .forEach { loading ->
+                                                listOf(true, false)
+                                                    .forEach { enabled ->
+                                                        add(
+                                                            element = ButtonPreviewData(
+                                                                leadingIcon = leadingIcon,
+                                                                trailingIcon = trailingIcon,
+                                                                enabled = enabled,
+                                                                loading = loading,
+                                                                size = size,
+                                                                variant = variant,
+                                                                type = type,
+                                                            ),
+                                                        )
+                                                    }
+                                            }
                                     }
-                                }
                             }
-                        }
                     }
                 }
             }
@@ -515,13 +522,13 @@ private class ButtonPreviewProvider : PreviewParameterProvider<ButtonPreviewData
 
 @LemonadePreview
 @Composable
-private fun LemonadeLabeledRadioButtonPreview(
+private fun LemonadeButtonPreview(
     @PreviewParameter(ButtonPreviewProvider::class)
     previewData: ButtonPreviewData,
 ) {
     LemonadeUi.Button(
         label = "Label",
-        onClick = { /* Nothing */ },
+        onClick = { },
         leadingIcon = LemonadeIcons.Heart.takeIf { previewData.leadingIcon },
         trailingIcon = LemonadeIcons.Heart.takeIf { previewData.trailingIcon },
         enabled = previewData.enabled,

@@ -25,8 +25,8 @@ internal fun SegmentedControlDisplay() {
     var selectedIcons by remember { mutableIntStateOf(1) }
     var selectedIconOnly by remember { mutableIntStateOf(0) }
 
-    SampleScreenDisplayColumn("SegmentedControl") {
-        SegmentedControlSection("Large (Default)") {
+    SampleScreenDisplayColumn(title = "SegmentedControl") {
+        SegmentedControlSection(title = "Large (Default)") {
             Column(
                 verticalArrangement = Arrangement.spacedBy(
                     space = LemonadeTheme.spaces.spacing200,
@@ -50,7 +50,7 @@ internal fun SegmentedControlDisplay() {
             }
         }
 
-        SegmentedControlSection("Medium") {
+        SegmentedControlSection(title = "Medium") {
             Column(
                 verticalArrangement = Arrangement.spacedBy(
                     space = LemonadeTheme.spaces.spacing200,
@@ -75,7 +75,7 @@ internal fun SegmentedControlDisplay() {
             }
         }
 
-        SegmentedControlSection("Small") {
+        SegmentedControlSection(title = "Small") {
             Column(
                 verticalArrangement = Arrangement.spacedBy(
                     space = LemonadeTheme.spaces.spacing200,
@@ -100,7 +100,7 @@ internal fun SegmentedControlDisplay() {
             }
         }
 
-        SegmentedControlSection("With Icons") {
+        SegmentedControlSection(title = "With Icons") {
             Column(
                 verticalArrangement = Arrangement.spacedBy(
                     space = LemonadeTheme.spaces.spacing200,
@@ -112,9 +112,18 @@ internal fun SegmentedControlDisplay() {
                     },
                     selectedTab = selectedIcons,
                     properties = listOf(
-                        TabButtonProperties.labelAndIcon(label = "Home", icon = LemonadeIcons.Home),
-                        TabButtonProperties.labelAndIcon(label = "Profile", icon = LemonadeIcons.User),
-                        TabButtonProperties.labelAndIcon(label = "Settings", icon = LemonadeIcons.Gear),
+                        TabButtonProperties.labelAndIcon(
+                            label = "Home",
+                            icon = LemonadeIcons.Home,
+                        ),
+                        TabButtonProperties.labelAndIcon(
+                            label = "Profile",
+                            icon = LemonadeIcons.User,
+                        ),
+                        TabButtonProperties.labelAndIcon(
+                            label = "Settings",
+                            icon = LemonadeIcons.Gear,
+                        ),
                     ),
                 )
                 LemonadeUi.Text(
@@ -124,7 +133,7 @@ internal fun SegmentedControlDisplay() {
             }
         }
 
-        SegmentedControlSection("Icon Only (Small)") {
+        SegmentedControlSection(title = "Icon Only (Small)") {
             LemonadeUi.SegmentedControl(
                 onTabSelected = { index ->
                     selectedIconOnly = index

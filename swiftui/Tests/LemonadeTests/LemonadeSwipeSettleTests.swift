@@ -67,12 +67,13 @@ final class LemonadeSwipeSettleTests: XCTestCase {
         XCTAssertEqual(settle(travel: 200, allowsFullSwipe: false), .open)
     }
 
-    /// A commit outranks a flick back, matching Compose.
+    /// A commit outranks a flick back: once the row has crossed the threshold the gesture has
+    /// been read as a full swipe, and dragging back at speed does not undo it.
     func testCommitBeatsAFlickBack() {
         XCTAssertEqual(settle(travel: 200, velocity: -900), .committed)
     }
 
-    // Threshold cases, mirroring `SwipeSettleTest`: these are what pin the `>=` choices down.
+    // Threshold cases: these are what pin the `>=` choices down.
 
     func testDragExactlyOnTheActionsRevealOpens() {
         XCTAssertEqual(settle(travel: firstActionReveal), .open)
@@ -87,7 +88,7 @@ final class LemonadeSwipeSettleTests: XCTestCase {
         XCTAssertEqual(settle(travel: rowWidth * 0.55), .committed)
     }
 
-    /// Halfway is no longer enough: iOS asks for a little more than half the row.
+    /// The commit threshold sits past halfway, so a drag to exactly half the row does not reach it.
     func testTravelOnHalfTheRowDoesNotCommit() {
         XCTAssertNotEqual(settle(travel: rowWidth / 2), .committed)
     }

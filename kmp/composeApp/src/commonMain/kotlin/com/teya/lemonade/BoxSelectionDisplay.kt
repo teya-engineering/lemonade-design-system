@@ -26,7 +26,6 @@ import com.teya.lemonade.core.TagVoice
 @Composable
 internal fun BoxSelectionDisplay() {
     SampleScreenDisplayLazyColumn(title = "BoxSelection") {
-        // Variants
         item(key = "Variants") {
             BoxSelectionSection(title = "Variants") {
                 Row(
@@ -49,7 +48,6 @@ internal fun BoxSelectionDisplay() {
             }
         }
 
-        // Background
         item(key = "Background") {
             BoxSelectionSection(title = "Background") {
                 Row(
@@ -72,7 +70,6 @@ internal fun BoxSelectionDisplay() {
             }
         }
 
-        // Selected
         item(key = "Selected") {
             BoxSelectionSection(title = "Selected") {
                 var isFilledSelected by remember { mutableStateOf(value = true) }
@@ -102,7 +99,6 @@ internal fun BoxSelectionDisplay() {
             }
         }
 
-        // Disabled
         item(key = "Disabled") {
             BoxSelectionSection(title = "Disabled") {
                 Row(
@@ -129,7 +125,6 @@ internal fun BoxSelectionDisplay() {
             }
         }
 
-        // Content Padding
         item(key = "Content Padding") {
             BoxSelectionSection(title = "Content Padding") {
                 Row(
@@ -161,7 +156,6 @@ internal fun BoxSelectionDisplay() {
             }
         }
 
-        // Radius
         item(key = "Radius") {
             BoxSelectionSection(title = "Radius") {
                 Row(
@@ -193,8 +187,7 @@ internal fun BoxSelectionDisplay() {
             }
         }
 
-        // Use Case: Plan Cards — a full-width box holding a whole card layout, showing that
-        // the slot is not limited to the small icon-and-label content a Tile would carry.
+        // The slot takes a whole card layout, not just the icon-and-label content a Tile carries.
         item(key = "Plan Cards") {
             BoxSelectionSection(title = "Use Case: Plan Cards") {
                 var selectedPlan by remember { mutableStateOf(value = plans[1].name) }
@@ -224,7 +217,6 @@ internal fun BoxSelectionDisplay() {
             }
         }
 
-        // Use Case: Single Selection
         item(key = "Single Selection") {
             BoxSelectionSection(title = "Use Case: Single Selection") {
                 var selectedOption by remember { mutableStateOf(value = frequencyOptions.first()) }

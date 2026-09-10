@@ -545,73 +545,78 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
 struct LemonadeTile_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 24) {
-            // Vertical — existing variants
-            HStack(spacing: 16) {
-                LemonadeUi.Tile(
-                    label: "Filled",
-                    icon: .heart,
-                    onClick: {},
-                    variant: .filled
-                )
-                LemonadeUi.Tile(
-                    label: "Outlined",
-                    icon: .star,
-                    variant: .outlined
-                )
-                LemonadeUi.Tile(
-                    label: "Selected",
-                    icon: .circleCheck,
-                    isSelected: true,
-                    variant: .filled
-                )
-            }
-
-            // Horizontal
-            VStack(spacing: 8) {
-                LemonadeUi.Tile(
-                    label: "Transfer",
-                    icon: .heart,
-                    onClick: {},
-                    variant: .filled,
-                    orientation: .horizontal,
-                    stretched: true
-                )
-                LemonadeUi.Tile(
-                    label: "Payments",
-                    icon: .star,
-                    variant: .outlined,
-                    orientation: .horizontal,
-                    stretched: true
-                )
-                LemonadeUi.Tile(
-                    label: "Selected",
-                    icon: .circleCheck,
-                    isSelected: true,
-                    variant: .filled,
-                    orientation: .horizontal,
-                    stretched: true
-                )
-                LemonadeUi.Tile(
-                    label: "With Support",
-                    icon: .heart,
-                    supportText: "Subtitle",
-                    variant: .filled,
-                    orientation: .horizontal,
-                    stretched: true
-                )
-                LemonadeUi.Tile(
-                    label: "Disabled",
-                    icon: .heart,
-                    enabled: false,
-                    variant: .filled,
-                    orientation: .horizontal,
-                    stretched: true
-                )
-            }
-            .padding(.horizontal)
+            verticalTiles
+            horizontalTiles
         }
         .padding()
         .previewLayout(.sizeThatFits)
+    }
+
+    private static var verticalTiles: some View {
+        HStack(spacing: 16) {
+            LemonadeUi.Tile(
+                label: "Filled",
+                icon: .heart,
+                onClick: {},
+                variant: .filled
+            )
+            LemonadeUi.Tile(
+                label: "Outlined",
+                icon: .star,
+                variant: .outlined
+            )
+            LemonadeUi.Tile(
+                label: "Selected",
+                icon: .circleCheck,
+                isSelected: true,
+                variant: .filled
+            )
+        }
+    }
+
+    private static var horizontalTiles: some View {
+        VStack(spacing: 8) {
+            LemonadeUi.Tile(
+                label: "Transfer",
+                icon: .heart,
+                onClick: {},
+                variant: .filled,
+                orientation: .horizontal,
+                stretched: true
+            )
+            LemonadeUi.Tile(
+                label: "Payments",
+                icon: .star,
+                variant: .outlined,
+                orientation: .horizontal,
+                stretched: true
+            )
+            LemonadeUi.Tile(
+                label: "Selected",
+                icon: .circleCheck,
+                isSelected: true,
+                variant: .filled,
+                orientation: .horizontal,
+                stretched: true
+            )
+            LemonadeUi.Tile(
+                label: "With Support",
+                icon: .heart,
+                supportText: "Subtitle",
+                variant: .filled,
+                orientation: .horizontal,
+                stretched: true
+            )
+            LemonadeUi.Tile(
+                label: "Disabled",
+                icon: .heart,
+                enabled: false,
+                variant: .filled,
+                orientation: .horizontal,
+                stretched: true
+            )
+        }
+        .padding(.horizontal)
     }
 }
 #endif

@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package com.teya.lemonade
 
 import androidx.compose.animation.animateColorAsState
@@ -30,7 +32,7 @@ import com.teya.lemonade.core.LemonadeIconButtonShape
 import com.teya.lemonade.core.LemonadeIcons
 
 /**
- * Lemonade icon button component. Used for simple click actions with only an icon.
+ * Icon-only button for simple click actions.
  *
  * ## Usage
  * ```kotlin
@@ -41,17 +43,17 @@ import com.teya.lemonade.core.LemonadeIcons
  * )
  * ```
  *
- * @param icon - [LemonadeIcons] to be displayed as the Button's icon.
- * @param contentDescription - [String] content description for accessibility.
- * @param onClick - Callback to be invoked when the Button is clicked.
- * @param modifier - [Modifier] to be applied to the Button.
- * @param interactionSource - [MutableInteractionSource] to be applied to the Button.
- * @param enabled - [Boolean] flag to enable or disable the Button.
- * @param variant - [LemonadeButtonVariant] for the color palette (Primary, Secondary, Neutral, Critical).
- * @param type - [LemonadeButtonType] for the fill treatment (Solid, Subtle, Ghost).
- * @param size - [LemonadeButtonSize] to size the Button accordingly.
- * @param loading - [Boolean] flag to show a loading spinner.
- * @param shape - [LemonadeIconButtonShape] for the button shape (Rounded, Circular).
+ * @param icon [LemonadeIcons] shown as the button's icon
+ * @param contentDescription accessibility description of the button
+ * @param onClick callback invoked when the button is clicked
+ * @param modifier [Modifier] applied to the button
+ * @param interactionSource [MutableInteractionSource] applied to the button
+ * @param enabled whether the button accepts clicks
+ * @param variant [LemonadeButtonVariant] driving the color palette
+ * @param type [LemonadeButtonType] driving the fill treatment
+ * @param size [LemonadeButtonSize] sizing the button
+ * @param loading whether to show a loading spinner in place of the icon
+ * @param shape [LemonadeIconButtonShape] driving the button shape
  */
 @Composable
 public fun LemonadeUi.IconButton(
@@ -100,25 +102,20 @@ private fun CoreIconButton(
     val colors = resolveIconButtonColors(
         variant = variant,
         type = type,
-    ).adjustedForDisabledFill(dimmed = !enabled || loading, variant = variant, type = type)
+    ).adjustedForDisabledFill(
+        dimmed = !enabled || loading,
+        variant = variant,
+        type = type,
+    )
     val animatedBackgroundColor by colors.animatedBackground(interactionSource = interactionSource)
     val sizeData = size.toSizeData(shape = shape)
-
-    // When disabled or loading, wrap the fill and content in a single alpha graphics layer so the
-    // whole button — container and content together — dims to 50% as one group, matching the Figma
-    // disabled treatment (group opacity, letting the underlying surface show through).
-    val disabledModifier = if (!enabled || loading) {
-        Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-    } else {
-        Modifier
-    }
 
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .requiredSize(size = sizeData.size)
             .clip(shape = sizeData.shape)
-            .then(other = disabledModifier)
+            .dimmedAsOneGroup(dimmed = !enabled || loading)
             .clickable(
                 onClick = onClick,
                 role = Role.Button,
@@ -143,7 +140,13 @@ private fun CoreIconButton(
     }
 }
 
-// MARK: - Color Resolution
+@Composable
+private fun Modifier.dimmedAsOneGroup(dimmed: Boolean): Modifier =
+    if (dimmed) {
+        alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+    } else {
+        this
+    }
 
 internal data class IconButtonColorData(
     val backgroundColor: Color,
@@ -153,7 +156,7 @@ internal data class IconButtonColorData(
 )
 
 /**
- * The fill a button of these [IconButtonColorData] draws under a finger, a pointer, or neither.
+ * Animates the fill of these [IconButtonColorData] between its rest, hover and pressed colors.
  *
  * Shared so that anything standing in for an icon button — the capsule a [LemonadeUi.SwipeActionRow]
  * reveals, for one — is pressed and hovered the same way rather than restating the rule.
@@ -189,11 +192,10 @@ internal fun resolveIconButtonColors(
         LemonadeButtonVariant.OnColor -> resolveOnColorColors()
     }
 
-// Secondary Solid's fill is an opaque dark inverse. Figma dims it to `opacity40` when dimmed
-// (disabled or loading), while every other variant — and all content — dims to `opacityDisabled`.
-// The dimming [Modifier.alpha] in [CoreIconButton] already multiplies the whole button by
-// `opacityDisabled`, so pre-scale just this fill by the ratio of the two, letting them multiply out
-// to `opacity40`.
+// Secondary Solid's opaque inverse fill has to land on `opacity40` when dimmed, while every other
+// variant — and all content — lands on `opacityDisabled`. [Modifier.dimmedAsOneGroup] already
+// multiplies the whole button by `opacityDisabled`, so pre-scale just this fill by the ratio of the
+// two and let them multiply out.
 @Composable
 private fun IconButtonColorData.adjustedForDisabledFill(
     dimmed: Boolean,
@@ -302,11 +304,7 @@ private fun resolveCriticalColors(type: LemonadeButtonType): IconButtonColorData
         )
     }
 
-// On Brand / On Color are designed as a single Subtle treatment, meant to sit on top of a
-// brand- or color-filled surface. They don't vary by [LemonadeButtonType], so the type is
-// ignored and every type resolves to the same colors. Their pressed state mirrors the labeled
-// [LemonadeUi.Button] (the base), which uses the interactive token rather than a dedicated pressed
-// one.
+// On Brand and On Color have no dedicated pressed token, so pressed reuses the interactive one.
 @Composable
 private fun resolveOnBrandColors(): IconButtonColorData =
     IconButtonColorData(
@@ -324,8 +322,6 @@ private fun resolveOnColorColors(): IconButtonColorData =
         backgroundPressedColor = LocalColors.current.interaction.bgAlwaysLightMediumInteractive,
         contentColor = LocalColors.current.content.contentAlwaysLight,
     )
-
-// MARK: - Size Data
 
 private data class IconButtonSizeData(
     val iconSize: LemonadeAssetSize,
@@ -373,8 +369,6 @@ private fun LemonadeIconButtonShape.resolveShape(roundedShape: Shape): Shape =
         LemonadeIconButtonShape.Circular -> LocalShapes.current.radiusFull
     }
 
-// MARK: - Previews
-
 private data class IconButtonPreviewData(
     val size: LemonadeButtonSize,
     val variant: LemonadeButtonVariant,
@@ -387,22 +381,23 @@ private class IconButtonPreviewProvider : PreviewParameterProvider<IconButtonPre
 
     private fun buildAllVariants(): Sequence<IconButtonPreviewData> =
         buildList {
-            listOf(true, false).forEach { enabled ->
-                LemonadeButtonSize.entries.forEach { size ->
-                    LemonadeButtonVariant.entries.forEach { variant ->
-                        LemonadeButtonType.entries.forEach { type ->
-                            add(
-                                element = IconButtonPreviewData(
-                                    size = size,
-                                    variant = variant,
-                                    type = type,
-                                    enabled = enabled,
-                                ),
-                            )
+            listOf(true, false)
+                .forEach { enabled ->
+                    LemonadeButtonSize.entries.forEach { size ->
+                        LemonadeButtonVariant.entries.forEach { variant ->
+                            LemonadeButtonType.entries.forEach { type ->
+                                add(
+                                    element = IconButtonPreviewData(
+                                        size = size,
+                                        variant = variant,
+                                        type = type,
+                                        enabled = enabled,
+                                    ),
+                                )
+                            }
                         }
                     }
                 }
-            }
         }.asSequence()
 }
 

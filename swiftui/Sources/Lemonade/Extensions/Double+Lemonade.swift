@@ -14,7 +14,6 @@ import SwiftUI
 public struct LemonadeOpacityShorthand {
     private let tokens = LemonadeOpacityTokens()
 
-    // Base opacity values
     public var opacity0: Double { tokens.base.opacity0 }
     public var opacity5: Double { tokens.base.opacity5 }
     public var opacity10: Double { tokens.base.opacity10 }
@@ -28,7 +27,6 @@ public struct LemonadeOpacityShorthand {
     public var opacity90: Double { tokens.base.opacity90 }
     public var opacity100: Double { tokens.base.opacity100 }
 
-    // State opacity values
     public var opacityPressed: Double { tokens.state.opacityPressed }
     public var opacityDisabled: Double { tokens.state.opacityDisabled }
 }

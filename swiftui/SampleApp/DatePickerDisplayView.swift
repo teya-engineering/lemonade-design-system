@@ -3,10 +3,8 @@ import Lemonade
 
 // MARK: - Shared Formatters
 
-// Defined at file scope so they are built exactly once for the process -
-// `DateFormatter` initialization is expensive due to ObjC bridging and locale
-// loading, and these were previously re-created on every access. Matches the
-// precedent in `Sources/Lemonade/Components/Calendar/CalendarDayCell.swift`.
+// `DateFormatter` initialisation is expensive, so these live at file scope and are built
+// once instead of on every view update.
 
 private let mediumDateFormatter: DateFormatter = {
     let formatter = DateFormatter()

@@ -4,11 +4,11 @@ import XCTest
 /// Covers `LemonadeToastPolicy` — what a `show(_:)` call does when a toast is already on screen.
 ///
 /// `.queue` is the default and is covered by `LemonadeToastQueueTests`. These guard `.replace`,
-/// and the promise that adding the parameter changed nothing for callers who omit it.
+/// and that omitting the parameter still queues.
 @MainActor
 final class LemonadeToastPolicyTests: XCTestCase {
 
-    /// Omitting the parameter must behave exactly as before it existed.
+    /// Omitting the parameter must queue: the visible toast keeps the slot.
     func testQueueIsTheDefaultPolicy() {
         let manager = LemonadeToastManager()
 

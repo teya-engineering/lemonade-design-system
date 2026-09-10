@@ -73,9 +73,10 @@ internal fun cardRowVisualIndex(
 ): Int = if (hasHeader) rowIndex + 1 else rowIndex
 
 /**
- * Renders a Lemonade card directly into a [LazyListScope], keeping every row a real lazy
- * item of the host list. Rows are composed on demand as they scroll into view, unlike
- * [LemonadeUi.Card] whose whole content composes at once.
+ * Renders a Lemonade card into a [LazyListScope], one real lazy item per row.
+ *
+ * Rows compose on demand as they scroll into view, unlike [LemonadeUi.Card], whose whole content
+ * composes at once.
  *
  * The card look is drawn per item: the first visual slot (the header when present,
  * otherwise the first row) carries the top corners, and the last visual slot (the footer
@@ -86,7 +87,7 @@ internal fun cardRowVisualIndex(
  * own internal padding, and separate consecutive cards with a spacer item instead.
  *
  * [content] only exposes [LemonadeCardItemsScope.item] and [LemonadeCardItemsScope.items];
- * any other `LazyListScope` call (for example `stickyHeader`) resolves to the host
+ * any other [LazyListScope] call (for example [LazyListScope.stickyHeader]) resolves to the host
  * [LazyListScope] instead and is emitted immediately, before this card's own header, rows,
  * and footer, rather than becoming part of it.
  *
@@ -117,7 +118,10 @@ public fun LazyListScope.lemonadeCardItems(
     if (header != null) {
         item(contentType = CardSlotContentType.Header) {
             CardSlotContainer(
-                position = resolveCardSlotPosition(visualIndex = 0, totalCount = totalCount),
+                position = resolveCardSlotPosition(
+                    visualIndex = 0,
+                    totalCount = totalCount,
+                ),
                 background = background,
             ) {
                 CardHeader(config = header)
@@ -149,8 +153,9 @@ public fun LazyListScope.lemonadeCardItems(
 }
 
 /**
- * Receiver for [lemonadeCardItems] content. Mirrors the [LazyListScope] item DSL; every
- * entry becomes a real lazy item of the host list.
+ * Declares the rows of a [lemonadeCardItems] card.
+ *
+ * Mirrors the [LazyListScope] item DSL; every entry becomes a real lazy item of the host list.
  */
 public sealed interface LemonadeCardItemsScope {
     public fun item(
@@ -359,7 +364,6 @@ private fun LazyItemScope.CardRowContainer(
     }
 }
 
-// Fades and slides a card slot into place as rows are added, removed, or reordered.
 private fun LazyItemScope.cardItemAnimationModifier(): Modifier =
     Modifier.animateItem(
         fadeInSpec = cardItemFadeSpec,

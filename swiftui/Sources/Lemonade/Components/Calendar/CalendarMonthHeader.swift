@@ -39,12 +39,10 @@ struct CalendarMonthHeader: View {
         }
     }
     
-    /// Header label with a 150ms cross-fade transition driven by `headerLabel`
-    /// changes. Mirrors the Compose reference, which wraps the header text in
-    /// `AnimatedContent` with `fadeIn(tween(150)) togetherWith fadeOut(tween(150))`.
-    /// On iOS 16+ `.contentTransition(.opacity)` makes the cross-fade explicit;
-    /// on iOS 15 the value-driven `.animation(...)` still produces a SwiftUI
-    /// implicit text animation, which degrades gracefully without breaking.
+    /// Header label that animates whenever `headerLabel` changes.
+    ///
+    /// The iOS 15 branch only drops `.contentTransition`, which is unavailable there;
+    /// the value-driven `.animation(...)` carries the transition on both paths.
     @ViewBuilder
     private var headerText: some View {
         let label = LemonadeUi.Text(

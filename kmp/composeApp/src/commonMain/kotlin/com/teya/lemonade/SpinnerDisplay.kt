@@ -9,7 +9,7 @@ internal fun SpinnerDisplay() {
     SampleScreenDisplayLazyGrid(title = "Spinner") {
         items(
             items = LemonadeAssetSize.entries,
-            key = { it.ordinal },
+            key = { size -> size.ordinal },
         ) { size ->
             LemonadeAssetBox(
                 asset = {

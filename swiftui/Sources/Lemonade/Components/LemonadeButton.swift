@@ -349,8 +349,7 @@ private func resolveButtonColors(
         )
 
     // MARK: On Brand / On Color
-    // Designed as a single Subtle treatment for placing a button on top of a brand- or
-    // color-filled surface. They don't vary by type, so every type resolves to the same colors.
+    // These two variants ignore `type`: every fill treatment resolves to the same colors.
     case (.onBrand, _):
         return LemonadeButtonColors(
             contentColor: LemonadeTheme.colors.content.contentOnBrandHigh,
@@ -392,9 +391,8 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
         let colors = resolveButtonColors(variant: variant, type: type)
         let buttonShape = RoundedRectangle(cornerRadius: cornerRadius)
 
-        // When disabled or loading, the whole button — fill and content together — dims to 50% via
-        // a single `.opacity` modifier on the SwiftUI.Button, matching the Figma disabled treatment
-        // (group opacity, letting the underlying surface show through).
+        // One `.opacity` on the whole SwiftUI.Button dims fill and content as a group; dimming
+        // them separately would stack and darken the content twice.
         let pressedOpacity = isPressed ? LemonadeTheme.opacity.state.opacityPressed : LemonadeTheme.opacity.base.opacity100
         let dimmed = !enabled || loading
         let dimmedOpacity = dimmed ? LemonadeTheme.opacity.state.opacityDisabled : 1.0
@@ -414,12 +412,9 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
                 HStack(spacing: 0) {
                     Spacer(minLength: 0)
                     ZStack {
-                        // Hide the content with opacity while loading instead of removing it
-                        // from the hierarchy. A removed view fades out at its old absolute
-                        // position, so if the button's frame animates at the same time the
-                        // content detaches and fades mid-screen while the spinner rides the
-                        // button to its new position. Kept in the layout, it moves with the
-                        // button.
+                        // Hidden with opacity rather than removed: a removed view fades out at
+                        // its old absolute position, so it detaches mid-screen whenever the
+                        // button's frame animates at the same time.
                         contentSlot(colors)
                             .opacity(loading ? 0 : 1)
 
@@ -442,8 +437,6 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
             .frame(height: size.contentData.requiredHeight)
             .frame(minWidth: size.contentData.minWidth)
             .background(buttonShape.fill(colors.backgroundColor.opacity(disabledFillScale)))
-            // Keep the rounded hit target the removed .clipShape used to provide, without
-            // reintroducing its offscreen pass.
             .contentShape(buttonShape)
         }
         .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
@@ -572,9 +565,8 @@ private struct LemonadeSlotButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
 
 #if DEBUG
 struct LemonadeButton_Previews: PreviewProvider {
-    static var previews: some View {
-        VStack(spacing: 16) {
-            // Primary variants
+    private static var variantButtons: some View {
+        Group {
             LemonadeUi.Button(
                 label: "Primary",
                 onClick: {}
@@ -605,8 +597,41 @@ struct LemonadeButton_Previews: PreviewProvider {
                 onClick: {},
                 variant: .critical
             )
+        }
+    }
 
-            // With icons
+    private static var sizeButtons: some View {
+        HStack(spacing: 8) {
+            LemonadeUi.Button(
+                label: "XSmall",
+                onClick: {},
+                size: .xSmall
+            )
+
+            LemonadeUi.Button(
+                label: "Small",
+                onClick: {},
+                size: .small
+            )
+
+            LemonadeUi.Button(
+                label: "Medium",
+                onClick: {},
+                size: .medium
+            )
+
+            LemonadeUi.Button(
+                label: "Large",
+                onClick: {},
+                size: .large
+            )
+        }
+    }
+
+    static var previews: some View {
+        VStack(spacing: 16) {
+            variantButtons
+
             LemonadeUi.Button(
                 label: "With Icons",
                 onClick: {},
@@ -614,41 +639,14 @@ struct LemonadeButton_Previews: PreviewProvider {
                 trailingIcon: .chevronRight
             )
 
-            // Sizes
-            HStack(spacing: 8) {
-                LemonadeUi.Button(
-                    label: "XSmall",
-                    onClick: {},
-                    size: .xSmall
-                )
+            sizeButtons
 
-                LemonadeUi.Button(
-                    label: "Small",
-                    onClick: {},
-                    size: .small
-                )
-
-                LemonadeUi.Button(
-                    label: "Medium",
-                    onClick: {},
-                    size: .medium
-                )
-
-                LemonadeUi.Button(
-                    label: "Large",
-                    onClick: {},
-                    size: .large
-                )
-            }
-
-            // Disabled
             LemonadeUi.Button(
                 label: "Disabled",
                 onClick: {},
                 enabled: false
             )
 
-            // Full width
             LemonadeUi.Button(
                 label: "Full Width",
                 onClick: {}

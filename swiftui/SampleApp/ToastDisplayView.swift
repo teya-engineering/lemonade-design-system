@@ -172,8 +172,8 @@ struct ToastDisplayView: View {
                     toastManager.show(label: "Third toast", voice: .error)
                 }
 
-                // Run both to compare: queued, all ten play back long after the tapping has
-                // stopped; replaced, one pill counts up and settles on "Added item 10".
+                // Run both to compare the policies: queued toasts play back one after another
+                // long after the tapping stops, while replaced ones collapse into a single pill.
                 Button("Rapid Burst (queue)") {
                     burst(policy: .queue)
                 }
@@ -247,19 +247,16 @@ struct ToastDisplayView: View {
         }
         .navigationTitle("Toast")
         .sheet(isPresented: $showOverSheet) {
-            // Give the sheet its own toast container so a toast fired from inside it renders on top of
-            // the sheet, not behind it. A `.sheet` is a separate presentation layer above the root, so
-            // the root's container can't reach over it — each presented layer that shows toasts needs
-            // its own container. (This mirrors how the app's navigator wraps every presented screen.)
+            // A sheet is a separate presentation layer above the root, so the root's container
+            // cannot reach over it: every presented layer that shows toasts needs its own.
             OverBottomSheetContent()
                 .lemonadeToastContainer()
                 .presentationDetents([.medium])
         }
     }
 
-    /// Ten toasts 150ms apart — spaced far enough to land as separate view updates, unlike the
-    /// same-tick "Queue Multiple Toasts" button, and the shape a real burst takes when a till
-    /// operator taps "add to cart" repeatedly.
+    /// Shows a run of toasts under the given policy, spaced far enough apart to land as
+    /// separate view updates rather than arriving on the same tick.
     private func burst(policy: LemonadeToastPolicy) {
         Task { @MainActor in
             for item in 1...10 {

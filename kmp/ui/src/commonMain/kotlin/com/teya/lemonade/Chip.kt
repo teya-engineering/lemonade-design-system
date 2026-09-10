@@ -40,8 +40,9 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTextStyle
 
 /**
- * A compact element used to display information, trigger actions, or represent selections.
- *  Commonly used for tags, filters, or interactive choices in dense interfaces.
+ * Shows information, triggers an action, or marks a selection in a compact element.
+ *
+ * Fits tags, filters and interactive choices in dense interfaces.
  *
  * ## Usage
  * ```kotlin
@@ -52,30 +53,20 @@ import com.teya.lemonade.core.LemonadeTextStyle
  * )
  * ```
  *
- * ## Parameters
- * @param label: The text to be displayed in the chip.
- * @param selected: Set to 'true' if the chip is in the selected state.
- * @param modifier: Optional - [Modifier] to be applied to the root container of the chip.
- * @param counter: Optional - [Int] number to be displayed in the chip
- *  in case it is counting the amount of a subject.
- * @param leadingPainter: Optional - [Painter] to be displayed
- *  in the leading position of the chip.
- * @param trailingIcon: Optional - [LemonadeIcons] to be displayed
- *  in the trailing position of the chip.
- * @param enabled: Optional - controls the enabled state of the chip.
- *  When `false`, interaction is disabled and it is visually styled
- *  as such. Defaults to true.
- * @param error: Optional - set to `true` to display the chip in an error state with a
- *  critical border and background. Takes precedence over [selected] styling when both are true. Defaults to false.
- * @param onChipClicked: Optional - sets the callback for when
- *  the chip is clicked. If null the clickable interactions will be
- *  automatically disabled.
- * @param onTrailingIconClick: Optional - Callback action triggered
- *  when the [trailingIcon] is clicked.
- *  Needs [trailingIcon] to not be null.
- * @param interactionSource: Optional - [MutableInteractionSource]
- *  used to observe interaction states like hover and press to drive
- *  visual feedback.
+ * @param label text shown in the chip
+ * @param selected whether the chip is in the selected state
+ * @param modifier [Modifier] applied to the chip's root container
+ * @param leadingPainter optional [Painter] shown in the leading position of the chip
+ * @param trailingIcon optional [LemonadeIcons] shown in the trailing position of the chip
+ * @param counter optional number shown in the chip when it counts a subject
+ * @param enabled whether the chip responds to interaction, styled as disabled when false
+ * @param error shows the chip in an error state with a critical border and background, taking
+ *  precedence over the [selected] styling when both are true
+ * @param onChipClicked called when the chip is clicked. When null the chip is not clickable
+ * @param onTrailingIconClick called when the [trailingIcon] is clicked, needs [trailingIcon] to
+ *  be non-null
+ * @param interactionSource optional [MutableInteractionSource] observing hover and press to drive
+ *  the visual feedback
  */
 @Composable
 public fun LemonadeUi.Chip(
@@ -135,8 +126,9 @@ public fun LemonadeUi.Chip(
 }
 
 /**
- * A compact element used to display information, trigger actions, or represent selections.
- *  Commonly used for tags, filters, or interactive choices in dense interfaces.
+ * Shows information, triggers an action, or marks a selection in a compact element.
+ *
+ * Fits tags, filters and interactive choices in dense interfaces.
  *
  * ## Usage
  * ```kotlin
@@ -147,30 +139,20 @@ public fun LemonadeUi.Chip(
  * )
  * ```
  *
- * ## Parameters
- * @param label: The text to be displayed in the chip.
- * @param selected: Set to 'true' if the chip is in the selected state.
- * @param modifier: Optional - [Modifier] to be applied to the root container of the chip.
- * @param counter: Optional - [Int] number to be displayed in the chip
- *  in case it is counting the amount of a subject.
- * @param leadingIcon: Optional - [LemonadeIcons] to be displayed
- *  in the leading position of the chip.
- * @param trailingIcon: Optional - [LemonadeIcons] to be displayed
- *  in the trailing position of the chip.
- * @param enabled: Optional - controls the enabled state of the chip.
- *  When `false`, interaction is disabled and it is visually styled
- *  as such. Defaults to true.
- * @param error: Optional - set to `true` to display the chip in an error state with a
- *  critical border and background. Takes precedence over [selected] styling when both are true. Defaults to false.
- * @param onChipClicked: Optional - sets the callback for when
- *  the chip is clicked. If null the clickable interactions will be
- *  automatically disabled.
- * @param onTrailingIconClick: Optional - Callback action triggered
- *  when the [trailingIcon] is clicked.
- *  Needs [trailingIcon] to not be null.
- * @param interactionSource: Optional - [MutableInteractionSource]
- *  used to observe interaction states like hover and press to drive
- *  visual feedback.
+ * @param label text shown in the chip
+ * @param selected whether the chip is in the selected state
+ * @param modifier [Modifier] applied to the chip's root container
+ * @param leadingIcon optional [LemonadeIcons] shown in the leading position of the chip
+ * @param trailingIcon optional [LemonadeIcons] shown in the trailing position of the chip
+ * @param counter optional number shown in the chip when it counts a subject
+ * @param enabled whether the chip responds to interaction, styled as disabled when false
+ * @param error shows the chip in an error state with a critical border and background, taking
+ *  precedence over the [selected] styling when both are true
+ * @param onChipClicked called when the chip is clicked. When null the chip is not clickable
+ * @param onTrailingIconClick called when the [trailingIcon] is clicked, needs [trailingIcon] to
+ *  be non-null
+ * @param interactionSource optional [MutableInteractionSource] observing hover and press to drive
+ *  the visual feedback
  */
 @Composable
 public fun LemonadeUi.Chip(
@@ -224,13 +206,13 @@ public fun LemonadeUi.Chip(
 }
 
 /**
- * A compact element used to display information, trigger actions, or represent selections.
- *  Commonly used for tags, filters, or interactive choices in dense interfaces.
+ * Shows information, triggers an action, or marks a selection in a compact element.
  *
- * This overload exposes generic [leadingContent] and [trailingContent] slots, mirroring the
- *  SwiftUI `LemonadeUi.Chip(leadingContent:trailingContent:)` initialiser, so callers can place
- *  any composable in either position — for example a [LemonadeUi.SymbolContainer] avatar as the
- *  leading content and a close icon as the trailing content.
+ * Fits tags, filters and interactive choices in dense interfaces.
+ *
+ * Exposes generic [leadingContent] and [trailingContent] slots, so callers can place any
+ * composable in either position — for example a [LemonadeUi.SymbolContainer] avatar as the
+ * leading content and a close icon as the trailing content.
  *
  * ## Usage
  * ```kotlin
@@ -252,18 +234,18 @@ public fun LemonadeUi.Chip(
  * )
  * ```
  *
- * ## Parameters
- * @param label: The text to be displayed in the chip.
- * @param selected: Set to 'true' if the chip is in the selected state.
- * @param leadingContent: Composable rendered in the leading position of the chip.
- * @param trailingContent: Composable rendered in the trailing position of the chip.
- * @param modifier: Optional - [Modifier] to be applied to the root container of the chip.
- * @param counter: Optional - [Int] number to be displayed in the chip.
- * @param enabled: Optional - controls the enabled state of the chip. Defaults to true.
- * @param error: Optional - set to `true` to display the chip in an error state. Defaults to false.
- * @param onChipClicked: Optional - callback for when the chip is clicked.
- * @param onTrailingIconClick: Optional - callback for when [trailingContent] is clicked.
- * @param interactionSource: Optional - [MutableInteractionSource] for interaction states.
+ * @param label text shown in the chip
+ * @param selected whether the chip is in the selected state
+ * @param leadingContent content rendered in the leading position of the chip
+ * @param trailingContent content rendered in the trailing position of the chip
+ * @param modifier [Modifier] applied to the chip's root container
+ * @param counter optional number shown in the chip
+ * @param enabled whether the chip responds to interaction
+ * @param error shows the chip in an error state
+ * @param onChipClicked called when the chip is clicked
+ * @param onTrailingIconClick called when [trailingContent] is clicked
+ * @param interactionSource optional [MutableInteractionSource] observing hover and press to drive
+ *  the visual feedback
  */
 @Composable
 public fun LemonadeUi.Chip(
@@ -291,8 +273,7 @@ public fun LemonadeUi.Chip(
         onTrailingIconClick = onTrailingIconClick,
         modifier = modifier,
         // Custom leading content (e.g. a SymbolContainer avatar) is larger than the icon-sized
-        // actions box, so let it size to its content instead of being clipped into it — matching
-        // the SwiftUI Chip, whose leadingContent is also unconstrained.
+        // actions box, so let it size to its content instead of being clipped into it.
         leadingSlotConstrained = false,
         interactionSource = interactionSource,
     )
@@ -315,7 +296,10 @@ internal fun CoreChip(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val platformDimensions = defaultChipDimensions()
-    val props = getChipProps(selected = selected, error = error)
+    val props = getChipProps(
+        selected = selected,
+        error = error,
+    )
 
     val isHover by interactionSource.collectIsHoveredAsState()
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -509,27 +493,44 @@ private class ChipPreviewProvider : PreviewParameterProvider<ChipPreviewData> {
 
     private fun buildAllVariants(): Sequence<ChipPreviewData> =
         buildList {
-            listOf(true, false).forEach { enabled ->
-                listOf(true, false).forEach { withCounter ->
-                    listOf(true, false).forEach { selected ->
-                        listOf(true, false).forEach { withLeadingIcon ->
-                            listOf(true, false).forEach { withTrailingIcon ->
-                                add(
-                                    ChipPreviewData(
-                                        isSelected = selected,
+            listOf(true, false)
+                .forEach { enabled ->
+                    listOf(true, false)
+                        .forEach { withCounter ->
+                            listOf(true, false)
+                                .forEach { selected ->
+                                    addIconVariants(
                                         enabled = enabled,
-                                        error = false,
-                                        counter = 5.takeIf { withCounter },
-                                        leadingIcon = LemonadeIcons.Airplane.takeIf { withLeadingIcon },
-                                        trailingIcon = LemonadeIcons.Airplane.takeIf { withTrailingIcon },
-                                    ),
-                                )
-                            }
+                                        withCounter = withCounter,
+                                        selected = selected,
+                                    )
+                                }
                         }
-                    }
                 }
-            }
         }.asSequence()
+
+    private fun MutableList<ChipPreviewData>.addIconVariants(
+        enabled: Boolean,
+        withCounter: Boolean,
+        selected: Boolean,
+    ) {
+        listOf(true, false)
+            .forEach { withLeadingIcon ->
+                listOf(true, false)
+                    .forEach { withTrailingIcon ->
+                        add(
+                            ChipPreviewData(
+                                isSelected = selected,
+                                enabled = enabled,
+                                error = false,
+                                counter = 5.takeIf { withCounter },
+                                leadingIcon = LemonadeIcons.Airplane.takeIf { withLeadingIcon },
+                                trailingIcon = LemonadeIcons.Airplane.takeIf { withTrailingIcon },
+                            ),
+                        )
+                    }
+            }
+    }
 }
 
 @LemonadePreview

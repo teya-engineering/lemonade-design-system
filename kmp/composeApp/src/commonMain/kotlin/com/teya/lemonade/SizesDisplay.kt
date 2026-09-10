@@ -28,18 +28,54 @@ private data class SizeItem(
 )
 
 private val sizeItems = listOf(
-    SizeItem("size100", LemonadeSizes.Size100.dp),
-    SizeItem("size200", LemonadeSizes.Size200.dp),
-    SizeItem("size300", LemonadeSizes.Size300.dp),
-    SizeItem("size400", LemonadeSizes.Size400.dp),
-    SizeItem("size500", LemonadeSizes.Size500.dp),
-    SizeItem("size600", LemonadeSizes.Size600.dp),
-    SizeItem("size700", LemonadeSizes.Size700.dp),
-    SizeItem("size800", LemonadeSizes.Size800.dp),
-    SizeItem("size900", LemonadeSizes.Size900.dp),
-    SizeItem("size1000", LemonadeSizes.Size1000.dp),
-    SizeItem("size1100", LemonadeSizes.Size1100.dp),
-    SizeItem("size1200", LemonadeSizes.Size1200.dp),
+    SizeItem(
+        name = "size100",
+        value = LemonadeSizes.Size100.dp,
+    ),
+    SizeItem(
+        name = "size200",
+        value = LemonadeSizes.Size200.dp,
+    ),
+    SizeItem(
+        name = "size300",
+        value = LemonadeSizes.Size300.dp,
+    ),
+    SizeItem(
+        name = "size400",
+        value = LemonadeSizes.Size400.dp,
+    ),
+    SizeItem(
+        name = "size500",
+        value = LemonadeSizes.Size500.dp,
+    ),
+    SizeItem(
+        name = "size600",
+        value = LemonadeSizes.Size600.dp,
+    ),
+    SizeItem(
+        name = "size700",
+        value = LemonadeSizes.Size700.dp,
+    ),
+    SizeItem(
+        name = "size800",
+        value = LemonadeSizes.Size800.dp,
+    ),
+    SizeItem(
+        name = "size900",
+        value = LemonadeSizes.Size900.dp,
+    ),
+    SizeItem(
+        name = "size1000",
+        value = LemonadeSizes.Size1000.dp,
+    ),
+    SizeItem(
+        name = "size1100",
+        value = LemonadeSizes.Size1100.dp,
+    ),
+    SizeItem(
+        name = "size1200",
+        value = LemonadeSizes.Size1200.dp,
+    ),
 )
 
 @Composable
@@ -60,7 +96,7 @@ internal fun SizesDisplay() {
             )
         }
 
-        items(sizeItems) { item ->
+        items(items = sizeItems) { item ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
@@ -78,7 +114,10 @@ internal fun SizesDisplay() {
                     modifier = Modifier.width(50.dp),
                 )
 
-                val displaySize = min(item.value, 100.dp)
+                val displaySize = min(
+                    a = item.value,
+                    b = 100.dp,
+                )
                 Box(
                     modifier = Modifier
                         .size(displaySize)

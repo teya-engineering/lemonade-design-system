@@ -26,8 +26,9 @@ import com.teya.lemonade.core.SelectListItemType
 import com.teya.lemonade.core.SelectListItemVariant
 
 /**
- * A list item with the sole purpose of selection of a single or multiple items, with behaviour
- *  changing depending if selection is singular or not.
+ * Selects one or several items from a list.
+ *
+ * [type] picks both the selection behaviour and the control drawn on the trailing edge.
  *
  * ## Usage
  * ```kotlin
@@ -44,41 +45,41 @@ import com.teya.lemonade.core.SelectListItemVariant
  * )
  * ```
  *
- * @param label - Label to be displayed in the selection item.
- * @param type - [SelectListItemType], that will define the selection behaviour and selection component.
- * @param checked - Flag defining if item is selected or not.
- * @param onItemClicked - Callback that is triggered on click interaction with list item.
- * @param modifier - [Modifier] to be applied to the base container of component.
- * @param variant - [SelectListItemVariant] that controls the visual treatment.
+ * @param label text shown in the selection item
+ * @param type [SelectListItemType] setting the selection behaviour and the selection control
+ * @param checked whether the item is selected
+ * @param onItemClicked called when the list item is clicked
+ * @param modifier optional [Modifier] applied to the base container
+ * @param variant [SelectListItemVariant] controlling the visual treatment.
  *  [SelectListItemVariant.Plain] (default) delegates to the base [LemonadeUi.ListItem] row and is
- *  meant to sit inside a surrounding surface such as [LemonadeUi.Card]. [SelectListItemVariant.Outlined]
- *  presents its own rounded container with a border and a brand-tinted background when selected,
- *  so items can stand alone in a stack.
- * @param isLoading - Shows a skeleton loading placeholder instead of content. Only honored by
- *  [SelectListItemVariant.Plain].
- * @param enabled - Flag that defines if the component is enabled or not. If disabled, click interactions
- *  and visual states are disabled.
- * @param interactionSource - Selection list item [MutableInteractionSource] for interaction events.
- * @param showDivider - Flag to show a divider below the list item. Only honored by
- *  [SelectListItemVariant.Plain].
- * @param supportText - Text to be displayed below the [label] as a support text.
- * @param leadingSlot - A Slot to be placed in the leading position of the list item.
- * @param trailingSlot - A Slot to be placed in the trailing position of the list item.
- * @param slotContent - Optional slot rendered below the support text, inside the label column
- *  so it stays aligned with the leading/trailing slots. Use for secondary content like an
- *  inline status text, badge, or compact widget that should sit under the row's text.
- * @param labelMaxLines - Maximum number of lines for the [label] before it truncates. Defaults to
- *  [Int.MAX_VALUE] (no limit).
- * @param labelOverflow - [TextOverflow] strategy applied to the [label] when it exceeds
- *  [labelMaxLines]. Defaults to [TextOverflow.Clip].
- * @param supportTextMaxLines - Maximum number of lines for the [supportText] before it truncates.
- *  Defaults to [Int.MAX_VALUE] (no limit).
- * @param supportTextOverflow - [TextOverflow] strategy applied to the [supportText] when it exceeds
- *  [supportTextMaxLines]. Defaults to [TextOverflow.Clip].
- * @param leadingVerticalAlignment - Vertical alignment of [leadingSlot] within the row. Defaults to
+ *  meant to sit inside a surrounding surface such as [LemonadeUi.Card].
+ *  [SelectListItemVariant.Outlined] presents its own rounded container with a border and a
+ *  brand-tinted background when selected, so items can stand alone in a stack
+ * @param isLoading shows a skeleton loading placeholder instead of content; honored only by
+ *  [SelectListItemVariant.Plain]
+ * @param enabled whether the component responds to input; when false, click interactions and
+ *  visual states are disabled
+ * @param interactionSource [MutableInteractionSource] for the list item's interaction events
+ * @param showDivider whether to show a divider below the list item; honored only by
+ *  [SelectListItemVariant.Plain]
+ * @param supportText text shown below [label]
+ * @param leadingSlot slot placed at the leading edge of the list item
+ * @param trailingSlot slot placed at the trailing edge of the list item
+ * @param slotContent optional slot drawn below the support text, inside the label column so it
+ *  stays aligned with the leading/trailing slots. Use for secondary content like an inline status
+ *  text, badge, or compact widget that should sit under the row's text
+ * @param labelMaxLines maximum lines for [label] before it truncates; defaults to [Int.MAX_VALUE]
+ *  (no limit)
+ * @param labelOverflow [TextOverflow] applied to [label] when it exceeds [labelMaxLines]; defaults
+ *  to [TextOverflow.Clip]
+ * @param supportTextMaxLines maximum lines for [supportText] before it truncates; defaults to
+ *  [Int.MAX_VALUE] (no limit)
+ * @param supportTextOverflow [TextOverflow] applied to [supportText] when it exceeds
+ *  [supportTextMaxLines]; defaults to [TextOverflow.Clip]
+ * @param leadingVerticalAlignment vertical alignment of [leadingSlot] within the row; defaults to
  *  [Alignment.Top], which keeps a leading icon level with the label's first line when the support
  *  text wraps. Pass [Alignment.CenterVertically] for a leading slot that should sit centred against
- *  the whole row instead — a large icon beside two lines of text, for example.
+ *  the whole row instead — a large icon beside two lines of text, for example
  */
 @Composable
 public fun LemonadeUi.SelectListItem(
@@ -589,23 +590,27 @@ private class SelectionListItemPreviewProvider :
     private fun buildAllVariants(): Sequence<SelectionListItemPreviewData> =
         buildList {
             SelectListItemType.entries.forEach { type ->
-                listOf(true, false).forEach { enabled ->
-                    listOf(true, false).forEach { leading ->
-                        listOf(true, false).forEach { trailing ->
-                            listOf(true, false).forEach { withSupportText ->
-                                add(
-                                    SelectionListItemPreviewData(
-                                        type = type,
-                                        supportText = withSupportText,
-                                        enabled = enabled,
-                                        leading = leading,
-                                        trailing = trailing,
-                                    ),
-                                )
+                listOf(true, false)
+                    .forEach { enabled ->
+                        listOf(true, false)
+                            .forEach { leading ->
+                                listOf(true, false)
+                                    .forEach { trailing ->
+                                        listOf(true, false)
+                                            .forEach { withSupportText ->
+                                                add(
+                                                    element = SelectionListItemPreviewData(
+                                                        type = type,
+                                                        supportText = withSupportText,
+                                                        enabled = enabled,
+                                                        leading = leading,
+                                                        trailing = trailing,
+                                                    ),
+                                                )
+                                            }
+                                    }
                             }
-                        }
                     }
-                }
             }
         }.asSequence()
 }
@@ -621,7 +626,7 @@ private fun SelectListItemPreview(
         supportText = "Support Text".takeIf { previewData.supportText },
         type = previewData.type,
         checked = previewData.enabled,
-        onItemClicked = { /* Nothing */ },
+        onItemClicked = { },
         leadingSlot = if (previewData.leading) {
             {
                 LemonadeUi.Icon(

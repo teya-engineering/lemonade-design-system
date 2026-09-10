@@ -79,15 +79,15 @@ private const val TOOLTIP_SCRIM_FADE_IN_MILLIS = 180
 /**
  * One step of a guided tour. See [LemonadeTooltipState.startTour].
  *
- * @param anchor Key of the element this step points at, as registered by
+ * @param anchor key of the element this step points at, as registered by
  *   [Modifier.lemonadeTooltipAnchor]. A step whose anchor is not currently on screen does not render
- *   until it appears, so a tour can span several screens.
- * @param content The body text of the step.
- * @param title Optional bold heading.
- * @param indicatorPlacement Forces where the indicator sits. Defaults to `null`, which resolves the
+ *   until it appears, so a tour can span several screens
+ * @param content body text of the step
+ * @param title optional bold heading
+ * @param indicatorPlacement forces where the indicator sits. Defaults to `null`, which resolves the
  *   placement from where the anchor is on screen — always a top or bottom one, so pass a left or
- *   right placement to put the tooltip beside its anchor instead.
- * @param cover Optional cover slot, rendered above the text.
+ *   right placement to put the tooltip beside its anchor instead
+ * @param cover optional cover slot, rendered above the text
  */
 public class LemonadeTooltipStep(
     public val anchor: String,
@@ -100,12 +100,12 @@ public class LemonadeTooltipStep(
 /**
  * Text the host puts in a tour's footer. Pass translated strings to localise a tour.
  *
- * @param next Label of the action that advances to the next step.
- * @param done Label that replaces [next] on the final step.
- * @param skip Label of the action that abandons the tour. Pass `null` to leave it out.
- * @param close Accessibility label for the close button. Kept separate from [skip], which can be
- *   `null` — the close button is always there, so it always needs a label.
- * @param stepSeparator Word between the two numbers of the step counter, as in `1 of 3`.
+ * @param next label of the action that advances to the next step
+ * @param done label that replaces [next] on the final step
+ * @param skip label of the action that abandons the tour. Pass `null` to leave it out
+ * @param close accessibility label for the close button. Kept separate from [skip], which can be
+ *   `null` — the close button is always there, so it always needs a label
+ * @param stepSeparator word between the two numbers of the step counter, as in `1 of 3`
  */
 public class LemonadeTooltipTourLabels(
     public val next: String = "Next",
@@ -115,8 +115,12 @@ public class LemonadeTooltipTourLabels(
     public val stepSeparator: String = "of",
 )
 
-// A snapshot of everything one presented tooltip needs. It is a plain carrier of the arguments the
-// caller already passed to show() or startTour(), so the parameter count tracks theirs.
+/**
+ * Carries the arguments behind one presented tooltip.
+ *
+ * They come straight from [LemonadeTooltipState.show] or [LemonadeTooltipState.startTour], so the
+ * parameter count tracks theirs.
+ */
 @Suppress("LongParameterList")
 internal class TooltipPresentation(
     val id: Int,
@@ -200,21 +204,21 @@ public class LemonadeTooltipState {
      * )
      * ```
      *
-     * @param anchor Key of the element to point at, as registered by
-     *   [Modifier.lemonadeTooltipAnchor]. Nothing renders until an element with this key is on screen.
-     * @param content The body text.
-     * @param title Optional bold heading.
-     * @param indicatorPlacement Forces where the indicator sits. Defaults to `null`, which resolves
+     * @param anchor key of the element to point at, as registered by
+     *   [Modifier.lemonadeTooltipAnchor]. Nothing renders until an element with this key is on screen
+     * @param content body text
+     * @param title optional bold heading
+     * @param indicatorPlacement forces where the indicator sits. Defaults to `null`, which resolves
      *   the placement from where the anchor is on screen — always a top or bottom one, so pass a left
-     *   or right placement to put the tooltip beside its anchor instead.
-     * @param scrim What to draw behind the tooltip. Defaults to [TooltipScrim.None] — on-demand help
-     *   usually should not dim the screen.
-     * @param dismissOnOutsideTap Whether a tap outside the tooltip dismisses it. Defaults to `true`.
-     *   Either way the host swallows the tap, so the UI underneath is never acted on by accident.
-     * @param showCloseButton Whether to show the close button. Defaults to `false`.
-     * @param closeContentDescription Accessibility label for the close button.
-     * @param cover Optional cover slot, rendered above the text.
-     * @param footer Optional footer slot. See [TooltipFooterScope].
+     *   or right placement to put the tooltip beside its anchor instead
+     * @param scrim what to draw behind the tooltip. Defaults to [TooltipScrim.None] — on-demand help
+     *   usually should not dim the screen
+     * @param dismissOnOutsideTap whether a tap outside the tooltip dismisses it. Defaults to `true`.
+     *   Either way the host swallows the tap, so the UI underneath is never acted on by accident
+     * @param showCloseButton whether to show the close button. Defaults to `false`
+     * @param closeContentDescription accessibility label for the close button
+     * @param cover optional cover slot, rendered above the text
+     * @param footer optional footer slot. See [TooltipFooterScope]
      */
     @Suppress("LongParameterList")
     public fun show(
@@ -270,17 +274,17 @@ public class LemonadeTooltipState {
      * )
      * ```
      *
-     * @param steps The steps, in order. An empty list does nothing.
-     * @param labels Text for the generated footer. Pass translated strings to localise a tour.
-     * @param scrim What to draw behind each step. Defaults to [TooltipScrim.Spotlight], which keeps
-     *   the element being described lit while dimming the rest.
-     * @param showCloseButton Whether each step shows the close button. Defaults to `true`.
-     * @param dismissOnOutsideTap Whether a tap outside the tooltip abandons the tour. Defaults to
+     * @param steps the steps, in order. An empty list does nothing
+     * @param labels text for the generated footer. Pass translated strings to localise a tour
+     * @param scrim what to draw behind each step. Defaults to [TooltipScrim.Spotlight], which keeps
+     *   the element being described lit while dimming the rest
+     * @param showCloseButton whether each step shows the close button. Defaults to `true`
+     * @param dismissOnOutsideTap whether a tap outside the tooltip abandons the tour. Defaults to
      *   `true`. Pass `false` to require the next/done action — the tap is still swallowed, so the UI
-     *   underneath is never acted on, it just does not end the tour.
-     * @param onFinish Invoked once the final step is confirmed.
-     * @param onSkip Invoked when the tour is abandoned, whether by the skip action, the close button
-     *   or an outside tap.
+     *   underneath is never acted on, it just does not end the tour
+     * @param onFinish run once the final step is confirmed
+     * @param onSkip run when the tour is abandoned, whether by the skip action, the close button or
+     *   an outside tap
      */
     public fun startTour(
         steps: List<LemonadeTooltipStep>,
@@ -308,7 +312,7 @@ public class LemonadeTooltipState {
         presentCurrentStep()
     }
 
-    /** Advances to the next step, finishing the tour if the current step is the last one. */
+    /** Advances to the next step, finishing the tour after the last one. */
     public fun next() {
         val currentTour = tour
             ?: return
@@ -334,7 +338,7 @@ public class LemonadeTooltipState {
         presentCurrentStep()
     }
 
-    /** Abandons the running tour and invokes its `onSkip`. */
+    /** Abandons the running tour and runs the `onSkip` given to [startTour]. */
     public fun skip() {
         val currentTour = tour
             ?: return
@@ -344,7 +348,7 @@ public class LemonadeTooltipState {
         currentTour.onSkip()
     }
 
-    /** Dismisses whatever is showing. A running tour is abandoned, which invokes its `onSkip`. */
+    /** Dismisses whatever is showing. Abandons a running tour, running the `onSkip` given to [startTour]. */
     public fun dismiss() {
         if (tour != null) {
             skip()
@@ -398,7 +402,10 @@ public class LemonadeTooltipState {
             },
             closeContentDescription = currentTour.labels.close,
             cover = step.cover,
-            footer = tourFooter(tour = currentTour, index = stepIndex),
+            footer = tourFooter(
+                tour = currentTour,
+                index = stepIndex,
+            ),
         )
     }
 
@@ -439,8 +446,7 @@ public class LemonadeTooltipState {
 }
 
 /**
- * Provides the [LemonadeTooltipState] to the composition tree. Must be used inside
- * [LemonadeTooltipHost].
+ * Current [LemonadeTooltipState]. Throws unless read inside a [LemonadeTooltipHost].
  */
 public val LocalLemonadeTooltipState: ProvidableCompositionLocal<LemonadeTooltipState> =
     staticCompositionLocalOf {
@@ -481,10 +487,10 @@ public fun Modifier.lemonadeTooltipAnchor(key: String): Modifier =
     }
 
 /**
- * Provides [LemonadeTooltipState] to the composition tree and renders the tooltip overlay — the
- * scrim and the anchored tooltip itself — above your content.
+ * Renders the tooltip overlay — the scrim and the anchored tooltip — above your content.
  *
- * Place this at the root of your app, wrapping your main content.
+ * Supplies [LemonadeTooltipState] to the composition tree. Place this at the root of your app,
+ * wrapping your main content.
  *
  * ## Usage
  * ```kotlin
@@ -535,7 +541,10 @@ public fun LemonadeTooltipHost(
                     state = tooltipState,
                     presentation = shown,
                     anchor = anchor,
-                    hostSize = Size(width = hostBounds.width, height = hostBounds.height),
+                    hostSize = Size(
+                        width = hostBounds.width,
+                        height = hostBounds.height,
+                    ),
                     visibleState = visibleState,
                 )
             }
@@ -543,7 +552,7 @@ public fun LemonadeTooltipHost(
     }
 }
 
-/** Draws the scrim behind a tooltip, punching out the anchor when the scrim is a spotlight. */
+/** Draws the scrim behind a tooltip, punching out the anchor for a spotlight. */
 private fun Modifier.drawTooltipScrim(
     scrim: TooltipScrim,
     color: Color,
@@ -557,15 +566,22 @@ private fun Modifier.drawTooltipScrim(
             TooltipScrim.Dim -> drawRect(color = color)
 
             TooltipScrim.Spotlight -> {
-                val cutout = Path().apply {
-                    addRoundRect(
-                        roundRect = RoundRect(
-                            rect = spotlight,
-                            cornerRadius = CornerRadius(spotlightRadius, spotlightRadius),
-                        ),
-                    )
-                }
-                clipPath(path = cutout, clipOp = ClipOp.Difference) {
+                val cutout = Path()
+                    .apply {
+                        addRoundRect(
+                            roundRect = RoundRect(
+                                rect = spotlight,
+                                cornerRadius = CornerRadius(
+                                    x = spotlightRadius,
+                                    y = spotlightRadius,
+                                ),
+                            ),
+                        )
+                    }
+                clipPath(
+                    path = cutout,
+                    clipOp = ClipOp.Difference,
+                ) {
                     drawRect(color = color)
                 }
             }
@@ -622,7 +638,10 @@ private fun TooltipOverlay(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .pointerInput(presentation.id, presentation.dismissOnOutsideTap) {
+            .pointerInput(
+                key1 = presentation.id,
+                key2 = presentation.dismissOnOutsideTap,
+            ) {
                 // The tap is always swallowed so the UI underneath cannot be acted on while a
                 // tooltip is up; whether it also dismisses is the caller's choice.
                 detectTapGestures {
@@ -675,9 +694,14 @@ private fun TooltipOverlay(
             },
             modifier = Modifier.fillMaxSize(),
         ) { measurables, constraints ->
-            val placeable = measurables.first().measure(
-                constraints = constraints.copy(minWidth = 0, minHeight = 0),
-            )
+            val placeable = measurables
+                .first()
+                .measure(
+                    constraints = constraints.copy(
+                        minWidth = 0,
+                        minHeight = 0,
+                    ),
+                )
             val offset = resolveTooltipOffset(
                 anchor = anchor,
                 hostSize = Size(
@@ -692,7 +716,10 @@ private fun TooltipOverlay(
                 density = this,
             )
 
-            layout(width = constraints.maxWidth, height = constraints.maxHeight) {
+            layout(
+                width = constraints.maxWidth,
+                height = constraints.maxHeight,
+            ) {
                 placeable.place(position = offset)
             }
         }
@@ -700,8 +727,9 @@ private fun TooltipOverlay(
 }
 
 /**
- * Pivot for the entry scale, placed at the indicator so the tooltip grows out of the element it
- * points at rather than out of its own centre.
+ * Pivot for the entry scale, placed at the indicator.
+ *
+ * The tooltip then grows out of the element it points at rather than out of its own centre.
  */
 private fun TooltipIndicatorPlacement.transformOrigin(density: Density): TransformOrigin {
     // Derived from indicatorCenterOffset rather than restated, so the pivot cannot drift from where
@@ -748,16 +776,13 @@ private fun TooltipIndicatorPlacement.transformOrigin(density: Density): Transfo
     }
 }
 
-// MARK: - Placement Resolution
-
 /**
- * Which edge of the tooltip its indicator protrudes from, and therefore which side of [anchor] the
- * tooltip sits on.
+ * Which edge of the tooltip its indicator protrudes from.
  *
- * A caller that forces a placement is choosing the side too — an indicator drawn on top of the body
- * only makes sense with the body below the anchor. Without one, and for
- * [TooltipIndicatorPlacement.None] which names no edge, the tooltip goes below an anchor in the top
- * half of the host and above one in the bottom half. Never returns
+ * That is also which side of [anchor] the tooltip sits on. A caller that forces a placement is
+ * choosing the side too — an indicator drawn on top of the body only makes sense with the body below
+ * the anchor. Without one, and for [TooltipIndicatorPlacement.None] which names no edge, the tooltip
+ * goes below an anchor in the top half of the host and above one in the bottom half. Never returns
  * [TooltipIndicatorEdge.None]: the tooltip is always on one side of its anchor, even when no
  * indicator is drawn.
  */
@@ -779,9 +804,10 @@ internal fun resolveTooltipEdge(
 }
 
 /**
- * Picks the placement whose indicator lands closest to the centre of [anchor] once the tooltip has
- * been kept inside the host. The indicator has only three possible positions, so near an edge the
- * left or right variant reaches an anchor that the centred one cannot.
+ * Picks the placement whose indicator lands closest to the centre of [anchor].
+ *
+ * The tooltip is kept inside the host first. The indicator has only three possible positions, so near
+ * an edge the left or right variant reaches an anchor that the centred one cannot.
  *
  * Only the top and bottom placements are candidates: choosing to sit beside an anchor rather than
  * above or below it is a deliberate call, so the left and right ones have to be asked for.
@@ -819,7 +845,10 @@ internal fun resolveIndicatorPlacement(
             edgeLength = tooltipWidth,
             density = density,
         )
-        val x = (anchorCenterX - offset).coerceIn(minimumValue = margin, maximumValue = maxX)
+        val x = (anchorCenterX - offset).coerceIn(
+            minimumValue = margin,
+            maximumValue = maxX,
+        )
         val error = abs(x + offset - anchorCenterX)
         if (error < bestError) {
             bestError = error
@@ -831,12 +860,12 @@ internal fun resolveIndicatorPlacement(
 }
 
 /**
- * Where to place the tooltip inside the host so its indicator points at [anchor], kept inside the
- * host's margins.
+ * Where to place the tooltip inside the host so its indicator points at [anchor].
  *
- * One rule, applied per edge: along the indicator's own axis the tooltip clears the corresponding
- * anchor bound by [TooltipAnchorGap]; across it the indicator lines up with the anchor's centre. The
- * indicator tip sits on the tooltip's own bounds, so the gap is measured from those.
+ * The result is kept inside the host's margins. One rule, applied per edge: along the indicator's own
+ * axis the tooltip clears the corresponding anchor bound by [TooltipAnchorGap]; across it the
+ * indicator lines up with the anchor's centre. The indicator tip sits on the tooltip's own bounds, so
+ * the gap is measured from those.
  *
  * The edge is resolved here rather than passed in, so it cannot contradict [placement], and so
  * [TooltipIndicatorPlacement.None] — which names no edge — still lands above or below its anchor.
@@ -868,14 +897,20 @@ internal fun resolveTooltipOffset(
     val raw = when (edge) {
         TooltipIndicatorEdge.Top,
         TooltipIndicatorEdge.None,
-        -> Offset(x = centredOnAnchorX, y = anchor.bottom + gap)
+        -> Offset(
+            x = centredOnAnchorX,
+            y = anchor.bottom + gap,
+        )
 
         TooltipIndicatorEdge.Bottom -> Offset(
             x = centredOnAnchorX,
             y = anchor.top - gap - tooltipSize.height,
         )
 
-        TooltipIndicatorEdge.Left -> Offset(x = anchor.right + gap, y = centredOnAnchorY)
+        TooltipIndicatorEdge.Left -> Offset(
+            x = anchor.right + gap,
+            y = centredOnAnchorY,
+        )
 
         TooltipIndicatorEdge.Right -> Offset(
             x = anchor.left - gap - tooltipSize.width,
@@ -887,7 +922,15 @@ internal fun resolveTooltipOffset(
     val maxY = (hostSize.height - tooltipSize.height - margin).coerceAtLeast(minimumValue = margin)
 
     return IntOffset(
-        x = raw.x.coerceIn(minimumValue = margin, maximumValue = maxX).roundToInt(),
-        y = raw.y.coerceIn(minimumValue = margin, maximumValue = maxY).roundToInt(),
+        x = raw.x
+            .coerceIn(
+                minimumValue = margin,
+                maximumValue = maxX,
+            ).roundToInt(),
+        y = raw.y
+            .coerceIn(
+                minimumValue = margin,
+                maximumValue = maxY,
+            ).roundToInt(),
     )
 }

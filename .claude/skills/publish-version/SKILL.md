@@ -19,9 +19,9 @@ either side.
 | **KMP** | `lemonade-kmp-X.Y.Z` | `kmp_release.yml` publishes to Maven Central | **You create it** (KMP CI does *not*) — holds the **Latest** badge |
 | **SwiftUI** | `lemonade-swiftui-X.Y.Z` **and** plain `X.Y.Z` | `swiftui_release.yml` (on the prefixed tag) builds the XCFramework + creates the GH release. The plain `X.Y.Z` tag is the **SPM resolution tag** consumers actually pin to (root `Package.swift` builds from source). | **CI creates it** — do *not* create it yourself |
 
-Both SwiftUI tags point at the same commit. The XCFramework path is legacy ("we
-consume SwiftUI purely via SPM from source"), but the prefixed tag still drives
-the GH release + Slack notification, so keep pushing it.
+Both SwiftUI tags point at the same commit. The prefixed tag drives the GitHub
+release and the Slack notification; the plain tag is what SPM consumers resolve,
+building from source. Push both.
 
 **Version bump rule (suggestion only, always confirmed):**
 - changes on **one** side only → **patch** bump for that SDK
@@ -163,4 +163,3 @@ Summarize what shipped, with links:
   doubling it up fights the CI-managed release.
 - These are public, outward-facing actions. Do the analysis and version
   confirmation, then execute the push/release for the confirmed SDKs in the same run.
-```

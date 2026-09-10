@@ -25,25 +25,22 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 
 /**
- * Spinner component, to indication status and possible actions via iconography
+ * Shows that a process is ongoing.
  *
- * Spinner is an animated indicator used to show that a process is ongoing. Communicates loading or
- * waiting states without blocking the interface.
+ * Animated indicator for loading or waiting states; it never blocks the interface.
  *
  * ## Usage
  * ```kotlin
- * LemonadeUi.Spinner (
+ * LemonadeUi.Spinner(
  *     size = LemonadeAssetSize.Medium,
  *     tint = LocalColors.current.content.contentSecondary,
  * )
  * ```
  *
- * ## Parameters
- * @param size The [LemonadeAssetSize] to be applied to the spinner.
- *  Defaults to [LemonadeAssetSize.Medium]
- * @param tint The tint color to be applied to the spinner.
- *  Defaults to the secondary content color of the [LemonadeTheme]
- * @param Modifier: Optional [Modifier] for additional styling and layout adjustments.
+ * @param size [LemonadeAssetSize] applied to the spinner; defaults to [LemonadeAssetSize.Medium]
+ * @param tint tint color applied to the spinner; defaults to the secondary content color of
+ *  [LemonadeTheme]
+ * @param modifier optional [Modifier] for styling and layout adjustments
  */
 @Composable
 public fun LemonadeUi.Spinner(
@@ -86,10 +83,7 @@ private fun CoreSpinner(
         modifier = modifier
             .size(spinnerSize.dp),
     ) {
-        /**
-         * Ensures that when the Spinner resizes, its stroke resizes
-         * with it, keeping its width relative to the Spinner size.
-         */
+        /** Scales the stroke with the [LemonadeUi.Spinner] so its width stays proportional. */
         val strokeWidth = size.minDimension * (strokeBaseWidth / spinnerBaseSize)
 
         rotate(rotation) {
@@ -99,7 +93,10 @@ private fun CoreSpinner(
                 sweepAngle = 285f,
                 topLeft = Offset.Zero,
                 useCenter = false,
-                size = Size(size.width, size.height),
+                size = Size(
+                    width = size.width,
+                    height = size.height,
+                ),
                 style = Stroke(width = strokeWidth),
             )
         }

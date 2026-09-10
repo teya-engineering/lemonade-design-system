@@ -19,7 +19,6 @@ import com.teya.lemonade.core.DividerVariant
 @Composable
 internal fun DividerDisplay() {
     SampleScreenDisplayLazyColumn(title = "Divider") {
-        // Horizontal Divider
         item(key = "Horizontal Divider") {
             DividerSection(title = "Horizontal Divider") {
                 Column(
@@ -50,7 +49,6 @@ internal fun DividerDisplay() {
             }
         }
 
-        // Horizontal Divider with Label
         item(key = "Horizontal Divider with Label") {
             DividerSection(title = "Horizontal Divider with Label") {
                 Column(
@@ -75,13 +73,15 @@ internal fun DividerDisplay() {
                             textStyle = LemonadeTheme.typography.bodySmallRegular,
                             color = LemonadeTheme.colors.content.contentSecondary,
                         )
-                        LemonadeUi.HorizontalDivider(label = "OR", variant = DividerVariant.Dashed)
+                        LemonadeUi.HorizontalDivider(
+                            label = "OR",
+                            variant = DividerVariant.Dashed,
+                        )
                     }
                 }
             }
         }
 
-        // Vertical Divider
         item(key = "Vertical Divider") {
             DividerSection(title = "Vertical Divider") {
                 Row(
@@ -118,119 +118,128 @@ internal fun DividerDisplay() {
             }
         }
 
-        // In Context
         item(key = "In Context") {
             DividerSection(title = "In Context") {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing600),
                 ) {
-                    // Content separation example
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(LemonadeTheme.radius.radius300))
-                            .background(LemonadeTheme.colors.background.bgElevated)
-                            .padding(LemonadeTheme.spaces.spacing400),
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-                    ) {
-                        LemonadeUi.Text(
-                            text = "Section 1",
-                            textStyle = LemonadeTheme.typography.bodyMediumMedium,
-                        )
-                        LemonadeUi.Text(
-                            text = "Some content for the first section",
-                            textStyle = LemonadeTheme.typography.bodySmallRegular,
-                            color = LemonadeTheme.colors.content.contentSecondary,
-                        )
-                        LemonadeUi.HorizontalDivider()
-                        LemonadeUi.Text(
-                            text = "Section 2",
-                            textStyle = LemonadeTheme.typography.bodyMediumMedium,
-                        )
-                        LemonadeUi.Text(
-                            text = "Some content for the second section",
-                            textStyle = LemonadeTheme.typography.bodySmallRegular,
-                            color = LemonadeTheme.colors.content.contentSecondary,
-                        )
-                    }
-
-                    // Login separator example
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(LemonadeTheme.radius.radius300))
-                            .background(LemonadeTheme.colors.background.bgElevated)
-                            .padding(LemonadeTheme.spaces.spacing400),
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        LemonadeUi.Button(
-                            label = "Continue with Email",
-                            onClick = { },
-                            modifier = Modifier.fillMaxWidth(),
-                        )
-                        LemonadeUi.HorizontalDivider(label = "OR")
-                        LemonadeUi.Button(
-                            label = "Continue with Google",
-                            onClick = { },
-                            modifier = Modifier.fillMaxWidth(),
-                        )
-                    }
-
-                    // Vertical divider in row example
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(LemonadeTheme.radius.radius300))
-                            .background(LemonadeTheme.colors.background.bgElevated)
-                            .padding(LemonadeTheme.spaces.spacing400),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            LemonadeUi.Text(
-                                text = "125",
-                                textStyle = LemonadeTheme.typography.headingSmall,
-                            )
-                            LemonadeUi.Text(
-                                text = "Posts",
-                                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                                color = LemonadeTheme.colors.content.contentSecondary,
-                            )
-                        }
-                        LemonadeUi.VerticalDivider(modifier = Modifier.height(40.dp))
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            LemonadeUi.Text(
-                                text = "1.2K",
-                                textStyle = LemonadeTheme.typography.headingSmall,
-                            )
-                            LemonadeUi.Text(
-                                text = "Followers",
-                                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                                color = LemonadeTheme.colors.content.contentSecondary,
-                            )
-                        }
-                        LemonadeUi.VerticalDivider(modifier = Modifier.height(40.dp))
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            LemonadeUi.Text(
-                                text = "348",
-                                textStyle = LemonadeTheme.typography.headingSmall,
-                            )
-                            LemonadeUi.Text(
-                                text = "Following",
-                                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                                color = LemonadeTheme.colors.content.contentSecondary,
-                            )
-                        }
-                    }
+                    ContentSeparationExample()
+                    LoginSeparatorExample()
+                    VerticalDividerRowExample()
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun ContentSeparationExample() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(LemonadeTheme.radius.radius300))
+            .background(LemonadeTheme.colors.background.bgElevated)
+            .padding(LemonadeTheme.spaces.spacing400),
+        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+    ) {
+        LemonadeUi.Text(
+            text = "Section 1",
+            textStyle = LemonadeTheme.typography.bodyMediumMedium,
+        )
+        LemonadeUi.Text(
+            text = "Some content for the first section",
+            textStyle = LemonadeTheme.typography.bodySmallRegular,
+            color = LemonadeTheme.colors.content.contentSecondary,
+        )
+        LemonadeUi.HorizontalDivider()
+        LemonadeUi.Text(
+            text = "Section 2",
+            textStyle = LemonadeTheme.typography.bodyMediumMedium,
+        )
+        LemonadeUi.Text(
+            text = "Some content for the second section",
+            textStyle = LemonadeTheme.typography.bodySmallRegular,
+            color = LemonadeTheme.colors.content.contentSecondary,
+        )
+    }
+}
+
+@Composable
+private fun LoginSeparatorExample() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(LemonadeTheme.radius.radius300))
+            .background(LemonadeTheme.colors.background.bgElevated)
+            .padding(LemonadeTheme.spaces.spacing400),
+        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        LemonadeUi.Button(
+            label = "Continue with Email",
+            onClick = { },
+            modifier = Modifier.fillMaxWidth(),
+        )
+        LemonadeUi.HorizontalDivider(label = "OR")
+        LemonadeUi.Button(
+            label = "Continue with Google",
+            onClick = { },
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Composable
+private fun VerticalDividerRowExample() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(LemonadeTheme.radius.radius300))
+            .background(LemonadeTheme.colors.background.bgElevated)
+            .padding(LemonadeTheme.spaces.spacing400),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            LemonadeUi.Text(
+                text = "125",
+                textStyle = LemonadeTheme.typography.headingSmall,
+            )
+            LemonadeUi.Text(
+                text = "Posts",
+                textStyle = LemonadeTheme.typography.bodySmallRegular,
+                color = LemonadeTheme.colors.content.contentSecondary,
+            )
+        }
+        LemonadeUi.VerticalDivider(modifier = Modifier.height(40.dp))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            LemonadeUi.Text(
+                text = "1.2K",
+                textStyle = LemonadeTheme.typography.headingSmall,
+            )
+            LemonadeUi.Text(
+                text = "Followers",
+                textStyle = LemonadeTheme.typography.bodySmallRegular,
+                color = LemonadeTheme.colors.content.contentSecondary,
+            )
+        }
+        LemonadeUi.VerticalDivider(modifier = Modifier.height(40.dp))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            LemonadeUi.Text(
+                text = "348",
+                textStyle = LemonadeTheme.typography.headingSmall,
+            )
+            LemonadeUi.Text(
+                text = "Following",
+                textStyle = LemonadeTheme.typography.bodySmallRegular,
+                color = LemonadeTheme.colors.content.contentSecondary,
+            )
         }
     }
 }

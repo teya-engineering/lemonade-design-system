@@ -3,8 +3,7 @@
 package com.teya.lemonade.core
 
 /**
- * Where the tooltip draws its indicator — the small arrow that points back at the element the
- * tooltip describes.
+ * Where the tooltip draws its indicator — the arrow pointing back at the element it describes.
  *
  * The first word names the edge of the tooltip the indicator protrudes from, the second where along
  * that edge it sits. So [TopLeft] puts the arrow on the top edge towards its left end — the tooltip

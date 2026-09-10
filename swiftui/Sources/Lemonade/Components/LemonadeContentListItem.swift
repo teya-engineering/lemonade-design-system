@@ -232,16 +232,55 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
 
 #if DEBUG
 struct LemonadeContentListItem_Previews: PreviewProvider {
+    private static var stackedList: some View {
+        VStack(spacing: 0) {
+            LemonadeUi.ContentListItem(
+                label: "Label",
+                value: "Value",
+                showDivider: true
+            )
+            LemonadeUi.ContentListItem(
+                label: "Label",
+                value: "Value",
+                showDivider: true
+            )
+            LemonadeUi.ContentListItem(
+                label: "Label",
+                value: "Value"
+            )
+        }
+    }
+
+    private static var stackedCompactList: some View {
+        VStack(spacing: 0) {
+            LemonadeUi.ContentListItem(
+                label: "Label",
+                value: "Value",
+                showDivider: true,
+                density: .compact
+            )
+            LemonadeUi.ContentListItem(
+                label: "Label",
+                value: "Value",
+                showDivider: true,
+                density: .compact
+            )
+            LemonadeUi.ContentListItem(
+                label: "Label",
+                value: "Value",
+                density: .compact
+            )
+        }
+    }
+
     static var previews: some View {
         ScrollView {
             VStack(spacing: LemonadeTheme.spaces.spacing400) {
-                // Horizontal - simple
                 LemonadeUi.ContentListItem(
                     label: "Account holder",
                     value: "John Doe"
                 )
 
-                // Horizontal - with leading and trailing
                 LemonadeUi.ContentListItem(
                     label: "Label",
                     value: "Value",
@@ -264,14 +303,12 @@ struct LemonadeContentListItem_Previews: PreviewProvider {
 
                 LemonadeUi.HorizontalDivider()
 
-                // Vertical small
                 LemonadeUi.ContentListItem(
                     label: "Balance",
                     value: "$1,234.56",
                     layout: .vertical
                 )
 
-                // Vertical large (with content slot)
                 LemonadeUi.ContentListItem(
                     label: "Balance",
                     value: "$1,234.56",
@@ -296,44 +333,9 @@ struct LemonadeContentListItem_Previews: PreviewProvider {
                     }
                 )
 
-                // Stacked list with dividers
-                VStack(spacing: 0) {
-                    LemonadeUi.ContentListItem(
-                        label: "Label",
-                        value: "Value",
-                        showDivider: true
-                    )
-                    LemonadeUi.ContentListItem(
-                        label: "Label",
-                        value: "Value",
-                        showDivider: true
-                    )
-                    LemonadeUi.ContentListItem(
-                        label: "Label",
-                        value: "Value"
-                    )
-                }
-                
-                // Stacked compact list with dividers
-                VStack(spacing: 0) {
-                    LemonadeUi.ContentListItem(
-                        label: "Label",
-                        value: "Value",
-                        showDivider: true,
-                        density: .compact
-                    )
-                    LemonadeUi.ContentListItem(
-                        label: "Label",
-                        value: "Value",
-                        showDivider: true,
-                        density: .compact
-                    )
-                    LemonadeUi.ContentListItem(
-                        label: "Label",
-                        value: "Value",
-                        density: .compact
-                    )
-                }
+                stackedList
+
+                stackedCompactList
             }
         }
         .padding()

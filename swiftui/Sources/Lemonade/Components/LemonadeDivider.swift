@@ -119,8 +119,7 @@ public extension LemonadeUi {
 /// A line down the middle of whatever rect it is given.
 ///
 /// A `Shape` receives the resolved rect in `path(in:)`, so neither variant needs a
-/// `GeometryReader` — which is a layout-deferral point that takes all offered space and forces a
-/// second pass. Dividers are the most repeated element in a list-heavy screen, so that mattered.
+/// `GeometryReader`, which would take all offered space and force a second layout pass.
 private struct DividerLine: Shape {
     let isHorizontal: Bool
 
@@ -174,35 +173,30 @@ private extension DividerVariant {
 struct LemonadeDivider_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 24) {
-            // Simple horizontal divider
             VStack(alignment: .leading) {
                 Text("Simple Divider")
                     .font(.caption)
                 LemonadeUi.HorizontalDivider()
             }
 
-            // Horizontal divider with label
             VStack(alignment: .leading) {
                 Text("Divider with Label")
                     .font(.caption)
                 LemonadeUi.HorizontalDivider(label: "OR")
             }
 
-            // Dashed horizontal divider
             VStack(alignment: .leading) {
                 Text("Dashed Divider")
                     .font(.caption)
                 LemonadeUi.HorizontalDivider(variant: .dashed)
             }
 
-            // Dashed horizontal divider with label
             VStack(alignment: .leading) {
                 Text("Dashed Divider with Label")
                     .font(.caption)
                 LemonadeUi.HorizontalDivider(label: "OR", variant: .dashed)
             }
 
-            // Vertical dividers
             HStack(spacing: 24) {
                 VStack {
                     Text("Simple")

@@ -9,7 +9,6 @@ import Lemonade
 /// building an `AnyView` per entry) means a destination view is only constructed
 /// when the user actually pushes it. The raw value doubles as the display title.
 private enum Demo: String, CaseIterable, Identifiable, Hashable {
-    // Foundations
     case colors = "Colors"
     case spacing = "Spacing"
     case radius = "Radius"
@@ -18,16 +17,13 @@ private enum Demo: String, CaseIterable, Identifiable, Hashable {
     case opacity = "Opacity"
     case borderWidth = "Border Width"
 
-    // Assets
     case icons = "Icons"
     case brandLogos = "Brand Logos"
     case countryFlags = "Country Flags"
 
-    // Typography
     case text = "Text"
     case markdown = "Markdown"
 
-    // Form Controls
     case button = "Button"
     case iconButton = "IconButton"
     case checkbox = "Checkbox"
@@ -36,13 +32,11 @@ private enum Demo: String, CaseIterable, Identifiable, Hashable {
     case datePicker = "DatePicker"
     case inlineCalendar = "InlineCalendar"
 
-    // Input Fields
     case textField = "TextField"
     case searchField = "SearchField"
     case selectField = "SelectField"
     case pinCode = "PinCode"
 
-    // Display Components
     case tag = "Tag"
     case badge = "Badge"
     case symbolContainer = "SymbolContainer"
@@ -52,7 +46,6 @@ private enum Demo: String, CaseIterable, Identifiable, Hashable {
     case tooltip = "Tooltip"
     case historyTimeline = "HistoryTimeline"
 
-    // Selection & Lists
     case chip = "Chip"
     case listItem = "ListItem"
     case contentListItem = "ContentListItem"
@@ -60,13 +53,11 @@ private enum Demo: String, CaseIterable, Identifiable, Hashable {
     case segmentedControl = "SegmentedControl"
     case boxSelection = "BoxSelection"
 
-    // Navigation
     case link = "Link"
     case tabs = "Tabs"
     case tile = "Tile"
     case topBar = "TopBar"
 
-    // Feedback
     case skeleton = "Skeleton"
     case spinner = "Spinner"
     case toast = "Toast"
@@ -76,17 +67,14 @@ private enum Demo: String, CaseIterable, Identifiable, Hashable {
     var title: String { rawValue }
 }
 
-/// A titled group of demo entries. The id is derived from the content (the title
-/// is unique across the catalog) so `ForEach` can diff sections across body
-/// passes instead of tearing them down and rebuilding them.
+/// A titled group of demo entries, identified by its title, which is unique across the catalog.
 private struct DemoSection: Identifiable {
     var id: String { title }
     let title: String
     let items: [Demo]
 }
 
-/// The catalog itself. A file-scope `let` is lazily initialized exactly once per
-/// process, so the section/item graph is never rebuilt on a body pass.
+/// Every demo screen, grouped into the sections the home list renders.
 private let demoSections: [DemoSection] = [
     DemoSection(
         title: "Foundations",
@@ -130,13 +118,16 @@ private func filteredSections(matching searchText: String) -> [DemoSection] {
     let text = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
     guard !text.isEmpty else { return demoSections }
 
-    // Filter items within each section and drop empty sections
-    return demoSections.compactMap { section in
-        let sectionMatches = section.title.localizedCaseInsensitiveContains(text)
-        let matchedItems = section.items.filter { item in
+    return demoSections.compactMap { $0.narrowed(to: text) }
+}
+
+private extension DemoSection {
+    func narrowed(to text: String) -> DemoSection? {
+        let sectionMatches = title.localizedCaseInsensitiveContains(text)
+        let matchedItems = items.filter { item in
             sectionMatches || item.title.localizedCaseInsensitiveContains(text)
         }
-        return matchedItems.isEmpty ? nil : DemoSection(title: section.title, items: matchedItems)
+        return matchedItems.isEmpty ? nil : DemoSection(title: title, items: matchedItems)
     }
 }
 
@@ -176,9 +167,8 @@ struct HomeView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
                 .environmentObject(styleHandler)
-                // Settings is three rows. Without detents a `.sheet` presents at full height, so it
-                // read as a full-screen takeover rather than a bottom sheet — no visible top inset,
-                // no rounded corners, nothing of the catalog left behind it.
+                // Without detents the sheet presents at full height and reads as a takeover
+                // instead of a bottom sheet with the catalog still behind it.
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         }

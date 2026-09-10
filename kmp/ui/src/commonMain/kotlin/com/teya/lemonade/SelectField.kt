@@ -24,9 +24,10 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeIcons
 
 /**
- * The Select Field component allows users to trigger an options list or picker without typing.
- * It is visually identical to [TextField] but the entire field is clickable (no text input).
- * Ideal for use cases such as country selection, category pickers, or any dropdown trigger.
+ * Opens an options list or picker without typing.
+ *
+ * Looks like a [TextField] but the whole field is clickable and takes no text input. Ideal for
+ * country selection, category pickers, or any dropdown trigger.
  *
  * ## Usage
  * ```kotlin
@@ -47,19 +48,19 @@ import com.teya.lemonade.core.LemonadeIcons
  * )
  * ```
  *
- * @param onClick Callback invoked when the select field is clicked.
- * @param selectedValue The currently selected value to display, or null if nothing is selected.
- * @param placeholderText Placeholder text displayed when [selectedValue] is null.
- * @param label Label displayed above the select field.
- * @param optionalIndicator Optional text displayed on the top right of the select field.
- * @param supportText Support text displayed below the select field.
- * @param errorMessage Error message displayed when the select field is in an error state.
- * @param error Whether the select field is in an error state.
- * @param enabled Whether the select field is enabled.
- * @param interactionSource [MutableInteractionSource] applied to the select field for
- *  hover and focus state handling.
- * @param leadingContent Optional content displayed at the leading edge of the select field.
- * @param modifier [Modifier] applied to the root container of the select field.
+ * @param onClick called when the select field is clicked
+ * @param selectedValue currently selected value, or null when nothing is selected
+ * @param placeholderText text shown while [selectedValue] is null
+ * @param label text shown above the select field
+ * @param optionalIndicator optional text shown at the top right of the select field
+ * @param supportText text shown below the select field
+ * @param errorMessage message shown while [error] is true
+ * @param error whether the select field is in an error state
+ * @param enabled whether the select field responds to clicks
+ * @param interactionSource [MutableInteractionSource] applied to the select field for hover and
+ *   focus state handling
+ * @param leadingContent optional content shown at the leading edge of the select field
+ * @param modifier optional [Modifier] applied to the root container of the select field
  */
 @Composable
 public fun LemonadeUi.SelectField(
@@ -116,7 +117,8 @@ public fun LemonadeUi.SelectField(
             }
 
             AnimatedContent(
-                targetState = selectedValue ?: placeholderText,
+                targetState = selectedValue
+                    ?: placeholderText,
                 modifier = Modifier.weight(weight = 1f),
                 content = { showingText ->
                     if (showingText != null) {
@@ -153,25 +155,30 @@ private class SelectFieldPreviewProvider : PreviewParameterProvider<SelectFieldP
 
     private fun buildAllVariants(): Sequence<SelectFieldPreviewData> =
         buildList {
-            listOf(true, false).forEach { withOuterContent ->
-                listOf(true, false).forEach { enabled ->
-                    listOf(true, false).forEach { error ->
-                        listOf(true, false).forEach { withLeadingIcon ->
-                            listOf(true, false).forEach { isFilled ->
-                                add(
-                                    element = SelectFieldPreviewData(
-                                        enabled = enabled,
-                                        error = error,
-                                        withLeadingIcon = withLeadingIcon,
-                                        isFilled = isFilled,
-                                        withOuterContent = withOuterContent,
-                                    ),
-                                )
-                            }
+            listOf(true, false)
+                .forEach { withOuterContent ->
+                    listOf(true, false)
+                        .forEach { enabled ->
+                            listOf(true, false)
+                                .forEach { error ->
+                                    listOf(true, false)
+                                        .forEach { withLeadingIcon ->
+                                            listOf(true, false)
+                                                .forEach { isFilled ->
+                                                    add(
+                                                        element = SelectFieldPreviewData(
+                                                            enabled = enabled,
+                                                            error = error,
+                                                            withLeadingIcon = withLeadingIcon,
+                                                            isFilled = isFilled,
+                                                            withOuterContent = withOuterContent,
+                                                        ),
+                                                    )
+                                                }
+                                        }
+                                }
                         }
-                    }
                 }
-            }
         }.asSequence()
 }
 
@@ -183,7 +190,7 @@ private fun SelectFieldPreview(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(space = 4.dp)) {
         LemonadeUi.SelectField(
-            onClick = { /* Nothing */ },
+            onClick = { },
             selectedValue = "Selected option".takeIf { previewData.isFilled },
             placeholderText = "Select an option",
             enabled = previewData.enabled,

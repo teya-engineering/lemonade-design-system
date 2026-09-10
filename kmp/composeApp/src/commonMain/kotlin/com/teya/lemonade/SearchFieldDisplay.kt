@@ -158,7 +158,10 @@ internal fun SearchFieldDisplay() {
                             productList
                         } else {
                             productList.filter { product ->
-                                product.contains(other = searchText6, ignoreCase = true)
+                                product.contains(
+                                    other = searchText6,
+                                    ignoreCase = true,
+                                )
                             }
                         }
                     }

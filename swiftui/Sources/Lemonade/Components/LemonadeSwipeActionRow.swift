@@ -286,7 +286,7 @@ private let bumpTrigger: CGFloat = 0.7
 /// Quick, so it lands with the row rather than trailing it: the row's own settle is 0.5s, and a
 /// bump that long is still arriving after the row has stopped, which reads as a second movement
 /// rather than the end of the first. `dampingFraction` is what makes it ring — 0.4 overshoots by
-/// about 2%, the same as iOS.
+/// about 2%, which is the whole of the landing.
 private let bump: Animation = .spring(response: 0.25, dampingFraction: 0.4)
 
 // MARK: - Reveal policy
@@ -373,8 +373,8 @@ private func swipeRevealWidth(through count: Int) -> CGFloat {
 }
 
 /// Opacity an action being pushed along has dimmed to once the row has travelled its whole width.
-/// `opacity20`, held as a plain number to match the Compose twin, where the reveal is resolved
-/// outside a composition and cannot read the theme.
+/// `opacity20`, held as a plain number because the reveal is resolved outside a view and so has no
+/// theme to read.
 private let displacedFloor: CGFloat = 0.2
 
 /// Opacity of the actions a stretching one is pushing along.
@@ -482,8 +482,7 @@ struct LemonadeSwipeActionRowView<Content: View>: View {
     let showDivider: Bool
     @Binding var open: Bool
     /// Built once rather than held as a closure. The drag rewrites this view's body on every touch
-    /// event, and a closure would re-run the caller's whole builder each time — the cost the
-    /// Compose row sheds by keeping `travel` out of composition.
+    /// event, and a closure would re-run the caller's whole builder each time.
     let content: Content
     /// Both edges in the order a reader would find them, joined once for the same reason: the drag
     /// rewrites the body on every touch event, and concatenating there would rebuild the
@@ -993,13 +992,13 @@ private struct SwipeActionStrip: View, Animatable {
     let actions: [LemonadeSwipeAction]
     let side: SwipeActionSide
     let committed: Bool
+    /// How far the first action has stretched once a commit has parked the row: what the icon is
+    /// sliding towards from the moment the crossing happens.
+    let committedStretch: CGFloat
     /// Whether an action is holding the row open behind something it opened, which is what the
     /// reader is answering — so the capsule is drawn inert and stops taking taps. An inline
     /// confirmation leaves it reachable, and a second tap on a destructive action is the one thing
     /// this must not allow.
-    /// How far the first action has stretched once a commit has parked the row: what the icon is
-    /// sliding towards from the moment the crossing happens.
-    let committedStretch: CGFloat
     let holding: Bool
 
     /// Which capsule a pointer is over, if any.
@@ -1370,83 +1369,92 @@ private struct LemonadeUncontrolledSwipeActionRow<Content: View>: View {
 struct LemonadeSwipeActionRow_Previews: PreviewProvider {
     static var previews: some View {
         VStack(alignment: .leading, spacing: .space.spacing600) {
-            // One trailing action, full swipe on.
+            singleActionFullSwipeRow
+            twoActionsWithoutFullSwipeRow
+            bothEdgesRow
+            controlledRow
+        }
+        .frame(maxHeight: .infinity, alignment: .top)
+    }
+
+    private static var singleActionFullSwipeRow: some View {
+        LemonadeUi.SwipeActionRow(
+            trailingActions: [
+                LemonadeSwipeAction(icon: .trash, contentDescription: "Remove", onClick: {})
+            ],
+            showDivider: true
+        ) {
+            LemonadeUi.ActionListItem(
+                label: "Kathryn Murphy",
+                supportText: "kathryn.murphy@mail.com",
+                showNavigationIndicator: true,
+                showDivider: false,
+                onItemClicked: {}
+            )
+        }
+    }
+
+    private static var twoActionsWithoutFullSwipeRow: some View {
+        LemonadeUi.SwipeActionRow(
+            trailingActions: [
+                LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: {}),
+                LemonadeSwipeAction(
+                    icon: .pencilLine,
+                    contentDescription: "Edit",
+                    onClick: {},
+                    variant: .neutral
+                )
+            ],
+            allowsFullSwipe: false
+        ) {
+            LemonadeUi.ActionListItem(
+                label: "Two actions",
+                supportText: "Outermost action first",
+                showDivider: false,
+                onItemClicked: {}
+            )
+        }
+    }
+
+    private static var bothEdgesRow: some View {
+        LemonadeUi.SwipeActionRow(
+            leadingActions: [
+                LemonadeSwipeAction(
+                    icon: .check,
+                    contentDescription: "Mark as read",
+                    onClick: {},
+                    variant: .primary
+                )
+            ],
+            trailingActions: [
+                LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: {})
+            ]
+        ) {
+            LemonadeUi.ActionListItem(
+                label: "Both edges",
+                supportText: "Drag either way",
+                showDivider: false,
+                onItemClicked: {}
+            )
+        }
+    }
+
+    private static var controlledRow: some View {
+        StatefulPreviewWrapper(AnyHashable?.none) { openId in
             LemonadeUi.SwipeActionRow(
+                id: "row",
+                openId: openId,
                 trailingActions: [
                     LemonadeSwipeAction(icon: .trash, contentDescription: "Remove", onClick: {})
-                ],
-                showDivider: true
-            ) {
-                LemonadeUi.ActionListItem(
-                    label: "Kathryn Murphy",
-                    supportText: "kathryn.murphy@mail.com",
-                    showNavigationIndicator: true,
-                    showDivider: false,
-                    onItemClicked: {}
-                )
-            }
-
-            // Two actions, no full swipe.
-            LemonadeUi.SwipeActionRow(
-                trailingActions: [
-                    LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: {}),
-                    LemonadeSwipeAction(
-                        icon: .pencilLine,
-                        contentDescription: "Edit",
-                        onClick: {},
-                        variant: .neutral
-                    )
-                ],
-                allowsFullSwipe: false
-            ) {
-                LemonadeUi.ActionListItem(
-                    label: "Two actions",
-                    supportText: "Outermost action first",
-                    showDivider: false,
-                    onItemClicked: {}
-                )
-            }
-
-            // An action on each edge. One drag reveals one of them.
-            LemonadeUi.SwipeActionRow(
-                leadingActions: [
-                    LemonadeSwipeAction(
-                        icon: .check,
-                        contentDescription: "Mark as read",
-                        onClick: {},
-                        variant: .primary
-                    )
-                ],
-                trailingActions: [
-                    LemonadeSwipeAction(icon: .trash, contentDescription: "Delete", onClick: {})
                 ]
             ) {
                 LemonadeUi.ActionListItem(
-                    label: "Both edges",
-                    supportText: "Drag either way",
+                    label: "Controlled row",
                     showDivider: false,
                     onItemClicked: {}
                 )
             }
-
-            // Controlled: one open row at a time.
-            StatefulPreviewWrapper(AnyHashable?.none) { openId in
-                LemonadeUi.SwipeActionRow(
-                    id: "row",
-                    openId: openId,
-                    trailingActions: [
-                        LemonadeSwipeAction(icon: .trash, contentDescription: "Remove", onClick: {})
-                    ]
-                ) {
-                    LemonadeUi.ActionListItem(
-                        label: "Controlled row",
-                        showDivider: false,
-                        onItemClicked: {}
-                    )
-                }
-            }
         }
-        .frame(maxHeight: .infinity, alignment: .top)
     }
 }
 #endif

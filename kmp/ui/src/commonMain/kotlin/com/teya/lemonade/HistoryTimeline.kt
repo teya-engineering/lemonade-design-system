@@ -26,12 +26,12 @@ private val HistoryItemLineThickness: Dp = 1.dp
 /**
  * Describes a single row inside a [LemonadeUi.HistoryTimeline].
  *
- * @param label Primary row text.
- * @param subheading Optional secondary text rendered immediately below [label].
- * @param description Optional tertiary paragraph text rendered below the subheading.
- * @param voice Semantic color of the indicator dot when this row is the current step.
- * @param contentSlot Optional slot for custom composable content (e.g. a button or tag)
- *   rendered below the description.
+ * @param label primary row text
+ * @param subheading optional secondary text rendered immediately below [label]
+ * @param description optional tertiary paragraph text rendered below the subheading
+ * @param voice semantic color of the indicator dot when this row is the current step
+ * @param contentSlot optional slot for custom composable content (e.g. a button or tag)
+ *   rendered below the description
  */
 public data class HistoryTimelineItem(
     public val label: String,
@@ -72,10 +72,10 @@ public data class HistoryTimelineItem(
  * )
  * ```
  *
- * @param items Ordered list of [HistoryTimelineItem]s to display.
- * @param modifier [Modifier] applied to the root column.
- * @param currentIndex Index of the row to render as the current step. Pass `null` to render
- *   every row in its non-current (muted) state. Defaults to `0` (first row is current).
+ * @param items ordered list of [HistoryTimelineItem]s to display
+ * @param modifier [Modifier] applied to the root column
+ * @param currentIndex index of the row to render as the current step. Pass `null` to render
+ *   every row in its non-current (muted) state. Defaults to `0` (first row is current)
  */
 @Composable
 public fun LemonadeUi.HistoryTimeline(
@@ -118,13 +118,22 @@ private fun CoreHistoryTimelineItem(
             drawCircle(
                 color = dotColor,
                 radius = dotRadius,
-                center = Offset(x = centerX, y = dotCenterY),
+                center = Offset(
+                    x = centerX,
+                    y = dotCenterY,
+                ),
             )
             if (!isLast) {
                 drawLine(
                     color = mutedColor,
-                    start = Offset(x = centerX, y = dotCenterY + dotRadius),
-                    end = Offset(x = centerX, y = size.height),
+                    start = Offset(
+                        x = centerX,
+                        y = dotCenterY + dotRadius,
+                    ),
+                    end = Offset(
+                        x = centerX,
+                        y = size.height,
+                    ),
                     strokeWidth = HistoryItemLineThickness.toPx(),
                 )
             }
@@ -190,20 +199,23 @@ private data class HistoryItemPreviewData(
 private class HistoryItemPreviewProvider : PreviewParameterProvider<HistoryItemPreviewData> {
     override val values: Sequence<HistoryItemPreviewData> = buildList {
         HistoryItemVoice.entries.forEach { voice ->
-            listOf(true, false).forEach { current ->
-                listOf(true, false).forEach { description ->
-                    listOf(true, false).forEach { contentSlot ->
-                        add(
-                            HistoryItemPreviewData(
-                                voice = voice,
-                                isCurrent = current,
-                                hasDescription = description,
-                                hasContentSlot = contentSlot,
-                            ),
-                        )
-                    }
+            listOf(true, false)
+                .forEach { current ->
+                    listOf(true, false)
+                        .forEach { description ->
+                            listOf(true, false)
+                                .forEach { contentSlot ->
+                                    add(
+                                        HistoryItemPreviewData(
+                                            voice = voice,
+                                            isCurrent = current,
+                                            hasDescription = description,
+                                            hasContentSlot = contentSlot,
+                                        ),
+                                    )
+                                }
+                        }
                 }
-            }
         }
     }.asSequence()
 }

@@ -3,7 +3,7 @@
 package com.teya.lemonade.core
 
 /**
- * Defines the layout arrangement for ContentListItem.
+ * Layout arrangement for `LemonadeUi.ContentListItem`.
  *
  * [Horizontal] places the label on the left and value on the right.
  * [Vertical] stacks the label above the value.
@@ -14,7 +14,7 @@ public enum class LemonadeContentListItemLayout {
 }
 
 /**
- * Defines the vertical density for ContentListItem.
+ * Vertical density for `LemonadeUi.ContentListItem`.
  *
  * [Comfortable] applies a larger vertical padding (spacing400).
  * [Compact] applies a reduced vertical padding (spacing200).

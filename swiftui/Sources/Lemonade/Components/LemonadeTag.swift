@@ -133,34 +133,39 @@ private struct LemonadeTagView: View {
 struct LemonadeTag_Previews: PreviewProvider {
     static var previews: some View {
         VStack(alignment: .leading, spacing: 16) {
-            // All voices without icon
-            VStack(alignment: .leading, spacing: 8) {
-                LemonadeUi.Tag(label: "Neutral", voice: .neutral)
-                LemonadeUi.Tag(label: "Critical", voice: .critical)
-                LemonadeUi.Tag(label: "Warning", voice: .warning)
-                LemonadeUi.Tag(label: "Info", voice: .info)
-                LemonadeUi.Tag(label: "Positive", voice: .positive)
-                LemonadeUi.Tag(label: "Featured", voice: .featured)
-                LemonadeUi.Tag(label: "Neutral On Color", voice: .neutralOnColor)
-                    .padding(.all)
-                    .background(LemonadeTheme.colors.background.bgAlwaysDark)
-            }
-
-            // All voices with icon
-            VStack(alignment: .leading, spacing: 8) {
-                LemonadeUi.Tag(label: "Neutral", icon: .heart, voice: .neutral)
-                LemonadeUi.Tag(label: "Critical", icon: .circleX, voice: .critical)
-                LemonadeUi.Tag(label: "Warning", icon: .triangleAlert, voice: .warning)
-                LemonadeUi.Tag(label: "Info", icon: .circleInfo, voice: .info)
-                LemonadeUi.Tag(label: "Positive", icon: .circleCheck, voice: .positive)
-                LemonadeUi.Tag(label: "Featured", icon: .sparkles, voice: .featured)
-                LemonadeUi.Tag(label: "Neutral On Color", icon: .heart, voice: .neutralOnColor)
-                    .padding(.all)
-                    .background(LemonadeTheme.colors.background.bgAlwaysDark)
-            }
+            voicesWithoutIcon
+            voicesWithIcon
         }
         .padding()
         .previewLayout(.sizeThatFits)
+    }
+
+    private static var voicesWithoutIcon: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            LemonadeUi.Tag(label: "Neutral", voice: .neutral)
+            LemonadeUi.Tag(label: "Critical", voice: .critical)
+            LemonadeUi.Tag(label: "Warning", voice: .warning)
+            LemonadeUi.Tag(label: "Info", voice: .info)
+            LemonadeUi.Tag(label: "Positive", voice: .positive)
+            LemonadeUi.Tag(label: "Featured", voice: .featured)
+            LemonadeUi.Tag(label: "Neutral On Color", voice: .neutralOnColor)
+                .padding(.all)
+                .background(LemonadeTheme.colors.background.bgAlwaysDark)
+        }
+    }
+
+    private static var voicesWithIcon: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            LemonadeUi.Tag(label: "Neutral", icon: .heart, voice: .neutral)
+            LemonadeUi.Tag(label: "Critical", icon: .circleX, voice: .critical)
+            LemonadeUi.Tag(label: "Warning", icon: .triangleAlert, voice: .warning)
+            LemonadeUi.Tag(label: "Info", icon: .circleInfo, voice: .info)
+            LemonadeUi.Tag(label: "Positive", icon: .circleCheck, voice: .positive)
+            LemonadeUi.Tag(label: "Featured", icon: .sparkles, voice: .featured)
+            LemonadeUi.Tag(label: "Neutral On Color", icon: .heart, voice: .neutralOnColor)
+                .padding(.all)
+                .background(LemonadeTheme.colors.background.bgAlwaysDark)
+        }
     }
 }
 #endif

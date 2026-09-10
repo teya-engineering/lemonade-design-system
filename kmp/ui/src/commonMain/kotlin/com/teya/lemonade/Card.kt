@@ -95,7 +95,10 @@ public data class CardHeaderConfig(
 ) {
     // Restores the pre-subtitle constructor symbol <init>(String, LemonadeCardHeadingStyle,
     // Function3, Function3, Z) so already-compiled consumers keep linking.
-    @Deprecated("kept for binary compatibility", level = DeprecationLevel.HIDDEN)
+    @Deprecated(
+        message = "kept for binary compatibility",
+        level = DeprecationLevel.HIDDEN,
+    )
     public constructor(
         title: String,
         headingStyle: LemonadeCardHeadingStyle = LemonadeCardHeadingStyle.Default,
@@ -113,7 +116,10 @@ public data class CardHeaderConfig(
 
     // Restores the pre-subtitle copy(...) and copy$default(...) symbols. The default on the
     // first parameter is what regenerates the old copy$default, keeping `copy()` callers linking.
-    @Deprecated("kept for binary compatibility", level = DeprecationLevel.HIDDEN)
+    @Deprecated(
+        message = "kept for binary compatibility",
+        level = DeprecationLevel.HIDDEN,
+    )
     public fun copy(
         title: String = this.title,
         headingStyle: LemonadeCardHeadingStyle = this.headingStyle,
@@ -239,11 +245,10 @@ private val LemonadeCardHeadingStyle.textStyle: LemonadeTextStyle
         }
     }
 
-// The overline's own line box is 16sp against the default heading's 24sp, so a header titled
-// with just an overline would sit tighter than one with a default heading. Holding the text box
-// to a minimum of size500 evens that out. The floor is in dp while the line box is in sp, so at
-// large font scales the line box outgrows the floor and wins — which is what we want, since the
-// text must never be clipped to keep the box at 20.
+// The overline's line box is shorter than the default heading's, so a header titled with only an
+// overline would sit tighter than one with a default heading; the floor evens that out. The floor
+// is in dp while the line box is in sp, so at large font scales the line box outgrows the floor
+// and wins, leaving the text unclipped.
 private val LemonadeCardHeadingStyle.minTextBoxHeight: Dp
     @Composable get() {
         return when (this) {
@@ -293,20 +298,24 @@ private class CardPreviewProvider : PreviewParameterProvider<CardPreviewData> {
         buildList {
             LemonadeCardPadding.entries.forEach { contentPadding ->
                 LemonadeCardBackground.entries.forEach { background ->
-                    listOf(true, false).forEach { withHeader ->
-                        add(
-                            CardPreviewData(
-                                background = background,
-                                contentPadding = contentPadding,
-                                header = CardHeaderConfig(
-                                    title = "Card heading",
-                                    trailingSlot = {
-                                        LemonadeUi.Tag("Tag label", voice = TagVoice.Neutral)
-                                    },
-                                ).takeIf { withHeader },
-                            ),
-                        )
-                    }
+                    listOf(true, false)
+                        .forEach { withHeader ->
+                            add(
+                                CardPreviewData(
+                                    background = background,
+                                    contentPadding = contentPadding,
+                                    header = CardHeaderConfig(
+                                        title = "Card heading",
+                                        trailingSlot = {
+                                            LemonadeUi.Tag(
+                                                label = "Tag label",
+                                                voice = TagVoice.Neutral,
+                                            )
+                                        },
+                                    ).takeIf { withHeader },
+                                ),
+                            )
+                        }
                 }
             }
         }.asSequence()
@@ -337,8 +346,8 @@ private fun CardHeadingSubtitlePreview() {
     }
 }
 
-// The overline's minimum box height only changes the layout when nothing else in the header
-// row is taller than it — no subtitle, no trailing slot — so keep that case previewed.
+// The overline's minimum box height only changes the layout when nothing else in the header row
+// is taller than it: no subtitle, no trailing slot.
 @LemonadePreview
 @Composable
 private fun CardOverlineHeadingPreview() {

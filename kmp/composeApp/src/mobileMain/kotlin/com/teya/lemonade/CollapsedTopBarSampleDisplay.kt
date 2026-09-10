@@ -29,7 +29,7 @@ internal fun CollapsedTopBarSampleDisplay() {
             state = topBarState,
             navigationAction = NavigationAction(
                 navigationAction = TopBarAction.Back,
-                onNavigationActionClicked = { /* Action Clicked */ },
+                onNavigationActionClicked = { },
             ),
         )
 

@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package com.teya.lemonade
 
 import androidx.compose.animation.core.SnapSpec
@@ -47,6 +49,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
@@ -73,63 +76,60 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 
 /**
- * Stiffness of the spring a released row travels on, and the one animation the reveal rides.
+ * Stiffness of the spring a released row travels on.
  *
- * Fitted to iOS frame by frame: a settle of 90dp lands within 0.123dp of a critically damped spring
- * at ω = 12.5 rad/s across the whole animation, which is inside the pixel quantisation of the
- * measurement. Stiffness is ω² at unit mass, and [Spring.DampingRatioNoBouncy] is the critical
- * damping — the row arrives without springing past and coming back.
+ * The one animation the reveal rides: ω = 12.5 rad/s at unit mass, about half a second end to end.
+ * [Spring.DampingRatioNoBouncy] is the critical damping for it, so the row arrives without springing
+ * past and coming back.
  */
 private const val SETTLE_STIFFNESS = 156.25f
 
 /**
- * How far the row may drift on screen before an open one counts as scrolled past. Enough to sit out
- * the rounding a layout pass can move it by, and far short of a deliberate scroll.
+ * How far the row may drift before an open one counts as scrolled past.
+ *
+ * Enough to sit out the rounding a layout pass can move it by, and far short of a deliberate scroll.
  */
 private val SCROLL_SLACK = 4.dp
 
 /**
- * What is left of the row on screen once a commit has claimed it. iOS stops the row 18.3pt short of
- * carrying it off, which keeps the row a row rather than a bare action.
+ * What is left of the row on screen once a commit has claimed it.
+ *
+ * A commit parks the row a sliver short of carrying it off, which keeps it a row rather than a bare
+ * action.
  */
 private val COMMIT_INSET = 20.dp
 
 /**
- * Stiffness of the spring a commit claims the row on — ω = 35 rad/s, a fifth of a second end to
- * end, against the settle's half. Fitted to iOS frame by frame: the action reaches half its width
- * within 50ms of the crossing and 94% within 130ms, which a critically damped spring at that ω
- * tracks to within a frame across the whole animation.
+ * Stiffness of the spring a commit claims the row on.
+ *
+ * ω = 35 rad/s at unit mass: a fifth of a second end to end, against the settle's half. The action
+ * reaches half its width within 50ms of the crossing and 94% of it within 130ms.
  */
 private const val COMMIT_STIFFNESS = 1225f
 
-/** The spring [SETTLE_STIFFNESS] describes, for the row's own travel. */
 private val settleSpring: SpringSpec<Float> = spring(
     dampingRatio = Spring.DampingRatioNoBouncy,
     stiffness = SETTLE_STIFFNESS,
 )
 
-/** The spring [COMMIT_STIFFNESS] describes, for the claim a commit takes of the row. */
 private val commitSpring: SpringSpec<Float> = spring(
     dampingRatio = Spring.DampingRatioNoBouncy,
     stiffness = COMMIT_STIFFNESS,
 )
 
-/** The spring [BUMP_STIFFNESS] describes, for an action landing. */
 private val bumpSpring: SpringSpec<Float> = spring(
     dampingRatio = BUMP_DAMPING,
     stiffness = BUMP_STIFFNESS,
 )
 
-/** No spring at all: the value is already where it needs to be. */
 private val noSpring: SnapSpec<Float> = snap()
 
 /**
  * How much of an action's arrival is held back for the end.
  *
  * The last of it springs into place when the row has revealed the action fully, so it lands rather
- * than simply stopping. Measured off iOS, where an action's scale rings about 3% past its resting
- * size before settling — a bounce this shallow overshoots by about that, and at 1.5dp of a 48dp
- * action it stays well inside the gap the action sits in.
+ * than simply stopping. A bounce this shallow rings about 3% past its resting size, which at 1.5dp
+ * of a 48dp action stays well inside the gap the action sits in.
  */
 private const val BUMP_DEPTH = 0.12f
 
@@ -148,13 +148,13 @@ private const val BUMP_TRIGGER = 0.7f
  * trailing it: the row's own settle is 0.5s, and a bump that long is still arriving after the row
  * has stopped, which reads as a second movement rather than the end of the first.
  *
- * [BUMP_DAMPING] is what makes it ring — 0.4 overshoots by about 2%, the same as iOS.
+ * [BUMP_DAMPING] is what makes it ring: 0.4 overshoots by about 2%.
  */
 private const val BUMP_STIFFNESS = 631f
 private const val BUMP_DAMPING = 0.4f
 
 /**
- * What a group tells its rows: one of them has taken the open slot, or nothing has.
+ * What a group tells its rows: which one has the open slot.
  *
  * The count is what makes it a signal rather than a value. Two rows opening in turn both leave
  * [opener] set, and a row that closed and reopened would look unchanged — the count moves either
@@ -182,7 +182,7 @@ private val LocalSwipeActionGroupAnnounce = compositionLocalOf<((Any?) -> Unit)?
  * closes the rest, and a tap anywhere inside closes whichever is open. Wrap the list, or the screen
  * — anything a reader would take as "somewhere else".
  *
- * Rows manage themselves inside it, including the ones given an `id` and `openId`, so nothing has to
+ * Rows manage themselves inside it, including the ones given an [id] and [openId], so nothing has to
  * be hoisted to get this.
  *
  * ## Usage
@@ -201,8 +201,8 @@ private val LocalSwipeActionGroupAnnounce = compositionLocalOf<((Any?) -> Unit)?
  * The group is a [Box] around [content] — it has to be, to watch for the tap that closes an open
  * row — so it takes part in the layout. Pass [modifier] whatever the content would have had.
  *
- * @param modifier - [Modifier] applied to the group.
- * @param content - the rows, and whatever else the group covers.
+ * @param modifier [Modifier] applied to the group
+ * @param content the rows, and whatever else the group covers
  */
 @Composable
 public fun LemonadeUi.SwipeActionGroup(
@@ -217,50 +217,55 @@ public fun LemonadeUi.SwipeActionGroup(
             opener = opener,
         )
     }
+    // The tap that fires an action is this same tap, seen here on the initial pass and by the
+    // action on the final one, so the decision waits a frame for that row to claim the slot.
+    val closeUnlessClaimed: () -> Unit = {
+        val seen = signal.announcements
+        scope.launch {
+            withFrameNanos { }
+            if (signal.announcements == seen) announce(null)
+        }
+    }
     CompositionLocalProvider(
         LocalSwipeActionGroupSignal provides signal,
         LocalSwipeActionGroupAnnounce provides announce,
     ) {
         Box(
             modifier = modifier.pointerInput(Unit) {
-                awaitEachGesture {
-                    // Watched on the initial pass and never consumed, so the tap still reaches
-                    // whatever was tapped. Closing an open row is not meant to cost the reader the
-                    // tap that closed it. A gesture that travelled is a swipe, and a row settling
-                    // out of one announces itself.
-                    val down = awaitFirstDown(
-                        requireUnconsumed = false,
-                        pass = PointerEventPass.Initial,
-                    )
-                    var travelled = 0f
-                    var pressed = true
-                    while (pressed) {
-                        val event = awaitPointerEvent(PointerEventPass.Initial)
-                        val change = event.changes.firstOrNull { it.id == down.id }
-                        if (change == null) {
-                            // The pointer is gone without ever coming up here; nothing to decide.
-                            pressed = false
-                        } else {
-                            travelled += (change.position - change.previousPosition).getDistance()
-                            pressed = change.pressed
-                            // Settled a frame later, and only if nothing claimed the slot
-                            // meanwhile. The tap that fires an action is this same tap, seen here
-                            // on the initial pass and by the action on the final one — waiting a
-                            // frame means a row that has claimed the slot has said so by the time
-                            // this decides, and this leaves it alone.
-                            if (!pressed && travelled < viewConfiguration.touchSlop) {
-                                val seen = signal.announcements
-                                scope.launch {
-                                    withFrameNanos { }
-                                    if (signal.announcements == seen) announce(null)
-                                }
-                            }
-                        }
-                    }
-                }
+                awaitTapsWithoutConsuming(onTap = closeUnlessClaimed)
             },
         ) {
             content()
+        }
+    }
+}
+
+/**
+ * Runs [onTap] for every tap inside.
+ *
+ * Watched on the initial pass and never consumed, so the tap still reaches whatever was tapped:
+ * closing an open row must not cost the reader the tap that closed it.
+ */
+private suspend fun PointerInputScope.awaitTapsWithoutConsuming(onTap: () -> Unit) {
+    awaitEachGesture {
+        val down = awaitFirstDown(
+            requireUnconsumed = false,
+            pass = PointerEventPass.Initial,
+        )
+        var travelled = 0f
+        var pressed = true
+        while (pressed) {
+            val event = awaitPointerEvent(PointerEventPass.Initial)
+            val pointer = event.changes.firstOrNull { change ->
+                change.id == down.id
+            }
+            if (pointer == null) {
+                pressed = false
+            } else {
+                travelled += (pointer.position - pointer.previousPosition).getDistance()
+                pressed = pointer.pressed
+                if (!pressed && travelled < viewConfiguration.touchSlop) onTap()
+            }
         }
     }
 }
@@ -273,7 +278,7 @@ public fun LemonadeUi.SwipeActionGroup(
  * closes the row, which is wrong for one that puts something on screen about it — a confirmation
  * asking whether to go ahead reads oddly over a row that has already tidied itself away. Nothing
  * inside the row closes it again afterwards: the reader does, by tapping away or swiping another
- * row, or the caller does through the `openId` overload. An action that opens something modal
+ * row, or the caller does through the [openId] overload. An action that opens something modal
  * needs that overload, because the modal takes the taps the reader would have closed it with.
  */
 @Immutable
@@ -314,7 +319,6 @@ private val SwipeActionSide.alignment: Alignment
  * Mirrored off [side]: an action sits against the edge it is revealed from, grows inwards from it,
  * and stacks away from it.
  */
-
 @Composable
 private fun SwipeActionStrip(
     actions: List<SwipeAction>,
@@ -352,43 +356,46 @@ private fun SwipeActionStrip(
         val shown = travel()
         val actionWidth = with(density) { LemonadeTheme.sizes.size1200.toPx() }
         val stripReveal = swipeRevealWidth(through = actions.size)
-        // The same for every action a stretching one is pushing along, so asked once rather than
-        // once per action.
-        val displaced = resolveSwipeDisplacedOpacity(travel = shown, rowWidth = rowWidth())
-        actions.indices.reversed().forEach { index ->
-            val revealed = resolveSwipeStripReveal(
-                travel = shown,
-                // The last action's own reveal is the whole strip's.
-                actionReveal = if (index == actions.lastIndex) {
-                    stripReveal
-                } else {
-                    swipeRevealWidth(through = index + 1)
-                },
-                stripReveal = stripReveal,
-                actionWidth = actionWidth,
-            )
-            // The slack goes to the first action's width and to everything else's position, so a
-            // stretching action pushes the ones beside it along rather than growing over them.
-            // Their gaps hold, and the strip still ends exactly one leading gap ahead of the row
-            // however far it is dragged.
-            val push = if (index == 0) 0.dp else with(density) { revealed.stretch.toDp() }
-            SwipeActionCapsule(
-                action = actions[index],
-                reveal = revealed,
-                // Each action lands as the row clears it, so the second of a pair bumps in on its
-                // own rather than with the first.
-                arrived = revealed.scale >= BUMP_TRIGGER,
-                opacity = if (index == 0) 1f else displaced,
-                stretches = index == 0,
-                committed = committed() && index == 0,
-                committedStretch = committedStretch,
-                towardsInside = towardsInside,
-                onFired = onFired,
-                dim = dim(),
-                holding = holding,
-                modifier = Modifier.offset(x = (step * index + push) * towardsInside),
-            )
-        }
+        val displaced = resolveSwipeDisplacedOpacity(
+            travel = shown,
+            rowWidth = rowWidth(),
+        )
+        actions.indices
+            .reversed()
+            .forEach { index ->
+                val revealed = resolveSwipeStripReveal(
+                    travel = shown,
+                    // The last action's own reveal is the whole strip's.
+                    actionReveal = if (index == actions.lastIndex) {
+                        stripReveal
+                    } else {
+                        swipeRevealWidth(through = index + 1)
+                    },
+                    stripReveal = stripReveal,
+                    actionWidth = actionWidth,
+                )
+                // The slack goes to the first action's width and to everything else's position, so
+                // a stretching action pushes the ones beside it along rather than growing over
+                // them. Their gaps hold, and the strip still ends exactly one leading gap ahead of
+                // the row however far it is dragged.
+                val push = if (index == 0) 0.dp else with(density) { revealed.stretch.toDp() }
+                SwipeActionCapsule(
+                    action = actions[index],
+                    reveal = revealed,
+                    // Each action lands as the row clears it, so the second of a pair bumps in on
+                    // its own rather than with the first.
+                    arrived = revealed.scale >= BUMP_TRIGGER,
+                    opacity = if (index == 0) 1f else displaced,
+                    stretches = index == 0,
+                    committed = committed() && index == 0,
+                    committedStretch = committedStretch,
+                    towardsInside = towardsInside,
+                    onFired = onFired,
+                    dim = dim(),
+                    holding = holding,
+                    modifier = Modifier.offset(x = (step * index + push) * towardsInside),
+                )
+            }
     }
 }
 
@@ -425,7 +432,6 @@ private fun SwipeActionCapsule(
         label = "swipeActionBump",
     )
     val scale = reveal.scale * bump
-    // The press and hover treatment LemonadeUi.IconButton gives its own button, off the same rule.
     val interactionSource = remember { MutableInteractionSource() }
     val background by colors.animatedBackground(interactionSource = interactionSource)
     // Taken straight off the row's position rather than animated: an action that springs towards
@@ -434,37 +440,33 @@ private fun SwipeActionCapsule(
     val stretch = with(LocalDensity.current) {
         (if (stretches) reveal.stretch else 0f).toDp()
     }
-    // Centred in the capsule until the swipe commits, then it slides to the centre of the capsule's
-    // inner end — where the action would sit if it had stayed a circle and the row had simply
-    // carried on past it. Which end that is follows the edge the action is revealed from.
-    //
-    // Against the width the commit is heading for rather than the one it has: a spring chasing a
-    // target that is itself still moving never catches it, which left the icon a third of its
-    // travel behind the capsule it slides in. iOS holds the two within 0.012 of each other the
-    // whole way, which is what this is.
-    //
-    // A claim of its own, not the row's: that one snaps back so the row can be handed to
-    // [resolveSwipeReleasedTravel] where it stands, while the icon is sprung both ways — it comes
-    // back to the centre the moment the gesture stops belonging to the action, rather than popping
-    // there.
+    // The icon slides to the centre of the capsule's inner end as a commit takes the row, against
+    // the width the commit is heading for rather than the one it has: a spring chasing a target
+    // that is itself still moving never catches it. Sprung both ways, unlike the row's own claim,
+    // so the icon comes back to the centre rather than popping there.
     val iconClaim by animateFloatAsState(
         targetValue = if (committed) 1f else 0f,
         animationSpec = commitSpring,
         label = "swipeActionIcon",
     )
     val iconOffset = committedStretch / 2 * iconClaim * towardsInside
+    val capsuleBackground = drained(
+        color = background,
+        amount = dim,
+    )
     Box(
         modifier = modifier
-            .size(width = size + stretch, height = size)
-            .graphicsLayer {
+            .size(
+                width = size + stretch,
+                height = size,
+            ).graphicsLayer {
                 scaleX = scale
                 scaleY = scale
                 alpha = scale * opacity * (1f - dim * (1f - dimFloor))
             }.clip(shape = LemonadeTheme.shapes.radiusFull)
             .clickable(
-                // Drawn inert while something the action opened is up, so it does not take taps
-                // either: an inline confirmation leaves the capsule reachable, and a second tap on
-                // a destructive action is the one thing this must not allow.
+                // A second tap on a destructive action is the one thing this must not allow, and
+                // an inline confirmation leaves the capsule reachable.
                 enabled = !holding,
                 onClick = {
                     onFired(action)
@@ -472,22 +474,26 @@ private fun SwipeActionCapsule(
                 role = Role.Button,
                 interactionSource = interactionSource,
                 indication = LocalEffects.current.interactionIndication,
-            ).background(color = drained(color = background, amount = dim)),
+            ).background(color = capsuleBackground),
         contentAlignment = Alignment.Center,
     ) {
         LemonadeUi.Icon(
             icon = action.icon,
             contentDescription = action.contentDescription,
             size = LemonadeAssetSize.Large,
-            tint = drained(color = colors.contentColor, amount = dim),
+            tint = drained(
+                color = colors.contentColor,
+                amount = dim,
+            ),
             modifier = Modifier.offset(x = iconOffset),
         )
     }
 }
 
 /**
- * [color] drained of [amount] of its colour: what a grayscale filter would leave of it, mixed back
- * in by how far the drain has gone.
+ * [color] drained of [amount] of its colour.
+ *
+ * What a grayscale filter would leave of it, mixed back in by how far the drain has gone.
  */
 private fun drained(
     color: Color,
@@ -499,10 +505,129 @@ private fun drained(
     val luma = 0.213f * color.red + 0.715f * color.green + 0.072f * color.blue
     return lerp(
         start = color,
-        stop = Color(red = luma, green = luma, blue = luma, alpha = color.alpha),
+        stop = Color(
+            red = luma,
+            green = luma,
+            blue = luma,
+            alpha = color.alpha,
+        ),
         fraction = amount,
     )
 }
+
+/**
+ * Where the row is drawn, blending the finger's travel with the commit's [claimed] share.
+ *
+ * @param handingBack whether the drag has left a commit behind and is carrying the row's lead back
+ */
+private fun resolveSwipeDrawnTravel(
+    travel: Float,
+    commitTravel: Float,
+    commitThreshold: Float,
+    handingBack: Boolean,
+    claimed: Float,
+): Float {
+    val base = if (handingBack) {
+        resolveSwipeReleasedTravel(
+            travel = travel,
+            commitTravel = commitTravel,
+            threshold = commitThreshold,
+        )
+    } else {
+        travel
+    }
+    return base + (commitTravel - base) * claimed
+}
+
+/**
+ * Closes an open row that has been scrolled past.
+ *
+ * Anchored on the first placement that repeats, never on the first placement at all: a screen still
+ * finding its own size moves every row on it, and a row composed already open would take the
+ * unplaced 0 for where it opened and close itself the moment the real position arrived.
+ */
+@Composable
+private fun Modifier.closeWhenScrolledPast(
+    open: Boolean,
+    onClose: () -> Unit,
+): Modifier {
+    val slack = with(LocalDensity.current) { SCROLL_SLACK.toPx() }
+    var rowY by remember { mutableFloatStateOf(0f) }
+    var openedAt by remember { mutableStateOf<Float?>(null) }
+    LaunchedEffect(open) {
+        if (!open) openedAt = null
+    }
+    return onGloballyPositioned { coordinates ->
+        val y = coordinates.positionInRoot().y
+        val layoutSettled = y == rowY
+        rowY = y
+        if (!open) return@onGloballyPositioned
+        val anchor = openedAt
+        when {
+            anchor == null -> if (layoutSettled) openedAt = y
+            abs(y - anchor) > slack -> onClose()
+        }
+    }
+}
+
+/** The list item's own press highlight, drawn behind a row that is being [handled]. */
+@Composable
+private fun Modifier.swipeRowHighlight(handled: Boolean): Modifier {
+    val color = LemonadeTheme.colors.interaction.bgSubtleInteractive
+    val density = LocalDensity.current
+    val gutter = with(density) { LemonadeTheme.spaces.spacing100.toPx() }
+    val radius = with(density) { LemonadeTheme.radius.radius500.toPx() }
+    // Snapped on and eased off rather than following the travel: the row is being handled from the
+    // first pixel, and is still being handled until it has finished arriving.
+    val alpha = animateFloatAsState(
+        targetValue = if (handled) 1f else 0f,
+        animationSpec = if (handled) noSpring else settleSpring,
+        label = "swipeRowHighlight",
+    )
+    return drawBehind {
+        if (alpha.value <= 0f) return@drawBehind
+        drawRoundRect(
+            color = color,
+            topLeft = Offset(
+                x = gutter,
+                y = gutter,
+            ),
+            size = Size(
+                width = size.width - gutter * 2,
+                height = size.height - gutter * 2,
+            ),
+            cornerRadius = CornerRadius(radius),
+            alpha = alpha.value,
+        )
+    }
+}
+
+/** Closes the row on a tap anywhere over the content it covers. */
+@Composable
+private fun SwipeRowTapToClose(
+    onClose: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier.clickable(
+            indication = null,
+            interactionSource = remember { MutableInteractionSource() },
+            onClick = onClose,
+        ),
+    )
+}
+
+/** The [actions] as accessibility actions, each firing through [onFired]. */
+private fun swipeRowCustomActions(
+    actions: List<SwipeAction>,
+    onFired: (SwipeAction) -> Unit,
+): List<CustomAccessibilityAction> =
+    actions.map { action ->
+        CustomAccessibilityAction(label = action.contentDescription) {
+            onFired(action)
+            true
+        }
+    }
 
 @Suppress("CyclomaticComplexMethod")
 @Composable
@@ -519,18 +644,15 @@ private fun SwipeActionRowCore(
 ) {
     // Signed: negative onto the leading actions, positive onto the trailing ones.
     //
-    // A plain value the drag writes as it happens, not an `Animatable` a launched coroutine
-    // catches up with. Every delta used to launch its own `snapTo`, and one landing after the
-    // settle had started cancelled it — an `Animatable` lets the later mutation win — leaving the
-    // row parked wherever the finger let go until something else moved it.
-    // Held rather than read: nothing in this function's body may touch `travel`, or the row
-    // recomposes on every frame of every drag and every settle — and with it the content it wraps,
-    // which is the caller's whole list item. The layout and draw lambdas below read it instead, so
-    // a moving row is re-laid-out and redrawn without being composed again.
+    // A plain value the drag writes as it happens, not an `Animatable` a launched coroutine catches
+    // up with: an `Animatable` lets the later mutation win, so a delta landing after a settle had
+    // started would cancel the settle and park the row wherever the finger let go.
     //
-    // [SwipeActionStrip] is the exception, by design: it reads the lambda in its own composition,
-    // because an action's width and scale are composition-level. A drag recomposes the strip and
-    // its handful of capsules, and nothing above them.
+    // Nothing in this function's body may read it, or the row recomposes on every frame of every
+    // drag and every settle — and with it the content it wraps, which is the caller's whole list
+    // item. The layout and draw lambdas below read it instead. [SwipeActionStrip] is the exception,
+    // by design: an action's width and scale are composition-level, so a drag recomposes the strip
+    // and its handful of capsules, and nothing above them.
     val travel = remember { mutableFloatStateOf(0f) }
     // The one animation allowed to write `travel`, held so a new one, or a finger, can end it.
     val settling = remember { mutableStateOf<Job?>(null) }
@@ -539,16 +661,10 @@ private fun SwipeActionRowCore(
     // the release velocity is riding on — every flick, a frame after it started.
     val settleTarget = remember { mutableFloatStateOf(Float.NaN) }
     var rowWidth by remember { mutableFloatStateOf(0f) }
-    // What this row answers to inside a group. Its own, so a row needs no identity from the caller
-    // to take part.
+    // Its own, so a row needs no identity from the caller to take part in a group.
     val groupIdentity = remember { Any() }
     val groupSignal = LocalSwipeActionGroupSignal.current
     val announce = LocalSwipeActionGroupAnnounce.current
-    // Where the row sits on screen, and where it sat when it opened. A row that has moved since is
-    // being scrolled past, and an open row scrolling away is one the reader has left behind.
-    var rowY by remember { mutableFloatStateOf(0f) }
-    var openedAt by remember { mutableStateOf<Float?>(null) }
-    val scrollSlack = with(LocalDensity.current) { SCROLL_SLACK.toPx() }
     // The side rather than a flag: the strip that stretches and the icon that slides are one
     // edge's, not both.
     var committedSide by remember { mutableStateOf<SwipeActionSide?>(null) }
@@ -599,9 +715,12 @@ private fun SwipeActionRowCore(
     val revealOn = { side: SwipeActionSide ->
         if (side == SwipeActionSide.Leading) leadingReveal else trailingReveal
     }
-    // Where a commit parks the row: as far as it goes, less the sliver iOS leaves of it.
+    // Where a commit parks the row: as far as it goes, less the sliver COMMIT_INSET keeps of it.
     val commitTravelOn = { side: SwipeActionSide ->
-        maxOf(revealOn(side), rowWidth - commitInset)
+        maxOf(
+            a = revealOn(side),
+            b = rowWidth - commitInset,
+        )
     }
 
     // The side the row would open onto with nothing having said otherwise: whichever edge has
@@ -612,10 +731,8 @@ private fun SwipeActionRowCore(
     val restingTravel = restingSide.sign *
         if (held) commitTravelOn(restingSide) else revealOn(restingSide)
 
-    // How far the commit has claimed the row off the finger. Crossing the threshold takes the row
-    // out of the drag's hands and carries it the rest of the way itself; dragging back below hands
-    // it back. The blend is what makes both a spring rather than a jump, and what keeps the finger
-    // in charge on the way there.
+    // How far the commit has claimed the row off the finger, blended into the drawn travel so the
+    // crossing springs rather than jumps.
     val claimed = animateFloatAsState(
         targetValue = if (committedSide != null) 1f else 0f,
         // Sprung on the way out, snapped on the way back: leaving a commit hands the row to
@@ -623,24 +740,20 @@ private fun SwipeActionRowCore(
         animationSpec = if (committedSide != null) commitSpring else noSpring,
         label = "swipeCommitClaim",
     )
-    // What the row draws, resolved wherever it is needed rather than here: the finger's own travel,
-    // or the lead a commit gave it being given back in proportion to the finger, blended with
-    // however far the commit has claimed the row. Resolved on the magnitude and signed back.
+    // A lambda, so the travel is read where it is drawn and never in this composition. Resolved on
+    // the magnitude and signed back.
     val shown = {
         val reached = travel.floatValue
-        val side = swipeTravelSide(travel = reached) ?: restingSide
-        val magnitude = abs(reached)
-        val commitTravel = commitTravelOn(side)
-        val base = if (releasing) {
-            resolveSwipeReleasedTravel(
-                travel = magnitude,
-                commitTravel = commitTravel,
-                threshold = swipeCommitThreshold(rowWidth = rowWidth),
-            )
-        } else {
-            magnitude
-        }
-        (base + (commitTravel - base) * claimed.value) * side.sign
+        val side = swipeTravelSide(travel = reached)
+            ?: restingSide
+        val drawn = resolveSwipeDrawnTravel(
+            travel = abs(reached),
+            commitTravel = commitTravelOn(side),
+            commitThreshold = swipeCommitThreshold(rowWidth = rowWidth),
+            handingBack = releasing,
+            claimed = claimed.value,
+        )
+        drawn * side.sign
     }
     // What one side's strip has been revealed by: nothing at all unless the row is showing it.
     val shownOn = { side: SwipeActionSide ->
@@ -648,9 +761,8 @@ private fun SwipeActionRowCore(
         if (swipeTravelSide(travel = reached) == side) abs(reached) else 0f
     }
 
-    // A tapped action tidies the row away after it, unless it has put something on screen that the
-    // row is the subject of. Claiming the slot again is what keeps the group's own tap — the same
-    // one that fired this — from closing the row underneath it.
+    // Claiming the slot again is what keeps the group's own tap — the same one that fired this —
+    // from closing the row underneath it.
     val fired: (SwipeAction) -> Unit = { action ->
         action.onClick()
         if (action.keepsRowOpen) {
@@ -668,7 +780,6 @@ private fun SwipeActionRowCore(
         if (open) {
             announce?.invoke(groupIdentity)
         } else {
-            openedAt = null
             held = false
             committedSide = null
             holding = false
@@ -676,9 +787,6 @@ private fun SwipeActionRowCore(
             // is drawn from.
             openSide = null
         }
-        // Armed from the first placement instead of from here: this runs before the row has been
-        // measured, so a row composed already open would take `rowY`'s initial 0 for where it
-        // opened and close itself the moment the real position arrived.
         val want = if (open) restingTravel else 0f
         if (settleTarget.floatValue != want) settleTo(want, 0f)
     }
@@ -719,7 +827,8 @@ private fun SwipeActionRowCore(
                     allowsFullSwipe = allowsFullSwipe,
                 ),
             )
-        } ?: 0f
+        }
+            ?: 0f
         val crossed = side?.takeIf {
             swipeCrossedCommit(
                 travel = next,
@@ -731,52 +840,27 @@ private fun SwipeActionRowCore(
             committedSide = crossed
             releasing = crossed == null
             // Felt either way: crossing back is the moment the gesture stops belonging to the
-            // action, which is as worth knowing as the moment it started to.
+            // action.
             haptics.performHapticFeedback(HapticFeedbackType.LongPress)
         }
         travel.floatValue = next
     }
 
-    val highlight = LemonadeTheme.colors.interaction.bgSubtleInteractive
-    // On the moment a finger takes the row, gone by the time it has carried it home. Snapping in
-    // and easing out rather than following the travel: keyed off the travel it would blink off the
-    // frame the row landed, and the row is still being handled until it has finished arriving.
-    val handled = dragging || open
-    val highlightAlpha = animateFloatAsState(
-        targetValue = if (handled) 1f else 0f,
-        animationSpec = if (handled) noSpring else settleSpring,
-        label = "swipeRowHighlight",
-    )
-    // Drained of colour and dimmed while something an action opened has the reader's attention:
-    // the actions are still there, and still where they were, but they are not what is being
-    // answered.
+    // The actions are still there while something they opened has the reader's attention, but they
+    // are not what is being answered.
     val dim = animateFloatAsState(
         targetValue = if (holding) 1f else 0f,
         animationSpec = settleSpring,
         label = "swipeActionsDimmed",
     )
-    val gutterPx = with(density) { LemonadeTheme.spaces.spacing100.toPx() }
-    val highlightRadiusPx = with(density) { LemonadeTheme.radius.radius500.toPx() }
 
     Column(
         modifier = modifier
-            .onSizeChanged { rowWidth = it.width.toFloat() }
-            .onGloballyPositioned { coordinates ->
-                val y = coordinates.positionInRoot().y
-                // Placed where it was last placed, so the layout around it has stopped moving.
-                val settled = y == rowY
-                rowY = y
-                if (!open) return@onGloballyPositioned
-                val opened = openedAt
-                when {
-                    // Anchored once the layout has settled, not on the first placement: a screen
-                    // still finding its own size moves every row on it — 314dp on this one — and
-                    // that is not the reader scrolling anything.
-                    opened == null -> if (settled) openedAt = y
-                    // Scrolled past, so the row is no longer the one being read.
-                    abs(y - opened) > scrollSlack -> onOpenChange(false)
-                }
-            },
+            .onSizeChanged { size -> rowWidth = size.width.toFloat() }
+            .closeWhenScrolledPast(
+                open = open,
+                onClose = { onOpenChange(false) },
+            ),
     ) {
         Box(
             modifier = Modifier
@@ -786,45 +870,41 @@ private fun SwipeActionRowCore(
                     orientation = Orientation.Horizontal,
                     enabled = enabled && (leadingActions.isNotEmpty() || trailingActions.isNotEmpty()),
                     onDragStarted = {
-                        // The finger outranks whatever the row was doing, and nothing is holding
-                        // the row any more: this drag settles it wherever it asks.
+                        // The finger outranks whatever the row was doing.
                         settling.value?.cancel()
                         held = false
                         holding = false
                         releasing = false
                         dragging = true
                         gestureSide.value = null
-                        // Claimed, so this is the row being read now. Announced here rather than
-                        // when the row settles open: a reader who has started on another row has
-                        // already left the open one, and waiting for the release leaves it
-                        // sitting there through the whole gesture.
+                        // Announced on the first touch rather than when the row settles open: a
+                        // reader who has started on another row has already left the open one.
                         announce?.invoke(groupIdentity)
                     },
                     onDragStopped = { velocity ->
                         dragging = false
-                        val side = gestureSide.value ?: restingSide
+                        val side = gestureSide.value
+                            ?: restingSide
                         gestureSide.value = null
                         // Everything below then reads as it always did: travel and velocity both
                         // positive while the row is still opening.
                         val sign = side.sign
-                        // Where the finger left the row, read before the claim is folded in. A drag
-                        // coming back from a commit draws the row ahead of the finger — by the
-                        // gain in [resolveSwipeReleasedTravel] — and settling on the drawn value
-                        // would fire the action from a third of the way across, after crossing
-                        // back had already told the reader the gesture was no longer its.
+                        // Read before the claim is folded in: a drag coming back from a commit
+                        // draws the row ahead of the finger, and settling on the drawn value would
+                        // fire the action from a third of the way across.
                         val reached = abs(travel.floatValue)
-                        // The claim is spent: the row settles from where it is being drawn.
                         travel.floatValue = shown()
                         releasing = false
-                        // The spring picks up the speed the finger let go at rather than starting
-                        // from rest, so the row carries straight on out of the drag.
                         val released = velocity * towardsTrailing * sign
                         val target = resolveSwipeSettle(
                             travel = reached,
                             velocity = released,
                             // Nothing to open onto is what closes a release on an edge with
                             // nothing behind it: an empty side's reveal is zero.
-                            firstActionReveal = minOf(revealOn(side), oneActionReveal),
+                            firstActionReveal = minOf(
+                                a = revealOn(side),
+                                b = oneActionReveal,
+                            ),
                             rowWidth = rowWidth,
                             allowsFullSwipe = allowsFullSwipe,
                         )
@@ -860,20 +940,15 @@ private fun SwipeActionRowCore(
                 // focused and its actions are never announced.
                 .semantics(mergeDescendants = true) {
                     // Through `fired`, not straight to `onClick`: an action reached this way has to
-                    // close the row, or hold it open and announce, exactly as a tapped one does.
-                    // Gated on `enabled`, because a row that will not open must not offer its
-                    // actions to a reader who cannot see they are unreachable — and on `holding`,
-                    // because the capsules stop taking taps once an action has put something on
-                    // screen, and a reader must not be able to fire it again through here.
-                    // Both edges in the order a reader would find them: the gesture is what is
-                    // invisible here, not the side.
+                    // close or hold the row exactly as a tapped one does. Gated like the capsules,
+                    // so a reader cannot fire an action the row has drawn inert. Both edges in the
+                    // order a reader would find them: the gesture is what is invisible here, not
+                    // the side.
                     customActions = if (enabled && !holding) {
-                        (leadingActions + trailingActions).map { action ->
-                            CustomAccessibilityAction(action.contentDescription) {
-                                fired(action)
-                                true
-                            }
-                        }
+                        swipeRowCustomActions(
+                            actions = leadingActions + trailingActions,
+                            onFired = fired,
+                        )
                     } else {
                         emptyList()
                     }
@@ -914,38 +989,21 @@ private fun SwipeActionRowCore(
             }
             Box(
                 modifier = Modifier
-                    .offset { IntOffset(x = (shown() * towardsTrailing).roundToInt(), y = 0) }
-                    // A row under the finger rests on the list item's own press highlight rather
-                    // than on a surface of its own: same fill, same radius, same gutter. It is on
-                    // for the whole gesture, not proportional to the travel — the row is being
-                    // handled from the first pixel.
-                    .drawBehind {
-                        if (highlightAlpha.value > 0f) {
-                            val gutter = gutterPx
-                            drawRoundRect(
-                                color = highlight,
-                                topLeft = Offset(x = gutter, y = gutter),
-                                size = Size(size.width - gutter * 2, size.height - gutter * 2),
-                                cornerRadius = CornerRadius(highlightRadiusPx),
-                                alpha = highlightAlpha.value,
-                            )
-                        }
-                    },
+                    .offset {
+                        IntOffset(
+                            x = (shown() * towardsTrailing).roundToInt(),
+                            y = 0,
+                        )
+                    }.swipeRowHighlight(handled = dragging || open),
             ) {
                 content()
                 // A sibling drawn above the content, not a `clickable` on its parent: Compose
                 // dispatches pointers children-first, so the wrapped item's own `clickable`
                 // consumes the down and a parent would never see it.
                 if (open) {
-                    Box(
-                        modifier = Modifier
-                            .matchParentSize()
-                            // Closing an open row is not a navigation, and it must not announce
-                            // as one.
-                            .clickable(
-                                indication = null,
-                                interactionSource = remember { MutableInteractionSource() },
-                            ) { onOpenChange(false) },
+                    SwipeRowTapToClose(
+                        onClose = { onOpenChange(false) },
+                        modifier = Modifier.matchParentSize(),
                     )
                 }
             }
@@ -980,19 +1038,20 @@ private fun SwipeActionRowCore(
  *     LemonadeUi.ActionListItem(label = "Label", onItemClicked = { /* … */ })
  * }
  * ```
+ *
  * Actions may sit on either edge, or both. A drag takes the side it sets off towards and keeps it
  * for the rest of the gesture, so one drag never reveals both. A row opened by its caller rather
  * than by a drag opens onto [trailingActions], falling back to [leadingActions] only when there
  * are none.
  *
- * @param leadingActions - the actions revealed on the leading edge, outermost first.
- * @param trailingActions - the actions revealed on the trailing edge, outermost first.
- * @param modifier - [Modifier] applied to the base container.
- * @param enabled - flag to define whether the drag is active.
- * @param allowsFullSwipe - whether dragging across the row fires the first action of whichever
- *  edge is being dragged, on release.
- * @param showDivider - flag to show a divider below the row, which does not travel with it.
- * @param content - the row this wraps.
+ * @param leadingActions the actions revealed on the leading edge, outermost first
+ * @param trailingActions the actions revealed on the trailing edge, outermost first
+ * @param modifier [Modifier] applied to the base container
+ * @param enabled whether the drag is active
+ * @param allowsFullSwipe whether dragging across the row fires the first action of whichever edge
+ *  is being dragged, on release
+ * @param showDivider whether to show a divider below the row, which does not travel with it
+ * @param content the row this wraps
  */
 @Composable
 public fun LemonadeUi.SwipeActionRow(
@@ -1007,7 +1066,7 @@ public fun LemonadeUi.SwipeActionRow(
     var open by remember { mutableStateOf(false) }
     SwipeActionRowCore(
         open = open,
-        onOpenChange = { open = it },
+        onOpenChange = { opening -> open = opening },
         leadingActions = leadingActions,
         trailingActions = trailingActions,
         enabled = enabled,
@@ -1052,12 +1111,12 @@ public fun LemonadeUi.SwipeActionRow(
  * Keeping one row open at a time needs nothing from the caller — that is what
  * [LemonadeUi.SwipeActionGroup] is for, and it works on these rows too. Reach for this overload
  * when the caller has to be able to close the row itself: after an action with
- * [SwipeAction.keepsRowOpen] has fired, the row waits on the reader, and only an `openId` the
+ * [SwipeAction.keepsRowOpen] has fired, the row waits on the reader, and only an [openId] the
  * caller owns can put it back.
  *
- * @param id - identity of this row, compared against [openId].
- * @param openId - identity of the row currently open, or null when none is.
- * @param onOpenIdChange - callback called with this row's [id] when it opens and null when it closes.
+ * @param id identity of this row, compared against [openId]
+ * @param openId identity of the row currently open, or null when none is
+ * @param onOpenIdChange called with this row's [id] when it opens and null when it closes
  */
 @Composable
 public fun LemonadeUi.SwipeActionRow(

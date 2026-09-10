@@ -45,9 +45,8 @@ internal fun MarkdownDisplay() {
         }
 
         item(key = "preview") {
-            // toLemonadeMarkdown() is itself @Composable (it resolves theme colors), so it cannot be
-            // wrapped in remember. Keeping the preview in its own lazy item is what bounds the
-            // re-parse: it now only runs when `input` changes, not when anything else on the screen does.
+            // toLemonadeMarkdown() is @Composable and cannot be wrapped in remember, so the preview
+            // lives in its own lazy item to bound the re-parse to changes in the input.
             MarkdownSection(title = "Preview") {
                 LemonadeUi.Text(
                     text = input.toLemonadeMarkdown(),

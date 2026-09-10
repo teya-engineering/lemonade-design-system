@@ -2,11 +2,10 @@ import SwiftUI
 
 // MARK: - Content Cell Button Style
 
-/// A button style that scales the cell slightly on press, mimicking the
-/// tap-feedback ripple from the Compose reference.
+/// A button style that scales the cell down while it is pressed.
 ///
-/// Uses a short spring so the scale-down on touch-down and rebound on
-/// release absorbs rapid taps without a linear-looking jitter.
+/// The spring is short so the scale-down and rebound absorb rapid taps without
+/// a linear-looking jitter.
 private struct CalendarCellPressStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label

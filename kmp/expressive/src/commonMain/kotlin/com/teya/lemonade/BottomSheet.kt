@@ -14,34 +14,15 @@ import com.teya.lemonade.core.LemonadeBottomSheetVariant
 /**
  * A bottom sheet overlay following the Lemonade Design System.
  *
- * This composable provides a modal bottom sheet that slides up from the bottom of the screen,
- * styled with Lemonade design tokens for shape, color, and elevation. The sheet visibility is
- * controlled by the [expanded] flag, following the same pattern used by [LemonadeUi.Dialog] and
- * [LemonadeUi.Dropdown].
+ * Slides a modal sheet up from the bottom of the screen, styled with Lemonade design tokens for
+ * shape, color, and elevation. [expanded] controls visibility, the same pattern used by
+ * [LemonadeUi.Dialog] and [LemonadeUi.Dropdown].
  *
- * The component handles exit animations automatically: when [expanded] changes from `true` to
- * `false` (e.g., from a button click inside the sheet), the sheet animates out before being
- * removed from composition. Drag-to-dismiss and scrim taps also animate correctly.
+ * Exit animations run automatically: when [expanded] flips from `true` to `false` — from a button
+ * click inside the sheet, say — the sheet animates out before leaving the composition.
+ * Drag-to-dismiss and scrim taps animate the same way.
  *
- * @param expanded Whether the bottom sheet is currently visible. When `false`, the sheet
- *   animates out and is removed from composition after the animation completes.
- * @param onDismissRequest Callback invoked when the user requests to dismiss the bottom sheet
- *   (e.g., by swiping down, tapping the scrim, or pressing back).
- * @param showDragHandle Whether to display the drag handle at the top of the sheet. Defaults to `true`.
- * @param skipPartiallyExpanded Whether the partially expanded state should be skipped. If `true`,
- *   the bottom sheet will always expand to the full height, skipping the intermediate (half-expanded)
- *   state. Defaults to `false`.
- * @param gesturesEnabled Whether the sheet responds to swipe/drag gestures. When `false`, the
- *   drag handle is hidden (overriding [showDragHandle]) and the sheet cannot be dragged. Defaults
- *   to `true`.
- * @param background The background variant of the bottom sheet. Defaults to
- *   [LemonadeBottomSheetVariant.Default], which uses [LemonadeTheme.colors.background.bgDefault];
- *   use [LemonadeBottomSheetVariant.Subtle] for [LemonadeTheme.colors.background.bgSubtle].
- * @param properties Dismissal behaviour for the bottom sheet (back press / scrim tap). Defaults
- *   to [LemonadeBottomSheetProperties] with both flags enabled.
- * @param content A composable lambda with [ColumnScope] receiver that defines the sheet's content.
- *
- * ## Usage Example
+ * ## Usage
  *
  * ```kotlin
  * var showSheet by remember { mutableStateOf(false) }
@@ -65,18 +46,30 @@ import com.teya.lemonade.core.LemonadeBottomSheetVariant
  * ## Design Notes
  *
  * - The sheet uses [LemonadeTheme.radius.radius500] for the top corners.
- * - Background color is resolved from [background]: [LemonadeBottomSheetVariant.Default] maps to
+ * - [background] resolves the background color: [LemonadeBottomSheetVariant.Default] maps to
  *   [LemonadeTheme.colors.background.bgDefault] and [LemonadeBottomSheetVariant.Subtle] maps to
  *   [LemonadeTheme.colors.background.bgSubtle].
- * - Tonal elevation is set to 0.dp; the sheet relies on Lemonade color tokens for visual hierarchy.
+ * - Tonal elevation is 0.dp; the sheet relies on Lemonade color tokens for visual hierarchy.
  * - The drag handle uses the default [BottomSheetDefaults.DragHandle] styling.
  * - The sheet keeps whichever system bars the host window hides, never shows one the host hides.
- * - For overlay components with a unified visibility API, see also [LemonadeUi.Dialog] and
- *   [LemonadeUi.Dropdown], which share the same `expanded` flag pattern.
  *
- * @see LemonadeUi.Dialog For a dialog overlay with the same visibility pattern.
- * @see LemonadeUi.Dropdown For a dropdown menu overlay with the same visibility pattern.
- * @see ModalBottomSheet The underlying component.
+ * @param expanded whether the bottom sheet is currently visible. When `false` the sheet animates
+ *   out, then leaves the composition
+ * @param onDismissRequest called when the user requests dismissal, by swiping down, tapping the
+ *   scrim, or pressing back
+ * @param showDragHandle whether to show the drag handle at the top of the sheet, `true` by default
+ * @param skipPartiallyExpanded whether to skip the half-expanded state and always open at full
+ *   height, `false` by default
+ * @param gesturesEnabled whether the sheet responds to swipe and drag gestures. When `false` the
+ *   drag handle is hidden, overriding [showDragHandle], and the sheet cannot be dragged. `true` by
+ *   default
+ * @param background background variant of the sheet, [LemonadeBottomSheetVariant.Default] by default
+ * @param properties dismissal behaviour for back press and scrim tap, both enabled by default
+ * @param content sheet body, composed in a [ColumnScope]
+ *
+ * @see LemonadeUi.Dialog for a dialog overlay with the same visibility pattern
+ * @see LemonadeUi.Dropdown for a dropdown menu overlay with the same visibility pattern
+ * @see ModalBottomSheet the underlying component
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -105,7 +98,7 @@ public fun LemonadeUi.BottomSheet(
 @Deprecated(
     message = "Use the overload with a gesturesEnabled parameter.",
     replaceWith = ReplaceWith(
-        "BottomSheet(expanded, onDismissRequest, showDragHandle, skipPartiallyExpanded, " +
+        expression = "BottomSheet(expanded, onDismissRequest, showDragHandle, skipPartiallyExpanded, " +
             "true, background, properties, content)",
     ),
     level = DeprecationLevel.HIDDEN,
@@ -136,7 +129,7 @@ public fun LemonadeUi.BottomSheet(
 @Deprecated(
     message = "Use the overload with a properties parameter.",
     replaceWith = ReplaceWith(
-        "BottomSheet(expanded, onDismissRequest, showDragHandle, skipPartiallyExpanded, " +
+        expression = "BottomSheet(expanded, onDismissRequest, showDragHandle, skipPartiallyExpanded, " +
             "true, background, LemonadeBottomSheetProperties(), content)",
     ),
     level = DeprecationLevel.HIDDEN,

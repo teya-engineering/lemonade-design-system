@@ -16,11 +16,10 @@ Kotlin script converters in `scripts/*-token-converter.main.kts` read those JSON
 files and (over)write the generated source for each platform. This skill runs the
 right converters for whatever token files changed.
 
-**Flutter is intentionally excluded.** The repo ships `flutter-*` converters too,
-but this skill targets **KMP + SwiftUI only** — do not run the Flutter converters
-or commit changes under `flutter/`. If Flutter is ever brought back into scope,
-re-add its converters to `converters_for()` in `run-converters.sh` and the table
-below.
+**Flutter is out of scope.** `converters_for()` in `run-converters.sh` maps every
+token file to its KMP and SwiftUI converters only. The repo also ships `flutter-*`
+converters in `scripts/`; do not run them, and do not commit changes under
+`flutter/`.
 
 ## TL;DR
 
@@ -89,7 +88,7 @@ a token *value* changed and the generated code needs rebuilding.
 `verify-generated.sh` is a separate, narrower tool; see below for when to reach
 for it.
 
-## One hard requirement (it bites silently)
+## The hard requirement (it bites silently)
 
 **Kotlin 2.3.20 — NOT Homebrew's 2.4.0.** The `.main.kts` converters fail to
 compile on Kotlin 2.4.0 with:

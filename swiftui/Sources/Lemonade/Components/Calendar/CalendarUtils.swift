@@ -34,36 +34,55 @@ enum CalendarUtils {
     /// The grid always starts on the calendar's `firstWeekday` and fills
     /// exactly 6 rows of 7 columns, padding with days from adjacent months.
     static func generateMonthDays(year: Int, month: Int, calendar: Calendar) -> [Date] {
-        guard let firstOfMonth = calendar.date(from: DateComponents(year: year, month: month, day: 1)) else {
-            return []
-        }
-        let weekday = calendar.component(.weekday, from: firstOfMonth) // 1=Sun, 7=Sat
+        guard let firstOfMonth = calendar.date(from: DateComponents(year: year, month: month, day: 1)),
+              let leadingPadding = previousMonthPadding(before: firstOfMonth, calendar: calendar),
+              let monthDays = daysInMonth(year: year, month: month, firstOfMonth: firstOfMonth, calendar: calendar)
+        else { return [] }
+
+        let days = leadingPadding + monthDays
+        guard let trailingPadding = nextMonthPadding(
+            after: firstOfMonth,
+            count: 42 - days.count,
+            calendar: calendar
+        ) else { return [] }
+
+        return days + trailingPadding
+    }
+
+    private static func previousMonthPadding(before firstOfMonth: Date, calendar: Calendar) -> [Date]? {
+        let weekday = calendar.component(.weekday, from: firstOfMonth)
         let firstDayOffset = (weekday - calendar.firstWeekday + 7) % 7
-
         var days: [Date] = []
-
-        // Previous month trailing days
         for i in (0..<firstDayOffset).reversed() {
-            guard let date = calendar.date(byAdding: .day, value: -(i + 1), to: firstOfMonth) else { return [] }
+            guard let date = calendar.date(byAdding: .day, value: -(i + 1), to: firstOfMonth) else { return nil }
             days.append(date)
         }
+        return days
+    }
 
-        // Current month days
-        guard let range = calendar.range(of: .day, in: .month, for: firstOfMonth) else { return [] }
+    private static func daysInMonth(
+        year: Int,
+        month: Int,
+        firstOfMonth: Date,
+        calendar: Calendar
+    ) -> [Date]? {
+        guard let range = calendar.range(of: .day, in: .month, for: firstOfMonth) else { return nil }
+        var days: [Date] = []
         for day in range {
-            guard let date = calendar.date(from: DateComponents(year: year, month: month, day: day)) else { return [] }
+            guard let date = calendar.date(from: DateComponents(year: year, month: month, day: day)) else { return nil }
             days.append(date)
         }
+        return days
+    }
 
-        // Next month leading days
-        var nextDay = 1
-        guard let nextMonthStart = calendar.date(byAdding: .month, value: 1, to: firstOfMonth) else { return [] }
-        while days.count < 42 {
-            guard let date = calendar.date(byAdding: .day, value: nextDay - 1, to: nextMonthStart) else { return [] }
+    private static func nextMonthPadding(after firstOfMonth: Date, count: Int, calendar: Calendar) -> [Date]? {
+        guard let nextMonthStart = calendar.date(byAdding: .month, value: 1, to: firstOfMonth) else { return nil }
+        guard count > 0 else { return [] }
+        var days: [Date] = []
+        for offset in 0..<count {
+            guard let date = calendar.date(byAdding: .day, value: offset, to: nextMonthStart) else { return nil }
             days.append(date)
-            nextDay += 1
         }
-
         return days
     }
 

@@ -64,8 +64,6 @@ private struct OpacityItem: Identifiable {
         "\(Int((value * 100).rounded()))%"
     }
 
-    /// Reads the names and values straight off the shipped token object, so the
-    /// gallery can never claim an opacity the SDK does not have.
     static func items(reflecting tokens: Any) -> [OpacityItem] {
         Mirror(reflecting: tokens).children.compactMap { child in
             guard let name = child.label, let value = child.value as? Double else { return nil }

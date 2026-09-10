@@ -69,7 +69,7 @@ public enum class ToastVoice {
 }
 
 /**
- * Duration for which a toast is displayed before auto-dismissal.
+ * How long a toast stays up before it auto-dismisses.
  */
 public sealed class ToastDuration(internal val millis: kotlin.Long) {
     /** 3 seconds */
@@ -81,7 +81,7 @@ public sealed class ToastDuration(internal val millis: kotlin.Long) {
     /** 9 seconds */
     public data object Long : ToastDuration(9_000L)
 
-    /** Custom duration */
+    /** Duration in milliseconds; must be positive. */
     public data class Custom(val customMillis: kotlin.Long) : ToastDuration(customMillis) {
         init {
             require(customMillis > 0) { "Custom toast duration must be positive, was $customMillis" }
@@ -112,13 +112,13 @@ public class LemonadeToastState {
     private var nextId: Int = 0
 
     /**
-     * Show a toast. If a toast is already visible, it is replaced immediately.
+     * Shows a toast, replacing any toast already visible.
      *
-     * @param label The text message to display.
-     * @param voice The tone of voice — determines icon and icon color. Defaults to [ToastVoice.Neutral].
-     * @param icon Optional custom icon. Only used when [voice] is [ToastVoice.Neutral].
-     * @param duration How long the toast is displayed. Defaults to [ToastDuration.Short].
-     * @param dismissible Whether the user can swipe to dismiss. Defaults to `true`.
+     * @param label text message to display
+     * @param voice tone of voice — determines icon and icon color. Defaults to [ToastVoice.Neutral]
+     * @param icon optional custom icon. Only used when [voice] is [ToastVoice.Neutral]
+     * @param duration how long the toast stays up. Defaults to [ToastDuration.Short]
+     * @param dismissible whether the user can swipe to dismiss. Defaults to `true`
      */
     @Deprecated(
         message = "Use show() with actionLabel and onAction to support an optional action button.",
@@ -145,28 +145,28 @@ public class LemonadeToastState {
     }
 
     /**
-     * Show a toast with an optional action button. If a toast is already visible, it is replaced immediately.
+     * Shows a toast with an optional action button, replacing any toast already visible.
      *
      * Use [ToastVoice.Loading] to communicate an ongoing action (e.g. "Downloading your document…"). A
      * loading toast shows a spinner and persists until you call [dismiss] or replace it with another
      * [show] — [duration] and [dismissible] are ignored for it.
      *
-     * @param label The text message to display.
-     * @param voice The tone of voice — determines icon and icon color. Defaults to [ToastVoice.Neutral].
-     * @param icon Optional custom icon. Only used when [voice] is [ToastVoice.Neutral].
-     * @param duration How long the toast is displayed. Defaults to [ToastDuration.Short]. Ignored when
-     *   [voice] is [ToastVoice.Loading].
-     * @param dismissible Whether the user can swipe to dismiss. Defaults to `true`. Ignored (forced off)
-     *   when [voice] is [ToastVoice.Loading].
-     * @param actionLabel Optional label for the action button shown at the trailing end of the toast.
-     * @param onAction Optional callback invoked when the action button is tapped. The button is only shown
-     *   when both [actionLabel] and [onAction] are non-null.
-     * @param paddingValues Extra space to clear around the toast, e.g. to raise it clear of a screen's
+     * @param label text message to display
+     * @param voice tone of voice — determines icon and icon color. Defaults to [ToastVoice.Neutral]
+     * @param icon optional custom icon. Only used when [voice] is [ToastVoice.Neutral]
+     * @param duration how long the toast stays up. Defaults to [ToastDuration.Short]. Ignored when
+     *   [voice] is [ToastVoice.Loading]
+     * @param dismissible whether the user can swipe to dismiss. Defaults to `true`. Ignored (forced off)
+     *   when [voice] is [ToastVoice.Loading]
+     * @param actionLabel optional label for the action button shown at the trailing end of the toast
+     * @param onAction optional callback run when the action button is tapped. The button only shows
+     *   when both [actionLabel] and [onAction] are non-null
+     * @param paddingValues extra space to clear around the toast, e.g. to raise it clear of a screen's
      *   persistent bottom action button, or to inset it from a side element. Bottom/start/end are honored;
      *   a zero edge falls back to the standard margin for that edge (there's no way to tell "unset" from
      *   "explicitly zero" on a plain [PaddingValues]). The top inset is never honored — the toast is always
      *   bottom-anchored with intrinsic height, so it has no visible effect. Defaults to `null` (standard
-     *   margins on every edge).
+     *   margins on every edge)
      */
     public fun show(
         label: String,
@@ -219,15 +219,14 @@ public class LemonadeToastState {
         )
     }
 
-    /** Programmatically dismiss the current toast. */
+    /** Dismisses the current toast. */
     public fun dismiss() {
         currentToast = null
     }
 }
 
 /**
- * Provides the [LemonadeToastState] to the composition tree.
- * Must be used inside [LemonadeToastHost].
+ * Current [LemonadeToastState]. Throws unless read inside a [LemonadeToastHost].
  */
 public val LocalLemonadeToastState: ProvidableCompositionLocal<LemonadeToastState> = staticCompositionLocalOf {
     error("No LemonadeToastState provided. Wrap your content with LemonadeToastHost.")
@@ -242,10 +241,10 @@ public val LocalLemonadeToastState: ProvidableCompositionLocal<LemonadeToastStat
  * toastState.show(label = "Changes saved", voice = ToastVoice.Success)
  * ```
  *
- * @param label The text to display.
- * @param modifier Modifier to apply to the toast container.
- * @param voice The tone — determines default icon and icon color. Defaults to [ToastVoice.Neutral].
- * @param icon Optional custom icon (only used when voice is [ToastVoice.Neutral]).
+ * @param label text to display
+ * @param modifier [Modifier] applied to the toast container
+ * @param voice tone — determines default icon and icon color. Defaults to [ToastVoice.Neutral]
+ * @param icon optional custom icon, only used when [voice] is [ToastVoice.Neutral]
  */
 @Deprecated(
     message = "Use Toast() with actionLabel and onAction to support an optional action button.",
@@ -281,13 +280,13 @@ public fun LemonadeUi.Toast(
  * toastState.show(label = "Item deleted", voice = ToastVoice.Neutral, actionLabel = "Undo", onAction = { /* undo */ })
  * ```
  *
- * @param label The text to display.
- * @param modifier Modifier to apply to the toast container.
- * @param voice The tone — determines default icon and icon color. Defaults to [ToastVoice.Neutral].
- * @param icon Optional custom icon (only used when voice is [ToastVoice.Neutral]).
- * @param actionLabel Optional label for the action button shown at the trailing end of the toast.
- * @param onAction Optional callback invoked when the action button is tapped. The button is only shown
- *   when both [actionLabel] and [onAction] are non-null.
+ * @param label text to display
+ * @param modifier [Modifier] applied to the toast container
+ * @param voice tone — determines default icon and icon color. Defaults to [ToastVoice.Neutral]
+ * @param icon optional custom icon, only used when [voice] is [ToastVoice.Neutral]
+ * @param actionLabel optional label for the action button shown at the trailing end of the toast
+ * @param onAction optional callback run when the action button is tapped. The button only shows
+ *   when both [actionLabel] and [onAction] are non-null
  */
 @Composable
 public fun LemonadeUi.Toast(
@@ -372,10 +371,12 @@ private fun CoreToast(
             text = label,
             textStyle = LocalTypographies.current.bodySmallMedium,
             color = colors.content.contentPrimaryInverse,
-            onTextLayout = { labelWraps = it.lineCount > 1 },
+            onTextLayout = { layoutResult -> labelWraps = layoutResult.lineCount > 1 },
             modifier = Modifier
-                .weight(weight = 1f, fill = labelWraps)
-                .padding(horizontal = spaces.spacing100),
+                .weight(
+                    weight = 1f,
+                    fill = labelWraps,
+                ).padding(horizontal = spaces.spacing100),
         )
 
         if (actionLabel != null && onAction != null) {
@@ -399,10 +400,10 @@ private const val DRAG_DISMISS_THRESHOLD_DP = 25
 private const val DRAG_FADE_MULTIPLIER = 4
 
 /**
- * Provides [LemonadeToastState] to the composition tree and renders toast overlays
- * at the bottom of the screen with entry/exit animations.
+ * Renders toast overlays at the bottom of the screen with entry/exit animations.
  *
- * Place this at the root of your app, wrapping your main content.
+ * Supplies [LemonadeToastState] to the composition tree. Place this at the root of your app, wrapping
+ * your main content.
  *
  * ## Usage
  * ```kotlin
@@ -448,7 +449,8 @@ public fun LemonadeToastHost(
 
 /**
  * Renders the toast overlay for the current platform. Android draws it in its own window so it z-orders
- * above any `ModalBottomSheet` / `Dialog`; other platforms render it inline as a sibling of [content].
+ * above any [androidx.compose.material3.ModalBottomSheet] or [androidx.compose.ui.window.Dialog]; other
+ * platforms render it inline as a sibling of [content].
  */
 @Composable
 internal expect fun PlatformToastHost(
@@ -465,11 +467,14 @@ internal fun InlineToastHost(
     content: @Composable () -> Unit,
 ) {
     var hostHeightPx by remember { mutableStateOf(0) }
-    Box(modifier = modifier.onSizeChanged { hostHeightPx = it.height }) {
+    Box(modifier = modifier.onSizeChanged { size -> hostHeightPx = size.height }) {
         content()
 
         val toast = toastState.currentToast
-        val padding = rememberToastPadding(toast?.paddingValues, LocalLayoutDirection.current)
+        val padding = rememberToastPadding(
+            override = toast?.paddingValues,
+            layoutDirection = LocalLayoutDirection.current,
+        )
 
         AnimatedContent(
             targetState = toast,
@@ -491,7 +496,7 @@ internal fun InlineToastHost(
                     ),
                 ).using(SizeTransform(clip = false) { _, _ -> snap() })
             },
-            contentKey = { it?.id },
+            contentKey = { toastData -> toastData?.id },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .navigationBarsPadding()
@@ -545,10 +550,14 @@ internal fun SwipeableToast(
         onAction = toast.onAction,
         modifier = modifier
             .then(swipeModifier)
-            .offset { IntOffset(x = 0, y = offsetY.roundToInt()) }
-            .graphicsLayer {
+            .offset {
+                IntOffset(
+                    x = 0,
+                    y = offsetY.roundToInt(),
+                )
+            }.graphicsLayer {
                 val fadeDistance = DRAG_DISMISS_THRESHOLD_DP.dp.toPx() * DRAG_FADE_MULTIPLIER
-                alpha = 1f - (offsetY / fadeDistance).coerceIn(0f, 1f)
+                alpha = 1f - (offsetY / fadeDistance).coerceIn(minimumValue = 0f, maximumValue = 1f)
             },
     )
 }
@@ -563,8 +572,21 @@ internal fun rememberToastPadding(
     layoutDirection: LayoutDirection,
 ): PaddingValues {
     val spaces = LocalSpaces.current
-    val bottom = override?.calculateBottomPadding()?.takeIf { it > 0.dp } ?: spaces.spacing600
-    val start = override?.calculateStartPadding(layoutDirection)?.takeIf { it > 0.dp } ?: spaces.spacing400
-    val end = override?.calculateEndPadding(layoutDirection)?.takeIf { it > 0.dp } ?: spaces.spacing400
-    return PaddingValues(start = start, end = end, bottom = bottom)
+    val bottom = override
+        ?.calculateBottomPadding()
+        ?.takeIf { edge -> edge > 0.dp }
+        ?: spaces.spacing600
+    val start = override
+        ?.calculateStartPadding(layoutDirection)
+        ?.takeIf { edge -> edge > 0.dp }
+        ?: spaces.spacing400
+    val end = override
+        ?.calculateEndPadding(layoutDirection)
+        ?.takeIf { edge -> edge > 0.dp }
+        ?: spaces.spacing400
+    return PaddingValues(
+        start = start,
+        end = end,
+        bottom = bottom,
+    )
 }

@@ -613,16 +613,9 @@ private fun textColorFor(
     onLightColor: Color,
     onDarkColor: Color,
 ): Color {
-    // Extract RGB components (Compose Color uses 0-1 range)
-    val r = backgroundColor.red
-    val g = backgroundColor.green
-    val b = backgroundColor.blue
+    val bt601Luma = 0.299 * backgroundColor.red + 0.587 * backgroundColor.green + 0.114 * backgroundColor.blue
 
-    // Calculate relative luminance using WCAG formula
-    val luminance = 0.299 * r + 0.587 * g + 0.114 * b
-
-    // Use threshold of 0.5 (can adjust between 0.4-0.6 based on preference)
-    return if (luminance > 0.5) {
+    return if (bt601Luma > 0.5) {
         onLightColor
     } else {
         onDarkColor

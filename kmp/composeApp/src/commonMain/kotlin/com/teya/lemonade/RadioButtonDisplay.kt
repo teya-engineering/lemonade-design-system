@@ -17,7 +17,6 @@ internal fun RadioButtonDisplay() {
     var selectedOption by remember { mutableIntStateOf(0) }
 
     SampleScreenDisplayLazyColumn(title = "RadioButton") {
-        // States
         item(key = "States") {
             RadioButtonSection(title = "States") {
                 Row(
@@ -55,7 +54,6 @@ internal fun RadioButtonDisplay() {
             }
         }
 
-        // Interactive Group
         item(key = "Interactive Group") {
             RadioButtonSection(title = "Interactive Group") {
                 for (index in 0..2) {
@@ -76,7 +74,6 @@ internal fun RadioButtonDisplay() {
             }
         }
 
-        // With Label
         item(key = "With Label") {
             RadioButtonSection(title = "With Label") {
                 LemonadeUi.RadioButton(
@@ -99,7 +96,6 @@ internal fun RadioButtonDisplay() {
             }
         }
 
-        // With Support Text
         item(key = "With Support Text") {
             RadioButtonSection(title = "With Support Text") {
                 LemonadeUi.RadioButton(
@@ -118,7 +114,6 @@ internal fun RadioButtonDisplay() {
             }
         }
 
-        // Disabled
         item(key = "Disabled") {
             RadioButtonSection(title = "Disabled") {
                 Row(

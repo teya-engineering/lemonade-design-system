@@ -57,13 +57,11 @@ private struct BorderWidthItem: Identifiable {
 
     var id: String { name }
 
-    /// Fractional tokens such as `border40` (1.5) must not be rounded away.
+    /// Point value as a label, keeping the decimal on fractional widths.
     var measurement: String {
         value == value.rounded() ? "\(Int(value))pt" : String(format: "%gpt", Double(value))
     }
 
-    /// Reads the names and values straight off the shipped token object, so the
-    /// gallery can never claim a border width the SDK does not have.
     static func items(reflecting tokens: Any) -> [BorderWidthItem] {
         Mirror(reflecting: tokens).children.compactMap { child in
             guard let name = child.label, let value = child.value as? CGFloat else { return nil }

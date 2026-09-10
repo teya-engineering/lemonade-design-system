@@ -27,8 +27,8 @@ import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.SymbolContainerVoice
 
 /**
- * A versatile container used to display an icon, brand logo, or image.
- *  Supports consistent sizing and different tone of voice.
+ * Shows an icon inside a sized container styled by its voice.
+ *
  * ## Usage
  * ```kotlin
  * LemonadeUi.SymbolContainer(
@@ -38,14 +38,14 @@ import com.teya.lemonade.core.SymbolContainerVoice
  *     size = SymbolContainerSize.Small,
  * )
  * ```
- * @param icon - [LemonadeIcons] to be displayed inside the container.
- * @param contentDescription - the **localized** content description for the [icon].
- * @param modifier - Optional, the [Modifier] to be applied to the base component.
- * @param voice - [SymbolContainerVoice] to define the tone of voice. This will effectively define
- *  color of the background and the tint for the [icon]. Defaults to [SymbolContainerVoice.Neutral].
- * @param size - [SymbolContainerSize] to define the container's size. Defaults to [SymbolContainerSize.Medium].
- * @param shape - [SymbolContainerShape] to define the container's shape. Defaults to [SymbolContainerShape.Circle].
- * @param badgeSlot - Optional composable slot for a badge overlay positioned at the bottom-right corner.
+ *
+ * @param icon [LemonadeIcons] shown inside the container
+ * @param contentDescription **localized** content description for the [icon]
+ * @param modifier [Modifier] applied to the base component
+ * @param voice [SymbolContainerVoice] driving the background color and the [icon] tint
+ * @param size [SymbolContainerSize] driving the container's size
+ * @param shape [SymbolContainerShape] driving the container's shape
+ * @param badgeSlot composable slot for a badge overlay at the bottom-right corner
  */
 @Composable
 public fun LemonadeUi.SymbolContainer(
@@ -76,8 +76,8 @@ public fun LemonadeUi.SymbolContainer(
 }
 
 /**
- * A versatile container used to display an icon, brand logo, or image.
- *  Supports consistent sizing and different tone of voice.
+ * Shows text inside a sized container styled by its voice.
+ *
  * ## Usage
  * ```kotlin
  * LemonadeUi.SymbolContainer(
@@ -86,13 +86,13 @@ public fun LemonadeUi.SymbolContainer(
  *     size = SymbolContainerSize.Small,
  * )
  * ```
- * @param text - [Text] to be displayed inside the container.
- * @param modifier - Optional, the [Modifier] to be applied to the base component.
- * @param voice - [SymbolContainerVoice] to define the tone of voice. This will effectively define
- *  color of the background and the color for the [text]. Defaults to [SymbolContainerVoice.Neutral].
- * @param size - [SymbolContainerSize] to define the container's size. Defaults to [SymbolContainerSize.Medium].
- * @param shape - [SymbolContainerShape] to define the container's shape. Defaults to [SymbolContainerShape.Circle].
- * @param badgeSlot - Optional composable slot for a badge overlay positioned at the bottom-right corner.
+ *
+ * @param text text shown inside the container
+ * @param modifier [Modifier] applied to the base component
+ * @param voice [SymbolContainerVoice] driving the background color and the [text] color
+ * @param size [SymbolContainerSize] driving the container's size
+ * @param shape [SymbolContainerShape] driving the container's shape
+ * @param badgeSlot composable slot for a badge overlay at the bottom-right corner
  */
 @Composable
 public fun LemonadeUi.SymbolContainer(
@@ -121,8 +121,8 @@ public fun LemonadeUi.SymbolContainer(
 }
 
 /**
- * A versatile container used to display a [Painter] image, such as a brand logo or user avatar.
- *  Supports consistent sizing and different tone of voice.
+ * Shows a [Painter] image, such as a brand logo or avatar, inside a sized container.
+ *
  * ## Usage
  * ```kotlin
  * LemonadeUi.SymbolContainer(
@@ -133,16 +133,16 @@ public fun LemonadeUi.SymbolContainer(
  *     size = SymbolContainerSize.Large,
  * )
  * ```
- * @param painter - [Painter] to be displayed inside the container. Rendered with its original colors (no tint).
- * @param contentDescription - the **localized** content description for the [painter].
- * @param fill - When `true`, the [painter] fills the entire container and is clipped by the [shape].
- *  When `false`, the [painter] is sized to the content area (same as icon/text overloads) and centered.
- * @param modifier - Optional, the [Modifier] to be applied to the base component.
- * @param voice - [SymbolContainerVoice] to define the tone of voice. This will effectively define
- *  color of the background. Defaults to [SymbolContainerVoice.Neutral].
- * @param size - [SymbolContainerSize] to define the container's size. Defaults to [SymbolContainerSize.Medium].
- * @param shape - [SymbolContainerShape] to define the container's shape. Defaults to [SymbolContainerShape.Circle].
- * @param badgeSlot - Optional composable slot for a badge overlay positioned at the bottom-right corner.
+ *
+ * @param painter [Painter] shown inside the container, rendered with its original colors
+ * @param contentDescription **localized** content description for the [painter]
+ * @param fill when `true` the [painter] fills the container and is clipped by [shape]; when
+ *  `false` it is sized to the content area and centered
+ * @param modifier [Modifier] applied to the base component
+ * @param voice [SymbolContainerVoice] driving the background color
+ * @param size [SymbolContainerSize] driving the container's size
+ * @param shape [SymbolContainerShape] driving the container's shape
+ * @param badgeSlot composable slot for a badge overlay at the bottom-right corner
  */
 @Composable
 public fun LemonadeUi.SymbolContainer(
@@ -185,8 +185,8 @@ public fun LemonadeUi.SymbolContainer(
 }
 
 /**
- * A versatile container used to display an icon, brand logo, or image.
- *  Supports consistent sizing and different tone of voice.
+ * Shows custom content inside a sized container styled by its voice.
+ *
  * ## Usage
  * ```kotlin
  * LemonadeUi.SymbolContainer(
@@ -200,13 +200,13 @@ public fun LemonadeUi.SymbolContainer(
  *     },
  * )
  * ```
- * @param contentSlot - A Composable slot for generic content to be added as the content of the container.
- * @param modifier - Optional, the [Modifier] to be applied to the base component.
- * @param voice - [SymbolContainerVoice] to define the tone of voice. This will effectively define
- *  color of the background. Defaults to [SymbolContainerVoice.Neutral].
- * @param size - [SymbolContainerSize] to define the container's size. Defaults to [SymbolContainerSize.Medium].
- * @param shape - [SymbolContainerShape] to define the container's shape. Defaults to [SymbolContainerShape.Circle].
- * @param badgeSlot - Optional composable slot for a badge overlay positioned at the bottom-right corner.
+ *
+ * @param contentSlot composable slot for the container's content
+ * @param modifier [Modifier] applied to the base component
+ * @param voice [SymbolContainerVoice] driving the background color
+ * @param size [SymbolContainerSize] driving the container's size
+ * @param shape [SymbolContainerShape] driving the container's shape
+ * @param badgeSlot composable slot for a badge overlay at the bottom-right corner
  */
 @Composable
 public fun LemonadeUi.SymbolContainer(
@@ -290,7 +290,6 @@ private fun CoreSymbolContainer(
     }
 }
 
-/** The container's fill, border and size; [clipContent] keeps the clip for content that overflows. */
 @Composable
 private fun Modifier.symbolContainerSurface(
     voice: SymbolContainerVoice,
@@ -436,20 +435,21 @@ private class SymbolContainerPreviewProvider :
     private fun buildAllVariants(): Sequence<SymbolContainerPreviewData> =
         buildList {
             SymbolContainerVoice.entries.forEach { voice ->
-                listOf("A", LemonadeIcons.Heart).forEach { content ->
-                    SymbolContainerSize.entries.forEach { size ->
-                        SymbolContainerShape.entries.forEach { shape ->
-                            add(
-                                SymbolContainerPreviewData(
-                                    content = content,
-                                    size = size,
-                                    voice = voice,
-                                    shape = shape,
-                                ),
-                            )
+                listOf("A", LemonadeIcons.Heart)
+                    .forEach { content ->
+                        SymbolContainerSize.entries.forEach { size ->
+                            SymbolContainerShape.entries.forEach { shape ->
+                                add(
+                                    SymbolContainerPreviewData(
+                                        content = content,
+                                        size = size,
+                                        voice = voice,
+                                        shape = shape,
+                                    ),
+                                )
+                            }
                         }
                     }
-                }
             }
         }.asSequence()
 }

@@ -40,9 +40,8 @@ struct SettingsView: View {
                 }
             }
         }
-        // The sheet may be hosted in its own window; make sure it picks up the
-        // selected appearance as soon as it appears. Subsequent changes are
-        // handled by the handler's `didSet`.
+        // The sheet may be hosted in its own window, so it has to pick up the selected
+        // appearance as it appears.
         .onAppear { styleHandler.applyToWindows() }
     }
 }

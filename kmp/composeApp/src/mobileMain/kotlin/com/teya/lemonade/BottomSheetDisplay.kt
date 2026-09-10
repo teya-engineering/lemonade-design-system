@@ -25,7 +25,6 @@ internal fun BottomSheetSampleDisplay() {
     var showNonDismissibleSheet by remember { mutableStateOf(false) }
 
     SampleScreenDisplayLazyColumn(title = "BottomSheet") {
-        // Basic Bottom Sheet
         item(key = "Basic Bottom Sheet") {
             BottomSheetSection(title = "Basic Bottom Sheet") {
                 LemonadeUi.Button(
@@ -37,7 +36,6 @@ internal fun BottomSheetSampleDisplay() {
             }
         }
 
-        // Without Drag Handle
         item(key = "Without Drag Handle") {
             BottomSheetSection(title = "Without Drag Handle") {
                 LemonadeUi.Text(
@@ -54,7 +52,6 @@ internal fun BottomSheetSampleDisplay() {
             }
         }
 
-        // Subtle Background
         item(key = "Subtle Background") {
             BottomSheetSection(title = "Subtle Background") {
                 LemonadeUi.Text(
@@ -71,7 +68,6 @@ internal fun BottomSheetSampleDisplay() {
             }
         }
 
-        // Non-dismissible scrim / back press
         item(key = "Non-dismissible") {
             BottomSheetSection(title = "Non-dismissible") {
                 LemonadeUi.Text(
@@ -90,7 +86,6 @@ internal fun BottomSheetSampleDisplay() {
         }
     }
 
-    // Basic Bottom Sheet
     LemonadeUi.BottomSheet(
         expanded = showBasicSheet,
         onDismissRequest = { showBasicSheet = false },
@@ -122,7 +117,6 @@ internal fun BottomSheetSampleDisplay() {
         }
     }
 
-    // Without Drag Handle
     LemonadeUi.BottomSheet(
         expanded = showNoDragHandleSheet,
         onDismissRequest = { showNoDragHandleSheet = false },
@@ -155,7 +149,6 @@ internal fun BottomSheetSampleDisplay() {
         }
     }
 
-    // Subtle Background
     LemonadeUi.BottomSheet(
         expanded = showSubtleSheet,
         onDismissRequest = { showSubtleSheet = false },
@@ -188,7 +181,6 @@ internal fun BottomSheetSampleDisplay() {
         }
     }
 
-    // Non-dismissible (fully locked)
     LemonadeUi.BottomSheet(
         expanded = showNonDismissibleSheet,
         onDismissRequest = { showNonDismissibleSheet = false },

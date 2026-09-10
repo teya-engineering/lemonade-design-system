@@ -10,7 +10,6 @@ import com.teya.lemonade.core.NoticeVoice
 @Composable
 internal fun NoticeDisplay() {
     SampleScreenDisplayLazyColumn(title = "Notice") {
-        // All Voices — Description only
         item(key = "Voices") {
             NoticeSection(title = "Voices") {
                 Column(
@@ -50,7 +49,6 @@ internal fun NoticeDisplay() {
             }
         }
 
-        // With Title + Description
         item(key = "With Title") {
             NoticeSection(title = "With Title") {
                 Column(
@@ -85,7 +83,6 @@ internal fun NoticeDisplay() {
             }
         }
 
-        // With Action
         item(key = "With Action") {
             NoticeSection(title = "With Action") {
                 Column(
@@ -115,7 +112,6 @@ internal fun NoticeDisplay() {
             }
         }
 
-        // Without Icon
         item(key = "Without Icon") {
             NoticeSection(title = "Without Icon") {
                 Column(

@@ -24,7 +24,13 @@ internal val LocalLemonadeStyleHandler = staticCompositionLocalOf {
 internal fun rememberLemonadeStyleHandler(
     initialStyle: LemonadeStyle = LemonadeStyle.Default,
     initialVariant: LemonadeThemeVariant = LemonadeThemeVariant.Default,
-): LemonadeStyleHandler = remember { LemonadeStyleHandler(initialStyle, initialVariant) }
+): LemonadeStyleHandler =
+    remember {
+        LemonadeStyleHandler(
+            initialStyle = initialStyle,
+            initialVariant = initialVariant,
+        )
+    }
 
 @Composable
 internal fun LemonadeStyledTheme(

@@ -1,8 +1,7 @@
 package com.teya.lemonade.core
 
 /**
- * Defines which slot claims layout space first when the content (label) and trailing
- * content compete for the available width.
+ * Which slot claims width first when label and trailing content compete.
  *
  * - [Label]: the content slot keeps its full width; the trailing slot truncates to fit
  *   (down to a readable minimum width).

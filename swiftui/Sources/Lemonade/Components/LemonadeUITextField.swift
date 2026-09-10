@@ -6,8 +6,8 @@ import UIKit
 /// Internal UIViewRepresentable wrapper around UITextField for cursor position control.
 /// This enables LemonadeTextFieldValue support on iOS.
 ///
-/// - Note: Cursor positions are measured in UTF-16 code units to match UIKit's internal indexing
-///   and maintain compatibility with Kotlin/Compose on Android.
+/// - Note: Cursor positions are measured in UTF-16 code units, the units UIKit indexes text
+///   positions in.
 internal struct LemonadeUITextField: UIViewRepresentable {
     /// Read from the environment rather than passed in, so a single change here covers every
     /// public TextField overload without touching any of their signatures.
@@ -34,7 +34,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     var onEditingChanged: ((Bool) -> Void)?
     /// Called when the keyboard's return key is pressed. When set, the field keeps
     /// first responder (the keyboard stays up) so the caller drives what happens
-    /// next; when `nil`, the return key dismisses the keyboard as before.
+    /// next; when `nil`, the return key dismisses the keyboard.
     var onReturnKey: (() -> Void)?
 
     /// Clamps a cursor position to the text's UTF-16 range, and then into the constrained span.
@@ -73,10 +73,8 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.setContentHuggingPriority(.required, for: .vertical)
         textField.setContentCompressionResistancePriority(.required, for: .vertical)
 
-        // Set initial cursor position (clamped to valid range)
         textField.setCaret(toUTF16Offset: clampedCursorPosition(value.cursorPosition, for: value.text))
 
-        // Add target for text changes
         textField.addTarget(
             context.coordinator,
             action: #selector(Coordinator.textFieldDidChange(_:)),
@@ -87,10 +85,11 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     }
 
     func updateUIView(_ textField: LemonadeClampingTextField, context: Context) {
-        context.coordinator.parent = self  // Keep coordinator in sync
+        context.coordinator.parent = self
         textField.selectionConstraint = selectionConstraint
 
-        // Guard against re-entrant updates from our own callbacks to avoid infinite loops
+        // Our own callbacks write back through the binding, which re-enters here; without the
+        // guard the two chase each other.
         guard !context.coordinator.isUpdating else { return }
         context.coordinator.isUpdating = true
         defer { context.coordinator.isUpdating = false }
@@ -102,42 +101,47 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             textField.isSecureTextEntry = isSecure
         }
 
-        let currentText = textField.text ?? ""
+        syncText(textField)
+        syncCaret(textField)
+        applyAppearance(textField)
+        syncInputTraits(textField)
+        applyDisplayDecoration(textField)
+        updateFocus(textField)
+    }
 
-        // Update text if changed externally
-        if currentText != value.text {
-            textField.text = value.text
-        }
+    private func syncText(_ textField: UITextField) {
+        guard (textField.text ?? "") != value.text else { return }
+        textField.text = value.text
+    }
 
-        // Update cursor position (clamped to valid range for current text)
-        let textForCursor = textField.text ?? ""
-        let clampedPosition = clampedCursorPosition(value.cursorPosition, for: textForCursor)
+    private func syncCaret(_ textField: UITextField) {
+        let clampedPosition = clampedCursorPosition(value.cursorPosition, for: textField.text ?? "")
         let currentOffset = textField.selectedTextRange.map {
             textField.offset(from: textField.beginningOfDocument, to: $0.start)
         } ?? -1
 
-        // Only update if different to avoid cursor jumping
-        if currentOffset != clampedPosition {
-            textField.setCaret(toUTF16Offset: clampedPosition)
-        }
+        // Writing an unchanged selection back jumps the caret, so only a real move is applied.
+        guard currentOffset != clampedPosition else { return }
+        textField.setCaret(toUTF16Offset: clampedPosition)
+    }
 
+    private func applyAppearance(_ textField: UITextField) {
         textField.isEnabled = isEnabled
         textField.font = textStyle.uiFont
         textField.textColor = UIColor(textColor)
         textField.tintColor = UIColor(textColor)
+    }
 
-        // Update keyboard type and reload if changed while focused
+    /// Each trait is reassigned only when it actually changed, to avoid needless per-keystroke
+    /// churn on the focused field. `keyboardType` is the only one that needs `reloadInputViews()`
+    /// to take effect while the field is up.
+    private func syncInputTraits(_ textField: UITextField) {
         if textField.keyboardType != keyboardType {
             textField.keyboardType = keyboardType
             if textField.isFirstResponder {
                 textField.reloadInputViews()
             }
         }
-
-        // Match the guarded keyboardType update above: only reassign when the
-        // value actually changed to avoid needless per-keystroke trait churn on
-        // the focused field. Unlike keyboardType, these traits take effect
-        // without reloadInputViews().
         if textField.textContentType != textContentType {
             textField.textContentType = textContentType
         }
@@ -147,11 +151,6 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         if textField.autocorrectionType != autocorrectionType {
             textField.autocorrectionType = autocorrectionType
         }
-
-        applyDisplayDecoration(textField)
-
-        // Handle focus state
-        updateFocus(textField)
     }
 
     /// Redraws the field's text through the decoration, if one is set.
@@ -398,7 +397,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             return min(max(caret, allowed.lowerBound), allowed.upperBound)
         }
 
-        /// Returns cursor position as UTF-16 code unit offset (matches UIKit's internal indexing)
+        /// The caret's offset in UTF-16 code units, the units UIKit indexes text positions in.
         private func getCursorPosition(_ textField: UITextField) -> Int {
             guard let selectedRange = textField.selectedTextRange else { return 0 }
             return textField.offset(from: textField.beginningOfDocument, to: selectedRange.start)

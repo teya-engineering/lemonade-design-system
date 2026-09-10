@@ -56,8 +56,11 @@ internal fun CountryFlagDisplay() {
                         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        LemonadeCountryFlags.getOrNull(alpha2 = isoAlpha2Example)?.let {
-                            FlagBox(flag = it, label = isoAlpha2Example)
+                        LemonadeCountryFlags.getOrNull(alpha2 = isoAlpha2Example)?.let { flag ->
+                            FlagBox(
+                                flag = flag,
+                                label = isoAlpha2Example,
+                            )
                         }
                     }
                 }
@@ -124,7 +127,8 @@ private fun FlagBox(
                 .height(LemonadeTheme.spaces.spacing200),
         )
         LemonadeUi.Text(
-            text = label ?: flag.name,
+            text = label
+                ?: flag.name,
             overflow = TextOverflow.Clip,
             maxLines = 1,
             textStyle = LemonadeTheme.typography.bodyXSmallRegular,

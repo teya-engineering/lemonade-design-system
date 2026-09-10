@@ -159,7 +159,6 @@ struct LemonadeNotice_Previews: PreviewProvider {
     static var previews: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                // Voices
                 sectionTitle("Voices")
                 ForEach(voices, id: \.self) { voice in
                     LemonadeUi.Notice(
@@ -170,7 +169,6 @@ struct LemonadeNotice_Previews: PreviewProvider {
                     )
                 }
 
-                // With Title
                 sectionTitle("With Title")
                 ForEach(voices, id: \.self) { voice in
                     LemonadeUi.Notice(
@@ -182,7 +180,6 @@ struct LemonadeNotice_Previews: PreviewProvider {
                     )
                 }
 
-                // Without Icon
                 sectionTitle("Without Icon")
                 LemonadeUi.Notice(
                     content: "A notice without an icon.",

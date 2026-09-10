@@ -3,11 +3,9 @@ import XCTest
 
 /// Covers the hand-off between a visible toast and one queued behind it.
 ///
-/// The regression these guard against: `scheduleTransition()` used to dismiss the
-/// visible toast after a flat 100ms, which is shorter than the 350ms entry
-/// animation. Two `show(_:)` calls close together therefore started fading the
-/// first toast before it had finished appearing — it read as a flicker, not a
-/// transition.
+/// A queued toast may only take the slot once `ToastAnimationConfig.minimumVisible` has
+/// elapsed. That window is longer than the entry animation, so a toast is never faded out
+/// while it is still appearing.
 @MainActor
 final class LemonadeToastQueueTests: XCTestCase {
 
@@ -21,7 +19,7 @@ final class LemonadeToastQueueTests: XCTestCase {
 
         XCTAssertEqual(manager.currentToast?.label, "First")
 
-        // Sample inside the entry animation, well past the flat 100ms the old code used.
+        // Sample inside the entry animation.
         let sample = ToastAnimationConfig.duration * 0.6
         try await Task.sleep(nanoseconds: ToastAnimationConfig.nanoseconds(from: sample))
 

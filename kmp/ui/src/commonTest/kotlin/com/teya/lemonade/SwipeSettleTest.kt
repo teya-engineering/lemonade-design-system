@@ -32,12 +32,18 @@ class SwipeSettleTest {
     /** A drag that showed most of the action but not all of it still belongs back where it was. */
     @Test
     fun `a drag short of the whole action settles closed`() {
-        assertEquals(expected = SwipeSettleTarget.Closed, actual = settle(travel = 70f))
+        assertEquals(
+            expected = SwipeSettleTarget.Closed,
+            actual = settle(travel = 70f),
+        )
     }
 
     @Test
     fun `a drag that brings the action fully out settles open`() {
-        assertEquals(expected = SwipeSettleTarget.Open, actual = settle(travel = 76f))
+        assertEquals(
+            expected = SwipeSettleTarget.Open,
+            actual = settle(travel = 76f),
+        )
     }
 
     /** Momentum settles the row where it was going, not where the finger let go. */
@@ -45,7 +51,10 @@ class SwipeSettleTest {
     fun `a flick opens a row the finger did not carry all the way`() {
         assertEquals(
             expected = SwipeSettleTarget.Open,
-            actual = settle(travel = 20f, velocity = 900f),
+            actual = settle(
+                travel = 20f,
+                velocity = 900f,
+            ),
         )
     }
 
@@ -55,7 +64,10 @@ class SwipeSettleTest {
      */
     @Test
     fun `the same drag without the speed does not`() {
-        assertEquals(expected = SwipeSettleTarget.Closed, actual = settle(travel = 20f))
+        assertEquals(
+            expected = SwipeSettleTarget.Closed,
+            actual = settle(travel = 20f),
+        )
     }
 
     /**
@@ -66,7 +78,10 @@ class SwipeSettleTest {
     fun `momentum does not commit a swipe the finger never carried`() {
         assertEquals(
             expected = SwipeSettleTarget.Open,
-            actual = settle(travel = 100f, velocity = 2000f),
+            actual = settle(
+                travel = 100f,
+                velocity = 2000f,
+            ),
         )
     }
 
@@ -74,20 +89,29 @@ class SwipeSettleTest {
     fun `a flick back closes an open row`() {
         assertEquals(
             expected = SwipeSettleTarget.Closed,
-            actual = settle(travel = 100f, velocity = -900f),
+            actual = settle(
+                travel = 100f,
+                velocity = -900f,
+            ),
         )
     }
 
     @Test
     fun `crossing the commit threshold commits`() {
-        assertEquals(expected = SwipeSettleTarget.Committed, actual = settle(travel = 240f))
+        assertEquals(
+            expected = SwipeSettleTarget.Committed,
+            actual = settle(travel = 240f),
+        )
     }
 
     @Test
     fun `a long drag only opens when full swipe is off`() {
         assertEquals(
             expected = SwipeSettleTarget.Open,
-            actual = settle(travel = 240f, allowsFullSwipe = false),
+            actual = settle(
+                travel = 240f,
+                allowsFullSwipe = false,
+            ),
         )
     }
 
@@ -95,13 +119,19 @@ class SwipeSettleTest {
     fun `a commit beats a flick back`() {
         assertEquals(
             expected = SwipeSettleTarget.Committed,
-            actual = settle(travel = 240f, velocity = -900f),
+            actual = settle(
+                travel = 240f,
+                velocity = -900f,
+            ),
         )
     }
 
     @Test
     fun `a drag exactly on the action's reveal opens`() {
-        assertEquals(expected = SwipeSettleTarget.Open, actual = settle(travel = firstActionReveal))
+        assertEquals(
+            expected = SwipeSettleTarget.Open,
+            actual = settle(travel = firstActionReveal),
+        )
     }
 
     /** A drag back carries its own momentum too, so the projection is what closes the row. */
@@ -109,7 +139,10 @@ class SwipeSettleTest {
     fun `a flick back closes a row the finger left open`() {
         assertEquals(
             expected = SwipeSettleTarget.Closed,
-            actual = settle(travel = 100f, velocity = -400f),
+            actual = settle(
+                travel = 100f,
+                velocity = -400f,
+            ),
         )
     }
 
@@ -121,7 +154,7 @@ class SwipeSettleTest {
         )
     }
 
-    /** Halfway is no longer enough: iOS asks for a little more than half the row. */
+    /** A commit asks for a little more than half the row, so halfway does not reach it. */
     @Test
     fun `travel on half the row does not commit`() {
         assertNotEquals(
@@ -134,7 +167,10 @@ class SwipeSettleTest {
     fun `a row with no actions settles closed`() {
         assertEquals(
             expected = SwipeSettleTarget.Closed,
-            actual = settle(travel = 0f, firstActionReveal = 0f),
+            actual = settle(
+                travel = 0f,
+                firstActionReveal = 0f,
+            ),
         )
     }
 
@@ -154,9 +190,21 @@ class SwipeSettleTest {
             )
         }
         // Continuous at the crossing: a drag can only leave a commit here.
-        assertEquals(commitTravel, released(threshold), 0.001f)
-        assertEquals(commitTravel / 2f, released(threshold / 2f), 0.001f)
-        assertEquals(0f, released(0f), 0.001f)
+        assertEquals(
+            expected = commitTravel,
+            actual = released(threshold),
+            absoluteTolerance = 0.001f,
+        )
+        assertEquals(
+            expected = commitTravel / 2f,
+            actual = released(threshold / 2f),
+            absoluteTolerance = 0.001f,
+        )
+        assertEquals(
+            expected = 0f,
+            actual = released(0f),
+            absoluteTolerance = 0.001f,
+        )
     }
 
     /** Never past where the commit had it, however far the finger is. */
@@ -164,7 +212,11 @@ class SwipeSettleTest {
     fun `a released commit never draws the row further than the commit did`() {
         assertEquals(
             expected = 400f,
-            actual = resolveSwipeReleasedTravel(travel = 300f, commitTravel = 400f, threshold = 220f),
+            actual = resolveSwipeReleasedTravel(
+                travel = 300f,
+                commitTravel = 400f,
+                threshold = 220f,
+            ),
             absoluteTolerance = 0.001f,
         )
     }
@@ -174,7 +226,11 @@ class SwipeSettleTest {
     fun `a released commit with no threshold draws the finger`() {
         assertEquals(
             expected = 40f,
-            actual = resolveSwipeReleasedTravel(travel = 40f, commitTravel = 0f, threshold = 0f),
+            actual = resolveSwipeReleasedTravel(
+                travel = 40f,
+                commitTravel = 0f,
+                threshold = 0f,
+            ),
             absoluteTolerance = 0.001f,
         )
     }
@@ -198,9 +254,18 @@ class SwipeSettleTest {
             commitTravel = commitTravel,
             threshold = threshold,
         )
-        assertTrue(drawn > reached, "the row is drawn ahead of the finger on the way back")
-        assertEquals(expected = SwipeSettleTarget.Committed, actual = settle(travel = drawn))
-        assertNotEquals(illegal = SwipeSettleTarget.Committed, actual = settle(travel = reached))
+        assertTrue(
+            actual = drawn > reached,
+            message = "the row is drawn ahead of the finger on the way back",
+        )
+        assertEquals(
+            expected = SwipeSettleTarget.Committed,
+            actual = settle(travel = drawn),
+        )
+        assertNotEquals(
+            illegal = SwipeSettleTarget.Committed,
+            actual = settle(travel = reached),
+        )
     }
 
     /**
@@ -215,7 +280,10 @@ class SwipeSettleTest {
     fun `an unmeasured row does not commit`() {
         assertEquals(
             expected = SwipeSettleTarget.Closed,
-            actual = settle(travel = 0f, rowWidth = 0f),
+            actual = settle(
+                travel = 0f,
+                rowWidth = 0f,
+            ),
         )
     }
 
@@ -224,7 +292,10 @@ class SwipeSettleTest {
     fun `a row with no actions does not commit`() {
         assertEquals(
             expected = SwipeSettleTarget.Closed,
-            actual = settle(travel = 300f, firstActionReveal = 0f),
+            actual = settle(
+                travel = 300f,
+                firstActionReveal = 0f,
+            ),
         )
     }
 }

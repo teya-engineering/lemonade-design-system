@@ -16,7 +16,7 @@ import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeCountryFlags
 
 /**
- * Country Flags component, to display the available country flags in standardized way.
+ * Shows a country flag at a standard size.
  *
  * ## Usage
  * ```kotlin
@@ -24,16 +24,16 @@ import com.teya.lemonade.core.LemonadeCountryFlags
  *     flag = LemonadeCountryFlags.BRBrazil,
  *     size = LemonadeAssetSize.Medium,
  *     shape = CountryFlagShape.Rounded,
- *     modifier = Modifier.clickable{ ... },
+ *     modifier = Modifier.clickable { ... },
  * )
  * ```
  *
- * @param flag - The [LemonadeCountryFlags] to be displayed.
- * @param contentDescription - The localizable message to be shown as content
- *  description for the [flag]. Defaults to [LemonadeCountryFlags.name].
- * @param size - The [LemonadeAssetSize] to be applied to the flag. Defaults to [LemonadeAssetSize.Medium].
- * @param modifier - Optional [Modifier] for additional styling and layout adjustments.
- * @param shape - The [CountryFlagShape] to be applied. Defaults to [CountryFlagShape.Circular].
+ * @param flag [LemonadeCountryFlags] to show
+ * @param contentDescription localizable content description for the [flag], defaults to
+ *  [LemonadeCountryFlags.name]
+ * @param size [LemonadeAssetSize] applied to the flag, defaults to [LemonadeAssetSize.Medium]
+ * @param modifier optional [Modifier] for styling and layout
+ * @param shape [CountryFlagShape] applied to the flag, defaults to [CountryFlagShape.Circular]
  */
 @Composable
 public fun LemonadeUi.CountryFlag(
@@ -139,19 +139,21 @@ private class CountryFlagPreviewProvider : PreviewParameterProvider<CountryFlagP
 
     private fun buildAllVariants(): Sequence<CountryFlagPreviewData> =
         buildList {
-            LemonadeCountryFlags.entries.take(5).forEach { flag ->
-                LemonadeAssetSize.entries.forEach { size ->
-                    CountryFlagShape.entries.forEach { shape ->
-                        add(
-                            CountryFlagPreviewData(
-                                flag = flag,
-                                size = size,
-                                shape = shape,
-                            ),
-                        )
+            LemonadeCountryFlags.entries
+                .take(5)
+                .forEach { flag ->
+                    LemonadeAssetSize.entries.forEach { size ->
+                        CountryFlagShape.entries.forEach { shape ->
+                            add(
+                                CountryFlagPreviewData(
+                                    flag = flag,
+                                    size = size,
+                                    shape = shape,
+                                ),
+                            )
+                        }
                     }
                 }
-            }
         }.asSequence()
 }
 

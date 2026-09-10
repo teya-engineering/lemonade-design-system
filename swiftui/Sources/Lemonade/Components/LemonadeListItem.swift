@@ -116,10 +116,6 @@ public extension LemonadeUi {
         if isLoading {
             ListItemSkeletonView(showDivider: showDivider)
         } else {
-            // The content is effectively single-line when there is nothing stacked below the
-            // label — no top label, no support text, and no custom slot content. In that case the
-            // leading slot is centered against the lone text line unless the caller explicitly pins
-            // an alignment.
             let isSingleLineContent = topLabel == nil
                 && supportText == nil
                 && SlotContent.self == EmptyView.self
@@ -263,8 +259,6 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
         priority == .label ? 1 : 0
     }
 
-    // The trailing slot is intrinsically sized only when it is prioritized;
-    // otherwise it expands to fill (and, for `.both`, shares the fill equally).
     private var trailingMinWidth: CGFloat? {
         priority == .label && (hasTrailing || navigationIndicator)
             ? minReadableSlotWidth
@@ -316,9 +310,6 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
             }
             
             HStack(alignment: contentRowAlignment, spacing: 0) {
-                // The non-prioritized slot becomes the flexible filler: it expands to
-                // claim the remaining width and truncates first, pinning the prioritized
-                // (intrinsically-sized) slot to its edge.
                 VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing0) {
                     contentSlot()
                 }
@@ -441,72 +432,50 @@ private struct ListItemSkeletonView: View {
 
 #if DEBUG
 struct LemonadeListItem_Previews: PreviewProvider {
+    private static func competingWidthsItem(priority: LemonadeListItemPriority) -> some View {
+        LemonadeUi.ListItem(
+            label: "Beneficiary account holder",
+            showDivider: true,
+            priority: priority,
+            labelMaxLines: 1,
+            leadingSlot: { EmptyView() },
+            trailingSlot: {
+                LemonadeUi.Text(
+                    "International Holdings Ltd Partnership",
+                    textStyle: LemonadeTypography.shared.bodyMediumMedium,
+                    maxLines: 1
+                )
+            }
+        )
+    }
+
+    private static var topAlignedWrappingItem: some View {
+        LemonadeUi.ListItem(
+            label: "Delivery to",
+            showDivider: true,
+            trailingAlignment: .top,
+            priority: .label,
+            leadingSlot: { EmptyView() },
+            trailingSlot: {
+                LemonadeUi.Text(
+                    "Rua de Olivenca, 55, esq 2, Algés, OX20 1PP",
+                    textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                    textAlign: .trailing
+                )
+            }
+        )
+    }
+
     static var previews: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // Priority .trailing (default) — trailing keeps its width, label truncates
-            LemonadeUi.ListItem(
-                label: "Beneficiary account holder",
-                showDivider: true,
-                labelMaxLines: 1,
-                leadingSlot: { EmptyView() },
-                trailingSlot: {
-                    LemonadeUi.Text(
-                        "International Holdings Ltd Partnership",
-                        textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                        maxLines: 1
-                    )
-                }
-            )
+            competingWidthsItem(priority: .trailing)
 
-            // Priority .label — label keeps its width, trailing truncates
-            LemonadeUi.ListItem(
-                label: "Beneficiary account holder",
-                showDivider: true,
-                priority: .label,
-                labelMaxLines: 1,
-                leadingSlot: { EmptyView() },
-                trailingSlot: {
-                    LemonadeUi.Text(
-                        "International Holdings Ltd Partnership",
-                        textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                        maxLines: 1
-                    )
-                }
-            )
+            competingWidthsItem(priority: .label)
 
-            // Priority .both — label and trailing each take half, truncating together
-            LemonadeUi.ListItem(
-                label: "Beneficiary account holder",
-                showDivider: true,
-                priority: .both,
-                labelMaxLines: 1,
-                leadingSlot: { EmptyView() },
-                trailingSlot: {
-                    LemonadeUi.Text(
-                        "International Holdings Ltd Partnership",
-                        textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                        maxLines: 1
-                    )
-                }
-            )
+            competingWidthsItem(priority: .both)
 
-            // Top alignment — label keeps first-line alignment when trailing wraps
-            LemonadeUi.ListItem(
-                label: "Delivery to",
-                showDivider: true,
-                trailingAlignment: .top,
-                priority: .label,
-                leadingSlot: { EmptyView() },
-                trailingSlot: {
-                    LemonadeUi.Text(
-                        "Rua de Olivenca, 55, esq 2, Algés, OX20 1PP",
-                        textStyle: LemonadeTypography.shared.bodyMediumRegular,
-                        textAlign: .trailing
-                    )
-                }
-            )
+            topAlignedWrappingItem
 
-            // SelectListItem - Single with divider
             LemonadeUi.SelectListItem(
                 label: "Single Selection",
                 type: .single,
@@ -516,7 +485,6 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 supportText: "Support text"
             )
             
-            // SelectListItem - Multiple with divider
             LemonadeUi.SelectListItem(
                 label: "Multiple Selection",
                 type: .multiple,
@@ -547,7 +515,6 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 }
             )
             
-            // ResourceListItem with divider
             LemonadeUi.ResourceListItem(
                 label: "Resource Label",
                 value: "$100.00",
@@ -580,7 +547,6 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 }
             )
             
-            // ResourceListItem with addon and divider
             LemonadeUi.ResourceListItem(
                 label: "With Addon",
                 value: "$50.00",
@@ -602,8 +568,6 @@ struct LemonadeListItem_Previews: PreviewProvider {
             LemonadeUi.HorizontalDivider()
                 .padding(.vertical, LemonadeTheme.spaces.spacing200)
             
-            // ActionListItem with divider
-            
             LemonadeUi.ActionListItem(
                 label: "Action Item",
                 supportText: "Support text",
@@ -619,7 +583,6 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 }
             )
             
-            // ActionListItem - Critical with divider
             LemonadeUi.ActionListItem(
                 label: "Delete Account",
                 voice: .critical,
@@ -635,7 +598,6 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 }
             )
             
-            // ActionListItem - Loading
             LemonadeUi.ActionListItem(
                 label: "Delete Account",
                 isLoading: true,

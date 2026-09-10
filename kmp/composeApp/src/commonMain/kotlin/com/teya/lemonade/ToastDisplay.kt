@@ -20,7 +20,7 @@ internal fun ToastDisplay() {
 
     SampleScreenDisplayLazyColumn(title = "Toast") {
         item(key = "Voice Variants") {
-            ToastSection("Voice Variants") {
+            ToastSection(title = "Voice Variants") {
                 LemonadeUi.Button(
                     label = "Success Toast",
                     onClick = {
@@ -71,7 +71,7 @@ internal fun ToastDisplay() {
         }
 
         item(key = "Loading") {
-            ToastSection("Loading") {
+            ToastSection(title = "Loading") {
                 LemonadeUi.Button(
                     label = "Loading Toast",
                     onClick = {
@@ -98,7 +98,7 @@ internal fun ToastDisplay() {
         }
 
         item(key = "With Action") {
-            ToastSection("With Action") {
+            ToastSection(title = "With Action") {
                 LemonadeUi.Button(
                     label = "Success Toast with Action",
                     onClick = {
@@ -169,7 +169,7 @@ internal fun ToastDisplay() {
         }
 
         item(key = "Durations") {
-            ToastSection("Durations") {
+            ToastSection(title = "Durations") {
                 LemonadeUi.Button(
                     label = "Short (3s)",
                     onClick = {
@@ -204,7 +204,7 @@ internal fun ToastDisplay() {
         }
 
         item(key = "Behaviors") {
-            ToastSection("Behaviors") {
+            ToastSection(title = "Behaviors") {
                 LemonadeUi.Button(
                     label = "Non-dismissible",
                     onClick = {
@@ -229,7 +229,7 @@ internal fun ToastDisplay() {
         }
 
         item(key = "Padding") {
-            ToastSection("Padding") {
+            ToastSection(title = "Padding") {
                 LemonadeUi.Button(
                     label = "Bottom (default)",
                     onClick = {
@@ -253,7 +253,7 @@ internal fun ToastDisplay() {
         }
 
         item(key = "Over Bottom Sheet") {
-            ToastSection("Over Bottom Sheet") {
+            ToastSection(title = "Over Bottom Sheet") {
                 LemonadeUi.Button(
                     label = "Open bottom sheet",
                     onClick = { showSheet = true },

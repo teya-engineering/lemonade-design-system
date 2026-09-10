@@ -19,12 +19,12 @@ A multi-platform design system providing production-ready UI components, theming
 
 ## Overview
 
-Lemonade Design System is a comprehensive, multi-platform solution that enables teams to build consistent, high-quality user interfaces. It provides:
+Lemonade ships the same design language to three platforms:
 
-- **Production-ready components** — Battle-tested UI components ready for production use
-- **Unified design tokens** — Colors, typography, spacing, and more shared across platforms
-- **Theming support** — Easily customize the look and feel to match your brand
-- **Platform-native implementations** — Each platform gets a native implementation optimized for its ecosystem
+- **UI components** — a shared catalogue, implemented natively on each platform
+- **Unified design tokens** — colors, typography, spacing, radius, shadows, opacity and border widths, generated from one Figma export
+- **Theming** — every token group is overridable at the theme root
+- **Platform-native implementations** — Compose Multiplatform, SwiftUI and Flutter, each idiomatic to its ecosystem
 
 ---
 
@@ -38,26 +38,32 @@ Lemonade Design System is a comprehensive, multi-platform solution that enables 
 
 ### Version Tags
 
-Each platform has its own versioning scheme:
+Each platform versions independently, and the version lives only in the tag.
 
 | Platform | Tag Pattern | Example |
 |----------|-------------|---------|
-| KMP | `lemonade-kmp-vX.Y.Z` | `lemonade-kmp-v1.0.0` |
-| Flutter | `lemonade-flutter-vX.Y.Z` | `lemonade-flutter-v0.1.0` |
-| SwiftUI | `lemonade-swiftui-vX.Y.Z` | `lemonade-swiftui-v1.0.0` |
+| KMP | `lemonade-kmp-X.Y.Z` | `lemonade-kmp-0.9.0` |
+| SwiftUI | `lemonade-swiftui-X.Y.Z` | `lemonade-swiftui-0.9.1` |
+| Flutter | `lemonade-flutter-vX.Y.Z` | `lemonade-flutter-v0.8.3` |
+
+Each SwiftUI release also carries a plain `X.Y.Z` tag at the same commit — that is
+the one Swift Package Manager consumers resolve.
 
 ---
 
 ## Components
 
-The design system includes a comprehensive set of UI components:
+| Category | Components |
+|----------|------------|
+| **Actions** | Button, IconButton, Link, Chip |
+| **Form Controls** | TextField, SearchField, SelectField, PinCode, Switch, Checkbox, RadioButton, SegmentedControl, BoxSelection |
+| **Display** | Text, Icon, Badge, Tag, Card, Tile, SymbolContainer, HorizontalDivider, VerticalDivider, BrandLogo, CountryFlag |
+| **Lists & Navigation** | ListItem, ContentListItem, ActionListItem, ResourceListItem, SelectListItem, SwipeActionRow, Tabs, TopBar, BottomTabBar, HistoryTimeline |
+| **Feedback & Overlays** | Toast, Tooltip, Notice, Spinner, Skeleton, Dialog, BottomSheet, Dropdown |
+| **Date & Time** | DatePicker, DateRangePicker, InlineCalendar, TimePicker, TimeInput |
 
-| Category | Examples |
-|----------|----------|
-| **Form Controls** | Button, Switch, Input, Checkbox, Radio |
-| **Display** | Text, Badge, Avatar, Card |
-| **Selection & Lists** | List, Dropdown, Menu |
-| **Feedback** | Toast, Dialog, Loading |
+Coverage differs per platform — see each platform's documentation for the exact
+catalogue.
 
 ---
 
@@ -79,40 +85,40 @@ All platforms share a consistent design foundation:
 
 ## Assets
 
-| Asset Type | Description |
-|------------|-------------|
-| **BrandLogo** | Brand logo assets |
-| **CountryFlag** | Country flag icons |
-| **SVG Icons** | Comprehensive icon library |
+Assets are authored as SVG under `svg/` and generated into each platform's native
+format.
+
+| Asset Type | Source |
+|------------|--------|
+| **Icons** | `svg/icons/` |
+| **CountryFlag** | `svg/flags/` |
+| **BrandLogo** | `svg/brandLogos/` — light and dark variants collapse into one asset |
 
 ---
 
 ## Philosophy
 
-The Lemonade Design System embraces **flexibility over rigidity**. We provide sensible defaults and semantic APIs, but acknowledge that design requirements vary.
-
 ### Core Principles
 
-- **Semantic First** — Always prefer semantic tokens over raw values
+- **Semantic First** — Prefer semantic tokens over raw values
 - **Type Safety** — Leverage each platform's type system to prevent misuse
 - **Consistency** — Use the design system to maintain visual harmony
-- **Flexibility** — Access lower-level primitives when necessary, with clear warnings
-- **Performance** — Theme changes animate smoothly via interpolation
+- **Flexibility** — Lower-level primitives stay reachable when a design needs them
 
 ### Documentation Standards
 
-All public APIs must be thoroughly documented with:
+Every public API is documented with:
 
-- Clear description of purpose and usage
+- A description of purpose and usage
 - Code examples showing common use cases
 - Parameter documentation with types and defaults
-- Preconditions and constraints clearly stated
+- Preconditions and constraints stated explicitly
 
 ---
 
 ## Contributing
 
-We welcome contributions! Please see the platform-specific documentation for detailed contribution guidelines:
+Platform-specific workflows live with each platform:
 
 - [KMP Contributing Guide](./kmp/README.md#contributing)
 - [Flutter Contributing Guide](./flutter/README.md#contributing)
@@ -121,7 +127,7 @@ We welcome contributions! Please see the platform-specific documentation for det
 
 1. **Design Validation** — Components must be validated by the design team before implementation
 2. **Figma First** — Public components must exist in Figma with "Ready for Dev" status
-3. **Documentation** — All public APIs require comprehensive documentation
+3. **Documentation** — Every public API is documented
 4. **Testing** — Include unit tests and widget/UI tests for components
 5. **Code Review** — All changes require at least one approval
 

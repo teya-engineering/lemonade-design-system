@@ -15,7 +15,6 @@ import com.teya.lemonade.core.TagVoice
 @Composable
 internal fun ContentListItemDisplay() {
     SampleScreenDisplayLazyColumn(title = "ContentListItem") {
-        // Horizontal simple (stacked with dividers)
         item(key = "Horizontal — Simple") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -35,7 +34,6 @@ internal fun ContentListItemDisplay() {
             }
         }
 
-        // Horizontal — label only (no value, no trailing): label fills available width
         item(key = "Horizontal — Label Only") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -56,7 +54,6 @@ internal fun ContentListItemDisplay() {
             }
         }
 
-        // Horizontal — label only with leading (still no trailing)
         item(key = "Horizontal — Label Only & Leading") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -78,7 +75,6 @@ internal fun ContentListItemDisplay() {
             }
         }
 
-        // Vertical — label only (no value, no trailing)
         item(key = "Vertical — Label Only") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -99,7 +95,6 @@ internal fun ContentListItemDisplay() {
             }
         }
 
-        // Horizontal simple — long text
         item(key = "Horizontal Simple — Long Text") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -131,7 +126,6 @@ internal fun ContentListItemDisplay() {
             }
         }
 
-        // Horizontal with leading SymbolContainer + trailing icon
         item(key = "Horizontal — Leading & Trailing") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -161,7 +155,6 @@ internal fun ContentListItemDisplay() {
             }
         }
 
-        // Horizontal with content slot
         item(key = "Horizontal — Content Slot") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -181,7 +174,6 @@ internal fun ContentListItemDisplay() {
             }
         }
 
-        // Vertical small (no content slot)
         item(key = "Vertical Small — Simple") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -195,7 +187,6 @@ internal fun ContentListItemDisplay() {
             }
         }
 
-        // Vertical small with leading + trailing
         item(key = "Vertical Small — Leading & Trailing") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -225,7 +216,6 @@ internal fun ContentListItemDisplay() {
             }
         }
 
-        // Vertical large (with content slot)
         item(key = "Vertical Large — Content Slot") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -245,7 +235,6 @@ internal fun ContentListItemDisplay() {
             }
         }
 
-        // Vertical large with leading + trailing + content slot
         item(key = "Vertical Large — Full") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -281,7 +270,6 @@ internal fun ContentListItemDisplay() {
             }
         }
 
-        // Density — Comfortable (default)
         item(key = "Density — Comfortable (default)") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -303,7 +291,6 @@ internal fun ContentListItemDisplay() {
             }
         }
 
-        // Density — Compact
         item(key = "Density — Compact") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -325,7 +312,6 @@ internal fun ContentListItemDisplay() {
             }
         }
 
-        // Mixed list with dividers
         item(key = "Mixed List with Dividers") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
