@@ -18,10 +18,10 @@ struct ThemedColorsDisplayView: View {
 private struct ThemedHueSection: View {
     let hue: ThemedHue
 
-    private let columns = [
-        GridItem(.flexible(), spacing: LemonadeTheme.spaces.spacing200),
-        GridItem(.flexible(), spacing: LemonadeTheme.spaces.spacing200),
-    ]
+    private let columns = Array(
+        repeating: GridItem(.flexible(), spacing: LemonadeTheme.spaces.spacing200),
+        count: 2
+    )
 
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing200) {
@@ -49,9 +49,8 @@ private struct ThemedSwatchView: View {
             LemonadeUi.Text(
                 swatch.path,
                 textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                color: swatch.label
+                color: swatch.label.opacity(LemonadeTheme.opacity.base.opacity70)
             )
-            .opacity(LemonadeTheme.opacity.base.opacity70)
 
             Spacer(minLength: 0)
 
@@ -65,8 +64,7 @@ private struct ThemedSwatchView: View {
         .padding(.horizontal, LemonadeTheme.spaces.spacing400)
         .padding(.vertical, LemonadeTheme.spaces.spacing500)
         .frame(height: 162)
-        .background(swatch.fill)
-        .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius600))
+        .background(swatch.fill, in: LemonadeTheme.shapes.radius600)
     }
 }
 

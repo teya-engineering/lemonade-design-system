@@ -12,8 +12,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -77,9 +75,10 @@ private fun ThemedSwatchBlock(
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .height(height = SwatchHeight)
-            .clip(shape = LemonadeTheme.shapes.radius600)
-            .background(color = swatch.fill)
-            .padding(
+            .background(
+                color = swatch.fill,
+                shape = LemonadeTheme.shapes.radius600,
+            ).padding(
                 horizontal = LemonadeTheme.spaces.spacing400,
                 vertical = LemonadeTheme.spaces.spacing500,
             ),
@@ -87,8 +86,7 @@ private fun ThemedSwatchBlock(
         LemonadeUi.Text(
             text = swatch.path,
             textStyle = LemonadeTheme.typography.bodyXSmallRegular,
-            color = swatch.label,
-            modifier = Modifier.alpha(alpha = LemonadeTheme.opacities.base.opacity70),
+            color = swatch.label.copy(alpha = swatch.label.alpha * LemonadeTheme.opacities.base.opacity70),
         )
         LemonadeUi.Text(
             text = swatch.slot,
