@@ -639,9 +639,12 @@ private extension ToolbarContent {
 private extension View {
     /// iOS 27 defaults the top edge to `.hard`; pinning `.soft` keeps the progressive blur
     /// under the bar. Consumers can still override it on their scroll view.
+    ///
+    /// Gated to the Xcode 27 compiler: on iOS 27, an app built against the iOS 26 SDK draws
+    /// `.soft` only over the status bar, which reads worse than the system's `.hard` bar.
     @ViewBuilder
     func lemonadeSoftTopScrollEdge() -> some View {
-        #if compiler(>=6.2)
+        #if compiler(>=6.4)
         if #available(iOS 26, *) {
             self.scrollEdgeEffectStyle(.soft, for: .top)
         } else {
