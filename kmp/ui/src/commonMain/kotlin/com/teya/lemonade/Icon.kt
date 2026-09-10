@@ -26,7 +26,7 @@ import com.teya.lemonade.core.LemonadeIcons
  *     icon = LemonadeIcons.Close,
  *     contentDescription = "Close icon",
  *     size = LemonadeAssetSize.Medium,
- *     tint = LocalColors.current.content.contentPrimary,
+ *     tint = LocalColors.current.content.contentSecondary,
  * )
  * ```
  *
@@ -34,7 +34,7 @@ import com.teya.lemonade.core.LemonadeIcons
  * @param contentDescription a **localized** text that describes the icon or its action.
  *  Optional, but strongly recommended
  * @param size [LemonadeAssetSize] applied to the icon, defaults to [LemonadeAssetSize.Medium]
- * @param tint tint color applied to the icon, defaults to the primary content color of [LemonadeTheme]
+ * @param tint tint color applied to the icon, defaults to [LocalContentColors]
  * @param modifier optional [Modifier] for additional styling and layout adjustments
  */
 @Composable
@@ -42,7 +42,7 @@ public fun LemonadeUi.Icon(
     icon: LemonadeIcons,
     contentDescription: String?,
     size: LemonadeAssetSize = LemonadeAssetSize.Medium,
-    tint: Color = LocalColors.current.content.contentPrimary,
+    tint: Color = LocalContentColors.current,
     modifier: Modifier = Modifier,
 ) {
     CoreIcon(

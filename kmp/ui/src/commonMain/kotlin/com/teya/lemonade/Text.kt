@@ -40,7 +40,8 @@ private const val NATURAL_LINE_HEIGHT_RATIO: Float = 1.20f
  * @param modifier [Modifier] applied to the text layout
  * @param textStyle Lemonade typography token to apply
  * @param textAlign alignment of the text within its container
- * @param color text color; when [Color.Unspecified] the color from [textStyle] is used
+ * @param color text color, defaults to [LocalContentColors]; [Color.Unspecified] falls back to
+ *   the color from [textStyle]
  * @param overflow how text overflow is handled
  * @param maxLines maximum number of lines to show
  * @param minLines minimum number of lines to show
@@ -56,7 +57,7 @@ public fun LemonadeUi.Text(
     modifier: Modifier = Modifier,
     textStyle: LemonadeTextStyle = LocalTextStyles.current,
     textAlign: TextAlign = TextAlign.Unspecified,
-    color: Color = LocalColors.current.content.contentPrimary,
+    color: Color = LocalContentColors.current,
     overflow: TextOverflow = TextOverflow.Clip,
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
@@ -98,7 +99,8 @@ public fun LemonadeUi.Text(
  * @param modifier [Modifier] applied to the text layout
  * @param textStyle Lemonade typography token to apply
  * @param textAlign alignment of the text within its container
- * @param color text color; when [Color.Unspecified] the color from [textStyle] is used
+ * @param color text color, defaults to [LocalContentColors]; [Color.Unspecified] falls back to
+ *   the color from [textStyle]
  * @param overflow how text overflow is handled
  * @param maxLines maximum number of lines to show
  * @param minLines minimum number of lines to show
@@ -114,7 +116,7 @@ public fun LemonadeUi.Text(
     modifier: Modifier = Modifier,
     textStyle: LemonadeTextStyle = LocalTextStyles.current,
     textAlign: TextAlign = TextAlign.Unspecified,
-    color: Color = LocalColors.current.content.contentPrimary,
+    color: Color = LocalContentColors.current,
     overflow: TextOverflow = TextOverflow.Clip,
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
