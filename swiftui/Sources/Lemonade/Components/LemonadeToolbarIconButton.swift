@@ -106,7 +106,10 @@ private struct LemonadeToolbarIconMenuView<Content: View>: View {
 
     @ViewBuilder
     private var menu: some View {
-        if #available(iOS 16.0, *) {
+        // `macOS 13.0` spelled out rather than left to the `*`: this file is not inside the
+        // `#if os(iOS)` its neighbours are, so it compiles for the macOS 12 the package declares,
+        // and `*` waves every one of those builds into a branch `.button` is not in yet.
+        if #available(iOS 16.0, macOS 13.0, *) {
             rawMenu
                 // Without this a `Menu` ignores `.buttonStyle` entirely, so a prominent tint lands
                 // on the glyph instead of filling the button.
