@@ -55,6 +55,7 @@ private struct BasicTopBarModifier<Toolbar: ToolbarContent, BottomContent: View>
 
     func body(content: Content) -> some View {
         content
+            .lemonadeSoftTopScrollEdge()
             .lemonadeNavigationTitle(title: collapsedLabel ?? label, subheading: subheading)
             .navigationBarBackButtonHidden(navigationAction?.action == .close)
             .toolbar {
@@ -90,6 +91,7 @@ private struct SearchTopBarModifier<Toolbar: ToolbarContent, BottomContent: View
 
     func body(content: Content) -> some View {
         content
+            .lemonadeSoftTopScrollEdge()
             .lemonadeNavigationTitle(title: expandedLabel ?? label, subheading: subheading)
             .searchable(
                 text: $searchInput,
@@ -526,6 +528,7 @@ private struct NativeCompactLargeTopBarModifier<Toolbar: ToolbarContent>: ViewMo
 
     func body(content: Content) -> some View {
         content
+            .lemonadeSoftTopScrollEdge()
             .coordinateSpace(name: "compactLargeNativeScroll")
             .onPreferenceChange(NativeScrollOffsetKey.self) { offset in
                 guard abs(offset - lastScrollOffset) > 2 else { return }
@@ -570,6 +573,7 @@ private struct NativeCompactLargeSearchTopBarModifier<Toolbar: ToolbarContent>: 
 
     func body(content: Content) -> some View {
         content
+            .lemonadeSoftTopScrollEdge()
             .coordinateSpace(name: "compactLargeSearchNativeScroll")
             .onPreferenceChange(NativeScrollOffsetKey.self) { offset in
                 guard abs(offset - lastScrollOffset) > 2 else { return }
@@ -623,6 +627,23 @@ private extension ToolbarContent {
         #if compiler(>=6.2)
         if #available(iOS 26, *) {
             self.sharedBackgroundVisibility(.hidden)
+        } else {
+            self
+        }
+        #else
+        self
+        #endif
+    }
+}
+
+private extension View {
+    /// iOS 27 defaults the top edge to `.hard`; pinning `.soft` keeps the progressive blur
+    /// under the bar. Consumers can still override it on their scroll view.
+    @ViewBuilder
+    func lemonadeSoftTopScrollEdge() -> some View {
+        #if compiler(>=6.2)
+        if #available(iOS 26, *) {
+            self.scrollEdgeEffectStyle(.soft, for: .top)
         } else {
             self
         }
