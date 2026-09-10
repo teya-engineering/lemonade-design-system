@@ -338,12 +338,18 @@ struct SwipeActionRowDisplayView: View {
                             // The lift a context menu does is a snapshot of the view it is
                             // attached to, and a list item's own fill is clear — the Card behind
                             // it is the surface. Without one of its own the row lifts as floating
-                            // text, so this gives it the fill and the shape the row already wears
-                            // under a finger.
+                            // text.
                             .background(
                                 RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
                                     .fill(LemonadeTheme.colors.background.bgDefault)
-                                    .padding(LemonadeTheme.spaces.spacing100)
+                            )
+                            // The fill alone is not enough: the preview is clipped to iOS's own
+                            // corner radius, so the lift starts on one shape and settles on
+                            // another, and the row flickers as it goes. Both have to be the same
+                            // rounded rectangle for it to lift cleanly.
+                            .contentShape(
+                                .contextMenuPreview,
+                                RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
                             )
                             .contextMenu {
                                 Button("Delete", role: .destructive) { }
