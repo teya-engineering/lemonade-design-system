@@ -18,6 +18,11 @@ internal interface Displays {
     }
 
     @Serializable
+    data object ThemedColors : Displays {
+        override val label: String = "Themed Colors"
+    }
+
+    @Serializable
     data object Icons : Displays {
         override val label: String = "Icons"
     }

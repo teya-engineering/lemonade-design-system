@@ -46,6 +46,7 @@ import com.teya.lemonade.TabsDisplay
 import com.teya.lemonade.TagDisplay
 import com.teya.lemonade.TextDisplay
 import com.teya.lemonade.TextFieldDisplay
+import com.teya.lemonade.ThemedColorsDisplay
 import com.teya.lemonade.TileDisplay
 import com.teya.lemonade.TimePickerDisplay
 import com.teya.lemonade.ToastDisplay
@@ -59,6 +60,7 @@ internal expect val platformScreens: Map<Displays, @Composable (onNavigate: (Dis
 internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit) -> Unit> = platformScreens + mapOf(
     Displays.Home to { onNavigate -> HomeDisplay(onNavigate = onNavigate) },
     Displays.Colors to { _ -> ColorsDisplay() },
+    Displays.ThemedColors to { _ -> ThemedColorsDisplay() },
     Displays.Icons to { _ -> IconsDisplay() },
     Displays.CountryFlag to { _ -> CountryFlagDisplay() },
     Displays.BrandLogo to { _ -> BrandLogoDisplay() },

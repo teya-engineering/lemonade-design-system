@@ -10,6 +10,7 @@ import Lemonade
 /// when the user actually pushes it. The raw value doubles as the display title.
 private enum Demo: String, CaseIterable, Identifiable, Hashable {
     case colors = "Colors"
+    case themedColors = "Themed Colors"
     case spacing = "Spacing"
     case radius = "Radius"
     case shadows = "Shadows"
@@ -78,7 +79,7 @@ private struct DemoSection: Identifiable {
 private let demoSections: [DemoSection] = [
     DemoSection(
         title: "Foundations",
-        items: [.colors, .spacing, .radius, .shadows, .sizes, .opacity, .borderWidth]
+        items: [.colors, .themedColors, .spacing, .radius, .shadows, .sizes, .opacity, .borderWidth]
     ),
     DemoSection(
         title: "Assets",
@@ -178,6 +179,7 @@ struct HomeView: View {
     private func destination(for demo: Demo) -> some View {
         switch demo {
         case .colors: ColorsDisplayView()
+        case .themedColors: ThemedColorsDisplayView()
         case .spacing: SpacingDisplayView()
         case .radius: RadiusDisplayView()
         case .shadows: ShadowsDisplayView()
