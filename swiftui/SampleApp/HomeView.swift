@@ -79,7 +79,7 @@ private struct DemoSection: Identifiable {
 private let demoSections: [DemoSection] = [
     DemoSection(
         title: "Foundations",
-        items: [.colors, .themedColors, .spacing, .radius, .shadows, .sizes, .opacity, .borderWidth]
+        items: [.themedColors, .colors, .spacing, .radius, .shadows, .sizes, .opacity, .borderWidth]
     ),
     DemoSection(
         title: "Assets",
