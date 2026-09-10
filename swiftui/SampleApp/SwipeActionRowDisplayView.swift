@@ -320,7 +320,7 @@ struct SwipeActionRowDisplayView: View {
                     LemonadeUi.Card(
                         header: CardHeaderConfig(
                             title: "Swipe or hold",
-                            subtitle: "The content carries a context menu. Holding the row leaves it where it is."
+                            subtitle: "The row carries a context menu. Holding it leaves it where it is."
                         )
                     ) {
                         LemonadeUi.SwipeActionRow(
@@ -335,25 +335,26 @@ struct SwipeActionRowDisplayView: View {
                                 showDivider: false,
                                 onItemClicked: { }
                             )
-                            // The lift a context menu does is a snapshot of the view it is
-                            // attached to, and a list item's own fill is clear — the Card behind
-                            // it is the surface. Without one of its own the row lifts as floating
-                            // text.
-                            .background(
-                                RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
-                                    .fill(LemonadeTheme.colors.background.bgDefault)
-                            )
-                            // The fill alone is not enough: the preview is clipped to iOS's own
-                            // corner radius, so the lift starts on one shape and settles on
-                            // another, and the row flickers as it goes. Both have to be the same
-                            // rounded rectangle for it to lift cleanly.
-                            .contentShape(
-                                .contextMenuPreview,
-                                RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
-                            )
-                            .contextMenu {
-                                Button("Delete", role: .destructive) { }
-                            }
+                        }
+                        // Around the row rather than inside it. The lift a context menu does is a
+                        // snapshot of the view it is attached to, and a list item's own fill is
+                        // clear — so something has to give the snapshot a surface. Putting that
+                        // surface in the content would bury the row's own press tint, which is
+                        // translucent and drawn behind whatever the content is: the row would
+                        // stop filling in under a swipe, alone among the rows on this screen.
+                        .background(
+                            RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
+                                .fill(LemonadeTheme.colors.background.bgDefault)
+                        )
+                        // The fill alone is not enough: the preview is otherwise clipped to iOS's
+                        // own corner radius, so the lift starts on one shape and settles on
+                        // another, and the row flickers as it goes.
+                        .contentShape(
+                            .contextMenuPreview,
+                            RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
+                        )
+                        .contextMenu {
+                            Button("Delete", role: .destructive) { }
                         }
                     }
 
