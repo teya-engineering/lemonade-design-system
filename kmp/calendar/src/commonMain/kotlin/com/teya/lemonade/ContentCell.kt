@@ -22,30 +22,26 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 
 /**
- * Reusable calendar date cell used by both the full-month [LemonadeUi.DatePicker]
- * grid and the inline calendar strip.
+ * Renders a calendar date cell styled by its selection, today, disabled and outside-month state.
  *
- * The cell renders a day number with the appropriate color/style based on its
- * selection, "today", disabled, and outside-month states. A small dot indicator
- * appears below the text when [isCurrent] is true.
+ * Backs both the [LemonadeUi.DatePicker] grid and the inline calendar strip. A dot appears below
+ * the text when [isCurrent] is true.
  *
- * @param text The display text (typically the day-of-month number).
- * @param isCurrent Whether this cell represents today's date.
- * @param isSelected Whether this cell is the selected date.
- * @param isEnabled Whether the cell is interactive.
- * @param isOutsideVisibleRange Whether the date falls outside the displayed month.
- * @param isInsideSelectedRange Whether the cell is within a selected date range.
- * @param onClick Invoked when the cell is tapped.
- * @param modifier Optional [Modifier] applied to the root container.
- * @param contentDescription Optional accessibility label. When provided, screen readers
- *   announce this description instead of just the [text] value.
- * @param showSelectionBackground Whether to render the selection background color within
- *   this cell. When `false`, the parent is expected to provide its own selection styling
- *   (e.g. [CalendarDayCell] wraps the whole cell in a dark background). Defaults to `true`
- *   so that the [LemonadeUi.DatePicker] grid continues to show the brand-colored background.
- * @param selectionContentColor When non-null and the cell [isSelected], overrides the default
- *   text color used on selected cells.
- * @param interactionSource Interaction source for ripple/focus handling.
+ * @param text display text, typically the day-of-month number
+ * @param isCurrent whether this cell represents today's date
+ * @param isSelected whether this cell is the selected date
+ * @param isEnabled whether the cell is interactive
+ * @param isOutsideVisibleRange whether the date falls outside the displayed month
+ * @param isInsideSelectedRange whether the cell is within a selected date range
+ * @param onClick called when the cell is tapped
+ * @param modifier [Modifier] applied to the root container
+ * @param contentDescription when non-null, what screen readers announce instead of the bare [text]
+ * @param showSelectionBackground whether to draw the selection background inside this cell; pass
+ *   `false` when the parent supplies its own selection styling, as [CalendarDayCell] does
+ * @param showTodayIndicator whether to draw the today dot; follows [showSelectionBackground]
+ * @param selectionContentColor when non-null and the cell [isSelected], overrides the text color
+ *   used on selected cells
+ * @param interactionSource interaction source for ripple/focus handling
  */
 @Composable
 internal fun ContentCell(
@@ -145,14 +141,6 @@ internal fun ContentCell(
     }
 }
 
-/**
- * Resolves the text color for a [ContentCell] based on its combined state flags.
- * Extracted from the composable body to keep cyclomatic complexity of the cell
- * itself inside detekt's threshold.
- *
- * When [selectionContentColor] is non-null and the cell [isSelected], that color
- * takes precedence over the default brand on-color.
- */
 @Composable
 private fun contentCellTextColor(
     isEnabled: Boolean,
