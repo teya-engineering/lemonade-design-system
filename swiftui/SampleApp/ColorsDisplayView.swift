@@ -9,7 +9,16 @@ struct ColorsDisplayView: View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 0) {
                 ForEach(semanticGroups) { group in
-                    ColorSwatchSection(group: group, outlined: true)
+                    LemonadeUi.Text(
+                        group.title,
+                        textStyle: LemonadeTypography.shared.headingSmall
+                    )
+                    .padding(.horizontal, LemonadeTheme.spaces.spacing500)
+                    .padding(.top, LemonadeTheme.spaces.spacing600)
+
+                    ForEach(group.subgroups) { subgroup in
+                        ColorSwatchSection(title: subgroup.title, swatches: subgroup.swatches, outlined: true)
+                    }
                 }
             }
         }
@@ -17,23 +26,28 @@ struct ColorsDisplayView: View {
         .navigationTitle("Semantic Colors")
     }
 
-    private var semanticGroups: [ColorSwatchGroup] {
+    private var semanticGroups: [SemanticGroup] {
         let colors = LemonadeTheme.colors
         return [
-            group(title: "Background", tokens: backgroundTokens(colors.background)),
-            group(title: "Border", tokens: borderTokens(colors.border)),
-            group(title: "Content", tokens: contentTokens(colors.content)),
-            group(title: "Interaction", tokens: interactionTokens(colors.interaction)),
-            group(title: "Scoped", tokens: scopedTokens(colors.scoped)),
-            group(title: "Shadow", tokens: shadowTokens(colors.shadow)),
+            group(title: "Background", subgroups: backgroundTokens(colors.background)),
+            group(title: "Border", subgroups: borderTokens(colors.border)),
+            group(title: "Content", subgroups: contentTokens(colors.content)),
+            group(title: "Interaction", subgroups: interactionTokens(colors.interaction)),
+            group(title: "Scoped", subgroups: scopedTokens(colors.scoped)),
+            group(title: "Shadow", subgroups: shadowTokens(colors.shadow)),
         ]
     }
 
-    private func group(title: String, tokens: [(String, Color)]) -> ColorSwatchGroup {
-        ColorSwatchGroup(
+    private func group(title: String, subgroups: [TokenSubgroup]) -> SemanticGroup {
+        SemanticGroup(
             title: title,
-            swatches: tokens.map { name, color in
-                ColorSwatch(path: title.lowercased(), name: name, fill: color, label: labelColor(for: color))
+            subgroups: subgroups.map { subgroup in
+                SemanticSubgroup(
+                    title: subgroup.title,
+                    swatches: subgroup.tokens.map { name, color in
+                        ColorSwatch(path: title.lowercased(), name: name, fill: color, label: labelColor(for: color))
+                    }
+                )
             }
         )
     }
@@ -80,180 +94,235 @@ struct ColorsDisplayView: View {
 
 // MARK: - Semantic Color Data
 
-private func backgroundTokens(_ colors: BackgroundColors) -> [(String, Color)] {
+private struct SemanticGroup: Identifiable {
+    var id: String { title }
+    let title: String
+    let subgroups: [SemanticSubgroup]
+}
+
+private struct SemanticSubgroup: Identifiable {
+    var id: String { title ?? "" }
+    let title: String?
+    let swatches: [ColorSwatch]
+}
+
+private typealias TokenSubgroup = (title: String?, tokens: [(String, Color)])
+
+
+private func backgroundTokens(_ colors: BackgroundColors) -> [TokenSubgroup] {
     [
-        ("bgBrand", colors.bgBrand),
-        ("bgBrandElevated", colors.bgBrandElevated),
-        ("bgBrandHigh", colors.bgBrandHigh),
-        ("bgBrandSubtle", colors.bgBrandSubtle),
-        ("bgAlwaysDark", colors.bgAlwaysDark),
-        ("bgAlwaysDarkHigh", colors.bgAlwaysDarkHigh),
-        ("bgAlwaysDarkLow", colors.bgAlwaysDarkLow),
-        ("bgAlwaysDarkMedium", colors.bgAlwaysDarkMedium),
-        ("bgAlwaysLight", colors.bgAlwaysLight),
-        ("bgAlwaysLightHigh", colors.bgAlwaysLightHigh),
-        ("bgAlwaysLightLow", colors.bgAlwaysLightLow),
-        ("bgAlwaysLightMedium", colors.bgAlwaysLightMedium),
-        ("bgTransparent", colors.bgTransparent),
-        ("bgTransparentDark", colors.bgTransparentDark),
-        ("bgTransparentLight", colors.bgTransparentLight),
-        ("bgDefaultInverse", colors.bgDefaultInverse),
-        ("bgElevatedInverse", colors.bgElevatedInverse),
-        ("bgSubtleInverse", colors.bgSubtleInverse),
-        ("bgCaution", colors.bgCaution),
-        ("bgCautionSubtle", colors.bgCautionSubtle),
-        ("bgCritical", colors.bgCritical),
-        ("bgCriticalSubtle", colors.bgCriticalSubtle),
-        ("bgFeatured", colors.bgFeatured),
-        ("bgFeaturedSubtle", colors.bgFeaturedSubtle),
-        ("bgInfo", colors.bgInfo),
-        ("bgInfoSubtle", colors.bgInfoSubtle),
-        ("bgNeutral", colors.bgNeutral),
-        ("bgNeutralSubtle", colors.bgNeutralSubtle),
-        ("bgPositive", colors.bgPositive),
-        ("bgPositiveSubtle", colors.bgPositiveSubtle),
-        ("bgDefault", colors.bgDefault),
-        ("bgElevated", colors.bgElevated),
-        ("bgElevatedHigh", colors.bgElevatedHigh),
-        ("bgSubtle", colors.bgSubtle),
+        (nil, [
+            ("bgDefault", colors.bgDefault),
+            ("bgSubtle", colors.bgSubtle),
+            ("bgElevated", colors.bgElevated),
+            ("bgElevatedHigh", colors.bgElevatedHigh),
+        ]),
+        ("Brand", [
+            ("bgBrand", colors.bgBrand),
+            ("bgBrandElevated", colors.bgBrandElevated),
+            ("bgBrandSubtle", colors.bgBrandSubtle),
+            ("bgBrandHigh", colors.bgBrandHigh),
+        ]),
+        ("Voice", [
+            ("bgCritical", colors.bgCritical),
+            ("bgCaution", colors.bgCaution),
+            ("bgInfo", colors.bgInfo),
+            ("bgPositive", colors.bgPositive),
+            ("bgFeatured", colors.bgFeatured),
+            ("bgNeutral", colors.bgNeutral),
+            ("bgCriticalSubtle", colors.bgCriticalSubtle),
+            ("bgCautionSubtle", colors.bgCautionSubtle),
+            ("bgInfoSubtle", colors.bgInfoSubtle),
+            ("bgPositiveSubtle", colors.bgPositiveSubtle),
+            ("bgFeaturedSubtle", colors.bgFeaturedSubtle),
+            ("bgNeutralSubtle", colors.bgNeutralSubtle),
+        ]),
+        ("Inverse", [
+            ("bgDefaultInverse", colors.bgDefaultInverse),
+            ("bgSubtleInverse", colors.bgSubtleInverse),
+            ("bgElevatedInverse", colors.bgElevatedInverse),
+        ]),
+        ("Fixed", [
+            ("bgAlwaysDark", colors.bgAlwaysDark),
+            ("bgAlwaysDarkHigh", colors.bgAlwaysDarkHigh),
+            ("bgAlwaysDarkMedium", colors.bgAlwaysDarkMedium),
+            ("bgAlwaysDarkLow", colors.bgAlwaysDarkLow),
+            ("bgAlwaysLight", colors.bgAlwaysLight),
+            ("bgAlwaysLightHigh", colors.bgAlwaysLightHigh),
+            ("bgAlwaysLightMedium", colors.bgAlwaysLightMedium),
+            ("bgAlwaysLightLow", colors.bgAlwaysLightLow),
+            ("bgTransparent", colors.bgTransparent),
+            ("bgTransparentLight", colors.bgTransparentLight),
+            ("bgTransparentDark", colors.bgTransparentDark),
+        ]),
     ]
 }
 
-private func borderTokens(_ colors: BorderColors) -> [(String, Color)] {
+private func borderTokens(_ colors: BorderColors) -> [TokenSubgroup] {
     [
-        ("borderBrand", colors.borderBrand),
-        ("borderOnBrandHigh", colors.borderOnBrandHigh),
-        ("borderOnBrandLow", colors.borderOnBrandLow),
-        ("borderOnBrandMedium", colors.borderOnBrandMedium),
-        ("borderAlwaysDark", colors.borderAlwaysDark),
-        ("borderAlwaysDarkHigh", colors.borderAlwaysDarkHigh),
-        ("borderAlwaysDarkLow", colors.borderAlwaysDarkLow),
-        ("borderAlwaysDarkMedium", colors.borderAlwaysDarkMedium),
-        ("borderAlwaysLight", colors.borderAlwaysLight),
-        ("borderAlwaysLightHigh", colors.borderAlwaysLightHigh),
-        ("borderAlwaysLightLow", colors.borderAlwaysLightLow),
-        ("borderAlwaysLightMedium", colors.borderAlwaysLightMedium),
-        ("borderBrandInverse", colors.borderBrandInverse),
-        ("borderNeutralHighInverse", colors.borderNeutralHighInverse),
-        ("borderNeutralLowInverse", colors.borderNeutralLowInverse),
-        ("borderNeutralMediumInverse", colors.borderNeutralMediumInverse),
-        ("borderSelectedInverse", colors.borderSelectedInverse),
-        ("borderCaution", colors.borderCaution),
-        ("borderCautionSubtle", colors.borderCautionSubtle),
-        ("borderCritical", colors.borderCritical),
-        ("borderCriticalSubtle", colors.borderCriticalSubtle),
-        ("borderFeatured", colors.borderFeatured),
-        ("borderFeaturedSubtle", colors.borderFeaturedSubtle),
-        ("borderInfo", colors.borderInfo),
-        ("borderInfoSubtle", colors.borderInfoSubtle),
-        ("borderPositive", colors.borderPositive),
-        ("borderPositiveSubtle", colors.borderPositiveSubtle),
-        ("borderNeutralHigh", colors.borderNeutralHigh),
-        ("borderNeutralLow", colors.borderNeutralLow),
-        ("borderNeutralMedium", colors.borderNeutralMedium),
-        ("borderSelected", colors.borderSelected),
+        (nil, [
+            ("borderNeutralLow", colors.borderNeutralLow),
+            ("borderNeutralMedium", colors.borderNeutralMedium),
+            ("borderNeutralHigh", colors.borderNeutralHigh),
+            ("borderSelected", colors.borderSelected),
+        ]),
+        ("Brand", [
+            ("borderBrand", colors.borderBrand),
+            ("borderOnBrandLow", colors.borderOnBrandLow),
+            ("borderOnBrandMedium", colors.borderOnBrandMedium),
+            ("borderOnBrandHigh", colors.borderOnBrandHigh),
+        ]),
+        ("Voice", [
+            ("borderCritical", colors.borderCritical),
+            ("borderCaution", colors.borderCaution),
+            ("borderInfo", colors.borderInfo),
+            ("borderPositive", colors.borderPositive),
+            ("borderFeatured", colors.borderFeatured),
+            ("borderCriticalSubtle", colors.borderCriticalSubtle),
+            ("borderCautionSubtle", colors.borderCautionSubtle),
+            ("borderInfoSubtle", colors.borderInfoSubtle),
+            ("borderPositiveSubtle", colors.borderPositiveSubtle),
+            ("borderFeaturedSubtle", colors.borderFeaturedSubtle),
+        ]),
+        ("Inverse", [
+            ("borderNeutralLowInverse", colors.borderNeutralLowInverse),
+            ("borderNeutralMediumInverse", colors.borderNeutralMediumInverse),
+            ("borderNeutralHighInverse", colors.borderNeutralHighInverse),
+            ("borderSelectedInverse", colors.borderSelectedInverse),
+            ("borderBrandInverse", colors.borderBrandInverse),
+        ]),
+        ("Fixed", [
+            ("borderAlwaysLight", colors.borderAlwaysLight),
+            ("borderAlwaysLightLow", colors.borderAlwaysLightLow),
+            ("borderAlwaysLightMedium", colors.borderAlwaysLightMedium),
+            ("borderAlwaysLightHigh", colors.borderAlwaysLightHigh),
+            ("borderAlwaysDark", colors.borderAlwaysDark),
+            ("borderAlwaysDarkLow", colors.borderAlwaysDarkLow),
+            ("borderAlwaysDarkMedium", colors.borderAlwaysDarkMedium),
+            ("borderAlwaysDarkHigh", colors.borderAlwaysDarkHigh),
+        ]),
     ]
 }
 
-private func contentTokens(_ colors: ContentColors) -> [(String, Color)] {
+private func contentTokens(_ colors: ContentColors) -> [TokenSubgroup] {
     [
-        ("contentBrand", colors.contentBrand),
-        ("contentBrandHigh", colors.contentBrandHigh),
-        ("contentOnBrandHigh", colors.contentOnBrandHigh),
-        ("contentOnBrandLow", colors.contentOnBrandLow),
-        ("contentAlwaysDark", colors.contentAlwaysDark),
-        ("contentAlwaysLight", colors.contentAlwaysLight),
-        ("contentCautionAlwaysOnColor", colors.contentCautionAlwaysOnColor),
-        ("contentCriticalAlwaysOnColor", colors.contentCriticalAlwaysOnColor),
-        ("contentInfoAlwaysOnColor", colors.contentInfoAlwaysOnColor),
-        ("contentNeutralAlwaysOnColor", colors.contentNeutralAlwaysOnColor),
-        ("contentPositiveAlwaysOnColor", colors.contentPositiveAlwaysOnColor),
-        ("contentBrandInverse", colors.contentBrandInverse),
-        ("contentPrimaryInverse", colors.contentPrimaryInverse),
-        ("contentSecondaryInverse", colors.contentSecondaryInverse),
-        ("contentTertiaryInverse", colors.contentTertiaryInverse),
-        ("contentCautionOnColor", colors.contentCautionOnColor),
-        ("contentCriticalOnColor", colors.contentCriticalOnColor),
-        ("contentFeaturedOnColor", colors.contentFeaturedOnColor),
-        ("contentInfoOnColor", colors.contentInfoOnColor),
-        ("contentNeutralOnColor", colors.contentNeutralOnColor),
-        ("contentPositiveOnColor", colors.contentPositiveOnColor),
-        ("contentCaution", colors.contentCaution),
-        ("contentCritical", colors.contentCritical),
-        ("contentFeatured", colors.contentFeatured),
-        ("contentInfo", colors.contentInfo),
-        ("contentNeutral", colors.contentNeutral),
-        ("contentPositive", colors.contentPositive),
-        ("contentPrimary", colors.contentPrimary),
-        ("contentSecondary", colors.contentSecondary),
-        ("contentTertiary", colors.contentTertiary),
+        (nil, [
+            ("contentPrimary", colors.contentPrimary),
+            ("contentSecondary", colors.contentSecondary),
+            ("contentTertiary", colors.contentTertiary),
+        ]),
+        ("Brand", [
+            ("contentBrand", colors.contentBrand),
+            ("contentBrandHigh", colors.contentBrandHigh),
+            ("contentOnBrandHigh", colors.contentOnBrandHigh),
+            ("contentOnBrandLow", colors.contentOnBrandLow),
+        ]),
+        ("Voice", [
+            ("contentCritical", colors.contentCritical),
+            ("contentCaution", colors.contentCaution),
+            ("contentInfo", colors.contentInfo),
+            ("contentPositive", colors.contentPositive),
+            ("contentFeatured", colors.contentFeatured),
+            ("contentNeutral", colors.contentNeutral),
+        ]),
+        ("Voice / On Color", [
+            ("contentCriticalOnColor", colors.contentCriticalOnColor),
+            ("contentCautionOnColor", colors.contentCautionOnColor),
+            ("contentInfoOnColor", colors.contentInfoOnColor),
+            ("contentPositiveOnColor", colors.contentPositiveOnColor),
+            ("contentFeaturedOnColor", colors.contentFeaturedOnColor),
+            ("contentNeutralOnColor", colors.contentNeutralOnColor),
+        ]),
+        ("Inverse", [
+            ("contentPrimaryInverse", colors.contentPrimaryInverse),
+            ("contentSecondaryInverse", colors.contentSecondaryInverse),
+            ("contentTertiaryInverse", colors.contentTertiaryInverse),
+            ("contentBrandInverse", colors.contentBrandInverse),
+        ]),
+        ("Fixed", [
+            ("contentAlwaysLight", colors.contentAlwaysLight),
+            ("contentAlwaysDark", colors.contentAlwaysDark),
+            ("contentCriticalAlwaysOnColor", colors.contentCriticalAlwaysOnColor),
+            ("contentCautionAlwaysOnColor", colors.contentCautionAlwaysOnColor),
+            ("contentInfoAlwaysOnColor", colors.contentInfoAlwaysOnColor),
+            ("contentPositiveAlwaysOnColor", colors.contentPositiveAlwaysOnColor),
+            ("contentNeutralAlwaysOnColor", colors.contentNeutralAlwaysOnColor),
+        ]),
     ]
 }
 
-private func interactionTokens(_ colors: InteractionColors) -> [(String, Color)] {
+private func interactionTokens(_ colors: InteractionColors) -> [TokenSubgroup] {
     [
-        ("bgAlwaysDarkHighInteractive", colors.bgAlwaysDarkHighInteractive),
-        ("bgAlwaysDarkLowInteractive", colors.bgAlwaysDarkLowInteractive),
-        ("bgAlwaysDarkMediumInteractive", colors.bgAlwaysDarkMediumInteractive),
-        ("bgAlwaysLightHighInteractive", colors.bgAlwaysLightHighInteractive),
-        ("bgAlwaysLightLowInteractive", colors.bgAlwaysLightLowInteractive),
-        ("bgAlwaysLightMediumInteractive", colors.bgAlwaysLightMediumInteractive),
-        ("bgBrandElevatedInteractive", colors.bgBrandElevatedInteractive),
-        ("bgBrandHighInteractive", colors.bgBrandHighInteractive),
-        ("bgBrandInteractive", colors.bgBrandInteractive),
-        ("bgCautionInteractive", colors.bgCautionInteractive),
-        ("bgCautionSubtleInteractive", colors.bgCautionSubtleInteractive),
-        ("bgCriticalInteractive", colors.bgCriticalInteractive),
-        ("bgCriticalSubtleInteractive", colors.bgCriticalSubtleInteractive),
-        ("bgDefaultInteractive", colors.bgDefaultInteractive),
-        ("bgElevatedHighInteractive", colors.bgElevatedHighInteractive),
-        ("bgElevatedInteractive", colors.bgElevatedInteractive),
-        ("bgFeaturedInteractive", colors.bgFeaturedInteractive),
-        ("bgFeaturedSubtleInteractive", colors.bgFeaturedSubtleInteractive),
-        ("bgInfoInteractive", colors.bgInfoInteractive),
-        ("bgInfoSubtleInteractive", colors.bgInfoSubtleInteractive),
-        ("bgNeutralInteractive", colors.bgNeutralInteractive),
-        ("bgNeutralSubtleInteractive", colors.bgNeutralSubtleInteractive),
-        ("bgPositiveInteractive", colors.bgPositiveInteractive),
-        ("bgPositiveSubtleInteractive", colors.bgPositiveSubtleInteractive),
-        ("bgSubtleInteractive", colors.bgSubtleInteractive),
-        ("bgBrandElevatedPressed", colors.bgBrandElevatedPressed),
-        ("bgBrandHighPressed", colors.bgBrandHighPressed),
-        ("bgBrandPressed", colors.bgBrandPressed),
-        ("bgCautionPressed", colors.bgCautionPressed),
-        ("bgCautionSubtlePressed", colors.bgCautionSubtlePressed),
-        ("bgCriticalPressed", colors.bgCriticalPressed),
-        ("bgCriticalSubtlePressed", colors.bgCriticalSubtlePressed),
-        ("bgDefaultPressed", colors.bgDefaultPressed),
-        ("bgElevatedPressed", colors.bgElevatedPressed),
-        ("bgFeaturedPressed", colors.bgFeaturedPressed),
-        ("bgFeaturedSubtlePressed", colors.bgFeaturedSubtlePressed),
-        ("bgInfoPressed", colors.bgInfoPressed),
-        ("bgInfoSubtlePressed", colors.bgInfoSubtlePressed),
-        ("bgNeutralPressed", colors.bgNeutralPressed),
-        ("bgNeutralSubtlePressed", colors.bgNeutralSubtlePressed),
-        ("bgPositivePressed", colors.bgPositivePressed),
-        ("bgPositiveSubtlePressed", colors.bgPositiveSubtlePressed),
-        ("bgSubtlePressed", colors.bgSubtlePressed),
+        ("Interactive / Background", [
+            ("bgDefaultInteractive", colors.bgDefaultInteractive),
+            ("bgSubtleInteractive", colors.bgSubtleInteractive),
+            ("bgElevatedInteractive", colors.bgElevatedInteractive),
+            ("bgElevatedHighInteractive", colors.bgElevatedHighInteractive),
+            ("bgBrandInteractive", colors.bgBrandInteractive),
+            ("bgBrandElevatedInteractive", colors.bgBrandElevatedInteractive),
+            ("bgBrandHighInteractive", colors.bgBrandHighInteractive),
+            ("bgCriticalInteractive", colors.bgCriticalInteractive),
+            ("bgCautionInteractive", colors.bgCautionInteractive),
+            ("bgInfoInteractive", colors.bgInfoInteractive),
+            ("bgPositiveInteractive", colors.bgPositiveInteractive),
+            ("bgFeaturedInteractive", colors.bgFeaturedInteractive),
+            ("bgNeutralInteractive", colors.bgNeutralInteractive),
+            ("bgCriticalSubtleInteractive", colors.bgCriticalSubtleInteractive),
+            ("bgCautionSubtleInteractive", colors.bgCautionSubtleInteractive),
+            ("bgInfoSubtleInteractive", colors.bgInfoSubtleInteractive),
+            ("bgPositiveSubtleInteractive", colors.bgPositiveSubtleInteractive),
+            ("bgFeaturedSubtleInteractive", colors.bgFeaturedSubtleInteractive),
+            ("bgNeutralSubtleInteractive", colors.bgNeutralSubtleInteractive),
+            ("bgAlwaysDarkHighInteractive", colors.bgAlwaysDarkHighInteractive),
+            ("bgAlwaysDarkMediumInteractive", colors.bgAlwaysDarkMediumInteractive),
+            ("bgAlwaysDarkLowInteractive", colors.bgAlwaysDarkLowInteractive),
+            ("bgAlwaysLightHighInteractive", colors.bgAlwaysLightHighInteractive),
+            ("bgAlwaysLightMediumInteractive", colors.bgAlwaysLightMediumInteractive),
+            ("bgAlwaysLightLowInteractive", colors.bgAlwaysLightLowInteractive),
+        ]),
+        ("Pressed / Background", [
+            ("bgDefaultPressed", colors.bgDefaultPressed),
+            ("bgSubtlePressed", colors.bgSubtlePressed),
+            ("bgElevatedPressed", colors.bgElevatedPressed),
+            ("bgBrandPressed", colors.bgBrandPressed),
+            ("bgBrandElevatedPressed", colors.bgBrandElevatedPressed),
+            ("bgBrandHighPressed", colors.bgBrandHighPressed),
+            ("bgCriticalPressed", colors.bgCriticalPressed),
+            ("bgCautionPressed", colors.bgCautionPressed),
+            ("bgInfoPressed", colors.bgInfoPressed),
+            ("bgPositivePressed", colors.bgPositivePressed),
+            ("bgFeaturedPressed", colors.bgFeaturedPressed),
+            ("bgNeutralPressed", colors.bgNeutralPressed),
+            ("bgCriticalSubtlePressed", colors.bgCriticalSubtlePressed),
+            ("bgCautionSubtlePressed", colors.bgCautionSubtlePressed),
+            ("bgInfoSubtlePressed", colors.bgInfoSubtlePressed),
+            ("bgPositiveSubtlePressed", colors.bgPositiveSubtlePressed),
+            ("bgFeaturedSubtlePressed", colors.bgFeaturedSubtlePressed),
+            ("bgNeutralSubtlePressed", colors.bgNeutralSubtlePressed),
+        ]),
     ]
 }
 
-private func scopedTokens(_ colors: ScopedColors) -> [(String, Color)] {
+private func scopedTokens(_ colors: ScopedColors) -> [TokenSubgroup] {
     [
-        ("bgSettlementBusinessDays", colors.bgSettlementBusinessDays),
-        ("bgSettlementEveryday", colors.bgSettlementEveryday),
-        ("bgSettlementInstant", colors.bgSettlementInstant),
-        ("bgSettlementScheduled", colors.bgSettlementScheduled),
-        ("contentOnSettlementBusinessDays", colors.contentOnSettlementBusinessDays),
-        ("contentOnSettlementEveryday", colors.contentOnSettlementEveryday),
-        ("contentOnSettlementInstant", colors.contentOnSettlementInstant),
-        ("contentOnSettlementScheduled", colors.contentOnSettlementScheduled),
+        ("Settlements", [
+            ("bgSettlementInstant", colors.bgSettlementInstant),
+            ("bgSettlementBusinessDays", colors.bgSettlementBusinessDays),
+            ("bgSettlementEveryday", colors.bgSettlementEveryday),
+            ("bgSettlementScheduled", colors.bgSettlementScheduled),
+            ("contentOnSettlementInstant", colors.contentOnSettlementInstant),
+            ("contentOnSettlementBusinessDays", colors.contentOnSettlementBusinessDays),
+            ("contentOnSettlementEveryday", colors.contentOnSettlementEveryday),
+            ("contentOnSettlementScheduled", colors.contentOnSettlementScheduled),
+        ]),
     ]
 }
 
-private func shadowTokens(_ colors: ShadowColors) -> [(String, Color)] {
+private func shadowTokens(_ colors: ShadowColors) -> [TokenSubgroup] {
     [
-        ("shadowDefault", colors.shadowDefault),
+        (nil, [
+            ("shadowDefault", colors.shadowDefault),
+        ]),
     ]
 }
 

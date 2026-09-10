@@ -34,19 +34,22 @@ internal data class ColorSwatchGroup(
 
 @Composable
 internal fun ColorSwatchSection(
-    group: ColorSwatchGroup,
+    title: String?,
+    swatches: List<ColorSwatch>,
     outlined: Boolean = false,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
         modifier = Modifier.padding(vertical = LemonadeTheme.spaces.spacing400),
     ) {
-        LemonadeUi.Text(
-            text = group.title,
-            textStyle = LemonadeTheme.typography.headingXXSmall,
-            modifier = Modifier.padding(horizontal = LemonadeTheme.spaces.spacing100),
-        )
-        group.swatches.chunked(size = COLUMNS).forEach { row ->
+        if (title != null) {
+            LemonadeUi.Text(
+                text = title,
+                textStyle = LemonadeTheme.typography.headingXXSmall,
+                modifier = Modifier.padding(horizontal = LemonadeTheme.spaces.spacing100),
+            )
+        }
+        swatches.chunked(size = COLUMNS).forEach { row ->
             Row(
                 horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
             ) {

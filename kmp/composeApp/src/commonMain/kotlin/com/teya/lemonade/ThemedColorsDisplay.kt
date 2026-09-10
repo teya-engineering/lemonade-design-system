@@ -21,7 +21,10 @@ internal fun ThemedColorsDisplay() {
             items = hues,
             key = { hue -> hue.title },
         ) { hue ->
-            ColorSwatchSection(group = hue)
+            ColorSwatchSection(
+                title = hue.title,
+                swatches = hue.swatches,
+            )
         }
     }
 }

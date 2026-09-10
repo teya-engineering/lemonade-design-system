@@ -16,7 +16,8 @@ struct ColorSwatchGroup: Identifiable {
 }
 
 struct ColorSwatchSection: View {
-    let group: ColorSwatchGroup
+    let title: String?
+    let swatches: [ColorSwatch]
     var outlined: Bool = false
 
     private let columns = [
@@ -26,14 +27,16 @@ struct ColorSwatchSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing200) {
-            LemonadeUi.Text(
-                group.title,
-                textStyle: LemonadeTypography.shared.headingXXSmall
-            )
-            .padding(.horizontal, LemonadeTheme.spaces.spacing100)
+            if let title {
+                LemonadeUi.Text(
+                    title,
+                    textStyle: LemonadeTypography.shared.headingXXSmall
+                )
+                .padding(.horizontal, LemonadeTheme.spaces.spacing100)
+            }
 
             LazyVGrid(columns: columns, spacing: LemonadeTheme.spaces.spacing200) {
-                ForEach(group.swatches) { swatch in
+                ForEach(swatches) { swatch in
                     ColorSwatchView(swatch: swatch, outlined: outlined)
                 }
             }
