@@ -41,10 +41,10 @@ public extension LemonadeUi {
     /// `.iconOnly` hides the title visually and leaves it to assistive technology.
     ///
     /// - Parameters:
-    ///   - icon: The icon to display.
-    ///   - contentDescription: Describes the action. Becomes the accessibility label.
-    ///   - prominence: Fill treatment. Defaults to `.plain`.
-    ///   - action: Invoked on tap.
+    ///   - icon: what the button shows
+    ///   - contentDescription: describes the action, and becomes the accessibility label
+    ///   - prominence: fill treatment, `.plain` by default
+    ///   - action: run on tap
     @ViewBuilder
     static func ToolbarIconButton(
         icon: LemonadeIcon,
