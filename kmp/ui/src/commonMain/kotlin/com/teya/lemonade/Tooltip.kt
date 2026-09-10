@@ -795,7 +795,32 @@ internal data class TooltipShape(
             density = density,
         )
         val edge = indicatorPlacement.edge
-        val origin = when (edge) {
+        val origin = indicatorOrigin(
+            bodyRect = bodyRect,
+            centerOffset = centerOffset,
+            edge = edge,
+        )
+
+        indicator.transform(
+            matrix = Matrix()
+                .apply {
+                    translate(
+                        x = origin.x,
+                        y = origin.y,
+                    )
+                    rotateZ(degrees = edge.rotationDegrees)
+                },
+        )
+
+        return indicator
+    }
+
+    private fun indicatorOrigin(
+        bodyRect: Rect,
+        centerOffset: Float,
+        edge: TooltipIndicatorEdge,
+    ): Offset =
+        when (edge) {
             TooltipIndicatorEdge.Top,
             TooltipIndicatorEdge.None,
             -> Offset(
@@ -818,20 +843,6 @@ internal data class TooltipShape(
                 y = bodyRect.top + centerOffset,
             )
         }
-
-        indicator.transform(
-            matrix = Matrix()
-                .apply {
-                    translate(
-                        x = origin.x,
-                        y = origin.y,
-                    )
-                    rotateZ(degrees = edge.rotationDegrees)
-                },
-        )
-
-        return indicator
-    }
 }
 
 private data class TooltipPreviewData(

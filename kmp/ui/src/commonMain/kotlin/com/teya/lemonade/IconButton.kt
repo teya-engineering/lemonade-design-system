@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package com.teya.lemonade
 
 import androidx.compose.animation.animateColorAsState

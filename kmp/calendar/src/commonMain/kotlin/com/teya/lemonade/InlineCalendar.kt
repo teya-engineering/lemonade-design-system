@@ -614,7 +614,7 @@ private fun deriveHeaderMonth(
         abs(item.offset + item.size / 2 - viewportCenter)
     }
     val localIndex = centerItem?.index
-        ?: (listState.firstVisibleItemIndex + visibleCells / 2)
+        ?: listState.firstVisibleItemIndex + visibleCells / 2
     val globalIndex = (localIndex + firstIndex).coerceIn(
         minimumValue = 0,
         maximumValue = TOTAL_DAYS - 1,
