@@ -47,6 +47,29 @@ public enum SymbolContainerVoice {
         case .brandSubtle: return LemonadeTheme.colors.border.borderOnBrandLow
         }
     }
+
+    var colors: SymbolContainerColors {
+        SymbolContainerColors(background: containerColor, border: borderColor, content: tintColor)
+    }
+}
+
+// MARK: - SymbolContainer Colors
+
+struct SymbolContainerColors: Equatable {
+    let background: Color
+    let border: Color
+    let content: Color
+}
+
+extension LemonadeThemedColors {
+    func symbolContainerColors(theme: ThemedStyle) -> SymbolContainerColors {
+        let palette = self[style: theme]
+        return SymbolContainerColors(
+            background: palette.background,
+            border: palette.border,
+            content: palette.onBackground
+        )
+    }
 }
 
 // MARK: - SymbolContainer Size
@@ -138,14 +161,14 @@ public extension LemonadeUi {
         shape: SymbolContainerShape = .circle,
         @ViewBuilder badgeSlot: @escaping () -> Badge
     ) -> some View {
-        LemonadeSymbolContainerView(voice: voice, size: size, shape: shape, badgeSlot: badgeSlot) {
-            LemonadeUi.Icon(
-                icon: icon,
-                contentDescription: contentDescription,
-                size: size.iconSize,
-                tint: voice.tintColor
-            )
-        }
+        iconSymbolContainer(
+            icon: icon,
+            contentDescription: contentDescription,
+            colors: voice.colors,
+            size: size,
+            shape: shape,
+            badgeSlot: badgeSlot
+        )
     }
 
     /// A versatile container used to display an icon with consistent sizing and tone (no badge).
@@ -186,13 +209,13 @@ public extension LemonadeUi {
         shape: SymbolContainerShape = .circle,
         @ViewBuilder badgeSlot: @escaping () -> Badge
     ) -> some View {
-        LemonadeSymbolContainerView(voice: voice, size: size, shape: shape, badgeSlot: badgeSlot) {
-            LemonadeUi.Text(
-                text,
-                textStyle: size.textStyle,
-                color: voice.tintColor
-            )
-        }
+        textSymbolContainer(
+            text: text,
+            colors: voice.colors,
+            size: size,
+            shape: shape,
+            badgeSlot: badgeSlot
+        )
     }
 
     /// A versatile container used to display text with consistent sizing and tone (no badge).
@@ -206,6 +229,107 @@ public extension LemonadeUi {
         SymbolContainer(
             text: text,
             voice: voice,
+            size: size,
+            shape: shape,
+            badgeSlot: { EmptyView() }
+        )
+    }
+
+    // MARK: Themed
+
+    /// A container used to display an icon styled by a themed hue, for colour that carries
+    /// application meaning the voices do not model - categories, per-role accents.
+    ///
+    /// > Experimental: builds on `LemonadeTheme.themed`, whose shape is still settling.
+    ///
+    /// - Parameters:
+    ///   - icon: LemonadeIcon to be displayed inside the container
+    ///   - contentDescription: Localized content description for the icon
+    ///   - theme: ThemedStyle driving the background, border and icon tint: `.blue` for the hue's
+    ///     solid palette, `.blue.subtle` for its subtle one
+    ///   - size: SymbolContainerSize to define the container's size. Defaults to .medium
+    ///   - shape: SymbolContainerShape to define the container's shape. Defaults to .circle
+    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the bottom-right corner
+    /// - Returns: A styled SymbolContainer view with icon
+    @ViewBuilder
+    static func SymbolContainer<Badge: View>(
+        icon: LemonadeIcon,
+        contentDescription: String?,
+        theme: ThemedStyle,
+        size: SymbolContainerSize = .medium,
+        shape: SymbolContainerShape = .circle,
+        @ViewBuilder badgeSlot: @escaping () -> Badge
+    ) -> some View {
+        iconSymbolContainer(
+            icon: icon,
+            contentDescription: contentDescription,
+            colors: LemonadeTheme.themed.symbolContainerColors(theme: theme),
+            size: size,
+            shape: shape,
+            badgeSlot: badgeSlot
+        )
+    }
+
+    /// A container used to display an icon styled by a themed hue (no badge).
+    @ViewBuilder
+    static func SymbolContainer(
+        icon: LemonadeIcon,
+        contentDescription: String?,
+        theme: ThemedStyle,
+        size: SymbolContainerSize = .medium,
+        shape: SymbolContainerShape = .circle
+    ) -> some View {
+        SymbolContainer(
+            icon: icon,
+            contentDescription: contentDescription,
+            theme: theme,
+            size: size,
+            shape: shape,
+            badgeSlot: { EmptyView() }
+        )
+    }
+
+    /// A container used to display text styled by a themed hue, for colour that carries
+    /// application meaning the voices do not model - categories, per-role accents.
+    ///
+    /// > Experimental: builds on `LemonadeTheme.themed`, whose shape is still settling.
+    ///
+    /// - Parameters:
+    ///   - text: String to be displayed inside the container
+    ///   - theme: ThemedStyle driving the background, border and text color: `.blue` for the hue's
+    ///     solid palette, `.blue.subtle` for its subtle one
+    ///   - size: SymbolContainerSize to define the container's size. Defaults to .medium
+    ///   - shape: SymbolContainerShape to define the container's shape. Defaults to .circle
+    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the bottom-right corner
+    /// - Returns: A styled SymbolContainer view with text
+    @ViewBuilder
+    static func SymbolContainer<Badge: View>(
+        text: String,
+        theme: ThemedStyle,
+        size: SymbolContainerSize = .medium,
+        shape: SymbolContainerShape = .circle,
+        @ViewBuilder badgeSlot: @escaping () -> Badge
+    ) -> some View {
+        textSymbolContainer(
+            text: text,
+            colors: LemonadeTheme.themed.symbolContainerColors(theme: theme),
+            size: size,
+            shape: shape,
+            badgeSlot: badgeSlot
+        )
+    }
+
+    /// A container used to display text styled by a themed hue (no badge).
+    @ViewBuilder
+    static func SymbolContainer(
+        text: String,
+        theme: ThemedStyle,
+        size: SymbolContainerSize = .medium,
+        shape: SymbolContainerShape = .circle
+    ) -> some View {
+        SymbolContainer(
+            text: text,
+            theme: theme,
             size: size,
             shape: shape,
             badgeSlot: { EmptyView() }
@@ -235,7 +359,7 @@ public extension LemonadeUi {
         shape: SymbolContainerShape = .circle,
         @ViewBuilder badgeSlot: @escaping () -> Badge
     ) -> some View {
-        LemonadeSymbolContainerView(voice: voice, size: size, shape: shape, clipsContent: fill, badgeSlot: badgeSlot) {
+        LemonadeSymbolContainerView(colors: voice.colors, size: size, shape: shape, clipsContent: fill, badgeSlot: badgeSlot) {
             SymbolContainerImageContent(
                 image: image,
                 contentDescription: contentDescription,
@@ -286,7 +410,7 @@ public extension LemonadeUi {
         @ViewBuilder badgeSlot: @escaping () -> Badge,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View {
-        LemonadeSymbolContainerView(voice: voice, size: size, shape: shape, badgeSlot: badgeSlot) {
+        LemonadeSymbolContainerView(colors: voice.colors, size: size, shape: shape, badgeSlot: badgeSlot) {
             content()
                 .frame(width: size.contentSize, height: size.contentSize)
         }
@@ -307,6 +431,42 @@ public extension LemonadeUi {
             badgeSlot: { EmptyView() },
             content: content
         )
+    }
+
+    // MARK: Shared
+
+    private static func iconSymbolContainer<Badge: View>(
+        icon: LemonadeIcon,
+        contentDescription: String?,
+        colors: SymbolContainerColors,
+        size: SymbolContainerSize,
+        shape: SymbolContainerShape,
+        badgeSlot: @escaping () -> Badge
+    ) -> some View {
+        LemonadeSymbolContainerView(colors: colors, size: size, shape: shape, badgeSlot: badgeSlot) {
+            LemonadeUi.Icon(
+                icon: icon,
+                contentDescription: contentDescription,
+                size: size.iconSize,
+                tint: colors.content
+            )
+        }
+    }
+
+    private static func textSymbolContainer<Badge: View>(
+        text: String,
+        colors: SymbolContainerColors,
+        size: SymbolContainerSize,
+        shape: SymbolContainerShape,
+        badgeSlot: @escaping () -> Badge
+    ) -> some View {
+        LemonadeSymbolContainerView(colors: colors, size: size, shape: shape, badgeSlot: badgeSlot) {
+            LemonadeUi.Text(
+                text,
+                textStyle: size.textStyle,
+                color: colors.content
+            )
+        }
     }
 }
 
@@ -336,7 +496,7 @@ private struct SymbolContainerImageContent: View {
 // MARK: - Internal SymbolContainer View
 
 private struct LemonadeSymbolContainerView<Content: View, Badge: View>: View {
-    let voice: SymbolContainerVoice
+    let colors: SymbolContainerColors
     let size: SymbolContainerSize
     let shape: SymbolContainerShape
     // Only fill-image content overflows the container; icon/text/custom content is inset and
@@ -356,13 +516,13 @@ private struct LemonadeSymbolContainerView<Content: View, Badge: View>: View {
         case .circle:
             let cornerShape = Circle()
             clippedIfNeeded(sized, to: cornerShape)
-                .background(voice.containerColor, in: cornerShape)
-                .overlay(cornerShape.stroke(voice.borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25))
+                .background(colors.background, in: cornerShape)
+                .overlay(cornerShape.stroke(colors.border, lineWidth: LemonadeTheme.borderWidth.base.border25))
         case .rounded:
             let cornerShape = RoundedRectangle(cornerRadius: roundedRadius(for: size))
             clippedIfNeeded(sized, to: cornerShape)
-                .background(voice.containerColor, in: cornerShape)
-                .overlay(cornerShape.stroke(voice.borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25))
+                .background(colors.background, in: cornerShape)
+                .overlay(cornerShape.stroke(colors.border, lineWidth: LemonadeTheme.borderWidth.base.border25))
         }
     }
 
@@ -413,6 +573,7 @@ struct LemonadeSymbolContainer_Previews: PreviewProvider {
             textVoices
             shapes
             brandVoices
+            themes
             withBadge
         }
         .padding()
@@ -451,6 +612,15 @@ struct LemonadeSymbolContainer_Previews: PreviewProvider {
         HStack(spacing: 8) {
             LemonadeUi.SymbolContainer(icon: .star, contentDescription: "Star", voice: .brand)
             LemonadeUi.SymbolContainer(icon: .star, contentDescription: "Star", voice: .brandSubtle)
+        }
+    }
+
+    private static var themes: some View {
+        HStack(spacing: 8) {
+            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", theme: .violet)
+            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", theme: .violet.subtle)
+            LemonadeUi.SymbolContainer(text: "A", theme: .teal.subtle)
+            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", theme: .amber, shape: .rounded)
         }
     }
 
