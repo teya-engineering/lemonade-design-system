@@ -6,17 +6,14 @@ import figma from 'figma'
 const instance = figma.selectedInstance
 
 const showDivider = instance.getBoolean('◉ Show Divider')
-
-// Figma offers a Leading placement; neither platform has a placement parameter,
-// so a row designed that way cannot be built as drawn. The snippet says so
-// rather than quietly emitting a trailing row.
 const leading = instance.getEnum('◇ Actions Placement', { Leading: true, Trailing: false })
 
+// The actions are SwipeAction data objects with enum-typed icons, which a Figma
+// slot resolves to neither, so the list is left for the developer to fill.
 export default {
-  example: figma.kotlin`LemonadeUi.SwipeActionRow(${leading ? `
-    // NOTE: this design places the actions leading, which the component does not support` : ''}
-    // TODO: actions — one SwipeAction per action in the design
-    actions = emptyList(),${showDivider ? `
+  example: figma.kotlin`LemonadeUi.SwipeActionRow(
+    // TODO: one action per action in the design
+    ${leading ? 'leadingActions = emptyList(),' : 'trailingActions = emptyList(),'}${showDivider ? `
     showDivider = true,` : ''}
 ) {
     /* row content */
