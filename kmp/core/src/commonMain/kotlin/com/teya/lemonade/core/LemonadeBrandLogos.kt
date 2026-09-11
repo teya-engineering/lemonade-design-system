@@ -21,12 +21,6 @@ public enum class LemonadeBrandLogos : LemonadeAsset {
     Bancomat,
     CartesBancaires,
     Diners,
-
-    @Deprecated(
-        message = "Superseded by Diners.",
-        replaceWith = ReplaceWith("Diners"),
-    )
-    Dinners,
     DirectDebit,
     Discover,
     Edenred,

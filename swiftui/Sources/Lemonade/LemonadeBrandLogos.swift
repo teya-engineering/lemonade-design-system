@@ -26,8 +26,6 @@ public enum LemonadeBrandLogo: String, CaseIterable {
     case bancomat = "bancomat"
     case cartesBancaires = "cartes-bancaires"
     case diners = "diners"
-    @available(*, deprecated, renamed: "diners")
-    case dinners = "dinners"
     case directDebit = "direct-debit"
     case discover = "discover"
     case edenred = "edenred"
@@ -47,52 +45,4 @@ public enum LemonadeBrandLogo: String, CaseIterable {
     case sodexo = "sodexo"
     case unionpay = "unionpay"
     case visa = "visa"
-
-    /// Name of this logo's image in the asset catalog.
-    ///
-    /// Deprecated aliases have no asset of their own and resolve to their replacement's,
-    /// so the two can never drift apart. Kept separate from `rawValue`, which stays the
-    /// entry's own name so that `init(rawValue:)` still accepts it.
-    public var assetName: String {
-        switch self {
-        case .dinners: return "diners"
-        default: return rawValue
-        }
-    }
-
-    /// Swift cannot synthesise `CaseIterable` for an enum carrying `@available` on a
-    /// case, so `allCases` is written out here.
-    ///
-    /// Deprecated aliases are omitted: each renders the same asset as its replacement,
-    /// so listing both would show the logo twice in a gallery. The cases themselves stay
-    /// usable - referencing one just warns and points at the replacement.
-    public static var allCases: [LemonadeBrandLogo] {
-        [
-            .amazon,
-            .amex,
-            .applePay,
-            .bancomat,
-            .cartesBancaires,
-            .diners,
-            .directDebit,
-            .discover,
-            .edenred,
-            .genericMealOrHealthIssuer,
-            .girocard,
-            .googlePay,
-            .jcb,
-            .maestro,
-            .mastercard,
-            .mbWay,
-            .multibanco,
-            .nfcLogo,
-            .pagoBancomat,
-            .paypal,
-            .pluxee,
-            .sepa,
-            .sodexo,
-            .unionpay,
-            .visa,
-        ]
-    }
 }

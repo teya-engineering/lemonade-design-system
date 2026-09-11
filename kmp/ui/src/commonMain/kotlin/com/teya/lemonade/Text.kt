@@ -88,47 +88,6 @@ public fun LemonadeUi.Text(
 }
 
 /**
- * Binary-compatibility shim for the pre-`lineSpacing` signature.
- *
- * Adding the `lineSpacing` value-class parameter re-mangled the symbol
- * (`Text-Zb-9Jy0` → `Text-hCnJeNg`), so consumers compiled against the old
- * symbol would `NoSuchMethodError` at runtime. This HIDDEN overload keeps the
- * exact old parameter list, regenerating the `Text-Zb-9Jy0` binary symbol.
- */
-@Deprecated(
-    message = "Use the overload with a lineSpacing parameter.",
-    level = DeprecationLevel.HIDDEN,
-)
-@Composable
-public fun LemonadeUi.Text(
-    text: String,
-    fontSize: TextUnit = TextUnit.Unspecified,
-    modifier: Modifier = Modifier,
-    textStyle: LemonadeTextStyle = LocalTextStyles.current,
-    textAlign: TextAlign = TextAlign.Unspecified,
-    color: Color = LocalColors.current.content.contentPrimary,
-    overflow: TextOverflow = TextOverflow.Clip,
-    maxLines: Int = Int.MAX_VALUE,
-    minLines: Int = 1,
-    autoSize: TextAutoSize? = null,
-    onTextLayout: ((TextLayoutResult) -> Unit)? = null,
-): Unit =
-    Text(
-        text = text,
-        fontSize = fontSize,
-        modifier = modifier,
-        textStyle = textStyle,
-        textAlign = textAlign,
-        color = color,
-        overflow = overflow,
-        maxLines = maxLines,
-        minLines = minLines,
-        autoSize = autoSize,
-        onTextLayout = onTextLayout,
-        lineSpacing = TextUnit.Unspecified,
-    )
-
-/**
  * Displays styled [AnnotatedString] text using the Lemonade Design System typography tokens.
  *
  * Use this overload to render text with inline styling such as the output of
@@ -179,45 +138,6 @@ public fun LemonadeUi.Text(
         ),
     )
 }
-
-/**
- * Binary-compatibility shim for the pre-`lineSpacing` [AnnotatedString] signature.
- *
- * See the [String] shim above — keeps the old `Text-Zb-9Jy0` symbol alive for
- * consumers compiled before the `lineSpacing` parameter was added.
- */
-@Deprecated(
-    message = "Use the overload with a lineSpacing parameter.",
-    level = DeprecationLevel.HIDDEN,
-)
-@Composable
-public fun LemonadeUi.Text(
-    text: AnnotatedString,
-    fontSize: TextUnit = TextUnit.Unspecified,
-    modifier: Modifier = Modifier,
-    textStyle: LemonadeTextStyle = LocalTextStyles.current,
-    textAlign: TextAlign = TextAlign.Unspecified,
-    color: Color = LocalColors.current.content.contentPrimary,
-    overflow: TextOverflow = TextOverflow.Clip,
-    maxLines: Int = Int.MAX_VALUE,
-    minLines: Int = 1,
-    autoSize: TextAutoSize? = null,
-    onTextLayout: ((TextLayoutResult) -> Unit)? = null,
-): Unit =
-    Text(
-        text = text,
-        fontSize = fontSize,
-        modifier = modifier,
-        textStyle = textStyle,
-        textAlign = textAlign,
-        color = color,
-        overflow = overflow,
-        maxLines = maxLines,
-        minLines = minLines,
-        autoSize = autoSize,
-        onTextLayout = onTextLayout,
-        lineSpacing = TextUnit.Unspecified,
-    )
 
 /**
  * Displays styled text using a raw Compose [TextStyle].
