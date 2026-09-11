@@ -1,0 +1,36 @@
+// url=<LEMONADE_COMPONENTS>?node-id=11090-33664
+// source=swiftui/Sources/Lemonade/Components/LemonadeHistoryTimeline.swift
+// component=HistoryTimeline
+import figma from 'figma'
+
+const instance = figma.selectedInstance
+
+// Rows share one layer name, so they are collected by name rather than index.
+// Current is a row property in Figma and an index here, so rows surface it
+// through metadata.props.
+const rows = instance
+  .findLayers((node) => node.name === '.History Item')
+  .filter((node) => node.type === 'INSTANCE')
+
+const items = []
+let currentIndex = 0
+for (const row of rows) {
+  const result = row.executeTemplate()
+  if (result.metadata?.props?.current === 'true') currentIndex = items.length
+  items.push(result.example)
+}
+
+const [i1, i2, i3, i4, i5, i6] = items
+const line = (i) => (i ? figma.swift`
+        ${i},` : '')
+
+export default {
+  example: figma.swift`LemonadeUi.HistoryTimeline(
+    items: [${line(i1)}${line(i2)}${line(i3)}${line(i4)}${line(i5)}${line(i6)}
+    ],
+    currentIndex: ${currentIndex},
+)`,
+
+  id: 'history-timeline',
+  metadata: { nestable: false },
+}
