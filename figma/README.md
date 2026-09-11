@@ -9,9 +9,56 @@ output. One Figma component, two labels: `Compose` and `SwiftUI`.
 ```
 figma.compose.config.json   label "Compose", language "kotlin", reads connect/
 figma.swiftui.config.json   label "SwiftUI", language "swift",  reads connect-swiftui/
+icons.manifest.json         Figma icon name -> node id        (shared by both platforms)
+flags.manifest.json         Figma flag name -> node id        (shared by both platforms)
+brand-logos.manifest.json   Figma brand logo name -> node id  (shared by both platforms)
 connect/                    Compose templates
 connect-swiftui/            SwiftUI templates
+  icons/                    GENERATED — do not edit
+  flags/                    GENERATED — do not edit
+  brand-logos/              GENERATED — do not edit
+scripts/generate-asset-templates.mjs
 ```
+
+## Assets
+
+Icons, country flags and brand logos are enums in code and plain property-less
+components in Figma, so their 1,200 mappings are generated rather than written:
+
+```bash
+node scripts/generate-asset-templates.mjs                # everything
+node scripts/generate-asset-templates.mjs flags swiftui  # one of each
+```
+
+It cross-checks each manifest against that platform's enum **in both directions**
+and fails rather than emitting a broken mapping. Only checking manifest → enum
+would catch a deleted asset but stay silent on an added one, which is the
+direction that actually happens: an icon lands in code and quietly has no
+mapping.
+
+The generated directories are marked `linguist-generated` in `.gitattributes`, so
+GitHub collapses them in diffs and leaves them out of language statistics. They
+stay committed on purpose — what is published to Figma should be inspectable in
+git, and `git diff --exit-code` after regenerating is what proves the two agree.
+
+A code enum entry with no Figma component is recorded in the manifest's
+`knownUnmapped` list, so the gap stays visible instead of being tolerated
+silently. Today that is one flag, `CD-congo-democratic-republic`.
+
+Two asset sets are not one-to-one, and the generator handles both:
+
+- **Brand logos ship a `-dark` component per brand.** `BrandLogo` resolves the
+  dark artwork from the theme, so both nodes reference the same enum entry —
+  50 templates over 25 entries.
+- **`LemonadeBrandLogos` carries both `Diners` and `Dinners`.** Only the
+  correctly-spelled component exists in Figma, and `Dinners` is served by it.
+  That is recorded in the manifest's `aliases` rather than dropped, so the
+  duplicate stays visible until someone removes it from the enums.
+
+Each asset emits a bare enum reference (`LemonadeIcons.Search`,
+`LemonadeCountryFlag.aCAscensionIsland`), because that is what every consumer
+takes. Templates whose parameter is a composable or view slot wrap it
+themselves.
 
 Each label is published separately from its own config, which is the structure
 Figma documents for multi-framework repos.
