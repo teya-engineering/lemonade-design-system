@@ -125,7 +125,7 @@ acted on.
 
 ## Components
 
-Thirty-six components per platform, hand-written and kept at parity. A few needed
+Thirty-seven components per platform, hand-written and kept at parity. A few needed
 more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
@@ -223,6 +223,10 @@ more than a property lookup:
 
 - `PinCode` has a disabled state in Figma that neither platform implements, so a
   disabled design carries a NOTE saying so rather than a silently normal snippet.
+
+- `Spinner` is the one component whose two platforms disagree. Compose takes a
+  `size`; SwiftUI does not, so any size but the default is emitted as a NOTE
+  there. The Figma set offers five.
 
 ### Deliberately unmapped
 
