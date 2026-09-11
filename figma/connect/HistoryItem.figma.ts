@@ -3,9 +3,8 @@
 // component=HistoryTimelineItem
 import figma from 'figma'
 
-// A timeline row has no component of its own — it is one entry in the parent's
-// list. Its text lives in a nested .History Item Content instance and its voice
-// on a nested .History Item Indicator, so both are reached from here.
+// A row's text lives in a nested content instance and its voice on a nested
+// indicator, so both are reached from here.
 const instance = figma.selectedInstance
 
 const read = (layer) => {

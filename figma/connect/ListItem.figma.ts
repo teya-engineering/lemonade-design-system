@@ -5,7 +5,6 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
-// The label is a plain text layer; the description is a real property.
 const labelLayer = instance.findText('Label')
 const label = labelLayer && labelLayer.type === 'TEXT' ? labelLayer.textContent : ''
 
@@ -17,8 +16,6 @@ const navigationIndicator = instance.getBoolean('◉ Navigation Indicator')
 const isLoading = instance.getEnum('◉ Is Loading', { True: true, False: false })
 const showDivider = instance.getEnum('◉ Show Divider', { True: true, False: false })
 
-// Slots are a presence signal only — Figma cannot inline their contents into a
-// Kotlin snippet, so each shown slot becomes a placeholder to fill in.
 const leading = instance.getBoolean('◉ Show Leading')
 const trailing = instance.getBoolean('◉ Show Trailing')
 const bottom = instance.getBoolean('◉ Show Bottom Slot')

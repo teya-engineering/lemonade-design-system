@@ -3,9 +3,8 @@
 // component=TabButtonProperties
 import figma from 'figma'
 
-// A segmented control tab has no composable of its own — it is one entry in the
-// parent's `properties` list. Connected so SegmentedControl can carry the real
-// labels and icons instead of placeholders.
+// An internal Figma component is connected here because a tab has no composable
+// of its own: it is one entry in the parent's list.
 const instance = figma.selectedInstance
 
 const iconOnly = instance.getEnum('◇ Layout', { 'Icon Only': true, 'With Label': false })
@@ -19,9 +18,6 @@ if (icon && icon.type === 'INSTANCE') {
   iconCode = icon.executeTemplate().example
 }
 
-// Falls back to the label form when the icon cannot be resolved, so the emitted
-// expression is always valid Kotlin rather than a factory call missing its
-// argument.
 export default {
   example: iconCode
     ? (iconOnly

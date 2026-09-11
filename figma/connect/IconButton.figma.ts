@@ -20,7 +20,7 @@ const type = instance.getEnum('◇ Type', {
   Ghost: 'Ghost',
 })
 
-// Figma exposes three sizes here; LemonadeButtonSize also has XSmall, unused by this set.
+// LemonadeButtonSize also has XSmall, unused by this set.
 const size = instance.getEnum('↕ Size', {
   Large: 'Large',
   Medium: 'Medium',

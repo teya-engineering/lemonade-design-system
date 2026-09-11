@@ -16,9 +16,7 @@ const size = instance.getEnum('◇ Size', {
   Small: 'small',
 })
 
-// The tabs are named instances in document order, each carrying its own label
-// and icon, so they resolve through their own template rather than being
-// invented here. Five lookups covers the set's maximum.
+// Five lookups covers the set's maximum.
 const tab = (n) => {
   const child = instance.findInstance(`↪ Button ${n}`)
   return child && child.type === 'INSTANCE' ? child.executeTemplate().example : undefined
@@ -29,8 +27,6 @@ const t3 = tab(3)
 const t4 = tab(4)
 const t5 = tab(5)
 
-// Only used when no tab resolves — an empty array would say less than the
-// segment count does.
 const placeholders = Array.from(
   { length: segments },
   (_, i) => `        LemonadeTabButtonProperties.label("Tab ${i + 1}"),`,
