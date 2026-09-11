@@ -1065,6 +1065,11 @@ public abstract interface class com/teya/lemonade/LemonadeThemedColors {
 	public abstract fun getYellowLime ()Lcom/teya/lemonade/ThemedPrimaryColor;
 }
 
+public final class com/teya/lemonade/LemonadeThemedColorsKt {
+	public static final fun get (Lcom/teya/lemonade/LemonadeThemedColors;Lcom/teya/lemonade/ThemedHue;)Lcom/teya/lemonade/ThemedPrimaryColor;
+	public static final fun get (Lcom/teya/lemonade/LemonadeThemedColors;Lcom/teya/lemonade/ThemedStyle;)Lcom/teya/lemonade/ThemedColor;
+}
+
 public class com/teya/lemonade/LemonadeTypographyProvider {
 	public static final field $stable I
 	public fun <init> ()V
@@ -1106,11 +1111,38 @@ public abstract interface class com/teya/lemonade/ThemedColor {
 	public abstract fun getOnBackground-0d7_KjU ()J
 }
 
+public final class com/teya/lemonade/ThemedHue : java/lang/Enum, com/teya/lemonade/ThemedStyle {
+	public static final field Amber Lcom/teya/lemonade/ThemedHue;
+	public static final field Blue Lcom/teya/lemonade/ThemedHue;
+	public static final field Cyan Lcom/teya/lemonade/ThemedHue;
+	public static final field Fuchsia Lcom/teya/lemonade/ThemedHue;
+	public static final field Green Lcom/teya/lemonade/ThemedHue;
+	public static final field GreenLime Lcom/teya/lemonade/ThemedHue;
+	public static final field Indigo Lcom/teya/lemonade/ThemedHue;
+	public static final field Neutral Lcom/teya/lemonade/ThemedHue;
+	public static final field Orange Lcom/teya/lemonade/ThemedHue;
+	public static final field Pink Lcom/teya/lemonade/ThemedHue;
+	public static final field Purple Lcom/teya/lemonade/ThemedHue;
+	public static final field Red Lcom/teya/lemonade/ThemedHue;
+	public static final field Rose Lcom/teya/lemonade/ThemedHue;
+	public static final field Teal Lcom/teya/lemonade/ThemedHue;
+	public static final field Violet Lcom/teya/lemonade/ThemedHue;
+	public static final field Yellow Lcom/teya/lemonade/ThemedHue;
+	public static final field YellowLime Lcom/teya/lemonade/ThemedHue;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getSubtle ()Lcom/teya/lemonade/ThemedStyle;
+	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/ThemedHue;
+	public static fun values ()[Lcom/teya/lemonade/ThemedHue;
+}
+
 public abstract interface class com/teya/lemonade/ThemedPrimaryColor : com/teya/lemonade/ThemedColor {
 	public abstract fun getBackgroundHigh-0d7_KjU ()J
 	public abstract fun getContent-0d7_KjU ()J
 	public abstract fun getContentInverse-0d7_KjU ()J
 	public abstract fun getOnBackgroundHigh-0d7_KjU ()J
 	public abstract fun getSubtle ()Lcom/teya/lemonade/ThemedColor;
+}
+
+public abstract interface class com/teya/lemonade/ThemedStyle {
 }
 

@@ -74,6 +74,98 @@ public protocol LemonadeThemedColors {
     var yellowLime: ThemedPrimaryColor { get }
 }
 
+/// Names one hue of `LemonadeThemedColors`, so a component can take a hue as a parameter
+/// and read the slots it needs from `LemonadeTheme.themed[hue]`.
+public enum ThemedHue: CaseIterable {
+    case amber
+    case blue
+    case cyan
+    case fuchsia
+    case green
+    case greenLime
+    case indigo
+    case neutral
+    case orange
+    case pink
+    case purple
+    case red
+    case rose
+    case teal
+    case violet
+    case yellow
+    case yellowLime
+}
+
+/// The themed palette a component is styled from: `.blue` selects the hue's solid palette,
+/// and `.blue.subtle` its subtle one. A component takes it as one parameter and reads the
+/// slots it needs from `LemonadeTheme.themed[style: style]`.
+public struct ThemedStyle: Hashable {
+    let hue: ThemedHue
+    let isSubtle: Bool
+
+    /// The solid palette of `hue`.
+    public init(_ hue: ThemedHue) {
+        self.hue = hue
+        isSubtle = false
+    }
+
+    private init(hue: ThemedHue, isSubtle: Bool) {
+        self.hue = hue
+        self.isSubtle = isSubtle
+    }
+
+    /// This hue's subtle palette.
+    public var subtle: ThemedStyle { ThemedStyle(hue: hue, isSubtle: true) }
+
+    public static let amber = ThemedStyle(.amber)
+    public static let blue = ThemedStyle(.blue)
+    public static let cyan = ThemedStyle(.cyan)
+    public static let fuchsia = ThemedStyle(.fuchsia)
+    public static let green = ThemedStyle(.green)
+    public static let greenLime = ThemedStyle(.greenLime)
+    public static let indigo = ThemedStyle(.indigo)
+    public static let neutral = ThemedStyle(.neutral)
+    public static let orange = ThemedStyle(.orange)
+    public static let pink = ThemedStyle(.pink)
+    public static let purple = ThemedStyle(.purple)
+    public static let red = ThemedStyle(.red)
+    public static let rose = ThemedStyle(.rose)
+    public static let teal = ThemedStyle(.teal)
+    public static let violet = ThemedStyle(.violet)
+    public static let yellow = ThemedStyle(.yellow)
+    public static let yellowLime = ThemedStyle(.yellowLime)
+}
+
+public extension LemonadeThemedColors {
+    /// The palette `style` selects.
+    subscript(style style: ThemedStyle) -> ThemedColor {
+        style.isSubtle ? self[style.hue].subtle : self[style.hue]
+    }
+
+    /// The palette for `hue`.
+    subscript(hue: ThemedHue) -> ThemedPrimaryColor {
+        switch hue {
+        case .amber: return amber
+        case .blue: return blue
+        case .cyan: return cyan
+        case .fuchsia: return fuchsia
+        case .green: return green
+        case .greenLime: return greenLime
+        case .indigo: return indigo
+        case .neutral: return neutral
+        case .orange: return orange
+        case .pink: return pink
+        case .purple: return purple
+        case .red: return red
+        case .rose: return rose
+        case .teal: return teal
+        case .violet: return violet
+        case .yellow: return yellow
+        case .yellowLime: return yellowLime
+        }
+    }
+}
+
 private struct AdaptiveThemedAmberSubtleColors: ThemedColor {
     let background = Color("lemonade-themed-amber-subtle-background", bundle: .lemonade)
     let border = Color("lemonade-themed-amber-subtle-border", bundle: .lemonade)

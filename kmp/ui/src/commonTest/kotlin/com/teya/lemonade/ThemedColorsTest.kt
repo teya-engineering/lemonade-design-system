@@ -3,6 +3,7 @@ package com.teya.lemonade
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
+import kotlin.test.assertSame
 
 class ThemedColorsTest {
     @Test
@@ -155,6 +156,25 @@ class ThemedColorsTest {
             LemonadeLightThemedColors.neutral.subtle.background,
             LemonadeDarkThemedColors.neutral.subtle.background,
         )
+    }
+
+    @Test
+    fun aHueResolvesToItsOwnPalette() {
+        assertSame(LemonadeLightThemedColors.greenLime, LemonadeLightThemedColors[ThemedHue.GreenLime])
+        assertSame(LemonadeDarkThemedColors.blue, LemonadeDarkThemedColors[ThemedHue.Blue])
+    }
+
+    @Test
+    fun aHueStyleIsTheSolidPaletteAndSubtleItsPaleOne() {
+        val solid: ThemedStyle = ThemedHue.Blue
+        assertSame(LemonadeLightThemedColors.blue, LemonadeLightThemedColors[solid])
+        assertSame(LemonadeDarkThemedColors.blue.subtle, LemonadeDarkThemedColors[ThemedHue.Blue.subtle])
+    }
+
+    @Test
+    fun everyHueResolvesToADistinctPalette() {
+        val palettes = ThemedHue.entries.map { hue -> LemonadeLightThemedColors[hue] }
+        assertEquals(ThemedHue.entries.size, palettes.toSet().size)
     }
 
     @Test
