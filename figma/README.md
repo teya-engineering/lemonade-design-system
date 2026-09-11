@@ -125,7 +125,7 @@ acted on.
 
 ## Components
 
-Thirty-five components per platform, hand-written and kept at parity. A few needed
+Thirty-six components per platform, hand-written and kept at parity. A few needed
 more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
@@ -220,6 +220,9 @@ more than a property lookup:
   connected to surface it and the picker resolves to `DatePicker` or
   `DateRangePicker` accordingly. `.Date Picker /Months` is left unconnected: the
   code has no grid of months to pick from.
+
+- `PinCode` has a disabled state in Figma that neither platform implements, so a
+  disabled design carries a NOTE saying so rather than a silently normal snippet.
 
 ### Deliberately unmapped
 
