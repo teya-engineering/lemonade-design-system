@@ -182,12 +182,10 @@ more than a property lookup:
   nested content instance and its voice from the nested indicator via
   `metadata.props`, then folds the current row into `currentIndex`.
 
-- `SwipeActionRow` maps little on purpose. `actions` is a list of `SwipeAction`
-  data objects with enum-typed icons, which a slot cannot resolve to, so the
-  snippet emits an empty list and a TODO. Figma also offers a **Leading**
-  actions placement that neither platform implements; rather than quietly
-  emitting a trailing row, the snippet carries a NOTE saying the design cannot
-  be built as drawn. That gap is worth closing on one side or the other.
+- `SwipeActionRow` maps its placement onto `leadingActions` or
+  `trailingActions`. The list itself stays empty with a TODO: the actions are
+  `SwipeAction` data objects with enum-typed icons, and a Figma slot resolves to
+  neither.
 
 - `Divider` is one Figma component over two composables: `Orientation` picks
   between `HorizontalDivider` and `VerticalDivider` rather than being a
