@@ -143,6 +143,7 @@ internal object DisplayRegistry {
             items = listOf(
                 Displays.Colors,
                 Displays.ThemedColors,
+                Displays.SemanticColors,
                 Displays.Spacing,
                 Displays.Radius,
                 Displays.Shadows,

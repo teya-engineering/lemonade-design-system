@@ -6,7 +6,7 @@ struct ThemedColorsDisplayView: View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 0) {
                 ForEach(themedHues) { hue in
-                    ThemedHueSection(hue: hue)
+                    ColorSwatchSection(group: hue)
                 }
             }
         }
@@ -15,108 +15,46 @@ struct ThemedColorsDisplayView: View {
     }
 }
 
-private struct ThemedHueSection: View {
-    let hue: ThemedHue
+// MARK: - Themed Color Data
 
-    private let columns = Array(
-        repeating: GridItem(.flexible(), spacing: LemonadeTheme.spaces.spacing200),
-        count: 2
-    )
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing200) {
-            LemonadeUi.Text(
-                hue.title,
-                textStyle: LemonadeTypography.shared.headingXXSmall
-            )
-            .padding(.horizontal, LemonadeTheme.spaces.spacing100)
-
-            LazyVGrid(columns: columns, spacing: LemonadeTheme.spaces.spacing200) {
-                ForEach(hue.swatches) { swatch in
-                    ThemedSwatchView(swatch: swatch)
-                }
-            }
-        }
-        .padding(LemonadeTheme.spaces.spacing400)
-    }
-}
-
-private struct ThemedSwatchView: View {
-    let swatch: ThemedSwatch
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            LemonadeUi.Text(
-                swatch.path,
-                textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                color: swatch.label.opacity(LemonadeTheme.opacity.base.opacity70)
-            )
-
-            Spacer(minLength: 0)
-
-            LemonadeUi.Text(
-                swatch.slot,
-                textStyle: LemonadeTypography.shared.bodyXSmallMedium,
-                color: swatch.label
-            )
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .padding(.horizontal, LemonadeTheme.spaces.spacing400)
-        .padding(.vertical, LemonadeTheme.spaces.spacing500)
-        .frame(height: 162)
-        .background(swatch.fill, in: LemonadeTheme.shapes.radius600)
-    }
-}
-
-private struct ThemedSwatch: Identifiable {
-    var id: String { "\(path).\(slot)" }
-    let path: String
-    let slot: String
-    let fill: Color
-    let label: Color
-}
-
-private struct ThemedHue: Identifiable {
-    var id: String { title }
-    let title: String
-    let swatches: [ThemedSwatch]
-
-    init(title: String, name: String, color: ThemedPrimaryColor) {
-        let subtle = "\(name).subtle"
-        self.title = title
-        self.swatches = [
-            ThemedSwatch(path: name, slot: "background", fill: color.background, label: color.onBackground),
-            ThemedSwatch(path: name, slot: "border", fill: color.border, label: color.onBackground),
-            ThemedSwatch(path: name, slot: "content", fill: color.content, label: color.contentInverse),
-            ThemedSwatch(path: name, slot: "contentInverse", fill: color.contentInverse, label: color.onBackground),
-            ThemedSwatch(path: name, slot: "onBackground", fill: color.onBackground, label: color.content),
-            ThemedSwatch(path: name, slot: "backgroundHigh", fill: color.backgroundHigh, label: color.contentInverse),
-            ThemedSwatch(path: name, slot: "onBackgroundHigh", fill: color.onBackgroundHigh, label: color.content),
-            ThemedSwatch(path: subtle, slot: "background", fill: color.subtle.background, label: color.subtle.onBackground),
-            ThemedSwatch(path: subtle, slot: "border", fill: color.subtle.border, label: color.subtle.onBackground),
-            ThemedSwatch(path: subtle, slot: "onBackground", fill: color.subtle.onBackground, label: color.contentInverse),
+private func themedHue(title: String, name: String, color: ThemedPrimaryColor) -> ColorSwatchGroup {
+    let subtle = "\(name).subtle"
+    return ColorSwatchGroup(
+        id: name,
+        title: title,
+        swatches: [
+            ColorSwatch(path: name, name: "background", fill: color.background, label: color.onBackground),
+            ColorSwatch(path: name, name: "border", fill: color.border, label: color.onBackground),
+            ColorSwatch(path: name, name: "content", fill: color.content, label: color.contentInverse),
+            ColorSwatch(path: name, name: "contentInverse", fill: color.contentInverse, label: color.onBackground),
+            ColorSwatch(path: name, name: "onBackground", fill: color.onBackground, label: color.content),
+            ColorSwatch(path: name, name: "backgroundHigh", fill: color.backgroundHigh, label: color.contentInverse),
+            ColorSwatch(path: name, name: "onBackgroundHigh", fill: color.onBackgroundHigh, label: color.content),
+            ColorSwatch(path: subtle, name: "background", fill: color.subtle.background, label: color.subtle.onBackground),
+            ColorSwatch(path: subtle, name: "border", fill: color.subtle.border, label: color.subtle.onBackground),
+            ColorSwatch(path: subtle, name: "onBackground", fill: color.subtle.onBackground, label: color.contentInverse),
         ]
-    }
+    )
 }
 
-private let themedHues: [ThemedHue] = [
-    ThemedHue(title: "Amber", name: "amber", color: LemonadeTheme.themed.amber),
-    ThemedHue(title: "Blue", name: "blue", color: LemonadeTheme.themed.blue),
-    ThemedHue(title: "Cyan", name: "cyan", color: LemonadeTheme.themed.cyan),
-    ThemedHue(title: "Fuchsia", name: "fuchsia", color: LemonadeTheme.themed.fuchsia),
-    ThemedHue(title: "Green", name: "green", color: LemonadeTheme.themed.green),
-    ThemedHue(title: "Green Lime", name: "greenLime", color: LemonadeTheme.themed.greenLime),
-    ThemedHue(title: "Indigo", name: "indigo", color: LemonadeTheme.themed.indigo),
-    ThemedHue(title: "Neutral", name: "neutral", color: LemonadeTheme.themed.neutral),
-    ThemedHue(title: "Orange", name: "orange", color: LemonadeTheme.themed.orange),
-    ThemedHue(title: "Pink", name: "pink", color: LemonadeTheme.themed.pink),
-    ThemedHue(title: "Purple", name: "purple", color: LemonadeTheme.themed.purple),
-    ThemedHue(title: "Red", name: "red", color: LemonadeTheme.themed.red),
-    ThemedHue(title: "Rose", name: "rose", color: LemonadeTheme.themed.rose),
-    ThemedHue(title: "Teal", name: "teal", color: LemonadeTheme.themed.teal),
-    ThemedHue(title: "Violet", name: "violet", color: LemonadeTheme.themed.violet),
-    ThemedHue(title: "Yellow", name: "yellow", color: LemonadeTheme.themed.yellow),
-    ThemedHue(title: "Yellow Lime", name: "yellowLime", color: LemonadeTheme.themed.yellowLime),
+private let themedHues: [ColorSwatchGroup] = [
+    themedHue(title: "Amber", name: "amber", color: LemonadeTheme.themed.amber),
+    themedHue(title: "Blue", name: "blue", color: LemonadeTheme.themed.blue),
+    themedHue(title: "Cyan", name: "cyan", color: LemonadeTheme.themed.cyan),
+    themedHue(title: "Fuchsia", name: "fuchsia", color: LemonadeTheme.themed.fuchsia),
+    themedHue(title: "Green", name: "green", color: LemonadeTheme.themed.green),
+    themedHue(title: "Green Lime", name: "greenLime", color: LemonadeTheme.themed.greenLime),
+    themedHue(title: "Indigo", name: "indigo", color: LemonadeTheme.themed.indigo),
+    themedHue(title: "Neutral", name: "neutral", color: LemonadeTheme.themed.neutral),
+    themedHue(title: "Orange", name: "orange", color: LemonadeTheme.themed.orange),
+    themedHue(title: "Pink", name: "pink", color: LemonadeTheme.themed.pink),
+    themedHue(title: "Purple", name: "purple", color: LemonadeTheme.themed.purple),
+    themedHue(title: "Red", name: "red", color: LemonadeTheme.themed.red),
+    themedHue(title: "Rose", name: "rose", color: LemonadeTheme.themed.rose),
+    themedHue(title: "Teal", name: "teal", color: LemonadeTheme.themed.teal),
+    themedHue(title: "Violet", name: "violet", color: LemonadeTheme.themed.violet),
+    themedHue(title: "Yellow", name: "yellow", color: LemonadeTheme.themed.yellow),
+    themedHue(title: "Yellow Lime", name: "yellowLime", color: LemonadeTheme.themed.yellowLime),
 ]
 
 #Preview {

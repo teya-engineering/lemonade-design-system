@@ -9,8 +9,8 @@ import Lemonade
 /// building an `AnyView` per entry) means a destination view is only constructed
 /// when the user actually pushes it. The raw value doubles as the display title.
 private enum Demo: String, CaseIterable, Identifiable, Hashable {
-    case colors = "Colors"
     case themedColors = "Themed Colors"
+    case semanticColors = "Semantic Colors"
     case spacing = "Spacing"
     case radius = "Radius"
     case shadows = "Shadows"
@@ -79,7 +79,7 @@ private struct DemoSection: Identifiable {
 private let demoSections: [DemoSection] = [
     DemoSection(
         title: "Foundations",
-        items: [.colors, .themedColors, .spacing, .radius, .shadows, .sizes, .opacity, .borderWidth]
+        items: [.themedColors, .semanticColors, .spacing, .radius, .shadows, .sizes, .opacity, .borderWidth]
     ),
     DemoSection(
         title: "Assets",
@@ -178,8 +178,8 @@ struct HomeView: View {
     @ViewBuilder
     private func destination(for demo: Demo) -> some View {
         switch demo {
-        case .colors: ColorsDisplayView()
         case .themedColors: ThemedColorsDisplayView()
+        case .semanticColors: SemanticColorsDisplayView()
         case .spacing: SpacingDisplayView()
         case .radius: RadiusDisplayView()
         case .shadows: ShadowsDisplayView()
