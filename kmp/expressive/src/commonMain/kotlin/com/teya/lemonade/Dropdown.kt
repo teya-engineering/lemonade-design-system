@@ -1,21 +1,21 @@
 package com.teya.lemonade
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.MenuDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
-import androidx.compose.material3.Text as M3Text
 
 /**
  * A dropdown menu overlay following the Lemonade Design System.
@@ -53,6 +53,8 @@ import androidx.compose.material3.Text as M3Text
  * - Uses [LemonadeTheme.shapes.radius500] for rounded corners.
  * - Background color is [LemonadeTheme.colors.background.bgDefault].
  * - Vertical offset is [LemonadeTheme.spaces.spacing200] from the anchor.
+ * - Items are inset [LemonadeTheme.spaces.spacing100] from the panel and stack flush against one
+ *   another.
  * - The dropdown keeps whichever system bars the host window hides, never shows one the host hides.
  *
  * @param expanded whether the dropdown menu is currently visible
@@ -83,8 +85,10 @@ public fun LemonadeUi.Dropdown(
     DropdownMenu(
         expanded = expanded,
         onDismissRequest = onDismissRequest,
+        // The inset belongs on the menu: padding each item opens a gap between rows.
         modifier = Modifier
-            .defaultMinSize(minWidth = dropdownMinWidth),
+            .defaultMinSize(minWidth = dropdownMinWidth)
+            .padding(horizontal = LemonadeTheme.spaces.spacing100),
         offset = DpOffset(
             y = LemonadeTheme.spaces.spacing200,
             x = LemonadeTheme.spaces.spacing0,
@@ -159,6 +163,7 @@ public fun LemonadeUi.DropdownItem(
                     icon = trailingIcon,
                     contentDescription = null,
                     size = LemonadeAssetSize.Small,
+                    tint = LemonadeTheme.colors.content.contentSecondary,
                 )
             }
         } else {
@@ -219,6 +224,7 @@ public fun LemonadeUi.DropdownItem(
                     icon = leadingIcon,
                     contentDescription = null,
                     size = LemonadeAssetSize.Medium,
+                    tint = LemonadeTheme.colors.content.contentSecondary,
                 )
             }
         } else {
@@ -242,15 +248,44 @@ private fun CoreDropdownItem(
     DropdownMenuItem(
         onClick = onClick,
         modifier = modifier
-            .padding(LemonadeTheme.spaces.spacing100)
+            .alpha(alpha = if (enabled) 1f else LemonadeTheme.opacities.state.opacityDisabled)
             .clip(LemonadeTheme.shapes.radius400),
-        leadingIcon = leadingSlot,
-        trailingIcon = trailingSlot,
+        leadingIcon = leadingSlot?.let { slot ->
+            {
+                SpacedFromLabel(
+                    padding = PaddingValues(end = LemonadeTheme.spaces.spacing100),
+                    content = slot,
+                )
+            }
+        },
+        trailingIcon = trailingSlot?.let { slot ->
+            {
+                SpacedFromLabel(
+                    padding = PaddingValues(start = LemonadeTheme.spaces.spacing100),
+                    content = slot,
+                )
+            }
+        },
         enabled = enabled,
-        contentPadding = PaddingValues(LemonadeTheme.spaces.spacing300),
-        colors = MenuDefaults.itemColors(),
+        contentPadding = PaddingValues(
+            horizontal = LemonadeTheme.spaces.spacing300,
+            vertical = LemonadeTheme.spaces.spacing200,
+        ),
         text = {
-            M3Text(text = text)
+            LemonadeUi.Text(
+                text = text,
+                textStyle = LemonadeTheme.typography.bodyMediumRegular,
+            )
         },
     )
+}
+
+@Composable
+private fun SpacedFromLabel(
+    padding: PaddingValues,
+    content: @Composable () -> Unit,
+) {
+    Box(modifier = Modifier.padding(paddingValues = padding)) {
+        content()
+    }
 }
