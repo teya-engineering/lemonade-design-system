@@ -13,9 +13,8 @@ const size = instance.getEnum('Size', {
   '2XLarge': 'xxLarge',
 })
 
-// The swapped node may be either a brand's light or its dark component; both
-// resolve to the same enum entry, since BrandLogo picks the artwork from the
-// theme rather than from the node.
+// A brand's light and dark components resolve to the same enum entry: the
+// artwork comes from the theme, not the node.
 const logo = instance.getInstanceSwap('🧩 Brand')
 let logoCode
 if (logo && logo.type === 'INSTANCE') {

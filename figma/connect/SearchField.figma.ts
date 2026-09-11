@@ -5,8 +5,6 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
-// Neither the query nor the placeholder is a component property; they are text
-// layers, and which one is visible depends on Is Filled.
 const filled = instance.getEnum('◉ Is Filled', { True: true, False: false })
 const valueLayer = instance.findText('Value')
 const placeholderLayer = instance.findText('Placeholder')

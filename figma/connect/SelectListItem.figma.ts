@@ -5,7 +5,6 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
-// Label and support text are plain text layers, not properties.
 const read = (layer) => {
   const node = instance.findText(layer)
   return node && node.type === 'TEXT' ? node.textContent : undefined

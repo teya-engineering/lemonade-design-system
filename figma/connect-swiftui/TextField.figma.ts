@@ -31,8 +31,7 @@ if (trailing && trailing.type === 'INSTANCE') {
   trailingCode = trailing.executeTemplate().example
 }
 
-// `input` is a Binding. .constant keeps the designed text visible and compiles
-// as-is; swap it for a real @State binding when wiring the screen up.
+// `input` is a Binding; .constant keeps the designed text and compiles as-is.
 export default {
   example: figma.swift`LemonadeUi.TextField(
     input: .constant("${input}")${label ? `,

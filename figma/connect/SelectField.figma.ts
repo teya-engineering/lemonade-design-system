@@ -19,7 +19,7 @@ const supportText = instance.getBoolean('◉ Show Footer')
   : undefined
 const errorMessage = hasError ? instance.getString('↪ ✍️ Error Message') : undefined
 
-// The set carries a separate leading slot per device; pick the one matching the variant.
+// The set carries one leading slot per device.
 const desktop = instance.getEnum('📱 Device', { Desktop: true, Mobile: false })
 const leading = instance.getBoolean('◉ Show Leading')
   ? instance.getInstanceSwap(desktop ? '↪ 🖥️ Leading Item' : '↪ 📱 Leading Item')

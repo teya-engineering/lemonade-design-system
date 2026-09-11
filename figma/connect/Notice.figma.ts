@@ -15,8 +15,7 @@ const voice = instance.getEnum('◇ Voice', {
   Neutral: 'Neutral',
 })
 
-// The variant axis is what actually decides whether a title renders; the
-// Show Heading boolean toggles the same layer.
+// Two properties gate the title; the variant axis is the authoritative one.
 const withTitle = instance.getEnum('◇ Variant', {
   'Title + Description': true,
   'Description only': false,

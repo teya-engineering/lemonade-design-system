@@ -3,9 +3,8 @@
 // component=LemonadeTabButtonProperties
 import figma from 'figma'
 
-// A segmented control tab has no view of its own — it is one entry in the
-// parent's `properties` array. Connected so SegmentedControl can carry the real
-// labels and icons instead of placeholders.
+// An internal Figma component is connected here because a tab has no view of
+// its own: it is one entry in the parent's array.
 const instance = figma.selectedInstance
 
 const iconOnly = instance.getEnum('◇ Layout', { 'Icon Only': true, 'With Label': false })
@@ -19,9 +18,6 @@ if (icon && icon.type === 'INSTANCE') {
   iconCode = icon.executeTemplate().example
 }
 
-// The factories take the label unlabelled: .label("Tab 1"), not .label(label:).
-// Falls back to the label form when the icon cannot be resolved, so the emitted
-// expression is always valid Swift rather than a call missing its argument.
 export default {
   example: iconCode
     ? (iconOnly

@@ -18,9 +18,7 @@ const orientation = instance.getEnum('◇ Orientation', {
 const selected = instance.getEnum('◉ Is Selected', { True: true, False: false })
 const disabled = instance.getEnum('◉ Is Disabled', { True: true, False: false })
 
-// `icon` is required and enum-typed. The leading slot holds an Icon instance,
-// but a slot cannot be resolved to an enum value, so the snippet says what is
-// missing rather than inventing a glyph.
+// `icon` is required and enum-typed, and a slot cannot resolve to an enum value.
 const topAccessory = instance.getBoolean('◉ Show Top Accessory')
   ? instance.getSlot('↪ 🧩 Top Accessory')
   : undefined

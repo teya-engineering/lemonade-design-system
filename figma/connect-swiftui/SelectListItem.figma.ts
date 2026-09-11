@@ -5,7 +5,6 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
-// Label and support text are plain text layers, not properties.
 const read = (layer) => {
   const node = instance.findText(layer)
   return node && node.type === 'TEXT' ? node.textContent : undefined
@@ -26,8 +25,6 @@ const checked = instance.getEnum('◉ Is Checked', { True: true, False: false })
 const disabled = instance.getEnum('◉ Is Disabled', { True: true, False: false })
 const showDivider = instance.getEnum('◉ Show Divider', { True: true, False: false })
 
-// Both builders are required by this overload, so an empty one is emitted where
-// the design has no content.
 const leading = instance.getBoolean('◉ Show Leading') ? '/* leading content */' : 'EmptyView()'
 const trailing = instance.getBoolean('◉ Show Trailing') ? '/* trailing content */' : 'EmptyView()'
 const bottom = instance.getBoolean('◉ Show Bottom Slot')

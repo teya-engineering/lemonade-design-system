@@ -8,8 +8,8 @@ const instance = figma.selectedInstance
 const showDivider = instance.getBoolean('◉ Show Divider')
 const leading = instance.getEnum('◇ Actions Placement', { Leading: true, Trailing: false })
 
-// The actions are SwipeAction data objects with enum-typed icons, which a Figma
-// slot resolves to neither, so the list is left for the developer to fill.
+// The actions are data objects with enum-typed icons, which a slot resolves to
+// neither.
 export default {
   example: figma.swift`LemonadeUi.SwipeActionRow(
     // TODO: one action per action in the design

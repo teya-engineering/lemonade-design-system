@@ -5,8 +5,6 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
-// All three strings are plain text layers rather than properties; the booleans
-// only control their visibility.
 const read = (layer) => {
   const node = instance.findText(layer)
   return node && node.type === 'TEXT' ? node.textContent : undefined
@@ -21,8 +19,6 @@ const navigationIndicator = instance.getBoolean('◉ Navigation Indicator')
 const isLoading = instance.getEnum('◉ Is Loading', { True: true, False: false })
 const showDivider = instance.getEnum('◉ Show Divider', { True: true, False: false })
 
-// Both builders are required by every overload, so an empty one is emitted where
-// the design has no content.
 const leading = instance.getBoolean('◉ Show Leading') ? '/* leading content */' : 'EmptyView()'
 const trailing = instance.getBoolean('◉ Show Trailing') ? '/* trailing content */' : 'EmptyView()'
 

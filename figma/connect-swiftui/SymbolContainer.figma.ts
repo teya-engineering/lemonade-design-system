@@ -5,8 +5,7 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
-// Figma still calls the amber voice "Caution" here; the enum calls it warning.
-// Tag was renamed in Figma, this set was not.
+// Figma calls the amber voice "Caution"; the enum calls it warning.
 const voice = instance.getEnum('◇ Voice', {
   Neutral: 'neutral',
   Critical: 'critical',
@@ -49,8 +48,6 @@ const badge = instance.getBoolean('◉ Show Accessory')
   ? instance.getSlot('↪ 🧩 Accessory')
   : undefined
 
-// Shared across all four initialisers; plain strings, so safe to build
-// separately. Leading commas, since Swift rejects a trailing one.
 const tail = `,
     voice: .${voice},
     size: .${size},
@@ -63,9 +60,6 @@ const badgeArg = badge ? figma.swift` {
 const badgeSlotArg = badge ? figma.swift`,
     badgeSlot: { ${badge} }` : ''
 
-// Brand Logo and Image go through the content builder, which is a real
-// initialiser here rather than a workaround. Image has no source in Figma to
-// carry over, so the builder is left for the developer to fill.
 export default {
   example:
     contentType === 'icon'

@@ -13,7 +13,6 @@ const status = instance.getEnum('◇ Status', {
 
 const disabled = instance.getEnum('◉ Is Disabled', { True: true, False: false })
 
-// "Standalone" is the bare box; "Content" is the labelled overload.
 const standalone = instance.getEnum('◇ Layout', { Standalone: true, Content: false })
 
 const label = instance.getString('↪ ✍️ Label')

@@ -3,11 +3,10 @@
 // component=TabItem
 import figma from 'figma'
 
-// A tab has no component of its own — it is one entry in the parent's list.
-// Connected so Tabs can carry the designer's real labels, icons and selection.
+// An internal Figma component is connected here because a tab has no component
+// of its own: it is one entry in the parent's list.
 const instance = figma.selectedInstance
 
-// The label is a plain text layer rather than a property.
 const labelLayer = instance.findText('Label')
 const label = labelLayer && labelLayer.type === 'TEXT' ? labelLayer.textContent : ''
 
@@ -20,8 +19,8 @@ if (icon && icon.type === 'INSTANCE') {
   iconCode = icon.executeTemplate().example
 }
 
-// Selection lives on the tab in Figma but is an index on the parent, so it is
-// surfaced through metadata.props for Tabs to fold into selectedIndex.
+// Selection is a tab property in Figma and an index on the parent, so it is
+// surfaced through metadata.props.
 export default {
   example: figma.swift`LemonadeTabItem(label: "${label}"${iconCode ? figma.swift`, icon: ${iconCode}` : ''}${disabled ? ', isDisabled: true' : ''})`,
 
