@@ -30,7 +30,7 @@ public fun LemonadeTheme(
         } else {
             LemonadeLightThemedColors
         },
-        LocalContentColors provides colors.content.contentNeutral,
+        LocalContentColors provides colors.content.contentPrimary,
         LocalTextStyles provides typography.bodyMediumRegular,
         LocalRadius provides radius,
         LocalShapes provides shapes,

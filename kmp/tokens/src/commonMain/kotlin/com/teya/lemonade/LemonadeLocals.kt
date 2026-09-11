@@ -2,6 +2,7 @@ package com.teya.lemonade
 
 import androidx.compose.foundation.Indication
 import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import com.teya.lemonade.core.LemonadeTextStyle
@@ -26,7 +27,7 @@ public val LocalTypographies: ProvidableCompositionLocal<LemonadeTypographyProvi
     }
 
 @InternalLemonadeApi
-public val LocalContentColors: ProvidableCompositionLocal<Color> = staticCompositionLocalOf {
+public val LocalContentColors: ProvidableCompositionLocal<Color> = compositionLocalOf {
     error("No default Content Colors set in the LocalContentColors for theme")
 }
 
