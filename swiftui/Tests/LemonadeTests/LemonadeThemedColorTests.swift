@@ -55,6 +55,26 @@ final class LemonadeThemedColorTests: XCTestCase {
         XCTAssertEqual(style(LemonadeTheme.themed.violet.subtle).count, 3)
     }
 
+    func testEveryHueResolvesToItsOwnPalette() {
+        let palette = Mirror(reflecting: LemonadeTheme.themed)
+        for hue in ThemedHue.allCases {
+            XCTAssertEqual(
+                LemonadeTheme.themed[hue].background,
+                (palette.descendant("\(hue)") as? ThemedPrimaryColor)?.background,
+                "\(hue) resolves to the wrong palette"
+            )
+        }
+    }
+
+    func testAStyleIsTheSolidPaletteAndSubtleItsPaleOne() {
+        XCTAssertEqual(LemonadeTheme.themed[style: .blue].background, LemonadeTheme.themed.blue.background)
+        XCTAssertEqual(
+            LemonadeTheme.themed[style: .blue.subtle].background,
+            LemonadeTheme.themed.blue.subtle.background
+        )
+        XCTAssertEqual(ThemedStyle(.greenLime), .greenLime)
+    }
+
     /// `background-high` from `backgroundHigh`, `green-lime` from `greenLime`.
     private func kebab(_ camel: String) -> String {
         camel.reduce(into: "") { out, ch in
