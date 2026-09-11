@@ -5,7 +5,7 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
-// Figma writes the largest three as 2X/3X/4X; LemonadeUiIconSize repeats the x.
+// Figma writes 2X/3X/4X; LemonadeUiIconSize repeats the x.
 const size = instance.getEnum('Size', {
   XSmall: 'xSmall',
   Small: 'small',

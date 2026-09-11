@@ -7,17 +7,15 @@ const instance = figma.selectedInstance
 
 const itemsSize = instance.getEnum('↕ Items Size', { Hug: 'Hug', Stretch: 'Stretch' })
 
-// The Items variant tops out at "5+", but the tabs themselves are real named
-// instances, so the count comes from resolving them rather than from the label.
-// Nine is the most the set lays out.
+// The Items variant tops out at "5+", so the count comes from resolving the
+// tabs. Nine is the most the set lays out.
 const tabs = []
 let selectedIndex = 0
 for (let n = 1; n <= 9; n += 1) {
   const child = instance.findInstance(`Tab ${n}`)
   if (!child || child.type !== 'INSTANCE') continue
   const result = child.executeTemplate()
-  // Selection is a property of the tab in Figma and an index on the parent, so
-  // the child surfaces it through metadata.props.
+  // Selection is a tab property in Figma and an index here.
   if (result.metadata?.props?.selected === 'true') selectedIndex = tabs.length
   tabs.push(result.example)
 }

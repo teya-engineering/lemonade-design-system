@@ -5,7 +5,7 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
-// Figma writes the largest three as 2X/3X/4X; LemonadeAssetSize repeats the X.
+// Figma writes 2X/3X/4X; LemonadeAssetSize repeats the X.
 const size = instance.getEnum('Size', {
   XSmall: 'XSmall',
   Small: 'Small',
@@ -17,8 +17,6 @@ const size = instance.getEnum('Size', {
   '4XLarge': 'XXXXLarge',
 })
 
-// Resolves through the swapped glyph's own template, which emits a bare
-// LemonadeIcons value.
 const glyph = instance.getInstanceSwap('🧩 Icon')
 let glyphCode
 if (glyph && glyph.type === 'INSTANCE') {
