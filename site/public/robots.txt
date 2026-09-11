@@ -1,0 +1,9 @@
+# The documentation is public but deliberately kept out of search results.
+#
+# Crawling is allowed on purpose. The directive that keeps pages out of an
+# index is the `noindex` meta tag every page carries; a crawler has to be able
+# to fetch a page to see it. Blocking with `Disallow: /` would have the
+# opposite effect — the crawler would never read the tag, and the URL could
+# still be listed from links elsewhere.
+User-agent: *
+Allow: /

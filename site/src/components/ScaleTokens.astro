@@ -1,0 +1,135 @@
+---
+import { scale } from '../lib/tokens';
+
+interface Props {
+	/** Token file in `/tokens`, e.g. "spacing.tokens.json". */
+	file: string;
+	/** How to preview the value. */
+	kind?: 'length' | 'radius' | 'percent';
+	/** Render only one group from the file, e.g. "base/". Omit for all of them. */
+	prefix?: string;
+}
+
+const { file, kind = 'length', prefix } = Astro.props;
+const tokens = scale(file, prefix ? { prefix } : {});
+
+if (tokens.length === 0) {
+	throw new Error(
+		`No tokens in "${file}"${prefix ? ` under "${prefix}"` : ''}. A section that renders ` +
+			'nothing is worse than a build failure — check the group name against the export.',
+	);
+}
+---
+
+<div class="scroller">
+	<table>
+		<thead>
+			<tr>
+				<th scope="col">Token</th>
+				<th scope="col">Value</th>
+				<th scope="col" class="preview-head">Preview</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				tokens.map((token) => (
+					<tr>
+						<th scope="row">
+							<code>{token.name}</code>
+						</th>
+						<td class="value">
+							{kind === 'percent' ? `${token.value}%` : `${token.value}px`}
+						</td>
+						<td>
+							{kind === 'radius' ? (
+								<span
+									class="radius-preview"
+									style={`border-radius: ${Math.min(token.value, 32)}px`}
+								/>
+							) : kind === 'percent' ? (
+								<span class="percent-preview">
+									<span class="percent-preview-fill" style={`opacity: ${token.value / 100}`} />
+								</span>
+							) : (
+								<span class="length-preview" style={`inline-size: ${token.value}px`} />
+							)}
+						</td>
+						</tr>
+				))
+			}
+		</tbody>
+	</table>
+</div>
+
+<style>
+	/* Wide tables scroll inside their own box rather than the page. */
+	.scroller {
+		overflow-x: auto;
+		margin-block: 1.5rem;
+	}
+
+	table {
+		margin: 0;
+	}
+
+	th,
+	td {
+		white-space: nowrap;
+		vertical-align: middle;
+	}
+
+	.value {
+		font-variant-numeric: tabular-nums;
+		color: var(--sl-color-gray-2);
+	}
+
+	.preview-head {
+		inline-size: 40%;
+	}
+
+	.length-preview {
+		display: block;
+		block-size: 1rem;
+		min-inline-size: 1px;
+		border-radius: 2px;
+		background: var(--lemonade-brand);
+	}
+
+	.radius-preview {
+		display: block;
+		inline-size: 3rem;
+		block-size: 2rem;
+		border: 2px solid var(--lemonade-brand);
+		background: color-mix(in srgb, var(--lemonade-brand) 18%, transparent);
+	}
+
+	/* Checkerboard so a low-opacity fill reads as translucent rather than as a
+	   plain lighter colour against the page background. */
+	.percent-preview {
+		display: block;
+		inline-size: 3rem;
+		block-size: 1.5rem;
+		background-image:
+			linear-gradient(45deg, var(--sl-color-gray-6) 25%, transparent 25%),
+			linear-gradient(-45deg, var(--sl-color-gray-6) 25%, transparent 25%),
+			linear-gradient(45deg, transparent 75%, var(--sl-color-gray-6) 75%),
+			linear-gradient(-45deg, transparent 75%, var(--sl-color-gray-6) 75%);
+		background-size: 10px 10px;
+		background-position:
+			0 0,
+			0 5px,
+			5px -5px,
+			-5px 0;
+	}
+
+	.percent-preview-fill {
+		display: block;
+		inline-size: 100%;
+		block-size: 100%;
+		background: var(--lemonade-brand);
+	}
+
+	code {
+		font-size: 0.75rem;
+	}
+</style>

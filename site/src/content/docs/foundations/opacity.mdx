@@ -1,0 +1,28 @@
+---
+title: Opacity
+description: The opacity levels, and the state tokens that carry a meaning rather than a number.
+---
+
+import ScaleTokens from '../../../components/ScaleTokens.astro';
+
+Opacity comes in two layers. The **base** scale is raw levels — percentages with nothing
+attached to them. The **meaningful** tokens name a UI state instead, and resolve to one
+of those levels. Reach for a meaningful token whenever the situation matches, so what
+"disabled" looks like can change in one place rather than in every component that
+guessed at a number.
+
+## Base
+
+Raw levels with no attached meaning. Pick one because you need "40% see-through," not
+because of what it is for.
+
+<ScaleTokens file="opacity.tokens.json" kind="percent" prefix="base/" />
+
+## Meaningful
+
+These encode a specific UI state rather than a number. Where the situation matches,
+reach for one of these instead of the base level it happens to resolve to — a component
+that references the meaning picks up any future change, one that hard-codes `opacity-50`
+does not.
+
+<ScaleTokens file="opacity.tokens.json" kind="percent" prefix="state/" />

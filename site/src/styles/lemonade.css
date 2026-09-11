@@ -1,0 +1,618 @@
+/*
+ * Dresses Starlight in Lemonade's palette, typeface and layout rhythm.
+ *
+ * Two things worth knowing before editing:
+ *
+ * 1. Starlight ships every one of its own rules inside a cascade layer
+ *    (`starlight.base` → `.reset` → `.core` → `.content` → `.components` →
+ *    `.utils`). Unlayered CSS — everything in this file — beats all of them
+ *    regardless of specificity. So overrides here need neither `!important`
+ *    nor specificity games; a plain selector wins.
+ *
+ * 2. Don't target Astro's scoped class hashes (`.astro-abfeecmu` and
+ *    friends). They are build output, they change on every Starlight
+ *    upgrade, and because `:where()` carries zero specificity they buy
+ *    nothing but breakage. Use the semantic class beside them instead.
+ *
+ * Sections: fonts · theme · base · header · sidebar · table of contents ·
+ * page layout · markdown · components · utilities.
+ */
+
+/* ==========================================================================
+   Fonts
+   Both families are self-hosted from `public/fonts/` — no external request, so
+   the docs render the same on a locked-down network as on the open internet.
+   Paths carry the GitHub Pages project base written out literally, because
+   plain CSS cannot read import.meta.env.BASE_URL.
+
+   Both are variable fonts — one file per subset covers the whole weight range —
+   taken byte-for-byte from the files Google Fonts serves. Only `latin` is
+   needed by today's content; `latin-ext` covers the European alphabets Teya
+   trades in and costs nothing until a page actually uses one of its glyphs.
+   Inter also publishes cyrillic/greek/vietnamese subsets; add them from
+   fonts.googleapis.com if the content ever needs them.
+
+   Licences (both SIL OFL 1.1) sit beside the fonts as `Inter-LICENSE.txt` and
+   `Figtree-LICENSE.txt`.
+   ========================================================================== */
+
+@font-face {
+	font-family: 'Inter';
+	src: url('/lemonade-design-system/fonts/Inter-Variable-latin.woff2') format('woff2');
+	font-style: normal;
+	font-weight: 100 900;
+	font-display: swap;
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Inter';
+	src: url('/lemonade-design-system/fonts/Inter-Variable-latin-ext.woff2') format('woff2');
+	font-style: normal;
+	font-weight: 100 900;
+	font-display: swap;
+	unicode-range:
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+		U+A720-A7FF;
+}
+
+@font-face {
+	font-family: 'Inter';
+	src: url('/lemonade-design-system/fonts/Inter-Variable-Italic-latin.woff2') format('woff2');
+	font-style: italic;
+	font-weight: 100 900;
+	font-display: swap;
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Inter';
+	src: url('/lemonade-design-system/fonts/Inter-Variable-Italic-latin-ext.woff2') format('woff2');
+	font-style: italic;
+	font-weight: 100 900;
+	font-display: swap;
+	unicode-range:
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+		U+A720-A7FF;
+}
+
+@font-face {
+	font-family: 'Figtree';
+	src: url('/lemonade-design-system/fonts/Figtree-Variable-latin.woff2') format('woff2');
+	font-style: normal;
+	font-weight: 300 900;
+	font-display: swap;
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Figtree';
+	src: url('/lemonade-design-system/fonts/Figtree-Variable-latin-ext.woff2') format('woff2');
+	font-style: normal;
+	font-weight: 300 900;
+	font-display: swap;
+	unicode-range:
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+		U+A720-A7FF;
+}
+
+@font-face {
+	font-family: 'Figtree';
+	src: url('/lemonade-design-system/fonts/Figtree-Variable-Italic-latin.woff2') format('woff2');
+	font-style: italic;
+	font-weight: 300 900;
+	font-display: swap;
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Figtree';
+	src: url('/lemonade-design-system/fonts/Figtree-Variable-Italic-latin-ext.woff2') format('woff2');
+	font-style: italic;
+	font-weight: 300 900;
+	font-display: swap;
+	unicode-range:
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+		U+A720-A7FF;
+}
+
+/* ==========================================================================
+   Theme
+   Colour values come from `tokens/theme-colors.json`, written out literally
+   because Starlight needs them as static custom properties before any
+   component renders.
+   ========================================================================== */
+
+/* Dark is Starlight's default theme, so bare :root carries the dark palette. */
+:root {
+	--lemonade-brand: #e1e51a;
+	--lemonade-brand-dim: #c7ca16;
+	--lemonade-accent: #00b8db;
+	--lemonade-surface: #201f1d;
+	--lemonade-surface-subtle: #151513;
+
+	--sl-font: 'Inter', 'Figtree', ui-sans-serif, system-ui, sans-serif;
+
+	/* Slightly wider than Starlight's 45rem default so the token galleries fit
+	   three columns without pushing prose past a comfortable measure. */
+	--sl-content-width: 52rem;
+	--sl-content-pad-x: 2.5rem;
+	--sl-content-gap-y: 0.87rem;
+
+	--sl-color-accent-low: #46520f;
+	--sl-color-accent: #c7ca16;
+	--sl-color-accent-high: #e1e51a;
+
+	--sl-color-white: #ffffff;
+	--sl-color-gray-1: #ffffffe5;
+	--sl-color-gray-2: #ffffffb8;
+	--sl-color-gray-3: #ffffff99;
+	--sl-color-gray-4: #ffffff80;
+	--sl-color-gray-5: #ffffff33;
+	--sl-color-gray-6: #ffffff1a;
+	--sl-color-gray-7: #ffffff0d;
+	--sl-color-black: #201f1d;
+}
+
+:root[data-theme='light'] {
+	--lemonade-brand: #c7ca16;
+	--lemonade-brand-dim: #6d770d;
+	--lemonade-accent: #0092b8;
+	--lemonade-surface: #ffffff;
+	--lemonade-surface-subtle: #f6f5f3;
+
+	--sl-color-accent-low: #eef0bd;
+	--sl-color-accent: #6d770d;
+	--sl-color-accent-high: #29320c;
+
+	--sl-color-white: #090806;
+	--sl-color-gray-1: #16140e;
+	--sl-color-gray-2: #3f3b33;
+	--sl-color-gray-3: #6b6559;
+	--sl-color-gray-4: #8f8676;
+	--sl-color-gray-5: #d8d4cd;
+	--sl-color-gray-6: #f6f5f3;
+	--sl-color-gray-7: #fbfaf9;
+	--sl-color-black: #ffffff;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+/* Both properties inherit, so :root covers the document. */
+:root {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.02em;
+}
+
+/* ==========================================================================
+   Site header
+   ========================================================================== */
+
+/* The brand lime is a surface colour, not a text colour — on the site header it
+   reads as Lemonade rather than as a default Starlight build. */
+.site-title {
+	font-weight: 600;
+	letter-spacing: -0.01em;
+}
+
+.site-title::before {
+	content: '';
+	display: inline-block;
+	inline-size: 0.65rem;
+	block-size: 0.65rem;
+	margin-inline-end: 0.55rem;
+	border-radius: 999px;
+	background: var(--lemonade-brand);
+}
+
+/* ==========================================================================
+   Left sidebar (navigation)
+   Starlight indents nested entries with a rule down the inline start edge.
+   Lemonade drops the rule and separates groups with space instead, so the
+   nav reads as grouped links rather than a tree.
+   ========================================================================== */
+
+.sidebar {
+	--lemonade-sidebar-pad-inline: 0.75rem;
+}
+
+.sidebar-pane:where(.astro-gqpr5s5a) {
+	scrollbar-gutter: initial;
+}
+
+.sidebar-content:where(.astro-gqpr5s5a) {
+	gap: 0.75rem;
+}
+
+.sidebar ul {
+	--sl-sidebar-item-padding-inline: var(--lemonade-sidebar-pad-inline);
+	display: flex;
+	flex-direction: column;
+	gap: 0.125rem;
+}
+
+.sidebar ul.astro-ojxuodky {
+	margin-top: 0.25rem;
+}
+
+ul:where(.astro-ojxuodky) ul {
+	border-inline-start: 1px solid var(--sl-color-hairline-light);
+}
+
+/* Section headings, rendered by the Sidebar override. Inert labels: they carry
+   no caret and nothing collapses, so they read as headings rather than as
+   groups that happen to be open. */
+.sidebar-section + .sidebar-section {
+	margin-top: 0.5rem;
+}
+
+.sidebar-section-title {
+	padding-inline: var(--lemonade-sidebar-pad-inline);
+	font-size: 0.75rem;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.1rem;
+	color: var(--sl-color-gray-3);
+	min-height: 2rem;
+	display: flex;
+	align-items: center;
+}
+
+.sidebar svg:where(.astro-n5k4ipy7) {
+	color: var(--sl-color-gray-4);
+}
+
+/* A page sitting directly under a section heading is a link, not a group
+   label. Starlight styles every top-level entry as a heading — larger, bolder,
+   in the foreground colour — which would outshout the group labels beside it,
+   so these are put back in line with the links nested under the groups. */
+.sidebar ul.top-level > li > a:not([aria-current='page']) {
+	font-size: var(--sl-text-sm);
+	font-weight: 500;
+	color: var(--sl-color-gray-3);
+}
+
+.sidebar ul.top-level > li > a:not([aria-current='page']):hover,
+.sidebar ul.top-level > li > a:not([aria-current='page']):focus {
+	color: var(--sl-color-white);
+}
+
+/* The current page keeps the section-heading size without the heading weight,
+   so the highlighted pill lines up with the links around it. */
+.sidebar ul.top-level > li > a[aria-current='page'] {
+	font-size: var(--sl-text-sm);
+	font-weight: 500;
+}
+
+.sidebar ul.top-level > li > details > summary span {
+	font-weight: 500;
+	font-size: var(--sl-text-sm);
+	color: var(--sl-color-gray-3);
+}
+
+.sidebar ul.top-level > li > details > ul {
+	margin-inline-start: 1.25rem;
+	padding-inline-start: 0.5rem;
+}
+
+.sidebar ul.top-level > li > details > ul > li {
+	border-inline-start: 0;
+	padding-inline-start: 0;
+	margin-inline-start: 0;
+}
+
+.sidebar ul.top-level > li > details > ul > li > a {
+	color: var(--sl-color-gray-3);
+	font-weight: 500;
+}
+
+.sidebar a,
+summary:where(.astro-ojxuodky) {
+	display: flex;
+	align-items: center;
+	min-height: 2rem;
+	border-radius: 0.5rem;
+}
+
+summary:where(.astro-ojxuodky):hover,
+.sidebar a:hover {
+	background: var(--lemonade-surface-subtle);
+}
+
+.sidebar ul.top-level > li > a[aria-current='page'],
+.sidebar ul.top-level > li > details > ul > li > a[aria-current='page'] {
+	background: var(--lemonade-surface-subtle);
+	color: var(--lemonade-brand-dim);
+}
+
+.top-level:where(.astro-ojxuodky) > li:where(.astro-ojxuodky) + li:where(.astro-ojxuodky) {
+	margin-top: 0;
+}
+
+/* ==========================================================================
+   Table of contents (right sidebar)
+   ========================================================================== */
+
+.right-sidebar-panel {
+	padding-top: 2.5rem;
+}
+
+@media (width >= 72rem) {
+	.right-sidebar {
+		border-inline-start: 0;
+	}
+
+	.right-sidebar-container:where(.astro-abfeecmu) {
+		order: 2;
+		position: relative;
+		width: max(
+			var(--sl-sidebar-width),
+			calc(var(--sl-sidebar-width) + (100% - var(--sl-content-width) - var(--sl-sidebar-width)) / 4)
+		);
+	}
+}
+
+starlight-toc h2 {
+	font-size: 0.75rem;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.1rem;
+}
+
+starlight-toc ul > li {
+	border-inline-start: 0;
+	padding-top: 0.3em;
+	padding-bottom: 0.3em;
+}
+
+/* --depth is set per level by Starlight's TOC list via define:vars; the
+   indent moves off the removed border rule and onto the link itself. */
+starlight-toc ul > li a {
+	padding-inline-start: calc(var(--depth) * 1em);
+}
+
+starlight-toc ul > li:has([aria-current='true']) a {
+	color: var(--lemonade-brand-dim);
+}
+
+/* ==========================================================================
+   Page layout
+   ========================================================================== */
+
+h1#_top,
+.sl-markdown-content h1:not(:where(.not-content *)) {
+	font-size: 2rem;
+}
+
+/* Starlight rules off the title panel from the body panel; the two read as
+   one page here. */
+.content-panel + .content-panel {
+	padding-top: 0;
+	border-top: 0;
+}
+
+@media (width >= 72rem) {
+	[data-has-sidebar][data-has-toc] .main-pane:where(.astro-abfeecmu) {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+}
+
+/* ==========================================================================
+   Markdown content
+   ========================================================================== */
+
+.sl-markdown-content h2:not(:where(.not-content *)) {
+	font-size: 1.5rem;
+}
+
+.sl-markdown-content h3:not(:where(.not-content *)) {
+	font-size: 1.25rem;
+}
+
+.sl-markdown-content h4:not(:where(.not-content *)) {
+	font-size: 1rem;
+}
+
+.sl-markdown-content code:not(:where(.not-content *)) {
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: 0.25rem;
+}
+
+.sl-markdown-content :is(th, td):not(:where(.not-content *)) {
+	border-color: var(--sl-color-gray-5);
+	font-size: 0.87rem;
+}
+
+/* Heading anchors.
+   Starlight renders the anchor inline and reserves end-of-line space for it
+   on the heading. These four rules swap that for a flex row: the reserved
+   space and the icon's own offset come off, and the icon shrinks. */
+.sl-markdown-content .sl-heading-wrapper {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	--sl-anchor-icon-size: 0.5em;
+	--sl-anchor-icon-gap: 0.4em;
+}
+
+.sl-markdown-content .sl-heading-wrapper > :first-child {
+	padding-inline-end: 0;
+}
+
+.sl-markdown-content .sl-anchor-link {
+	display: flex;
+	margin-inline-start: 0;
+}
+
+.sl-markdown-content
+	:not(
+		h1,
+		h2,
+		h3,
+		.sl-heading-wrapper.level-h1,
+		.sl-heading-wrapper.level-h2,
+		.sl-heading-wrapper.level-h3
+	)
+	+ :is(.sl-heading-wrapper.level-h1, .sl-heading-wrapper.level-h2, .sl-heading-wrapper.level-h3) {
+	margin-top: 2.5rem;
+}
+
+.sl-markdown-content
+	:not(
+		h4,
+		h5,
+		h6,
+		.sl-heading-wrapper.level-h4,
+		.sl-heading-wrapper.level-h5,
+		.sl-heading-wrapper.level-h6
+	)
+	+ :is(.sl-heading-wrapper.level-h4, .sl-heading-wrapper.level-h5, .sl-heading-wrapper.level-h6) {
+	margin-top: 1.5rem;
+}
+
+/* ==========================================================================
+   Components
+   ========================================================================== */
+
+/* Badge.
+   Starlight's badge palette is its own blue/red/green/orange/purple, which are
+   not Lemonade's. The component is themed entirely through custom properties,
+   so pointing those at semantic values is enough — no component override and
+   no !important.
+
+   Each variant follows the pairing the Standards page prescribes: a `-subtle`
+   background carrying the full-strength `content-` colour, never a full-strength
+   background against a full-strength foreground. Starlight has no Lemonade
+   equivalent for `tip`, so it takes the neutral voice.
+
+   Values are written out literally, as everywhere else in this file, because
+   Starlight needs them as static custom properties before any component
+   renders. The token each one comes from is named beside it. */
+:root {
+	--sl-badge-default-bg: #e1e51a0d; /* bg-brand-subtle */
+	--sl-badge-default-border: #e1e51a0d; /* bg-brand-subtle — no border-brand-subtle token exists */
+	--sl-badge-default-text: #c7ca16; /* content-brand */
+
+	--sl-badge-success-bg: #7ccf001a; /* bg-positive-subtle */
+	--sl-badge-success-border: #7ccf001a; /* border-positive-subtle */
+	--sl-badge-success-text: #7ccf00; /* content-positive */
+
+	--sl-badge-caution-bg: #fe9a001a; /* bg-caution-subtle */
+	--sl-badge-caution-border: #ff69001a; /* border-caution-subtle */
+	--sl-badge-caution-text: #fe9a00; /* content-caution */
+
+	--sl-badge-danger-bg: #f73c481a; /* bg-critical-subtle */
+	--sl-badge-danger-border: #f73c481a; /* border-critical-subtle */
+	--sl-badge-danger-text: #f73c48; /* content-critical */
+
+	--sl-badge-note-bg: #2b7fff1a; /* bg-info-subtle */
+	--sl-badge-note-border: #2b7fff1a; /* border-info-subtle */
+	--sl-badge-note-text: #51a2ff; /* content-info */
+
+	--sl-badge-tip-bg: #ffffff1a; /* bg-neutral-subtle */
+	--sl-badge-tip-border: #ffffff1a; /* border-neutral-low */
+	--sl-badge-tip-text: #ffffffe5; /* content-neutral */
+}
+
+/* Only the values that actually differ by theme. Most subtle backgrounds are
+   alpha tints of the same hue and resolve identically in both. */
+:root[data-theme='light'] {
+	--sl-badge-default-bg: #e1e51a4d; /* bg-brand-subtle */
+	--sl-badge-default-border: #e1e51a4d; /* bg-brand-subtle */
+	--sl-badge-default-text: #6d770d; /* content-brand */
+
+	--sl-badge-success-text: #497d00; /* content-positive */
+	--sl-badge-caution-text: #bb4d00; /* content-caution */
+	--sl-badge-danger-text: #e41e2b; /* content-critical */
+	--sl-badge-note-text: #1447e6; /* content-info */
+
+	--sl-badge-tip-bg: #756b571a; /* bg-neutral-subtle */
+	--sl-badge-tip-border: #756b571a; /* border-neutral-low */
+	--sl-badge-tip-text: #090806ec; /* content-neutral */
+}
+
+/* Starlight sets badges in the mono face, which reads as a code chip. A tag is
+   interface, not code. */
+.sl-badge {
+	font-family: var(--sl-font);
+	font-weight: 500;
+}
+
+/* Asides: Starlight marks them with an inline-start rule; Lemonade uses a
+   filled rounded card instead. */
+.starlight-aside {
+	padding: 1.25rem;
+	border-radius: 1rem;
+	border-inline-start: 0;
+}
+
+.starlight-aside__icon {
+	font-size: 1rem;
+}
+
+.starlight-aside__content {
+	line-height: 1.5rem;
+}
+
+.starlight-aside--note {
+	--sl-color-asides-text-accent: #51a2ff; /* content-info */
+	background-color: #2b7fff1a; /* bg-info-subtle, same in both themes */
+}
+
+:root[data-theme='light'] .starlight-aside--note {
+	--sl-color-asides-text-accent: #1447e6; /* content-info */
+}
+
+.expressive-code pre {
+	border-radius: 0.75rem;
+}
+
+/* Previous/next pagination. */
+.pagination-links a {
+	border: 0;
+	border-radius: 1rem;
+	box-shadow: none;
+	background-color: var(--lemonade-surface-subtle);
+	font-size: 0.87rem;
+}
+
+.pagination-links .link-title {
+	font-size: 1.25rem;
+	font-weight: 500;
+}
+
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
+
+/* Theme-paired screenshots.
+   Astro keeps the source filename in the hashed output, so a '-light'/'-dark'
+   naming convention is enough to show the right one. Authors write two ordinary
+   markdown image lines; no component and no MDX required. */
+:root[data-theme='dark'] .sl-markdown-content img[src*='-light.'],
+:root[data-theme='light'] .sl-markdown-content img[src*='-dark.'] {
+	display: none;
+}

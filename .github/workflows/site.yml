@@ -1,0 +1,82 @@
+name: Documentation Site
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'site/**'
+      - 'tokens/**'
+      - '.github/workflows/site.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'site/**'
+      - 'tokens/**'
+      - '.github/workflows/site.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    concurrency:
+      group: site-build-${{ github.ref }}
+      cancel-in-progress: true
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Starlight derives each page's last-updated date from the newest
+          # commit touching it, and swallows git errors — a shallow clone
+          # would drop every date with no warning.
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: site/.nvmrc
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npx vitest run
+
+      # Also validates every internal link; a dead link exits non-zero.
+      - name: Build site
+        run: npm run build
+
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    # Never cancel an in-flight deployment: deploy-pages@v4 can't be interrupted
+    # cleanly, and cancelling it mid-run leaves the GitHub Pages deployment
+    # stuck. A second push to main queues behind this instead of cancelling it.
+    concurrency:
+      group: site-deploy
+      cancel-in-progress: false
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

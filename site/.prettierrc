@@ -1,0 +1,14 @@
+{
+	"useTabs": true,
+	"singleQuote": true,
+	"printWidth": 100,
+	"trailingComma": "all",
+	"semi": true,
+	"proseWrap": "preserve",
+	"overrides": [
+		{
+			"files": ["*.md", "*.mdx", "*.yml", "*.yaml", "*.json"],
+			"options": { "useTabs": false }
+		}
+	]
+}

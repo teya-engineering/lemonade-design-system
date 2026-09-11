@@ -1,0 +1,19 @@
+---
+title: Borders
+description: The border width scale, and the state tokens that keep focus and selection consistent.
+---
+
+import ScaleTokens from '../../../components/ScaleTokens.astro';
+
+Borders carry very little weight in Lemonade — the scale is short on purpose, and most
+separation is done with [colour](/lemonade-design-system/foundations/colour/) or
+[space](/lemonade-design-system/foundations/space-and-shape/) rather than a line.
+
+<ScaleTokens file="border-width.tokens.json" />
+
+`state/focus-ring` and `state/border-selected` exist so focus and selection stay
+consistent across components, wherever they show up. Both currently resolve to the same
+2px as `base/border-50`, but that is incidental, not a guarantee — do not replace either
+state token with a raw `base/border-50`. The state tokens are free to diverge from it
+later, and components that referenced them by meaning will pick up the change
+automatically; components that reached for the raw value will not.

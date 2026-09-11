@@ -1,0 +1,103 @@
+---
+/**
+ * Replaces Starlight's `PageTitle` so the page's provenance sits under the
+ * heading. Starlight renders its last-updated date in the page footer, a long
+ * way from the question a reader is asking — is this current, and who wrote
+ * it? Starlight also knows nothing about authors, so both ends of the history
+ * come from `contributors.ts` rather than from `starlightRoute.lastUpdated`.
+ */
+import { historyForPage } from '../lib/contributors';
+
+const { entry, lang } = Astro.locals.starlightRoute;
+
+// Must stay '_top'. Starlight's skip link targets it, and so does the
+// `h1#_top` rule in lemonade.css. It is Starlight's PAGE_TITLE_ID, which the
+// package does not export.
+const PAGE_TITLE_ID = '_top';
+
+const history = historyForPage(entry.filePath ?? '');
+const updatedOn = history?.lastEdited.date.toLocaleDateString(lang, {
+	dateStyle: 'medium',
+	timeZone: 'UTC',
+});
+
+// One name reads better than the same name twice, which is what a page with a
+// single author would otherwise show.
+const sameAuthor = history && history.created.name === history.lastEdited.name;
+---
+
+<h1 id={PAGE_TITLE_ID}>{entry.data.title}</h1>
+
+{
+	history && (
+		<p class="page-meta">
+			<svg
+				class="clock"
+				aria-hidden="true"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<circle cx="12" cy="12" r="9" />
+				<path d="M12 7v5l3 2" />
+			</svg>
+			<span>
+				Last updated{' '}
+				<time datetime={history.lastEdited.date.toISOString()}>{updatedOn}</time> by{' '}
+				<strong>{history.lastEdited.name}</strong>
+			</span>
+			{!sameAuthor && (
+				<>
+					<span class="divider" aria-hidden="true" />
+					<span>
+						Created by <strong>{history.created.name}</strong>
+					</span>
+				</>
+			)}
+		</p>
+	)
+}
+
+<style>
+	/* Carried over from the component this replaces — without it the title
+	   loses its margin, weight and colour. */
+	h1 {
+		margin-top: 1rem;
+		font-size: var(--sl-text-h1);
+		line-height: var(--sl-line-height-headings);
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+
+	.page-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.4rem;
+		margin-top: 0.5rem;
+		margin-bottom: 0;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+
+	.page-meta strong {
+		font-weight: 500;
+		color: var(--sl-color-gray-2);
+	}
+
+	.clock {
+		flex: none;
+		inline-size: 1em;
+		block-size: 1em;
+		color: var(--sl-color-gray-4);
+	}
+
+	.divider {
+		inline-size: 1px;
+		block-size: 0.9em;
+		background: var(--sl-color-gray-5);
+	}
+</style>
