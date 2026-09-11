@@ -1,10 +1,14 @@
+@file:Suppress("TooManyFunctions")
+
 package com.teya.lemonade
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -57,21 +61,14 @@ public fun LemonadeUi.SymbolContainer(
     shape: SymbolContainerShape = SymbolContainerShape.Circle,
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
 ) {
-    CoreSymbolContainer(
-        voice = voice,
+    IconSymbolContainer(
+        icon = icon,
+        contentDescription = contentDescription,
+        colors = voice.symbolContainerColors,
+        modifier = modifier,
         size = size,
         shape = shape,
-        clipContent = false,
-        modifier = modifier,
         badgeSlot = badgeSlot,
-        contentSlot = { dimensions ->
-            LemonadeUi.Icon(
-                icon = icon,
-                size = dimensions.lemonadeIconSize,
-                contentDescription = contentDescription,
-                tint = voice.tintColor,
-            )
-        },
     )
 }
 
@@ -103,20 +100,99 @@ public fun LemonadeUi.SymbolContainer(
     shape: SymbolContainerShape = SymbolContainerShape.Circle,
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
 ) {
-    CoreSymbolContainer(
-        voice = voice,
+    TextSymbolContainer(
+        text = text,
+        colors = voice.symbolContainerColors,
+        modifier = modifier,
         size = size,
         shape = shape,
-        clipContent = false,
-        modifier = modifier,
         badgeSlot = badgeSlot,
-        contentSlot = { dimensions ->
-            LemonadeUi.Text(
-                text = text,
-                color = voice.tintColor,
-                textStyle = dimensions.textStyle,
-            )
-        },
+    )
+}
+
+/**
+ * Shows an icon inside a sized container styled by a themed hue, for colour that carries
+ * application meaning the voices do not model - categories, per-role accents.
+ *
+ * ## Usage
+ * ```kotlin
+ * LemonadeUi.SymbolContainer(
+ *     icon = LemonadeIcons.Heart,
+ *     contentDescription = "Content Description",
+ *     theme = ThemedHue.Violet.subtle,
+ *     size = SymbolContainerSize.Small,
+ * )
+ * ```
+ *
+ * @param icon [LemonadeIcons] shown inside the container
+ * @param contentDescription **localized** content description for the [icon]
+ * @param theme [ThemedStyle] driving the background, border and [icon] tint: a [ThemedHue] for its
+ *  solid palette, or [ThemedHue.subtle] for its subtle one
+ * @param modifier [Modifier] applied to the base component
+ * @param size [SymbolContainerSize] driving the container's size
+ * @param shape [SymbolContainerShape] driving the container's shape
+ * @param badgeSlot composable slot for a badge overlay at the bottom-right corner
+ */
+@ExperimentalLemonadeApi
+@Composable
+public fun LemonadeUi.SymbolContainer(
+    icon: LemonadeIcons,
+    contentDescription: String?,
+    theme: ThemedStyle,
+    modifier: Modifier = Modifier,
+    size: SymbolContainerSize = SymbolContainerSize.Medium,
+    shape: SymbolContainerShape = SymbolContainerShape.Circle,
+    badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
+) {
+    IconSymbolContainer(
+        icon = icon,
+        contentDescription = contentDescription,
+        colors = LocalThemedColors.current.symbolContainerColors(theme = theme),
+        modifier = modifier,
+        size = size,
+        shape = shape,
+        badgeSlot = badgeSlot,
+    )
+}
+
+/**
+ * Shows text inside a sized container styled by a themed hue, for colour that carries
+ * application meaning the voices do not model - categories, per-role accents.
+ *
+ * ## Usage
+ * ```kotlin
+ * LemonadeUi.SymbolContainer(
+ *     text = "W",
+ *     theme = ThemedHue.Violet.subtle,
+ *     size = SymbolContainerSize.Small,
+ * )
+ * ```
+ *
+ * @param text text shown inside the container
+ * @param theme [ThemedStyle] driving the background, border and [text] color: a [ThemedHue] for its
+ *  solid palette, or [ThemedHue.subtle] for its subtle one
+ * @param modifier [Modifier] applied to the base component
+ * @param size [SymbolContainerSize] driving the container's size
+ * @param shape [SymbolContainerShape] driving the container's shape
+ * @param badgeSlot composable slot for a badge overlay at the bottom-right corner
+ */
+@ExperimentalLemonadeApi
+@Composable
+public fun LemonadeUi.SymbolContainer(
+    text: String,
+    theme: ThemedStyle,
+    modifier: Modifier = Modifier,
+    size: SymbolContainerSize = SymbolContainerSize.Medium,
+    shape: SymbolContainerShape = SymbolContainerShape.Circle,
+    badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
+) {
+    TextSymbolContainer(
+        text = text,
+        colors = LocalThemedColors.current.symbolContainerColors(theme = theme),
+        modifier = modifier,
+        size = size,
+        shape = shape,
+        badgeSlot = badgeSlot,
     )
 }
 
@@ -156,7 +232,7 @@ public fun LemonadeUi.SymbolContainer(
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     CoreSymbolContainer(
-        voice = voice,
+        colors = voice.symbolContainerColors,
         size = size,
         shape = shape,
         clipContent = fill,
@@ -218,7 +294,7 @@ public fun LemonadeUi.SymbolContainer(
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     CoreSymbolContainer(
-        voice = voice,
+        colors = voice.symbolContainerColors,
         size = size,
         shape = shape,
         clipContent = true,
@@ -235,9 +311,63 @@ public fun LemonadeUi.SymbolContainer(
 }
 
 @Composable
+private fun IconSymbolContainer(
+    icon: LemonadeIcons,
+    contentDescription: String?,
+    colors: SymbolContainerColors,
+    modifier: Modifier,
+    size: SymbolContainerSize,
+    shape: SymbolContainerShape,
+    badgeSlot: (@Composable BoxScope.() -> Unit)?,
+) {
+    CoreSymbolContainer(
+        colors = colors,
+        size = size,
+        shape = shape,
+        clipContent = false,
+        modifier = modifier,
+        badgeSlot = badgeSlot,
+        contentSlot = { dimensions ->
+            LemonadeUi.Icon(
+                icon = icon,
+                size = dimensions.lemonadeIconSize,
+                contentDescription = contentDescription,
+                tint = colors.content,
+            )
+        },
+    )
+}
+
+@Composable
+private fun TextSymbolContainer(
+    text: String,
+    colors: SymbolContainerColors,
+    modifier: Modifier,
+    size: SymbolContainerSize,
+    shape: SymbolContainerShape,
+    badgeSlot: (@Composable BoxScope.() -> Unit)?,
+) {
+    CoreSymbolContainer(
+        colors = colors,
+        size = size,
+        shape = shape,
+        clipContent = false,
+        modifier = modifier,
+        badgeSlot = badgeSlot,
+        contentSlot = { dimensions ->
+            LemonadeUi.Text(
+                text = text,
+                color = colors.content,
+                textStyle = dimensions.textStyle,
+            )
+        },
+    )
+}
+
+@Composable
 private fun CoreSymbolContainer(
     contentSlot: @Composable BoxScope.(dimensions: SymbolContainerPlatformDimensions) -> Unit,
-    voice: SymbolContainerVoice,
+    colors: SymbolContainerColors,
     size: SymbolContainerSize,
     shape: SymbolContainerShape,
     clipContent: Boolean,
@@ -265,7 +395,7 @@ private fun CoreSymbolContainer(
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier.symbolContainerSurface(
-                        voice = voice,
+                        colors = colors,
                         resolvedShape = resolvedShape,
                         containerSize = dimensions.containerSize,
                         clipContent = clipContent,
@@ -279,7 +409,7 @@ private fun CoreSymbolContainer(
         Box(
             contentAlignment = Alignment.Center,
             modifier = modifier.symbolContainerSurface(
-                voice = voice,
+                colors = colors,
                 resolvedShape = resolvedShape,
                 containerSize = dimensions.containerSize,
                 clipContent = clipContent,
@@ -292,7 +422,7 @@ private fun CoreSymbolContainer(
 
 @Composable
 private fun Modifier.symbolContainerSurface(
-    voice: SymbolContainerVoice,
+    colors: SymbolContainerColors,
     resolvedShape: Shape,
     containerSize: Dp,
     clipContent: Boolean,
@@ -300,20 +430,42 @@ private fun Modifier.symbolContainerSurface(
     val surface = if (clipContent) {
         this
             .clip(shape = resolvedShape)
-            .background(color = voice.containerColor)
+            .background(color = colors.background)
     } else {
         this.background(
-            color = voice.containerColor,
+            color = colors.background,
             shape = resolvedShape,
         )
     }
     return surface
         .border(
             width = LocalBorderWidths.current.base.border25,
-            color = voice.borderColor,
+            color = colors.border,
             shape = resolvedShape,
         ).requiredSize(size = containerSize)
 }
+
+internal data class SymbolContainerColors(
+    val background: Color,
+    val border: Color,
+    val content: Color,
+)
+
+internal fun LemonadeThemedColors.symbolContainerColors(theme: ThemedStyle): SymbolContainerColors {
+    val palette = this[theme]
+    return SymbolContainerColors(
+        background = palette.background,
+        border = palette.border,
+        content = palette.onBackground,
+    )
+}
+
+private val SymbolContainerVoice.symbolContainerColors: SymbolContainerColors
+    @Composable get() = SymbolContainerColors(
+        background = containerColor,
+        border = borderColor,
+        content = tintColor,
+    )
 
 private val SymbolContainerVoice.tintColor: Color
     @Composable get() {
@@ -479,5 +631,33 @@ private fun SymbolContainerPreview(
                 shape = previewData.shape,
             )
         }
+    }
+}
+
+private class SymbolContainerThemedPreviewProvider : PreviewParameterProvider<ThemedHue> {
+    override val values: Sequence<ThemedHue> = ThemedHue.entries.asSequence()
+}
+
+@LemonadePreview
+@Composable
+private fun SymbolContainerThemedPreview(
+    @PreviewParameter(SymbolContainerThemedPreviewProvider::class)
+    theme: ThemedHue,
+) {
+    Row(horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200)) {
+        LemonadeUi.SymbolContainer(
+            icon = LemonadeIcons.Heart,
+            contentDescription = null,
+            theme = theme,
+        )
+        LemonadeUi.SymbolContainer(
+            icon = LemonadeIcons.Heart,
+            contentDescription = null,
+            theme = theme.subtle,
+        )
+        LemonadeUi.SymbolContainer(
+            text = "A",
+            theme = theme.subtle,
+        )
     }
 }
