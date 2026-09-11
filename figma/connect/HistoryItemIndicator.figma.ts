@@ -3,9 +3,8 @@
 // component=HistoryItemVoice
 import figma from 'figma'
 
-// The indicator has no component of its own in code — it is the voice of a
-// timeline row, plus whether that row is the current one. Connected so
-// .History Item can read both, which a parent cannot do directly.
+// Connected so the row can read the voice and current flag, which a parent
+// cannot read off a child directly.
 const instance = figma.selectedInstance
 
 const voice = instance.getEnum('◇ Voice', { Neutral: 'Neutral', Positive: 'Positive' })

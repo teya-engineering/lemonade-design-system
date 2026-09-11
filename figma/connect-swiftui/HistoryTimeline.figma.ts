@@ -5,10 +5,9 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
-// Rows are repeated instances of the same component, so they are collected by
-// layer name rather than by an indexed name as Tabs does. Which row is current
-// is a property of the row in Figma and an index on the parent, so each row
-// surfaces it through metadata.props.
+// Rows share one layer name, so they are collected by name rather than index.
+// Current is a row property in Figma and an index here, so rows surface it
+// through metadata.props.
 const rows = instance
   .findLayers((node) => node.name === '.History Item')
   .filter((node) => node.type === 'INSTANCE')

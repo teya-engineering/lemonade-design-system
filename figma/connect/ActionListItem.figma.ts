@@ -5,8 +5,6 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
-// All three strings are plain text layers rather than properties; the booleans
-// only control their visibility.
 const read = (layer) => {
   const node = instance.findText(layer)
   return node && node.type === 'TEXT' ? node.textContent : undefined

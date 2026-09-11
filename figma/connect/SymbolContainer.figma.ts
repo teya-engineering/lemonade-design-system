@@ -5,8 +5,7 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
-// Figma still calls the amber voice "Caution" here; the enum calls it Warning.
-// Tag was renamed in Figma, this set was not.
+// Figma calls the amber voice "Caution"; the enum calls it Warning.
 const voice = instance.getEnum('◇ Voice', {
   Neutral: 'Neutral',
   Critical: 'Critical',
@@ -49,7 +48,6 @@ const badge = instance.getBoolean('◉ Show Accessory')
   ? instance.getSlot('↪ 🧩 Accessory')
   : undefined
 
-// Shared across all four overloads; plain strings, so safe to build separately.
 const tail = `
     voice = SymbolContainerVoice.${voice},
     size = SymbolContainerSize.${size},
@@ -58,9 +56,6 @@ const tail = `
 const badgeArg = badge ? figma.kotlin`
     badgeSlot = { /* accessory */ },` : ''
 
-// Brand Logo has no overload of its own — a brand renders through the content
-// slot. Image has no source in Figma to carry over, so the slot is left for the
-// developer to fill.
 export default {
   example:
     contentType === 'icon'

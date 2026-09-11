@@ -5,7 +5,7 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
-// LemonadeCountryFlagSize has no xSmall; the Figma set does not offer one either.
+// Neither side offers an xSmall here.
 const size = instance.getEnum('Size', {
   Small: 'small',
   Medium: 'medium',

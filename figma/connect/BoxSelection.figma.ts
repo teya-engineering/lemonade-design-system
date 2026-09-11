@@ -10,8 +10,7 @@ const variant = instance.getEnum('◇ Variant', {
   Outlined: 'Outlined',
 })
 
-// "N/A" is the Outlined variant, where the background does not apply — emitting
-// a value there would imply a choice the design does not make.
+// "N/A" is the Outlined variant, where the background does not apply.
 const background = instance.getEnum('◇ Background', {
   Default: 'Default',
   Elevated: 'Elevated',

@@ -32,7 +32,6 @@ const size = instance.getEnum('↕ Size', {
 const loading = instance.getEnum('◉ Is Loading', { True: true, False: false })
 const disabled = instance.getEnum('◉ Is Disabled', { True: true, False: false })
 
-// The Figma slots are only meaningful when their matching toggle is on.
 const leadingSlot = instance.getBoolean('◉ Show Leading')
   ? instance.getSlot('↪ 🧩 Leading Slot')
   : undefined

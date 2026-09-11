@@ -5,7 +5,6 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
-// The message is a plain text layer, not a component property.
 const labelLayer = instance.findText('Label')
 const label = labelLayer && labelLayer.type === 'TEXT' ? labelLayer.textContent : ''
 
@@ -15,8 +14,8 @@ const voice = instance.getEnum('◉ Voice', {
   Neutral: 'neutral',
 })
 
-// Success and Error bake their own icon into the variant; only Neutral exposes a
-// swappable one, so emitting the swap on the others would invent an icon.
+// Success and Error bake their icon into the variant; only Neutral's is
+// swappable.
 const icon = voice === 'neutral' ? instance.getInstanceSwap('↪ 🧩 Icon') : null
 let iconCode
 if (icon && icon.type === 'INSTANCE') {
