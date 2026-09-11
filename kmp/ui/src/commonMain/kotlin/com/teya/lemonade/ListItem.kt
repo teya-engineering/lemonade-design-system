@@ -2,7 +2,7 @@
 
 package com.teya.lemonade
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -76,6 +76,8 @@ import com.teya.lemonade.core.TagVoice
  *  states are off
  * @param supportText text shown as support text
  * @param showDivider whether to show a divider below the list item
+ * @param onLongClick callback invoked when the component is long-pressed. A row with no
+ *  [onItemClicked] keeps its press highlight but is announced as clickable, and a tap does nothing
  */
 @Composable
 public fun LemonadeUi.ResourceListItem(
@@ -90,6 +92,7 @@ public fun LemonadeUi.ResourceListItem(
     enabled: Boolean = true,
     supportText: String? = null,
     showDivider: Boolean = false,
+    onLongClick: (() -> Unit)? = null,
 ) {
     if (isLoading) {
         ListItemSkeleton(
@@ -148,6 +151,7 @@ public fun LemonadeUi.ResourceListItem(
         voice = LemonadeListItemVoice.Neutral,
         navigationIndicator = false,
         onListItemClick = onItemClicked,
+        onLongClick = onLongClick,
         role = null,
         enabled = enabled,
         modifier = modifier,
@@ -161,6 +165,44 @@ public fun LemonadeUi.ResourceListItem(
             supportText = supportText,
         ),
         priority = LemonadeListItemPriority.Trailing,
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with an onLongClick parameter.",
+    replaceWith = ReplaceWith(
+        expression = "ResourceListItem(leadingSlot, label, value, modifier, addonSlot, " +
+            "interactionSource, onItemClicked, isLoading, enabled, supportText, showDivider, null)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.ResourceListItem(
+    leadingSlot: @Composable BoxScope.() -> Unit,
+    label: String,
+    value: String,
+    modifier: Modifier = Modifier,
+    addonSlot: (@Composable ColumnScope.() -> Unit)? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    onItemClicked: (() -> Unit)? = null,
+    isLoading: Boolean = false,
+    enabled: Boolean = true,
+    supportText: String? = null,
+    showDivider: Boolean = false,
+) {
+    ResourceListItem(
+        leadingSlot = leadingSlot,
+        label = label,
+        value = value,
+        modifier = modifier,
+        addonSlot = addonSlot,
+        interactionSource = interactionSource,
+        onItemClicked = onItemClicked,
+        isLoading = isLoading,
+        enabled = enabled,
+        supportText = supportText,
+        showDivider = showDivider,
+        onLongClick = null,
     )
 }
 
@@ -211,6 +253,8 @@ public fun LemonadeUi.ResourceListItem(
  *  Defaults to [Int.MAX_VALUE] (no limit)
  * @param supportTextOverflow [TextOverflow] strategy applied to the [supportText] when it exceeds
  *  [supportTextMaxLines]. Defaults to [TextOverflow.Clip]
+ * @param onLongClick callback invoked when the component is long-pressed. A row with no
+ *  [onItemClicked] keeps its press highlight but is announced as clickable, and a tap does nothing
  */
 @Composable
 public fun LemonadeUi.ActionListItem(
@@ -239,6 +283,7 @@ public fun LemonadeUi.ActionListItem(
     labelOverflow: TextOverflow = TextOverflow.Clip,
     supportTextMaxLines: Int = Int.MAX_VALUE,
     supportTextOverflow: TextOverflow = TextOverflow.Clip,
+    onLongClick: (() -> Unit)? = null,
 ) {
     if (isLoading) {
         ListItemSkeleton(
@@ -281,6 +326,7 @@ public fun LemonadeUi.ActionListItem(
             voice = voice,
             navigationIndicator = showNavigationIndicator,
             onListItemClick = onItemClicked,
+            onLongClick = onLongClick,
             role = role,
             enabled = enabled,
             modifier = modifier,
@@ -291,6 +337,71 @@ public fun LemonadeUi.ActionListItem(
             priority = LemonadeListItemPriority.Trailing,
         )
     }
+}
+
+@Deprecated(
+    message = "Use the overload with an onLongClick parameter.",
+    replaceWith = ReplaceWith(
+        expression = "ActionListItem(label, modifier, topLabel, supportText, leadingSlot, " +
+            "trailingSlot, voice, isLoading, enabled, onItemClicked, role, interactionSource, " +
+            "showNavigationIndicator, showDivider, trailingVerticalAlignment, " +
+            "leadingVerticalAlignment, slotContent, labelMaxLines, labelOverflow, " +
+            "supportTextMaxLines, supportTextOverflow, null)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.ActionListItem(
+    label: String,
+    modifier: Modifier = Modifier,
+    topLabel: String? = null,
+    supportText: String? = null,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    isLoading: Boolean = false,
+    enabled: Boolean = true,
+    onItemClicked: (() -> Unit)? = null,
+    role: Role? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showNavigationIndicator: Boolean = false,
+    showDivider: Boolean = false,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    leadingVerticalAlignment: Alignment.Vertical =
+        singleLineLeadingAlignment(
+            topLabel = topLabel,
+            supportText = supportText,
+        ),
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+    labelMaxLines: Int = Int.MAX_VALUE,
+    labelOverflow: TextOverflow = TextOverflow.Clip,
+    supportTextMaxLines: Int = Int.MAX_VALUE,
+    supportTextOverflow: TextOverflow = TextOverflow.Clip,
+) {
+    ActionListItem(
+        label = label,
+        modifier = modifier,
+        topLabel = topLabel,
+        supportText = supportText,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        voice = voice,
+        isLoading = isLoading,
+        enabled = enabled,
+        onItemClicked = onItemClicked,
+        role = role,
+        interactionSource = interactionSource,
+        showNavigationIndicator = showNavigationIndicator,
+        showDivider = showDivider,
+        trailingVerticalAlignment = trailingVerticalAlignment,
+        leadingVerticalAlignment = leadingVerticalAlignment,
+        slotContent = slotContent,
+        labelMaxLines = labelMaxLines,
+        labelOverflow = labelOverflow,
+        supportTextMaxLines = supportTextMaxLines,
+        supportTextOverflow = supportTextOverflow,
+        onLongClick = null,
+    )
 }
 
 /**
@@ -326,6 +437,8 @@ public fun LemonadeUi.ActionListItem(
  *  [supportTextMaxLines]. Defaults to [TextOverflow.Clip]
  * @param priority [LemonadeListItemPriority] deciding which slot claims layout space first when
  *  the label and trailing slots compete for width. Defaults to [LemonadeListItemPriority.Trailing]
+ * @param onLongClick optional callback triggered on a long press of the list item. A row with no
+ *  [onListItemClick] keeps its press highlight but is announced as clickable, and a tap does nothing
  */
 @Composable
 public fun LemonadeUi.ListItem(
@@ -356,6 +469,7 @@ public fun LemonadeUi.ListItem(
     supportTextMaxLines: Int = Int.MAX_VALUE,
     supportTextOverflow: TextOverflow = TextOverflow.Clip,
     priority: LemonadeListItemPriority = LemonadeListItemPriority.Trailing,
+    onLongClick: (() -> Unit)? = null,
 ) {
     if (isLoading) {
         ListItemSkeleton(
@@ -382,6 +496,7 @@ public fun LemonadeUi.ListItem(
             voice = voice,
             navigationIndicator = navigationIndicator,
             onListItemClick = onListItemClick,
+            onLongClick = onLongClick,
             role = role,
             enabled = enabled,
             modifier = modifier,
@@ -392,6 +507,74 @@ public fun LemonadeUi.ListItem(
             priority = priority,
         )
     }
+}
+
+@Deprecated(
+    message = "Use the overload with an onLongClick parameter.",
+    replaceWith = ReplaceWith(
+        expression = "ListItem(label, modifier, topLabel, supportText, onListItemClick, voice, " +
+            "navigationIndicator, isLoading, role, enabled, interactionSource, showDivider, " +
+            "leadingSlot, trailingSlot, slotContent, trailingVerticalAlignment, " +
+            "leadingVerticalAlignment, labelMaxLines, labelOverflow, supportTextMaxLines, " +
+            "supportTextOverflow, priority, null)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.ListItem(
+    label: String,
+    modifier: Modifier = Modifier,
+    topLabel: String? = null,
+    supportText: String? = null,
+    onListItemClick: (() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    navigationIndicator: Boolean = false,
+    isLoading: Boolean = false,
+    role: Role? = null,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showDivider: Boolean = false,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    leadingVerticalAlignment: Alignment.Vertical =
+        singleLineLeadingAlignment(
+            topLabel = topLabel,
+            supportText = supportText,
+            slotContent = slotContent,
+        ),
+    labelMaxLines: Int = Int.MAX_VALUE,
+    labelOverflow: TextOverflow = TextOverflow.Clip,
+    supportTextMaxLines: Int = Int.MAX_VALUE,
+    supportTextOverflow: TextOverflow = TextOverflow.Clip,
+    priority: LemonadeListItemPriority = LemonadeListItemPriority.Trailing,
+) {
+    ListItem(
+        label = label,
+        modifier = modifier,
+        topLabel = topLabel,
+        supportText = supportText,
+        onListItemClick = onListItemClick,
+        voice = voice,
+        navigationIndicator = navigationIndicator,
+        isLoading = isLoading,
+        role = role,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        showDivider = showDivider,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        slotContent = slotContent,
+        trailingVerticalAlignment = trailingVerticalAlignment,
+        leadingVerticalAlignment = leadingVerticalAlignment,
+        labelMaxLines = labelMaxLines,
+        labelOverflow = labelOverflow,
+        supportTextMaxLines = supportTextMaxLines,
+        supportTextOverflow = supportTextOverflow,
+        priority = priority,
+        onLongClick = null,
+    )
 }
 
 /**
@@ -415,6 +598,8 @@ public fun LemonadeUi.ListItem(
  *  content slot. Defaults to [Alignment.Top]
  * @param priority [LemonadeListItemPriority] deciding which slot claims layout space first when
  *  the content and trailing slots compete for width. Defaults to [LemonadeListItemPriority.Trailing]
+ * @param onLongClick optional callback triggered on a long press of the list item. A row with no
+ *  [onListItemClick] keeps its press highlight but is announced as clickable, and a tap does nothing
  */
 @Composable
 public fun LemonadeUi.ListItem(
@@ -432,6 +617,7 @@ public fun LemonadeUi.ListItem(
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
     priority: LemonadeListItemPriority = LemonadeListItemPriority.Trailing,
+    onLongClick: (() -> Unit)? = null,
 ) {
     CoreListItem(
         contentSlot = contentSlot,
@@ -440,6 +626,7 @@ public fun LemonadeUi.ListItem(
         voice = voice,
         navigationIndicator = navigationIndicator,
         onListItemClick = onListItemClick,
+        onLongClick = onLongClick,
         role = role,
         enabled = enabled,
         modifier = modifier,
@@ -448,6 +635,51 @@ public fun LemonadeUi.ListItem(
         leadingVerticalAlignment = leadingVerticalAlignment,
         trailingVerticalAlignment = trailingVerticalAlignment,
         priority = priority,
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with an onLongClick parameter.",
+    replaceWith = ReplaceWith(
+        expression = "ListItem(contentSlot, modifier, onListItemClick, voice, navigationIndicator, " +
+            "role, enabled, interactionSource, showDivider, leadingSlot, trailingSlot, " +
+            "trailingVerticalAlignment, leadingVerticalAlignment, priority, null)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.ListItem(
+    contentSlot: @Composable ColumnScope.() -> Unit,
+    modifier: Modifier = Modifier,
+    onListItemClick: (() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    navigationIndicator: Boolean = false,
+    role: Role? = null,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showDivider: Boolean = false,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
+    priority: LemonadeListItemPriority = LemonadeListItemPriority.Trailing,
+) {
+    ListItem(
+        contentSlot = contentSlot,
+        modifier = modifier,
+        onListItemClick = onListItemClick,
+        voice = voice,
+        navigationIndicator = navigationIndicator,
+        role = role,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        showDivider = showDivider,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        trailingVerticalAlignment = trailingVerticalAlignment,
+        leadingVerticalAlignment = leadingVerticalAlignment,
+        priority = priority,
+        onLongClick = null,
     )
 }
 
@@ -509,6 +741,9 @@ private inline fun ColumnScope.ListItemTextContent(
     }
 }
 
+/** An inline `{}` would cost a composer group and a remember slot per row. */
+private val NoOpClick: () -> Unit = {}
+
 @Composable
 private fun CoreListItem(
     contentSlot: @Composable ColumnScope.() -> Unit,
@@ -517,6 +752,7 @@ private fun CoreListItem(
     voice: LemonadeListItemVoice,
     navigationIndicator: Boolean,
     onListItemClick: (() -> Unit)?,
+    onLongClick: (() -> Unit)?,
     role: Role?,
     enabled: Boolean,
     modifier: Modifier,
@@ -531,11 +767,13 @@ private fun CoreListItem(
         modifier = modifier
             .listItemSafeArea(showDivider = showDivider)
             .then(
-                other = if (onListItemClick != null) {
-                    Modifier.clickable(
+                other = if (onListItemClick != null || onLongClick != null) {
+                    Modifier.combinedClickable(
                         enabled = enabled,
                         role = role,
-                        onClick = onListItemClick,
+                        onClick = onListItemClick
+                            ?: NoOpClick,
+                        onLongClick = onLongClick,
                         interactionSource = interactionSource,
                         indication = ListItemHighlightIndication(voice = voice),
                     )
