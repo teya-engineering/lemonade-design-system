@@ -178,3 +178,9 @@ swiftui/.claude/settings.local.json
 flutter/.claude/settings.local.json
 .build/
 .claude/scheduled_tasks.lock
+
+# Web package
+web/node_modules/
+web/dist/
+web/*.tgz
+
