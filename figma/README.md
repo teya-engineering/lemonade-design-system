@@ -212,14 +212,14 @@ more than a property lookup:
   is `Ghost` there against `Plain` in the enum. Neither is a gap, but both are
   the kind of near-miss that a name-based audit reports as missing — see below.
 
-- `DatePicker` maps **nothing**. Its Figma component is a representative
-  rendering with two properties, `Device` and `View Type`, and neither has a code
-  counterpart — the code has no months view at all. The template exists purely so
-  a calendar in a design is recognised as `LemonadeUi.DatePicker` rather than
-  rebuilt from layers, and it says outright that the locale data is not carried.
-  A Months design gets a NOTE saying the component does not implement it. If the
-  Figma component is ever modelled properly, this template should be rewritten
-  rather than extended.
+- `DatePicker` carries one decision and no data. Its Figma component has no
+  properties of its own: the calendar is assembled from building blocks, and the
+  locale data the code needs — a `monthFormatter` and `weekdayAbbreviations` —
+  is not something a design can express. What the design does say is whether a
+  range is selected, which lives on the week building blocks, so those are
+  connected to surface it and the picker resolves to `DatePicker` or
+  `DateRangePicker` accordingly. `.Date Picker /Months` is left unconnected: the
+  code has no grid of months to pick from.
 
 ### Deliberately unmapped
 
