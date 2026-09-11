@@ -1,0 +1,14 @@
+{
+  "name": "lemonade-code-connect",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Figma Code Connect mappings for the Lemonade design system.",
+  "scripts": {
+    "validate": "figma connect publish --config figma.compose.config.json --dry-run --exit-on-unreadable-files && figma connect publish --config figma.swiftui.config.json --dry-run --exit-on-unreadable-files",
+    "publish:compose": "figma connect publish --config figma.compose.config.json",
+    "publish:swiftui": "figma connect publish --config figma.swiftui.config.json"
+  },
+  "devDependencies": {
+    "@figma/code-connect": "^2.0.0"
+  }
+}
