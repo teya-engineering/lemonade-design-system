@@ -50,18 +50,13 @@ private struct ColorSwatchView: View {
     let swatch: ColorSwatch
     let outlined: Bool
 
-    private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius600)
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             LemonadeUi.Text(
                 swatch.path,
                 textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                color: swatch.label
+                color: swatch.label.opacity(LemonadeTheme.opacity.base.opacity70)
             )
-            .opacity(LemonadeTheme.opacity.base.opacity70)
 
             Spacer(minLength: 0)
 
@@ -75,10 +70,10 @@ private struct ColorSwatchView: View {
         .padding(.horizontal, LemonadeTheme.spaces.spacing400)
         .padding(.vertical, LemonadeTheme.spaces.spacing500)
         .frame(height: 162)
-        .background(swatch.fill, in: shape)
+        .background(swatch.fill, in: LemonadeTheme.shapes.radius600)
         .overlay {
             if outlined {
-                shape.strokeBorder(.border.borderNeutralLow, lineWidth: LemonadeTheme.borderWidth.base.border25)
+                LemonadeTheme.shapes.radius600.strokeBorder(.border.borderNeutralLow, lineWidth: LemonadeTheme.borderWidth.base.border25)
             }
         }
     }
