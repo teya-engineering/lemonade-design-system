@@ -280,6 +280,18 @@ internal fun SymbolContainerDisplay() {
             }
         }
 
+        item(key = "Themes (Solid)") {
+            SymbolContainerSection(title = "Themes (Solid)") {
+                ThemedSymbols(subtle = false)
+            }
+        }
+
+        item(key = "Themes (Subtle)") {
+            SymbolContainerSection(title = "Themes (Subtle)") {
+                ThemedSymbols(subtle = true)
+            }
+        }
+
         item(key = "Text Variant") {
             SymbolContainerSection(title = "Text Variant") {
                 SymbolRow {
@@ -400,6 +412,41 @@ private fun VoiceSymbol(sample: VoiceSample) {
             size = SymbolContainerSize.Medium,
         )
     }
+}
+
+@OptIn(ExperimentalLemonadeApi::class)
+@Composable
+private fun ThemedSymbols(subtle: Boolean) {
+    val rows = ThemedHue.entries.chunked(size = 5)
+    val style = { hue: ThemedHue -> if (subtle) hue.subtle else hue }
+    rows.forEach { hues ->
+        SymbolRow {
+            hues.forEach { hue ->
+                LemonadeUi.SymbolContainer(
+                    icon = LemonadeIcons.Heart,
+                    contentDescription = hue.name,
+                    theme = style(hue),
+                )
+            }
+        }
+    }
+    rows.forEach { hues ->
+        SymbolRow {
+            hues.forEach { hue ->
+                LemonadeUi.SymbolContainer(
+                    text = hue.abbreviation(),
+                    theme = style(hue),
+                    shape = SymbolContainerShape.Rounded,
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLemonadeApi::class)
+private fun ThemedHue.abbreviation(): String {
+    val initials = name.filter { char -> char.isUpperCase() }
+    return if (initials.length > 1) initials else name.take(n = 2)
 }
 
 @Composable

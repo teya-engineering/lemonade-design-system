@@ -43,6 +43,8 @@ complexity:
     threshold: 4
   TooManyFunctions:
     active: true
+    ignoreAnnotatedFunctions:
+      - 'Composable'
     thresholdInFiles: 15
     thresholdInClasses: 15
     thresholdInInterfaces: 15
