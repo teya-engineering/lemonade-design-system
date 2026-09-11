@@ -50,10 +50,10 @@ Two asset sets are not one-to-one, and the generator handles both:
 - **Brand logos ship a `-dark` component per brand.** `BrandLogo` resolves the
   dark artwork from the theme, so both nodes reference the same enum entry —
   50 templates over 25 entries.
-- **`LemonadeBrandLogos` carries both `Diners` and `Dinners`.** Only the
-  correctly-spelled component exists in Figma, and `Dinners` is served by it.
-  That is recorded in the manifest's `aliases` rather than dropped, so the
-  duplicate stays visible until someone removes it from the enums.
+- **`LemonadeBrandLogos` used to carry both `Diners` and `Dinners`.** Only the
+  correctly-spelled component exists in Figma. The duplicate has since been
+  removed from the enums, so no alias is needed — but `aliases` remains supported
+  for the next time the two sides diverge like that.
 
 Each asset emits a bare enum reference (`LemonadeIcons.Search`,
 `LemonadeCountryFlag.aCAscensionIsland`), because that is what every consumer
@@ -187,12 +187,10 @@ more than a property lookup:
   nested content instance and its voice from the nested indicator via
   `metadata.props`, then folds the current row into `currentIndex`.
 
-- `SwipeActionRow` maps little on purpose. `actions` is a list of `SwipeAction`
-  data objects with enum-typed icons, which a slot cannot resolve to, so the
-  snippet emits an empty list and a TODO. Figma also offers a **Leading**
-  actions placement that neither platform implements; rather than quietly
-  emitting a trailing row, the snippet carries a NOTE saying the design cannot
-  be built as drawn. That gap is worth closing on one side or the other.
+- `SwipeActionRow` maps its placement onto `leadingActions` or
+  `trailingActions`. The list itself stays empty with a TODO: the actions are
+  `SwipeAction` data objects with enum-typed icons, and a Figma slot resolves to
+  neither.
 
 - `Divider` is one Figma component over two composables: `Orientation` picks
   between `HorizontalDivider` and `VerticalDivider` rather than being a
