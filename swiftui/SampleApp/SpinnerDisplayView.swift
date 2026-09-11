@@ -6,6 +6,7 @@ struct SpinnerDisplayView: View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 32) {
                 defaultSection
+                sizesSection
                 customTintSection
                 loadingButtonsSection
             }
@@ -19,6 +20,31 @@ struct SpinnerDisplayView: View {
             LemonadeUi.Spinner()
         }
     }
+
+    private var sizesSection: some View {
+        sectionView(title: "Sizes") {
+            HStack(alignment: .bottom, spacing: 12) {
+                ForEach(sizes, id: \.label) { size in
+                    VStack(spacing: 8) {
+                        LemonadeUi.Spinner(size: size.value)
+                        Text(size.label)
+                            .font(.caption)
+                    }
+                }
+            }
+        }
+    }
+
+    private let sizes: [(label: String, value: LemonadeSpinnerSize)] = [
+        ("XS", .xSmall),
+        ("S", .small),
+        ("M", .medium),
+        ("L", .large),
+        ("XL", .xLarge),
+        ("2XL", .xxLarge),
+        ("3XL", .xxxLarge),
+        ("4XL", .xxxxLarge),
+    ]
 
     private var customTintSection: some View {
         sectionView(title: "Custom Tint") {
