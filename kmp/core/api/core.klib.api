@@ -632,6 +632,7 @@ final enum class com.teya.lemonade.core/LemonadeIcons : com.teya.lemonade.core/L
     enum entry Board // com.teya.lemonade.core/LemonadeIcons.Board|null[0]
     enum entry BrandAndroid // com.teya.lemonade.core/LemonadeIcons.BrandAndroid|null[0]
     enum entry BrandApple // com.teya.lemonade.core/LemonadeIcons.BrandApple|null[0]
+    enum entry BrandTeyaPos // com.teya.lemonade.core/LemonadeIcons.BrandTeyaPos|null[0]
     enum entry BrandTeyaSquare // com.teya.lemonade.core/LemonadeIcons.BrandTeyaSquare|null[0]
     enum entry BrandTeyaSymbol // com.teya.lemonade.core/LemonadeIcons.BrandTeyaSymbol|null[0]
     enum entry Briefcase // com.teya.lemonade.core/LemonadeIcons.Briefcase|null[0]

@@ -557,6 +557,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field Board Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field BrandAndroid Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field BrandApple Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field BrandTeyaPos Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field BrandTeyaSquare Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field BrandTeyaSymbol Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Briefcase Lcom/teya/lemonade/core/LemonadeIcons;

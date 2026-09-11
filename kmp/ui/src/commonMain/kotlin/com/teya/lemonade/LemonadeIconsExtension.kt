@@ -61,6 +61,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.Board -> LemonadeRes.drawable.gen_board
         LemonadeIcons.BrandAndroid -> LemonadeRes.drawable.gen_brand_android
         LemonadeIcons.BrandApple -> LemonadeRes.drawable.gen_brand_apple
+        LemonadeIcons.BrandTeyaPos -> LemonadeRes.drawable.gen_brand_teya_pos
         LemonadeIcons.BrandTeyaSquare -> LemonadeRes.drawable.gen_brand_teya_square
         LemonadeIcons.BrandTeyaSymbol -> LemonadeRes.drawable.gen_brand_teya_symbol
         LemonadeIcons.Briefcase -> LemonadeRes.drawable.gen_briefcase

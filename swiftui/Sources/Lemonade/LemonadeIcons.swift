@@ -64,6 +64,7 @@ public enum LemonadeIcon: String, CaseIterable {
     case board = "board"
     case brandAndroid = "brand-android"
     case brandApple = "brand-apple"
+    case brandTeyaPos = "brand-teya-pos"
     case brandTeyaSquare = "brand-teya-square"
     case brandTeyaSymbol = "brand-teya-symbol"
     case briefcase = "briefcase"
