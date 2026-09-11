@@ -46,6 +46,8 @@ struct SymbolContainerDisplayView: View {
             LazyVStack(alignment: .leading, spacing: 32) {
                 sizesSection
                 voicesSection
+                themesSection(title: "Themes (Solid)", subtle: false)
+                themesSection(title: "Themes (Subtle)", subtle: true)
                 shapesSection
                 badgeSection
                 imageSection
@@ -94,6 +96,40 @@ struct SymbolContainerDisplayView: View {
                 }
             }
         }
+    }
+
+    // MARK: - Themes
+
+    private func themesSection(title: String, subtle: Bool) -> some View {
+        let style = { (hue: ThemedHue) in subtle ? ThemedStyle(hue).subtle : ThemedStyle(hue) }
+        return sectionView(title: title) {
+            VStack(alignment: .leading, spacing: 16) {
+                FlowLayout(spacing: 16) {
+                    ForEach(ThemedHue.allCases, id: \.self) { hue in
+                        LemonadeUi.SymbolContainer(
+                            icon: .heart,
+                            contentDescription: "\(hue)",
+                            theme: style(hue)
+                        )
+                    }
+                }
+                FlowLayout(spacing: 16) {
+                    ForEach(ThemedHue.allCases, id: \.self) { hue in
+                        LemonadeUi.SymbolContainer(
+                            text: abbreviation(of: hue),
+                            theme: style(hue),
+                            shape: .rounded
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private func abbreviation(of hue: ThemedHue) -> String {
+        let name = "\(hue)"
+        let initials = name.prefix(1).uppercased() + name.filter(\.isUppercase)
+        return initials.count > 1 ? initials : name.prefix(2).capitalized
     }
 
     // MARK: - Shapes
