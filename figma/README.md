@@ -132,9 +132,10 @@ acted on.
 
 ## Components
 
-Thirty-eight components on both platforms, three Compose-only ones (`Dropdown`,
-`DropdownItem`, `BottomTabBar`), and nine internal parts they nest, all
-hand-written. A few needed more than a property lookup:
+Thirty-eight components on both platforms, six Compose-only ones (`Dropdown`,
+`DropdownItem`, `BottomTabBar`, `TimePicker`, `TimeInput`, `TimePickerDialog`),
+and nine internal parts they nest, all hand-written. A few needed more than a
+property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
   `selectedTab` is a 0-based index; the template converts. Its tabs resolve
@@ -279,6 +280,18 @@ hand-written. A few needed more than a property lookup:
   keeps document order. `Dropdown` walks its sections, then each section's
   items, and flattens them: the code has no sections, so a design with headings,
   dividers or item support text gets a NOTE.
+
+- The time pickers map Figma's Android sets. Each snippet opens with the
+  `rememberLemonadeTimePickerState` call the component needs, seeded with the
+  designed hour and minute: a 12-hour design is converted to the code's 0-23
+  hour through its AM/PM toggle, and `◇ Format` sets `is24Hour`. The dialog's
+  Dial and Input sets pick `initialDisplayMode`. Its two accessibility labels
+  have no source in the design, so they are emitted as English literals, and
+  the dial's `◇ Orientation` is left to the component, which lays itself out
+  by window size.
+- Code Connect names the time fields inside the dial's nested `Time Input`
+  after that component's own building block, not the one Figma shows there, so
+  the templates match either name.
 
 ### Deliberately unmapped
 
