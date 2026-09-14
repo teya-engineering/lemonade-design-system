@@ -2,95 +2,76 @@
 name: publish-figma-connect
 description: >
   Publish the Lemonade Figma Code Connect mappings so Figma Dev Mode and
-  MCP-driven agents emit real LemonadeUi.* code. Use when a `figma/connect/*.figma.ts`
-  template changes, when icons are added and the templates need regenerating, when
-  a Figma component's properties are renamed and the snippets have gone stale, or
-  when the user asks to "publish Code Connect", "push the Figma mappings", or
+  MCP-driven agents emit real LemonadeUi.* code. Use when a template under
+  `figma/connect/` or `figma/connect-swiftui/` changes, when a Figma component is
+  renamed, rebuilt or has its properties changed and the snippets have gone stale,
+  or when the user asks to "publish Code Connect", "push the Figma mappings", or
   "sync Figma to code".
 ---
 
 # Publish Lemonade Figma Code Connect
 
-Uploads the templates in `figma/connect/` to Figma under the **`Compose`** label.
-Publishing writes to the **shared team library** — everyone in the org sees the
-result immediately. There is no staging environment.
+Uploads the templates in `figma/connect/` under the **`Compose`** label and those
+in `figma/connect-swiftui/` under the **`SwiftUI`** label. Publishing writes to
+the **shared team library**, so everyone in the org sees the result immediately.
+There is no staging environment.
 
 | Thing | Value |
 |---|---|
 | Configs | `figma/figma.compose.config.json` and `figma/figma.swiftui.config.json` |
-| Labels | `Compose`, `SwiftUI` — each published separately from its own config. Neither touches the unrelated `React` label on the same file. |
+| Labels | `Compose` and `SwiftUI`, each published from its own config. Neither touches the unrelated `React` label on the same file. |
 | Components file | `91S16rhVrl5wivqV66fNjm` |
-| Icons file | `f7zokCdnayXejxc2y7r1Qt` |
-| Token env var | `FIGMA_CODE_CONNECT_TOKEN` — **per-machine, set it up once (below)** |
+| Token env var | `FIGMA_CODE_CONNECT_TOKEN`, set up once per machine (below) |
 
 ## First run on a new machine
 
-Nothing here is checked in — each person sets this up once.
+Nothing here is checked in. Each person sets it up once.
 
 1. **Node 18+** (`node -v`). The CLI declares `engines.node >= 18`.
-2. **Install** — `cd figma && npm ci`. `@figma/code-connect` comes from public
-   npm. If your npm is pointed at Teya's JFrog registry, it must proxy npmjs for
-   this to resolve; `npm config get registry` tells you what you are pointed at.
+2. **Install**: `cd figma && npm ci`. `@figma/code-connect` comes from public
+   npm. If your npm points at Teya's JFrog registry, it must proxy npmjs for this
+   to resolve; `npm config get registry` shows where you point.
 3. **Create a Figma personal access token** (Figma → Settings → Security →
    Personal access tokens) with exactly two scopes: **`file_code_connect:write`**
-   and **`file_content:read`**. Nothing else. This needs a Dev or Full seat on an
-   Organization or Enterprise plan — Teya is on `org`.
+   and **`file_content:read`**. It needs a Dev or Full seat on an Organization or
+   Enterprise plan; Teya is on `org`.
 4. **Export it**, e.g. in `~/.zshrc`:
    ```bash
    export FIGMA_CODE_CONNECT_TOKEN=figd_...
    ```
 
 Consuming Code Connect needs none of this. Snippets live on Figma's servers, so
-Dev Mode and the Figma MCP work for everyone with no local setup at all. The
-steps above are only for *publishing* or regenerating templates.
+Dev Mode and the Figma MCP work for everyone without local setup. These steps are
+only for publishing.
 
 ---
 
 ## Procedure
 
-### 1. Regenerate icon templates, if icons changed
+Run everything from `figma/`. The `include` globs resolve against the working
+directory, not the config file.
 
-`figma/connect/icons/*.figma.ts` is **generated — never hand-edit it**:
-
-```bash
-cd figma && node scripts/generate-icon-templates.mjs
-```
-
-It cross-checks `icons.manifest.json` against the `LemonadeIcons` enum and
-**fails** if they have drifted, rather than emitting a template for an icon the
-enum lacks. If it fails, either run the `svg-asset-converter` first or refresh
-`icons.manifest.json` from Figma (`list_file_components_for_code_connect` on the
-icons file → `{name: nodeId}` for every property-less `COMPONENT`).
-
-### 2. Validate
+### 1. Validate
 
 ```bash
-cd figma && npm ci
 FIGMA_ACCESS_TOKEN="$FIGMA_CODE_CONNECT_TOKEN" npm run validate
 ```
 
-`--dry-run` writes nothing but **still needs a token** — it exits 1 without one,
-so CI needs the token as a secret. A config whose glob matches zero templates is
-also an error rather than a no-op.
+`--dry-run` writes nothing but still needs a token and exits 1 without one, so
+CI needs the token as a secret. A config whose glob matches zero templates is an
+error, not a no-op.
 
-Neither config is named `figma.config.json`, which is the CLI default — so a
-bare `figma connect publish` finds no config and errors instead of silently
-publishing one platform and reporting success. Always pass `--config`.
+Neither config is named `figma.config.json`, the CLI default, so a bare
+`figma connect publish` finds no config and errors rather than publishing one
+platform and reporting success. Always pass `--config`.
 
-**Run this from `figma/`.** The `include` globs resolve against the working
-directory, not the config file. From anywhere else the run either finds nothing
-or fails with the misleading `Framework-specific parsers are no longer supported
-in Code Connect CLI v2`, which is about the glob matching non-template files —
-not about the `parser` setting being wrong.
+This is the check to wire into CI. It cannot catch a wrong Figma property name:
+`getEnum('◇ Varient', …)` parses fine and yields `undefined`. Only step 3
+catches that.
 
-This is the check to wire into CI. **It cannot catch a wrong Figma property
-name**: `getEnum('◇ Varient', …)` parses fine and silently yields `undefined`.
-Only step 4 catches that.
-
-### 3. Publish
+### 2. Publish
 
 ```bash
-cd figma
 for cfg in figma.compose.config.json figma.swiftui.config.json; do
   FIGMA_ACCESS_TOKEN="$FIGMA_CODE_CONNECT_TOKEN" \
     ./node_modules/.bin/figma connect publish --config "$cfg" \
@@ -98,14 +79,9 @@ for cfg in figma.compose.config.json figma.swiftui.config.json; do
 done
 ```
 
-Publish **both** labels, and never a platform's components without its icons.
-Figma resolves a nested icon by node; a label with no template for that node
-falls back to another label's, so a missing SwiftUI icon renders the *Kotlin*
-snippet inside a Swift call rather than rendering nothing.
-
-**Pipe it.** The command prints one line per template — ~300 of them — and the
-success or error summary is the *last* line. Unfiltered it scrolls off and a
-failure looks identical to a success.
+Publish both labels. Pipe the output: the command prints a line per template and
+the success or error summary is the last line, so unfiltered a failure looks the
+same as a success.
 
 Success ends with:
 
@@ -115,65 +91,70 @@ Successfully uploaded to Figma, for Compose:
 ```
 
 If it warns that nodes **already have UI-created Code Connect mappings**, those
-were made by hand in the Figma UI and are skipped. Re-run with `--force` to
-replace them with the repo's templates. Confirm with the user first — `--force`
-destroys someone's UI-created mapping, and it is not recoverable from this repo.
+were made by hand in the Figma UI and are skipped. `--force` replaces them with
+the repo's templates. Confirm with the user first: `--force` destroys the
+UI-created mapping and it can't be recovered from this repo.
 
-### 4. Verify — the step that actually proves anything
+### 3. Verify
 
-The CLI reporting success only means the upload succeeded. Check the rendered
-snippet through the Figma MCP:
+A successful upload only means the upload succeeded. Check the rendered snippet
+through the Figma MCP, once per label:
 
 ```
 get_code_connect_map(fileKey, nodeId=<component set>, codeConnectLabel="Compose")
 ```
 
 The response is keyed by **variant** node ids, not the component-set id you
-published against — so the set's own id will be absent even on a healthy
-publish. That is expected; look at the entries, not the key you passed.
+published against, so the set's own id is absent even on a healthy publish. Read
+the entries, not the key you passed.
 
-Confirm the snippet names real Kotlin, and that two different variants differ in
-the way they should:
+Confirm each snippet is real Kotlin or Swift, and that two variants differ the way
+they should:
 
 ```kotlin
 8302:10572 → size = LemonadeButtonSize.Large
 8302:10564 → size = LemonadeButtonSize.Medium
 ```
 
-The response usually exceeds the tool's token cap and gets written to a file —
-query it with `python3`/`grep` rather than re-fetching.
+The response usually exceeds the tool's token cap and is written to a file; query
+it with `python3` or `grep` rather than re-fetching.
 
-For a nested icon, check a `Tag` variant renders `icon = LemonadeIcons.Heart`
-and not an opaque instance; that is the cross-file resolution working.
+When the correct output and a failure would look the same, force them apart. If
+every library variant has the first tab selected, `selectedIndex = 0` is also
+what a broken lookup would produce: change the fallback to something distinctive,
+republish, check, then restore it.
 
 ---
 
 ## Trialling risky changes
 
-To avoid disturbing the live `Compose` snippets, set `label` to
-`"Compose (test)"` in `figma.config.json`, publish, verify in Dev Mode, then:
+To avoid disturbing the live snippets, change `label` in the config you are
+testing (for example to `"Compose (test)"` in `figma.compose.config.json`),
+publish with that config, verify in Dev Mode, then remove the trial mappings:
 
 ```bash
-./node_modules/.bin/figma connect unpublish --config figma.config.json
+./node_modules/.bin/figma connect unpublish --config figma.compose.config.json
 ```
 
-and restore the label. Worth doing when property names changed; unnecessary for
-a re-publish of templates that already verified.
+Restore the label afterwards. Worth doing when property names changed; not needed
+to republish templates that already verified.
 
 ## Common failures
 
 | Symptom | Cause |
 |---|---|
-| `Couldn't find a Figma access token` | `$FIGMA_CODE_CONNECT_TOKEN` unset or empty. Either it was never set up (see First run), or you are in a non-interactive shell that did not source your profile — `source ~/.zshrc` first. Check with `echo ${FIGMA_CODE_CONNECT_TOKEN:+set}`. |
-| `npm ci` cannot find `@figma/code-connect` | npm pointed at a registry that does not proxy public npm. Check `npm config get registry`. |
+| `Couldn't find a Figma access token` | `$FIGMA_CODE_CONNECT_TOKEN` is unset or empty. Either it was never set up (see First run), or the shell didn't source your profile: `source ~/.zshrc` first. Check with `echo ${FIGMA_CODE_CONNECT_TOKEN:+set}`. |
+| `npm ci` cannot find `@figma/code-connect` | npm points at a registry that doesn't proxy public npm. Check `npm config get registry`. |
 | `Framework-specific parsers are no longer supported` | Ran from the wrong directory. `cd figma` first. |
 | Exit code 126 | `./node_modules/.bin/figma` resolved from the wrong cwd. Use an absolute path. |
-| Publish succeeds, snippet shows `undefined` | A Figma property was renamed. Re-read it with `get_context_for_code_connect` and fix the `getEnum`/`getString` key — names are case- and emoji-sensitive (`✍️ Label` vs `↪ ✍️ Label`). |
+| `node not found in file` | The Figma component was deleted or rebuilt under a new node. Find the new node and repoint the template's `// url=` line. |
+| Publish succeeds, snippet shows `undefined` | A Figma property or variant value was renamed. Re-read it with `get_context_for_code_connect` and fix the `getEnum`/`getString` key; names are case- and emoji-sensitive (`✍️ Label` vs `↪ ✍️ Label`). |
 | Nodes silently skipped | UI-created mappings exist. Re-run with `--force`. |
 
 ## Related
 
-- `figma/README.md` — layout, the icon generator, and the deliberate mapping gaps.
-- Templates are parserless `.figma.ts` emitting Kotlin strings, so publishing
-  **never** touches `kmp/ui` or the BCV baseline. A Code-Connect-only PR's API
-  Dump section is always "No public API changes".
+- `figma/README.md`: layout, and the mapping decisions worth knowing before
+  editing a template.
+- Templates are parserless `.figma.ts` files that emit Kotlin or Swift as strings,
+  so publishing never touches `kmp/` or `swiftui/Sources`. A Code-Connect-only
+  PR's API Dump section is "No public API changes".
