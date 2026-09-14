@@ -23,7 +23,6 @@ export default {
   imports: [
     'import com.teya.lemonade.LemonadeUi',
     'import com.teya.lemonade.SwipeActionRow',
-    'import com.teya.lemonade.core.SwipeAction',
     ...slotImports,
   ],
   id: 'swipe-action-row',

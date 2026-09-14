@@ -1,5 +1,5 @@
 // url=<LEMONADE_COMPONENTS>?node-id=11090-33687
-// source=kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/HistoryTimeline.kt
+// source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/HistoryTimeline.kt
 // component=HistoryTimelineItem
 import figma from 'figma'
 
@@ -28,7 +28,7 @@ export default {
   example: figma.kotlin`HistoryTimelineItem(label = "${label}"${subheading ? `, subheading = "${subheading}"` : ''}${description ? `, description = "${description}"` : ''}${voice && voice !== 'Neutral' ? `, voice = HistoryItemVoice.${voice}` : ''})`,
   imports: [
     'import com.teya.lemonade.core.HistoryItemVoice',
-    'import com.teya.lemonade.core.HistoryTimelineItem',
+    'import com.teya.lemonade.HistoryTimelineItem',
   ],
   id: 'history-item',
   metadata: { nestable: true, props: { current: current } },

@@ -42,11 +42,9 @@ export default {
     errorMessage: "${errorMessage}"` : ''}${hasError ? `,
     error: true` : ''}${disabled ? `,
     enabled: false` : ''}${
-      leadingCode ? figma.swift`,
-    leadingContent: { LemonadeUi.Icon(icon: ${leadingCode}, contentDescription: nil) }` : ''
-    }${
-      trailingCode ? figma.swift`,
-    trailingContent: { LemonadeUi.Icon(icon: ${trailingCode}, contentDescription: nil) }` : ''
+      leadingCode || trailingCode ? figma.swift`,
+    leadingContent: { ${leadingCode ? figma.swift`LemonadeUi.Icon(icon: ${leadingCode}, contentDescription: nil)` : 'EmptyView()'} },
+    trailingContent: { ${trailingCode ? figma.swift`LemonadeUi.Icon(icon: ${trailingCode}, contentDescription: nil)` : 'EmptyView()'} }` : ''
     }
 )`,
   id: 'text-field',

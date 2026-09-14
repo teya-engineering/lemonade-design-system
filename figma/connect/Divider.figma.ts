@@ -25,7 +25,7 @@ export default {
     variant = DividerVariant.${variant},
 )`,
   imports: [
-    'import com.teya.lemonade.Divider',
+    vertical ? 'import com.teya.lemonade.VerticalDivider' : 'import com.teya.lemonade.HorizontalDivider',
     'import com.teya.lemonade.LemonadeUi',
     'import com.teya.lemonade.core.DividerVariant',
   ],

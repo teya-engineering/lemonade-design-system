@@ -1,5 +1,5 @@
 // url=<LEMONADE_COMPONENTS>?node-id=8122-18897
-// source=kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/Tabs.kt
+// source=swiftui/Sources/Lemonade/Components/LemonadeTabs.swift
 // component=TabItem
 import figma from 'figma'
 

@@ -26,10 +26,17 @@ export default {
     weekdayAbbreviations = emptyList(),
     state = rememberDatePickerState(),
 )`,
-  imports: [
-    'import com.teya.lemonade.DatePicker',
-    'import com.teya.lemonade.LemonadeUi',
-  ],
+  imports: isRange
+    ? [
+        'import com.teya.lemonade.DateRangePicker',
+        'import com.teya.lemonade.LemonadeUi',
+        'import com.teya.lemonade.rememberDateRangePickerState',
+      ]
+    : [
+        'import com.teya.lemonade.DatePicker',
+        'import com.teya.lemonade.LemonadeUi',
+        'import com.teya.lemonade.rememberDatePickerState',
+      ],
   id: 'date-picker',
   metadata: { nestable: false },
 }

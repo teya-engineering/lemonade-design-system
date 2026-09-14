@@ -39,11 +39,11 @@ export default {
   example: figma.swift`LemonadeUi.IconButton(${iconCode ? figma.swift`
     icon: ${iconCode},` : ''}
     contentDescription: nil, // TODO: this button has no visible label — describe the action
-    onClick: { },
+    onClick: { },${disabled ? `
+    enabled: false,` : ''}
     variant: .${variant},
     type: .${type},
-    size: .${size}${disabled ? `,
-    enabled: false` : ''}${loading ? `,
+    size: .${size}${loading ? `,
     loading: true` : ''}
 )`,
   id: 'icon-button',

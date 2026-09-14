@@ -34,8 +34,8 @@ export default {
   imports: [
     'import com.teya.lemonade.LemonadeUi',
     'import com.teya.lemonade.Tabs',
-    'import com.teya.lemonade.core.TabItem',
-    'import com.teya.lemonade.core.TabsItemSize',
+    'import com.teya.lemonade.TabItem',
+    'import com.teya.lemonade.TabsItemSize',
   ],
   id: 'tabs',
   metadata: { nestable: true },
