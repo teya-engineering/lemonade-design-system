@@ -120,8 +120,8 @@ acted on.
 
 ## Components
 
-Thirty-seven components per platform, hand-written and kept at parity. A few needed
-more than a property lookup:
+Thirty-four components per platform, plus nine internal parts they nest,
+hand-written and kept at parity. A few needed more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
   `selectedTab` is a 0-based index; the template converts. Its tabs resolve
@@ -191,11 +191,17 @@ more than a property lookup:
   between `HorizontalDivider` and `VerticalDivider` rather than being a
   parameter. Only the horizontal one takes a label, which is why the labelled
   variant has no vertical counterpart in code.
-- Connecting `ListItem` and `Divider` also fixed an import leak. Figma
-  aggregates imports from nested children, and both were previously mapped only
-  under the `React` label, so React imports were appearing in Kotlin snippets
-  for any component that nests them — `SwipeActionRow` most visibly. A component
-  left unmapped does not only lose its own snippet; it degrades its parents'.
+- Figma merges a nested child's imports into its parent's snippet, so a child
+  template owns the imports for what it emits and the parent does not repeat
+  them. A nested component mapped only under another label leaks that label's
+  imports into the parent: an unmapped component degrades its parents' snippets
+  as well as losing its own.
+
+- `Card` reads its header and footer from the nested `Card Heading` and
+  `Card Footer Action` instances, which map onto `CardHeaderConfig` and
+  `CardFooterActionConfig`. Code Connect skips hidden layers, and the library's
+  own Card variants hide both, so a header or footer only appears in snippets for
+  instances with `◉ Show Heading` / `◉ Show Footer Action` switched on.
 
 - The list-item family keeps its strings in **text layers**, not properties, so
   `ListItem`, `ResourceListItem` and `ActionListItem` all read them with
@@ -227,9 +233,6 @@ more than a property lookup:
 
 - `◇ Interaction State` and `📱 Device` everywhere — the former is runtime state
   driven by `interactionSource`, the latter has no code equivalent.
-- `Card`'s `Show Heading` / `Show Footer Action` — the code takes
-  `CardHeaderConfig` / `CardFooterActionConfig` objects, which Figma models as
-  nested components rather than properties.
 - `Link`'s `Show Indicator` — no code equivalent.
 - `Notice`'s icon swap — the code has `showIcon` only and derives the glyph from
   the voice, so there is no parameter to map the swap onto.

@@ -20,10 +20,20 @@ const padding = instance.getEnum('◇ Spacing', {
 
 const content = instance.getSlot('🧩 Slot')
 
+const nested = (show, layer) => {
+  if (!instance.getBoolean(show)) return undefined
+  const child = instance.findInstance(layer)
+  return child && child.type === 'INSTANCE' ? child.executeTemplate() : undefined
+}
+const header = nested('◉ Show Heading', 'Card Heading')
+const footer = nested('◉ Show Footer Action', 'Card Footer Action')
+
 export default {
   example: figma.swift`LemonadeUi.Card(
     contentPadding: .${padding},
-    background: .${background}
+    background: .${background}${header ? figma.swift`,
+    header: ${header.example}` : ''}${footer ? figma.swift`,
+    footerAction: ${footer.example}` : ''}
 ) {
     /* card content */
 }`,
