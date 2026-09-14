@@ -17,7 +17,7 @@ connect-swiftui/            SwiftUI templates
   icons/                    GENERATED — do not edit
   flags/                    GENERATED — do not edit
   brand-logos/              GENERATED — do not edit
-shared/render.ts            slot and nested-snippet helpers both labels import
+shared/                     helpers templates import: slots, time pickers, bottom sheets
 scripts/generate-asset-templates.mjs
 ```
 
@@ -291,7 +291,7 @@ needed more than a property lookup:
   by window size.
 - Code Connect names the time fields inside the dial's nested `Time Input`
   after that component's own building block, not the one Figma shows there, so
-  the templates match either name.
+  `shared/time.ts` matches either name.
 
 - `BottomSheet` is one composable over two Figma sets: `Sheet - Full Screen`
   adds `skipPartiallyExpanded = true`. The code sheet has no header, so the Top
