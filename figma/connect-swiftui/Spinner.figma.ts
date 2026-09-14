@@ -5,19 +5,18 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
-// Compose's Spinner takes a size; this one does not, so any size but the
-// default cannot be expressed.
 const size = instance.getEnum('Size', {
-  Small: 'Small',
-  Medium: 'Medium',
-  Large: 'Large',
-  XLarge: 'XLarge',
-  '2XLarge': '2XLarge',
+  Small: 'small',
+  Medium: 'medium',
+  Large: 'large',
+  XLarge: 'xLarge',
+  '2XLarge': 'xxLarge',
 })
 
 export default {
-  example: figma.swift`LemonadeUi.Spinner()${size !== 'Medium' ? `
-// NOTE: this design is ${size}; the SwiftUI Spinner has no size parameter` : ''}`,
+  example: figma.swift`LemonadeUi.Spinner(
+    size: .${size}
+)`,
   id: 'spinner',
   metadata: { nestable: true },
 }
