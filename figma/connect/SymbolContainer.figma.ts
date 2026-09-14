@@ -54,7 +54,34 @@ const tail = `
     shape = SymbolContainerShape.${shape},`
 
 const badgeArg = badge ? figma.kotlin`
-    badgeSlot = { /* accessory */ },` : ''
+    badgeSlot = ${slot('↪ 🧩 Accessory', 'accessory')},` : ''
+
+// Lemonade components in a slot render as their own snippets, indented to fit;
+// a slot holding none of them keeps its placeholder. Figma passes up only one
+// level of imports, so the children's are re-exported for the parent's parent.
+const slotImports = new Set()
+const snippets = (name, pad) => {
+  const found = instance.getSlot(name)
+  const children = found && found.connectedInstances ? found.connectedInstances : []
+  if (!children.length) return undefined
+  let body = figma.kotlin``
+  for (const child of children) {
+    const { example } = child.executeTemplate()
+    for (const section of example) for (const i of section.nestedImports ?? []) slotImports.add(i)
+    const sections = example.map((section) =>
+      section.type === 'CODE' ? { ...section, code: section.code.replace(/\n/g, `\n${pad}`) } : section,
+    )
+    body = figma.kotlin`${body}
+${pad}${sections}`
+  }
+  return body
+}
+
+const slot = (name, placeholder, open = '{') => {
+  const body = snippets(name, '        ')
+  return body ? figma.kotlin`${open}${body}
+    }` : `${open} /* ${placeholder} */ }`
+}
 
 export default {
   example:
@@ -80,6 +107,9 @@ export default {
     'import com.teya.lemonade.core.SymbolContainerShape',
     'import com.teya.lemonade.core.SymbolContainerSize',
     'import com.teya.lemonade.core.SymbolContainerVoice',
+    ...slotImports,
+    ...(iconCode ? ['import com.teya.lemonade.core.LemonadeIcons'] : []),
+    ...(brandCode ? ['import com.teya.lemonade.BrandLogo', 'import com.teya.lemonade.core.LemonadeAssetSize', 'import com.teya.lemonade.core.LemonadeBrandLogos'] : []),
   ],
   id: 'symbol-container',
   metadata: { nestable: true },

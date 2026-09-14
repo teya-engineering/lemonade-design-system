@@ -53,6 +53,7 @@ export default {
     'import com.teya.lemonade.core.LemonadeButtonSize',
     'import com.teya.lemonade.core.LemonadeButtonType',
     'import com.teya.lemonade.core.LemonadeButtonVariant',
+    ...(iconCode ? ['import com.teya.lemonade.core.LemonadeIcons'] : []),
   ],
   id: 'icon-button',
   metadata: { nestable: true },
