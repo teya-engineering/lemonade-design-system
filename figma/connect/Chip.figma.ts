@@ -23,11 +23,22 @@ const counter = instance.getBoolean('◉ Shown Counter')
 const leading = instance.getBoolean('◉ Show Leading') ? instance.getSlot('↪ 🧩 Leading') : undefined
 const trailing = instance.getBoolean('◉ Show Trailing') ? instance.getSlot('↪ 🧩 Trailing') : undefined
 
+// An enum-typed parameter takes the glyph of the Icon a slot holds.
+const slotIcon = (name) => {
+  const found = instance.getSlot(name)
+  const icon = found && found.connectedInstances ? found.connectedInstances[0] : undefined
+  const glyph = icon ? icon.getInstanceSwap('🧩 Icon') : undefined
+  return glyph && glyph.type === 'INSTANCE' ? glyph.executeTemplate().example : undefined
+}
+
+const leadingIcon = leading ? slotIcon('↪ 🧩 Leading') : undefined
+
 export default {
   example: figma.kotlin`LemonadeUi.Chip(
     label = "${label}",
     selected = ${selected},
-    onChipClicked = { },${counter ? `
+    onChipClicked = { },${leadingIcon ? figma.kotlin`
+    leadingIcon = ${leadingIcon},` : ''}${counter ? `
     counter = ${counter},` : ''}${error ? `
     error = true,` : ''}${disabled ? `
     enabled = false,` : ''}
@@ -35,6 +46,7 @@ export default {
   imports: [
     'import com.teya.lemonade.Chip',
     'import com.teya.lemonade.LemonadeUi',
+    ...(leadingIcon ? ['import com.teya.lemonade.core.LemonadeIcons'] : []),
   ],
   id: 'chip',
   metadata: { nestable: true },

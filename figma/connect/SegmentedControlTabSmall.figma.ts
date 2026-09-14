@@ -24,7 +24,7 @@ export default {
         ? figma.kotlin`TabButtonProperties.icon(icon = ${iconCode})`
         : figma.kotlin`TabButtonProperties.labelAndIcon(label = "${label}", icon = ${iconCode})`)
     : figma.kotlin`TabButtonProperties.label(label = "${label}")`,
-  imports: ['import com.teya.lemonade.core.TabButtonProperties'],
+  imports: ['import com.teya.lemonade.core.TabButtonProperties', ...(iconCode ? ['import com.teya.lemonade.core.LemonadeIcons'] : [])],
   id: 'segmented-control-tab-small',
   metadata: { nestable: true },
 }

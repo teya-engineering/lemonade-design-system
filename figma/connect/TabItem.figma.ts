@@ -23,7 +23,7 @@ if (icon && icon.type === 'INSTANCE') {
 // surfaced through metadata.props.
 export default {
   example: figma.kotlin`TabItem(label = "${label}"${iconCode ? figma.kotlin`, icon = ${iconCode}` : ''}${disabled ? ', isDisabled = true' : ''})`,
-  imports: ['import com.teya.lemonade.core.TabItem'],
+  imports: ['import com.teya.lemonade.core.TabItem', ...(iconCode ? ['import com.teya.lemonade.core.LemonadeIcons'] : [])],
   id: 'tab-item',
   metadata: { nestable: true, props: { selected: selected ? 'true' : 'false' } },
 }

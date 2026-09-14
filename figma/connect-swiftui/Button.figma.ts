@@ -5,6 +5,29 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
+// Lemonade components in a slot render as their own snippets, indented to fit;
+// a slot holding none of them keeps its placeholder.
+const snippets = (name, pad) => {
+  const found = instance.getSlot(name)
+  const children = found && found.connectedInstances ? found.connectedInstances : []
+  if (!children.length) return undefined
+  let body = figma.swift``
+  for (const child of children) {
+    const sections = child.executeTemplate().example.map((section) =>
+      section.type === 'CODE' ? { ...section, code: section.code.replace(/\n/g, `\n${pad}`) } : section,
+    )
+    body = figma.swift`${body}
+${pad}${sections}`
+  }
+  return body
+}
+
+const slot = (name, placeholder, open = '{') => {
+  const body = snippets(name, '        ')
+  return body ? figma.swift`${open}${body}
+    }` : `${open} /* ${placeholder} */ }`
+}
+
 const label = instance.getString('✍️ Label')
 
 const variant = instance.getEnum('◇ Variant', {
@@ -46,10 +69,10 @@ export default {
     label: "${label}",
     onClick: { }${
       leadingSlot ? figma.swift`,
-    leadingSlot: { _ in /* leading content */ }` : ''
+    leadingSlot: ${slot('↪ 🧩 Leading Slot', 'leading content', '{ _ in')}` : ''
     }${
       trailingSlot ? figma.swift`,
-    trailingSlot: { _ in /* trailing content */ }` : ''
+    trailingSlot: ${slot('↪ 🧩 Trailing Slot', 'trailing content', '{ _ in')}` : ''
     },
     variant: .${variant},
     type: .${type},

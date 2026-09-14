@@ -5,6 +5,29 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
+// Lemonade components in a slot render as their own snippets, indented to fit;
+// a slot holding none of them keeps its placeholder.
+const snippets = (name, pad) => {
+  const found = instance.getSlot(name)
+  const children = found && found.connectedInstances ? found.connectedInstances : []
+  if (!children.length) return undefined
+  let body = figma.swift``
+  for (const child of children) {
+    const sections = child.executeTemplate().example.map((section) =>
+      section.type === 'CODE' ? { ...section, code: section.code.replace(/\n/g, `\n${pad}`) } : section,
+    )
+    body = figma.swift`${body}
+${pad}${sections}`
+  }
+  return body
+}
+
+const slot = (name, placeholder, open = '{') => {
+  const body = snippets(name, '        ')
+  return body ? figma.swift`${open}${body}
+    }` : `${open} /* ${placeholder} */ }`
+}
+
 const read = (layer) => {
   const node = instance.findText(layer)
   return node && node.type === 'TEXT' ? node.textContent : ''
@@ -27,9 +50,9 @@ export default {
     supportText: "${supportText}"` : ''}${isLoading ? `,
     isLoading: true` : ''}${showDivider ? `,
     showDivider: true` : ''},
-    onItemClicked: { },${bottom ? `
-    addonSlot: { /* bottom content */ },` : ''}
-    leadingSlot: { /* leading content */ }
+    onItemClicked: { },${bottom ? figma.swift`
+    addonSlot: ${slot('↪ 🧩 Bottom Slot', 'bottom content')},` : ''}
+    leadingSlot: ${slot('↪ 🧩 Leading', 'leading content')}
 )`,
   id: 'resource-list-item',
   metadata: { nestable: true },

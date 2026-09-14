@@ -22,6 +22,7 @@ export default {
   imports: [
     'import com.teya.lemonade.LemonadeUi',
     'import com.teya.lemonade.Link',
+    ...(iconCode ? ['import com.teya.lemonade.core.LemonadeIcons'] : []),
   ],
   id: 'link',
   metadata: { nestable: true },

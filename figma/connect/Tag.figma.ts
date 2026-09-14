@@ -33,6 +33,7 @@ export default {
     'import com.teya.lemonade.LemonadeUi',
     'import com.teya.lemonade.Tag',
     'import com.teya.lemonade.core.TagVoice',
+    ...(iconCode ? ['import com.teya.lemonade.core.LemonadeIcons'] : []),
   ],
   id: 'tag',
   metadata: { nestable: true },
