@@ -120,7 +120,7 @@ acted on.
 
 ## Components
 
-Thirty-seven components per platform, plus nine internal parts they nest,
+Thirty-eight components per platform, plus nine internal parts they nest,
 hand-written and kept at parity. A few needed more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
@@ -130,6 +130,12 @@ hand-written and kept at parity. A few needed more than a property lookup:
   real labels and icons. Those are the only internal `_` components worth
   connecting — the child has a genuine code representation the parent cannot
   otherwise obtain. It falls back to `"Tab 1".."Tab n"` if no tab resolves.
+- `TextFieldWithSelector` maps like `TextField`, and its selector becomes the
+  `leadingContent` the code leaves to the caller: the designer's asset (flag,
+  icon or brand logo), the selector text and a chevron, laid out as in the
+  component's KDoc. The template reads those straight off the nested
+  `Selector Type` and `Asset` instances, so the parts need no templates of their
+  own. An `Image` asset has no source to carry over and emits a placeholder.
 - `Toast`'s message is a plain text layer rather than a property, read with
   `findText('Label')`. Its icon is baked into the Success and Error variants, so
   the swap is only emitted for Neutral.
