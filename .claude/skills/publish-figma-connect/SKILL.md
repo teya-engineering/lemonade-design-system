@@ -72,16 +72,21 @@ catches that.
 ### 2. Publish
 
 ```bash
-for cfg in figma.compose.config.json figma.swiftui.config.json; do
-  FIGMA_ACCESS_TOKEN="$FIGMA_CODE_CONNECT_TOKEN" \
-    ./node_modules/.bin/figma connect publish --config "$cfg" \
-    2>&1 | grep -viE "^-> |\.figma\.ts$" | tail -8
-done
+(
+  set -o pipefail
+  for cfg in figma.compose.config.json figma.swiftui.config.json; do
+    FIGMA_ACCESS_TOKEN="$FIGMA_CODE_CONNECT_TOKEN" \
+      ./node_modules/.bin/figma connect publish --config "$cfg" \
+      2>&1 | grep -viE "^-> |\.figma\.ts$" | tail -8 || exit 1
+  done
+)
 ```
 
 Publish both labels. Pipe the output: the command prints a line per template and
 the success or error summary is the last line, so unfiltered a failure looks the
-same as a success.
+same as a success. `pipefail` keeps the publish's exit status through the pipe,
+so the loop stops at the first failed label instead of publishing the other one
+and leaving the two out of step.
 
 Success ends with:
 
