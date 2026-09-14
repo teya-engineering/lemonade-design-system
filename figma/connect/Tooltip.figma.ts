@@ -24,8 +24,8 @@ const placement = instance.getEnum('◇ Indicator Placement', {
   'Left Top': 'LeftTop',
 })
 
-const cover = instance.getBoolean('◉ Show Cover') ? instance.getSlot('↪ 🧩 Cover Slot') : undefined
-const footer = instance.getBoolean('◉ Show Footer') ? instance.getSlot('↪ 🧩 Footer') : undefined
+const cover = instance.getBoolean('◉ Show Cover')
+const footer = instance.getBoolean('◉ Show Footer')
 const showClose = instance.getBoolean('◉ Show Close Button')
 
 export default {

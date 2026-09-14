@@ -9,24 +9,23 @@ const itemsSize = instance.getEnum('↕ Items Size', { Hug: 'Hug', Stretch: 'Str
 
 // The Items variant tops out at "5+", so the count comes from resolving the
 // tabs. Nine is the most the set lays out.
-const tabs = []
+let tabs = figma.kotlin``
+let count = 0
 let selectedIndex = 0
 for (let n = 1; n <= 9; n += 1) {
   const child = instance.findInstance(`Tab ${n}`)
   if (!child || child.type !== 'INSTANCE') continue
   const result = child.executeTemplate()
   // Selection is a tab property in Figma and an index here.
-  if (result.metadata?.props?.selected === 'true') selectedIndex = tabs.length
-  tabs.push(result.example)
+  if (result.metadata?.props?.selected === 'true') selectedIndex = count
+  tabs = figma.kotlin`${tabs}
+        ${result.example},`
+  count += 1
 }
-
-const [t1, t2, t3, t4, t5, t6, t7, t8, t9] = tabs
-const line = (t) => (t ? figma.kotlin`
-        ${t},` : '')
 
 export default {
   example: figma.kotlin`LemonadeUi.Tabs(
-    tabs = listOf(${line(t1)}${line(t2)}${line(t3)}${line(t4)}${line(t5)}${line(t6)}${line(t7)}${line(t8)}${line(t9)}
+    tabs = listOf(${tabs}
     ),
     selectedIndex = ${selectedIndex},
     onTabSelected = { },
