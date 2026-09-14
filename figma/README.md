@@ -132,10 +132,10 @@ acted on.
 
 ## Components
 
-Thirty-eight components on both platforms, six Compose-only ones (`Dropdown`,
-`DropdownItem`, `BottomTabBar`, `TimePicker`, `TimeInput`, `TimePickerDialog`),
-and nine internal parts they nest, all hand-written. A few needed more than a
-property lookup:
+Thirty-eight components on both platforms, seven Compose-only ones (`Dropdown`,
+`DropdownItem`, `BottomTabBar`, `BottomSheet`, `TimePicker`, `TimeInput`,
+`TimePickerDialog`), and nine internal parts they nest, all hand-written. A few
+needed more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
   `selectedTab` is a 0-based index; the template converts. Its tabs resolve
@@ -292,6 +292,13 @@ property lookup:
 - Code Connect names the time fields inside the dial's nested `Time Input`
   after that component's own building block, not the one Figma shows there, so
   the templates match either name.
+
+- `BottomSheet` is one composable over two Figma sets: `Sheet - Full Screen`
+  adds `skipPartiallyExpanded = true`. The code sheet has no header, so the Top
+  Bar's title and subheading become `Text` in the content, as in the
+  component's KDoc, and its grabber drives `showDragHandle`. The body slot holds
+  a placeholder frame in the library and stays a placeholder; the iOS-only
+  `Stacked` variant, keyboard and home indicator have no code equivalent.
 
 ### Deliberately unmapped
 
