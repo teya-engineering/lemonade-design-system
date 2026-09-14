@@ -40,10 +40,10 @@ export default {
     type: .${type},
     checked: ${checked},
     onItemClicked: { }${variant !== 'plain' ? `,
-    variant: .${variant}` : ''}${supportText ? `,
-    supportText: "${supportText}"` : ''}${disabled ? `,
+    variant: .${variant}` : ''}${disabled ? `,
     enabled: false` : ''}${showDivider ? `,
-    showDivider: true` : ''},
+    showDivider: true` : ''}${supportText ? `,
+    supportText: "${supportText}"` : ''},
     leadingSlot: ${leading},
     trailingSlot: ${trailing}${bottom ? figma.swift`,
     slotContent: ${slot('↪ 🧩 Bottom Slot', 'bottom content')}` : ''}

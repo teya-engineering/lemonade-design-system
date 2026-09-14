@@ -1,5 +1,5 @@
 // url=<LEMONADE_COMPONENTS>?node-id=8122-18897
-// source=kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/Tabs.kt
+// source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/Tabs.kt
 // component=TabItem
 import figma from 'figma'
 
@@ -23,7 +23,7 @@ if (icon && icon.type === 'INSTANCE') {
 // surfaced through metadata.props.
 export default {
   example: figma.kotlin`TabItem(label = "${label}"${iconCode ? figma.kotlin`, icon = ${iconCode}` : ''}${disabled ? ', isDisabled = true' : ''})`,
-  imports: ['import com.teya.lemonade.core.TabItem', ...(iconCode ? ['import com.teya.lemonade.core.LemonadeIcons'] : [])],
+  imports: ['import com.teya.lemonade.TabItem', ...(iconCode ? ['import com.teya.lemonade.core.LemonadeIcons'] : [])],
   id: 'tab-item',
   metadata: { nestable: true, props: { selected: selected ? 'true' : 'false' } },
 }
