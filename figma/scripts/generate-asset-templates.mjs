@@ -41,9 +41,27 @@ const swiftMembers = (src) =>
 // the theme, so both nodes reference the same enum entry.
 const stripDark = (name) => name.replace(/-dark$/, '')
 
+// Kotlin enums live in core as LemonadeIcons; the Swift enum in the same-named
+// file is singular, LemonadeIcon.
 const PLATFORMS = {
-  compose: { dir: 'connect', tag: 'kotlin' },
-  swiftui: { dir: 'connect-swiftui', tag: 'swift' },
+  compose: {
+    dir: 'connect',
+    tag: 'kotlin',
+    members: kotlinMembers,
+    keyFor: pascal,
+    enumPath: (enumName) => `kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/${enumName}.kt`,
+    type: (enumName) => enumName,
+    imports: (enumName) => [`import com.teya.lemonade.core.${enumName}`],
+  },
+  swiftui: {
+    dir: 'connect-swiftui',
+    tag: 'swift',
+    members: swiftMembers,
+    keyFor: (name) => name,
+    enumPath: (enumName) => `swiftui/Sources/Lemonade/${enumName}.swift`,
+    type: (enumName) => enumName.replace(/s$/, ''),
+    imports: () => [],
+  },
 }
 
 const ASSETS = {
@@ -52,63 +70,22 @@ const ASSETS = {
     entries: 'icons',
     urlToken: '<LEMONADE_ICONS>',
     outSub: 'icons',
-    normalise: (name) => name,
-    compose: {
-      enumPath: 'kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeIcons.kt',
-      members: kotlinMembers,
-      keyFor: (name) => pascal(name),
-      reference: (m) => `LemonadeIcons.${m}`,
-      imports: ['import com.teya.lemonade.core.LemonadeIcons'],
-    },
-    swiftui: {
-      enumPath: 'swiftui/Sources/Lemonade/LemonadeIcons.swift',
-      members: swiftMembers,
-      keyFor: (name) => name,
-      reference: (m) => `LemonadeIcon.${m}`,
-      imports: [],
-    },
+    enumName: 'LemonadeIcons',
   },
   flags: {
     manifest: 'flags.manifest.json',
     entries: 'flags',
     urlToken: '<LEMONADE_FLAGS>',
     outSub: 'flags',
-    normalise: (name) => name,
-    compose: {
-      enumPath: 'kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeCountryFlags.kt',
-      members: kotlinMembers,
-      keyFor: (name) => pascal(name),
-      reference: (m) => `LemonadeCountryFlags.${m}`,
-      imports: ['import com.teya.lemonade.core.LemonadeCountryFlags'],
-    },
-    swiftui: {
-      enumPath: 'swiftui/Sources/Lemonade/LemonadeCountryFlags.swift',
-      members: swiftMembers,
-      keyFor: (name) => name,
-      reference: (m) => `LemonadeCountryFlag.${m}`,
-      imports: [],
-    },
+    enumName: 'LemonadeCountryFlags',
   },
   brandLogos: {
     manifest: 'brand-logos.manifest.json',
     entries: 'brandLogos',
     urlToken: '<LEMONADE_COMPONENTS>',
     outSub: 'brand-logos',
+    enumName: 'LemonadeBrandLogos',
     normalise: stripDark,
-    compose: {
-      enumPath: 'kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeBrandLogos.kt',
-      members: kotlinMembers,
-      keyFor: (name) => pascal(name),
-      reference: (m) => `LemonadeBrandLogos.${m}`,
-      imports: ['import com.teya.lemonade.core.LemonadeBrandLogos'],
-    },
-    swiftui: {
-      enumPath: 'swiftui/Sources/Lemonade/LemonadeBrandLogos.swift',
-      members: swiftMembers,
-      keyFor: (name) => name,
-      reference: (m) => `LemonadeBrandLogo.${m}`,
-      imports: [],
-    },
   },
 }
 
@@ -141,20 +118,23 @@ for (const assetName of assets) {
 
   for (const platformName of platforms) {
     const platform = PLATFORMS[platformName]
-    const spec = asset[platformName]
-    const members = spec.members(readFileSync(join(repo, spec.enumPath), 'utf8'))
-    const allowed = new Set([...knownUnmapped, ...Object.keys(aliases)].map(spec.keyFor))
+    const enumPath = platform.enumPath(asset.enumName)
+    const type = platform.type(asset.enumName)
+    const imports = platform.imports(asset.enumName)
+    const members = platform.members(readFileSync(join(repo, enumPath), 'utf8'))
+    const allowed = new Set([...knownUnmapped, ...Object.keys(aliases)].map(platform.keyFor))
 
     // Checked in BOTH directions on purpose. Only checking manifest -> enum
     // catches a deleted asset but stays silent on an added one, which is the
     // direction that actually happens: an asset lands in code with no mapping.
     const missingFromEnum = []
-    const mapped = new Set()
+    const memberFor = new Map()
     for (const name of Object.keys(items)) {
-      const member = members.get(spec.keyFor(normalise(name)))
+      const member = members.get(platform.keyFor(normalise(name)))
       if (!member) missingFromEnum.push(name)
-      else mapped.add(member)
+      else memberFor.set(name, member)
     }
+    const mapped = new Set(memberFor.values())
     const missingFromManifest = [...members.entries()]
       .filter(([key, member]) => !mapped.has(member) && !allowed.has(key))
       .map(([, member]) => member)
@@ -164,7 +144,7 @@ for (const assetName of assets) {
       if (missingFromEnum.length) {
         console.error(`[${assetName}/${platformName}] ${missingFromEnum.length} Figma component(s) have no enum entry:`)
         for (const n of missingFromEnum) console.error(`  ${n}`)
-        console.error(`  → run the svg-asset-converter to add them to ${spec.enumPath}`)
+        console.error(`  → run the svg-asset-converter to add them to ${enumPath}`)
       }
       if (missingFromManifest.length) {
         console.error(`[${assetName}/${platformName}] ${missingFromManifest.length} enum entr(ies) have no mapping:`)
@@ -179,18 +159,15 @@ for (const assetName of assets) {
     mkdirSync(outDir, { recursive: true })
 
     for (const [name, nodeId] of Object.entries(items)) {
-      const member = members.get(spec.keyFor(normalise(name)))
-      const reference = spec.reference(member)
-      // Emits a bare enum reference, not a view or composable call: every
-      // consumer takes the enum. Parents needing a rendered asset wrap it.
+      // A bare enum reference, not a call: every consumer takes the enum.
       const body = `// url=${asset.urlToken}?node-id=${nodeId.replace(':', '-')}
-// source=${spec.enumPath}
-// component=${reference.split('.')[0]}
+// source=${enumPath}
+// component=${type}
 import figma from 'figma'
 
 export default {
-  example: figma.${platform.tag}\`${reference}\`,${
-    spec.imports.length ? `\n  imports: [${spec.imports.map((i) => `'${i}'`).join(', ')}],` : ''
+  example: figma.${platform.tag}\`${type}.${memberFor.get(name)}\`,${
+    imports.length ? `\n  imports: [${imports.map((i) => `'${i}'`).join(', ')}],` : ''
   }
   id: '${assetName.replace(/s$/, '')}-${name}',
   metadata: { nestable: true },
