@@ -132,8 +132,9 @@ acted on.
 
 ## Components
 
-Thirty-eight components per platform, plus nine internal parts they nest,
-hand-written and kept at parity. A few needed more than a property lookup:
+Thirty-eight components on both platforms, three Compose-only ones (`Dropdown`,
+`DropdownItem`, `BottomTabBar`), and nine internal parts they nest, all
+hand-written. A few needed more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
   `selectedTab` is a 0-based index; the template converts. Its tabs resolve
@@ -266,6 +267,18 @@ hand-written and kept at parity. A few needed more than a property lookup:
   variant. The circle has no size property and is drawn at 40px, which is
   `XXLarge`; a resized instance does not carry its size over. `BlockSkeleton` has
   a fixed height and radius, so every `Block` variant emits a NOTE.
+
+- A Compose-only component still gets a SwiftUI template, a one-line NOTE
+  saying there is no SwiftUI equivalent. A label with no template for a node
+  falls back to another label's, so without it the SwiftUI panel would show a
+  foreign snippet.
+
+- `findLayers` with `traverseInstances: true` returns layers **last to first**.
+  Templates that list children in order (`BottomTabBar`'s tabs, `Dropdown`'s
+  items, `HistoryTimeline`'s rows) search one level at a time without it, which
+  keeps document order. `Dropdown` walks its sections, then each section's
+  items, and flattens them: the code has no sections, so a design with headings,
+  dividers or item support text gets a NOTE.
 
 ### Deliberately unmapped
 
