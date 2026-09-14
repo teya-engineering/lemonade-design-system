@@ -45,15 +45,10 @@ A code enum entry with no Figma component is recorded in the manifest's
 `knownUnmapped` list, so the gap stays visible instead of being tolerated
 silently. Today that is one flag, `CD-congo-democratic-republic`.
 
-Two asset sets are not one-to-one, and the generator handles both:
-
-- **Brand logos ship a `-dark` component per brand.** `BrandLogo` resolves the
-  dark artwork from the theme, so both nodes reference the same enum entry —
-  50 templates over 25 entries.
-- **`LemonadeBrandLogos` carries both `Diners` and `Dinners`.** Only the
-  correctly-spelled component exists in Figma, and `Dinners` is served by it.
-  That is recorded in the manifest's `aliases` rather than dropped, so the
-  duplicate stays visible until someone removes it from the enums.
+Brand logos are not one-to-one: Figma ships a `-dark` component per brand, and
+`BrandLogo` resolves the dark artwork from the theme, so both nodes reference
+the same enum entry — 50 templates over 25 entries. When one enum entry is
+served by another entry's component, the manifest's `aliases` records it.
 
 Each asset emits a bare enum reference (`LemonadeIcons.Search`,
 `LemonadeCountryFlag.aCAscensionIsland`), because that is what every consumer
