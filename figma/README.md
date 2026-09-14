@@ -120,7 +120,7 @@ acted on.
 
 ## Components
 
-Thirty-four components per platform, plus nine internal parts they nest,
+Thirty-seven components per platform, plus nine internal parts they nest,
 hand-written and kept at parity. A few needed more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
@@ -224,6 +224,14 @@ hand-written and kept at parity. A few needed more than a property lookup:
 
 - `PinCode` has a disabled state in Figma that neither platform implements, so a
   disabled design carries a NOTE saying so rather than a silently normal snippet.
+
+- The skeletons are three Figma components over three composables. Figma names
+  the `Single Line` heights one step above `LemonadeSkeletonSize` — its `Small`
+  is the `size-400` line the code calls `XSmall` — so the template matches on the
+  height token rather than the name, and the code's `XXXLarge` has no Figma
+  variant. The circle has no size property and is drawn at 40px, which is
+  `XXLarge`; a resized instance does not carry its size over. `BlockSkeleton` has
+  a fixed height and radius, so every `Block` variant emits a NOTE.
 
 ### Deliberately unmapped
 
