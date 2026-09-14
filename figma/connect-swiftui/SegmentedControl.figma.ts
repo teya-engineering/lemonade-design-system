@@ -16,39 +16,22 @@ const size = instance.getEnum('◇ Size', {
   Small: 'small',
 })
 
-// Five lookups covers the set's maximum.
-const tab = (n) => {
+let tabs = figma.swift``
+let count = 0
+for (let n = 1; n <= segments; n += 1) {
   const child = instance.findInstance(`↪ Button ${n}`)
-  return child && child.type === 'INSTANCE' ? child.executeTemplate().example : undefined
+  if (!child || child.type !== 'INSTANCE') continue
+  tabs = figma.swift`${tabs}
+        ${child.executeTemplate().example},`
+  count += 1
 }
-const t1 = tab(1)
-const t2 = tab(2)
-const t3 = tab(3)
-const t4 = tab(4)
-const t5 = tab(5)
 
-const placeholders = Array.from(
-  { length: segments },
-  (_, i) => `        LemonadeTabButtonProperties.label("Tab ${i + 1}"),`,
-).join('\n')
+const placeholders = Array.from({ length: segments }, (_, i) => `
+        LemonadeTabButtonProperties.label("Tab ${i + 1}"),`).join('')
 
 export default {
-  example: t1
-    ? figma.swift`LemonadeUi.SegmentedControl(
-    properties: [${t1 ? figma.swift`
-        ${t1},` : ''}${t2 ? figma.swift`
-        ${t2},` : ''}${t3 ? figma.swift`
-        ${t3},` : ''}${t4 ? figma.swift`
-        ${t4},` : ''}${t5 ? figma.swift`
-        ${t5},` : ''}
-    ],
-    selectedTab: ${selected},
-    size: .${size},
-    onTabSelected: { _ in }
-)`
-    : figma.swift`LemonadeUi.SegmentedControl(
-    properties: [
-${placeholders}
+  example: figma.swift`LemonadeUi.SegmentedControl(
+    properties: [${count ? tabs : placeholders}
     ],
     selectedTab: ${selected},
     size: .${size},

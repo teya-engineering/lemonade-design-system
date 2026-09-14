@@ -16,39 +16,22 @@ const size = instance.getEnum('◇ Size', {
   Small: 'Small',
 })
 
-// Five lookups covers the set's maximum.
-const tab = (n) => {
+let tabs = figma.kotlin``
+let count = 0
+for (let n = 1; n <= segments; n += 1) {
   const child = instance.findInstance(`↪ Button ${n}`)
-  return child && child.type === 'INSTANCE' ? child.executeTemplate().example : undefined
+  if (!child || child.type !== 'INSTANCE') continue
+  tabs = figma.kotlin`${tabs}
+        ${child.executeTemplate().example},`
+  count += 1
 }
-const t1 = tab(1)
-const t2 = tab(2)
-const t3 = tab(3)
-const t4 = tab(4)
-const t5 = tab(5)
 
-const placeholders = Array.from(
-  { length: segments },
-  (_, i) => `        TabButtonProperties.label(label = "Tab ${i + 1}"),`,
-).join('\n')
+const placeholders = Array.from({ length: segments }, (_, i) => `
+        TabButtonProperties.label(label = "Tab ${i + 1}"),`).join('')
 
 export default {
-  example: t1
-    ? figma.kotlin`LemonadeUi.SegmentedControl(
-    properties = listOf(${t1 ? figma.kotlin`
-        ${t1},` : ''}${t2 ? figma.kotlin`
-        ${t2},` : ''}${t3 ? figma.kotlin`
-        ${t3},` : ''}${t4 ? figma.kotlin`
-        ${t4},` : ''}${t5 ? figma.kotlin`
-        ${t5},` : ''}
-    ),
-    selectedTab = ${selected},
-    onTabSelected = { },
-    size = LemonadeSegmentedControlSize.${size},
-)`
-    : figma.kotlin`LemonadeUi.SegmentedControl(
-    properties = listOf(
-${placeholders}
+  example: figma.kotlin`LemonadeUi.SegmentedControl(
+    properties = listOf(${count ? tabs : placeholders}
     ),
     selectedTab = ${selected},
     onTabSelected = { },

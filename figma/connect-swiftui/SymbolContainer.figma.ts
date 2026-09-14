@@ -2,33 +2,10 @@
 // source=swiftui/Sources/Lemonade/Components/LemonadeSymbolContainer.swift
 // component=SymbolContainer
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-
-// Lemonade components in a slot render as their own snippets, indented to fit;
-// a slot holding none of them keeps its placeholder.
-const snippets = (name, pad) => {
-  const found = instance.getSlot(name)
-  const children = found && found.connectedInstances ? found.connectedInstances : []
-  if (!children.length) return undefined
-  let body = figma.swift``
-  for (const child of children) {
-    const sections = child.executeTemplate().example.map((section) =>
-      section.type === 'CODE' ? { ...section, code: section.code.replace(/\n/g, `\n${pad}`) } : section,
-    )
-    body = figma.swift`${body}
-${pad}${sections}`
-  }
-  return body
-}
-
-const slot = (name, placeholder, open = '{') => {
-  const body = snippets(name, '        ')
-  return body ? figma.swift`${open}${body}
-    }` : `${open} /* ${placeholder} */ }`
-}
-
-const accessory = snippets('↪ 🧩 Accessory', '    ')
+const { snippets, slot } = renderer(instance, figma.swift)
 
 // Figma calls the amber voice "Caution"; the enum calls it warning.
 const voice = instance.getEnum('◇ Voice', {
@@ -70,8 +47,6 @@ const textLayer = contentType === 'text' ? instance.findText('A') : undefined
 const text = textLayer && textLayer.type === 'TEXT' ? textLayer.textContent : ''
 
 const badge = instance.getBoolean('◉ Show Accessory')
-  ? instance.getSlot('↪ 🧩 Accessory')
-  : undefined
 
 const tail = `,
     voice: .${voice},
@@ -79,11 +54,16 @@ const tail = `,
     shape: .${shape}`
 
 // When content is the trailing closure, badgeSlot has to be a labelled argument.
-const badgeArg = badge ? figma.swift` {${accessory ?? `
+const contentClosure = contentType !== 'icon' && contentType !== 'text'
+const badgeArg = badge && !contentClosure ? figma.swift` {${snippets('↪ 🧩 Accessory', '    ') ?? `
     /* accessory */`}
 }` : ''
-const badgeSlotArg = badge ? figma.swift`,
+const badgeSlotArg = badge && contentClosure ? figma.swift`,
     badgeSlot: ${slot('↪ 🧩 Accessory', 'accessory')}` : ''
+
+const content = contentType === 'brand'
+  ? brandCode ? figma.swift`LemonadeUi.BrandLogo(logo: ${brandCode}, size: .medium)` : ''
+  : '// TODO: your image'
 
 export default {
   example:
@@ -96,20 +76,12 @@ export default {
         ? figma.swift`LemonadeUi.SymbolContainer(
     text: "${text}"${tail}
 )${badgeArg}`
-        : contentType === 'brand'
-          ? figma.swift`LemonadeUi.SymbolContainer(
+        : figma.swift`LemonadeUi.SymbolContainer(
     voice: .${voice},
     size: .${size},
     shape: .${shape}${badgeSlotArg}
 ) {
-    ${brandCode ? figma.swift`LemonadeUi.BrandLogo(logo: ${brandCode}, size: .medium)` : ''}
-}`
-          : figma.swift`LemonadeUi.SymbolContainer(
-    voice: .${voice},
-    size: .${size},
-    shape: .${shape}${badgeSlotArg}
-) {
-    // TODO: your image
+    ${content}
 }`,
   id: 'symbol-container',
   metadata: { nestable: true },
