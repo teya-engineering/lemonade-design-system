@@ -1,5 +1,5 @@
 // url=<LEMONADE_COMPONENTS>?node-id=11090-33609
-// source=kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/HistoryTimeline.kt
+// source=kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/HistoryItemVoice.kt
 // component=HistoryItemVoice
 import figma from 'figma'
 

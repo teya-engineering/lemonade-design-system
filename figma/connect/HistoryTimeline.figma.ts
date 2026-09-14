@@ -29,7 +29,7 @@ export default {
     ),
     currentIndex = ${currentIndex},
 )`,
-  imports: ['import com.teya.lemonade.HistoryTimeline', 'import com.teya.lemonade.LemonadeUi', 'import com.teya.lemonade.core.HistoryTimelineItem'],
+  imports: ['import com.teya.lemonade.HistoryTimeline', 'import com.teya.lemonade.LemonadeUi', 'import com.teya.lemonade.HistoryTimelineItem'],
   id: 'history-timeline',
   metadata: { nestable: false },
 }
