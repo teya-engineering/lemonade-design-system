@@ -141,6 +141,8 @@ hand-written and kept at parity. A few needed more than a property lookup:
   the swap is only emitted for Neutral.
 - `Chip` folds disabled into `Interaction State` instead of a separate flag, and
   has no slot overload — its Figma slots map onto `leadingIcon`/`trailingIcon`.
+  The trailing slot holds the internal `Chip Trailing Options`, which has no
+  code equivalent, so only `leadingIcon` is emitted.
 - SwiftUI rejects a trailing comma in an argument list, so those templates
   compose optional arguments with a **leading** comma. Kotlin permits either.
 - `TextField.input` is a `Binding` on SwiftUI, so the snippet emits
@@ -175,23 +177,36 @@ hand-written and kept at parity. A few needed more than a property lookup:
   of each tab in Figma and an index on the parent, so the child surfaces it
   through `metadata.props` and the parent folds it into `selectedIndex`.
 
-- **Slot content cannot be inlined.** Figma hoists an instance-bearing `SLOT`
-  into React-shaped nested functions, so `getSlot()` interpolated into a Kotlin
-  or Swift snippet emits `<LeadingSlot_1 />` rather than the child's code. Slots
-  are therefore used only as a presence signal: a lambda-typed parameter gets a
-  `/* … */` placeholder, and an enum-typed one is left out entirely, because a
-  slot cannot resolve to an enum value. That is why `Chip`'s leading and trailing
-  icons are omitted and `Tile`'s required `icon` emits a TODO instead of a guess.
-  `INSTANCE_SWAP` properties do not have this problem and inline correctly.
+- **Slots.** Interpolating `getSlot()` into a Kotlin or Swift snippet emits
+  React-shaped `<LeadingSlot_1 />`, because Figma hoists an instance-bearing
+  `SLOT` into nested functions. Templates read slots through
+  `getSlot(name).connectedInstances` instead, which lists the Lemonade
+  components in the slot, and render each one's `executeTemplate().example`
+  into the lambda. A slot holding none of them (empty, text, or an unconnected
+  internal part) keeps its `/* … */` placeholder; SwiftUI's required closures
+  take `{ EmptyView() }` when the slot is hidden. Two details make this work:
+  - A nested snippet keeps its own indentation, so the `CODE` sections of each
+    example are re-indented before interpolating.
+  - Figma passes imports up only one level: a child's result carries its own
+    imports but not its children's. Each template therefore re-exports the
+    imports of the slot children it renders (`slotImports`), and a template that
+    interpolates an asset swap lists that asset's enum import itself. Without
+    both, a Card holding a ListItem holding an Icon would lose the Icon's
+    imports.
+
+  An enum-typed parameter reads the glyph of the Icon its slot holds, which is
+  how `Tile` fills its required `icon` and `Chip` its `leadingIcon`.
+  `INSTANCE_SWAP` properties inline directly.
 - `Tooltip` maps all thirteen indicator placements. `History Timeline` resolves
   its rows through a `.History Item` template, which reads its text from the
   nested content instance and its voice from the nested indicator via
   `metadata.props`, then folds the current row into `currentIndex`.
 
 - `SwipeActionRow` maps its placement onto `leadingActions` or
-  `trailingActions`. The list itself stays empty with a TODO: the actions are
-  `SwipeAction` data objects with enum-typed icons, and a Figma slot resolves to
-  neither.
+  `trailingActions`, and renders its row content from the `Sliding Item` slot.
+  The actions list stays empty with a TODO: the actions are `SwipeAction` data
+  objects, and the design draws them with internal `.Icon Button Circular`
+  parts that have no template.
 
 - `Divider` is one Figma component over two composables: `Orientation` picks
   between `HorizontalDivider` and `VerticalDivider` rather than being a

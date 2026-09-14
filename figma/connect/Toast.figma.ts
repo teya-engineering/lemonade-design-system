@@ -38,6 +38,7 @@ export default {
     'import com.teya.lemonade.LemonadeUi',
     'import com.teya.lemonade.Toast',
     'import com.teya.lemonade.ToastVoice',
+    ...(iconCode ? ['import com.teya.lemonade.core.LemonadeIcons'] : []),
   ],
   id: 'toast',
   metadata: { nestable: true },

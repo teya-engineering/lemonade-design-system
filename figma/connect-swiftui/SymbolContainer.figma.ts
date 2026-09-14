@@ -5,6 +5,31 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
+// Lemonade components in a slot render as their own snippets, indented to fit;
+// a slot holding none of them keeps its placeholder.
+const snippets = (name, pad) => {
+  const found = instance.getSlot(name)
+  const children = found && found.connectedInstances ? found.connectedInstances : []
+  if (!children.length) return undefined
+  let body = figma.swift``
+  for (const child of children) {
+    const sections = child.executeTemplate().example.map((section) =>
+      section.type === 'CODE' ? { ...section, code: section.code.replace(/\n/g, `\n${pad}`) } : section,
+    )
+    body = figma.swift`${body}
+${pad}${sections}`
+  }
+  return body
+}
+
+const slot = (name, placeholder, open = '{') => {
+  const body = snippets(name, '        ')
+  return body ? figma.swift`${open}${body}
+    }` : `${open} /* ${placeholder} */ }`
+}
+
+const accessory = snippets('↪ 🧩 Accessory', '    ')
+
 // Figma calls the amber voice "Caution"; the enum calls it warning.
 const voice = instance.getEnum('◇ Voice', {
   Neutral: 'neutral',
@@ -54,11 +79,11 @@ const tail = `,
     shape: .${shape}`
 
 // When content is the trailing closure, badgeSlot has to be a labelled argument.
-const badgeArg = badge ? figma.swift` {
-    /* accessory */
+const badgeArg = badge ? figma.swift` {${accessory ?? `
+    /* accessory */`}
 }` : ''
 const badgeSlotArg = badge ? figma.swift`,
-    badgeSlot: { ${badge} }` : ''
+    badgeSlot: ${slot('↪ 🧩 Accessory', 'accessory')}` : ''
 
 export default {
   example:

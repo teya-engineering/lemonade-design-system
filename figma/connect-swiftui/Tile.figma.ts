@@ -5,6 +5,40 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 
+// Lemonade components in a slot render as their own snippets, indented to fit;
+// a slot holding none of them keeps its placeholder.
+const snippets = (name, pad) => {
+  const found = instance.getSlot(name)
+  const children = found && found.connectedInstances ? found.connectedInstances : []
+  if (!children.length) return undefined
+  let body = figma.swift``
+  for (const child of children) {
+    const sections = child.executeTemplate().example.map((section) =>
+      section.type === 'CODE' ? { ...section, code: section.code.replace(/\n/g, `\n${pad}`) } : section,
+    )
+    body = figma.swift`${body}
+${pad}${sections}`
+  }
+  return body
+}
+
+const slot = (name, placeholder, open = '{') => {
+  const body = snippets(name, '        ')
+  return body ? figma.swift`${open}${body}
+    }` : `${open} /* ${placeholder} */ }`
+}
+
+// An enum-typed parameter takes the glyph of the Icon a slot holds.
+const slotIcon = (name) => {
+  const found = instance.getSlot(name)
+  const icon = found && found.connectedInstances ? found.connectedInstances[0] : undefined
+  const glyph = icon ? icon.getInstanceSwap('🧩 Icon') : undefined
+  return glyph && glyph.type === 'INSTANCE' ? glyph.executeTemplate().example : undefined
+}
+
+const icon = slotIcon('🧩 Leading Slot')
+const accessory = snippets('↪ 🧩 Top Accessory', '    ')
+
 const label = instance.getString('✍️ Label')
 const supportText = instance.getBoolean('◉ Show Support Text')
   ? instance.getString('↪ ✍️ Support Text')
@@ -27,22 +61,22 @@ export default {
   example: topAccessory
     ? figma.swift`LemonadeUi.Tile(
     label: "${label}",
-    // TODO: icon — set the LemonadeIcon case the design uses${supportText ? `,
-    supportText: "${supportText}"` : ''}${selected ? `,
-    isSelected: true` : ''}${disabled ? `,
-    enabled: false` : ''},
+    ${icon ? figma.swift`icon: ${icon}` : '// TODO: icon — set the LemonadeIcon case the design uses'}${disabled ? `,
+    enabled: false` : ''}${selected ? `,
+    isSelected: true` : ''}${supportText ? `,
+    supportText: "${supportText}"` : ''},
     onClick: { },
     variant: .${variant},
     orientation: .${orientation}
-) {
-    /* top accessory */
+) {${accessory ?? `
+    /* top accessory */`}
 }`
     : figma.swift`LemonadeUi.Tile(
     label: "${label}",
-    // TODO: icon — set the LemonadeIcon case the design uses${supportText ? `,
-    supportText: "${supportText}"` : ''}${selected ? `,
-    isSelected: true` : ''}${disabled ? `,
-    enabled: false` : ''},
+    ${icon ? figma.swift`icon: ${icon}` : '// TODO: icon — set the LemonadeIcon case the design uses'}${disabled ? `,
+    enabled: false` : ''}${selected ? `,
+    isSelected: true` : ''}${supportText ? `,
+    supportText: "${supportText}"` : ''},
     onClick: { },
     variant: .${variant},
     orientation: .${orientation}
