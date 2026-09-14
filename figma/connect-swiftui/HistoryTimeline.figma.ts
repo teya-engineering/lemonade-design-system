@@ -12,25 +12,23 @@ const rows = instance
   .findLayers((node) => node.name === '.History Item')
   .filter((node) => node.type === 'INSTANCE')
 
-const items = []
+let items = figma.swift``
+let count = 0
 let currentIndex = 0
 for (const row of rows) {
   const result = row.executeTemplate()
-  if (result.metadata?.props?.current === 'true') currentIndex = items.length
-  items.push(result.example)
+  if (result.metadata?.props?.current === 'true') currentIndex = count
+  items = figma.swift`${items}
+        ${result.example},`
+  count += 1
 }
-
-const [i1, i2, i3, i4, i5, i6] = items
-const line = (i) => (i ? figma.swift`
-        ${i},` : '')
 
 export default {
   example: figma.swift`LemonadeUi.HistoryTimeline(
-    items: [${line(i1)}${line(i2)}${line(i3)}${line(i4)}${line(i5)}${line(i6)}
+    items: [${items}
     ],
-    currentIndex: ${currentIndex},
+    currentIndex: ${currentIndex}
 )`,
-
   id: 'history-timeline',
   metadata: { nestable: false },
 }

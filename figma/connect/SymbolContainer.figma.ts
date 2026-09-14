@@ -2,8 +2,10 @@
 // source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/SymbolContainer.kt
 // component=SymbolContainer
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { slot, imports: slotImports } = renderer(instance, figma.kotlin)
 
 // Figma calls the amber voice "Caution"; the enum calls it Warning.
 const voice = instance.getEnum('◇ Voice', {
@@ -45,43 +47,18 @@ const textLayer = contentType === 'text' ? instance.findText('A') : undefined
 const text = textLayer && textLayer.type === 'TEXT' ? textLayer.textContent : ''
 
 const badge = instance.getBoolean('◉ Show Accessory')
-  ? instance.getSlot('↪ 🧩 Accessory')
-  : undefined
 
 const tail = `
     voice = SymbolContainerVoice.${voice},
     size = SymbolContainerSize.${size},
     shape = SymbolContainerShape.${shape},`
 
+const content = contentType === 'brand'
+  ? brandCode ? figma.kotlin`LemonadeUi.BrandLogo(logo = ${brandCode}, size = LemonadeAssetSize.Medium)` : ''
+  : '/* TODO: your image */'
+
 const badgeArg = badge ? figma.kotlin`
     badgeSlot = ${slot('↪ 🧩 Accessory', 'accessory')},` : ''
-
-// Lemonade components in a slot render as their own snippets, indented to fit;
-// a slot holding none of them keeps its placeholder. Figma passes up only one
-// level of imports, so the children's are re-exported for the parent's parent.
-const slotImports = new Set()
-const snippets = (name, pad) => {
-  const found = instance.getSlot(name)
-  const children = found && found.connectedInstances ? found.connectedInstances : []
-  if (!children.length) return undefined
-  let body = figma.kotlin``
-  for (const child of children) {
-    const { example } = child.executeTemplate()
-    for (const section of example) for (const i of section.nestedImports ?? []) slotImports.add(i)
-    const sections = example.map((section) =>
-      section.type === 'CODE' ? { ...section, code: section.code.replace(/\n/g, `\n${pad}`) } : section,
-    )
-    body = figma.kotlin`${body}
-${pad}${sections}`
-  }
-  return body
-}
-
-const slot = (name, placeholder, open = '{') => {
-  const body = snippets(name, '        ')
-  return body ? figma.kotlin`${open}${body}
-    }` : `${open} /* ${placeholder} */ }`
-}
 
 export default {
   example:
@@ -94,12 +71,8 @@ export default {
         ? figma.kotlin`LemonadeUi.SymbolContainer(
     text = "${text}",${tail}${badgeArg}
 )`
-        : contentType === 'brand'
-          ? figma.kotlin`LemonadeUi.SymbolContainer(
-    contentSlot = { ${brandCode ? figma.kotlin`LemonadeUi.BrandLogo(logo = ${brandCode}, size = LemonadeAssetSize.Medium)` : ''} },${tail}${badgeArg}
-)`
-          : figma.kotlin`LemonadeUi.SymbolContainer(
-    contentSlot = { /* TODO: your image */ },${tail}${badgeArg}
+        : figma.kotlin`LemonadeUi.SymbolContainer(
+    contentSlot = { ${content} },${tail}${badgeArg}
 )`,
   imports: [
     'import com.teya.lemonade.LemonadeUi',

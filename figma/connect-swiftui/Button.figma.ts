@@ -2,32 +2,10 @@
 // source=swiftui/Sources/Lemonade/Components/LemonadeButton.swift
 // component=Button
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-
-// Lemonade components in a slot render as their own snippets, indented to fit;
-// a slot holding none of them keeps its placeholder.
-const snippets = (name, pad) => {
-  const found = instance.getSlot(name)
-  const children = found && found.connectedInstances ? found.connectedInstances : []
-  if (!children.length) return undefined
-  let body = figma.swift``
-  for (const child of children) {
-    const sections = child.executeTemplate().example.map((section) =>
-      section.type === 'CODE' ? { ...section, code: section.code.replace(/\n/g, `\n${pad}`) } : section,
-    )
-    body = figma.swift`${body}
-${pad}${sections}`
-  }
-  return body
-}
-
-const slot = (name, placeholder, open = '{') => {
-  const body = snippets(name, '        ')
-  return body ? figma.swift`${open}${body}
-    }` : `${open} /* ${placeholder} */ }`
-}
-
+const { slot } = renderer(instance, figma.swift)
 const label = instance.getString('✍️ Label')
 
 const variant = instance.getEnum('◇ Variant', {
@@ -56,11 +34,7 @@ const loading = instance.getEnum('◉ Is Loading', { True: true, False: false })
 const disabled = instance.getEnum('◉ Is Disabled', { True: true, False: false })
 
 const leadingSlot = instance.getBoolean('◉ Show Leading')
-  ? instance.getSlot('↪ 🧩 Leading Slot')
-  : undefined
 const trailingSlot = instance.getBoolean('◉ Show Trailing')
-  ? instance.getSlot('↪ 🧩 Trailing Slot')
-  : undefined
 
 // Swift rejects a trailing comma in an argument list, so every optional
 // argument carries a leading comma instead.

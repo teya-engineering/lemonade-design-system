@@ -17,6 +17,7 @@ connect-swiftui/            SwiftUI templates
   icons/                    GENERATED — do not edit
   flags/                    GENERATED — do not edit
   brand-logos/              GENERATED — do not edit
+shared/render.ts            slot and nested-snippet helpers both labels import
 scripts/generate-asset-templates.mjs
 ```
 
@@ -163,12 +164,10 @@ hand-written and kept at parity. A few needed more than a property lookup:
   **Brand Logo** has no overload of its own and renders through the content slot
   as a nested `BrandLogo`; **Image** has no source in Figma to carry over, so the
   slot is emitted with a TODO for the developer to fill.
-- Figma still calls SymbolContainer's amber voice **`Caution`** while the enum
-  calls it `Warning`. Tag and ActionListItem both had this shape of mismatch and
-  were renamed in Figma; this set is the last one outstanding. The template maps
-  across it, but the library disagreeing with itself is worth fixing at source —
-  and note that a rename is exactly the change `getEnum` degrades to `undefined`
-  on, silently, until someone republishes.
+- Figma calls SymbolContainer's amber voice **`Caution`** while the enum calls
+  it `Warning`. The template maps across it, but the library disagreeing with
+  itself is worth fixing at source — and a rename is exactly the change
+  `getEnum` degrades to `undefined` on, silently, until someone republishes.
 
 - `Tabs` resolves its tab children the way SegmentedControl does, through a
   `TabItem` template on the internal `_Tab Item` component. Its `◇ Items` variant
@@ -180,23 +179,26 @@ hand-written and kept at parity. A few needed more than a property lookup:
 - **Slots.** Interpolating `getSlot()` into a Kotlin or Swift snippet emits
   React-shaped `<LeadingSlot_1 />`, because Figma hoists an instance-bearing
   `SLOT` into nested functions. Templates read slots through
-  `getSlot(name).connectedInstances` instead, which lists the Lemonade
-  components in the slot, and render each one's `executeTemplate().example`
-  into the lambda. A slot holding none of them (empty, text, or an unconnected
-  internal part) keeps its `/* … */` placeholder; SwiftUI's required closures
-  take `{ EmptyView() }` when the slot is hidden. Two details make this work:
+  `shared/render.ts` instead, which renders the Lemonade components listed in
+  `getSlot(name).connectedInstances` into the lambda. A slot holding none of
+  them (empty, text, an unconnected internal part, or a component mapped only
+  under another label, which has no `codeConnectId()` here) keeps its `/* … */`
+  placeholder; SwiftUI's required closures take `{ EmptyView() }` when the slot
+  is hidden. The helper also covers two platform quirks:
   - A nested snippet keeps its own indentation, so the `CODE` sections of each
     example are re-indented before interpolating.
   - Figma passes imports up only one level: a child's result carries its own
-    imports but not its children's. Each template therefore re-exports the
-    imports of the slot children it renders (`slotImports`), and a template that
+    imports but not its children's. The helper collects the imports of every
+    child it renders for the template to re-export, and a template that
     interpolates an asset swap lists that asset's enum import itself. Without
     both, a Card holding a ListItem holding an Icon would lose the Icon's
     imports.
 
   An enum-typed parameter reads the glyph of the Icon its slot holds, which is
   how `Tile` fills its required `icon` and `Chip` its `leadingIcon`.
-  `INSTANCE_SWAP` properties inline directly.
+  `INSTANCE_SWAP` properties inline directly. Templates are bundled at publish
+  time, so a helper import costs nothing at runtime; helpers must live under
+  `figma/` outside the `connect*/**/*.figma.ts` globs.
 - `Tooltip` maps all thirteen indicator placements. `History Timeline` resolves
   its rows through a `.History Item` template, which reads its text from the
   nested content instance and its voice from the nested indicator via

@@ -2,8 +2,10 @@
 // source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/Chip.kt
 // component=Chip
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { slotIcon } = renderer(instance, figma.kotlin)
 
 const label = instance.getString('✍️ Label')
 const selected = instance.getEnum('◉ Is Selected', { True: true, False: false })
@@ -20,17 +22,7 @@ const counter = instance.getBoolean('◉ Shown Counter')
   ? instance.getString('↪ ✍️ Counter')
   : undefined
 
-const leading = instance.getBoolean('◉ Show Leading') ? instance.getSlot('↪ 🧩 Leading') : undefined
-const trailing = instance.getBoolean('◉ Show Trailing') ? instance.getSlot('↪ 🧩 Trailing') : undefined
-
-// An enum-typed parameter takes the glyph of the Icon a slot holds.
-const slotIcon = (name) => {
-  const found = instance.getSlot(name)
-  const icon = found && found.connectedInstances ? found.connectedInstances[0] : undefined
-  const glyph = icon ? icon.getInstanceSwap('🧩 Icon') : undefined
-  return glyph && glyph.type === 'INSTANCE' ? glyph.executeTemplate().example : undefined
-}
-
+const leading = instance.getBoolean('◉ Show Leading')
 const leadingIcon = leading ? slotIcon('↪ 🧩 Leading') : undefined
 
 export default {
