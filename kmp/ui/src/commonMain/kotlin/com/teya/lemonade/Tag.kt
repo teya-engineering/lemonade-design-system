@@ -142,22 +142,22 @@ private data class TagPreviewData(
 
 private class TagPreviewProvider :
     PreviewParameterProvider<TagPreviewData> {
-    override val values: Sequence<TagPreviewData> = buildAllVariants()
+    override val values: Sequence<TagPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<TagPreviewData> =
-        buildList {
-            listOf(true, false)
-                .forEach { withIcon ->
-                    TagVoice.entries.forEach { voice ->
-                        add(
-                            element = TagPreviewData(
-                                voice = voice,
-                                withIcon = withIcon,
-                            ),
-                        )
-                    }
-                }
-        }.asSequence()
+    private fun buildRepresentativeVariants(): Sequence<TagPreviewData> {
+        val base = TagPreviewData(
+            voice = TagVoice.Neutral,
+            withIcon = false,
+        )
+        return buildList {
+            add(element = base)
+            TagVoice.entries.forEach { voice ->
+                add(element = base.copy(voice = voice))
+            }
+            add(element = base.copy(withIcon = true))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @Composable

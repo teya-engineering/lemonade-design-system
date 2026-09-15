@@ -1090,27 +1090,22 @@ private data class ResourceListItemPreviewData(
 
 private class ResourceListItemPreviewProvider :
     PreviewParameterProvider<ResourceListItemPreviewData> {
-    override val values: Sequence<ResourceListItemPreviewData> = buildAllVariants()
+    override val values: Sequence<ResourceListItemPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<ResourceListItemPreviewData> =
-        buildList {
-            listOf(true, false)
-                .forEach { addonSlot ->
-                    listOf(true, false)
-                        .forEach { enabled ->
-                            listOf(true, false)
-                                .forEach { withSupportText ->
-                                    add(
-                                        ResourceListItemPreviewData(
-                                            withAddonSlot = addonSlot,
-                                            enabled = enabled,
-                                            supportText = withSupportText,
-                                        ),
-                                    )
-                                }
-                        }
-                }
-        }.asSequence()
+    private fun buildRepresentativeVariants(): Sequence<ResourceListItemPreviewData> {
+        val base = ResourceListItemPreviewData(
+            withAddonSlot = false,
+            enabled = true,
+            supportText = false,
+        )
+        return buildList {
+            add(element = base)
+            add(element = base.copy(withAddonSlot = true))
+            add(element = base.copy(enabled = false))
+            add(element = base.copy(supportText = true))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview
@@ -1157,39 +1152,28 @@ private data class ActionListItemPreviewData(
 
 private class ActionListItemPreviewProvider :
     PreviewParameterProvider<ActionListItemPreviewData> {
-    override val values: Sequence<ActionListItemPreviewData> = buildAllVariants()
+    override val values: Sequence<ActionListItemPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<ActionListItemPreviewData> =
-        buildList {
-            listOf(true, false)
-                .forEach { voice ->
-                    listOf(true, false)
-                        .forEach { enabled ->
-                            listOf(true, false)
-                                .forEach { topLabel ->
-                                    listOf(true, false)
-                                        .forEach { withSupportText ->
-                                            listOf(true, false)
-                                                .forEach { trailingSlot ->
-                                                    listOf(true, false)
-                                                        .forEach { showNavigationIndicator ->
-                                                            add(
-                                                                ActionListItemPreviewData(
-                                                                    voice = voice,
-                                                                    enabled = enabled,
-                                                                    topLabel = topLabel,
-                                                                    supportText = withSupportText,
-                                                                    trailingSlot = trailingSlot,
-                                                                    showNavigationIndicator = showNavigationIndicator,
-                                                                ),
-                                                            )
-                                                        }
-                                                }
-                                        }
-                                }
-                        }
-                }
-        }.asSequence()
+    private fun buildRepresentativeVariants(): Sequence<ActionListItemPreviewData> {
+        val base = ActionListItemPreviewData(
+            voice = false,
+            enabled = true,
+            topLabel = false,
+            supportText = false,
+            trailingSlot = false,
+            showNavigationIndicator = false,
+        )
+        return buildList {
+            add(element = base)
+            add(element = base.copy(voice = true))
+            add(element = base.copy(enabled = false))
+            add(element = base.copy(topLabel = true))
+            add(element = base.copy(supportText = true))
+            add(element = base.copy(trailingSlot = true))
+            add(element = base.copy(showNavigationIndicator = true))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview

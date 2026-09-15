@@ -422,23 +422,20 @@ private data class SearchFieldPreviewData(
 )
 
 private class SearchFieldPreviewProvider : PreviewParameterProvider<SearchFieldPreviewData> {
-    override val values: Sequence<SearchFieldPreviewData> = buildAllVariants()
+    override val values: Sequence<SearchFieldPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<SearchFieldPreviewData> =
-        buildList {
-            listOf(true, false)
-                .forEach { withContent ->
-                    listOf(true, false)
-                        .forEach { enabled ->
-                            add(
-                                element = SearchFieldPreviewData(
-                                    withContent = withContent,
-                                    enabled = enabled,
-                                ),
-                            )
-                        }
-                }
-        }.asSequence()
+    private fun buildRepresentativeVariants(): Sequence<SearchFieldPreviewData> {
+        val base = SearchFieldPreviewData(
+            withContent = false,
+            enabled = true,
+        )
+        return buildList {
+            add(element = base)
+            add(element = base.copy(withContent = true))
+            add(element = base.copy(enabled = false))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview

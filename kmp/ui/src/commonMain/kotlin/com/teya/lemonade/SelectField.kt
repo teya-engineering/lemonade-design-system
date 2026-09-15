@@ -151,35 +151,26 @@ private data class SelectFieldPreviewData(
 )
 
 private class SelectFieldPreviewProvider : PreviewParameterProvider<SelectFieldPreviewData> {
-    override val values: Sequence<SelectFieldPreviewData> = buildAllVariants()
+    override val values: Sequence<SelectFieldPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<SelectFieldPreviewData> =
-        buildList {
-            listOf(true, false)
-                .forEach { withOuterContent ->
-                    listOf(true, false)
-                        .forEach { enabled ->
-                            listOf(true, false)
-                                .forEach { error ->
-                                    listOf(true, false)
-                                        .forEach { withLeadingIcon ->
-                                            listOf(true, false)
-                                                .forEach { isFilled ->
-                                                    add(
-                                                        element = SelectFieldPreviewData(
-                                                            enabled = enabled,
-                                                            error = error,
-                                                            withLeadingIcon = withLeadingIcon,
-                                                            isFilled = isFilled,
-                                                            withOuterContent = withOuterContent,
-                                                        ),
-                                                    )
-                                                }
-                                        }
-                                }
-                        }
-                }
-        }.asSequence()
+    private fun buildRepresentativeVariants(): Sequence<SelectFieldPreviewData> {
+        val base = SelectFieldPreviewData(
+            enabled = true,
+            error = false,
+            withLeadingIcon = false,
+            isFilled = false,
+            withOuterContent = false,
+        )
+        return buildList {
+            add(element = base)
+            add(element = base.copy(enabled = false))
+            add(element = base.copy(error = true))
+            add(element = base.copy(withLeadingIcon = true))
+            add(element = base.copy(isFilled = true))
+            add(element = base.copy(withOuterContent = true))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @Composable

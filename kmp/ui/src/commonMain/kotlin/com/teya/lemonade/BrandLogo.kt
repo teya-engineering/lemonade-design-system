@@ -84,23 +84,26 @@ private data class BrandLogoPreviewData(
 )
 
 private class BrandLogoPreviewProvider : PreviewParameterProvider<BrandLogoPreviewData> {
-    override val values: Sequence<BrandLogoPreviewData> = buildAllVariants()
+    override val values: Sequence<BrandLogoPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<BrandLogoPreviewData> =
-        buildList {
+    private fun buildRepresentativeVariants(): Sequence<BrandLogoPreviewData> {
+        val base = BrandLogoPreviewData(
+            logo = LemonadeBrandLogos.entries.first(),
+            size = LemonadeAssetSize.Medium,
+        )
+        return buildList {
+            add(element = base)
             LemonadeBrandLogos.entries
                 .take(5)
                 .forEach { logo ->
-                    LemonadeAssetSize.entries.forEach { size ->
-                        add(
-                            BrandLogoPreviewData(
-                                logo = logo,
-                                size = size,
-                            ),
-                        )
-                    }
+                    add(element = base.copy(logo = logo))
                 }
-        }.asSequence()
+            LemonadeAssetSize.entries.forEach { size ->
+                add(element = base.copy(size = size))
+            }
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview

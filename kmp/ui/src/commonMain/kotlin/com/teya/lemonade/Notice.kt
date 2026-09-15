@@ -213,30 +213,26 @@ private data class NoticePreviewData(
 )
 
 private class NoticePreviewProvider : PreviewParameterProvider<NoticePreviewData> {
-    override val values: Sequence<NoticePreviewData> = buildAllVariants()
+    override val values: Sequence<NoticePreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<NoticePreviewData> =
-        buildList {
+    private fun buildRepresentativeVariants(): Sequence<NoticePreviewData> {
+        val base = NoticePreviewData(
+            voice = NoticeVoice.Info,
+            withTitle = false,
+            withAction = false,
+            withIcon = true,
+        )
+        return buildList {
+            add(element = base)
             NoticeVoice.entries.forEach { voice ->
-                listOf(true, false)
-                    .forEach { withTitle ->
-                        listOf(true, false)
-                            .forEach { withAction ->
-                                listOf(true, false)
-                                    .forEach { withIcon ->
-                                        add(
-                                            element = NoticePreviewData(
-                                                voice = voice,
-                                                withTitle = withTitle,
-                                                withAction = withAction,
-                                                withIcon = withIcon,
-                                            ),
-                                        )
-                                    }
-                            }
-                    }
+                add(element = base.copy(voice = voice))
             }
-        }.asSequence()
+            add(element = base.copy(withTitle = true))
+            add(element = base.copy(withAction = true))
+            add(element = base.copy(withIcon = false))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview

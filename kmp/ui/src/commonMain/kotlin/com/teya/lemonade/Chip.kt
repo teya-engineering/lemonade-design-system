@@ -489,47 +489,26 @@ private data class ChipPreviewData(
 )
 
 private class ChipPreviewProvider : PreviewParameterProvider<ChipPreviewData> {
-    override val values: Sequence<ChipPreviewData> = buildAllVariants()
+    override val values: Sequence<ChipPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<ChipPreviewData> =
-        buildList {
-            listOf(true, false)
-                .forEach { enabled ->
-                    listOf(true, false)
-                        .forEach { withCounter ->
-                            listOf(true, false)
-                                .forEach { selected ->
-                                    addIconVariants(
-                                        enabled = enabled,
-                                        withCounter = withCounter,
-                                        selected = selected,
-                                    )
-                                }
-                        }
-                }
-        }.asSequence()
-
-    private fun MutableList<ChipPreviewData>.addIconVariants(
-        enabled: Boolean,
-        withCounter: Boolean,
-        selected: Boolean,
-    ) {
-        listOf(true, false)
-            .forEach { withLeadingIcon ->
-                listOf(true, false)
-                    .forEach { withTrailingIcon ->
-                        add(
-                            ChipPreviewData(
-                                isSelected = selected,
-                                enabled = enabled,
-                                error = false,
-                                counter = 5.takeIf { withCounter },
-                                leadingIcon = LemonadeIcons.Airplane.takeIf { withLeadingIcon },
-                                trailingIcon = LemonadeIcons.Airplane.takeIf { withTrailingIcon },
-                            ),
-                        )
-                    }
-            }
+    private fun buildRepresentativeVariants(): Sequence<ChipPreviewData> {
+        val base = ChipPreviewData(
+            isSelected = false,
+            enabled = true,
+            error = false,
+            counter = null,
+            leadingIcon = null,
+            trailingIcon = null,
+        )
+        return buildList {
+            add(element = base)
+            add(element = base.copy(isSelected = true))
+            add(element = base.copy(enabled = false))
+            add(element = base.copy(counter = 5))
+            add(element = base.copy(leadingIcon = LemonadeIcons.Airplane))
+            add(element = base.copy(trailingIcon = LemonadeIcons.Airplane))
+        }.distinct()
+            .asSequence()
     }
 }
 
