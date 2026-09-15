@@ -1,0 +1,51 @@
+---
+/**
+ * The three primitive scales, as tables.
+ *
+ * These are deliberately not rendered as specimens. A reader picks a semantic
+ * style, not a raw size — the specimens live in `TextStyles.astro` where the
+ * choice is actually made. Here the useful thing is the token name beside its
+ * value, so the tables stay identical in shape and easy to scan.
+ */
+import { fontSizes, fontWeights, lineHeights } from '../lib/tokens';
+
+const scales = [
+	{ heading: 'Font sizes', rows: fontSizes().map((t) => [t.name, `${t.value}px`] as const) },
+	{ heading: 'Font weights', rows: fontWeights().map((t) => [t.name, String(t.value)] as const) },
+	{ heading: 'Line heights', rows: lineHeights().map((t) => [t.name, `${t.value}px`] as const) },
+];
+---
+
+{
+	scales.map(({ heading, rows }) => (
+		<>
+			<h3>{heading}</h3>
+			<div class="scroller">
+				<table>
+					<thead>
+						<tr>
+							<th scope="col">Token</th>
+							<th scope="col">Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						{rows.map(([name, value]) => (
+							<tr>
+								<th scope="row">
+									<code>{name}</code>
+								</th>
+								<td>{value}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+		</>
+	))
+}
+
+<style>
+	.scroller {
+		overflow-x: auto;
+	}
+</style>

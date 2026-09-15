@@ -1,0 +1,68 @@
+---
+title: Typography
+description: The Lemonade text styles — Display, Heading, Body and Overline — with the scales they are built from, generated from the design system's own definitions.
+---
+
+import TextStyles from '../../../components/TextStyles.astro';
+import TypeRamp from '../../../components/TypeRamp.astro';
+
+Lemonade sets everything in **Figtree**, and product code reaches for a named style —
+`BodyMediumRegular`, `HeadingSmall` — rather than for a size. A style bundles the size,
+the line height, the weight and the letter spacing that belong together, so the pairing
+is decided once instead of at every call site.
+
+## Styles and roles
+
+### Display
+
+Display sizes are for large text on screen rather than for document structure. They add
+hierarchy and weight to a single piece of information — a statistic, a balance, a total
+— and do not need to carry heading semantics.
+
+<TextStyles group="Display" />
+
+### Heading
+
+Headings are the navigational and organisational keystones of a screen: headlines,
+section titles, the labels that let someone find their place. Pick the level by the
+structure it expresses, not by the size you want.
+
+<TextStyles group="Heading" />
+
+### Body
+
+Body is the workhorse. It is optimised for reading at length and for the short factual
+text that fills components — form fields, buttons, labels, descriptions. Each size step
+comes in the weights that step actually needs.
+
+<TextStyles group="Body" />
+
+### Overline
+
+A compact, letter-spaced style for metadata and small annotations that label the content
+next to them without competing with it. The components uppercase the text for you — pass
+it in ordinary case and let `LemonadeUi.Text` handle it, rather than shouting in the
+string.
+
+<TextStyles group="Overline" />
+
+## Choosing a style
+
+Pick by role, not by measurement. If a heading needs to be smaller, the answer is
+usually a different heading level rather than a smaller token — text that steps outside
+the ramp stops scaling with the rest of the interface when someone turns their font
+size up.
+
+Reach past the named styles only when you are building something the system does not
+cover yet, and treat that as a gap worth raising rather than a decision to make alone.
+
+## The scales underneath
+
+The styles above are assembled from these three scales. You rarely need them directly —
+reach for a named style instead — but they are what a new style would be built from.
+
+Sizes are unitless design tokens — each platform maps them to its own unit (`sp` on
+Android, points on iOS), so the same token produces the correct result once the user's
+own text-size preference is applied.
+
+<TypeRamp />
