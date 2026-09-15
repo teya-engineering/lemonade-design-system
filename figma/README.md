@@ -75,8 +75,18 @@ File keys live only in `documentUrlSubstitutions`; templates reference
 
 ```bash
 cd figma && npm ci
+npm run check
 FIGMA_ACCESS_TOKEN=figd_... npm run validate
 ```
+
+`npm run check` needs no token. It reads the templates against the Kotlin and
+Swift sources and fails when a snippet would not compile as pasted: an import
+that does not resolve, a Lemonade name used without its import, a Compose named
+argument no overload takes, a Swift labelled argument out of declaration order,
+or a `// source=` link to a missing file. It reads template source rather than
+running templates, so it cannot tell which conditional arguments appear
+together — a Swift call needing two closures that are emitted under separate
+conditions passes.
 
 `--dry-run` writes nothing, but it **still needs a token** — it resolves nodes
 against the file before reporting, and exits 1 without one. CI therefore needs
@@ -87,8 +97,9 @@ Two other things it will not do:
 - A config whose `include` glob matches **zero** templates is an error, not a
   no-op. Both `connect/` and `connect-swiftui/` must contain at least one
   template for validation to pass.
-- It cannot catch Figma-side drift. If a designer renames a property, `getEnum`
-  silently returns `undefined` and the snippet degrades without failing.
+- It cannot catch Figma-side drift, and neither can `check`. If a designer
+  renames a property, `getEnum` silently returns `undefined` and the snippet
+  degrades without failing.
 
 ## Publish
 
