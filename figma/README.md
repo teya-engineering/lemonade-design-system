@@ -17,7 +17,7 @@ connect-swiftui/            SwiftUI templates
   icons/                    GENERATED — do not edit
   flags/                    GENERATED — do not edit
   brand-logos/              GENERATED — do not edit
-shared/render.ts            slot and nested-snippet helpers both labels import
+shared/                     helpers templates import: slots, time pickers, bottom sheets
 scripts/generate-asset-templates.mjs
 ```
 
@@ -132,8 +132,10 @@ acted on.
 
 ## Components
 
-Thirty-eight components per platform, plus nine internal parts they nest,
-hand-written and kept at parity. A few needed more than a property lookup:
+Thirty-eight components on both platforms, seven Compose-only ones (`Dropdown`,
+`DropdownItem`, `BottomTabBar`, `BottomSheet`, `TimePicker`, `TimeInput`,
+`TimePickerDialog`), and nine internal parts they nest, all hand-written. A few
+needed more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
   `selectedTab` is a 0-based index; the template converts. Its tabs resolve
@@ -266,6 +268,37 @@ hand-written and kept at parity. A few needed more than a property lookup:
   variant. The circle has no size property and is drawn at 40px, which is
   `XXLarge`; a resized instance does not carry its size over. `BlockSkeleton` has
   a fixed height and radius, so every `Block` variant emits a NOTE.
+
+- A Compose-only component still gets a SwiftUI template, a one-line NOTE
+  saying there is no SwiftUI equivalent. A label with no template for a node
+  falls back to another label's, so without it the SwiftUI panel would show a
+  foreign snippet.
+
+- `findLayers` with `traverseInstances: true` returns layers **last to first**.
+  Templates that list children in order (`BottomTabBar`'s tabs, `Dropdown`'s
+  items, `HistoryTimeline`'s rows) search one level at a time without it, which
+  keeps document order. `Dropdown` walks its sections, then each section's
+  items, and flattens them: the code has no sections, so a design with headings,
+  dividers or item support text gets a NOTE.
+
+- The time pickers map Figma's Android sets. Each snippet opens with the
+  `rememberLemonadeTimePickerState` call the component needs, seeded with the
+  designed hour and minute: a 12-hour design is converted to the code's 0-23
+  hour through its AM/PM toggle, and `◇ Format` sets `is24Hour`. The dialog's
+  Dial and Input sets pick `initialDisplayMode`. Its two accessibility labels
+  have no source in the design, so they are emitted as English literals, and
+  the dial's `◇ Orientation` is left to the component, which lays itself out
+  by window size.
+- Code Connect names the time fields inside the dial's nested `Time Input`
+  after that component's own building block, not the one Figma shows there, so
+  `shared/time.ts` matches either name.
+
+- `BottomSheet` is one composable over two Figma sets: `Sheet - Full Screen`
+  adds `skipPartiallyExpanded = true`. The code sheet has no header, so the Top
+  Bar's title and subheading become `Text` in the content, as in the
+  component's KDoc, and its grabber drives `showDragHandle`. The body slot holds
+  a placeholder frame in the library and stays a placeholder; the iOS-only
+  `Stacked` variant, keyboard and home indicator have no code equivalent.
 
 ### Deliberately unmapped
 
