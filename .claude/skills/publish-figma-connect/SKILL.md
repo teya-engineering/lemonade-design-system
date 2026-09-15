@@ -85,8 +85,13 @@ directory, not the config file.
 ### 1. Validate
 
 ```bash
+npm run check
 FIGMA_ACCESS_TOKEN="$FIGMA_CODE_CONNECT_TOKEN" npm run validate
 ```
+
+`check` runs offline and fails when an emitted snippet would not compile: a bad
+import, a missing one, a named argument no overload takes, or Swift labels out
+of declaration order. Fix what it reports before publishing.
 
 `--dry-run` writes nothing but still needs a token and exits 1 without one, so
 CI needs the token as a secret. A config whose glob matches zero templates is an
@@ -96,9 +101,9 @@ Neither config is named `figma.config.json`, the CLI default, so a bare
 `figma connect publish` finds no config and errors rather than publishing one
 platform and reporting success. Always pass `--config`.
 
-This is the check to wire into CI. It cannot catch a wrong Figma property name:
-`getEnum('◇ Varient', …)` parses fine and yields `undefined`. Only step 3
-catches that.
+Both are the checks to wire into CI; `check` needs no secret. Neither catches a
+wrong Figma property name: `getEnum('◇ Varient', …)` parses fine and yields
+`undefined`. Only step 3 catches that.
 
 ### 2. Publish
 
