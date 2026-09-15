@@ -71,6 +71,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.BuildingBlocks -> LemonadeRes.drawable.gen_building_blocks
         LemonadeIcons.Buildings -> LemonadeRes.drawable.gen_buildings
         LemonadeIcons.BuildingsCheck -> LemonadeRes.drawable.gen_buildings_check
+        LemonadeIcons.Bus -> LemonadeRes.drawable.gen_bus
         LemonadeIcons.Calculator -> LemonadeRes.drawable.gen_calculator
         LemonadeIcons.Calendar -> LemonadeRes.drawable.gen_calendar
         LemonadeIcons.CalendarArrowRight -> LemonadeRes.drawable.gen_calendar_arrow_right
@@ -190,6 +191,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.Key -> LemonadeRes.drawable.gen_key
         LemonadeIcons.Keyboard -> LemonadeRes.drawable.gen_keyboard
         LemonadeIcons.Laptop -> LemonadeRes.drawable.gen_laptop
+        LemonadeIcons.LayDown -> LemonadeRes.drawable.gen_lay_down
         LemonadeIcons.Lightbulb -> LemonadeRes.drawable.gen_lightbulb
         LemonadeIcons.Lightning -> LemonadeRes.drawable.gen_lightning
         LemonadeIcons.Limit -> LemonadeRes.drawable.gen_limit
@@ -229,6 +231,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.Package -> LemonadeRes.drawable.gen_package
         LemonadeIcons.Padlock -> LemonadeRes.drawable.gen_padlock
         LemonadeIcons.PadlockOpen -> LemonadeRes.drawable.gen_padlock_open
+        LemonadeIcons.PaintRoller -> LemonadeRes.drawable.gen_paint_roller
         LemonadeIcons.Paperclip -> LemonadeRes.drawable.gen_paperclip
         LemonadeIcons.Passport -> LemonadeRes.drawable.gen_passport
         LemonadeIcons.PenSignature -> LemonadeRes.drawable.gen_pen_signature
@@ -276,8 +279,10 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.Store -> LemonadeRes.drawable.gen_store
         LemonadeIcons.StoreCheck -> LemonadeRes.drawable.gen_store_check
         LemonadeIcons.Stores -> LemonadeRes.drawable.gen_stores
+        LemonadeIcons.Suitcase -> LemonadeRes.drawable.gen_suitcase
         LemonadeIcons.Sun -> LemonadeRes.drawable.gen_sun
         LemonadeIcons.SupportChat -> LemonadeRes.drawable.gen_support_chat
+        LemonadeIcons.TShirt -> LemonadeRes.drawable.gen_t_shirt
         LemonadeIcons.ThumbDown -> LemonadeRes.drawable.gen_thumb_down
         LemonadeIcons.ThumbUp -> LemonadeRes.drawable.gen_thumb_up
         LemonadeIcons.ThumbsDownSolid -> LemonadeRes.drawable.gen_thumbs_down_solid
@@ -286,6 +291,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.Times -> LemonadeRes.drawable.gen_times
         LemonadeIcons.Translate -> LemonadeRes.drawable.gen_translate
         LemonadeIcons.Trash -> LemonadeRes.drawable.gen_trash
+        LemonadeIcons.Trees -> LemonadeRes.drawable.gen_trees
         LemonadeIcons.TriangleAlert -> LemonadeRes.drawable.gen_triangle_alert
         LemonadeIcons.Trophy -> LemonadeRes.drawable.gen_trophy
         LemonadeIcons.Truck -> LemonadeRes.drawable.gen_truck
@@ -303,4 +309,5 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.Wallet -> LemonadeRes.drawable.gen_wallet
         LemonadeIcons.WalletSolid -> LemonadeRes.drawable.gen_wallet_solid
         LemonadeIcons.Wifi -> LemonadeRes.drawable.gen_wifi
+        LemonadeIcons.Wrench -> LemonadeRes.drawable.gen_wrench
     }

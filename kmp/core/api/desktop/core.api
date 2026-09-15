@@ -567,6 +567,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field BuildingBlocks Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Buildings Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field BuildingsCheck Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field Bus Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Calculator Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Calendar Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CalendarArrowRight Lcom/teya/lemonade/core/LemonadeIcons;
@@ -686,6 +687,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field Key Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Keyboard Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Laptop Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field LayDown Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Lightbulb Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Lightning Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Limit Lcom/teya/lemonade/core/LemonadeIcons;
@@ -725,6 +727,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field Package Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Padlock Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field PadlockOpen Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field PaintRoller Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Paperclip Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Passport Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field PenSignature Lcom/teya/lemonade/core/LemonadeIcons;
@@ -772,8 +775,10 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field Store Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field StoreCheck Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Stores Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field Suitcase Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Sun Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field SupportChat Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field TShirt Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ThumbDown Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ThumbUp Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ThumbsDownSolid Lcom/teya/lemonade/core/LemonadeIcons;
@@ -782,6 +787,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field Times Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Translate Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Trash Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field Trees Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field TriangleAlert Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Trophy Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Truck Lcom/teya/lemonade/core/LemonadeIcons;
@@ -799,6 +805,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field Wallet Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field WalletSolid Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Wifi Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field Wrench Lcom/teya/lemonade/core/LemonadeIcons;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/LemonadeIcons;
 	public static fun values ()[Lcom/teya/lemonade/core/LemonadeIcons;
