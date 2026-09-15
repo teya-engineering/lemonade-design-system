@@ -413,35 +413,28 @@ private data class TilePreviewData(
 )
 
 private class TilePreviewProvider : PreviewParameterProvider<TilePreviewData> {
-    override val values: Sequence<TilePreviewData> = buildAllVariants()
+    override val values: Sequence<TilePreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<TilePreviewData> =
-        buildList {
-            listOf(true, false)
-                .forEach { enabled ->
-                    listOf(
-                        LemonadeTileVariant.Filled,
-                        LemonadeTileVariant.Outlined,
-                    ).forEach { variant ->
-                        listOf(true, false)
-                            .forEach { selected ->
-                                listOf(
-                                    LemonadeTileOrientation.Vertical,
-                                    LemonadeTileOrientation.Horizontal,
-                                ).forEach { orientation ->
-                                    add(
-                                        TilePreviewData(
-                                            enabled = enabled,
-                                            variant = variant,
-                                            isSelected = selected,
-                                            orientation = orientation,
-                                        ),
-                                    )
-                                }
-                            }
-                    }
-                }
-        }.asSequence()
+    private fun buildRepresentativeVariants(): Sequence<TilePreviewData> {
+        val base = TilePreviewData(
+            enabled = true,
+            variant = LemonadeTileVariant.Filled,
+            isSelected = false,
+            orientation = LemonadeTileOrientation.Vertical,
+        )
+        return buildList {
+            add(element = base)
+            LemonadeTileVariant.entries.forEach { variant ->
+                add(element = base.copy(variant = variant))
+            }
+            LemonadeTileOrientation.entries.forEach { orientation ->
+                add(element = base.copy(orientation = orientation))
+            }
+            add(element = base.copy(enabled = false))
+            add(element = base.copy(isSelected = true))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview

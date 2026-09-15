@@ -203,29 +203,28 @@ private data class BoxSelectionPreviewData(
 )
 
 private class BoxSelectionPreviewProvider : PreviewParameterProvider<BoxSelectionPreviewData> {
-    override val values: Sequence<BoxSelectionPreviewData> = buildAllVariants()
+    override val values: Sequence<BoxSelectionPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<BoxSelectionPreviewData> =
-        buildList {
+    private fun buildRepresentativeVariants(): Sequence<BoxSelectionPreviewData> {
+        val base = BoxSelectionPreviewData(
+            variant = LemonadeBoxSelectionVariant.Filled,
+            background = LemonadeBoxSelectionBackground.Default,
+            isSelected = false,
+            enabled = true,
+        )
+        return buildList {
+            add(element = base)
             LemonadeBoxSelectionVariant.entries.forEach { variant ->
-                LemonadeBoxSelectionBackground.entries.forEach { background ->
-                    listOf(true, false)
-                        .forEach { isSelected ->
-                            listOf(true, false)
-                                .forEach { enabled ->
-                                    add(
-                                        BoxSelectionPreviewData(
-                                            variant = variant,
-                                            background = background,
-                                            isSelected = isSelected,
-                                            enabled = enabled,
-                                        ),
-                                    )
-                                }
-                        }
-                }
+                add(element = base.copy(variant = variant))
             }
-        }.asSequence()
+            LemonadeBoxSelectionBackground.entries.forEach { background ->
+                add(element = base.copy(background = background))
+            }
+            add(element = base.copy(isSelected = true))
+            add(element = base.copy(enabled = false))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview

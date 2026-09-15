@@ -240,21 +240,127 @@ jobs:
         with:
           build-root-directory: kmp
 
+  android-screenshots:
+    name: Android Screenshots
+    # Linux runner: Roborazzi renders deterministically on Linux, so we don't
+    # need teya's self-hosted macOS runners.
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Run on non-draft PRs and on pushes to the default branch.
+    if: (github.event_name != 'pull_request' || github.event.pull_request.draft == false) && (github.event_name == 'pull_request' || github.ref == 'refs/heads/main')
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout PR branch (same-repo)
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/checkout@v4
+        with:
+          # Check out the PR HEAD branch (not the merge ref) and use the PAT so
+          # the bot's golden-update push re-triggers CI (the default
+          # GITHUB_TOKEN deliberately cannot, to avoid recursive runs).
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+          token: ${{ secrets.SCREENSHOT_AUTOMATION_TOKEN }}
+
+      - name: Checkout code
+        # Fork PRs and pushes to main: the head branch does not exist in this
+        # repo and the automation secrets are not exposed, so take the default
+        # checkout. Nothing is committed back on these events.
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
+        uses: actions/checkout@v4
+
+      - name: Setup Gradle
+        uses: ./.github/actions/setup-gradle
+
+      - name: Verify and record screenshots
+        id: vandr
+        continue-on-error: true
+        # verifyAndRecord only overwrites goldens whose PIXELS actually changed,
+        # so PNG byte-noise can't churn the tree. The verify assertion still
+        # flips the step outcome to failure, which is what gates the commit step.
+        run: ./gradlew :ui:verifyAndRecordRoborazziDebug --continue --no-daemon -Dorg.gradle.jvmargs="-Xmx4g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+        working-directory: ./kmp
+
+      - name: Verify screenshots (distinguish diffs from crashes)
+        id: verify
+        if: steps.vandr.outcome == 'failure'
+        continue-on-error: true
+        # After vandr recorded changed goldens in place, plain verify now passes
+        # for pixel-diff cases and only still-fails when a preview crashed.
+        run: ./gradlew :ui:verifyRoborazziDebug --continue --no-daemon -Dorg.gradle.jvmargs="-Xmx4g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+        working-directory: ./kmp
+
+      - name: Import GPG signing key
+        id: import-gpg
+        if: steps.vandr.outcome == 'failure' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GPG_KEY_B64: ${{ secrets.SCREENSHOT_AUTOMATION_GPG_KEY }}
+          GPG_EMAIL: ${{ secrets.SCREENSHOT_AUTOMATION_GPG_EMAIL }}
+        run: |
+          set -euo pipefail
+          echo "$GPG_KEY_B64" | base64 --decode | gpg --batch --import
+          # import-ownertrust and git's signingkey want the 40-char fingerprint
+          # (fpr field), not the 16-char key id (sec field) — the latter is
+          # rejected as "invalid fingerprint".
+          FINGERPRINT=$(gpg --list-secret-keys --with-colons "$GPG_EMAIL" | awk -F: '$1 == "fpr" { print $10; exit }')
+          printf '%s:6:\n' "$FINGERPRINT" | gpg --batch --import-ownertrust
+          git config --global user.signingkey "$FINGERPRINT"
+          git config --global user.name "Lemonade Screenshots Bot"
+          git config --global user.email "$GPG_EMAIL"
+          git config --global commit.gpgsign true
+
+      - name: Commit updated screenshots
+        if: steps.vandr.outcome == 'failure' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          BRANCH: ${{ github.head_ref }}
+        run: ./scripts/commit-screenshot-updates.sh
+
+      - name: Upload screenshot diffs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-screenshot-diffs
+          path: |
+            kmp/ui/build/outputs/roborazzi/**
+            kmp/ui/src/androidMain/screenshots/**
+
+      - name: Fail on screenshot failure
+        if: steps.verify.outcome == 'failure' || (steps.vandr.outcome == 'failure' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository))
+        run: |
+          if [[ "${{ steps.verify.outcome }}" == "failure" ]]; then
+            echo "::error::A screenshot test crashed (verify still failed after re-recording). This is not a pixel diff — inspect the 'android-screenshot-diffs' artifact and fix the preview."
+          else
+            echo "::error::Screenshot goldens are out of date and cannot be auto-committed here (fork PR or push to main)."
+            echo "::error::Record them locally: run './gradlew :ui:recordRoborazziDebug' from ./kmp, then commit the changes under 'kmp/ui/src/androidMain/screenshots/'."
+          fi
+          exit 1
+      # NOTE: No GPG-key cleanup step — GitHub-hosted ubuntu runners are
+      # ephemeral and destroyed after the job, so the imported key never persists.
+
   ci-status:
     name: CI Status
     if: always()
-    needs: [ detekt, ktlint, dependency-allowlist, api-compatibility, build ]
+    needs: [ detekt, ktlint, dependency-allowlist, api-compatibility, build, android-screenshots ]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Check CI results
         run: |
+          # `android-screenshots` is skipped when path filters exclude it or the event doesn't match; treat skipped as a pass.
+          SCR="${{ needs['android-screenshots'].result }}"
+          if [[ "$SCR" != "success" && "$SCR" != "skipped" ]]; then
+            SCR_BAD=1
+          else
+            SCR_BAD=0
+          fi
+
           if [[ "${{ needs.detekt.result }}" != "success" || \
                 "${{ needs.ktlint.result }}" != "success" || \
                 "${{ needs['dependency-allowlist'].result }}" != "success" || \
                 "${{ needs['api-compatibility'].result }}" != "success" || \
+                "$SCR_BAD" == "1" || \
                 "${{ needs.build.result }}" != "success" ]]; then
-            echo "CI did not succeed: detekt=${{ needs.detekt.result }}, ktlint=${{ needs.ktlint.result }}, dependency-allowlist=${{ needs['dependency-allowlist'].result }}, api-compatibility=${{ needs['api-compatibility'].result }}, build=${{ needs.build.result }}"
+            echo "CI did not succeed: detekt=${{ needs.detekt.result }}, ktlint=${{ needs.ktlint.result }}, dependency-allowlist=${{ needs['dependency-allowlist'].result }}, api-compatibility=${{ needs['api-compatibility'].result }}, android-screenshots=$SCR, build=${{ needs.build.result }}"
             exit 1
           fi
           echo "All CI checks passed"

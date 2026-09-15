@@ -249,33 +249,37 @@ private data class CardPreviewData(
 )
 
 private class CardPreviewProvider : PreviewParameterProvider<CardPreviewData> {
-    override val values: Sequence<CardPreviewData> = buildAllVariants()
+    override val values: Sequence<CardPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<CardPreviewData> =
-        buildList {
+    private fun headerConfig(): CardHeaderConfig =
+        CardHeaderConfig(
+            title = "Card heading",
+            trailingSlot = {
+                LemonadeUi.Tag(
+                    label = "Tag label",
+                    voice = TagVoice.Neutral,
+                )
+            },
+        )
+
+    private fun buildRepresentativeVariants(): Sequence<CardPreviewData> {
+        val base = CardPreviewData(
+            background = LemonadeCardBackground.Default,
+            contentPadding = LemonadeCardPadding.None,
+            header = null,
+        )
+        return buildList {
+            add(element = base)
             LemonadeCardPadding.entries.forEach { contentPadding ->
-                LemonadeCardBackground.entries.forEach { background ->
-                    listOf(true, false)
-                        .forEach { withHeader ->
-                            add(
-                                CardPreviewData(
-                                    background = background,
-                                    contentPadding = contentPadding,
-                                    header = CardHeaderConfig(
-                                        title = "Card heading",
-                                        trailingSlot = {
-                                            LemonadeUi.Tag(
-                                                label = "Tag label",
-                                                voice = TagVoice.Neutral,
-                                            )
-                                        },
-                                    ).takeIf { withHeader },
-                                ),
-                            )
-                        }
-                }
+                add(element = base.copy(contentPadding = contentPadding))
             }
-        }.asSequence()
+            LemonadeCardBackground.entries.forEach { background ->
+                add(element = base.copy(background = background))
+            }
+            add(element = base.copy(header = headerConfig()))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview

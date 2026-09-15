@@ -137,23 +137,20 @@ private data class LinkPreviewData(
 )
 
 private class LinkPreviewProvider : PreviewParameterProvider<LinkPreviewData> {
-    override val values: Sequence<LinkPreviewData> = buildAllVariants()
+    override val values: Sequence<LinkPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<LinkPreviewData> =
-        buildList {
-            listOf(true, false)
-                .forEach { enabled ->
-                    listOf(true, false)
-                        .forEach { withIcon ->
-                            add(
-                                element = LinkPreviewData(
-                                    enabled = enabled,
-                                    withIcon = withIcon,
-                                ),
-                            )
-                        }
-                }
-        }.asSequence()
+    private fun buildRepresentativeVariants(): Sequence<LinkPreviewData> {
+        val base = LinkPreviewData(
+            enabled = true,
+            withIcon = false,
+        )
+        return buildList {
+            add(element = base)
+            add(element = base.copy(enabled = false))
+            add(element = base.copy(withIcon = true))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @Suppress("UnusedPrivateMember")
