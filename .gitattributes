@@ -1,0 +1,3 @@
+# Screenshot golden images are opaque binaries — never line-diff or merge them.
+# GitHub still renders a visual image diff in PR views.
+**/screenshots/**/*.png binary
