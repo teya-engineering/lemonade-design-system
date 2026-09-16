@@ -4,7 +4,9 @@ Almost no code needs a comment. The target is close to zero. A comment is the ra
 
 A comment also rots. The code changes, the comment doesn't, and the next reader trusts a line that now lies. A wrong comment costs more than no comment. So every comment that survives has to clear two bars at once: it can't be replaced by clearer code, and it has to stay true as the code moves. Most can't clear the first bar, so they never reach the second.
 
-These rules apply to Kotlin in every source set under `kmp/` and to Swift under `swiftui/`. They cover implementation comments, KDoc, and Swift doc comments. They are enforced as blocking findings. See [Enforcement](#enforcement).
+These rules apply to Kotlin in every source set under `kmp/`, to Swift under `swiftui/`, and to the TypeScript and Node scripts under `figma/`. They cover implementation comments, KDoc, Swift doc comments, and the `//` comments in a Code Connect template. They are enforced as blocking findings. See [Enforcement](#enforcement).
+
+A Code Connect template's `// url=`, `// source=` and `// component=` header is not a comment for these purposes: the CLI parses it. Leave it alone.
 
 ## A comment is almost always a missing function
 
