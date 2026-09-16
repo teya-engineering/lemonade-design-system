@@ -40,7 +40,7 @@ can be added to an existing app without affecting any current component.
 | `@teya/lemonade-ds/icon.css` | The `.lmnd-icon` mask utility |
 | `@teya/lemonade-ds/lemonade.css` | Everything in one self-contained file, for prototypes |
 | `@teya/lemonade-ds/llms.txt` | Token reference for AI tools |
-| `@teya/lemonade-ds/icons/*.svg` | 286 icons, `currentColor` |
+| `@teya/lemonade-ds/icons/*.svg` | 294 icons, `currentColor` |
 | `@teya/lemonade-ds/flags/*.svg` | 265 flags |
 | `@teya/lemonade-ds/brand-logos/*.svg` | 39 brand logos |
 
