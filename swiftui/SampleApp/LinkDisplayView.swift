@@ -28,6 +28,47 @@ struct LinkDisplayView: View {
                     }
                 }
 
+                sectionView(title: "Sizes") {
+                    VStack(alignment: .leading, spacing: 16) {
+                        LemonadeUi.Link(
+                            text: "Large link",
+                            onClick: { },
+                            icon: .externalLink,
+                            size: .large
+                        )
+
+                        LemonadeUi.Link(
+                            text: "Medium link",
+                            onClick: { },
+                            icon: .externalLink,
+                            size: .medium
+                        )
+
+                        LemonadeUi.Link(
+                            text: "Small link",
+                            onClick: { },
+                            icon: .externalLink,
+                            size: .small
+                        )
+                    }
+                }
+
+                sectionView(title: "In Context") {
+                    VStack(alignment: .leading, spacing: 4) {
+                        LemonadeUi.Text(
+                            "Need help with your account?",
+                            textStyle: LemonadeTypography.shared.bodySmallRegular,
+                            color: .content.contentSecondary
+                        )
+
+                        LemonadeUi.Link(
+                            text: "Contact us",
+                            onClick: { },
+                            size: .small
+                        )
+                    }
+                }
+
                 sectionView(title: "Disabled") {
                     VStack(alignment: .leading, spacing: 16) {
                         LemonadeUi.Link(

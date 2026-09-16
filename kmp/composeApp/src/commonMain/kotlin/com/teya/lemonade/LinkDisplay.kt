@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.LemonadeLinkSize
 
 @Composable
 internal fun LinkDisplay() {
@@ -21,6 +22,9 @@ internal fun LinkDisplay() {
         }
         item(key = "With Icon") {
             WithIconLinkSection()
+        }
+        item(key = "Sizes") {
+            SizesLinkSection()
         }
         item(key = "Disabled") {
             DisabledLinkSection()
@@ -56,6 +60,34 @@ private fun WithIconLinkSection() {
                 text = "Continue reading",
                 onClick = { },
                 icon = LemonadeIcons.ArrowRight,
+            )
+        }
+    }
+}
+
+@Composable
+private fun SizesLinkSection() {
+    LinkSection(title = "Sizes") {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+        ) {
+            LemonadeUi.Link(
+                text = "Large link",
+                onClick = { },
+                icon = LemonadeIcons.ExternalLink,
+                size = LemonadeLinkSize.Large,
+            )
+            LemonadeUi.Link(
+                text = "Medium link",
+                onClick = { },
+                icon = LemonadeIcons.ExternalLink,
+                size = LemonadeLinkSize.Medium,
+            )
+            LemonadeUi.Link(
+                text = "Small link",
+                onClick = { },
+                icon = LemonadeIcons.ExternalLink,
+                size = LemonadeLinkSize.Small,
             )
         }
     }
@@ -117,6 +149,16 @@ private fun InContextLinkSection() {
                     icon = LemonadeIcons.ExternalLink,
                 )
             }
+            LemonadeUi.Text(
+                text = "Need help with your account?",
+                textStyle = LemonadeTheme.typography.bodySmallRegular,
+                color = LemonadeTheme.colors.content.contentSecondary,
+            )
+            LemonadeUi.Link(
+                text = "Contact us",
+                onClick = { },
+                size = LemonadeLinkSize.Small,
+            )
         }
     }
 }

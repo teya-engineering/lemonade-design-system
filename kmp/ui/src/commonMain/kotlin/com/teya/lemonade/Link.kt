@@ -22,6 +22,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.LemonadeLinkSize
+import com.teya.lemonade.core.LemonadeTextStyle
 
 /**
  * Clickable text styled as a hyperlink.
@@ -35,6 +37,12 @@ import com.teya.lemonade.core.LemonadeIcons
  *     text = "Learn more",
  *     onClick = { println("link clicked!") },
  * )
+ *
+ * LemonadeUi.Link(
+ *     text = "Contact us",
+ *     onClick = { println("link clicked!") },
+ *     size = LemonadeLinkSize.Small,
+ * )
  * ```
  *
  * @param text label shown as the link
@@ -42,6 +50,8 @@ import com.teya.lemonade.core.LemonadeIcons
  * @param modifier [Modifier] applied to the root container of the link
  * @param enabled whether the link accepts clicks, defaults to `true`
  * @param icon optional trailing [LemonadeIcons] shown after the text, e.g. an external link icon
+ * @param size [LemonadeLinkSize] matching the body text around the link, defaults to
+ * [LemonadeLinkSize.Medium]
  * @param interactionSource [MutableInteractionSource] observing the interaction states
  */
 @Composable
@@ -51,6 +61,7 @@ public fun LemonadeUi.Link(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     icon: LemonadeIcons? = null,
+    size: LemonadeLinkSize = LemonadeLinkSize.Medium,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     CoreLink(
@@ -59,6 +70,34 @@ public fun LemonadeUi.Link(
         modifier = modifier,
         enabled = enabled,
         icon = icon,
+        size = size,
+        interactionSource = interactionSource,
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with a size parameter.",
+    replaceWith = ReplaceWith(
+        expression = "Link(text, onClick, modifier, enabled, icon, LemonadeLinkSize.Medium, interactionSource)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.Link(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    icon: LemonadeIcons? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+) {
+    Link(
+        text = text,
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        icon = icon,
+        size = LemonadeLinkSize.Medium,
         interactionSource = interactionSource,
     )
 }
@@ -69,6 +108,7 @@ private fun CoreLink(
     onClick: () -> Unit,
     enabled: Boolean,
     icon: LemonadeIcons?,
+    size: LemonadeLinkSize,
     interactionSource: MutableInteractionSource,
     modifier: Modifier = Modifier,
 ) {
@@ -87,7 +127,7 @@ private fun CoreLink(
 
     val animatedColor by animateColorAsState(targetValue = targetColor)
 
-    val textStyle = LocalTypographies.current.bodyMediumMedium.textStyle.copy(
+    val textStyle = size.typography.textStyle.copy(
         textDecoration = TextDecoration.Underline,
         lineHeightStyle = LineHeightStyle(
             alignment = LineHeightStyle.Alignment.Center,
@@ -131,9 +171,17 @@ private fun CoreLink(
     }
 }
 
+private val LemonadeLinkSize.typography: LemonadeTextStyle
+    @Composable get() = when (this) {
+        LemonadeLinkSize.Small -> LocalTypographies.current.bodySmallMedium
+        LemonadeLinkSize.Medium -> LocalTypographies.current.bodyMediumMedium
+        LemonadeLinkSize.Large -> LocalTypographies.current.bodyLargeMedium
+    }
+
 private data class LinkPreviewData(
     val enabled: Boolean,
     val withIcon: Boolean,
+    val size: LemonadeLinkSize,
 )
 
 private class LinkPreviewProvider : PreviewParameterProvider<LinkPreviewData> {
@@ -141,18 +189,21 @@ private class LinkPreviewProvider : PreviewParameterProvider<LinkPreviewData> {
 
     private fun buildAllVariants(): Sequence<LinkPreviewData> =
         buildList {
-            listOf(true, false)
-                .forEach { enabled ->
-                    listOf(true, false)
-                        .forEach { withIcon ->
-                            add(
-                                element = LinkPreviewData(
-                                    enabled = enabled,
-                                    withIcon = withIcon,
-                                ),
-                            )
-                        }
-                }
+            LemonadeLinkSize.entries.forEach { size ->
+                listOf(true, false)
+                    .forEach { enabled ->
+                        listOf(true, false)
+                            .forEach { withIcon ->
+                                add(
+                                    element = LinkPreviewData(
+                                        enabled = enabled,
+                                        withIcon = withIcon,
+                                        size = size,
+                                    ),
+                                )
+                            }
+                    }
+            }
         }.asSequence()
 }
 
@@ -169,6 +220,7 @@ private fun LinkPreview(
             onClick = { },
             enabled = previewData.enabled,
             icon = LemonadeIcons.ExternalLink.takeIf { previewData.withIcon },
+            size = previewData.size,
         )
     }
 }
