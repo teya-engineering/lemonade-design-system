@@ -134,6 +134,7 @@ public protocol LemonadeTypographyProtocol {
     var bodyMediumRegular: LemonadeTextStyle { get }
     var bodyMediumMedium: LemonadeTextStyle { get }
     var bodyMediumSemiBold: LemonadeTextStyle { get }
+    @available(*, deprecated, renamed: "bodyMediumSemiBold", message: "Bold is not a public Lemonade text style.")
     var bodyMediumBold: LemonadeTextStyle { get }
 
     var bodySmallRegular: LemonadeTextStyle { get }
@@ -277,11 +278,11 @@ public struct LemonadeTypography: LemonadeTypographyProtocol {
         lineHeight: LemonadeLineHeights.lineHeight600.value,
         fontWeight: LemonadeFontWeights.semibold.value
     )
-    /// Maps to `.semibold` weight because the Figtree font family does not include a true bold weight.
+    @available(*, deprecated, renamed: "bodyMediumSemiBold", message: "Bold is not a public Lemonade text style.")
     public let bodyMediumBold = LemonadeTextStyle(
         fontSize: LemonadeFontSizes.fontSize400.value,
         lineHeight: LemonadeLineHeights.lineHeight600.value,
-        fontWeight: LemonadeFontWeights.semibold.value
+        fontWeight: LemonadeFontWeights.bold.value
     )
 
     public let bodySmallRegular = LemonadeTextStyle(

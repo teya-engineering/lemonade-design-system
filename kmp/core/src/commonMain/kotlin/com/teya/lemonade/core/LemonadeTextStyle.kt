@@ -184,6 +184,11 @@ public enum class LemonadeTypography(public val style: LemonadeTextStyle) {
             fontWeight = LemonadeFontWeights.Semibold.weight,
         ),
     ),
+
+    @Deprecated(
+        message = "Bold is not a public Lemonade text style.",
+        replaceWith = ReplaceWith("LemonadeTypography.BodyMediumSemiBold"),
+    )
     BodyMediumBold(
         style = LemonadeTextStyle(
             fontSize = LemonadeFontSizes.FontSize400.value,
