@@ -199,22 +199,22 @@ private data class HorizontalDividerPreviewData(
 
 private class HorizontalDividerPreviewProvider :
     PreviewParameterProvider<HorizontalDividerPreviewData> {
-    override val values: Sequence<HorizontalDividerPreviewData> = buildAllVariants()
+    override val values: Sequence<HorizontalDividerPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<HorizontalDividerPreviewData> =
-        buildList {
-            listOf(null, "OR")
-                .forEach { label ->
-                    DividerVariant.entries.forEach { variant ->
-                        add(
-                            HorizontalDividerPreviewData(
-                                label = label,
-                                variant = variant,
-                            ),
-                        )
-                    }
-                }
-        }.asSequence()
+    private fun buildRepresentativeVariants(): Sequence<HorizontalDividerPreviewData> {
+        val base = HorizontalDividerPreviewData(
+            label = null,
+            variant = DividerVariant.Solid,
+        )
+        return buildList {
+            add(element = base)
+            DividerVariant.entries.forEach { variant ->
+                add(element = base.copy(variant = variant))
+            }
+            add(element = base.copy(label = "OR"))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview

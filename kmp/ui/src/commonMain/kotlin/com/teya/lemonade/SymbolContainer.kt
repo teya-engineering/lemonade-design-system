@@ -580,28 +580,30 @@ private data class SymbolContainerPreviewData(
 
 private class SymbolContainerPreviewProvider :
     PreviewParameterProvider<SymbolContainerPreviewData> {
-    override val values: Sequence<SymbolContainerPreviewData> = buildAllVariants()
+    override val values: Sequence<SymbolContainerPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<SymbolContainerPreviewData> =
-        buildList {
+    private fun buildRepresentativeVariants(): Sequence<SymbolContainerPreviewData> {
+        val base = SymbolContainerPreviewData(
+            content = LemonadeIcons.Heart,
+            size = SymbolContainerSize.Medium,
+            voice = SymbolContainerVoice.Neutral,
+            shape = SymbolContainerShape.Circle,
+        )
+        return buildList {
+            add(element = base)
             SymbolContainerVoice.entries.forEach { voice ->
-                listOf("A", LemonadeIcons.Heart)
-                    .forEach { content ->
-                        SymbolContainerSize.entries.forEach { size ->
-                            SymbolContainerShape.entries.forEach { shape ->
-                                add(
-                                    SymbolContainerPreviewData(
-                                        content = content,
-                                        size = size,
-                                        voice = voice,
-                                        shape = shape,
-                                    ),
-                                )
-                            }
-                        }
-                    }
+                add(element = base.copy(voice = voice))
             }
-        }.asSequence()
+            SymbolContainerSize.entries.forEach { size ->
+                add(element = base.copy(size = size))
+            }
+            SymbolContainerShape.entries.forEach { shape ->
+                add(element = base.copy(shape = shape))
+            }
+            add(element = base.copy(content = "A"))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview

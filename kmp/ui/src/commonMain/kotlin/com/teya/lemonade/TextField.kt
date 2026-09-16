@@ -871,36 +871,27 @@ private data class TextFieldPreviewData(
 )
 
 private class TextFieldPreviewProvider : PreviewParameterProvider<TextFieldPreviewData> {
-    override val values: Sequence<TextFieldPreviewData> = buildAllVariants()
+    override val values: Sequence<TextFieldPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<TextFieldPreviewData> =
-        buildList {
-            listOf(true, false)
-                .forEach { withOuterContent ->
-                    listOf(true, false)
-                        .forEach { enabled ->
-                            listOf(true, false)
-                                .forEach { error ->
-                                    listOf(true, false)
-                                        .forEach { leading ->
-                                            listOf(true, false)
-                                                .forEach { trailing ->
-                                                    add(
-                                                        element = TextFieldPreviewData(
-                                                            enabled = enabled,
-                                                            error = error,
-                                                            withLeadingIcon = leading,
-                                                            withTrailingIcon = trailing,
-                                                            withOuterContent = withOuterContent,
-                                                            size = null,
-                                                        ),
-                                                    )
-                                                }
-                                        }
-                                }
-                        }
-                }
-        }.asSequence()
+    private fun buildRepresentativeVariants(): Sequence<TextFieldPreviewData> {
+        val base = TextFieldPreviewData(
+            enabled = true,
+            error = false,
+            withLeadingIcon = false,
+            withTrailingIcon = false,
+            withOuterContent = false,
+            size = null,
+        )
+        return buildList {
+            add(element = base)
+            add(element = base.copy(enabled = false))
+            add(element = base.copy(error = true))
+            add(element = base.copy(withLeadingIcon = true))
+            add(element = base.copy(withTrailingIcon = true))
+            add(element = base.copy(withOuterContent = true))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @Composable

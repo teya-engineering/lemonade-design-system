@@ -484,40 +484,36 @@ private data class ButtonPreviewData(
 )
 
 private class ButtonPreviewProvider : PreviewParameterProvider<ButtonPreviewData> {
-    override val values: Sequence<ButtonPreviewData> = buildAllVariants()
+    override val values: Sequence<ButtonPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<ButtonPreviewData> =
-        buildList {
+    private fun buildRepresentativeVariants(): Sequence<ButtonPreviewData> {
+        val base = ButtonPreviewData(
+            leadingIcon = false,
+            trailingIcon = false,
+            enabled = true,
+            loading = false,
+            size = LemonadeButtonSize.Large,
+            variant = LemonadeButtonVariant.Primary,
+            type = LemonadeButtonType.Solid,
+        )
+        return buildList {
+            add(element = base)
             LemonadeButtonSize.entries.forEach { size ->
-                LemonadeButtonVariant.entries.forEach { variant ->
-                    LemonadeButtonType.entries.forEach { type ->
-                        listOf(true, false)
-                            .forEach { leadingIcon ->
-                                listOf(true, false)
-                                    .forEach { trailingIcon ->
-                                        listOf(true, false)
-                                            .forEach { loading ->
-                                                listOf(true, false)
-                                                    .forEach { enabled ->
-                                                        add(
-                                                            element = ButtonPreviewData(
-                                                                leadingIcon = leadingIcon,
-                                                                trailingIcon = trailingIcon,
-                                                                enabled = enabled,
-                                                                loading = loading,
-                                                                size = size,
-                                                                variant = variant,
-                                                                type = type,
-                                                            ),
-                                                        )
-                                                    }
-                                            }
-                                    }
-                            }
-                    }
-                }
+                add(element = base.copy(size = size))
             }
-        }.asSequence()
+            LemonadeButtonVariant.entries.forEach { variant ->
+                add(element = base.copy(variant = variant))
+            }
+            LemonadeButtonType.entries.forEach { type ->
+                add(element = base.copy(type = type))
+            }
+            add(element = base.copy(leadingIcon = true))
+            add(element = base.copy(trailingIcon = true))
+            add(element = base.copy(enabled = false))
+            add(element = base.copy(loading = true))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview

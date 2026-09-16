@@ -1346,38 +1346,36 @@ private data class TopBarPreviewData(
 )
 
 private class TopBarPreviewProvider : PreviewParameterProvider<TopBarPreviewData> {
-    override val values: Sequence<TopBarPreviewData> = buildAllVariants()
+    override val values: Sequence<TopBarPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<TopBarPreviewData> =
-        buildList {
-            listOf(true, false)
-                .forEach { filled ->
-                    listOf(true, false)
-                        .forEach { collapsed ->
-                            listOf(TopBarAction.Back, TopBarAction.Close)
-                                .forEach { action ->
-                                    listOf(0, 1, 2)
-                                        .forEach { trailingIconCount ->
-                                            listOf(false, true)
-                                                .forEach { longLabel ->
-                                                    add(
-                                                        element = TopBarPreviewData(
-                                                            collapsed = collapsed,
-                                                            action = NavigationAction(
-                                                                navigationAction = action,
-                                                                onNavigationActionClicked = { },
-                                                                filled = filled,
-                                                            ),
-                                                            trailingIconCount = trailingIconCount,
-                                                            longLabel = longLabel,
-                                                        ),
-                                                    )
-                                                }
-                                        }
-                                }
-                        }
-                }
-        }.asSequence()
+    private fun previewAction(
+        action: TopBarAction,
+        filled: Boolean = false,
+    ): NavigationAction =
+        NavigationAction(
+            navigationAction = action,
+            onNavigationActionClicked = { },
+            filled = filled,
+        )
+
+    private fun buildRepresentativeVariants(): Sequence<TopBarPreviewData> {
+        val base = TopBarPreviewData(
+            collapsed = false,
+            action = previewAction(action = TopBarAction.Back),
+            trailingIconCount = 0,
+            longLabel = false,
+        )
+        return buildList {
+            add(element = base)
+            add(element = base.copy(collapsed = true))
+            add(element = base.copy(action = previewAction(action = TopBarAction.Close)))
+            add(element = base.copy(action = previewAction(action = TopBarAction.Back, filled = true)))
+            add(element = base.copy(trailingIconCount = 1))
+            add(element = base.copy(trailingIconCount = 2))
+            add(element = base.copy(longLabel = true))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview

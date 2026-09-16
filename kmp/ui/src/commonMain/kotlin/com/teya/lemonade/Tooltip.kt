@@ -854,37 +854,27 @@ private data class TooltipPreviewData(
 )
 
 private class TooltipPreviewProvider : PreviewParameterProvider<TooltipPreviewData> {
-    override val values: Sequence<TooltipPreviewData> = buildAllVariants()
+    override val values: Sequence<TooltipPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<TooltipPreviewData> =
-        buildList {
+    private fun buildRepresentativeVariants(): Sequence<TooltipPreviewData> {
+        val base = TooltipPreviewData(
+            indicatorPlacement = TooltipIndicatorPlacement.None,
+            withTitle = true,
+            withCloseButton = false,
+            withCover = false,
+            withFooter = true,
+        )
+        return buildList {
+            add(element = base)
             TooltipIndicatorPlacement.entries.forEach { placement ->
-                add(
-                    element = TooltipPreviewData(
-                        indicatorPlacement = placement,
-                        withTitle = true,
-                        withCloseButton = false,
-                        withCover = false,
-                        withFooter = true,
-                    ),
-                )
+                add(element = base.copy(indicatorPlacement = placement))
             }
-            listOf(true, false)
-                .forEach { withTitle ->
-                    listOf(true, false)
-                        .forEach { withCover ->
-                            add(
-                                element = TooltipPreviewData(
-                                    indicatorPlacement = TooltipIndicatorPlacement.TopCenter,
-                                    withTitle = withTitle,
-                                    withCloseButton = true,
-                                    withCover = withCover,
-                                    withFooter = withTitle,
-                                ),
-                            )
-                        }
-                }
-        }.asSequence()
+            add(element = base.copy(withTitle = false, withFooter = false))
+            add(element = base.copy(withCloseButton = true))
+            add(element = base.copy(withCover = true))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview

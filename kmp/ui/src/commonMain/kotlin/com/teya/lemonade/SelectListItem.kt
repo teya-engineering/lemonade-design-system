@@ -492,34 +492,28 @@ private data class SelectionListItemPreviewData(
 
 private class SelectionListItemPreviewProvider :
     PreviewParameterProvider<SelectionListItemPreviewData> {
-    override val values: Sequence<SelectionListItemPreviewData> = buildAllVariants()
+    override val values: Sequence<SelectionListItemPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<SelectionListItemPreviewData> =
-        buildList {
+    private fun buildRepresentativeVariants(): Sequence<SelectionListItemPreviewData> {
+        val base = SelectionListItemPreviewData(
+            type = SelectListItemType.Single,
+            supportText = false,
+            enabled = true,
+            leading = false,
+            trailing = false,
+        )
+        return buildList {
+            add(element = base)
             SelectListItemType.entries.forEach { type ->
-                listOf(true, false)
-                    .forEach { enabled ->
-                        listOf(true, false)
-                            .forEach { leading ->
-                                listOf(true, false)
-                                    .forEach { trailing ->
-                                        listOf(true, false)
-                                            .forEach { withSupportText ->
-                                                add(
-                                                    element = SelectionListItemPreviewData(
-                                                        type = type,
-                                                        supportText = withSupportText,
-                                                        enabled = enabled,
-                                                        leading = leading,
-                                                        trailing = trailing,
-                                                    ),
-                                                )
-                                            }
-                                    }
-                            }
-                    }
+                add(element = base.copy(type = type))
             }
-        }.asSequence()
+            add(element = base.copy(enabled = false))
+            add(element = base.copy(supportText = true))
+            add(element = base.copy(leading = true))
+            add(element = base.copy(trailing = true))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview

@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.composeHotReload)
     id("lemonade")
     id("lemonade-lint")
+    id("lemonade-screenshot")
 }
 
 lemonadePublishing {

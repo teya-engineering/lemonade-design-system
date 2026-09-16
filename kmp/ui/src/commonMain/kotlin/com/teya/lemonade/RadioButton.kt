@@ -292,31 +292,24 @@ private data class RadioPreviewData(
 )
 
 private class RadioPreviewProvider : PreviewParameterProvider<RadioPreviewData> {
-    override val values: Sequence<RadioPreviewData> = buildAllVariants()
+    override val values: Sequence<RadioPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<RadioPreviewData> =
-        buildList {
-            listOf(true, false)
-                .forEach { checked ->
-                    listOf(true, false)
-                        .forEach { enabled ->
-                            listOf(true, false)
-                                .forEach { withLabel ->
-                                    listOf(true, false)
-                                        .forEach { withSupportText ->
-                                            add(
-                                                element = RadioPreviewData(
-                                                    checked = checked,
-                                                    label = "Label".takeIf { withLabel },
-                                                    supportText = "Support Text".takeIf { withSupportText },
-                                                    enabled = enabled,
-                                                ),
-                                            )
-                                        }
-                                }
-                        }
-                }
-        }.asSequence()
+    private fun buildRepresentativeVariants(): Sequence<RadioPreviewData> {
+        val base = RadioPreviewData(
+            checked = false,
+            label = null,
+            supportText = null,
+            enabled = true,
+        )
+        return buildList {
+            add(element = base)
+            add(element = base.copy(checked = true))
+            add(element = base.copy(enabled = false))
+            add(element = base.copy(label = "Label"))
+            add(element = base.copy(label = "Label", supportText = "Support Text"))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview
