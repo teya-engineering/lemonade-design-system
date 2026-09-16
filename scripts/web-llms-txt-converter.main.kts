@@ -37,7 +37,7 @@ fun main() {
         val hidden = node.optJSONObject("\$extensions")
             ?.optBoolean("com.figma.hiddenFromPublishing") ?: false
         if (hidden) return@forEach
-        val leaf = leafOf(path)
+        val leaf = colourName(path)
         val description = descriptionOf(node)
         out.append("- `var(${cssVar("color", leaf)})`")
         if (description.isNotEmpty()) out.append(" — $description")

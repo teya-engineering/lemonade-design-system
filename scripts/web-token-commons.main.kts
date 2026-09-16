@@ -12,6 +12,10 @@ import java.util.Locale
 /** The last segment of a DTCG slash path. `Content/Brand/content-brand` -> `content-brand`. */
 fun leafOf(path: String): String = path.substringAfterLast('/')
 
+/** Every hue in the Themed collection reuses the same leaves, so those names keep the full path. */
+fun colourName(path: String): String =
+    if (path.startsWith("Themed/")) path.replace('/', '-').lowercase() else leafOf(path)
+
 /**
  * The CSS custom property for a token.
  *
