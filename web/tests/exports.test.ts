@@ -19,7 +19,7 @@ describe('token export', () => {
 
 describe('asset manifests', () => {
   it('lists every asset', () => {
-    expect(iconNames).toHaveLength(286)
+    expect(iconNames).toHaveLength(294)
     expect(flagNames).toHaveLength(265)
     expect(brandLogoNames).toHaveLength(39)
   })
