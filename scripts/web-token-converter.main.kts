@@ -297,7 +297,7 @@ fun themeVars(mode: String): List<CssVar> {
     readFileResourceFileByModeRaw(files, mode) { path, resolved ->
         vars.add(
             CssVar(
-                name = cssVar("color", leafOf(path)),
+                name = cssVar("color", colourName(path)),
                 value = rgbValue(
                     r = resolved.getDouble("r"),
                     g = resolved.getDouble("g"),
