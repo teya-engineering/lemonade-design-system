@@ -156,6 +156,176 @@ Always prefer a semantic token over a literal value.
 - `var(--lmnd-color-content-on-settlement-instant)` — Use for text and icons on the Instant settlement background.
 - `var(--lmnd-color-content-on-settlement-scheduled)` — Use for text and icons on the Scheduled settlement background.
 - `var(--lmnd-color-shadow-default)`
+- `var(--lmnd-color-themed-amber-background)` — Generic amber surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-amber-background-high)` — High-emphasis generic amber surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.
+- `var(--lmnd-color-themed-amber-border)` — Generic amber border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-amber-content)` — Generic amber text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-amber-content-inverse)` — Generic amber text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-amber-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-amber-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-amber-subtle-background)` — Subtle generic amber surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-amber-subtle-border)` — Subtle generic amber border. Pairs with background.
+- `var(--lmnd-color-themed-amber-subtle-on-background)` — Text and icons drawn on top of the subtle amber background. The hue's own content colour, which stays legible on a pale fill.
+- `var(--lmnd-color-themed-blue-background)` — Generic blue surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-blue-background-high)` — High-emphasis generic blue surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.
+- `var(--lmnd-color-themed-blue-border)` — Generic blue border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-blue-content)` — Generic blue text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-blue-content-inverse)` — Generic blue text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-blue-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-blue-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-blue-subtle-background)` — Subtle generic blue surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-blue-subtle-border)` — Subtle generic blue border. Pairs with background.
+- `var(--lmnd-color-themed-blue-subtle-on-background)` — Text and icons drawn on top of the subtle blue background. The hue's own content colour, which stays legible on a pale fill.
+- `var(--lmnd-color-themed-cyan-background)` — Generic cyan surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-cyan-background-high)` — High-emphasis generic cyan surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.
+- `var(--lmnd-color-themed-cyan-border)` — Generic cyan border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-cyan-content)` — Generic cyan text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-cyan-content-inverse)` — Generic cyan text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-cyan-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-cyan-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-cyan-subtle-background)` — Subtle generic cyan surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-cyan-subtle-border)` — Subtle generic cyan border. Pairs with background.
+- `var(--lmnd-color-themed-cyan-subtle-on-background)` — Text and icons drawn on top of the subtle cyan background. The hue's own content colour, which stays legible on a pale fill.
+- `var(--lmnd-color-themed-fuchsia-background)` — Generic fuchsia surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-fuchsia-background-high)` — High-emphasis generic fuchsia surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.
+- `var(--lmnd-color-themed-fuchsia-border)` — Generic fuchsia border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-fuchsia-content)` — Generic fuchsia text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-fuchsia-content-inverse)` — Generic fuchsia text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-fuchsia-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-fuchsia-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-fuchsia-subtle-background)` — Subtle generic fuchsia surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-fuchsia-subtle-border)` — Subtle generic fuchsia border. Pairs with background.
+- `var(--lmnd-color-themed-fuchsia-subtle-on-background)` — Text and icons drawn on top of the subtle fuchsia background. The hue's own content colour, which stays legible on a pale fill.
+- `var(--lmnd-color-themed-green-background)` — Generic green surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-green-background-high)` — High-emphasis generic green surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.
+- `var(--lmnd-color-themed-green-border)` — Generic green border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-green-content)` — Generic green text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-green-content-inverse)` — Generic green text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-green-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-green-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-green-subtle-background)` — Subtle generic green surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-green-subtle-border)` — Subtle generic green border. Pairs with background.
+- `var(--lmnd-color-themed-green-subtle-on-background)` — Text and icons drawn on top of the subtle green background. The hue's own content colour, which stays legible on a pale fill.
+- `var(--lmnd-color-themed-green-lime-background)` — Generic green lime surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-green-lime-background-high)` — High-emphasis generic green lime surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.
+- `var(--lmnd-color-themed-green-lime-border)` — Generic green lime border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-green-lime-content)` — Generic green lime text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-green-lime-content-inverse)` — Generic green lime text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-green-lime-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-green-lime-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-green-lime-subtle-background)` — Subtle generic green lime surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-green-lime-subtle-border)` — Subtle generic green lime border. Pairs with background.
+- `var(--lmnd-color-themed-green-lime-subtle-on-background)` — Text and icons drawn on top of the subtle green lime background. The hue's own content colour, which stays legible on a pale fill.
+- `var(--lmnd-color-themed-indigo-background)` — Generic indigo surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-indigo-background-high)` — High-emphasis generic indigo surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.
+- `var(--lmnd-color-themed-indigo-border)` — Generic indigo border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-indigo-content)` — Generic indigo text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-indigo-content-inverse)` — Generic indigo text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-indigo-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-indigo-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-indigo-subtle-background)` — Subtle generic indigo surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-indigo-subtle-border)` — Subtle generic indigo border. Pairs with background.
+- `var(--lmnd-color-themed-indigo-subtle-on-background)` — Text and icons drawn on top of the subtle indigo background. The hue's own content colour, which stays legible on a pale fill.
+- `var(--lmnd-color-themed-neutral-background)` — Generic neutral surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-neutral-background-high)` — High-emphasis generic neutral surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.
+- `var(--lmnd-color-themed-neutral-border)` — Generic neutral border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-neutral-content)` — Generic neutral text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-neutral-content-inverse)` — Generic neutral text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-neutral-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-neutral-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-neutral-subtle-background)` — Subtle generic neutral surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-neutral-subtle-border)` — Subtle generic neutral border. Pairs with background.
+- `var(--lmnd-color-themed-neutral-subtle-on-background)` — Text and icons drawn on top of the subtle neutral background. The hue's own content colour, which stays legible on a pale fill.
+- `var(--lmnd-color-themed-orange-background)` — Generic orange surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-orange-background-high)` — High-emphasis generic orange surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.
+- `var(--lmnd-color-themed-orange-border)` — Generic orange border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-orange-content)` — Generic orange text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-orange-content-inverse)` — Generic orange text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-orange-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-orange-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-orange-subtle-background)` — Subtle generic orange surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-orange-subtle-border)` — Subtle generic orange border. Pairs with background.
+- `var(--lmnd-color-themed-orange-subtle-on-background)` — Text and icons drawn on top of the subtle orange background. The hue's own content colour, which stays legible on a pale fill.
+- `var(--lmnd-color-themed-pink-background)` — Generic pink surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-pink-background-high)` — High-emphasis generic pink surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.
+- `var(--lmnd-color-themed-pink-border)` — Generic pink border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-pink-content)` — Generic pink text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-pink-content-inverse)` — Generic pink text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-pink-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-pink-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-pink-subtle-background)` — Subtle generic pink surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-pink-subtle-border)` — Subtle generic pink border. Pairs with background.
+- `var(--lmnd-color-themed-pink-subtle-on-background)` — Text and icons drawn on top of the subtle pink background. The hue's own content colour, which stays legible on a pale fill.
+- `var(--lmnd-color-themed-purple-background)` — Generic purple surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-purple-background-high)` — High-emphasis generic purple surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.
+- `var(--lmnd-color-themed-purple-border)` — Generic purple border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-purple-content)` — Generic purple text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-purple-content-inverse)` — Generic purple text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-purple-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-purple-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-purple-subtle-background)` — Subtle generic purple surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-purple-subtle-border)` — Subtle generic purple border. Pairs with background.
+- `var(--lmnd-color-themed-purple-subtle-on-background)` — Text and icons drawn on top of the subtle purple background. The hue's own content colour, which stays legible on a pale fill.
+- `var(--lmnd-color-themed-red-background)` — Generic red surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-red-background-high)` — High-emphasis generic red surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.
+- `var(--lmnd-color-themed-red-border)` — Generic red border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-red-content)` — Generic red text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-red-content-inverse)` — Generic red text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-red-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-red-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-red-subtle-background)` — Subtle generic red surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-red-subtle-border)` — Subtle generic red border. Pairs with background.
+- `var(--lmnd-color-themed-red-subtle-on-background)` — Text and icons drawn on top of the subtle red background. The hue's own content colour, which stays legible on a pale fill.
+- `var(--lmnd-color-themed-rose-background)` — Generic rose surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-rose-background-high)` — High-emphasis generic rose surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.
+- `var(--lmnd-color-themed-rose-border)` — Generic rose border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-rose-content)` — Generic rose text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-rose-content-inverse)` — Generic rose text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-rose-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-rose-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-rose-subtle-background)` — Subtle generic rose surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-rose-subtle-border)` — Subtle generic rose border. Pairs with background.
+- `var(--lmnd-color-themed-rose-subtle-on-background)` — Text and icons drawn on top of the subtle rose background. The hue's own content colour, which stays legible on a pale fill.
+- `var(--lmnd-color-themed-teal-background)` — Generic teal surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-teal-background-high)` — High-emphasis generic teal surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.
+- `var(--lmnd-color-themed-teal-border)` — Generic teal border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-teal-content)` — Generic teal text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-teal-content-inverse)` — Generic teal text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-teal-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-teal-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-teal-subtle-background)` — Subtle generic teal surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-teal-subtle-border)` — Subtle generic teal border. Pairs with background.
+- `var(--lmnd-color-themed-teal-subtle-on-background)` — Text and icons drawn on top of the subtle teal background. The hue's own content colour, which stays legible on a pale fill.
+- `var(--lmnd-color-themed-violet-background)` — Generic violet surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-violet-background-high)` — High-emphasis generic violet surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.
+- `var(--lmnd-color-themed-violet-border)` — Generic violet border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-violet-content)` — Generic violet text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-violet-content-inverse)` — Generic violet text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-violet-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-violet-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-violet-subtle-background)` — Subtle generic violet surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-violet-subtle-border)` — Subtle generic violet border. Pairs with background.
+- `var(--lmnd-color-themed-violet-subtle-on-background)` — Text and icons drawn on top of the subtle violet background. The hue's own content colour, which stays legible on a pale fill.
+- `var(--lmnd-color-themed-yellow-background)` — Generic yellow surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-yellow-background-high)` — High-emphasis generic yellow surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.
+- `var(--lmnd-color-themed-yellow-border)` — Generic yellow border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-yellow-content)` — Generic yellow text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-yellow-content-inverse)` — Generic yellow text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-yellow-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-yellow-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-yellow-subtle-background)` — Subtle generic yellow surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-yellow-subtle-border)` — Subtle generic yellow border. Pairs with background.
+- `var(--lmnd-color-themed-yellow-subtle-on-background)` — Text and icons drawn on top of the subtle yellow background. The hue's own content colour, which stays legible on a pale fill.
+- `var(--lmnd-color-themed-yellow-lime-background)` — Generic yellow lime surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.
+- `var(--lmnd-color-themed-yellow-lime-background-high)` — High-emphasis generic yellow lime surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Dark uses the brand step 500 rather than 200, which reads washed out for this hue. Pair with on-background-high.
+- `var(--lmnd-color-themed-yellow-lime-border)` — Generic yellow lime border. Use for application-defined meaning where no semantic token applies.
+- `var(--lmnd-color-themed-yellow-lime-content)` — Generic yellow lime text and icons on a default surface. Also legible on background-subtle.
+- `var(--lmnd-color-themed-yellow-lime-content-inverse)` — Generic yellow lime text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.
+- `var(--lmnd-color-themed-yellow-lime-on-background)` — Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.
+- `var(--lmnd-color-themed-yellow-lime-on-background-high)` — Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.
+- `var(--lmnd-color-themed-yellow-lime-subtle-background)` — Subtle generic yellow lime surface. Pair with on-background for the label, optionally outlined with border.
+- `var(--lmnd-color-themed-yellow-lime-subtle-border)` — Subtle generic yellow lime border. Pairs with background.
+- `var(--lmnd-color-themed-yellow-lime-subtle-on-background)` — Text and icons drawn on top of the subtle yellow lime background. The hue's own content colour, which stays legible on a pale fill.
 
 ## Spacing
 

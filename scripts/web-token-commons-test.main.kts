@@ -12,6 +12,17 @@ fun main() {
     check(leafOf("Content/Brand/content-brand") == "content-brand", "leafOf takes the last segment")
     check(leafOf("spacing-100") == "spacing-100", "leafOf tolerates a bare name")
 
+    // --- colourName -----------------------------------------------------
+    check(colourName("Content/content-primary") == "content-primary", "semantic colours keep their leaf")
+    check(
+        colourName("Themed/yellow/background") == "themed-yellow-background",
+        "themed colours carry their hue, since every hue reuses the same leaves",
+    )
+    check(
+        colourName("Themed/green-lime/subtle/on-background") == "themed-green-lime-subtle-on-background",
+        "themed subtle colours carry hue and subtle",
+    )
+
     // --- cssVar: colours keep their full leaf --------------------------
     check(
         cssVar("color", "content-primary") == "--lmnd-color-content-primary",
