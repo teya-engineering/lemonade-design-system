@@ -119,8 +119,9 @@ private const val TESTER_CLASS =
 private const val SCREENSHOTS_DIR = "src/androidMain/screenshots"
 
 // The generated `@Config(sdk = ...)` annotation takes this literal; pinning it
-// keeps goldens deterministic when Robolectric's default SDK moves.
-private const val ROBOLECTRIC_SDK = "[36]"
+// keeps goldens deterministic when Robolectric's default SDK moves. 35 is the
+// newest level a Java 17 test JVM can sandbox (Robolectric's SDK 36 needs 21).
+private const val ROBOLECTRIC_SDK = "[35]"
 
 private fun Project.lib(alias: String): Provider<MinimalExternalModuleDependency> {
     val catalog = extensions
