@@ -7,5 +7,5 @@ import { timePickerDialog } from '../shared/time'
 export default {
   ...timePickerDialog(figma.selectedInstance, false),
   id: 'time-picker-dialog-dial',
-  metadata: { nestable: true },
+  metadata: { nestable: false },
 }

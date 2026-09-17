@@ -6,5 +6,5 @@ import figma from 'figma'
 export default {
   example: figma.swift`// NOTE: TimePickerDialog is Compose-only; Lemonade has no SwiftUI time picker`,
   id: 'time-picker-dialog-dial',
-  metadata: { nestable: true },
+  metadata: { nestable: false },
 }

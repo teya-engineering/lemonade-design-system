@@ -7,5 +7,5 @@ import { bottomSheet } from '../shared/bottom-sheet'
 export default {
   ...bottomSheet(figma.selectedInstance, true),
   id: 'bottom-sheet-full-screen',
-  metadata: { nestable: true },
+  metadata: { nestable: false },
 }

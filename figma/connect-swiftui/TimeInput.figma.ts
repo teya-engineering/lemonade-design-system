@@ -6,5 +6,5 @@ import figma from 'figma'
 export default {
   example: figma.swift`// NOTE: TimeInput is Compose-only; Lemonade has no SwiftUI time picker`,
   id: 'time-input',
-  metadata: { nestable: true },
+  metadata: { nestable: false },
 }

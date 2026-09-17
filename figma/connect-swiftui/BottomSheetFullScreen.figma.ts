@@ -6,5 +6,5 @@ import figma from 'figma'
 export default {
   example: figma.swift`// NOTE: BottomSheet is Compose-only; Lemonade has no SwiftUI BottomSheet`,
   id: 'bottom-sheet-full-screen',
-  metadata: { nestable: true },
+  metadata: { nestable: false },
 }

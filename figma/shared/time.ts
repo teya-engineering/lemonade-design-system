@@ -1,4 +1,5 @@
 import figma from 'figma'
+import { renderer } from './render'
 
 // Code Connect names the fields inside the dial's nested Time Input after that
 // component's own building block, not the one Figma shows there.
@@ -23,7 +24,7 @@ const readTime = (holder, is24Hour) => {
 
 // The state every time picker composable takes, seeded with the designed time.
 export const timeState = (instance, holder = instance) => {
-  const is24Hour = instance.getEnum('◇ Format', { '12 hour': false, '24 hour': true })
+  const is24Hour = instance.getEnum('◇ Format', { '12 hour': false, '24 hour': true }) ?? false
   const time = readTime(holder, is24Hour)
   return figma.kotlin`val state = rememberLemonadeTimePickerState(
     initialHour = ${time.hour},
@@ -34,6 +35,7 @@ export const timeState = (instance, holder = instance) => {
 
 // The Dial and Input dialog sets differ only in the mode the dialog opens on.
 export const timePickerDialog = (instance, inputMode) => {
+  const { quote } = renderer(instance, figma.kotlin)
   const buttons = instance.findLayers((node) => node.type === 'INSTANCE' && node.name === 'Primary button')
   const label = (variant, fallback) => {
     const button = buttons.find(
@@ -45,9 +47,9 @@ export const timePickerDialog = (instance, inputMode) => {
     example: figma.kotlin`${timeState(instance)}
 LemonadeUi.TimePickerDialog(
     expanded = true,
-    title = "${instance.getString('✍️ Headline')}",
-    confirmLabel = "${label('Primary', 'Confirm')}",
-    cancelLabel = "${label('Neutral', 'Cancel')}",
+    title = "${quote(instance.getString('✍️ Headline'))}",
+    confirmLabel = "${quote(label('Primary', 'Confirm'))}",
+    cancelLabel = "${quote(label('Neutral', 'Cancel'))}",
     switchToInputLabel = "Switch to text input",
     switchToDialLabel = "Switch to clock dial",
     state = state,

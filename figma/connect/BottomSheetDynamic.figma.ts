@@ -7,5 +7,5 @@ import { bottomSheet } from '../shared/bottom-sheet'
 export default {
   ...bottomSheet(figma.selectedInstance, false),
   id: 'bottom-sheet-dynamic',
-  metadata: { nestable: true },
+  metadata: { nestable: false },
 }

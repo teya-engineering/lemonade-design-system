@@ -6,5 +6,5 @@ import figma from 'figma'
 export default {
   example: figma.swift`// NOTE: BottomTabBar is Compose-only; Lemonade has no SwiftUI BottomTabBar`,
   id: 'bottom-tab-bar',
-  metadata: { nestable: true },
+  metadata: { nestable: false },
 }

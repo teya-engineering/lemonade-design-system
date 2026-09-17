@@ -40,5 +40,5 @@ export default {
 // NOTE: Dropdown has no ${unsupported.join(', ')}` : ''}`,
   imports: ['import com.teya.lemonade.Dropdown', 'import com.teya.lemonade.LemonadeUi'],
   id: 'dropdown',
-  metadata: { nestable: true },
+  metadata: { nestable: false },
 }

@@ -6,5 +6,5 @@ import figma from 'figma'
 export default {
   example: figma.swift`// NOTE: DropdownItem is Compose-only; Lemonade has no SwiftUI Dropdown`,
   id: 'dropdown-item',
-  metadata: { nestable: true },
+  metadata: { nestable: false },
 }

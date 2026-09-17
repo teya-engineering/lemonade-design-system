@@ -15,5 +15,5 @@ LemonadeUi.TimeInput(state = state)`,
     'import com.teya.lemonade.rememberLemonadeTimePickerState',
   ],
   id: 'time-input',
-  metadata: { nestable: true },
+  metadata: { nestable: false },
 }

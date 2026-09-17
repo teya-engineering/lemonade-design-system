@@ -4,7 +4,7 @@ import { renderer } from './render'
 // Both Figma sheet sets map to the one composable; full screen skips the
 // half-expanded state.
 export const bottomSheet = (instance, fullScreen) => {
-  const { render, snippets, imports } = renderer(instance, figma.kotlin)
+  const { render, snippets, imports, quote } = renderer(instance, figma.kotlin)
 
   const subtle = instance.getEnum('◇ Background', { Default: false, Subtle: true })
   const actions = instance.getBoolean('◉ Show Bottom Actions')
@@ -28,8 +28,8 @@ export const bottomSheet = (instance, fullScreen) => {
     skipPartiallyExpanded = true,` : ''}${subtle ? `
     background = LemonadeBottomSheetVariant.Subtle,` : ''}
 ) {${title ? `
-    LemonadeUi.Text(text = "${title}", textStyle = LemonadeTheme.typography.headingSmall)` : ''}${subheading ? `
-    LemonadeUi.Text(text = "${subheading}")` : ''}${searchCode ? figma.kotlin`
+    LemonadeUi.Text(text = "${quote(title)}", textStyle = LemonadeTheme.typography.headingSmall)` : ''}${subheading ? `
+    LemonadeUi.Text(text = "${quote(subheading)}")` : ''}${searchCode ? figma.kotlin`
     ${searchCode}` : ''}
     /* sheet content */${actions ? actionCode ?? `
     /* bottom actions */` : ''}
