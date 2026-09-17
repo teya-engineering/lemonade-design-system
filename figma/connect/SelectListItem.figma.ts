@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slot, imports: slotImports } = renderer(instance, figma.kotlin)
+const { slot, imports: slotImports, quote } = renderer(instance, figma.kotlin)
 
 const read = (layer) => {
   const node = instance.findText(layer)
@@ -32,12 +32,12 @@ const trailing = instance.getBoolean('◉ Show Trailing')
 const bottom = instance.getBoolean('◉ Show Bottom Slot')
 export default {
   example: figma.kotlin`LemonadeUi.SelectListItem(
-    label = "${label}",
+    label = "${quote(label)}",
     type = SelectListItemType.${type},
     checked = ${checked},
-    onItemClicked = { },${variant !== 'Plain' ? `
+    onItemClicked = { },${variant && variant !== 'Plain' ? `
     variant = SelectListItemVariant.${variant},` : ''}${supportText ? `
-    supportText = "${supportText}",` : ''}${disabled ? `
+    supportText = "${quote(supportText)}",` : ''}${disabled ? `
     enabled = false,` : ''}${showDivider ? `
     showDivider = true,` : ''}${leading ? figma.kotlin`
     leadingSlot = ${slot('↪ 🧩 Leading', 'leading content')},` : ''}${trailing ? figma.kotlin`

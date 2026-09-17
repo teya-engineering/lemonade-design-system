@@ -37,8 +37,8 @@ if (icon && icon.type === 'INSTANCE') {
 }
 
 export default {
-  example: figma.kotlin`LemonadeUi.IconButton(${iconCode ? figma.kotlin`
-    icon = ${iconCode},` : ''}
+  example: figma.kotlin`LemonadeUi.IconButton(
+    icon = ${iconCode ?? 'LemonadeIcons.Heart'},
     contentDescription = null, // TODO: this button has no visible label — describe the action
     onClick = { },
     variant = LemonadeButtonVariant.${variant},
@@ -46,14 +46,15 @@ export default {
     size = LemonadeButtonSize.${size},${disabled ? `
     enabled = false,` : ''}${loading ? `
     loading = true,` : ''}
-)`,
+)${iconCode ? '' : `
+// NOTE: the design's icon did not resolve; set the entry it uses`}`,
   imports: [
+    'import com.teya.lemonade.core.LemonadeIcons',
     'import com.teya.lemonade.IconButton',
     'import com.teya.lemonade.LemonadeUi',
     'import com.teya.lemonade.core.LemonadeButtonSize',
     'import com.teya.lemonade.core.LemonadeButtonType',
     'import com.teya.lemonade.core.LemonadeButtonVariant',
-    ...(iconCode ? ['import com.teya.lemonade.core.LemonadeIcons'] : []),
   ],
   id: 'icon-button',
   metadata: { nestable: true },

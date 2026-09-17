@@ -2,8 +2,10 @@
 // source=swiftui/Sources/Lemonade/Components/LemonadeLink.swift
 // component=Link
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.swift)
 
 const text = instance.getString('✍️ Label')
 
@@ -15,7 +17,7 @@ if (icon && icon.type === 'INSTANCE') {
 
 export default {
   example: figma.swift`LemonadeUi.Link(
-    text: "${text}",
+    text: "${quote(text)}",
     onClick: { }${iconCode ? figma.swift`,
     icon: ${iconCode}` : ''}
 )`,

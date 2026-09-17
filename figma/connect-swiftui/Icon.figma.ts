@@ -24,11 +24,12 @@ if (glyph && glyph.type === 'INSTANCE') {
 }
 
 export default {
-  example: figma.swift`LemonadeUi.Icon(${glyphCode ? figma.swift`
-    icon: ${glyphCode},` : ''}
+  example: figma.swift`LemonadeUi.Icon(
+    icon: ${glyphCode ?? 'LemonadeIcon.heart'},
     contentDescription: nil,
     size: .${size}
-)`,
+)${glyphCode ? '' : `
+// NOTE: the design's icon did not resolve; set the case it uses`}`,
   id: 'icon',
   metadata: { nestable: true },
 }

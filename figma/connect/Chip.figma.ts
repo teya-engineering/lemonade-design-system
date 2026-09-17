@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slotIcon } = renderer(instance, figma.kotlin)
+const { slotIcon, quote } = renderer(instance, figma.kotlin)
 
 const label = instance.getString('✍️ Label')
 const selected = instance.getEnum('◉ Is Selected', { True: true, False: false })
@@ -27,7 +27,7 @@ const leadingIcon = leading ? slotIcon('↪ 🧩 Leading') : undefined
 
 export default {
   example: figma.kotlin`LemonadeUi.Chip(
-    label = "${label}",
+    label = "${quote(label)}",
     selected = ${selected},
     onChipClicked = { },${leadingIcon ? figma.kotlin`
     leadingIcon = ${leadingIcon},` : ''}${counter ? `

@@ -2,8 +2,10 @@
 // source=swiftui/Sources/Lemonade/Components/LemonadeToast.swift
 // component=Toast
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.swift)
 
 const labelLayer = instance.findText('Label')
 const label = labelLayer && labelLayer.type === 'TEXT' ? labelLayer.textContent : ''
@@ -28,10 +30,10 @@ const actionLabel = instance.getBoolean('◉ Show Action')
 
 export default {
   example: figma.swift`LemonadeUi.Toast(
-    label: "${label}",
+    label: "${quote(label)}",
     voice: .${voice}${iconCode ? figma.swift`,
     icon: ${iconCode}` : ''}${actionLabel ? `,
-    actionLabel: "${actionLabel}",
+    actionLabel: "${quote(actionLabel)}",
     onAction: { }` : ''}
 )`,
   id: 'toast',

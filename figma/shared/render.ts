@@ -11,6 +11,18 @@ export const shift = (sections, pad) =>
 // collected for the caller to re-export.
 export const renderer = (instance, tag) => {
   const imports = new Set()
+  const kotlin = tag``.language === 'kotlin'
+
+  // Figma text is arbitrary: a quote ends the literal, a backslash escapes what
+  // follows it, a newline breaks the line, and Kotlin reads `$name` as a
+  // template expression. Swift has no `\$` escape, so that one is Kotlin-only.
+  const quote = (value) => {
+    const escaped = String(value ?? '')
+      .replace(/\\/g, '\\\\')
+      .replace(/"/g, '\\"')
+      .replace(/\r?\n/g, '\\n')
+    return kotlin ? escaped.replace(/\$/g, '\\$') : escaped
+  }
 
   const render = (child, pad) => {
     const { example } = child.executeTemplate()
@@ -52,5 +64,5 @@ ${pad}${render(child, pad)}`
     return glyph && glyph.type === 'INSTANCE' ? glyph.executeTemplate().example : undefined
   }
 
-  return { imports, render, snippets, slot, slotIcon }
+  return { imports, render, snippets, slot, slotIcon, quote }
 }

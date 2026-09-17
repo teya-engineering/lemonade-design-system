@@ -2,10 +2,12 @@
 // source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/Divider.kt
 // component=Divider
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 // One Figma component over two composables: orientation picks between them
 // rather than being a parameter.
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.kotlin)
 
 const vertical = instance.getEnum('Orientation', { Vertical: true, Horizontal: false })
 const variant = instance.getEnum('Type', { Solid: 'Solid', Dashed: 'Dashed' })
@@ -21,7 +23,7 @@ export default {
     variant = DividerVariant.${variant},
 )`
     : figma.kotlin`LemonadeUi.HorizontalDivider(${label ? `
-    label = "${label}",` : ''}
+    label = "${quote(label)}",` : ''}
     variant = DividerVariant.${variant},
 )`,
   imports: [

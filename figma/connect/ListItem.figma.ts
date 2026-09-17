@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slot, imports: slotImports } = renderer(instance, figma.kotlin)
+const { slot, imports: slotImports, quote } = renderer(instance, figma.kotlin)
 
 const labelLayer = instance.findText('Label')
 const label = labelLayer && labelLayer.type === 'TEXT' ? labelLayer.textContent : ''
@@ -23,8 +23,8 @@ const trailing = instance.getBoolean('◉ Show Trailing')
 const bottom = instance.getBoolean('◉ Show Bottom Slot')
 export default {
   example: figma.kotlin`LemonadeUi.ListItem(
-    label = "${label}",${supportText ? `
-    supportText = "${supportText}",` : ''}
+    label = "${quote(label)}",${supportText ? `
+    supportText = "${quote(supportText)}",` : ''}
     onListItemClick = { },${navigationIndicator ? `
     navigationIndicator = true,` : ''}${isLoading ? `
     isLoading = true,` : ''}${showDivider ? `

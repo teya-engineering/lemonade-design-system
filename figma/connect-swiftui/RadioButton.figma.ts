@@ -2,8 +2,10 @@
 // source=swiftui/Sources/Lemonade/Components/LemonadeRadioButton.swift
 // component=RadioButton
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.swift)
 
 const checked = instance.getEnum('◉ Is Checked', { True: true, False: false })
 const disabled = instance.getEnum('◉ Is Disabled', { True: true, False: false })
@@ -24,8 +26,8 @@ export default {
     : figma.swift`LemonadeUi.RadioButton(
     checked: ${checked},
     onRadioButtonClicked: { },
-    label: "${label}"${supportText ? `,
-    supportText: "${supportText}"` : ''}${disabled ? `,
+    label: "${quote(label)}"${supportText ? `,
+    supportText: "${quote(supportText)}"` : ''}${disabled ? `,
     enabled: false` : ''}
 )`,
   id: 'radio-button',

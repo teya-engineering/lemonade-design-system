@@ -2,8 +2,10 @@
 // source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/Toast.kt
 // component=Toast
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.kotlin)
 
 const labelLayer = instance.findText('Label')
 const label = labelLayer && labelLayer.type === 'TEXT' ? labelLayer.textContent : ''
@@ -28,10 +30,10 @@ const actionLabel = instance.getBoolean('◉ Show Action')
 
 export default {
   example: figma.kotlin`LemonadeUi.Toast(
-    label = "${label}",
+    label = "${quote(label)}",
     voice = ToastVoice.${voice},${iconCode ? figma.kotlin`
     icon = ${iconCode},` : ''}${actionLabel ? `
-    actionLabel = "${actionLabel}",
+    actionLabel = "${quote(actionLabel)}",
     onAction = { },` : ''}
 )`,
   imports: [

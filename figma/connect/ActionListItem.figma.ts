@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slot, imports: slotImports } = renderer(instance, figma.kotlin)
+const { slot, imports: slotImports, quote } = renderer(instance, figma.kotlin)
 
 const read = (layer) => {
   const node = instance.findText(layer)
@@ -25,10 +25,10 @@ const leading = instance.getBoolean('◉ Show Leading')
 const trailing = instance.getBoolean('◉ Show Trailing')
 export default {
   example: figma.kotlin`LemonadeUi.ActionListItem(
-    label = "${label}",${topLabel ? `
-    topLabel = "${topLabel}",` : ''}${supportText ? `
-    supportText = "${supportText}",` : ''}
-    onItemClicked = { },${voice !== 'Neutral' ? `
+    label = "${quote(label)}",${topLabel ? `
+    topLabel = "${quote(topLabel)}",` : ''}${supportText ? `
+    supportText = "${quote(supportText)}",` : ''}
+    onItemClicked = { },${voice && voice !== 'Neutral' ? `
     voice = LemonadeListItemVoice.${voice},` : ''}${navigationIndicator ? `
     showNavigationIndicator = true,` : ''}${isLoading ? `
     isLoading = true,` : ''}${showDivider ? `

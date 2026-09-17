@@ -2,10 +2,12 @@
 // source=swiftui/Sources/Lemonade/Components/LemonadeDivider.swift
 // component=Divider
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 // One Figma component over two views: orientation picks between them rather
 // than being a parameter.
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.swift)
 
 const vertical = instance.getEnum('Orientation', { Vertical: true, Horizontal: false })
 const variant = instance.getEnum('Type', { Solid: 'solid', Dashed: 'dashed' })
@@ -21,7 +23,7 @@ export default {
     variant: .${variant}
 )`
     : figma.swift`LemonadeUi.HorizontalDivider(${label ? `
-    label: "${label}",` : ''}
+    label: "${quote(label)}",` : ''}
     variant: .${variant}
 )`,
   id: 'divider',

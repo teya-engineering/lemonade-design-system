@@ -2,8 +2,10 @@
 // source=swiftui/Sources/Lemonade/Components/LemonadeNotice.swift
 // component=Notice
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.swift)
 
 const content = instance.getString('✍️ Content')
 
@@ -28,11 +30,11 @@ const actionLabel = instance.getBoolean('◉ Show Action')
 
 export default {
   example: figma.swift`LemonadeUi.Notice(
-    content: "${content}",
+    content: "${quote(content)}",
     voice: .${voice}${title ? `,
-    title: "${title}"` : ''}${showIcon ? '' : `,
+    title: "${quote(title)}"` : ''}${showIcon ? '' : `,
     showIcon: false`}${actionLabel ? `,
-    actionLabel: "${actionLabel}",
+    actionLabel: "${quote(actionLabel)}",
     onActionClick: { }` : ''}
 )`,
   id: 'notice',

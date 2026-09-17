@@ -73,13 +73,13 @@ const enclosingType = (src, at) => {
 // one line has no labels here, so it is skipped rather than misread.
 const calls = (src, separator) => {
   const out = []
-  for (const m of src.matchAll(/(?:LemonadeUi\.)?\b([A-Z]\w+)\(/g)) {
+  for (const m of src.matchAll(/(LemonadeUi\.)?\b([A-Z]\w+)\(/g)) {
     const open = m.index + m[0].length - 1
     const end = closing(src, open)
     if (end === -1) continue
     const body = src.slice(open, end)
     const labels = [...body.matchAll(new RegExp(`\\n {4}(\\w+) ?${separator}`, 'g'))].map((l) => l[1])
-    if (labels.length) out.push({ name: m[1], labels })
+    if (labels.length) out.push({ name: m[2], labels, ours: Boolean(m[1]) })
   }
   return out
 }
@@ -94,7 +94,8 @@ const shared = files('figma/shared', (f) => f.endsWith('.ts'))
 // 1. Every template's `// source=` link points at a real file.
 for (const file of [...compose, ...swiftui]) {
   const source = readFileSync(file, 'utf8').match(/^\/\/ source=(.+)$/m)?.[1]
-  if (source && !existsSync(join(repo, source))) report(file, `source ${source} does not exist`)
+  if (!source) report(file, 'has no // source= header')
+  else if (!existsSync(join(repo, source))) report(file, `source ${source} does not exist`)
 }
 
 // 2. Compose imports resolve, and Lemonade names the snippet uses are imported.
@@ -144,7 +145,10 @@ const kotlinDecls = declarations(
 for (const file of [...compose, ...shared]) {
   for (const call of calls(readFileSync(file, 'utf8'), '=')) {
     const overloads = kotlinDecls.get(call.name)
-    if (!overloads) continue
+    if (!overloads) {
+      if (call.ours) report(file, `LemonadeUi.${call.name} is not a composable in kmp/`)
+      continue
+    }
     if (!overloads.some((labels) => call.labels.every((l) => labels.includes(l)))) {
       report(file, `${call.name}(${call.labels.join(', ')}) matches no overload`)
     }
@@ -160,7 +164,10 @@ const swiftDecls = declarations(
 for (const file of swiftui) {
   for (const call of calls(readFileSync(file, 'utf8'), ':')) {
     const overloads = swiftDecls.get(call.name)
-    if (!overloads) continue
+    if (!overloads) {
+      if (call.ours) report(file, `LemonadeUi.${call.name} is not a function in swiftui/Sources`)
+      continue
+    }
     const fits = overloads.some((labels) => {
       const at = call.labels.map((l) => labels.indexOf(l))
       return !at.includes(-1) && at.every((v, i) => i === 0 || v > at[i - 1])

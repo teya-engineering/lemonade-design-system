@@ -2,8 +2,10 @@
 // source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/TextField.kt
 // component=TextFieldWithSelector
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.kotlin)
 
 const filled = instance.getEnum('◉ Is Filled', { True: true, False: false })
 const input = filled ? instance.getString('✍️ Value') : ''
@@ -52,7 +54,7 @@ if (selector && selector.type === 'INSTANCE') {
 
 export default {
   example: figma.kotlin`LemonadeUi.TextFieldWithSelector(
-    input = "${input}",
+    input = "${quote(input)}",
     onInputChanged = { },
     leadingAction = { },
     leadingContent = {
@@ -62,14 +64,14 @@ export default {
             modifier = Modifier.padding(all = LemonadeTheme.spaces.spacing400),
         ) {${asset ? figma.kotlin`
             ${asset}` : ''}
-            LemonadeUi.Text(text = "${selectorText}")
+            LemonadeUi.Text(text = "${quote(selectorText)}")
             LemonadeUi.Icon(icon = LemonadeIcons.ChevronDown, contentDescription = null)
         }
     },${label ? `
-    label = "${label}",` : ''}
-    placeholderText = "${placeholder}",${supportText ? `
-    supportText = "${supportText}",` : ''}${errorMessage ? `
-    errorMessage = "${errorMessage}",` : ''}${hasError ? `
+    label = "${quote(label)}",` : ''}
+    placeholderText = "${quote(placeholder)}",${supportText ? `
+    supportText = "${quote(supportText)}",` : ''}${errorMessage ? `
+    errorMessage = "${quote(errorMessage)}",` : ''}${hasError ? `
     error = true,` : ''}${optional ? `
     optionalIndicator = "Optional",` : ''}${disabled ? `
     enabled = false,` : ''}

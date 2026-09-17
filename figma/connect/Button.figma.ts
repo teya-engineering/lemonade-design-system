@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slot, imports: slotImports } = renderer(instance, figma.kotlin)
+const { slot, imports: slotImports, quote } = renderer(instance, figma.kotlin)
 
 const label = instance.getString('✍️ Label')
 
@@ -38,7 +38,7 @@ const leadingSlot = instance.getBoolean('◉ Show Leading')
 const trailingSlot = instance.getBoolean('◉ Show Trailing')
 export default {
   example: figma.kotlin`LemonadeUi.Button(
-    label = "${label}",
+    label = "${quote(label)}",
     onClick = { },
     variant = LemonadeButtonVariant.${variant},
     type = LemonadeButtonType.${type},

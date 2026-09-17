@@ -2,8 +2,10 @@
 // source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/Checkbox.kt
 // component=Checkbox
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.kotlin)
 
 const status = instance.getEnum('◇ Status', {
   Selected: 'Checked',
@@ -30,8 +32,8 @@ export default {
     : figma.kotlin`LemonadeUi.Checkbox(
     status = CheckboxStatus.${status},
     onCheckboxClicked = { },
-    label = "${label}",${supportText ? `
-    supportText = "${supportText}",` : ''}${disabled ? `
+    label = "${quote(label)}",${supportText ? `
+    supportText = "${quote(supportText)}",` : ''}${disabled ? `
     enabled = false,` : ''}
 )`,
   imports: [

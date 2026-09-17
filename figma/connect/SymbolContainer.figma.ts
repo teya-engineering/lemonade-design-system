@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slot, imports: slotImports } = renderer(instance, figma.kotlin)
+const { slot, imports: slotImports, quote } = renderer(instance, figma.kotlin)
 
 // Figma calls the amber voice "Caution"; the enum calls it Warning.
 const voice = instance.getEnum('◇ Voice', {
@@ -63,25 +63,26 @@ const badgeArg = badge ? figma.kotlin`
 export default {
   example:
     contentType === 'icon'
-      ? figma.kotlin`LemonadeUi.SymbolContainer(${iconCode ? figma.kotlin`
-    icon = ${iconCode},` : ''}
+      ? figma.kotlin`LemonadeUi.SymbolContainer(
+    icon = ${iconCode ?? 'LemonadeIcons.Heart'},
     contentDescription = null,${tail}${badgeArg}
-)`
+)${iconCode ? '' : `
+// NOTE: the design's icon did not resolve; set the entry it uses`}`
       : contentType === 'text'
         ? figma.kotlin`LemonadeUi.SymbolContainer(
-    text = "${text}",${tail}${badgeArg}
+    text = "${quote(text)}",${tail}${badgeArg}
 )`
         : figma.kotlin`LemonadeUi.SymbolContainer(
     contentSlot = { ${content} },${tail}${badgeArg}
 )`,
   imports: [
+    'import com.teya.lemonade.core.LemonadeIcons',
     'import com.teya.lemonade.LemonadeUi',
     'import com.teya.lemonade.SymbolContainer',
     'import com.teya.lemonade.core.SymbolContainerShape',
     'import com.teya.lemonade.core.SymbolContainerSize',
     'import com.teya.lemonade.core.SymbolContainerVoice',
     ...slotImports,
-    ...(iconCode ? ['import com.teya.lemonade.core.LemonadeIcons'] : []),
     ...(brandCode ? ['import com.teya.lemonade.BrandLogo', 'import com.teya.lemonade.core.LemonadeAssetSize', 'import com.teya.lemonade.core.LemonadeBrandLogos'] : []),
   ],
   id: 'symbol-container',

@@ -24,11 +24,12 @@ if (glyph && glyph.type === 'INSTANCE') {
 }
 
 export default {
-  example: figma.kotlin`LemonadeUi.Icon(${glyphCode ? figma.kotlin`
-    icon = ${glyphCode},` : ''}
+  example: figma.kotlin`LemonadeUi.Icon(
+    icon = ${glyphCode ?? 'LemonadeIcons.Heart'},
     contentDescription = null,
     size = LemonadeAssetSize.${size},
-)`,
+)${glyphCode ? '' : `
+// NOTE: the design's icon did not resolve; set the entry it uses`}`,
   imports: [
     'import com.teya.lemonade.Icon',
     'import com.teya.lemonade.LemonadeUi',

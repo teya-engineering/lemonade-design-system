@@ -2,8 +2,10 @@
 // source=swiftui/Sources/Lemonade/Components/LemonadeCheckbox.swift
 // component=Checkbox
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.swift)
 
 const status = instance.getEnum('◇ Status', {
   Selected: 'checked',
@@ -29,8 +31,8 @@ export default {
     : figma.swift`LemonadeUi.Checkbox(
     status: .${status},
     onCheckboxClicked: { },
-    label: "${label}"${supportText ? `,
-    supportText: "${supportText}"` : ''}${disabled ? `,
+    label: "${quote(label)}"${supportText ? `,
+    supportText: "${quote(supportText)}"` : ''}${disabled ? `,
     enabled: false` : ''}
 )`,
   id: 'checkbox',

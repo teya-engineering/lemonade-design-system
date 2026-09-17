@@ -2,10 +2,12 @@
 // source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/Tabs.kt
 // component=TabItem
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 // An internal Figma component is connected here because a tab has no component
 // of its own: it is one entry in the parent's list.
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.kotlin)
 
 const labelLayer = instance.findText('Label')
 const label = labelLayer && labelLayer.type === 'TEXT' ? labelLayer.textContent : ''
@@ -22,7 +24,7 @@ if (icon && icon.type === 'INSTANCE') {
 // Selection is a tab property in Figma and an index on the parent, so it is
 // surfaced through metadata.props.
 export default {
-  example: figma.kotlin`TabItem(label = "${label}"${iconCode ? figma.kotlin`, icon = ${iconCode}` : ''}${disabled ? ', isDisabled = true' : ''})`,
+  example: figma.kotlin`TabItem(label = "${quote(label)}"${iconCode ? figma.kotlin`, icon = ${iconCode}` : ''}${disabled ? ', isDisabled = true' : ''})`,
   imports: ['import com.teya.lemonade.TabItem', ...(iconCode ? ['import com.teya.lemonade.core.LemonadeIcons'] : [])],
   id: 'tab-item',
   metadata: { nestable: true, props: { selected: selected ? 'true' : 'false' } },

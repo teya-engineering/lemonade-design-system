@@ -2,8 +2,10 @@
 // source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/Notice.kt
 // component=Notice
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.kotlin)
 
 const content = instance.getString('✍️ Content')
 
@@ -29,11 +31,11 @@ const actionLabel = instance.getBoolean('◉ Show Action')
 
 export default {
   example: figma.kotlin`LemonadeUi.Notice(
-    content = "${content}",
+    content = "${quote(content)}",
     voice = NoticeVoice.${voice},${title ? `
-    title = "${title}",` : ''}${showIcon ? '' : `
+    title = "${quote(title)}",` : ''}${showIcon ? '' : `
     showIcon = false,`}${actionLabel ? `
-    actionLabel = "${actionLabel}",
+    actionLabel = "${quote(actionLabel)}",
     onActionClick = { },` : ''}
 )`,
   imports: [

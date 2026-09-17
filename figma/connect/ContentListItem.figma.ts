@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slot, imports: slotImports } = renderer(instance, figma.kotlin)
+const { slot, imports: slotImports, quote } = renderer(instance, figma.kotlin)
 
 const label = instance.getString('✍️ Label')
 const value = instance.getString('✍️ Value')
@@ -27,8 +27,8 @@ const trailingSlot = instance.getBoolean('Show Trailing')
 const contentSlot = instance.getBoolean('◉ Show Content Slot')
 export default {
   example: figma.kotlin`LemonadeUi.ContentListItem(
-    label = "${label}",
-    value = "${value}",
+    label = "${quote(label)}",
+    value = "${quote(value)}",
     layout = LemonadeContentListItemLayout.${layout},
     density = LemonadeContentListItemDensity.${density},${showDivider ? `
     showDivider = true,` : ''}${

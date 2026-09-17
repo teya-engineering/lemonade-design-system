@@ -2,8 +2,10 @@
 // source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/TextField.kt
 // component=TextField
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.kotlin)
 
 // "Is Filled" is Figma's way of showing an empty vs. populated field.
 const filled = instance.getEnum('◉ Is Filled', { True: true, False: false })
@@ -34,12 +36,12 @@ if (trailing && trailing.type === 'INSTANCE') {
 
 export default {
   example: figma.kotlin`LemonadeUi.TextField(
-    input = "${input}",
+    input = "${quote(input)}",
     onInputChanged = { },${label ? `
-    label = "${label}",` : ''}
-    placeholderText = "${placeholder}",${supportText ? `
-    supportText = "${supportText}",` : ''}${errorMessage ? `
-    errorMessage = "${errorMessage}",` : ''}${hasError ? `
+    label = "${quote(label)}",` : ''}
+    placeholderText = "${quote(placeholder)}",${supportText ? `
+    supportText = "${quote(supportText)}",` : ''}${errorMessage ? `
+    errorMessage = "${quote(errorMessage)}",` : ''}${hasError ? `
     error = true,` : ''}${optional ? `
     optionalIndicator = "Optional",` : ''}${disabled ? `
     enabled = false,` : ''}${
