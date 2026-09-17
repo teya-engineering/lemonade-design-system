@@ -29,12 +29,12 @@ Nothing here is checked in. Each person sets it up once.
 
 1. **Node 18+** (`node -v`). The CLI declares `engines.node >= 18`.
 2. **Install**: `cd figma && npm ci`. `@figma/code-connect` comes from public
-   npm. If your npm points at Teya's JFrog registry, it must proxy npmjs for this
-   to resolve; `npm config get registry` shows where you point.
+   npm, so your registry has to proxy npmjs for this to resolve;
+   `npm config get registry` shows where you point.
 3. **Create a Figma personal access token** (Figma → Settings → Security →
    Personal access tokens) with exactly two scopes: **`file_code_connect:write`**
    and **`file_content:read`**. It needs a Dev or Full seat on an Organization or
-   Enterprise plan; Teya is on `org`.
+   Enterprise plan.
 4. **Export it**, e.g. in `~/.zshrc`:
    ```bash
    export FIGMA_CODE_CONNECT_TOKEN=figd_...

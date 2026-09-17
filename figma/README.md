@@ -32,7 +32,7 @@ File keys live only in `documentUrlSubstitutions`; templates reference
 
 ```bash
 cd figma && npm ci
-FIGMA_ACCESS_TOKEN=figd_... npm run validate
+FIGMA_ACCESS_TOKEN="$FIGMA_CODE_CONNECT_TOKEN" npm run validate
 ```
 
 `--dry-run` writes nothing, but it **still needs a token** — it resolves nodes
@@ -54,8 +54,8 @@ Needs a Figma personal access token with `file_code_connect:write` and
 procedure, including first-run setup on a new machine.
 
 ```bash
-FIGMA_ACCESS_TOKEN=figd_... npm run publish:compose
-FIGMA_ACCESS_TOKEN=figd_... npm run publish:swiftui
+FIGMA_ACCESS_TOKEN="$FIGMA_CODE_CONNECT_TOKEN" npm run publish:compose
+FIGMA_ACCESS_TOKEN="$FIGMA_CODE_CONNECT_TOKEN" npm run publish:swiftui
 ```
 
 Publishing writes to the shared team library. **Publish both labels**, and never
@@ -63,6 +63,6 @@ a platform's components without its assets — Figma resolves a nested icon by
 node, and a label with no template for that node falls back to another label's,
 so a missing SwiftUI icon renders the *Kotlin* snippet inside a Swift call.
 
-The components file also carries an unrelated `React` label pointing at a
-personal exploration repo. Labels are independent namespaces; publishing these
-two does not touch it.
+The components file also carries a `React` label published from outside this
+repo. Labels are independent namespaces; publishing these two does not touch
+it.
