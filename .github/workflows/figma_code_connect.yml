@@ -1,0 +1,49 @@
+name: Figma Code Connect
+
+# Both steps run offline. `npm run validate` is the other half of the story, but
+# it resolves nodes against Figma and exits 1 without a token, so it stays a
+# local step rather than a secret on a public repo.
+on:
+  pull_request:
+    paths:
+      - 'figma/**'
+      - 'kmp/**/api/**'
+      - '.github/workflows/figma_code_connect.yml'
+
+concurrency:
+  group: figma-code-connect-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  code-connect:
+    name: Templates compile and assets match
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Snippets compile against the sources
+        run: node figma/scripts/check-templates.mjs
+
+      # The generator writes nothing when an asset fails to validate, so a clean
+      # tree alone would pass a failed run — the exit code is the real signal.
+      - name: Regenerate the asset templates
+        run: node scripts/generate-asset-templates.mjs
+        working-directory: figma
+
+      - name: Fail if the generated templates drifted
+        run: |
+          if [ -n "$(git status --porcelain -- figma/)" ]; then
+            echo "::error::Generated asset templates do not match the manifests. Run:"
+            echo "  cd figma && node scripts/generate-asset-templates.mjs"
+            git status --porcelain -- figma/
+            git --no-pager diff --stat -- figma/
+            exit 1
+          fi
+          echo "Generated asset templates are in sync with the manifests."
