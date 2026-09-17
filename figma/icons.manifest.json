@@ -55,6 +55,7 @@
     "building-blocks": "4008:42",
     "buildings": "39:7678",
     "buildings-check": "3190:84",
+    "bus": "4555:177",
     "calculator": "38:4771",
     "calendar": "38:4772",
     "calendar-arrow-right": "3829:78",
@@ -174,6 +175,7 @@
     "key": "38:5071",
     "keyboard": "4469:46",
     "laptop": "38:5072",
+    "lay-down": "4555:182",
     "lightbulb": "38:5073",
     "lightning": "76:91",
     "limit": "2742:76",
@@ -213,6 +215,7 @@
     "package": "38:5130",
     "padlock": "38:5092",
     "padlock-open": "38:5093",
+    "paint-roller": "4555:178",
     "paperclip": "38:5094",
     "passport": "2792:140",
     "pen-signature": "2353:667",
@@ -260,8 +263,10 @@
     "store": "38:5115",
     "store-check": "3190:60",
     "stores": "2396:1682",
+    "suitcase": "4555:176",
     "sun": "4488:74",
     "support-chat": "2297:1037",
+    "t-shirt": "4555:180",
     "thumb-down": "38:5116",
     "thumb-up": "38:5117",
     "thumbs-down-solid": "3969:102",
@@ -270,6 +275,7 @@
     "times": "38:5118",
     "translate": "38:5119",
     "trash": "38:5120",
+    "trees": "4555:179",
     "triangle-alert": "38:5121",
     "trophy": "2023:27",
     "truck": "2645:21",
@@ -286,6 +292,7 @@
     "voice-wave-high": "3624:45",
     "wallet": "3296:46",
     "wallet-solid": "3487:294",
-    "wifi": "38:5129"
+    "wifi": "38:5129",
+    "wrench": "4555:181"
   }
 }
