@@ -36,8 +36,9 @@ would catch a deleted asset but stay silent on an added one, which is the
 direction that actually happens: an icon lands in code and quietly has no
 mapping.
 
-The generated directories are marked `linguist-generated` in `.gitattributes`, so
-GitHub collapses them in diffs and leaves them out of language statistics. They
+Every generated template carries the repo's `DO NOT MODIFY THIS FILE MANUALLY`
+banner, and the directories are marked `linguist-generated` in `.gitattributes`,
+so GitHub collapses them in diffs and leaves them out of language statistics. They
 stay committed on purpose — what is published to Figma should be inspectable in
 git, and `git diff --exit-code` after regenerating is what proves the two agree.
 
@@ -47,8 +48,7 @@ silently. Today that is one flag, `CD-congo-democratic-republic`.
 
 Brand logos are not one-to-one: Figma ships a `-dark` component per brand, and
 `BrandLogo` resolves the dark artwork from the theme, so both nodes reference
-the same enum entry — 50 templates over 25 entries. When one enum entry is
-served by another entry's component, the manifest's `aliases` records it.
+the same enum entry — 50 templates over 25 entries.
 
 Each asset emits a bare enum reference (`LemonadeIcons.Search`,
 `LemonadeCountryFlag.aCAscensionIsland`), because that is what every consumer
