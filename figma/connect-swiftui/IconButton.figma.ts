@@ -1,0 +1,52 @@
+// url=<LEMONADE_COMPONENTS>?node-id=17383-2038
+// source=swiftui/Sources/Lemonade/Components/LemonadeIconButton.swift
+// component=IconButton
+import figma from 'figma'
+
+const instance = figma.selectedInstance
+
+const variant = instance.getEnum('◇ Variant', {
+  Primary: 'primary',
+  Secondary: 'secondary',
+  Neutral: 'neutral',
+  Critical: 'critical',
+  'On Brand': 'onBrand',
+  'On Color': 'onColor',
+})
+
+const type = instance.getEnum('◇ Type', {
+  Solid: 'solid',
+  Subtle: 'subtle',
+  Ghost: 'ghost',
+})
+
+const size = instance.getEnum('↕ Size', {
+  Large: 'large',
+  Medium: 'medium',
+  Small: 'small',
+})
+
+const loading = instance.getEnum('◉ Is Loading', { True: true, False: false })
+const disabled = instance.getEnum('◉ Is Disabled', { True: true, False: false })
+
+const icon = instance.getInstanceSwap('🧩 Icon')
+let iconCode
+if (icon && icon.type === 'INSTANCE') {
+  iconCode = icon.executeTemplate().example
+}
+
+export default {
+  example: figma.swift`LemonadeUi.IconButton(
+    icon: ${iconCode ?? 'LemonadeIcon.heart'},
+    contentDescription: nil, // TODO: this button has no visible label — describe the action
+    onClick: { },${disabled ? `
+    enabled: false,` : ''}
+    variant: .${variant},
+    type: .${type},
+    size: .${size}${loading ? `,
+    loading: true` : ''}
+)${iconCode ? '' : `
+// NOTE: the design's icon did not resolve; set the case it uses`}`,
+  id: 'icon-button',
+  metadata: { nestable: true },
+}

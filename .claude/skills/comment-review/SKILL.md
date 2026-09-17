@@ -16,13 +16,15 @@ The default verdict is **remove**, not keep. A comment survives only if it says 
 - Arg is a file path → review that file only.
 - Arg is `branch` or empty → review files changed on this branch:
   ```bash
-  git diff --name-only main...HEAD -- '*.kt' '*.swift'
+  git diff --name-only main...HEAD -- '*.kt' '*.swift' '*.ts' '*.mjs'
   ```
-- Drop any file whose header carries the `DO NOT MODIFY THIS FILE MANUALLY` banner (generated tokens, themes, and icons under `kmp/` and `swiftui/` — anything the `generate-tokens` / `export-icons` pipelines regenerate), and anything under `kmp/*/api/`. Keep only `.kt` and `.swift` files.
+- Drop any file whose header carries the `DO NOT MODIFY THIS FILE MANUALLY` banner (generated tokens, themes, and icons under `kmp/` and `swiftui/` — anything the `generate-tokens` / `export-icons` pipelines regenerate), anything under `kmp/*/api/`, and the generated Code Connect asset templates under `figma/connect*/{icons,flags,brand-logos}/`. Keep only `.kt`, `.swift`, `.ts` and `.mjs` files.
 
 ## Step 2: Find the comments
 
 Read each in-scope file. Collect every `//`, `/* */`, KDoc `/** */`, and Swift `///` comment with its line number and the code it sits above or beside.
+
+In a Code Connect template, skip the `// url=`, `// source=` and `// component=` header: the CLI parses it, so it is data rather than a comment.
 
 Skip: license/copyright headers, and notes that intentionally preserve a deliberate naming mismatch. These are not stale.
 

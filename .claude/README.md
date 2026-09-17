@@ -28,6 +28,8 @@ only when the task actually needs them.
 | Cut a KMP / SwiftUI release | `publish-version` |
 | Diagnose an `apiCheck` or API Stability failure | `binary-compatibility` (run `scripts/bcv-check.sh --ci` before any PR) |
 | Clean up comments in a file or branch diff | `comment-review` |
+| Connect a component to Figma, or fix a wrong Dev Mode snippet | `code-connect-templates` |
+| Publish the Code Connect mappings to Figma | `publish-figma-connect` |
 
 ## Skills
 
@@ -39,6 +41,8 @@ frontmatter decides when it triggers, so that line is the important one to get r
 **Comments and docs** — `comment-review`, `ktdoc-quality`, `writing-docs`
 
 **Swift** — `swift-concurrency-expert`, `swiftui-performance-audit`, `swiftui-liquid-glass`
+
+**Figma Code Connect** — `code-connect-templates`, `publish-figma-connect`
 
 A module-scoped skill also lives at `kmp/.claude/skills/kotlin-conventions/` and loads only when
 working under `kmp/`.
