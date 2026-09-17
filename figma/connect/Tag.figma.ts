@@ -2,8 +2,10 @@
 // source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/Tag.kt
 // component=Tag
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.kotlin)
 
 const label = instance.getString('✍️ Label')
 
@@ -25,7 +27,7 @@ if (icon && icon.type === 'INSTANCE') {
 
 export default {
   example: figma.kotlin`LemonadeUi.Tag(
-    label = "${label}",
+    label = "${quote(label)}",
     voice = TagVoice.${voice},${iconCode ? figma.kotlin`
     icon = ${iconCode},` : ''}
 )`,

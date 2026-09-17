@@ -2,10 +2,12 @@
 // source=swiftui/Sources/Lemonade/Components/LemonadeTabs.swift
 // component=TabItem
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 // An internal Figma component is connected here because a tab has no component
 // of its own: it is one entry in the parent's list.
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.swift)
 
 const labelLayer = instance.findText('Label')
 const label = labelLayer && labelLayer.type === 'TEXT' ? labelLayer.textContent : ''
@@ -22,7 +24,7 @@ if (icon && icon.type === 'INSTANCE') {
 // Selection is a tab property in Figma and an index on the parent, so it is
 // surfaced through metadata.props.
 export default {
-  example: figma.swift`LemonadeTabItem(label: "${label}"${iconCode ? figma.swift`, icon: ${iconCode}` : ''}${disabled ? ', isDisabled: true' : ''})`,
+  example: figma.swift`LemonadeTabItem(label: "${quote(label)}"${iconCode ? figma.swift`, icon: ${iconCode}` : ''}${disabled ? ', isDisabled: true' : ''})`,
 
   id: 'tab-item',
   metadata: { nestable: true, props: { selected: selected ? 'true' : 'false' } },

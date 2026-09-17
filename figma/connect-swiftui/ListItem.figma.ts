@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slot } = renderer(instance, figma.swift)
+const { slot, quote } = renderer(instance, figma.swift)
 const labelLayer = instance.findText('Label')
 const label = labelLayer && labelLayer.type === 'TEXT' ? labelLayer.textContent : ''
 
@@ -27,8 +27,8 @@ const bottom = instance.getBoolean('◉ Show Bottom Slot')
 
 export default {
   example: figma.swift`LemonadeUi.ListItem(
-    label: "${label}"${supportText ? `,
-    supportText: "${supportText}"` : ''}${navigationIndicator ? `,
+    label: "${quote(label)}"${supportText ? `,
+    supportText: "${quote(supportText)}"` : ''}${navigationIndicator ? `,
     navigationIndicator: true` : ''}${isLoading ? `,
     isLoading: true` : ''}${showDivider ? `,
     showDivider: true` : ''},

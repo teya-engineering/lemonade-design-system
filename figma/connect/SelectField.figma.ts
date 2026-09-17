@@ -2,8 +2,10 @@
 // source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/SelectField.kt
 // component=SelectField
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.kotlin)
 
 const filled = instance.getEnum('◉ Is Filled', { True: true, False: false })
 const selectedValue = filled ? instance.getString('✍️ Value') : undefined
@@ -32,11 +34,11 @@ if (leading && leading.type === 'INSTANCE') {
 export default {
   example: figma.kotlin`LemonadeUi.SelectField(
     onClick = { },
-    selectedValue = ${selectedValue ? `"${selectedValue}"` : 'null'},${label ? `
-    label = "${label}",` : ''}
-    placeholderText = "${placeholder}",${supportText ? `
-    supportText = "${supportText}",` : ''}${errorMessage ? `
-    errorMessage = "${errorMessage}",` : ''}${hasError ? `
+    selectedValue = ${selectedValue ? `"${quote(selectedValue)}"` : 'null'},${label ? `
+    label = "${quote(label)}",` : ''}
+    placeholderText = "${quote(placeholder)}",${supportText ? `
+    supportText = "${quote(supportText)}",` : ''}${errorMessage ? `
+    errorMessage = "${quote(errorMessage)}",` : ''}${hasError ? `
     error = true,` : ''}${optional ? `
     optionalIndicator = "Optional",` : ''}${disabled ? `
     enabled = false,` : ''}${

@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slot, imports: slotImports } = renderer(instance, figma.kotlin)
+const { slot, imports: slotImports, quote } = renderer(instance, figma.kotlin)
 
 const title = instance.getString('✍️ Title')
 const subtitle = instance.getBoolean('◉ Show Subtitle', {
@@ -21,16 +21,16 @@ const trailing = instance.getBoolean('◉ Show Trailing')
 const navigation = instance.getBoolean('◉ Show Navigation Indicator')
 export default {
   example: figma.kotlin`CardHeaderConfig(
-    title = "${title}",${style !== 'Default' ? `
+    title = "${quote(title)}",${style && style !== 'Default' ? `
     headingStyle = LemonadeCardHeadingStyle.${style},` : ''}${leading ? figma.kotlin`
     leadingSlot = ${slot('↪ 🧩 Leading', 'leading content')},` : ''}${trailing ? figma.kotlin`
     trailingSlot = ${slot('↪ 🧩 Trailing', 'trailing content')},` : ''}${navigation ? `
     showNavigationIndicator = true,` : ''}${subtitle ? `
-    subtitle = "${subtitle}",` : ''}
+    subtitle = "${quote(subtitle)}",` : ''}
 )`,
   imports: [
     'import com.teya.lemonade.CardHeaderConfig',
-    ...(style !== 'Default' ? ['import com.teya.lemonade.core.LemonadeCardHeadingStyle'] : []),
+    ...(style && style !== 'Default' ? ['import com.teya.lemonade.core.LemonadeCardHeadingStyle'] : []),
     ...slotImports,
   ],
   id: 'card-heading',

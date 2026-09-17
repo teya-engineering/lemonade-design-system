@@ -2,8 +2,10 @@
 // source=swiftui/Sources/Lemonade/Components/LemonadeTextField.swift
 // component=TextFieldWithSelector
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.swift)
 
 const filled = instance.getEnum('◉ Is Filled', { True: true, False: false })
 const input = filled ? instance.getString('✍️ Value') : ''
@@ -46,21 +48,21 @@ if (selector && selector.type === 'INSTANCE') {
 // `input` is a Binding; .constant keeps the designed text and compiles as-is.
 export default {
   example: figma.swift`LemonadeUi.TextFieldWithSelector(
-    input: .constant("${input}"),
+    input: .constant("${quote(input)}"),
     leadingAction: { },
     leadingContent: {
         HStack(spacing: LemonadeTheme.spaces.spacing200) {${asset ? figma.swift`
             ${asset}` : ''}
-            LemonadeUi.Text("${selectorText}")
+            LemonadeUi.Text("${quote(selectorText)}")
             LemonadeUi.Icon(icon: .chevronDown, contentDescription: nil)
         }
         .padding(LemonadeTheme.spaces.spacing400)
     }${label ? `,
-    label: "${label}"` : ''}${optional ? `,
+    label: "${quote(label)}"` : ''}${optional ? `,
     optionalIndicator: "Optional"` : ''}${supportText ? `,
-    supportText: "${supportText}"` : ''},
-    placeholderText: "${placeholder}"${errorMessage ? `,
-    errorMessage: "${errorMessage}"` : ''}${hasError ? `,
+    supportText: "${quote(supportText)}"` : ''},
+    placeholderText: "${quote(placeholder)}"${errorMessage ? `,
+    errorMessage: "${quote(errorMessage)}"` : ''}${hasError ? `,
     error: true` : ''}${disabled ? `,
     enabled: false` : ''}
 )`,

@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { snippets, slotIcon } = renderer(instance, figma.swift)
+const { snippets, slotIcon, quote } = renderer(instance, figma.swift)
 const icon = slotIcon('🧩 Leading Slot')
 
 const label = instance.getString('✍️ Label')
@@ -26,17 +26,18 @@ const accessory = topAccessory ? snippets('↪ 🧩 Top Accessory', '    ') : un
 
 export default {
   example: figma.swift`LemonadeUi.Tile(
-    label: "${label}",
-    ${icon ? figma.swift`icon: ${icon}` : '// TODO: icon — set the LemonadeIcon case the design uses'}${disabled ? `,
+    label: "${quote(label)}",
+    icon: ${icon ?? 'LemonadeIcon.heart'}${disabled ? `,
     enabled: false` : ''}${selected ? `,
     isSelected: true` : ''}${supportText ? `,
-    supportText: "${supportText}"` : ''},
+    supportText: "${quote(supportText)}"` : ''},
     onClick: { },
     variant: .${variant},
     orientation: .${orientation}
 )${topAccessory ? figma.swift` {${accessory ?? `
     /* top accessory */`}
-}` : ''}`,
+}` : ''}${icon ? '' : `
+// NOTE: the design's icon did not resolve; set the case it uses`}`,
   id: 'tile',
   metadata: { nestable: true },
 }

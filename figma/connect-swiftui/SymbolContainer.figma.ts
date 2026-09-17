@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { snippets, slot } = renderer(instance, figma.swift)
+const { snippets, slot, quote } = renderer(instance, figma.swift)
 
 // Figma calls the amber voice "Caution"; the enum calls it warning.
 const voice = instance.getEnum('◇ Voice', {
@@ -68,13 +68,14 @@ const content = contentType === 'brand'
 export default {
   example:
     contentType === 'icon'
-      ? figma.swift`LemonadeUi.SymbolContainer(${iconCode ? figma.swift`
-    icon: ${iconCode},` : ''}
+      ? figma.swift`LemonadeUi.SymbolContainer(
+    icon: ${iconCode ?? 'LemonadeIcon.heart'},
     contentDescription: nil${tail}
-)${badgeArg}`
+)${badgeArg}${iconCode ? '' : `
+// NOTE: the design's icon did not resolve; set the case it uses`}`
       : contentType === 'text'
         ? figma.swift`LemonadeUi.SymbolContainer(
-    text: "${text}"${tail}
+    text: "${quote(text)}"${tail}
 )${badgeArg}`
         : figma.swift`LemonadeUi.SymbolContainer(
     voice: .${voice},

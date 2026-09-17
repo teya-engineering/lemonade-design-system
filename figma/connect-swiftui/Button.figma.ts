@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slot } = renderer(instance, figma.swift)
+const { slot, quote } = renderer(instance, figma.swift)
 const label = instance.getString('✍️ Label')
 
 const variant = instance.getEnum('◇ Variant', {
@@ -40,7 +40,7 @@ const trailingSlot = instance.getBoolean('◉ Show Trailing')
 // argument carries a leading comma instead.
 export default {
   example: figma.swift`LemonadeUi.Button(
-    label: "${label}",
+    label: "${quote(label)}",
     onClick: { }${
       leadingSlot ? figma.swift`,
     leadingSlot: ${slot('↪ 🧩 Leading Slot', 'leading content', '{ _ in')}` : ''

@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slot } = renderer(instance, figma.swift)
+const { slot, quote } = renderer(instance, figma.swift)
 const label = instance.getString('✍️ Label')
 const value = instance.getString('✍️ Value')
 
@@ -27,8 +27,8 @@ const contentSlot = instance.getBoolean('◉ Show Content Slot')
 
 export default {
   example: figma.swift`LemonadeUi.ContentListItem(
-    label: "${label}",
-    value: "${value}",
+    label: "${quote(label)}",
+    value: "${quote(value)}",
     layout: .${layout}${showDivider ? `,
     showDivider: true` : ''},
     density: .${density}${

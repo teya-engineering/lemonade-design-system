@@ -2,8 +2,10 @@
 // source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/Link.kt
 // component=Link
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.kotlin)
 
 const text = instance.getString('✍️ Label')
 
@@ -15,7 +17,7 @@ if (icon && icon.type === 'INSTANCE') {
 
 export default {
   example: figma.kotlin`LemonadeUi.Link(
-    text = "${text}",
+    text = "${quote(text)}",
     onClick = { },${iconCode ? figma.kotlin`
     icon = ${iconCode},` : ''}
 )`,

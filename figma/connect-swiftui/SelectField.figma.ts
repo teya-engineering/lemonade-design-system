@@ -2,8 +2,10 @@
 // source=swiftui/Sources/Lemonade/Components/LemonadeSelectField.swift
 // component=SelectField
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.swift)
 
 const filled = instance.getEnum('◉ Is Filled', { True: true, False: false })
 const selectedValue = filled ? instance.getString('✍️ Value') : undefined
@@ -31,12 +33,12 @@ if (leading && leading.type === 'INSTANCE') {
 export default {
   example: figma.swift`LemonadeUi.SelectField(
     onClick: { },
-    selectedValue: ${selectedValue ? `"${selectedValue}"` : 'nil'},
-    placeholderText: "${placeholder}"${label ? `,
-    label: "${label}"` : ''}${optional ? `,
+    selectedValue: ${selectedValue ? `"${quote(selectedValue)}"` : 'nil'},
+    placeholderText: "${quote(placeholder)}"${label ? `,
+    label: "${quote(label)}"` : ''}${optional ? `,
     optionalIndicator: "Optional"` : ''}${supportText ? `,
-    supportText: "${supportText}"` : ''}${errorMessage ? `,
-    errorMessage: "${errorMessage}"` : ''}${hasError ? `,
+    supportText: "${quote(supportText)}"` : ''}${errorMessage ? `,
+    errorMessage: "${quote(errorMessage)}"` : ''}${hasError ? `,
     error: true` : ''}${disabled ? `,
     enabled: false` : ''}${
       leadingCode ? figma.swift`,

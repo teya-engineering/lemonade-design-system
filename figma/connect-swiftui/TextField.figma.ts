@@ -2,8 +2,10 @@
 // source=swiftui/Sources/Lemonade/Components/LemonadeTextField.swift
 // component=TextField
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.swift)
 
 const filled = instance.getEnum('◉ Is Filled', { True: true, False: false })
 const input = filled ? instance.getString('✍️ Value') : ''
@@ -34,12 +36,12 @@ if (trailing && trailing.type === 'INSTANCE') {
 // `input` is a Binding; .constant keeps the designed text and compiles as-is.
 export default {
   example: figma.swift`LemonadeUi.TextField(
-    input: .constant("${input}")${label ? `,
-    label: "${label}"` : ''}${optional ? `,
+    input: .constant("${quote(input)}")${label ? `,
+    label: "${quote(label)}"` : ''}${optional ? `,
     optionalIndicator: "Optional"` : ''}${supportText ? `,
-    supportText: "${supportText}"` : ''},
-    placeholderText: "${placeholder}"${errorMessage ? `,
-    errorMessage: "${errorMessage}"` : ''}${hasError ? `,
+    supportText: "${quote(supportText)}"` : ''},
+    placeholderText: "${quote(placeholder)}"${errorMessage ? `,
+    errorMessage: "${quote(errorMessage)}"` : ''}${hasError ? `,
     error: true` : ''}${disabled ? `,
     enabled: false` : ''}${
       leadingCode || trailingCode ? figma.swift`,

@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slot } = renderer(instance, figma.swift)
+const { slot, quote } = renderer(instance, figma.swift)
 const read = (layer) => {
   const node = instance.findText(layer)
   return node && node.type === 'TEXT' ? node.textContent : undefined
@@ -36,14 +36,14 @@ const bottom = instance.getBoolean('◉ Show Bottom Slot')
 
 export default {
   example: figma.swift`LemonadeUi.SelectListItem(
-    label: "${label}",
+    label: "${quote(label)}",
     type: .${type},
     checked: ${checked},
-    onItemClicked: { }${variant !== 'plain' ? `,
+    onItemClicked: { }${variant && variant !== 'plain' ? `,
     variant: .${variant}` : ''}${disabled ? `,
     enabled: false` : ''}${showDivider ? `,
     showDivider: true` : ''}${supportText ? `,
-    supportText: "${supportText}"` : ''},
+    supportText: "${quote(supportText)}"` : ''},
     leadingSlot: ${leading},
     trailingSlot: ${trailing}${bottom ? figma.swift`,
     slotContent: ${slot('↪ 🧩 Bottom Slot', 'bottom content')}` : ''}

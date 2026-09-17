@@ -36,8 +36,8 @@ if (icon && icon.type === 'INSTANCE') {
 }
 
 export default {
-  example: figma.swift`LemonadeUi.IconButton(${iconCode ? figma.swift`
-    icon: ${iconCode},` : ''}
+  example: figma.swift`LemonadeUi.IconButton(
+    icon: ${iconCode ?? 'LemonadeIcon.heart'},
     contentDescription: nil, // TODO: this button has no visible label — describe the action
     onClick: { },${disabled ? `
     enabled: false,` : ''}
@@ -45,7 +45,8 @@ export default {
     type: .${type},
     size: .${size}${loading ? `,
     loading: true` : ''}
-)`,
+)${iconCode ? '' : `
+// NOTE: the design's icon did not resolve; set the case it uses`}`,
   id: 'icon-button',
   metadata: { nestable: true },
 }

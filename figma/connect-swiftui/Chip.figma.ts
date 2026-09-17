@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slotIcon } = renderer(instance, figma.swift)
+const { slotIcon, quote } = renderer(instance, figma.swift)
 const label = instance.getString('✍️ Label')
 const selected = instance.getEnum('◉ Is Selected', { True: true, False: false })
 const error = instance.getEnum('◉ Has Error', { True: true, False: false })
@@ -26,7 +26,7 @@ const leadingIcon = leading ? slotIcon('↪ 🧩 Leading') : undefined
 
 export default {
   example: figma.swift`LemonadeUi.Chip(
-    label: "${label}",
+    label: "${quote(label)}",
     selected: ${selected}${leadingIcon ? figma.swift`,
     leadingIcon: ${leadingIcon}` : ''}${counter ? `,
     counter: ${counter}` : ''}${disabled ? `,

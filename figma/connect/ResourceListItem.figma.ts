@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slot, imports: slotImports } = renderer(instance, figma.kotlin)
+const { slot, imports: slotImports, quote } = renderer(instance, figma.kotlin)
 
 const read = (layer) => {
   const node = instance.findText(layer)
@@ -24,9 +24,9 @@ const bottom = instance.getBoolean('◉ Show Bottom Slot')
 export default {
   example: figma.kotlin`LemonadeUi.ResourceListItem(
     leadingSlot = ${slot('↪ 🧩 Leading', 'leading content')},
-    label = "${label}",
-    value = "${value}",${supportText ? `
-    supportText = "${supportText}",` : ''}
+    label = "${quote(label)}",
+    value = "${quote(value)}",${supportText ? `
+    supportText = "${quote(supportText)}",` : ''}
     onItemClicked = { },${isLoading ? `
     isLoading = true,` : ''}${showDivider ? `
     showDivider = true,` : ''}${bottom ? figma.kotlin`

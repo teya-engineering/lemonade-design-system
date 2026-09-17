@@ -2,8 +2,10 @@
 // source=swiftui/Sources/Lemonade/Components/LemonadeSearchField.swift
 // component=SearchField
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.swift)
 
 const filled = instance.getEnum('◉ Is Filled', { True: true, False: false })
 const valueLayer = instance.findText('Value')
@@ -15,8 +17,8 @@ const placeholder =
 // `input` is a Binding; .constant keeps the designed text and compiles as-is.
 export default {
   example: figma.swift`LemonadeUi.SearchField(
-    input: .constant("${input}")${placeholder ? `,
-    placeholder: "${placeholder}"` : ''}
+    input: .constant("${quote(input)}")${placeholder ? `,
+    placeholder: "${quote(placeholder)}"` : ''}
 )`,
   id: 'search-field',
   metadata: { nestable: true },

@@ -2,8 +2,10 @@
 // source=swiftui/Sources/Lemonade/Components/LemonadeTag.swift
 // component=Tag
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.swift)
 
 const label = instance.getString('✍️ Label')
 
@@ -25,7 +27,7 @@ if (icon && icon.type === 'INSTANCE') {
 
 export default {
   example: figma.swift`LemonadeUi.Tag(
-    label: "${label}"${iconCode ? figma.swift`,
+    label: "${quote(label)}"${iconCode ? figma.swift`,
     icon: ${iconCode}` : ''},
     voice: .${voice}
 )`,

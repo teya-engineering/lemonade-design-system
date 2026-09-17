@@ -2,8 +2,10 @@
 // source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/Switch.kt
 // component=Switch
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.kotlin)
 
 const checked = instance.getEnum('◉ Checked', { True: true, False: false })
 const disabled = instance.getEnum('◇ Is Disabled', { True: true, False: false })
@@ -24,8 +26,8 @@ export default {
     : figma.kotlin`LemonadeUi.Switch(
     checked = ${checked},
     onCheckedChange = { },
-    label = "${label}",${supportText ? `
-    supportText = "${supportText}",` : ''}${disabled ? `
+    label = "${quote(label)}",${supportText ? `
+    supportText = "${quote(supportText)}",` : ''}${disabled ? `
     enabled = false,` : ''}
 )`,
   imports: [

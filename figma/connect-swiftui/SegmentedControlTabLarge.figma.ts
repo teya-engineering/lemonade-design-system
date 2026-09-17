@@ -2,10 +2,12 @@
 // source=swiftui/Sources/Lemonade/Components/LemonadeSegmentedControl.swift
 // component=LemonadeTabButtonProperties
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 // An internal Figma component is connected here because a tab has no view of
 // its own: it is one entry in the parent's array.
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.swift)
 
 const iconOnly = instance.getEnum('◇ Layout', { 'Icon Only': true, 'With Label': false })
 const label = instance.getString('✍️ Label')
@@ -22,8 +24,8 @@ export default {
   example: iconCode
     ? (iconOnly
         ? figma.swift`LemonadeTabButtonProperties.icon(${iconCode})`
-        : figma.swift`LemonadeTabButtonProperties.labelAndIcon("${label}", icon: ${iconCode})`)
-    : figma.swift`LemonadeTabButtonProperties.label("${label}")`,
+        : figma.swift`LemonadeTabButtonProperties.labelAndIcon("${quote(label)}", icon: ${iconCode})`)
+    : figma.swift`LemonadeTabButtonProperties.label("${quote(label)}")`,
   id: 'segmented-control-tab-large',
   metadata: { nestable: true },
 }

@@ -2,8 +2,10 @@
 // source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/Tooltip.kt
 // component=Tooltip
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.kotlin)
 
 const content = instance.getString('✍️ Content')
 const title = instance.getBoolean('◉ Show Title') ? instance.getString('↪ ✍️ Title') : undefined
@@ -30,8 +32,8 @@ const showClose = instance.getBoolean('◉ Show Close Button')
 
 export default {
   example: figma.kotlin`LemonadeUi.Tooltip(
-    content = "${content}",${title ? `
-    title = "${title}",` : ''}
+    content = "${quote(content)}",${title ? `
+    title = "${quote(title)}",` : ''}
     indicatorPlacement = TooltipIndicatorPlacement.${placement},${showClose ? `
     onCloseClick = { },` : ''}${
       cover ? figma.kotlin`

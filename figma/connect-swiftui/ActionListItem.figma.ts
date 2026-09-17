@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slot } = renderer(instance, figma.swift)
+const { slot, quote } = renderer(instance, figma.swift)
 const read = (layer) => {
   const node = instance.findText(layer)
   return node && node.type === 'TEXT' ? node.textContent : undefined
@@ -29,9 +29,9 @@ const trailing = instance.getBoolean('◉ Show Trailing')
 
 export default {
   example: figma.swift`LemonadeUi.ActionListItem(
-    label: "${label}"${topLabel ? `,
-    topLabel: "${topLabel}"` : ''}${supportText ? `,
-    supportText: "${supportText}"` : ''}${voice !== 'neutral' ? `,
+    label: "${quote(label)}"${topLabel ? `,
+    topLabel: "${quote(topLabel)}"` : ''}${supportText ? `,
+    supportText: "${quote(supportText)}"` : ''}${voice && voice !== 'neutral' ? `,
     voice: .${voice}` : ''}${navigationIndicator ? `,
     showNavigationIndicator: true` : ''}${isLoading ? `,
     isLoading: true` : ''}${showDivider ? `,

@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slot, slotIcon, imports: slotImports } = renderer(instance, figma.kotlin)
+const { slot, slotIcon, imports: slotImports, quote } = renderer(instance, figma.kotlin)
 
 const label = instance.getString('✍️ Label')
 const supportText = instance.getBoolean('◉ Show Support Text')
@@ -25,11 +25,10 @@ const icon = slotIcon('🧩 Leading Slot')
 
 export default {
   example: figma.kotlin`LemonadeUi.Tile(
-    label = "${label}",${icon ? figma.kotlin`
-    icon = ${icon},` : `
-    // TODO: icon — set the LemonadeIcons entry the design uses`}
+    label = "${quote(label)}",
+    icon = ${icon ?? 'LemonadeIcons.Heart'},
     onClick = { },${supportText ? `
-    supportText = "${supportText}",` : ''}${selected ? `
+    supportText = "${quote(supportText)}",` : ''}${selected ? `
     isSelected = true,` : ''}${disabled ? `
     enabled = false,` : ''}
     variant = LemonadeTileVariant.${variant},
@@ -37,14 +36,15 @@ export default {
       topAccessory ? figma.kotlin`
     topAccessory = ${slot('↪ 🧩 Top Accessory', 'top accessory')},` : ''
     }
-)`,
+)${icon ? '' : `
+// NOTE: the design's icon did not resolve; set the entry it uses`}`,
   imports: [
+    'import com.teya.lemonade.core.LemonadeIcons',
     'import com.teya.lemonade.LemonadeUi',
     'import com.teya.lemonade.Tile',
     'import com.teya.lemonade.core.LemonadeTileOrientation',
     'import com.teya.lemonade.core.LemonadeTileVariant',
     ...slotImports,
-    ...(icon ? ['import com.teya.lemonade.core.LemonadeIcons'] : []),
   ],
   id: 'tile',
   metadata: { nestable: true },

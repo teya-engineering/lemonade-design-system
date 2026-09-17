@@ -2,10 +2,12 @@
 // source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/HistoryTimeline.kt
 // component=HistoryTimelineItem
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 // A row's text lives in a nested content instance and its voice on a nested
 // indicator, so both are reached from here.
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.kotlin)
 
 const read = (layer) => {
   const node = instance.findText(layer, { traverseInstances: true })
@@ -25,7 +27,7 @@ if (indicator && indicator.type === 'INSTANCE') {
 }
 
 export default {
-  example: figma.kotlin`HistoryTimelineItem(label = "${label}"${subheading ? `, subheading = "${subheading}"` : ''}${description ? `, description = "${description}"` : ''}${voice && voice !== 'Neutral' ? `, voice = HistoryItemVoice.${voice}` : ''})`,
+  example: figma.kotlin`HistoryTimelineItem(label = "${quote(label)}"${subheading ? `, subheading = "${quote(subheading)}"` : ''}${description ? `, description = "${quote(description)}"` : ''}${voice && voice !== 'Neutral' ? `, voice = HistoryItemVoice.${voice}` : ''})`,
   imports: [
     'import com.teya.lemonade.core.HistoryItemVoice',
     'import com.teya.lemonade.HistoryTimelineItem',

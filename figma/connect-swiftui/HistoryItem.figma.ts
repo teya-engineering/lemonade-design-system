@@ -2,10 +2,12 @@
 // source=swiftui/Sources/Lemonade/Components/LemonadeHistoryTimeline.swift
 // component=LemonadeHistoryTimelineItem
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 // A row's text lives in a nested content instance and its voice on a nested
 // indicator, so both are reached from here.
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.swift)
 
 const read = (layer) => {
   const node = instance.findText(layer, { traverseInstances: true })
@@ -25,7 +27,7 @@ if (indicator && indicator.type === 'INSTANCE') {
 }
 
 export default {
-  example: figma.swift`LemonadeHistoryTimelineItem(label: "${label}"${subheading ? `, subheading: "${subheading}"` : ''}${description ? `, description: "${description}"` : ''}${voice && voice !== 'neutral' ? `, voice: .${voice}` : ''})`,
+  example: figma.swift`LemonadeHistoryTimelineItem(label: "${quote(label)}"${subheading ? `, subheading: "${quote(subheading)}"` : ''}${description ? `, description: "${quote(description)}"` : ''}${voice && voice !== 'neutral' ? `, voice: .${voice}` : ''})`,
   id: 'history-item',
   metadata: { nestable: true, props: { current: current } },
 }

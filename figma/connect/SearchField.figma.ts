@@ -2,8 +2,10 @@
 // source=kmp/ui/src/commonMain/kotlin/com/teya/lemonade/SearchField.kt
 // component=SearchField
 import figma from 'figma'
+import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
+const { quote } = renderer(instance, figma.kotlin)
 
 const filled = instance.getEnum('◉ Is Filled', { True: true, False: false })
 const valueLayer = instance.findText('Value')
@@ -14,9 +16,9 @@ const placeholder =
 
 export default {
   example: figma.kotlin`LemonadeUi.SearchField(
-    input = "${input}",
+    input = "${quote(input)}",
     onInputChanged = { },${placeholder ? `
-    placeholder = "${placeholder}",` : ''}
+    placeholder = "${quote(placeholder)}",` : ''}
 )`,
   imports: [
     'import com.teya.lemonade.LemonadeUi',

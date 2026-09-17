@@ -5,7 +5,7 @@ import figma from 'figma'
 import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { slot } = renderer(instance, figma.swift)
+const { slot, quote } = renderer(instance, figma.swift)
 const title = instance.getString('✍️ Title')
 const subtitle = instance.getBoolean('◉ Show Subtitle', {
   true: instance.getString('↪ ✍️ Subtitle'),
@@ -21,8 +21,8 @@ const navigation = instance.getBoolean('◉ Show Navigation Indicator')
 
 export default {
   example: figma.swift`CardHeaderConfig(
-    title: "${title}"${subtitle ? `,
-    subtitle: "${subtitle}"` : ''}${style !== 'default' ? `,
+    title: "${quote(title)}"${subtitle ? `,
+    subtitle: "${quote(subtitle)}"` : ''}${style && style !== 'default' ? `,
     headingStyle: .${style}` : ''}${leading ? figma.swift`,
     leadingSlot: ${slot('↪ 🧩 Leading', 'leading content')}` : ''}${trailing ? figma.swift`,
     trailingSlot: ${slot('↪ 🧩 Trailing', 'trailing content')}` : ''}${navigation ? `,
