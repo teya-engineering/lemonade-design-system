@@ -74,6 +74,11 @@ another tagged template) **requires** the tagged form, otherwise it prints
 `imports` is a plain array of strings, evaluated after `example`, so it can depend on
 what the example rendered.
 
+A tag result carries its own `language` — `figma.kotlin``.language` is `'kotlin'`,
+`figma.swift``.language` is `'swift'` (both checked in Dev Mode). `shared/render.ts`
+reads it to escape per language, and throws on anything else rather than guessing,
+because guessing wrong drops Kotlin's `$` escape silently.
+
 `id` is a stable kebab-case identifier, unique across both directories.
 `metadata.nestable` says the snippet is safe to inline in a parent.
 

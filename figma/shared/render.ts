@@ -11,7 +11,13 @@ export const shift = (sections, pad) =>
 // collected for the caller to re-export.
 export const renderer = (instance, tag) => {
   const imports = new Set()
-  const kotlin = tag``.language === 'kotlin'
+  // Escaping differs per language, and a tag that stopped reporting one would
+  // silently drop Kotlin's `$` escape, so an unknown language fails the publish.
+  const language = tag``.language
+  if (language !== 'kotlin' && language !== 'swift') {
+    throw new Error(`Code Connect template language is ${language}, expected kotlin or swift`)
+  }
+  const kotlin = language === 'kotlin'
 
   // Figma text is arbitrary: a quote ends the literal, a backslash escapes what
   // follows it, a newline breaks the line, and Kotlin reads `$name` as a
