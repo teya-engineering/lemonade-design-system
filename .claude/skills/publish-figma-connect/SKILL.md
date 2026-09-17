@@ -71,8 +71,11 @@ fails rather than writing a broken mapping:
   enum catches up.
 
 When a code entry deliberately has no Figma component, add its Figma-style name
-to the manifest's `knownUnmapped` list. When one entry is served by another
-entry's component, record it in `aliases`, keyed by the served name.
+to the manifest's `knownUnmapped` list.
+
+The generator writes nothing until every asset and platform validates, so a
+failed run leaves the templates as they were rather than refreshing one label
+and skipping the other.
 
 After regenerating, `git diff --exit-code connect/ connect-swiftui/` should show
 only the assets you expected to change.

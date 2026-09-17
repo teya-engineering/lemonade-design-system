@@ -1,5 +1,4 @@
 {
-  "fileKey": "f7zokCdnayXejxc2y7r1Qt",
   "icons": {
     "airplane": "2372:15",
     "appearance-dark-mode": "3576:57",
@@ -46,6 +45,7 @@
     "board": "4008:38",
     "brand-android": "3233:58",
     "brand-apple": "3233:59",
+    "brand-teya-pos": "4526:66",
     "brand-teya-square": "2943:45",
     "brand-teya-symbol": "2943:55",
     "briefcase": "38:4768",

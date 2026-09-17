@@ -8,7 +8,7 @@
 // by node and falls back to another label when it has no template for that node,
 // so a missing SwiftUI icon renders the Kotlin snippet inside a Swift call.
 
-import { readFileSync, writeFileSync, mkdirSync, rmSync, readdirSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -97,6 +97,11 @@ const platforms = platformNames.length ? platformNames : Object.keys(PLATFORMS)
 
 let failed = false
 
+// Nothing is written until every asset and platform validates. A half-written
+// run would leave one label's templates refreshed and the other's stale, which
+// renders the wrong language's snippet.
+const plans = []
+
 for (const assetName of assets) {
   const asset = ASSETS[assetName]
   const manifest = JSON.parse(readFileSync(join(root, asset.manifest), 'utf8'))
@@ -104,9 +109,6 @@ for (const assetName of assets) {
   // Entries the code enum has but Figma does not, stored as Figma names so each
   // platform maps them into its own key space below.
   const knownUnmapped = manifest.knownUnmapped ?? []
-  // Enum entries served by another entry's component, keyed Figma name -> the
-  // Figma name that covers it.
-  const aliases = manifest.aliases ?? {}
   const normalise = asset.normalise ?? ((name) => name)
 
   for (const platformName of platforms) {
@@ -115,7 +117,8 @@ for (const assetName of assets) {
     const type = platform.type(asset.enumName)
     const imports = platform.imports(asset.enumName)
     const members = platform.members(readFileSync(join(repo, enumPath), 'utf8'))
-    const allowed = new Set([...knownUnmapped, ...Object.keys(aliases)].map(platform.keyFor))
+    const allowed = new Set(knownUnmapped.map(platform.keyFor))
+    const label = `[${assetName}/${platformName}]`
 
     // Checked both ways: manifest -> enum alone catches a deleted asset but stays
     // silent on an added one, which is the direction that actually happens.
@@ -131,47 +134,62 @@ for (const assetName of assets) {
       .filter(([key, member]) => !mapped.has(member) && !allowed.has(key))
       .map(([, member]) => member)
 
-    if (missingFromEnum.length || missingFromManifest.length) {
+    if (missingFromEnum.length) {
       failed = true
-      if (missingFromEnum.length) {
-        console.error(`[${assetName}/${platformName}] ${missingFromEnum.length} Figma component(s) have no enum entry:`)
-        for (const n of missingFromEnum) console.error(`  ${n}`)
-        console.error(`  → run the svg-asset-converter to add them to ${enumPath}`)
-      }
-      if (missingFromManifest.length) {
-        console.error(`[${assetName}/${platformName}] ${missingFromManifest.length} enum entr(ies) have no mapping:`)
-        for (const m of missingFromManifest) console.error(`  ${m}`)
-        console.error(`  → refresh ${asset.manifest} from Figma, or add the Figma name to its knownUnmapped list`)
-      }
-      continue
+      console.error(`${label} ${missingFromEnum.length} Figma component(s) have no enum entry:`)
+      for (const n of missingFromEnum) console.error(`  ${n}`)
+      console.error(`  → run the svg-asset-converter to add them to ${enumPath}`)
+    }
+    if (missingFromManifest.length) {
+      failed = true
+      console.error(`${label} ${missingFromManifest.length} enum entr(ies) have no mapping:`)
+      for (const m of missingFromManifest) console.error(`  ${m}`)
+      console.error(`  → refresh ${asset.manifest} from Figma, or add the Figma name to its knownUnmapped list`)
     }
 
-    const outDir = join(root, platform.dir, asset.outSub)
-    rmSync(outDir, { recursive: true, force: true })
-    mkdirSync(outDir, { recursive: true })
-
+    // pascal() collapses separators, so two manifest names can land on one file
+    // and the second would silently win.
+    const files = new Map()
     for (const [name, nodeId] of Object.entries(items)) {
-      // A bare enum reference, not a call: every consumer takes the enum.
-      const body = `// url=${asset.urlToken}?node-id=${nodeId.replace(':', '-')}
-// source=${enumPath}
-// component=${type}
+      const file = `${pascal(name)}.figma.ts`
+      const taken = files.get(file)
+      if (taken) {
+        failed = true
+        console.error(`${label} ${name} and ${taken.name} both write ${file}; rename one in ${asset.manifest}`)
+        continue
+      }
+      files.set(file, { name, nodeId })
+    }
+    if (failed) continue
+
+    plans.push({ label, outDir: join(root, platform.dir, asset.outSub), files, memberFor, platform, asset, assetName, enumPath, type, imports })
+  }
+}
+
+if (failed) process.exit(1)
+
+for (const plan of plans) {
+  rmSync(plan.outDir, { recursive: true, force: true })
+  mkdirSync(plan.outDir, { recursive: true })
+
+  for (const [file, { name, nodeId }] of plan.files) {
+    // A bare enum reference, not a call: every consumer takes the enum.
+    const body = `// DO NOT MODIFY THIS FILE MANUALLY — generated by scripts/generate-asset-templates.mjs
+// url=${plan.asset.urlToken}?node-id=${nodeId.replace(':', '-')}
+// source=${plan.enumPath}
+// component=${plan.type}
 import figma from 'figma'
 
 export default {
-  example: figma.${platform.tag}\`${type}.${memberFor.get(name)}\`,${
-    imports.length ? `\n  imports: [${imports.map((i) => `'${i}'`).join(', ')}],` : ''
+  example: figma.${plan.platform.tag}\`${plan.type}.${plan.memberFor.get(name)}\`,${
+    plan.imports.length ? `\n  imports: [${plan.imports.map((i) => `'${i}'`).join(', ')}],` : ''
   }
-  id: '${assetName.replace(/s$/, '')}-${name}',
+  id: '${plan.assetName.replace(/s$/, '')}-${name}',
   metadata: { nestable: true },
 }
 `
-      writeFileSync(join(outDir, `${pascal(name)}.figma.ts`), body)
-    }
-
-    console.log(
-      `[${assetName}/${platformName}] generated ${readdirSync(outDir).length} templates in ${platform.dir}/${asset.outSub}/`,
-    )
+    writeFileSync(join(plan.outDir, file), body)
   }
-}
 
-process.exit(failed ? 1 : 0)
+  console.log(`${plan.label} generated ${plan.files.size} templates in ${plan.platform.dir}/${plan.asset.outSub}/`)
+}
