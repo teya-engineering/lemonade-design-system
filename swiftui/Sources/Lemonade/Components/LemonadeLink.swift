@@ -1,5 +1,23 @@
 import SwiftUI
 
+// MARK: - Link Size
+
+/// Size of a link, chosen to match the body text around it: `small` pairs with `bodySmall` text,
+/// `medium` with `bodyMedium` text and `large` with `bodyLarge` text.
+public enum LemonadeLinkSize {
+    case small
+    case medium
+    case large
+
+    var textStyle: LemonadeTextStyle {
+        switch self {
+        case .small: return LemonadeTypography.shared.bodySmallMedium
+        case .medium: return LemonadeTypography.shared.bodyMediumMedium
+        case .large: return LemonadeTypography.shared.bodyLargeMedium
+        }
+    }
+}
+
 // MARK: - Link Component
 
 public extension LemonadeUi {
@@ -19,6 +37,12 @@ public extension LemonadeUi {
     ///     onClick: { },
     ///     icon: .externalLink
     /// )
+    ///
+    /// LemonadeUi.Link(
+    ///     text: "Contact us",
+    ///     onClick: { },
+    ///     size: .small
+    /// )
     /// ```
     ///
     /// - Parameters:
@@ -26,19 +50,22 @@ public extension LemonadeUi {
     ///   - onClick: Callback to be invoked when the link is tapped
     ///   - enabled: Boolean flag to enable or disable the link
     ///   - icon: Optional trailing LemonadeIcon shown after the text
+    ///   - size: LemonadeLinkSize matching the body text around the link, defaults to `.medium`
     /// - Returns: A styled link view
     @ViewBuilder
     static func Link(
         text: String,
         onClick: @escaping () -> Void,
         enabled: Bool = true,
-        icon: LemonadeIcon? = nil
+        icon: LemonadeIcon? = nil,
+        size: LemonadeLinkSize = .medium
     ) -> some View {
         LemonadeLinkView(
             text: text,
             onClick: onClick,
             enabled: enabled,
-            icon: icon
+            icon: icon,
+            size: size
         )
     }
 }
@@ -50,6 +77,7 @@ private struct LemonadeLinkView: View {
     let onClick: () -> Void
     let enabled: Bool
     let icon: LemonadeIcon?
+    let size: LemonadeLinkSize
 
     @State private var isPressed = false
 
@@ -64,7 +92,7 @@ private struct LemonadeLinkView: View {
         SwiftUI.Button(action: onClick) {
             HStack(spacing: LemonadeTheme.spaces.spacing100) {
                 SwiftUI.Text(text)
-                    .font(LemonadeTypography.shared.bodyMediumMedium.font)
+                    .font(size.textStyle.font)
                     .foregroundColor(currentColor)
                     .underline(true, color: currentColor)
 
@@ -100,6 +128,13 @@ struct LemonadeLink_Previews: PreviewProvider {
                 text: "External link",
                 onClick: { },
                 icon: .externalLink
+            )
+
+            LemonadeUi.Link(
+                text: "Small link",
+                onClick: { },
+                icon: .externalLink,
+                size: .small
             )
 
             LemonadeUi.Link(

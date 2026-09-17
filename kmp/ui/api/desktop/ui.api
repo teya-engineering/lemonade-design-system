@@ -505,7 +505,8 @@ public final class com/teya/lemonade/LemonadeUi {
 }
 
 public final class com/teya/lemonade/LinkKt {
-	public static final fun Link (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLcom/teya/lemonade/core/LemonadeIcons;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
+	public static final synthetic fun Link (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLcom/teya/lemonade/core/LemonadeIcons;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
+	public static final fun Link (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/core/LemonadeLinkSize;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/teya/lemonade/ListItemKt {
