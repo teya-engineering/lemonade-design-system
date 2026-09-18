@@ -12,10 +12,14 @@ public struct LemonadeTextEdit: Equatable {
     /// The proposed replacement. Empty for a deletion, multi-character for a paste or AutoFill.
     public let replacement: String
 
-    public init(currentText: String, range: NSRange, replacement: String) {
+    /// The selection before the edit, in UTF-16 offsets. Tells a backspace from a forward delete.
+    public let selection: NSRange?
+
+    public init(currentText: String, range: NSRange, replacement: String, selection: NSRange? = nil) {
         self.currentText = currentText
         self.range = range
         self.replacement = replacement
+        self.selection = selection
     }
 }
 

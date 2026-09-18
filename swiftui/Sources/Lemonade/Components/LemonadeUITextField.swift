@@ -158,7 +158,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     /// The decoration cannot change the character count, so the caret index is still valid
     /// afterwards — but assigning `attributedText` moves the caret to the end regardless, so it is
     /// captured and restored around the write.
-    private func applyDisplayDecoration(_ textField: UITextField) {
+    fileprivate func applyDisplayDecoration(_ textField: UITextField) {
         guard let decoration = displayDecoration else { return }
 
         // Assigning attributedText cancels an in-flight multi-stage composition.
@@ -273,7 +273,9 @@ internal struct LemonadeUITextField: UIViewRepresentable {
 
             // The selection clamp keeps the caret out of the symbol, but not the *edit*: with the
             // caret pinned just after a leading "$", UIKit still proposes (0, 1) for a backspace.
-            if let allowed = allowedSpan(for: textField),
+            // A transformation resolves such an edit itself.
+            if parent.inputTransformation == nil,
+               let allowed = allowedSpan(for: textField),
                range.location < allowed.lowerBound || range.location + range.length > allowed.upperBound {
                 return false
             }
@@ -286,7 +288,8 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             let edit = LemonadeTextEdit(
                 currentText: oldText,
                 range: range,
-                replacement: string
+                replacement: string,
+                selection: selectedRange(of: textField)
             )
             guard let result = transformation.transform(edit) else {
                 return applySecureEntryEdit(textField, range: range, replacement: string)
@@ -332,7 +335,33 @@ internal struct LemonadeUITextField: UIViewRepresentable {
                 textField.text = newText
             }
 
-            textField.setCaret(toUTF16Offset: clampedCaret(caret, for: newText))
+            // Now, not on the next update, so no frame shows the text undecorated.
+            parent.applyDisplayDecoration(textField)
+
+            let target = clampedCaret(caret, for: newText)
+            textField.setCaret(toUTF16Offset: target)
+            reassertCaret(target, in: textField)
+        }
+
+        /// After the delegate returns `false`, UIKit re-applies the selection it expected the edit
+        /// to leave.
+        private func reassertCaret(_ target: Int, in textField: UITextField) {
+            let text = textField.text
+            DispatchQueue.main.async { [weak textField] in
+                guard let textField, textField.text == text else { return }
+                let current = textField.selectedTextRange.map {
+                    textField.offset(from: textField.beginningOfDocument, to: $0.start)
+                }
+                guard current != target else { return }
+                textField.setCaret(toUTF16Offset: target)
+            }
+        }
+
+        private func selectedRange(of textField: UITextField) -> NSRange? {
+            guard let selection = textField.selectedTextRange else { return nil }
+            let start = textField.offset(from: textField.beginningOfDocument, to: selection.start)
+            let end = textField.offset(from: textField.beginningOfDocument, to: selection.end)
+            return NSRange(location: start, length: end - start)
         }
 
         /// A secure `UITextField` wipes all of its text on the first edit after the text was
