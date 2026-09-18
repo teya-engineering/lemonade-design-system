@@ -31,19 +31,25 @@ Two rules decide `BREAKING`, and they are blunt on purpose:
 
 1. **Any `-` line** in the diff (other than the `---` file header). A removal, a
    rename, a return-type change, a narrowed visibility — anything that deletes or
-   alters an existing line counts. There are two carve-outs:
+   alters an existing line counts. There are four carve-outs:
    - A `-`/`+` pair in the same file that differs *only* by the `synthetic`
      modifier is treated as additive, because that's a `@Deprecated(HIDDEN)` symbol
      keeping its exact descriptor (more below).
    - A `-` line for a name-mangled `internal` member is treated as additive,
      because it was never public ABI in the first place (more below).
+   - The `ComposableSingletons$<File>Kt` class line, its `INSTANCE` field, and a
+     bare `}` are treated as additive. The Compose compiler declares that holder
+     `internal` (more below).
+   - A `.klib.api` header `// Targets: [...]` line replaced by one that keeps
+     every old target is treated as additive. A new KMP target removes nothing.
+     Dropping a target stays `BREAKING`.
 2. **A `+` abstract member added inside a type that already existed.** That looks
    additive in the diff but throws `AbstractMethodError` on consumers who already
    implement the type. A brand-new type with abstract members is fine — nobody
    implements it yet.
 
 That's the whole model. The classifier reads text, not intent, so outside those
-two carve-outs it stays deliberately strict.
+four carve-outs it stays deliberately strict.
 
 ## Step 1 — see what actually changed
 
@@ -125,6 +131,17 @@ is still visible to source. Pick per case and say which in the PR.
 Same shape as above. Keep the old name as a `@Deprecated(HIDDEN)` function that
 forwards to the new one. The old binary symbol survives, source users move to the
 new name, and the `synthetic`-only flip classifies as `ADDITIONS_ONLY`.
+
+### Renaming a file with public top-level declarations
+
+On the JVM, top-level declarations live in a facade class named after the file:
+`TopBar.mobile.kt` compiles to `TopBar_mobileKt`. Rename the file (for example
+when you move it from `mobileMain` to `commonMain/TopBar.kt`) and every top-level
+symbol moves to `TopBarKt`, which is a real break on Android and desktop. Keep the
+old class name with `@file:kotlin.jvm.JvmName("TopBar_mobileKt")` on the renamed
+file. Use the fully qualified name, because `commonMain` does not resolve the
+short `JvmName`. The `.klib.api` dump has no facade classes, so native and wasm
+targets are not affected.
 
 ### Renaming or removing a public property — STOP
 
@@ -268,9 +285,14 @@ you watch move without touching its source.
 The classifier knows this: a `-` line whose member name ends in `$<module>` (the
 module is read from the `…/<module>/api/…` path in the diff header) is treated as
 additive, so a lone hash flip lands as `ADDITIONS_ONLY`. You don't need a shim or a
-maintainer gate for it. Trying to "fix" the hash by moving the lambda to another
-file only makes things worse: the singleton just reappears on a different class,
-which is a real removal from the original one. Leave it.
+maintainer gate for it. Leave it. Moving the lambda to another file only moves the
+singleton to a different holder.
+
+The holder class takes its name from the source file, even when the file has
+`@file:JvmName`. Rename the file or move it to another source set and
+`ComposableSingletons$<Old>Kt` becomes `ComposableSingletons$<New>Kt`. The
+compiler declares the holder `internal`, so the classifier also counts its class
+line and `INSTANCE` field as additive.
 
 This is scoped tightly: only the trailing `$`-segment is matched against the
 module name, so the genuine default-argument symbols (`copy$default`,
@@ -300,8 +322,10 @@ exists so a reviewer can read the API delta without re-deriving it. State:
   additive;
 - any interface or enum addition, with a line confirming the type is local-only /
   config-only;
-- any `getLambda$<hash>` line that moved (it's the mangled Compose singleton
-  re-hashing, which the classifier counts as additive);
+- any `ComposableSingletons` line that moved (a `getLambda$<hash>` re-hash or a
+  holder rename), which the classifier counts as additive;
+- any `// Targets:` header that gained a target, which the classifier counts as
+  additive;
 - if the verdict is `BREAKING` for a real reason, who needs to approve and why the
   break is acceptable.
 
