@@ -1,0 +1,61 @@
+---
+/**
+ * Replaces Starlight's `Sidebar` so the nav can carry inert section headings.
+ *
+ * Starlight's sidebar vocabulary is links and groups; a group is always a
+ * `<details>`, so it cannot express a heading that is only a heading. This
+ * override renders a real `<h2>` per section and hands each section's entries
+ * to Starlight's own `SidebarSublist`, which keeps the links, groups, badges,
+ * current-page marking and open/closed persistence exactly as they were.
+ *
+ * `Sidebar` is a documented override slot. `SidebarSublist` and
+ * `SidebarPersister` are not public API — they live in Starlight's
+ * `components/` directory and could move in a future release. If a Starlight
+ * upgrade breaks this file, the fallback is to delete the override from
+ * `astro.config.mjs`; the sidebar then renders flat, without the headings.
+ */
+import MobileMenuFooter from 'virtual:starlight/components/MobileMenuFooter';
+import SidebarPersister from '@astrojs/starlight/components/SidebarPersister.astro';
+import SidebarSublist from '@astrojs/starlight/components/SidebarSublist.astro';
+import { sections } from '../sidebar';
+
+// `starlightRoute.sidebar` is our `sidebar` export after Starlight has resolved
+// hrefs and marked the current page — same entries, same order, sections
+// flattened away. Slice it back into sections using the shape we started from.
+const { sidebar } = Astro.locals.starlightRoute;
+
+let cursor = 0;
+const grouped = sections.map((section) => {
+	const entries = sidebar.slice(cursor, cursor + section.entries.length);
+	cursor += section.entries.length;
+	return { label: section.label, entries };
+});
+
+// A silently short sidebar is the failure mode worth guarding: if the two ever
+// drift, pages vanish from the nav with nothing to show for it.
+if (cursor !== sidebar.length) {
+	throw new Error(
+		`Sidebar sections cover ${cursor} entries but Starlight resolved ${sidebar.length}.\n` +
+			`If you just edited src/sidebar.ts, restart the dev server: astro.config.mjs reads ` +
+			`\`sidebar\` at startup, so the config keeps the old tree while this component sees ` +
+			`the new one.\n` +
+			`Otherwise check that \`sidebar\` is still derived from \`sections\` — it is the ` +
+			`single source for both.`,
+	);
+}
+---
+
+<SidebarPersister>
+	{
+		grouped.map(({ label, entries }) => (
+			<div class="sidebar-section">
+				<h2 class="sidebar-section-title">{label}</h2>
+				<SidebarSublist sublist={entries} />
+			</div>
+		))
+	}
+</SidebarPersister>
+
+<div class="md:sl-hidden">
+	<MobileMenuFooter />
+</div>
