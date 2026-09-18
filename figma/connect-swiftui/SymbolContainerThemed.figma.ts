@@ -3,17 +3,12 @@
 // component=SymbolContainer
 import figma from 'figma'
 import { renderer } from '../shared/render'
+import { themeMap } from '../shared/themed'
 
 const instance = figma.selectedInstance
 const { snippets, quote } = renderer(instance, figma.swift)
 
-const hues = ['Yellow', 'Amber', 'Orange', 'Red', 'Rose', 'Pink', 'Fuchsia', 'Purple', 'Violet',
-  'Indigo', 'Blue', 'Cyan', 'Teal', 'Green', 'Green Lime', 'Yellow Lime']
-const theme = instance.getEnum('◇ Theme', Object.fromEntries(hues.flatMap((hue) => {
-  const [first, ...rest] = hue.split(' ')
-  const entry = `.${first.toLowerCase()}${rest.join('')}`
-  return [[hue, entry], [`${hue} Subtle`, `${entry}.subtle`]]
-})))
+const theme = instance.getEnum('◇ Theme', themeMap(([first, ...rest]) => `.${first.toLowerCase()}${rest.join('')}`))
 
 const size = instance.getEnum('↕ Size', {
   XSmall: 'xSmall',

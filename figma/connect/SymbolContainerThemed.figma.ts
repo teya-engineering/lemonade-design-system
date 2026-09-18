@@ -3,16 +3,12 @@
 // component=SymbolContainer
 import figma from 'figma'
 import { renderer } from '../shared/render'
+import { themeMap } from '../shared/themed'
 
 const instance = figma.selectedInstance
 const { slot, imports: slotImports, quote } = renderer(instance, figma.kotlin)
 
-const hues = ['Yellow', 'Amber', 'Orange', 'Red', 'Rose', 'Pink', 'Fuchsia', 'Purple', 'Violet',
-  'Indigo', 'Blue', 'Cyan', 'Teal', 'Green', 'Green Lime', 'Yellow Lime']
-const theme = instance.getEnum('◇ Theme', Object.fromEntries(hues.flatMap((hue) => {
-  const entry = `ThemedHue.${hue.replace(' ', '')}`
-  return [[hue, entry], [`${hue} Subtle`, `${entry}.subtle`]]
-})))
+const theme = instance.getEnum('◇ Theme', themeMap((words) => `ThemedHue.${words.join('')}`))
 
 const size = instance.getEnum('↕ Size', {
   XSmall: 'XSmall',
@@ -40,17 +36,19 @@ const tail = `
     size = SymbolContainerSize.${size},
     shape = SymbolContainerShape.${shape},`
 
+const optIn = '// NOTE: experimental; the caller opts in with @OptIn(ExperimentalLemonadeApi::class)'
+
 const badgeArg = badge ? figma.kotlin`
     badgeSlot = ${slot('↪ 🧩 Accessory', 'accessory')},` : ''
 
 export default {
   example:
     contentType === 'text'
-      ? figma.kotlin`// NOTE: experimental; the caller opts in with @OptIn(ExperimentalLemonadeApi::class)
+      ? figma.kotlin`${optIn}
 LemonadeUi.SymbolContainer(
     text = "${quote(text)}",${tail}${badgeArg}
 )`
-      : figma.kotlin`// NOTE: experimental; the caller opts in with @OptIn(ExperimentalLemonadeApi::class)
+      : figma.kotlin`${optIn}
 LemonadeUi.SymbolContainer(
     icon = ${iconCode ?? 'LemonadeIcons.Heart'},
     contentDescription = null,${tail}${badgeArg}
