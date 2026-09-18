@@ -46,6 +46,7 @@ public extension Font {
     static var bodyMediumRegular: Font { LemonadeTypography.shared.bodyMediumRegular.font }
     static var bodyMediumMedium: Font { LemonadeTypography.shared.bodyMediumMedium.font }
     static var bodyMediumSemiBold: Font { LemonadeTypography.shared.bodyMediumSemiBold.font }
+    @available(*, deprecated, renamed: "bodyMediumSemiBold", message: "Bold is not a public Lemonade text style.")
     static var bodyMediumBold: Font { LemonadeTypography.shared.bodyMediumBold.font }
 
     // MARK: - Body Small Styles

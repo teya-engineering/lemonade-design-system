@@ -34,6 +34,11 @@ public open class LemonadeTypographyProvider {
     public open val bodyMediumRegular: LemonadeTextStyle get() = LemonadeTypography.BodyMediumRegular.style
     public open val bodyMediumMedium: LemonadeTextStyle get() = LemonadeTypography.BodyMediumMedium.style
     public open val bodyMediumSemiBold: LemonadeTextStyle get() = LemonadeTypography.BodyMediumSemiBold.style
+
+    @Deprecated(
+        message = "Bold is not a public Lemonade text style.",
+        replaceWith = ReplaceWith("bodyMediumSemiBold"),
+    )
     public open val bodyMediumBold: LemonadeTextStyle get() = LemonadeTypography.BodyMediumBold.style
 
     public open val bodySmallRegular: LemonadeTextStyle get() = LemonadeTypography.BodySmallRegular.style
