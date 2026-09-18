@@ -7,7 +7,9 @@ Usage (from the repo root):
 
 `diff` reports which icons exist in Figma but not in svg/icons (and the reverse).
 `export` with no names writes every icon missing from svg/icons; with names it
-re-exports exactly those, which is how updated artwork is pulled in.
+re-exports exactly those, which is how updated artwork is pulled in. It also
+records each exported icon's node id in figma/icons.manifest.json, which the
+Code Connect template generator needs to map the new enum entry.
 
 Needs a Figma personal access token with the `file_content:read` scope, in
 FIGMA_TOKEN or FIGMA_CODE_CONNECT_TOKEN.
@@ -34,6 +36,7 @@ API = "https://api.figma.com/v1"
 DEFAULT_FILE_KEY = "f7zokCdnayXejxc2y7r1Qt"
 DEFAULT_NODE_ID = "32:185"
 DEFAULT_DIR = "svg/icons"
+DEFAULT_MANIFEST = "figma/icons.manifest.json"
 
 # Depth that reaches the COMPONENT nodes (page > Main > Stack > frame > card > component).
 TREE_DEPTH = 6
@@ -130,6 +133,18 @@ def download(url):
         return response.read()
 
 
+def update_manifest(path, entries):
+    manifest = json.loads(path.read_text())
+    icons = manifest["icons"]
+    changed = {name: node for name, node in entries.items() if icons.get(name) != node}
+    if not changed:
+        return
+    icons.update(changed)
+    manifest["icons"] = dict(sorted(icons.items()))
+    path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
+    print(f"  mapped {', '.join(changed)} in {path}")
+
+
 def cmd_diff(args, tok):
     icons_dir = Path(args.dir)
     figma = figma_icons(args.file_key, args.node, tok)
@@ -195,6 +210,8 @@ def cmd_export(args, tok):
         target.write_bytes(svg)
         print(f"  {verb} {target}")
 
+    update_manifest(Path(args.manifest), {name: figma[name] for name in wanted})
+
     print()
     print("Next: .claude/skills/export-icons/scripts/generate-assets.sh")
 
@@ -204,6 +221,9 @@ def main():
     parser.add_argument("--file-key", default=DEFAULT_FILE_KEY, help="Figma file key")
     parser.add_argument("--node", default=DEFAULT_NODE_ID, help="node id of the Icons page")
     parser.add_argument("--dir", default=DEFAULT_DIR, help="destination directory")
+    parser.add_argument(
+        "--manifest", default=DEFAULT_MANIFEST, help="Code Connect icons manifest to update"
+    )
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("diff", help="compare Figma against the repo")
     export = sub.add_parser("export", help="write icons into the repo")
