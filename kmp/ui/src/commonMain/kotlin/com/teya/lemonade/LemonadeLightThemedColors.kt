@@ -77,7 +77,7 @@ public object LemonadeLightThemedColors : LemonadeThemedColors {
             override val background = LemonadePrimitiveColors.Solid.Fuchsia.fuchsia600
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Fuchsia.fuchsia900
             override val border = LemonadePrimitiveColors.Solid.Fuchsia.fuchsia600
-            override val content = LemonadePrimitiveColors.Solid.Fuchsia.fuchsia700
+            override val content = LemonadePrimitiveColors.Solid.Fuchsia.fuchsia600
             override val contentInverse = LemonadePrimitiveColors.Solid.Fuchsia.fuchsia400
             override val onBackground = LemonadePrimitiveColors.Solid.White.white950
             override val onBackgroundHigh = LemonadePrimitiveColors.Solid.Fuchsia.fuchsia50
@@ -128,7 +128,7 @@ public object LemonadeLightThemedColors : LemonadeThemedColors {
             override val background = LemonadePrimitiveColors.Solid.Indigo.indigo600
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Indigo.indigo900
             override val border = LemonadePrimitiveColors.Solid.Indigo.indigo600
-            override val content = LemonadePrimitiveColors.Solid.Indigo.indigo700
+            override val content = LemonadePrimitiveColors.Solid.Indigo.indigo600
             override val contentInverse = LemonadePrimitiveColors.Solid.Indigo.indigo400
             override val onBackground = LemonadePrimitiveColors.Solid.Indigo.indigo50
             override val onBackgroundHigh = LemonadePrimitiveColors.Solid.Indigo.indigo50
@@ -179,7 +179,7 @@ public object LemonadeLightThemedColors : LemonadeThemedColors {
             override val background = LemonadePrimitiveColors.Solid.Pink.pink600
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Pink.pink900
             override val border = LemonadePrimitiveColors.Solid.Pink.pink600
-            override val content = LemonadePrimitiveColors.Solid.Pink.pink700
+            override val content = LemonadePrimitiveColors.Solid.Pink.pink600
             override val contentInverse = LemonadePrimitiveColors.Solid.Pink.pink400
             override val onBackground = LemonadePrimitiveColors.Solid.White.white950
             override val onBackgroundHigh = LemonadePrimitiveColors.Solid.Pink.pink50
@@ -213,7 +213,7 @@ public object LemonadeLightThemedColors : LemonadeThemedColors {
             override val background = LemonadePrimitiveColors.Solid.Red.red600
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Red.red900
             override val border = LemonadePrimitiveColors.Solid.Red.red600
-            override val content = LemonadePrimitiveColors.Solid.Red.red700
+            override val content = LemonadePrimitiveColors.Solid.Red.red600
             override val contentInverse = LemonadePrimitiveColors.Solid.Red.red400
             override val onBackground = LemonadePrimitiveColors.Solid.White.white950
             override val onBackgroundHigh = LemonadePrimitiveColors.Solid.Red.red50
@@ -230,7 +230,7 @@ public object LemonadeLightThemedColors : LemonadeThemedColors {
             override val background = LemonadePrimitiveColors.Solid.Rose.rose600
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Rose.rose900
             override val border = LemonadePrimitiveColors.Solid.Rose.rose600
-            override val content = LemonadePrimitiveColors.Solid.Rose.rose700
+            override val content = LemonadePrimitiveColors.Solid.Rose.rose600
             override val contentInverse = LemonadePrimitiveColors.Solid.Rose.rose400
             override val onBackground = LemonadePrimitiveColors.Solid.White.white950
             override val onBackgroundHigh = LemonadePrimitiveColors.Solid.Rose.rose50
@@ -264,7 +264,7 @@ public object LemonadeLightThemedColors : LemonadeThemedColors {
             override val background = LemonadePrimitiveColors.Solid.Violet.violet600
             override val backgroundHigh = LemonadePrimitiveColors.Solid.Violet.violet900
             override val border = LemonadePrimitiveColors.Solid.Violet.violet600
-            override val content = LemonadePrimitiveColors.Solid.Violet.violet700
+            override val content = LemonadePrimitiveColors.Solid.Violet.violet600
             override val contentInverse = LemonadePrimitiveColors.Solid.Violet.violet400
             override val onBackground = LemonadePrimitiveColors.Solid.Violet.violet50
             override val onBackgroundHigh = LemonadePrimitiveColors.Solid.Violet.violet50

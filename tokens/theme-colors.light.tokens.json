@@ -5324,12 +5324,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.7529411911964417,
-            0.08235294371843338,
-            0.125490203499794
+            0.8941176533699036,
+            0.11764705926179886,
+            0.16862745583057404
           ],
           "alpha": 1,
-          "hex": "#C01520"
+          "hex": "#E41E2B"
         },
         "$description": "Generic red text and icons on a default surface. Also legible on background-subtle.",
         "$extensions": {
@@ -5343,8 +5343,8 @@
             "iOS": "LemonadeTheme.themed.red.content"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:a17656e99cc45a002894f8a0fc808807399ae7f0/559:8",
-            "targetVariableName": "red/700",
+            "targetVariableId": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/559:7",
+            "targetVariableName": "red/600",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -5643,12 +5643,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.7785063982009888,
+            0.9273908734321594,
             0,
-            0.21069633960723877
+            0.2487092763185501
           ],
           "alpha": 1,
-          "hex": "#C70036"
+          "hex": "#EC003F"
         },
         "$description": "Generic rose text and icons on a default surface. Also legible on background-subtle.",
         "$extensions": {
@@ -5662,8 +5662,8 @@
             "iOS": "LemonadeTheme.themed.rose.content"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:cb9a5d2622553e64145a7c57f909881df69c2276/71:73",
-            "targetVariableName": "rose/700",
+            "targetVariableId": "VariableID:bc1e36e44c17315b78c897bc826f64068e2987ac/71:81",
+            "targetVariableName": "rose/600",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -5962,12 +5962,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.7777568101882935,
+            0.901336133480072,
             0,
-            0.35892295837402344
+            0.4634101092815399
           ],
           "alpha": 1,
-          "hex": "#C6005C"
+          "hex": "#E60076"
         },
         "$description": "Generic pink text and icons on a default surface. Also legible on background-subtle.",
         "$extensions": {
@@ -5981,8 +5981,8 @@
             "iOS": "LemonadeTheme.themed.pink.content"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:738ef3cee0466ed6325c1034d294dde486609e79/72:86",
-            "targetVariableName": "pink/700",
+            "targetVariableId": "VariableID:fbe98adbd33ec14255fe83d09095c57c96189ea9/72:91",
+            "targetVariableName": "pink/600",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -6281,12 +6281,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.658823549747467,
+            0.7843137383460999,
             0,
-            0.7176470756530762
+            0.8705882430076599
           ],
           "alpha": 1,
-          "hex": "#A800B7"
+          "hex": "#C800DE"
         },
         "$description": "Generic fuchsia text and icons on a default surface. Also legible on background-subtle.",
         "$extensions": {
@@ -6300,8 +6300,8 @@
             "iOS": "LemonadeTheme.themed.fuchsia.content"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:34713dffaf0599fbccf0da127827e7b5a7b27a3b/590:24",
-            "targetVariableName": "fuchsia/700",
+            "targetVariableId": "VariableID:f1750cd14f5079e1ab8ecf1773ec3b37fe211dc2/590:21",
+            "targetVariableName": "fuchsia/600",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -6919,12 +6919,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.4396858811378479,
-            0.03142301365733147,
-            0.9064206480979919
+            0.4999111592769623,
+            0.13370467722415924,
+            0.9959982633590698
           ],
           "alpha": 1,
-          "hex": "#7008E7"
+          "hex": "#7F22FE"
         },
         "$description": "Generic violet text and icons on a default surface. Also legible on background-subtle.",
         "$extensions": {
@@ -6938,8 +6938,8 @@
             "iOS": "LemonadeTheme.themed.violet.content"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:5cce525c80ec6bf3b0f5c4b3476bede891893493/74:15",
-            "targetVariableName": "violet/700",
+            "targetVariableId": "VariableID:b891b27d3616ad1828212f35c90c37cda822d6a4/74:13",
+            "targetVariableName": "violet/600",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
@@ -7238,12 +7238,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.2643529772758484,
-            0.17659243941307068,
-            0.8448341488838196
+            0.310885488986969,
+            0.2244044691324234,
+            0.9662612676620483
           ],
           "alpha": 1,
-          "hex": "#432DD7"
+          "hex": "#4F39F6"
         },
         "$description": "Generic indigo text and icons on a default surface. Also legible on background-subtle.",
         "$extensions": {
@@ -7257,8 +7257,8 @@
             "iOS": "LemonadeTheme.themed.indigo.content"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:d2b17880e05ecc87de782cf168beafbeb84d0420/72:126",
-            "targetVariableName": "indigo/700",
+            "targetVariableId": "VariableID:752d3aedb71470db1c117dc227106ae480bbe653/72:118",
+            "targetVariableName": "indigo/600",
             "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
             "targetVariableSetName": "Colors"
           }
