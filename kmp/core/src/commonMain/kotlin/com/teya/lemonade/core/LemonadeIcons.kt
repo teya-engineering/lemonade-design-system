@@ -88,6 +88,7 @@ public enum class LemonadeIcons : LemonadeAsset {
     CalendarSearch,
     Camera,
     Car,
+    CarFrontView,
     Card,
     CardCog,
     CardMachine,

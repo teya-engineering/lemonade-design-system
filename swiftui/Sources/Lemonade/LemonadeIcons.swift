@@ -92,6 +92,7 @@ public enum LemonadeIcon: String, CaseIterable {
     case calendarSearch = "calendar-search"
     case camera = "camera"
     case car = "car"
+    case carFrontView = "car-front-view"
     case card = "card"
     case cardCog = "card-cog"
     case cardMachine = "card-machine"

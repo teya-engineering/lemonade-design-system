@@ -89,6 +89,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.CalendarSearch -> LemonadeRes.drawable.gen_calendar_search
         LemonadeIcons.Camera -> LemonadeRes.drawable.gen_camera
         LemonadeIcons.Car -> LemonadeRes.drawable.gen_car
+        LemonadeIcons.CarFrontView -> LemonadeRes.drawable.gen_car_front_view
         LemonadeIcons.Card -> LemonadeRes.drawable.gen_card
         LemonadeIcons.CardCog -> LemonadeRes.drawable.gen_card_cog
         LemonadeIcons.CardMachine -> LemonadeRes.drawable.gen_card_machine

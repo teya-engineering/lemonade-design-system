@@ -660,6 +660,7 @@ final enum class com.teya.lemonade.core/LemonadeIcons : com.teya.lemonade.core/L
     enum entry CalendarSearch // com.teya.lemonade.core/LemonadeIcons.CalendarSearch|null[0]
     enum entry Camera // com.teya.lemonade.core/LemonadeIcons.Camera|null[0]
     enum entry Car // com.teya.lemonade.core/LemonadeIcons.Car|null[0]
+    enum entry CarFrontView // com.teya.lemonade.core/LemonadeIcons.CarFrontView|null[0]
     enum entry Card // com.teya.lemonade.core/LemonadeIcons.Card|null[0]
     enum entry CardCog // com.teya.lemonade.core/LemonadeIcons.CardCog|null[0]
     enum entry CardMachine // com.teya.lemonade.core/LemonadeIcons.CardMachine|null[0]
