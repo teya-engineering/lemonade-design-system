@@ -585,6 +585,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field CalendarSearch Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Camera Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Car Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field CarFrontView Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Card Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CardCog Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CardMachine Lcom/teya/lemonade/core/LemonadeIcons;
