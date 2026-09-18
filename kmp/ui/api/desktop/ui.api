@@ -157,6 +157,13 @@ public final class com/teya/lemonade/ComposableSingletons$TooltipKt {
 	public final fun getLambda$900957876$ui ()Lkotlin/jvm/functions/Function3;
 }
 
+public final class com/teya/lemonade/ComposableSingletons$TopBarKt {
+	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$TopBarKt;
+	public fun <init> ()V
+	public final fun getLambda$-1023197263$ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1971304850$ui ()Lkotlin/jvm/functions/Function3;
+}
+
 public final class com/teya/lemonade/ContentListItemKt {
 	public static final fun ContentListItem--8slwkU (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Ljava/lang/String;Lcom/teya/lemonade/core/LemonadeContentListItemLayout;Landroidx/compose/ui/Modifier;ZLcom/teya/lemonade/core/LemonadeContentListItemDensity;Landroidx/compose/ui/Alignment$Vertical;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;IIIILandroidx/compose/runtime/Composer;III)V
 }
@@ -524,6 +531,23 @@ public final class com/teya/lemonade/ModifierKt {
 	public static final fun clickable-VcnDGT4 (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/ui/semantics/Role;Landroidx/compose/runtime/Composer;II)Landroidx/compose/ui/Modifier;
 }
 
+public final class com/teya/lemonade/NavigationAction {
+	public static final field $stable I
+	public fun <init> (Lcom/teya/lemonade/core/TopBarAction;Lkotlin/jvm/functions/Function0;Z)V
+	public synthetic fun <init> (Lcom/teya/lemonade/core/TopBarAction;Lkotlin/jvm/functions/Function0;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lcom/teya/lemonade/core/TopBarAction;
+	public final fun component2 ()Lkotlin/jvm/functions/Function0;
+	public final fun component3 ()Z
+	public final fun copy (Lcom/teya/lemonade/core/TopBarAction;Lkotlin/jvm/functions/Function0;Z)Lcom/teya/lemonade/NavigationAction;
+	public static synthetic fun copy$default (Lcom/teya/lemonade/NavigationAction;Lcom/teya/lemonade/core/TopBarAction;Lkotlin/jvm/functions/Function0;ZILjava/lang/Object;)Lcom/teya/lemonade/NavigationAction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFilled ()Z
+	public final fun getNavigationAction ()Lcom/teya/lemonade/core/TopBarAction;
+	public final fun getOnNavigationActionClicked ()Lkotlin/jvm/functions/Function0;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/teya/lemonade/NoticeKt {
 	public static final fun Notice (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lcom/teya/lemonade/core/NoticeVoice;Landroidx/compose/ui/Modifier;Ljava/lang/String;ZLjava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }
@@ -753,5 +777,26 @@ public final class com/teya/lemonade/TooltipHostKt {
 
 public final class com/teya/lemonade/TooltipKt {
 	public static final fun Tooltip (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lcom/teya/lemonade/core/TooltipIndicatorPlacement;Lkotlin/jvm/functions/Function0;Ljava/lang/String;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/teya/lemonade/TopBarState {
+	public static final field $stable I
+	public final fun collapse (Landroidx/compose/animation/core/AnimationSpec;)V
+	public static synthetic fun collapse$default (Lcom/teya/lemonade/TopBarState;Landroidx/compose/animation/core/AnimationSpec;ILjava/lang/Object;)V
+	public final fun expand (Landroidx/compose/animation/core/AnimationSpec;)V
+	public static synthetic fun expand$default (Lcom/teya/lemonade/TopBarState;Landroidx/compose/animation/core/AnimationSpec;ILjava/lang/Object;)V
+	public final fun getCollapseProgress ()F
+	public final fun getNestedScrollConnection ()Landroidx/compose/ui/input/nestedscroll/NestedScrollConnection;
+	public final fun isCollapsed ()Z
+	public final fun isScrolled ()Z
+	public final fun setAnimationGesturesLock (Z)V
+}
+
+public final class com/teya/lemonade/TopBar_mobileKt {
+	public static final fun TopBar-8Hg-P2A (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/TopBarState;JJLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/teya/lemonade/NavigationAction;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
+	public static final fun TopBar-dNgdfXs (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Ljava/lang/String;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/TopBarState;JJLkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun TopBar-mwx5Hpo (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/TopBarState;JJLjava/lang/String;Ljava/lang/String;Lcom/teya/lemonade/NavigationAction;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
+	public static final fun TopBar-uPCbpMU (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/TopBarState;JJLjava/lang/String;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
+	public static final fun rememberTopBarState (Lkotlinx/coroutines/CoroutineScope;ZZLandroidx/compose/runtime/Composer;II)Lcom/teya/lemonade/TopBarState;
 }
 

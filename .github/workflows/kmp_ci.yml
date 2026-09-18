@@ -232,7 +232,7 @@ jobs:
             konan-${{ runner.os }}-
 
       - name: Compile All Targets
-        run: ./gradlew compileKotlinMetadata compileKotlinIosArm64 compileKotlinIosSimulatorArm64 compileKotlinDesktop --no-daemon
+        run: ./gradlew compileKotlinMetadata compileKotlinIosArm64 compileKotlinIosSimulatorArm64 compileKotlinDesktop compileKotlinWasmJs --no-daemon
         working-directory: ./kmp
 
       - name: Setup Dependency Submission
