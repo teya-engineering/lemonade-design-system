@@ -30,6 +30,14 @@
  *     key re-hashes when a surrounding `@Composable` changes shape. See
  *     [String.isInternalMangled].
  *
+ *     Exception C: the `ComposableSingletons$<File>Kt` class line and its
+ *     `INSTANCE` field. The Compose compiler emits this holder as `internal`, and
+ *     it renames with its source file. A bare `}` is not a declaration either.
+ *
+ *     Exception D: a `.klib.api` header `// Targets: [...]` line replaced by one
+ *     that keeps every old target. Adding a target removes nothing; dropping one
+ *     stays a break.
+ *
  *  2. A `+` line declaring an abstract member (`abstract fun|val|var`) inside
  *     a class/interface block whose declaration line is **not** also a `+`
  *     line — i.e. an abstract member added to a type that already existed.
@@ -65,9 +73,7 @@ public object ApiStabilityClassifier {
     }
 
     /**
-     * Collects declarations the diff removed or altered, but drops `-`/`+` pairs
-     * that differ only by the `synthetic` modifier (a `@Deprecated(HIDDEN)`
-     * transition — the descriptor is preserved, so it is not an ABI break).
+     * Collects declarations the diff removed or altered, minus Exceptions A to D.
      *
      * Lines are bucketed per file (a `---` header starts a new file in both the
      * `git diff` and plain `diff -u` formats) so a genuine removal on one target
@@ -78,11 +84,16 @@ public object ApiStabilityClassifier {
         var added = mutableListOf<String>()
         var removed = mutableListOf<String>()
         var module = ""
+        var inDumpHeader = false
+        var removedTargetsHeader: String? = null
+        var addedTargetsHeader: String? = null
 
         fun flushFile() {
+            removedTargetsHeader?.let { header ->
+                if (!header.isWidenedBy(addedTargetsHeader)) realRemovals += header
+            }
             for (removedLine in removed) {
-                // Name-mangled internal members are invisible outside their module, so removing one breaks nothing.
-                if (removedLine.isInternalMangled(module)) continue
+                if (removedLine.isInvisibleToConsumers(module)) continue
                 val removedSignature = removedLine.stripSyntheticModifier()
                 val syntheticOnly = added.any { addedLine ->
                     addedLine != removedLine && addedLine.stripSyntheticModifier() == removedSignature
@@ -91,30 +102,52 @@ public object ApiStabilityClassifier {
             }
             added = mutableListOf()
             removed = mutableListOf()
+            removedTargetsHeader = null
+            addedTargetsHeader = null
         }
 
         for (line in diff.lineSequence()) {
+            if (line.startsWith("---")) {
+                flushFile()
+                inDumpHeader = true
+                moduleFromHeader(line)?.let { moduleName -> module = moduleName }
+                continue
+            }
+            if (line.startsWith("+++")) {
+                moduleFromHeader(line)?.let { moduleName -> module = moduleName }
+                continue
+            }
+            val body = line.drop(n = 1)
+                .trim()
+            if (body.startsWith(KLIB_LIBRARY_NAME_PREFIX)) inDumpHeader = false
+            val isTargetsHeader = inDumpHeader && body.startsWith(KLIB_TARGETS_PREFIX)
             when {
-                line.startsWith("---") -> {
-                    flushFile()
-                    moduleFromHeader(line)?.let { moduleName -> module = moduleName }
-                }
-                line.startsWith("+++") -> moduleFromHeader(line)?.let { moduleName -> module = moduleName }
-                line.startsWith("+") -> {
-                    val body = line.removePrefix("+")
-                        .trim()
-                    if (body.isNotEmpty()) added += body
-                }
-                line.startsWith("-") -> {
-                    val body = line.removePrefix("-")
-                        .trim()
-                    if (body.isNotEmpty()) removed += body
-                }
+                line.startsWith("+") && isTargetsHeader -> addedTargetsHeader = body
+                line.startsWith("-") && isTargetsHeader -> removedTargetsHeader = body
+                line.startsWith("+") && body.isNotEmpty() -> added += body
+                line.startsWith("-") && body.isNotEmpty() -> removed += body
             }
         }
         flushFile()
         return realRemovals
     }
+
+    private fun String.isWidenedBy(addedHeader: String?): Boolean =
+        addedHeader != null && addedHeader.klibTargets()
+            .containsAll(elements = klibTargets())
+
+    private fun String.klibTargets(): Set<String> =
+        substringAfter(delimiter = '[')
+            .substringBefore(delimiter = ']')
+            .split(',')
+            .map { target -> target.trim() }
+            .toSet()
+
+    private fun String.isInvisibleToConsumers(module: String): Boolean =
+        this == "}" || isInternalMangled(module) || isComposableSingletonsHolder()
+
+    private fun String.isComposableSingletonsHolder(): Boolean =
+        composableSingletonsHolderRegex.matches(input = trim())
 
     /**
      * Pulls the module name out of a diff file-header line such as
@@ -250,6 +283,14 @@ public object ApiStabilityClassifier {
     private val whitespaceRegex = Regex("""\s+""")
 
     private val modulePathRegex = Regex("""(?:^|/)([\w.\-]+)/api/""")
+
+    private val composableSingletonsHolderRegex = Regex(
+        """^public (?:final class (?:\S+/)?ComposableSingletons\$\S+ \{|static final field INSTANCE L(?:\S+/)?ComposableSingletons\$\S+;)$"""
+    )
+
+    private const val KLIB_TARGETS_PREFIX = "// Targets:"
+
+    private const val KLIB_LIBRARY_NAME_PREFIX = "// Library unique name:"
 
     private val jvmMemberNameRegex = Regex("""\b(?:fun|field)\s+([^\s(]+)""")
 

@@ -303,6 +303,111 @@ class ApiStabilityClassifierTest {
     }
 
     @Test
+    fun `klib dump header gaining a target is additions-only`() {
+        val diff = """
+            --- a/kmp/core/api/core.klib.api
+            +++ b/kmp/core/api/core.klib.api
+            @@ -1,3 +1,3 @@
+             // Klib ABI Dump
+            -// Targets: [iosArm64, iosSimulatorArm64]
+            +// Targets: [iosArm64, iosSimulatorArm64, wasmJs]
+             // Library unique name: <Lemonade:core>
+        """.trimIndent()
+        assertEquals(
+            expected = Verdict.AdditionsOnly,
+            actual = ApiStabilityClassifier.classify(diff),
+        )
+    }
+
+    @Test
+    fun `klib dump header losing a target is breaking`() {
+        val diff = """
+            --- a/kmp/core/api/core.klib.api
+            +++ b/kmp/core/api/core.klib.api
+            @@ -1,3 +1,3 @@
+             // Klib ABI Dump
+            -// Targets: [iosArm64, iosSimulatorArm64, wasmJs]
+            +// Targets: [iosArm64, iosSimulatorArm64]
+             // Library unique name: <Lemonade:core>
+        """.trimIndent()
+        val verdict = ApiStabilityClassifier.classify(diff)
+        assertIs<Verdict.Breaking>(verdict)
+        assertTrue(
+            actual = verdict.reasons.any { reason -> reason.contains("wasmJs") },
+            message = "Expected the dropped target to be flagged. Reasons: ${verdict.reasons}",
+        )
+    }
+
+    @Test
+    fun `declaration narrowed to fewer targets is breaking even when the header gains one`() {
+        val diff = """
+            --- a/kmp/core/api/core.klib.api
+            +++ b/kmp/core/api/core.klib.api
+            @@ -1,5 +1,5 @@
+             // Klib ABI Dump
+            -// Targets: [iosArm64, iosSimulatorArm64]
+            +// Targets: [iosArm64, iosSimulatorArm64, wasmJs]
+             // Library unique name: <Lemonade:core>
+            -// Targets: [iosArm64, iosSimulatorArm64]
+            +// Targets: [iosArm64]
+             final fun com.teya.lemonade.core/foo(): kotlin/Int // com.teya.lemonade.core/foo|foo(){}[0]
+        """.trimIndent()
+        assertIs<Verdict.Breaking>(ApiStabilityClassifier.classify(diff))
+    }
+
+    @Test
+    fun `renamed ComposableSingletons holder is additions-only`() {
+        val diff = """
+            --- a/kmp/ui/api/android/ui.api
+            +++ b/kmp/ui/api/android/ui.api
+            @@ -1,4 +1,4 @@
+            -public final class com/teya/lemonade/ComposableSingletons${'$'}TopBar_mobileKt {
+            -${"\t"}public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons${'$'}TopBar_mobileKt;
+            +public final class com/teya/lemonade/ComposableSingletons${'$'}TopBarKt {
+            +${"\t"}public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons${'$'}TopBarKt;
+            -${"\t"}public final fun getLambda${'$'}-1159005459${'$'}ui_release ()Lkotlin/jvm/functions/Function3;
+            +${"\t"}public final fun getLambda${'$'}-1023197263${'$'}ui_release ()Lkotlin/jvm/functions/Function3;
+             }
+        """.trimIndent()
+        assertEquals(
+            expected = Verdict.AdditionsOnly,
+            actual = ApiStabilityClassifier.classify(diff),
+        )
+    }
+
+    @Test
+    fun `removed ComposableSingletons holder is additions-only`() {
+        val diff = """
+            --- a/kmp/core/api/desktop/core.api
+            +++ b/kmp/core/api/desktop/core.api
+            @@ -1,5 +1,0 @@
+            -public final class com/teya/lemonade/core/ComposableSingletons${'$'}WidgetKt {
+            -${"\t"}public static final field INSTANCE Lcom/teya/lemonade/core/ComposableSingletons${'$'}WidgetKt;
+            -${"\t"}public final fun getLambda${'$'}123456${'$'}core ()Lkotlin/jvm/functions/Function2;
+            -}
+            -
+        """.trimIndent()
+        assertEquals(
+            expected = Verdict.AdditionsOnly,
+            actual = ApiStabilityClassifier.classify(diff),
+        )
+    }
+
+    @Test
+    fun `removed regular class is still breaking`() {
+        val diff = """
+            --- a/kmp/core/api/desktop/core.api
+            +++ b/kmp/core/api/desktop/core.api
+            @@ -1,4 +1,0 @@
+            -public final class com/teya/lemonade/core/WidgetKt {
+            -${"\t"}public static final field INSTANCE Lcom/teya/lemonade/core/WidgetKt;
+            -}
+            -
+        """.trimIndent()
+        assertIs<Verdict.Breaking>(ApiStabilityClassifier.classify(diff))
+    }
+
+    @Test
     fun `empty input is NoChanges`() {
         assertEquals(
             expected = Verdict.NoChanges,
