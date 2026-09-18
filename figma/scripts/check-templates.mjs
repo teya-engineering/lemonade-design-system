@@ -106,7 +106,7 @@ for (const file of kotlinSources) {
   const pkg = src.match(/^package\s+([\w.]+)/m)?.[1]
   if (!pkg) continue
   const names = [
-    ...src.matchAll(/^(?:public\s+)?(?:data\s+|enum\s+|sealed\s+|abstract\s+|open\s+|value\s+)*(?:class|object|interface|typealias)\s+(\w+)/gm),
+    ...src.matchAll(/^(?:public\s+)?(?:data\s+|enum\s+|annotation\s+|sealed\s+|abstract\s+|open\s+|value\s+)*(?:class|object|interface|typealias)\s+(\w+)/gm),
     ...src.matchAll(/^(?:public\s+)?(?:@\w+\s+)*fun\s+(?:<[^>]*>\s*)?(?:LemonadeUi\.)?(\w+)\s*\(/gm),
   ].map((m) => m[1])
   for (const name of names) {
