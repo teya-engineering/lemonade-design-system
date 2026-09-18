@@ -8,6 +8,7 @@ import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.register
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class LemonadePlugin : Plugin<Project> {
@@ -51,6 +52,9 @@ class LemonadePlugin : Plugin<Project> {
             iosSimulatorArm64()
 
             jvm("desktop")
+
+            @OptIn(ExperimentalWasmDsl::class)
+            wasmJs { browser() }
 
             applyDefaultHierarchyTemplate {
                 common {

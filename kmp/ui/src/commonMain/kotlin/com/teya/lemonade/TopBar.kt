@@ -1,3 +1,5 @@
+@file:kotlin.jvm.JvmName("TopBar_mobileKt")
+
 package com.teya.lemonade
 
 import androidx.compose.animation.AnimatedContent
@@ -142,52 +144,6 @@ public class TopBarState internal constructor(
         get() = -scrollOffset
 
     /**
-     * Animates the top bar to the fully collapsed state.
-     * Does nothing if already fully collapsed.
-     *
-     * @param animationSpec animation to run. Defaults to a 300ms tween
-     */
-    public fun collapse(animationSpec: AnimationSpec<Float> = tween(durationMillis = 300)) {
-        if (collapseFraction.value < 1f) {
-            coroutineScope.launch {
-                collapseFraction.animateTo(
-                    targetValue = 1f,
-                    animationSpec = animationSpec,
-                )
-            }
-        }
-    }
-
-    /**
-     * Animates the top bar to the fully expanded state.
-     * Does nothing if already fully expanded.
-     *
-     * @param animationSpec animation to run. Defaults to a 300ms tween
-     */
-    public fun expand(animationSpec: AnimationSpec<Float> = tween(durationMillis = 300)) {
-        if (collapseFraction.value > 0f) {
-            coroutineScope.launch {
-                collapseFraction.animateTo(
-                    targetValue = 0f,
-                    animationSpec = animationSpec,
-                )
-            }
-        }
-    }
-
-    /**
-     * Locks or unlocks scroll-gesture–driven collapse/expand animations.
-     *
-     * When [locked] is `true`, nested-scroll gestures will not change the collapse state;
-     * only programmatic calls to [collapse] and [expand] will have effect.
-     *
-     * @param locked `true` to lock gesture animations, `false` to unlock
-     */
-    public fun setAnimationGesturesLock(locked: Boolean) {
-        lockGestureAnimation = locked
-    }
-
-    /**
      * [NestedScrollConnection] that captures scroll events from child scrollable content.
      *
      * Apply it to your scrollable content with
@@ -273,6 +229,52 @@ public class TopBarState internal constructor(
             }
             return Offset.Zero
         }
+    }
+
+    /**
+     * Animates the top bar to the fully collapsed state.
+     * Does nothing if already fully collapsed.
+     *
+     * @param animationSpec animation to run. Defaults to a 300ms tween
+     */
+    public fun collapse(animationSpec: AnimationSpec<Float> = tween(durationMillis = 300)) {
+        if (collapseFraction.value < 1f) {
+            coroutineScope.launch {
+                collapseFraction.animateTo(
+                    targetValue = 1f,
+                    animationSpec = animationSpec,
+                )
+            }
+        }
+    }
+
+    /**
+     * Animates the top bar to the fully expanded state.
+     * Does nothing if already fully expanded.
+     *
+     * @param animationSpec animation to run. Defaults to a 300ms tween
+     */
+    public fun expand(animationSpec: AnimationSpec<Float> = tween(durationMillis = 300)) {
+        if (collapseFraction.value > 0f) {
+            coroutineScope.launch {
+                collapseFraction.animateTo(
+                    targetValue = 0f,
+                    animationSpec = animationSpec,
+                )
+            }
+        }
+    }
+
+    /**
+     * Locks or unlocks scroll-gesture–driven collapse/expand animations.
+     *
+     * When [locked] is `true`, nested-scroll gestures will not change the collapse state;
+     * only programmatic calls to [collapse] and [expand] will have effect.
+     *
+     * @param locked `true` to lock gesture animations, `false` to unlock
+     */
+    public fun setAnimationGesturesLock(locked: Boolean) {
+        lockGestureAnimation = locked
     }
 
     private fun accumulateScrolledFade(deltaY: Float) {
@@ -987,7 +989,9 @@ private fun CoreTopBar(
 ) {
     // A device turned with its camera at the bottom edge reports the cutout there, and padding it
     // would grow the bar below its content.
-    val cutoutAboveAndBeside = WindowInsets.displayCutout.only(sides = WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
+    val cutoutAboveAndBeside = WindowInsets.displayCutout.only(
+        sides = WindowInsetsSides.Top + WindowInsetsSides.Horizontal,
+    )
     TopBarLayout(
         state = state,
         modifier = Modifier

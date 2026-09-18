@@ -157,11 +157,11 @@ public final class com/teya/lemonade/ComposableSingletons$TooltipKt {
 	public final fun getLambda$900957876$ui_release ()Lkotlin/jvm/functions/Function3;
 }
 
-public final class com/teya/lemonade/ComposableSingletons$TopBar_mobileKt {
-	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$TopBar_mobileKt;
+public final class com/teya/lemonade/ComposableSingletons$TopBarKt {
+	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$TopBarKt;
 	public fun <init> ()V
-	public final fun getLambda$-1159005459$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-182889072$ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1023197263$ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1971304850$ui_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/teya/lemonade/ContentListItemKt {
