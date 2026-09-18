@@ -1,7 +1,7 @@
 {
   "name": "@teya/lemonade-ds",
   "version": "0.1.0",
-  "description": "Teya's Lemonade design system for the web",
+  "description": "Design tokens, typography and icons for Teya's Lemonade design system",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -9,14 +9,17 @@
     "directory": "web"
   },
   "type": "module",
-  "sideEffects": [
-    "*.css"
-  ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "*.css"
+  ],
   "files": [
     "dist",
+    "styles",
+    "llms.txt",
+    "tokens.json",
     "LICENSE"
   ],
   "exports": {
@@ -29,20 +32,29 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
-    }
+    },
+    "./tokens.css": "./styles/tokens.css",
+    "./typography.css": "./styles/typography.css",
+    "./icon.css": "./styles/icon.css",
+    "./fonts.css": "./dist/fonts.css",
+    "./styles.css": "./styles/styles.css",
+    "./lemonade.css": "./styles/lemonade.css",
+    "./llms.txt": "./llms.txt",
+    "./tokens.json": "./tokens.json"
   },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "node build/build-fonts.mjs && tsup",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "tsup": "^8.3.0",
     "typescript": "^5.6.0",
-    "vitest": "^2.1.0"
+    "vitest": "^2.1.0",
+    "wawoff2": "^2.0.1"
   },
   "engines": {
     "node": ">=20"
