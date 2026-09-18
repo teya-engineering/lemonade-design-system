@@ -181,6 +181,10 @@ needed more than a property lookup:
   it `Warning`. The template maps across it, but the library disagreeing with
   itself is worth fixing at source — and a rename is exactly the change
   `getEnum` degrades to `undefined` on, silently, until someone republishes.
+- `Symbol Container (Themed)` is a separate Figma set that maps to the `theme:`
+  overloads, Icon and Text only. `◇ Theme` value `Violet Subtle` becomes
+  `ThemedHue.Violet.subtle` / `.violet.subtle`. The Compose overloads are
+  `@ExperimentalLemonadeApi`, so its snippet carries a NOTE about opting in.
 
 - `Tabs` resolves its tab children the way SegmentedControl does, through a
   `TabItem` template on the internal `_Tab Item` component. Its `◇ Items` variant
