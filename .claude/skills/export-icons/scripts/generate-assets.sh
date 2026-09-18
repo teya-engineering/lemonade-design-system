@@ -6,8 +6,9 @@
 #
 #   --skip-api   stop after the converters; don't run apiDump or the ABI classifier
 #
-# Runs the SVG converter, then the country-flags post-generator, then refreshes
-# the API baselines that the new enum entries move.
+# Runs the SVG converter, then the country-flags post-generator, then the Code
+# Connect templates, then refreshes the API baselines that the new enum entries
+# move.
 set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
@@ -79,6 +80,16 @@ if [ -n "$churned_list" ]; then
 else
   echo "    none"
 fi
+
+# CI regenerates the templates and fails when an enum entry has no Figma node in
+# icons.manifest.json, which `figma-icons.py export` fills in.
+echo "==> Code Connect templates"
+(
+  cd figma
+  [ -d node_modules ] || npm ci --silent
+  node scripts/generate-asset-templates.mjs icons
+  npm run --silent check
+)
 
 if [ "$SKIP_API" -eq 1 ]; then
   echo "==> Skipping apiDump (--skip-api)"
