@@ -51,7 +51,8 @@ public extension LemonadeUi {
     ///   - submitting: When true the boxes show the disabled style and input is disabled.
     ///   - autoFocus: When true the field requests focus, opening the keyboard without a tap. Focus
     ///     is requested when it appears and again whenever the field becomes enabled (e.g. after
-    ///     `submitting` clears). Use for a screen whose only purpose is entering this code.
+    ///     `submitting` clears). Use for a screen whose only purpose is entering this code. For
+    ///     two-way control of focus, use `lemonadeFocused(_:)` instead.
     ///   - accessibilityLabel: Label for the input, announced by VoiceOver. The boxes carry no
     ///     visible label, so set this to what the code is for (e.g. "Verification code").
     ///   - oneTimeCodeAutofill: When true the field offers the OS one-time-code suggestion (the
@@ -101,6 +102,7 @@ private struct LemonadePinCodeView: View {
     // Focus is owned here and read directly by the indicator (for the active ring) and bound
     // into the hidden field — no @State/@FocusState sync loop, so a tap focuses immediately.
     @FocusState private var focused: Bool
+    @Environment(\.lemonadeTextFieldFocus) private var externalFocus
 
     var body: some View {
         ZStack {
@@ -142,10 +144,18 @@ private struct LemonadePinCodeView: View {
         // `autoFocus` turns on, not just on appear.
         .onChange(of: submitting) { _ in requestAutoFocusIfNeeded() }
         .onChange(of: autoFocus) { _ in requestAutoFocusIfNeeded() }
+        .onChange(of: focused) { newValue in
+            guard let externalFocus, externalFocus.wrappedValue != newValue else { return }
+            externalFocus.wrappedValue = newValue
+        }
+        .onChange(of: externalFocus?.wrappedValue) { newValue in
+            guard let newValue, newValue != focused else { return }
+            if newValue { requestAutoFocusIfNeeded() } else { focused = false }
+        }
     }
 
     private func requestAutoFocusIfNeeded() {
-        guard autoFocus, !submitting else { return }
+        guard autoFocus || externalFocus?.wrappedValue == true, !submitting else { return }
         // Defer a frame so the field is in the hierarchy; setting @FocusState synchronously (e.g.
         // from onAppear) is dropped on first appearance.
         DispatchQueue.main.async { focused = true }

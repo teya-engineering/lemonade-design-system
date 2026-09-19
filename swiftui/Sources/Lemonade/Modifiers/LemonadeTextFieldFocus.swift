@@ -16,7 +16,7 @@ extension EnvironmentValues {
 // MARK: - View Modifier
 
 public extension View {
-    /// Binds the focus of the Lemonade text field in this hierarchy to `isFocused`.
+    /// Binds the focus of the Lemonade text field or PIN code in this hierarchy to `isFocused`.
     ///
     /// The field writes `true` when it gains focus and `false` when it loses it. Setting the
     /// binding moves focus: `true` raises the keyboard, `false` dismisses it.
@@ -30,7 +30,7 @@ public extension View {
     /// ```
     ///
     /// - Parameter isFocused: The field's focus.
-    /// - Returns: A view whose Lemonade text field follows and reports `isFocused`.
+    /// - Returns: A view whose Lemonade field follows and reports `isFocused`.
     func lemonadeFocused(_ isFocused: Binding<Bool>) -> some View {
         environment(\.lemonadeTextFieldFocus, isFocused)
     }
