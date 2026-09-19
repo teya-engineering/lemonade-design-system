@@ -509,6 +509,8 @@ private struct LemonadeTextInputField: View {
     @Environment(\.lemonadeTextContentType) private var textContentType
     @Environment(\.lemonadeAutocapitalizationType) private var autocapitalizationType
     @Environment(\.lemonadeAutocorrectionType) private var autocorrectionType
+    @Environment(\.lemonadeReturnKeyType) private var returnKeyType
+    @Environment(\.lemonadeSubmitAction) private var submitAction
 
     // `input` (the public String binding) stays the source of truth; this local
     // value only carries the live cursor position that LemonadeUITextField needs.
@@ -542,12 +544,13 @@ private struct LemonadeTextInputField: View {
             textContentType: textContentType,
             autocapitalizationType: autocapitalizationType,
             autocorrectionType: autocorrectionType,
+            returnKeyType: returnKeyType,
             isSecure: isSecure,
             onValueChange: { newValue in
                 if newValue.text != input { input = newValue.text }
                 onInputChanged?(newValue.text)
             },
-            onReturnKey: onSubmit
+            onReturnKey: onSubmit ?? submitAction
         )
         .onChange(of: input) { newText in
             // A change arriving on the public String binding carries no cursor position, so the
@@ -608,7 +611,11 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
     let leadingContent: (() -> LeadingContent)?
     let trailingContent: (() -> TrailingContent)?
 
-    @State private var isFocused = false
+    @State private var localFocus = false
+    @Environment(\.lemonadeTextFieldFocus) private var externalFocus
+
+    private var focusBinding: Binding<Bool> { externalFocus ?? $localFocus }
+    private var isFocused: Bool { focusBinding.wrappedValue }
     @State private var isHovered = false
     @Environment(\.lemonadeSecureTextEntry) private var isSecure
 
@@ -643,7 +650,7 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
                     input: $input,
                     isSecure: isSecure,
                     enabled: enabled,
-                    isFocused: $isFocused,
+                    isFocused: focusBinding,
                     onInputChanged: onInputChanged,
                     onSubmit: onSubmit
                 )
@@ -682,7 +689,11 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
     let enabled: Bool
     let trailingContent: (() -> TrailingContent)?
 
-    @State private var isFocused = false
+    @State private var localFocus = false
+    @Environment(\.lemonadeTextFieldFocus) private var externalFocus
+
+    private var focusBinding: Binding<Bool> { externalFocus ?? $localFocus }
+    private var isFocused: Bool { focusBinding.wrappedValue }
     @State private var isHovered = false
     @Environment(\.lemonadeSecureTextEntry) private var isSecure
 
@@ -736,7 +747,7 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
                     input: $input,
                     isSecure: isSecure,
                     enabled: enabled,
-                    isFocused: $isFocused,
+                    isFocused: focusBinding,
                     onInputChanged: onInputChanged,
                     onSubmit: nil
                 )
@@ -771,13 +782,19 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
     let leadingContent: (() -> LeadingContent)?
     let trailingContent: (() -> TrailingContent)?
 
-    @State private var isFocused = false
+    @State private var localFocus = false
+    @Environment(\.lemonadeTextFieldFocus) private var externalFocus
+
+    private var focusBinding: Binding<Bool> { externalFocus ?? $localFocus }
+    private var isFocused: Bool { focusBinding.wrappedValue }
     @State private var isHovered = false
     @Environment(\.lemonadeSecureTextEntry) private var isSecure
     @Environment(\.lemonadeKeyboardType) private var environmentKeyboardType
     @Environment(\.lemonadeTextContentType) private var textContentType
     @Environment(\.lemonadeAutocapitalizationType) private var autocapitalizationType
     @Environment(\.lemonadeAutocorrectionType) private var autocorrectionType
+    @Environment(\.lemonadeReturnKeyType) private var returnKeyType
+    @Environment(\.lemonadeSubmitAction) private var submitAction
 
     // The explicit per-call type wins; otherwise fall back to the environment value.
     private var resolvedKeyboardType: UIKeyboardType { keyboardType ?? environmentKeyboardType }
@@ -811,7 +828,7 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
 
                 LemonadeUITextField(
                     value: $value,
-                    isFocused: $isFocused,
+                    isFocused: focusBinding,
                     isEnabled: enabled,
                     textStyle: LemonadeTypography.shared.bodyMediumRegular,
                     textColor: LemonadeTheme.colors.content.contentPrimary,
@@ -819,8 +836,10 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
                     textContentType: textContentType,
                     autocapitalizationType: autocapitalizationType,
                     autocorrectionType: autocorrectionType,
+                    returnKeyType: returnKeyType,
                     isSecure: isSecure,
-                    onValueChange: onValueChange
+                    onValueChange: onValueChange,
+                    onReturnKey: submitAction
                 )
             }
 
@@ -907,13 +926,19 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
     let keyboardType: UIKeyboardType?
     let trailingContent: (() -> TrailingContent)?
 
-    @State private var isFocused = false
+    @State private var localFocus = false
+    @Environment(\.lemonadeTextFieldFocus) private var externalFocus
+
+    private var focusBinding: Binding<Bool> { externalFocus ?? $localFocus }
+    private var isFocused: Bool { focusBinding.wrappedValue }
     @State private var isHovered = false
     @Environment(\.lemonadeSecureTextEntry) private var isSecure
     @Environment(\.lemonadeKeyboardType) private var environmentKeyboardType
     @Environment(\.lemonadeTextContentType) private var textContentType
     @Environment(\.lemonadeAutocapitalizationType) private var autocapitalizationType
     @Environment(\.lemonadeAutocorrectionType) private var autocorrectionType
+    @Environment(\.lemonadeReturnKeyType) private var returnKeyType
+    @Environment(\.lemonadeSubmitAction) private var submitAction
 
     // The explicit per-call type wins; otherwise fall back to the environment value.
     private var resolvedKeyboardType: UIKeyboardType { keyboardType ?? environmentKeyboardType }
@@ -966,7 +991,7 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
 
                 LemonadeUITextField(
                     value: $value,
-                    isFocused: $isFocused,
+                    isFocused: focusBinding,
                     isEnabled: enabled,
                     textStyle: LemonadeTypography.shared.bodyMediumRegular,
                     textColor: LemonadeTheme.colors.content.contentPrimary,
@@ -974,8 +999,10 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
                     textContentType: textContentType,
                     autocapitalizationType: autocapitalizationType,
                     autocorrectionType: autocorrectionType,
+                    returnKeyType: returnKeyType,
                     isSecure: isSecure,
-                    onValueChange: onValueChange
+                    onValueChange: onValueChange,
+                    onReturnKey: submitAction
                 )
             }
 
