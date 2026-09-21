@@ -226,7 +226,7 @@
   --lmnd-color-content-neutral-on-color: rgb(255 255 255 / 0.8);
   --lmnd-color-content-positive-on-color: rgb(154 230 0);
   --lmnd-color-content-caution: rgb(187 77 0);
-  --lmnd-color-content-critical: rgb(192 21 32);
+  --lmnd-color-content-critical: rgb(228 30 43);
   --lmnd-color-content-featured: rgb(130 0 219);
   --lmnd-color-content-info: rgb(20 71 230);
   --lmnd-color-content-neutral: rgb(9 8 6 / 0.925);
@@ -319,7 +319,7 @@
   --lmnd-color-themed-fuchsia-background: rgb(200 0 222);
   --lmnd-color-themed-fuchsia-background-high: rgb(114 19 120);
   --lmnd-color-themed-fuchsia-border: rgb(200 0 222);
-  --lmnd-color-themed-fuchsia-content: rgb(168 0 183);
+  --lmnd-color-themed-fuchsia-content: rgb(200 0 222);
   --lmnd-color-themed-fuchsia-content-inverse: rgb(237 106 255);
   --lmnd-color-themed-fuchsia-on-background: rgb(255 255 255);
   --lmnd-color-themed-fuchsia-on-background-high: rgb(253 244 255);
@@ -349,7 +349,7 @@
   --lmnd-color-themed-indigo-background: rgb(79 57 246);
   --lmnd-color-themed-indigo-background-high: rgb(49 44 133);
   --lmnd-color-themed-indigo-border: rgb(79 57 246);
-  --lmnd-color-themed-indigo-content: rgb(67 45 215);
+  --lmnd-color-themed-indigo-content: rgb(79 57 246);
   --lmnd-color-themed-indigo-content-inverse: rgb(124 134 255);
   --lmnd-color-themed-indigo-on-background: rgb(238 242 255);
   --lmnd-color-themed-indigo-on-background-high: rgb(238 242 255);
@@ -379,7 +379,7 @@
   --lmnd-color-themed-pink-background: rgb(230 0 118);
   --lmnd-color-themed-pink-background-high: rgb(134 16 67);
   --lmnd-color-themed-pink-border: rgb(230 0 118);
-  --lmnd-color-themed-pink-content: rgb(198 0 92);
+  --lmnd-color-themed-pink-content: rgb(230 0 118);
   --lmnd-color-themed-pink-content-inverse: rgb(251 100 182);
   --lmnd-color-themed-pink-on-background: rgb(255 255 255);
   --lmnd-color-themed-pink-on-background-high: rgb(253 242 248);
@@ -399,7 +399,7 @@
   --lmnd-color-themed-red-background: rgb(228 30 43);
   --lmnd-color-themed-red-background-high: rgb(131 25 32);
   --lmnd-color-themed-red-border: rgb(228 30 43);
-  --lmnd-color-themed-red-content: rgb(192 21 32);
+  --lmnd-color-themed-red-content: rgb(228 30 43);
   --lmnd-color-themed-red-content-inverse: rgb(254 83 94);
   --lmnd-color-themed-red-on-background: rgb(255 255 255);
   --lmnd-color-themed-red-on-background-high: rgb(255 241 242);
@@ -409,7 +409,7 @@
   --lmnd-color-themed-rose-background: rgb(236 0 63);
   --lmnd-color-themed-rose-background-high: rgb(139 8 54);
   --lmnd-color-themed-rose-border: rgb(236 0 63);
-  --lmnd-color-themed-rose-content: rgb(199 0 54);
+  --lmnd-color-themed-rose-content: rgb(236 0 63);
   --lmnd-color-themed-rose-content-inverse: rgb(255 99 126);
   --lmnd-color-themed-rose-on-background: rgb(255 255 255);
   --lmnd-color-themed-rose-on-background-high: rgb(255 241 242);
@@ -429,7 +429,7 @@
   --lmnd-color-themed-violet-background: rgb(127 34 254);
   --lmnd-color-themed-violet-background-high: rgb(77 23 154);
   --lmnd-color-themed-violet-border: rgb(127 34 254);
-  --lmnd-color-themed-violet-content: rgb(112 8 231);
+  --lmnd-color-themed-violet-content: rgb(127 34 254);
   --lmnd-color-themed-violet-content-inverse: rgb(166 132 255);
   --lmnd-color-themed-violet-on-background: rgb(245 243 255);
   --lmnd-color-themed-violet-on-background-high: rgb(245 243 255);
@@ -1190,7 +1190,7 @@
   --lmnd-color-content-neutral-on-color: rgb(255 255 255 / 0.8);
   --lmnd-color-content-positive-on-color: rgb(154 230 0);
   --lmnd-color-content-caution: rgb(187 77 0);
-  --lmnd-color-content-critical: rgb(192 21 32);
+  --lmnd-color-content-critical: rgb(228 30 43);
   --lmnd-color-content-featured: rgb(130 0 219);
   --lmnd-color-content-info: rgb(20 71 230);
   --lmnd-color-content-neutral: rgb(9 8 6 / 0.925);
@@ -1283,7 +1283,7 @@
   --lmnd-color-themed-fuchsia-background: rgb(200 0 222);
   --lmnd-color-themed-fuchsia-background-high: rgb(114 19 120);
   --lmnd-color-themed-fuchsia-border: rgb(200 0 222);
-  --lmnd-color-themed-fuchsia-content: rgb(168 0 183);
+  --lmnd-color-themed-fuchsia-content: rgb(200 0 222);
   --lmnd-color-themed-fuchsia-content-inverse: rgb(237 106 255);
   --lmnd-color-themed-fuchsia-on-background: rgb(255 255 255);
   --lmnd-color-themed-fuchsia-on-background-high: rgb(253 244 255);
@@ -1313,7 +1313,7 @@
   --lmnd-color-themed-indigo-background: rgb(79 57 246);
   --lmnd-color-themed-indigo-background-high: rgb(49 44 133);
   --lmnd-color-themed-indigo-border: rgb(79 57 246);
-  --lmnd-color-themed-indigo-content: rgb(67 45 215);
+  --lmnd-color-themed-indigo-content: rgb(79 57 246);
   --lmnd-color-themed-indigo-content-inverse: rgb(124 134 255);
   --lmnd-color-themed-indigo-on-background: rgb(238 242 255);
   --lmnd-color-themed-indigo-on-background-high: rgb(238 242 255);
@@ -1343,7 +1343,7 @@
   --lmnd-color-themed-pink-background: rgb(230 0 118);
   --lmnd-color-themed-pink-background-high: rgb(134 16 67);
   --lmnd-color-themed-pink-border: rgb(230 0 118);
-  --lmnd-color-themed-pink-content: rgb(198 0 92);
+  --lmnd-color-themed-pink-content: rgb(230 0 118);
   --lmnd-color-themed-pink-content-inverse: rgb(251 100 182);
   --lmnd-color-themed-pink-on-background: rgb(255 255 255);
   --lmnd-color-themed-pink-on-background-high: rgb(253 242 248);
@@ -1363,7 +1363,7 @@
   --lmnd-color-themed-red-background: rgb(228 30 43);
   --lmnd-color-themed-red-background-high: rgb(131 25 32);
   --lmnd-color-themed-red-border: rgb(228 30 43);
-  --lmnd-color-themed-red-content: rgb(192 21 32);
+  --lmnd-color-themed-red-content: rgb(228 30 43);
   --lmnd-color-themed-red-content-inverse: rgb(254 83 94);
   --lmnd-color-themed-red-on-background: rgb(255 255 255);
   --lmnd-color-themed-red-on-background-high: rgb(255 241 242);
@@ -1373,7 +1373,7 @@
   --lmnd-color-themed-rose-background: rgb(236 0 63);
   --lmnd-color-themed-rose-background-high: rgb(139 8 54);
   --lmnd-color-themed-rose-border: rgb(236 0 63);
-  --lmnd-color-themed-rose-content: rgb(199 0 54);
+  --lmnd-color-themed-rose-content: rgb(236 0 63);
   --lmnd-color-themed-rose-content-inverse: rgb(255 99 126);
   --lmnd-color-themed-rose-on-background: rgb(255 255 255);
   --lmnd-color-themed-rose-on-background-high: rgb(255 241 242);
@@ -1393,7 +1393,7 @@
   --lmnd-color-themed-violet-background: rgb(127 34 254);
   --lmnd-color-themed-violet-background-high: rgb(77 23 154);
   --lmnd-color-themed-violet-border: rgb(127 34 254);
-  --lmnd-color-themed-violet-content: rgb(112 8 231);
+  --lmnd-color-themed-violet-content: rgb(127 34 254);
   --lmnd-color-themed-violet-content-inverse: rgb(166 132 255);
   --lmnd-color-themed-violet-on-background: rgb(245 243 255);
   --lmnd-color-themed-violet-on-background-high: rgb(245 243 255);
