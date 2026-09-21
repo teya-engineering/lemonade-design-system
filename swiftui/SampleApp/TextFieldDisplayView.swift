@@ -19,6 +19,10 @@ struct TextFieldDisplayView: View {
     @State private var usernameText = ""
     @State private var autofillPasswordText = ""
     @State private var isAutofillPasswordVisible = false
+    @State private var firstNameText = ""
+    @State private var lastNameText = ""
+    @State private var isFirstNameFocused = false
+    @State private var isLastNameFocused = false
 
     private let prefixOptions = ["+1", "+44", "+351", "+353"]
 
@@ -37,6 +41,7 @@ struct TextFieldDisplayView: View {
                 urlKeyboardSection
                 decimalKeyboardSection
                 withSelectorSection
+                returnKeySection
                 autofillUsernameSection
                 autofillPasswordSection
                 disabledSection
@@ -190,6 +195,30 @@ struct TextFieldDisplayView: View {
                 placeholderText: "0.00",
                 keyboardType: .decimalPad
             )
+        }
+    }
+
+    private var returnKeySection: some View {
+        sectionView(title: "Return Key and Focus") {
+            VStack(spacing: LemonadeTheme.spaces.spacing300) {
+                LemonadeUi.TextField(
+                    input: $firstNameText,
+                    label: "First name",
+                    supportText: "Next moves to the last name"
+                )
+                .lemonadeReturnKeyType(.next)
+                .lemonadeOnSubmit { isLastNameFocused = true }
+                .lemonadeFocused($isFirstNameFocused)
+
+                LemonadeUi.TextField(
+                    input: $lastNameText,
+                    label: "Last name",
+                    supportText: "Done dismisses the keyboard"
+                )
+                .lemonadeReturnKeyType(.done)
+                .lemonadeOnSubmit { isLastNameFocused = false }
+                .lemonadeFocused($isLastNameFocused)
+            }
         }
     }
 

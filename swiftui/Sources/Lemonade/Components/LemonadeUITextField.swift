@@ -26,6 +26,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     var textContentType: UITextContentType?
     var autocapitalizationType: UITextAutocapitalizationType = .sentences
     var autocorrectionType: UITextAutocorrectionType = .default
+    var returnKeyType: UIReturnKeyType = .default
     /// Enables native secure text entry (character masking). Note: UIKit clears
     /// the field's text and selection when this flips, so `updateUIView` applies
     /// it before re-synchronizing text and cursor to keep them stable on toggle.
@@ -59,6 +60,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.textContentType = textContentType
         textField.autocapitalizationType = autocapitalizationType
         textField.autocorrectionType = autocorrectionType
+        textField.returnKeyType = returnKeyType
         textField.isSecureTextEntry = isSecure
         textField.text = value.text
 
@@ -133,11 +135,12 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     }
 
     /// Each trait is reassigned only when it actually changed, to avoid needless per-keystroke
-    /// churn on the focused field. `keyboardType` is the only one that needs `reloadInputViews()`
-    /// to take effect while the field is up.
+    /// churn on the focused field. `keyboardType` and `returnKeyType` need `reloadInputViews()` to
+    /// take effect while the field is up.
     private func syncInputTraits(_ textField: UITextField) {
-        if textField.keyboardType != keyboardType {
+        if textField.keyboardType != keyboardType || textField.returnKeyType != returnKeyType {
             textField.keyboardType = keyboardType
+            textField.returnKeyType = returnKeyType
             if textField.isFirstResponder {
                 textField.reloadInputViews()
             }
@@ -183,11 +186,17 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         }
     }
 
+    /// Runs on the next main-queue turn: a responder change inside a SwiftUI update can hand focus
+    /// back to a field that is redrawing in the same pass.
     private func updateFocus(_ textField: UITextField) {
-        if isFocused && !textField.isFirstResponder {
-            textField.becomeFirstResponder()
-        } else if !isFocused && textField.isFirstResponder {
-            textField.resignFirstResponder()
+        guard isFocused != textField.isFirstResponder else { return }
+        let wantsFocus = isFocused
+        DispatchQueue.main.async {
+            if wantsFocus, !textField.isFirstResponder, textField.window != nil {
+                textField.becomeFirstResponder()
+            } else if !wantsFocus, textField.isFirstResponder {
+                textField.resignFirstResponder()
+            }
         }
     }
 
