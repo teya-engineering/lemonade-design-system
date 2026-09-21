@@ -161,13 +161,6 @@
     "fontWeight": "semibold"
   },
   {
-    "css": "body-medium-bold",
-    "name": "bodyMediumBold",
-    "fontSize": "font-size-400",
-    "lineHeight": "line-height-600",
-    "fontWeight": "semibold"
-  },
-  {
     "css": "body-small-regular",
     "name": "bodySmallRegular",
     "fontSize": "font-size-350",

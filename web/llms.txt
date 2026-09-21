@@ -430,7 +430,6 @@ Apply as a class, e.g. `<p class="lmnd-text-body-medium-regular">`.
 - `.lmnd-text-body-medium-regular`
 - `.lmnd-text-body-medium-medium`
 - `.lmnd-text-body-medium-semibold`
-- `.lmnd-text-body-medium-bold`
 - `.lmnd-text-body-small-regular`
 - `.lmnd-text-body-small-medium`
 - `.lmnd-text-body-small-semibold`

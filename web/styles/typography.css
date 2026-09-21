@@ -174,13 +174,6 @@
   font-weight: var(--lmnd-font-weight-semibold);
 }
 
-.lmnd-text-body-medium-bold {
-  font-family: var(--lmnd-font-family-base);
-  font-size: var(--lmnd-font-size-400);
-  line-height: var(--lmnd-line-height-600);
-  font-weight: var(--lmnd-font-weight-semibold);
-}
-
 .lmnd-text-body-small-regular {
   font-family: var(--lmnd-font-family-base);
   font-size: var(--lmnd-font-size-350);

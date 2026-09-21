@@ -25,7 +25,7 @@ data class TextStyle(
 )
 
 private val DECL = Regex(
-    """public let (\w+) = LemonadeTextStyle\(([^)]*)\)""",
+    """(@available\([^)]*deprecated[^)]*\)\s*)?public let (\w+) = LemonadeTextStyle\(([^)]*)\)""",
     RegexOption.DOT_MATCHES_ALL,
 )
 private val FIELD = Regex("""(\w+):\s*([^,\n]+)""")
@@ -78,8 +78,9 @@ fun cssNameFor(swiftName: String): String {
 
 fun parseSwiftTextStyles(file: File): List<TextStyle> {
     val text = file.readText()
-    return DECL.findAll(text).map { match ->
-        val (name, body) = match.destructured
+    // Deprecated styles stay in Swift for existing callers; web is new, so it never ships them.
+    return DECL.findAll(text).filter { it.groupValues[1].isEmpty() }.map { match ->
+        val (_, name, body) = match.destructured
         val fields = FIELD.findAll(body).associate { it.groupValues[1] to it.groupValues[2].trim() }
         TextStyle(
             name = name,
@@ -95,7 +96,7 @@ fun parseSwiftTextStyles(file: File): List<TextStyle> {
 fun main() {
     val swift = File("swiftui/Sources/Lemonade/LemonadeTypography.swift")
     val styles = parseSwiftTextStyles(swift)
-    require(styles.size == 30) { "expected 30 text styles, parsed ${styles.size}" }
+    require(styles.size == 29) { "expected 29 text styles, parsed ${styles.size}" }
 
     val array = JSONArray()
     styles.forEach { style ->

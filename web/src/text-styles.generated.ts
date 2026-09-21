@@ -153,12 +153,6 @@ export const textStyles = {
     lineHeight: "line-height-600",
     fontWeight: "semibold",
   },
-  bodyMediumBold: {
-    className: "lmnd-text-body-medium-bold",
-    fontSize: "font-size-400",
-    lineHeight: "line-height-600",
-    fontWeight: "semibold",
-  },
   bodySmallRegular: {
     className: "lmnd-text-body-small-regular",
     fontSize: "font-size-350",
