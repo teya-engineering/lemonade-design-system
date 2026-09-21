@@ -34,8 +34,7 @@ the divergence starts and where the fix is framework-agnostic.
    same drift protection the native platforms already have.
 3. Make the package genuinely useful on day one: real type, real icons, real fonts —
    not a bag of hex codes.
-4. Make correctness verifiable: WCAG contrast checked in CI, cross-platform
-   typography parity checked in CI.
+4. Make correctness verifiable: cross-platform typography parity checked in CI.
 5. Make tokens discoverable, so teams stop reinventing them.
 
 **Non-goals for v0**
@@ -116,7 +115,6 @@ scripts/                                    Kotlin .main.kts, alongside kmp-* / 
   web-text-style-converter.main.kts         text-styles.json -> .lmnd-text-* classes
   web-svg-converter.main.kts                currentColor rewrite, inline-style strip
   web-llms-txt-converter.main.kts           llms.txt token reference for AI tools — §12
-  web-contrast-check.main.kts               WCAG 2.2 AA validation
   web-text-style-parity-check.main.kts      web table vs SwiftUI table
 
 web/
@@ -466,41 +464,23 @@ the inline `style` *and* rewrite the attribute to `currentColor`.
 `svgo` config is family-aware: aggressive for icons, conservative for flags and
 brand logos, where path merging can visibly distort artwork.
 
-## 10. Accessibility validation
+## 10. Contrast
 
-**Withdrawn from v0.** A `scripts/web-contrast-check.main.kts` was built, run, and then
-removed before release. Design tokens and the accessibility decisions about them are
-owned by the design team, who run contrast validation at source; a second gate in the
-web repo would check tokens web does not own, on one of four platforms that consume
-them, and would rot the moment nobody in this repo owned it.
+Colour contrast belongs to the design team, who check it in Figma where the tokens are
+authored. Web has no contrast check of its own: the tokens are shared by all four
+platforms, and web renders exactly the values Android and iOS do.
 
-The measurements it produced are kept below, because they are a real finding and the
-allowlist that recorded them is gone with the script.
+Secondary and tertiary text use lower contrast by design. In light theme they sit below
+WCAG 2.2 AA (4.5:1) on the neutral surfaces:
 
-### Measured 2026-08-21 — these pairs did not meet WCAG 2.2 AA
-
-Foreground composited over the surface; translucent surfaces (`bg-elevated` α 0.05,
-`bg-elevated-high` α 0.20 light / 0.10 dark) composited over `bg-default` first.
-Computed twice by independent implementations, agreeing to ±0.02.
-
-| Theme | Pair | Measured | Required |
+| Theme | Text | Surfaces | Contrast |
 |---|---|---|---|
-| Light | `content-secondary on bg-default` | **4.07:1** | 4.5:1 |
-| Light | `content-secondary on bg-subtle` | **3.97:1** | 4.5:1 |
-| Light | `content-secondary on bg-elevated` | **3.98:1** | 4.5:1 |
-| Light | `content-secondary on bg-elevated-high` | **3.83:1** | 4.5:1 |
-| Light | `content-tertiary on bg-default` | **2.48:1** | 4.5:1 |
-| Light | `content-tertiary on bg-subtle` | **2.45:1** | 4.5:1 |
-| Light | `content-tertiary on bg-elevated` | **2.45:1** | 4.5:1 |
-| Light | `content-tertiary on bg-elevated-high` | **2.39:1** | 4.5:1 |
-| Dark | `content-tertiary on bg-elevated-high` | **4.34:1** | 4.5:1 |
+| Light | `content-secondary` | `bg-default`, `bg-subtle`, `bg-elevated`, `bg-elevated-high` | 3.83–4.07:1 |
+| Light | `content-tertiary` | `bg-default`, `bg-subtle`, `bg-elevated`, `bg-elevated-high` | 2.39–2.48:1 |
+| Dark | `content-tertiary` | `bg-elevated-high` | 4.34:1 |
 
-Dark theme was otherwise clean; every other neutral pairing passed. `content-secondary`
-is described in the token export as *"Use for secondary text, such as body copy or
-supporting content"* — body copy at 4.07:1 does not meet AA.
-
-**This is not a web issue.** The tokens are shared, so Android, iOS and Flutter render
-the same values. Any fix belongs in Figma, not in a platform.
+These are the intended levels, and any change to them is made in Figma. The ratios composite the translucent surfaces (`bg-elevated`, `bg-elevated-high`)
+over `bg-default` before measuring.
 
 ## 11. Documentation — Storybook
 
@@ -560,8 +540,8 @@ though a model can inline the few it needs from the public repo.
 
 ## 13. CI and release
 
-- **`web_ci.yml`** — on PRs touching `web/**`: typecheck, unit tests, contrast
-  check, typography parity check, Storybook build, and a check that the package
+- **`web_ci.yml`** — on PRs touching `web/**`: typecheck, unit tests,
+  typography parity check, Storybook build, and a check that the package
   installs and imports cleanly.
 - **`web_release.yml`** — on tag `lemonade-web-v*`: build, publish to **public npm**
   with `NODE_AUTH_TOKEN` (`publishConfig.access: "public"`, as
@@ -587,8 +567,8 @@ functions as a snapshot test: any change to output shows up as a reviewable diff
 **Package** — Vitest in `web/` over the published TS surface (`tokens`,
 `textStyles`, `iconNames`) plus an install-and-import smoke test.
 
-The contrast, loader-parity and text-style-parity checks double as product
-guarantees rather than only tests.
+The loader-parity and text-style-parity checks double as product guarantees rather
+than only tests.
 
 ## 15. Explicitly out of scope for v0
 
@@ -613,7 +593,7 @@ guarantees rather than only tests.
 4. Changing a value in Figma, re-exporting, and running `run-converters.sh`
    regenerates web output; skipping it fails CI.
 5. The typography-parity check passes, holding web's text styles identical to
-   SwiftUI's. (Contrast validation was withdrawn — see §10.)
+   SwiftUI's.
 6. Storybook is deployed and a designer or engineer can find any token by browsing.
 7. Pasting `lemonade.css` into a bare HTML page in a Claude artifact renders Lemonade
    colour and type, with Figtree loading from Google Fonts.
