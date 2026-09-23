@@ -46,7 +46,7 @@ Each platform versions independently, and the version lives only in the tag.
 | KMP | `lemonade-kmp-X.Y.Z` | `lemonade-kmp-0.9.0` |
 | SwiftUI | `lemonade-swiftui-X.Y.Z` | `lemonade-swiftui-0.9.1` |
 | Flutter | `lemonade-flutter-vX.Y.Z` | `lemonade-flutter-v0.8.3` |
-| Web | `lemonade-mobile-web-vX.Y.Z` | `lemonade-mobile-web-v0.1.0` |
+| Web | `lemonade-mobile-web-X.Y.Z` | `lemonade-mobile-web-0.1.0` |
 
 Each SwiftUI release also carries a plain `X.Y.Z` tag at the same commit — that is
 the one Swift Package Manager consumers resolve.

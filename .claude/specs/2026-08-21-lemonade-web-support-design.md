@@ -59,7 +59,7 @@ tokens (none exist in Figma). Each is deliberately deferred — see §15.
 | Theming | `data-lmnd-theme` attribute + `prefers-color-scheme` | Zero-config follows the OS; the attribute always wins and works at any depth |
 | Units | `rem` for proportional values, `px` for optical ones | See §5 |
 | Docs | Storybook | Both existing internal component libraries use it, so Teya web teams already know it; it is also where components will live later |
-| Release | Tag `lemonade-mobile-web-v*` | One tag per platform, as KMP, SwiftUI and Flutter each have |
+| Release | Tag `lemonade-mobile-web-X.Y.Z` | Same shape as the KMP and SwiftUI tags |
 
 ### 3.1 Why public, and what it exposes
 
@@ -543,7 +543,7 @@ though a model can inline the few it needs from the public repo.
 - **`web_ci.yml`** — on PRs touching `web/**`: typecheck, unit tests,
   typography parity check, Storybook build, and a check that the package
   installs and imports cleanly.
-- **`web_release.yml`** — on tag `lemonade-mobile-web-v*`: build, publish to **public npm**
+- **`web_release.yml`** — on tag `lemonade-mobile-web-X.Y.Z`: build, publish to **public npm**
   with `NODE_AUTH_TOKEN` (`publishConfig.access: "public"`, as
   `teya-blocks-react` does), create a GitHub release with a changelog scoped to
   `web/`. Same shape as `kmp_release.yml`.
