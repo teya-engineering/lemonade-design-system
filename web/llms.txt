@@ -1,7 +1,7 @@
 # Lemonade Design System — web tokens
 
 CSS custom properties for Teya's Lemonade design system.
-Import `@teya/lemonade-ds/tokens.css`, or paste `lemonade.css` into a <style> block.
+Import `@teya/lemonade-mobile-ds/tokens.css`, or paste `lemonade.css` into a <style> block.
 Light theme is the default; dark applies automatically from the OS, or explicitly
 with `data-lmnd-theme="dark"` on any element.
 

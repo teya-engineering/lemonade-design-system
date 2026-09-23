@@ -49,7 +49,7 @@ tokens (none exist in Figma). Each is deliberately deferred — see §15.
 | v0 scope | Tokens + assets, components deferred | Let adoption reveal which components are actually needed, rather than guessing |
 | Registry | **Public npm** | The tokens are already public via Maven Central and an Apache-2.0 repo, so nothing new is disclosed — see §3.1. Public npm is also the only registry AI prototyping tools can resolve |
 | Scope | `@teya` if claimable, else `@teyaproduct` | `@teyaproduct` is the scope Teya demonstrably owns on public npm (`@teyaproduct/teya-blocks-*` resolve). That Teya chose it over `@teya` suggests `@teya` is taken. Verify before first publish |
-| Package | `@teya/lemonade-ds`, single package | Subpath exports let components land later without a rename. npm has no rename operation, and the name will eventually be baked into Figma `codeSyntax`, so this is decided once |
+| Package | `@teya/lemonade-mobile-ds`, single package | The library renders Lemonade mobile on the web, for prototyping the Teya app. Subpath exports let components land later without a rename |
 | Publish gate | Nothing published until validated locally and signed off by the team | Public publication is effectively irreversible: npm unpublish is restricted and the name is burned either way |
 | CSS delivery | Layered, individually importable entrypoints | The base layer is custom properties only — zero selectors — so it is safe to drop into any app, MUI included, with no possibility of conflict |
 | Generator | Kotlin `.main.kts` in `scripts/`, like the other platforms | The DTCG loader is duplicated per platform and guarded by `check-loader-parity.py`. A TypeScript loader would be a fourth copy the guard cannot read — see §4.1. Style Dictionary was also rejected: the Figma export needs custom parsers regardless |
@@ -118,7 +118,7 @@ scripts/                                    Kotlin .main.kts, alongside kmp-* / 
   web-text-style-parity-check.main.kts      web table vs SwiftUI table
 
 web/
-  package.json                              @teya/lemonade-ds
+  package.json                              @teya/lemonade-mobile-ds
   tsup.config.ts
   src/
     index.ts                                public TS surface
@@ -232,9 +232,9 @@ React is not a dependency of any kind in v0. When components land they become
 ### Consumer usage
 
 ```js
-import '@teya/lemonade-ds/tokens.css'      // always safe, anywhere
-import '@teya/lemonade-ds/fonts.css'       // opt-in
-import '@teya/lemonade-ds/typography.css'  // opt-in
+import '@teya/lemonade-mobile-ds/tokens.css'      // always safe, anywhere
+import '@teya/lemonade-mobile-ds/fonts.css'       // opt-in
+import '@teya/lemonade-mobile-ds/typography.css'  // opt-in
 ```
 
 ```html
@@ -434,7 +434,7 @@ SVG.
 Three first-class consumption paths:
 
 ```js
-import ArrowRight from '@teya/lemonade-ds/icons/arrow-right.svg'  // bundler inlines; tree-shakes
+import ArrowRight from '@teya/lemonade-mobile-ds/icons/arrow-right.svg'  // bundler inlines; tree-shakes
 ```
 ```css
 .lmnd-icon {                                   /* no-build, themeable */

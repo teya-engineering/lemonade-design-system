@@ -14,7 +14,7 @@ fun main() {
     out.appendLine("# Lemonade Design System — web tokens")
     out.appendLine()
     out.appendLine("CSS custom properties for Teya's Lemonade design system.")
-    out.appendLine("Import `@teya/lemonade-ds/tokens.css`, or paste `lemonade.css` into a <style> block.")
+    out.appendLine("Import `@teya/lemonade-mobile-ds/tokens.css`, or paste `lemonade.css` into a <style> block.")
     out.appendLine("Light theme is the default; dark applies automatically from the OS, or explicitly")
     out.appendLine("with `data-lmnd-theme=\"dark\"` on any element.")
     out.appendLine()
