@@ -1,7 +1,8 @@
 package com.teya.lemonade
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -50,6 +51,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 /**
  * A single tab: its label, optional icon, and disabled state.
@@ -150,35 +153,39 @@ internal fun CoreTabs(
         contentWidths.keys.removeAll { key -> key >= tabs.size }
     }
 
-    var hasInitialMeasurement by remember { mutableStateOf(value = false) }
-    val animationSpec = if (hasInitialMeasurement) {
-        tween<Dp>(durationMillis = INDICATOR_ANIMATION_DURATION_MS)
-    } else {
-        tween<Dp>(durationMillis = 0)
-    }
-
-    LaunchedEffect(key1 = contentWidths[resolvedIndex]) {
-        if (contentWidths[resolvedIndex] != null && !hasInitialMeasurement) {
-            hasInitialMeasurement = true
-        }
-    }
-
-    val indicatorWidth by animateDpAsState(
-        targetValue = contentWidths[resolvedIndex]
-            ?: tabWidths[resolvedIndex]
-            ?: 0.dp,
-        animationSpec = animationSpec,
-    )
     val selectedTabWidth = tabWidths[resolvedIndex]
-        ?: 0.dp
-    val selectedContentWidth = contentWidths[resolvedIndex]
-        ?: selectedTabWidth
-    val selectedTabOffset = tabOffsets[resolvedIndex]
-        ?: 0.dp
-    val indicatorOffset by animateDpAsState(
-        targetValue = selectedTabOffset + (selectedTabWidth - selectedContentWidth) / 2,
-        animationSpec = animationSpec,
-    )
+    val targetWidth = contentWidths[resolvedIndex] ?: selectedTabWidth
+    val targetOffset = tabOffsets[resolvedIndex]?.let { tabOffset ->
+        tabOffset + ((selectedTabWidth ?: 0.dp) - (targetWidth ?: 0.dp)) / 2
+    }
+
+    // Only a selection change slides the indicator. Its first placement — and every re-creation of
+    // the host, such as a screen that is rebuilt on each visit — lands without animating.
+    val animatedWidth = remember { Animatable(initialValue = 0.dp, typeConverter = Dp.VectorConverter) }
+    val animatedOffset = remember { Animatable(initialValue = 0.dp, typeConverter = Dp.VectorConverter) }
+    var placedIndex by remember { mutableStateOf<Int?>(value = null) }
+
+    LaunchedEffect(key1 = resolvedIndex, key2 = targetWidth, key3 = targetOffset) {
+        if (targetWidth == null || targetOffset == null) {
+            return@LaunchedEffect
+        }
+        if (placedIndex == null || placedIndex == resolvedIndex) {
+            animatedWidth.snapTo(targetValue = targetWidth)
+            animatedOffset.snapTo(targetValue = targetOffset)
+        } else {
+            val spec = tween<Dp>(durationMillis = INDICATOR_ANIMATION_DURATION_MS)
+            coroutineScope {
+                launch { animatedWidth.animateTo(targetValue = targetWidth, animationSpec = spec) }
+                launch { animatedOffset.animateTo(targetValue = targetOffset, animationSpec = spec) }
+            }
+        }
+        placedIndex = resolvedIndex
+    }
+
+    // Until the first placement lands, draw straight from the measurement so there's no empty frame.
+    val isPlaced = placedIndex != null
+    val indicatorWidth = if (isPlaced) animatedWidth.value else targetWidth ?: 0.dp
+    val indicatorOffset = if (isPlaced) animatedOffset.value else targetOffset ?: 0.dp
 
     val indicatorHeight = LocalBorderWidths.current.base.border75
     val indicatorColor = LocalColors.current.background.bgBrandHigh
