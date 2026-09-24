@@ -19,7 +19,10 @@ function managerFontFaces(): string {
 }
 
 const config: StorybookConfig = {
-  stories: ['../stories/**/*.mdx', '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  // The MDX guides are left out until the package is published — stories/Installing.mdx
+  // documents an npm install that does not resolve yet. Restore the '../stories/**/*.mdx'
+  // entry once it does.
+  stories: ['../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: ['@storybook/addon-essentials', '@storybook/addon-interactions', '@storybook/addon-themes'],
   framework: {
     name: '@storybook/react-vite',
