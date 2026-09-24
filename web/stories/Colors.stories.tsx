@@ -47,7 +47,7 @@ function Swatch({ name }: { name: string }) {
           height: 'var(--lmnd-size-1000)',
           background: `var(${name})`,
           borderRadius: 'var(--lmnd-radius-200)',
-          border: '1px solid var(--lmnd-color-border-neutral-low)',
+          border: 'var(--lmnd-border-width-25) solid var(--lmnd-color-border-neutral-low)',
         }}
       />
       <code className="lmnd-text-body-small-regular" style={{ color: 'var(--lmnd-color-content-primary)' }}>

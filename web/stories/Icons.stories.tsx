@@ -2,6 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react'
 import type { CSSProperties } from 'react'
 import { useMemo, useState } from 'react'
 import { iconNames } from '../src/index'
+import { Tile } from './Tile'
+
+// Named because the grid's column sizing has to compose them.
+const GAP = 'var(--lmnd-spacing-300)'
+const TILE_MIN = 'var(--lmnd-size-2400)'
 
 function IconTile({ name }: { name: string }) {
   const [copied, setCopied] = useState(false)
@@ -18,45 +23,23 @@ function IconTile({ name }: { name: string }) {
   }
 
   return (
-    <button
-      type="button"
-      onClick={handleCopy}
+    <Tile
+      label={copied ? 'copied!' : name}
       title={`Click to copy "${name}"`}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 'var(--lmnd-spacing-200)',
-        padding: 'var(--lmnd-spacing-300)',
-        background: copied ? 'var(--lmnd-color-bg-brand-subtle)' : 'var(--lmnd-color-bg-elevated)',
-        border: '1px solid var(--lmnd-color-border-neutral-low)',
-        borderRadius: 'var(--lmnd-radius-200)',
-        cursor: 'pointer',
-        color: 'var(--lmnd-color-content-primary)',
-        font: 'inherit',
-      }}
+      highlighted={copied}
+      onClick={handleCopy}
     >
       <span
         className="lmnd-icon"
         style={
           {
-            width: 'var(--lmnd-size-800)',
-            height: 'var(--lmnd-size-800)',
+            width: 'var(--lmnd-size-500)',
+            height: 'var(--lmnd-size-500)',
             '--lmnd-icon': `url('/assets/icons/${name}.svg')`,
           } as CSSProperties
         }
       />
-      <code
-        className="lmnd-text-body-xsmall-regular"
-        style={{
-          color: 'var(--lmnd-color-content-secondary)',
-          textAlign: 'center',
-          wordBreak: 'break-word',
-        }}
-      >
-        {copied ? 'copied!' : name}
-      </code>
-    </button>
+    </Tile>
   )
 }
 
@@ -87,7 +70,7 @@ function IconGrid() {
         style={{
           padding: 'var(--lmnd-spacing-300)',
           borderRadius: 'var(--lmnd-radius-200)',
-          border: '1px solid var(--lmnd-color-border-neutral-low)',
+          border: 'var(--lmnd-border-width-25) solid var(--lmnd-color-border-neutral-low)',
           background: 'var(--lmnd-color-bg-default)',
           color: 'var(--lmnd-color-content-primary)',
           font: 'inherit',
@@ -99,8 +82,11 @@ function IconGrid() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(6rem, 1fr))',
-          gap: 'var(--lmnd-spacing-300)',
+          // Five tiles per row at most: a fifth of the row (less the four gaps) is the
+          // track's minimum, so auto-fill can never fit a sixth. TILE_MIN is the floor, so
+          // a phone-width canvas drops to three or four rather than squeezing five in.
+          gridTemplateColumns: `repeat(auto-fill, minmax(max(${TILE_MIN}, calc((100% - 4 * ${GAP}) / 5)), 1fr))`,
+          gap: GAP,
         }}
       >
         {filtered.map((name) => (

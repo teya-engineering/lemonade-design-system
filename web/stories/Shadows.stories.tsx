@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useEffect, useState } from 'react'
+import { Tile } from './Tile'
 
 function useShadowNames() {
   const [names, setNames] = useState<string[]>([])
@@ -29,20 +30,9 @@ function useShadowNames() {
   return names
 }
 
-function Card({ name }: { name: string }) {
+function ShadowTile({ name }: { name: string }) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 'var(--lmnd-spacing-400)',
-        padding: 'var(--lmnd-spacing-800)',
-        background: 'var(--lmnd-color-bg-elevated)',
-        borderRadius: 'var(--lmnd-radius-300)',
-      }}
-    >
+    <Tile label={name}>
       <div
         style={{
           width: 'var(--lmnd-size-2000)',
@@ -52,10 +42,7 @@ function Card({ name }: { name: string }) {
           boxShadow: `var(${name})`,
         }}
       />
-      <code className="lmnd-text-body-small-regular" style={{ color: 'var(--lmnd-color-content-primary)' }}>
-        {name}
-      </code>
-    </div>
+    </Tile>
   )
 }
 
@@ -77,7 +64,7 @@ function ShadowGrid() {
       }}
     >
       {names.map((name) => (
-        <Card key={name} name={name} />
+        <ShadowTile key={name} name={name} />
       ))}
     </div>
   )
