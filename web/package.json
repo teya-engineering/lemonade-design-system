@@ -52,7 +52,9 @@
     "build": "node build/build-fonts.mjs && node build/optimize-svg.mjs && tsup",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
+    "prestorybook": "node build/build-fonts.mjs",
     "storybook": "storybook dev -p 6006",
+    "prebuild-storybook": "node build/build-fonts.mjs",
     "build-storybook": "storybook build"
   },
   "devDependencies": {
@@ -60,9 +62,11 @@
     "@storybook/addon-interactions": "^8.6.18",
     "@storybook/addon-themes": "^8.6.18",
     "@storybook/blocks": "^8.6.18",
+    "@storybook/manager-api": "^8.6.18",
     "@storybook/react": "^8.6.18",
     "@storybook/react-vite": "^8.6.18",
     "@storybook/test": "^8.6.18",
+    "@storybook/theming": "^8.6.18",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
     "react": "^19.2.8",

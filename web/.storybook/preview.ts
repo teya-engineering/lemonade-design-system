@@ -1,3 +1,7 @@
+// Build output: written by build/build-fonts.mjs, which npm run build and both storybook
+// scripts' pre hooks run. Without it --lmnd-font-family-base falls through to the system
+// sans and the gallery misreports how the type actually looks.
+import '../dist/fonts.css'
 import '../styles/tokens.css'
 import '../styles/typography.css'
 import '../styles/icon.css'
@@ -5,6 +9,7 @@ import type { Preview } from '@storybook/react'
 import type { ReactElement } from 'react'
 import { createElement } from 'react'
 import { withThemeByDataAttribute } from '@storybook/addon-themes'
+import { create } from '@storybook/theming/create'
 
 export const decorators = [
   withThemeByDataAttribute({
@@ -26,6 +31,7 @@ export const decorators = [
           padding: 'var(--lmnd-spacing-600)',
           background: 'var(--lmnd-color-bg-default)',
           color: 'var(--lmnd-color-content-primary)',
+          fontFamily: 'var(--lmnd-font-family-base)',
         },
       },
       createElement(Story),
@@ -38,6 +44,7 @@ const preview: Preview = {
     // the decorator above); Storybook's own backgrounds addon would paint over it
     // and fight the theme toggle.
     backgrounds: { disable: true },
+    docs: { theme: create({ base: 'light', fontBase: '"Figtree", sans-serif' }) },
     controls: {
       matchers: {
         color: /(background|color)$/i,
