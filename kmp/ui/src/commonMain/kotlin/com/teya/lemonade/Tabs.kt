@@ -153,39 +153,14 @@ internal fun CoreTabs(
         contentWidths.keys.removeAll { key -> key >= tabs.size }
     }
 
-    val selectedTabWidth = tabWidths[resolvedIndex]
-    val targetWidth = contentWidths[resolvedIndex] ?: selectedTabWidth
-    val targetOffset = tabOffsets[resolvedIndex]?.let { tabOffset ->
-        tabOffset + ((selectedTabWidth ?: 0.dp) - (targetWidth ?: 0.dp)) / 2
-    }
-
-    // Only a selection change slides the indicator. Its first placement — and every re-creation of
-    // the host, such as a screen that is rebuilt on each visit — lands without animating.
-    val animatedWidth = remember { Animatable(initialValue = 0.dp, typeConverter = Dp.VectorConverter) }
-    val animatedOffset = remember { Animatable(initialValue = 0.dp, typeConverter = Dp.VectorConverter) }
-    var placedIndex by remember { mutableStateOf<Int?>(value = null) }
-
-    LaunchedEffect(key1 = resolvedIndex, key2 = targetWidth, key3 = targetOffset) {
-        if (targetWidth == null || targetOffset == null) {
-            return@LaunchedEffect
-        }
-        if (placedIndex == null || placedIndex == resolvedIndex) {
-            animatedWidth.snapTo(targetValue = targetWidth)
-            animatedOffset.snapTo(targetValue = targetOffset)
-        } else {
-            val spec = tween<Dp>(durationMillis = INDICATOR_ANIMATION_DURATION_MS)
-            coroutineScope {
-                launch { animatedWidth.animateTo(targetValue = targetWidth, animationSpec = spec) }
-                launch { animatedOffset.animateTo(targetValue = targetOffset, animationSpec = spec) }
-            }
-        }
-        placedIndex = resolvedIndex
-    }
-
-    // Until the first placement lands, draw straight from the measurement so there's no empty frame.
-    val isPlaced = placedIndex != null
-    val indicatorWidth = if (isPlaced) animatedWidth.value else targetWidth ?: 0.dp
-    val indicatorOffset = if (isPlaced) animatedOffset.value else targetOffset ?: 0.dp
+    val indicator = rememberTabIndicatorPlacement(
+        selectedIndex = resolvedIndex,
+        tabWidth = tabWidths[resolvedIndex],
+        tabOffset = tabOffsets[resolvedIndex],
+        contentWidth = contentWidths[resolvedIndex],
+    )
+    val indicatorWidth = indicator.width
+    val indicatorOffset = indicator.offset
 
     val indicatorHeight = LocalBorderWidths.current.base.border75
     val indicatorColor = LocalColors.current.background.bgBrandHigh
@@ -235,6 +210,54 @@ internal fun CoreTabs(
                 .height(height = separatorHeight)
                 .background(color = separatorColor),
         )
+    }
+}
+
+private data class TabIndicatorPlacement(
+    val width: Dp,
+    val offset: Dp,
+)
+
+@Composable
+private fun rememberTabIndicatorPlacement(
+    selectedIndex: Int,
+    tabWidth: Dp?,
+    tabOffset: Dp?,
+    contentWidth: Dp?,
+): TabIndicatorPlacement {
+    val targetWidth = contentWidth ?: tabWidth
+    val targetOffset = tabOffset?.let { offset ->
+        offset + ((tabWidth ?: 0.dp) - (targetWidth ?: 0.dp)) / 2
+    }
+
+    // Only a selection change slides the indicator. Its first placement — and every re-creation of
+    // the host, such as a screen that is rebuilt on each visit — lands without animating.
+    val animatedWidth = remember { Animatable(initialValue = 0.dp, typeConverter = Dp.VectorConverter) }
+    val animatedOffset = remember { Animatable(initialValue = 0.dp, typeConverter = Dp.VectorConverter) }
+    var placedIndex by remember { mutableStateOf<Int?>(value = null) }
+
+    LaunchedEffect(key1 = selectedIndex, key2 = targetWidth, key3 = targetOffset) {
+        if (targetWidth == null || targetOffset == null) {
+            return@LaunchedEffect
+        }
+        if (placedIndex == null || placedIndex == selectedIndex) {
+            animatedWidth.snapTo(targetValue = targetWidth)
+            animatedOffset.snapTo(targetValue = targetOffset)
+        } else {
+            val spec = tween<Dp>(durationMillis = INDICATOR_ANIMATION_DURATION_MS)
+            coroutineScope {
+                launch { animatedWidth.animateTo(targetValue = targetWidth, animationSpec = spec) }
+                launch { animatedOffset.animateTo(targetValue = targetOffset, animationSpec = spec) }
+            }
+        }
+        placedIndex = selectedIndex
+    }
+
+    // Until the first placement lands, draw straight from the measurement so there's no empty frame.
+    return if (placedIndex != null) {
+        TabIndicatorPlacement(width = animatedWidth.value, offset = animatedOffset.value)
+    } else {
+        TabIndicatorPlacement(width = targetWidth ?: 0.dp, offset = targetOffset ?: 0.dp)
     }
 }
 
