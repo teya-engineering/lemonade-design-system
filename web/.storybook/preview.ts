@@ -5,6 +5,9 @@ import '../dist/fonts.css'
 import '../styles/tokens.css'
 import '../styles/typography.css'
 import '../styles/icon.css'
+// Every component's stylesheet, discovered the way web-css-bundle discovers them, so a
+// new component never needs this file edited to render styled in a story.
+import.meta.glob('../src/components/**/*.css', { eager: true })
 import type { Preview } from '@storybook/react'
 import type { ReactElement } from 'react'
 import { createElement } from 'react'

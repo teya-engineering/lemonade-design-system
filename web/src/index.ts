@@ -8,3 +8,10 @@ export {
   brandLogoNames,
 } from './icons.generated'
 export type { IconName, FlagName, BrandLogoName } from './icons.generated'
+export { buttonClasses } from './components/button/button.classes'
+export type {
+  ButtonAppearance,
+  LemonadeButtonSize,
+  LemonadeButtonType,
+  LemonadeButtonVariant,
+} from './components/button/button.types'

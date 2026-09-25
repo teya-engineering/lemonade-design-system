@@ -1,7 +1,9 @@
 import { defineConfig } from 'tsup'
 
 export default defineConfig({
-  entry: ['src/index.ts'],
+  // Named, so the React entry emits dist/react.* rather than dist/react/index.*, which
+  // is what the ./react export subpath points at.
+  entry: { index: 'src/index.ts', react: 'src/react/index.ts' },
   format: ['esm', 'cjs'],
   dts: true,
   clean: false, // dist/fonts is written by build-fonts.mjs before tsup runs
