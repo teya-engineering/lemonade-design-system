@@ -2,7 +2,7 @@
 
 **Date:** 2026-08-21
 **Status:** Approved design, pending implementation plan
-**Scope:** v0 — design tokens and assets only. No components.
+**Scope:** design tokens and assets (§1–16); the component layer (§17).
 
 ---
 
@@ -37,19 +37,19 @@ the divergence starts and where the fix is framework-agnostic.
 4. Make correctness verifiable: cross-platform typography parity checked in CI.
 5. Make tokens discoverable, so teams stop reinventing them.
 
-**Non-goals for v0**
+**Non-goals for the token layer**
 
-React components; a Tailwind preset; a Material UI adapter; a CSS reset; motion
-tokens (none exist in Figma). Each is deliberately deferred — see §15.
+A Tailwind preset; a Material UI adapter; a CSS reset; motion tokens (none exist in
+Figma). Each is deliberately deferred — see §15. Components are specified in §17.
 
 ## 3. Decisions
 
 | Decision | Choice | Rationale |
 |---|---|---|
-| v0 scope | Tokens + assets, components deferred | Let adoption reveal which components are actually needed, rather than guessing |
+| Layering | Tokens and assets first, components on top of them | The tokens stand alone for any stack; the component layer builds on them without changing them — see §17 |
 | Registry | **Public npm** | The tokens are already public via Maven Central and an Apache-2.0 repo, so nothing new is disclosed — see §3.1. Public npm is also the only registry AI prototyping tools can resolve |
 | Scope | `@teya` if claimable, else `@teyaproduct` | `@teyaproduct` is the scope Teya demonstrably owns on public npm (`@teyaproduct/teya-blocks-*` resolve). That Teya chose it over `@teya` suggests `@teya` is taken. Verify before first publish |
-| Package | `@teya/lemonade-mobile-ds`, single package | The library renders Lemonade mobile on the web, for prototyping the Teya app. Subpath exports let components land later without a rename |
+| Package | `@teya/lemonade-mobile-ds`, single package | The library renders Lemonade mobile on the web, for prototyping the Teya app. Subpath exports carry the components without a rename |
 | Publish gate | Nothing published until validated locally and signed off by the team | Public publication is effectively irreversible: npm unpublish is restricted and the name is burned either way |
 | CSS delivery | Layered, individually importable entrypoints | The base layer is custom properties only — zero selectors — so it is safe to drop into any app, MUI included, with no possibility of conflict |
 | Generator | Kotlin `.main.kts` in `scripts/`, like the other platforms | The DTCG loader is duplicated per platform and guarded by `check-loader-parity.py`. A TypeScript loader would be a fourth copy the guard cannot read — see §4.1. Style Dictionary was also rejected: the Figma export needs custom parsers regardless |
@@ -58,7 +58,7 @@ tokens (none exist in Figma). Each is deliberately deferred — see §15.
 | Var prefix | `--lmnd-` | Short enough to type all day, distinct from `--mui-*` and `--tw-*` |
 | Theming | `data-lmnd-theme` attribute + `prefers-color-scheme` | Zero-config follows the OS; the attribute always wins and works at any depth |
 | Units | `rem` for proportional values, `px` for optical ones | See §5 |
-| Docs | Storybook | Both existing internal component libraries use it, so Teya web teams already know it; it is also where components will live later |
+| Docs | Storybook | Both existing internal component libraries use it, so Teya web teams already know it; it is also where the components are documented |
 | Release | Tag `lemonade-mobile-web-X.Y.Z` | Same shape as the KMP and SwiftUI tags |
 
 ### 3.1 Why public, and what it exposes
@@ -226,8 +226,9 @@ The published tarball ships `dist/assets/**` (optimized) and **not** `assets/**`
 The `styles.css` barrel deliberately omits `fonts.css`: fonts are build output, so a
 barrel importing them would reference a file absent from a source checkout.
 
-React is not a dependency of any kind in v0. When components land they become
-`./react`, with React as an optional peer dependency.
+Nothing here depends on React: the root export and every stylesheet above are
+framework-free. Components live under `./react` with React as an optional peer
+dependency — see §17.
 
 ### Consumer usage
 
@@ -570,11 +571,10 @@ functions as a snapshot test: any change to output shows up as a reviewable diff
 The loader-parity and text-style-parity checks double as product guarantees rather
 than only tests.
 
-## 15. Explicitly out of scope for v0
+## 15. Explicitly out of scope for the token layer
 
 | Deferred | Why, and what unblocks it |
 |---|---|
-| React components | The framework decision is deliberately left to adoption. Everything here is framework-agnostic, so no rework is implied |
 | Material UI adapter | A hybrid of `var()` and literal values is unavoidable, because MUI computes derived states with `alpha()`/`darken()`, which cannot parse `var()`. Documenting the pattern is honest; shipping a half-solution creates a support burden |
 | Tailwind preset | ~30 lines on top of this foundation. Tailwind v4's `@theme` consumes CSS variables natively. Should not gate the release |
 | CSS reset | Would fight MUI's `CssBaseline`. Consumers own their reset |
@@ -599,3 +599,198 @@ than only tests.
    colour and type, with Figtree loading from Google Fonts.
 8. An AI given `llms.txt` produces markup using semantic token names rather than
    literal hex values.
+
+---
+
+## 17. Components
+
+The component layer exists so designers and product managers can build web prototypes
+of the Teya app. That purpose sets the priorities: a prototype must look like Lemonade
+in any stack, including ones that cannot run `npm install`.
+
+So a component here is **CSS plus the correct markup**. The class names are the public
+API; the React package is a wrapper that composes them and adds nothing a consumer
+cannot reproduce by hand.
+
+### 17.1 Decisions
+
+| Decision | Choice | Rationale |
+|---|---|---|
+| Framework | React, as an **optional peer** | The Teya web apps are React, and it is what AI prototyping tools emit. Optional keeps the tokens installable by a Vue app or a plain HTML page |
+| Package | Same package; components under `./react`, their styles under `./components.css` | The root export stays framework-free, so nothing that imports tokens pulls React into its graph |
+| Bundling | React, `react-dom` and `react/jsx-runtime` are externalised | Two copies of React in one page break the hook dispatcher. `tsup` derives externals from `peerDependencies`; `jsx-runtime` is in neither list and needs naming explicitly |
+| Styling | Hand-written plain CSS, colocated with the component | The class names have to be a stable contract for stacks that never load our JS |
+| Not CSS Modules | — | Hashed class names are the opposite of a public contract |
+| Not Tailwind for authoring | — | Utilities in markup leave no class to hand a non-React consumer, and force Tailwind on every one. A Tailwind *preset* over the tokens remains a separate, deferred thing |
+| Class naming | `lmnd-<component>` block, `lmnd-<component>--<modifier>` for variants and states | The `--` makes a modifier visible at a glance against the generated single-dash token classes |
+| Bundle inclusion | `web-css-bundle` **discovers** `web/src/components/**/*.css` | A hardcoded list loses a component silently: the pasteable bundle ships without its styles and every check stays green |
+| Hover | `-interactive` tokens | See §17.4 — the token set already carries a two-step ladder |
+| Pressed | `-pressed` tokens | Same ladder. Diverges from mobile for Primary/Solid, accepted for now |
+| Focus | `--lmnd-color-border-selected` at `--lmnd-border-width-focus-ring` | The only focus token is a width; this pairs it with an existing colour rather than inventing one |
+| Canonical API | The surface KMP and SwiftUI already agree on | Those two agree prop-for-prop and token-for-token. Flutter's Button shows the cost of not having a canon |
+| Types | One `<component>.types.ts` per component | The whole contract in one place; the barrels, not the file, decide what is public — see §17.8 |
+| Divergence | Enumerated in §17.5, never implicit | Nothing in the repo compares component APIs across platforms |
+
+### 17.2 Layout on disk
+
+```
+web/src/components/button/
+  button.types.ts     every type the component declares
+  button.classes.ts   the class-name builder, framework-free
+  button.css          hand-written, committed; the class contract
+  button.tsx          composes class names, no styling logic
+  button.stories.tsx  Storybook page, with a copy-paste HTML snippet
+  button.test.tsx     behaviour and the class contract
+```
+
+Colocated CSS is committed source, not build output, so the rule that `web/dist/` holds
+everything a build produces still holds. It sits under `web/src/` rather than
+`web/styles/`, which is generated territory owned by the converters.
+
+### 17.3 The class contract
+
+Markup a consumer can reproduce in any stack:
+
+```html
+<button class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large
+               lmnd-text-body-medium-semibold">
+  <span class="lmnd-icon" style="--lmnd-icon: url('…/icons/plus.svg')"></span>
+  Add item
+</button>
+```
+
+Typography comes from the generated `.lmnd-text-*` classes; a component never
+re-declares font rules. Geometry, colour, radius and spacing come from `--lmnd-*`
+custom properties, so a component stylesheet contains no literal values.
+
+Renaming a class is a breaking change for consumers who never load our JavaScript, so
+the contract is asserted by a test rather than left to review.
+
+### 17.4 Interaction states
+
+The token set carries a two-step interaction ladder on 18 background families: opaque
+accents go lighter for `-interactive` and darker for `-pressed`, and translucent ones
+escalate from `α 0.1` through `0.2` to `0.3`. Web maps it directly:
+
+| State | Source |
+|---|---|
+| `:hover` | the `-interactive` token for the variant |
+| `:active` | the `-pressed` token for the variant |
+| `:focus-visible` | `--lmnd-color-border-selected` at `--lmnd-border-width-focus-ring`, offset by `--lmnd-spacing-50` |
+| `:disabled` | `--lmnd-opacity-disabled` over the whole control |
+| loading | dimmed as disabled, slots suppressed, spinner shown |
+
+Mobile has no hover, so its components take whichever rung suits them for press, and
+they disagree: KMP's Button uses `bgBrandInteractive` for a pressed Primary/Solid while
+IconButton and Link use `bgBrandPressed`. Web follows the ladder, which makes a pressed
+Primary button darker on web than on mobile. That divergence is accepted; interaction
+states are being revisited across the system.
+
+The variant × type colour triples and the size → geometry tuples are not restated here.
+Both platforms already agree token-for-token, in
+`kmp/ui/src/commonMain/kotlin/com/teya/lemonade/Button.kt` and
+`swiftui/Sources/Lemonade/Components/LemonadeButton.swift`; web consumes those same
+tokens.
+
+### 17.5 Parity with KMP and SwiftUI
+
+Three categories, and only the first is policed:
+
+**Must match exactly** — the component name, prop names, the variant/type/size
+vocabularies, their defaults, and the rendered result per state.
+
+**Free to differ, platform-idiomatic** — how the escape hatch is spelled, how slots are
+typed, how press is detected.
+
+**Platform-only** — a capability one platform has and the others cannot express.
+
+For Button:
+
+| Difference | KMP | SwiftUI | Web |
+|---|---|---|---|
+| Escape hatch | `modifier: Modifier` | SwiftUI view modifiers | `className`, `style` |
+| Slots | one function, nullable slots | three overloads, because Swift cannot default a `@ViewBuilder` | `ReactNode` props |
+| Press detection | `interactionSource` | private `@State` | `:active` |
+| Press rendering | animates the background colour | whole-view `opacityPressed` | `:active` background |
+| Pill shape | — | `.fullShape()` | — (`--lmnd-radius-full` exists when it is wanted) |
+| Colours type | `LemonadeButtonColors.solidBackgroundColor` | `…backgroundColor` | none — CSS owns colour |
+| Hover, focus ring | — | — | web-only |
+
+Enum vocabularies are held by a parity check in the mould of
+`scripts/web-text-style-parity-check.main.kts`, which already parses Swift source to
+keep typography identical: it extracts the `LemonadeButtonVariant`, `LemonadeButtonType`
+and `LemonadeButtonSize` entries from the KMP and SwiftUI sources and asserts web's
+string unions match, case-insensitively. Web literals use SwiftUI's casing
+(`'xSmall'`), so the comparison is mechanical.
+
+### 17.6 Consuming without React, or without npm
+
+Three tiers, the first two committed:
+
+1. **The class contract.** Any stack writes its own markup against `lmnd-*` classes.
+   `lemonade.css` covers the no-npm case entirely — paste it into a `<style>` block, no
+   install, no build, no framework. Components reach it through the discovered glob.
+2. **Documented markup.** Each component publishes its canonical HTML: a copy-paste
+   snippet in its Storybook page, and a `Components` section in `llms.txt` so AI tools
+   emit correct markup. `llms.txt` is generated from token data, so that section is a
+   hand-written block the converter appends rather than derives. The snippet is held to
+   the component by the class-contract test.
+3. **Custom elements** — deferred. `<lmnd-button>` would be framework-agnostic, but it
+   is a second implementation and a second parity surface, and inside a shadow root the
+   `lmnd-*` classes would not apply even though custom properties would, forking the
+   styling model. The trigger to revisit: the first component whose behaviour cannot be
+   expressed in markup, such as a dropdown, a date picker or the swipe row.
+
+A CDN bundle is not a route. It answers "no npm" but not "no React", and Claude
+artifacts block every external host, so inlining is the only option there.
+
+### 17.7 Testing
+
+Vitest runs in `jsdom` with Testing Library. Each component carries behaviour tests, a
+test asserting the documented class list, and a Storybook page; `@storybook/addon-a11y`
+reports violations while a story is open.
+
+`token_drift.yml` watches `web/src/components/**/*.css`, because that CSS is an input to
+the generated `lemonade.css`: editing a component's styles without re-running
+`web-css-bundle` would otherwise ship a stale bundle with CI green.
+
+### 17.8 Type surface
+
+Every type a component declares lives in its `<component>.types.ts` — the vocabularies
+and the React props side by side. One file per component, so a consumer reading the
+source finds the whole contract in one place.
+
+Which of them is *public where* is decided by the two barrels, not by the file:
+
+| Type | Reached through | Because |
+|---|---|---|
+| `LemonadeButtonVariant`, `…Type`, `…Size` | root | Framework-free vocabulary, like `IconName`. A Vue or plain-TS consumer types its own props with these |
+| `ButtonProps` | `./react` | Names `ComponentPropsWithoutRef`, so a consumer without `@types/react` must never have to resolve it |
+
+The split survives the build: `tsup` bundles declarations and drops what a barrel does
+not export, so a React-typed declaration sitting in the same source file does not reach
+`dist/index.d.ts`. Verified — the root declaration contains no reference to `react`.
+
+Props are typed as string-literal unions rather than `string`. That is what makes an
+invalid variant a compile error and gives editors the list, which matters most for the
+AI tools this library exists to serve.
+
+Because the barrels are the public API, moving a type between source files is not a
+breaking change. Shared vocabulary will move: on KMP, adding a `LemonadeButtonVariant`
+entry touches both Button and IconButton, so those unions belong in a shared module once
+the second component exists.
+
+`tsup` emits `dist/react.js`, `dist/react.cjs`, `dist/react.d.ts` and `dist/react.d.cts`
+from a second entry, and `exports` carries `./react` in the same dual per-condition shape
+as the root. Consumers on `moduleResolution: "node"` ignore `exports` altogether, so they
+can import the tokens and cannot see `./react` at all.
+
+### 17.9 Out of scope for the component layer
+
+| Deferred | Why, and what unblocks it |
+|---|---|
+| Custom elements | See §17.6 — waits for a component whose behaviour markup cannot carry |
+| A hover token set | Web reads the `-interactive` rung. Design owns interaction states and is revisiting them |
+| A focus ring colour of its own | `--lmnd-color-border-selected` stands in until one exists |
+| Motion | No motion tokens exist in Figma |
+

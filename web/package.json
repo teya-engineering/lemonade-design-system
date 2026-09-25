@@ -1,7 +1,7 @@
 {
   "name": "@teya/lemonade-mobile-ds",
   "version": "0.1.0",
-  "description": "Lemonade mobile design system for the web \u2014 tokens, typography and icons for building Teya app prototypes",
+  "description": "Lemonade mobile design system for the web — tokens, typography and icons for building Teya app prototypes",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -33,6 +33,17 @@
         "default": "./dist/index.cjs"
       }
     },
+    "./react": {
+      "import": {
+        "types": "./dist/react.d.ts",
+        "default": "./dist/react.js"
+      },
+      "require": {
+        "types": "./dist/react.d.cts",
+        "default": "./dist/react.cjs"
+      }
+    },
+    "./components.css": "./dist/components.css",
     "./tokens.css": "./styles/tokens.css",
     "./typography.css": "./styles/typography.css",
     "./icon.css": "./styles/icon.css",
@@ -45,11 +56,23 @@
     "./flags/*": "./dist/assets/flags/*",
     "./brand-logos/*": "./dist/assets/brand-logos/*"
   },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "node build/build-fonts.mjs && node build/optimize-svg.mjs && tsup",
+    "build": "node build/build-fonts.mjs && node build/build-component-css.mjs && node build/optimize-svg.mjs && tsup",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "prestorybook": "node build/build-fonts.mjs",
@@ -58,6 +81,7 @@
     "build-storybook": "storybook build"
   },
   "devDependencies": {
+    "@storybook/addon-a11y": "^8.6.18",
     "@storybook/addon-essentials": "^8.6.18",
     "@storybook/addon-interactions": "^8.6.18",
     "@storybook/addon-themes": "^8.6.18",
@@ -67,8 +91,12 @@
     "@storybook/react-vite": "^8.6.18",
     "@storybook/test": "^8.6.18",
     "@storybook/theming": "^8.6.18",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
+    "jsdom": "^25.0.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "storybook": "^8.6.18",

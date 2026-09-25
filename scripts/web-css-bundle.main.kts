@@ -9,12 +9,42 @@ import java.io.File
  * exist in a pasted context. The header tells the reader to use Google Fonts instead,
  * which is the one external host Claude artifacts allow.
  *
- * Order matters: tokens.css (custom properties) must precede typography.css and
- * icon.css, which consume those properties via var().
+ * Order matters: tokens.css (custom properties) must precede typography.css, icon.css
+ * and the component stylesheets, which consume those properties via var().
  */
+
+/**
+ * One header is enough for the bundle, so each part's own banner is dropped. Only a
+ * comment at the very start is a banner: a hand-written stylesheet may open with rules
+ * and comment a rule further down, and cutting from that comment would silently take
+ * every rule above it.
+ */
+fun withoutLeadingBanner(css: String): String {
+    val text = css.trimStart()
+    if (!text.startsWith("/*")) return text.trim()
+    val close = text.indexOf("*/")
+    if (close < 0) return text.trim()
+    return text.substring(close + 2).trim()
+}
+
+/**
+ * Discovered rather than listed, so a new component cannot be left out of the bundle
+ * that prototypes paste — its styles would simply be missing, with every check green.
+ */
+fun componentStylesheets(): List<String> {
+    val root = File("web/src/components")
+    if (!root.isDirectory) return emptyList()
+    return root.walkTopDown()
+        .filter { it.isFile && it.extension == "css" }
+        .map { it.path }
+        .sorted()
+        .toList()
+}
+
 fun main() {
-    val parts = listOf("web/styles/tokens.css", "web/styles/typography.css", "web/styles/icon.css")
-    parts.forEach { require(File(it).isFile) { "$it is missing — run the converters first" } }
+    val base = listOf("web/styles/tokens.css", "web/styles/typography.css", "web/styles/icon.css")
+    base.forEach { require(File(it).isFile) { "$it is missing — run the converters first" } }
+    val parts = base + componentStylesheets()
 
     val bundle = buildString {
         appendLine("/* Lemonade Design System — self-contained stylesheet.")
@@ -25,12 +55,11 @@ fun main() {
         appendLine(" */")
         parts.forEach { path ->
             appendLine()
-            // Strip each part's own generated banner; one header is enough.
-            appendLine(File(path).readText().substringAfter("*/").trim())
+            appendLine(withoutLeadingBanner(File(path).readText()))
         }
     }
     File("web/styles/lemonade.css").writeText(bundle + "\n")
-    println("✓ web/styles/lemonade.css written (${bundle.length / 1024}KB)")
+    println("✓ web/styles/lemonade.css written (${bundle.length / 1024}KB, ${parts.size} parts)")
 }
 
 main()
