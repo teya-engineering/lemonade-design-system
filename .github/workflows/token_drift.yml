@@ -17,6 +17,10 @@ on:
       - 'text-styles.json'
       - 'web/styles/**'
       - 'web/src/*.generated.ts'
+      # Hand-written, but an input to the generated lemonade.css bundle: edit a
+      # component's stylesheet without re-running web-css-bundle and the pasteable
+      # bundle silently ships without it.
+      - 'web/src/components/**/*.css'
       - 'web/llms.txt'
       - 'web/tokens.json'
       - 'web/assets/**'
