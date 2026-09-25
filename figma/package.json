@@ -4,9 +4,8 @@
   "version": "0.0.0",
   "description": "Figma Code Connect mappings for the Lemonade design system.",
   "scripts": {
-    "check": "node scripts/check-templates.mjs",
-    "validate": "figma connect publish --config figma.compose.config.json --dry-run --exit-on-unreadable-files && figma connect publish --config figma.swiftui.config.json --dry-run --exit-on-unreadable-files",
-    "validate:react": "figma connect publish --config figma.react.config.json --dry-run --exit-on-unreadable-files",
+    "check": "node scripts/check-templates.mjs && node scripts/check-react-snippets.mjs",
+    "validate": "figma connect publish --config figma.compose.config.json --dry-run --exit-on-unreadable-files && figma connect publish --config figma.swiftui.config.json --dry-run --exit-on-unreadable-files && figma connect publish --config figma.react.config.json --dry-run --exit-on-unreadable-files",
     "publish:compose": "figma connect publish --config figma.compose.config.json",
     "publish:swiftui": "figma connect publish --config figma.swiftui.config.json",
     "publish:react": "figma connect publish --config figma.react.config.json"
