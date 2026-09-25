@@ -90,6 +90,9 @@ fun main() {
     out.appendLine("## Text styles")
     out.appendLine()
     out.appendLine("Apply as a class, e.g. `<p class=\"lmnd-text-body-medium-regular\">`.")
+    out.appendLine("Each class also sets font smoothing, so Figtree renders at the weight it was drawn for.")
+    out.appendLine("Text styled with `var(--lmnd-font-family-base)` instead of a class needs")
+    out.appendLine("`-webkit-font-smoothing: antialiased` and `-moz-osx-font-smoothing: grayscale` added by hand.")
     out.appendLine()
     val styles = org.json.JSONArray(File("text-styles.json").readText())
     (0 until styles.length()).forEach { index ->

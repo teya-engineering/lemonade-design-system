@@ -15,6 +15,8 @@
 
 .lmnd-text-display-xsmall {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-600);
   line-height: var(--lmnd-line-height-800);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -23,6 +25,8 @@
 
 .lmnd-text-display-small {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-700);
   line-height: var(--lmnd-line-height-900);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -31,6 +35,8 @@
 
 .lmnd-text-display-medium {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-900);
   line-height: var(--lmnd-line-height-1100);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -39,6 +45,8 @@
 
 .lmnd-text-display-large {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-1200);
   line-height: var(--lmnd-line-height-1400);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -47,6 +55,8 @@
 
 .lmnd-text-display-xlarge {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-1400);
   line-height: var(--lmnd-line-height-1600);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -55,6 +65,8 @@
 
 .lmnd-text-display-2xlarge {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-1600);
   line-height: var(--lmnd-line-height-1800);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -63,6 +75,8 @@
 
 .lmnd-text-display-3xlarge {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-1800);
   line-height: var(--lmnd-line-height-2000);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -71,6 +85,8 @@
 
 .lmnd-text-heading-xlarge {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-1000);
   line-height: var(--lmnd-line-height-1200);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -78,6 +94,8 @@
 
 .lmnd-text-heading-large {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-800);
   line-height: var(--lmnd-line-height-1000);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -85,6 +103,8 @@
 
 .lmnd-text-heading-medium {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-700);
   line-height: var(--lmnd-line-height-900);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -92,6 +112,8 @@
 
 .lmnd-text-heading-small {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-600);
   line-height: var(--lmnd-line-height-800);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -99,6 +121,8 @@
 
 .lmnd-text-heading-xsmall {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-450);
   line-height: var(--lmnd-line-height-650);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -106,6 +130,8 @@
 
 .lmnd-text-heading-xxsmall {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-400);
   line-height: var(--lmnd-line-height-600);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -113,6 +139,8 @@
 
 .lmnd-text-body-xlarge-regular {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-500);
   line-height: var(--lmnd-line-height-700);
   font-weight: var(--lmnd-font-weight-regular);
@@ -120,6 +148,8 @@
 
 .lmnd-text-body-xlarge-medium {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-500);
   line-height: var(--lmnd-line-height-700);
   font-weight: var(--lmnd-font-weight-medium);
@@ -127,6 +157,8 @@
 
 .lmnd-text-body-xlarge-semibold {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-500);
   line-height: var(--lmnd-line-height-700);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -134,6 +166,8 @@
 
 .lmnd-text-body-large-regular {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-450);
   line-height: var(--lmnd-line-height-700);
   font-weight: var(--lmnd-font-weight-regular);
@@ -141,6 +175,8 @@
 
 .lmnd-text-body-large-medium {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-450);
   line-height: var(--lmnd-line-height-700);
   font-weight: var(--lmnd-font-weight-medium);
@@ -148,6 +184,8 @@
 
 .lmnd-text-body-large-semibold {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-450);
   line-height: var(--lmnd-line-height-700);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -155,6 +193,8 @@
 
 .lmnd-text-body-medium-regular {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-400);
   line-height: var(--lmnd-line-height-600);
   font-weight: var(--lmnd-font-weight-regular);
@@ -162,6 +202,8 @@
 
 .lmnd-text-body-medium-medium {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-400);
   line-height: var(--lmnd-line-height-600);
   font-weight: var(--lmnd-font-weight-medium);
@@ -169,6 +211,8 @@
 
 .lmnd-text-body-medium-semibold {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-400);
   line-height: var(--lmnd-line-height-600);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -176,6 +220,8 @@
 
 .lmnd-text-body-small-regular {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-350);
   line-height: var(--lmnd-line-height-500);
   font-weight: var(--lmnd-font-weight-regular);
@@ -183,6 +229,8 @@
 
 .lmnd-text-body-small-medium {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-350);
   line-height: var(--lmnd-line-height-500);
   font-weight: var(--lmnd-font-weight-medium);
@@ -190,6 +238,8 @@
 
 .lmnd-text-body-small-semibold {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-350);
   line-height: var(--lmnd-line-height-500);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -197,6 +247,8 @@
 
 .lmnd-text-body-xsmall-regular {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-300);
   line-height: var(--lmnd-line-height-400);
   font-weight: var(--lmnd-font-weight-regular);
@@ -204,6 +256,8 @@
 
 .lmnd-text-body-xsmall-medium {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-300);
   line-height: var(--lmnd-line-height-400);
   font-weight: var(--lmnd-font-weight-medium);
@@ -211,6 +265,8 @@
 
 .lmnd-text-body-xsmall-semibold {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-300);
   line-height: var(--lmnd-line-height-400);
   font-weight: var(--lmnd-font-weight-semibold);
@@ -218,6 +274,8 @@
 
 .lmnd-text-body-xsmall-overline {
   font-family: var(--lmnd-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-size: var(--lmnd-font-size-300);
   line-height: var(--lmnd-line-height-400);
   font-weight: var(--lmnd-font-weight-semibold);
