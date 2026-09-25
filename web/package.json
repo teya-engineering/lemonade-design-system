@@ -45,6 +45,18 @@
     "./flags/*": "./dist/assets/flags/*",
     "./brand-logos/*": "./dist/assets/brand-logos/*"
   },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -58,6 +70,7 @@
     "build-storybook": "storybook build"
   },
   "devDependencies": {
+    "@storybook/addon-a11y": "^8.6.18",
     "@storybook/addon-essentials": "^8.6.18",
     "@storybook/addon-interactions": "^8.6.18",
     "@storybook/addon-themes": "^8.6.18",
@@ -67,8 +80,11 @@
     "@storybook/react-vite": "^8.6.18",
     "@storybook/test": "^8.6.18",
     "@storybook/theming": "^8.6.18",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
+    "jsdom": "^25.0.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "storybook": "^8.6.18",
