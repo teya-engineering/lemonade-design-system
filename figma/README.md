@@ -21,6 +21,8 @@ connect-swiftui/            SwiftUI templates
 connect-react/              React templates
 shared/                     helpers templates import: slots, time pickers, bottom sheets
 scripts/generate-asset-templates.mjs
+scripts/check-templates.mjs           Kotlin and Swift snippets resolve
+scripts/check-react-snippets.mjs      React snippets type-check
 ```
 
 ## Assets
@@ -72,9 +74,12 @@ here would land on top of that one in a shared team library.
 Web has no asset templates: an icon reaches a React call site as a `--lmnd-icon` URL
 rather than an enum entry, so there is nothing to map one-to-one.
 
-`validate:react` is separate from `validate` because a config whose glob matches no
-templates is an error, so folding it in would break the combined check whenever
-`connect-react/` is empty.
+`npm run check` renders every React template for every combination of its enum and boolean
+properties and hands the snippets to `tsc` against the component sources, so a prop the
+component does not take, an enum spelled the platform's way, or a placeholder that is not a
+valid expression fails offline. Today that is 1,152 combinations for Button. The
+combinations come from the template's own `getEnum` maps, so a vocabulary added in Figma is
+covered without editing the checker.
 
 **No config is named `figma.config.json` on purpose.** That is the CLI's
 default filename, so a bare `figma connect publish` would silently publish just
