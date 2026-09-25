@@ -1,4 +1,5 @@
-// Shared by the templates of both labels; `tag` is figma.kotlin or figma.swift.
+// Shared by every label's templates; `tag` is figma.kotlin, figma.swift or
+// figma.typescript.
 
 // A nested snippet keeps its own indentation, so its code is shifted to fit.
 export const shift = (sections, pad) =>
@@ -14,14 +15,15 @@ export const renderer = (instance, tag) => {
   // Escaping differs per language, and a tag that stopped reporting one would
   // silently drop Kotlin's `$` escape, so an unknown language fails the publish.
   const language = tag``.language
-  if (language !== 'kotlin' && language !== 'swift') {
-    throw new Error(`Code Connect template language is ${language}, expected kotlin or swift`)
+  if (language !== 'kotlin' && language !== 'swift' && language !== 'typescript') {
+    throw new Error(`Code Connect template language is ${language}, expected kotlin, swift or typescript`)
   }
   const kotlin = language === 'kotlin'
 
   // Figma text is arbitrary: a quote ends the literal, a backslash escapes what
   // follows it, a newline breaks the line, and Kotlin reads `$name` as a
-  // template expression. Swift has no `\$` escape, so that one is Kotlin-only.
+  // template expression. Swift and a JSX attribute have no `\$` escape, so that
+  // one is Kotlin-only.
   const quote = (value) => {
     const escaped = String(value ?? '')
       .replace(/\\/g, '\\\\')

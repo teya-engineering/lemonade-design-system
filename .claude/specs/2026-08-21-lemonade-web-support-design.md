@@ -715,6 +715,7 @@ For Button:
 | Pill shape | — | `.fullShape()` | — (`--lmnd-radius-full` exists when it is wanted) |
 | Colours type | `LemonadeButtonColors.solidBackgroundColor` | `…backgroundColor` | none — CSS owns colour |
 | Hover, focus ring | — | — | web-only |
+| `expandContents` | slot overloads only; the icon form hardcodes `false` | slot overloads only | every button — there is one component, so no narrower form to attach it to |
 
 Enum vocabularies are held by a parity check in the mould of
 `scripts/web-text-style-parity-check.main.kts`, which already parses Swift source to

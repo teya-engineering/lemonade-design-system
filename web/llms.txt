@@ -407,6 +407,9 @@ Always prefer a semantic token over a literal value.
 ## Text styles
 
 Apply as a class, e.g. `<p class="lmnd-text-body-medium-regular">`.
+Each class also sets font smoothing, so Figtree renders at the weight it was drawn for.
+Text styled with `var(--lmnd-font-family-base)` instead of a class needs
+`-webkit-font-smoothing: antialiased` and `-moz-osx-font-smoothing: grayscale` added by hand.
 
 - `.lmnd-text-display-xsmall`
 - `.lmnd-text-display-small`

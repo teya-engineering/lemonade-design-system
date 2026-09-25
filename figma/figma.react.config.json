@@ -1,0 +1,15 @@
+{
+  "codeConnect": {
+    "parser": "html",
+    "include": [
+      "connect-react/**/*.figma.ts"
+    ],
+    "label": "Lemonade React",
+    "language": "typescript",
+    "documentUrlSubstitutions": {
+      "<LEMONADE_COMPONENTS>": "https://www.figma.com/design/91S16rhVrl5wivqV66fNjm/Lemonade-DS---Components",
+      "<LEMONADE_ICONS>": "https://www.figma.com/design/f7zokCdnayXejxc2y7r1Qt/Lemonade-DS---Icons",
+      "<LEMONADE_FLAGS>": "https://www.figma.com/design/WdrbfE6UsxkbyEpqGpPozQ/Lemonade-DS---Country-Flags"
+    }
+  }
+}
