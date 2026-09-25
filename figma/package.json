@@ -6,8 +6,10 @@
   "scripts": {
     "check": "node scripts/check-templates.mjs",
     "validate": "figma connect publish --config figma.compose.config.json --dry-run --exit-on-unreadable-files && figma connect publish --config figma.swiftui.config.json --dry-run --exit-on-unreadable-files",
+    "validate:react": "figma connect publish --config figma.react.config.json --dry-run --exit-on-unreadable-files",
     "publish:compose": "figma connect publish --config figma.compose.config.json",
-    "publish:swiftui": "figma connect publish --config figma.swiftui.config.json"
+    "publish:swiftui": "figma connect publish --config figma.swiftui.config.json",
+    "publish:react": "figma connect publish --config figma.react.config.json"
   },
   "devDependencies": {
     "@figma/code-connect": "^2.0.0"
