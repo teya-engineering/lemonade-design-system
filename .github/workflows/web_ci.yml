@@ -38,7 +38,13 @@ jobs:
           npm init -y >/dev/null
           npm install /tmp/teya-lemonade-mobile-ds-*.tgz
           node -e "const {tokens}=require('@teya/lemonade-mobile-ds'); if(tokens.spacing.spacing200!==8) throw new Error('bad token value')"
+          # React is an optional peer, so everything but ./react must work without it.
+          node -e "const {buttonClasses}=require('@teya/lemonade-mobile-ds'); if(!buttonClasses().includes('lmnd-button')) throw new Error('buttonClasses is not usable without React')"
+          test -f node_modules/@teya/lemonade-mobile-ds/dist/components.css
+          test -f node_modules/@teya/lemonade-mobile-ds/dist/react.d.ts
           test -f node_modules/@teya/lemonade-mobile-ds/styles/tokens.css
           test -f node_modules/@teya/lemonade-mobile-ds/dist/fonts.css
           test -f node_modules/@teya/lemonade-mobile-ds/llms.txt
           test -f node_modules/@teya/lemonade-mobile-ds/dist/assets/icons/airplane.svg
+          npm install react react-dom
+          node -e "const {Button}=require('@teya/lemonade-mobile-ds/react'); if(typeof Button!=='function') throw new Error('./react does not export Button')"
