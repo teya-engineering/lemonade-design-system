@@ -1,0 +1,558 @@
+import { describe, expect, it } from 'vitest';
+import {
+	themeColors,
+	scale,
+	fontSizes,
+	fontWeights,
+	composeFontWeights,
+	semanticTextStyles,
+	parseTextStyleName,
+	parseTextStyleSource,
+	shadowSets,
+	composeShadowSizes,
+	fixedLightSurface,
+	findFixedLightSurface,
+	unrenderedColorGroups,
+	assertAllColorGroupsRendered,
+	resolveColorTokens,
+	flattenTokens,
+	type ColorToken,
+} from './tokens';
+
+/** A cut-down stand-in for one `*.tokens.json` export. */
+function parseFixture() {
+	return flattenTokens({
+		$extensions: { 'com.figma.modeName': 'Light' },
+		Background: {
+			'bg-default': {
+				$type: 'color',
+				$value: { colorSpace: 'srgb', components: [1, 1, 1], alpha: 1, hex: '#FFFFFF' },
+				$description: 'The page.',
+				$extensions: {
+					'com.figma.codeSyntax': {
+						ANDROID: 'LemonadeTheme.colors.background.bgDefault',
+						iOS: 'LemonadeTheme.colors.background.bgDefault',
+					},
+					'com.figma.aliasData': { targetVariableName: 'white/950' },
+				},
+			},
+			Voice: {
+				'bg-critical': {
+					$type: 'color',
+					$value: { colorSpace: 'srgb', components: [1, 0, 0], alpha: 0.1, hex: '#F73C48' },
+					$extensions: { 'com.figma.aliasData': { targetVariableName: 'red/alpha/100' } },
+				},
+			},
+			Fixed: {
+				'bg-always-light': {
+					$type: 'color',
+					$value: { colorSpace: 'srgb', components: [1, 1, 1], alpha: 1, hex: '#FFFFFF' },
+					$extensions: { 'com.figma.hiddenFromPublishing': true },
+				},
+			},
+		},
+	});
+}
+
+describe('flattenTokens', () => {
+	// The export moved from the Figma plugin's { modes, variables[] } shape to
+	// Figma native's nested DTCG tree, so this is the layer everything else
+	// depends on.
+	it('walks nested groups into slash-delimited names', () => {
+		const flat = parseFixture();
+
+		expect(flat.map((t) => t.name)).toEqual([
+			'Background/bg-default',
+			'Background/Voice/bg-critical',
+			'Background/Fixed/bg-always-light',
+		]);
+	});
+
+	it('reads value, description, code syntax and the aliased primitive', () => {
+		const [first] = parseFixture();
+
+		expect(first).toMatchObject({
+			type: 'COLOR',
+			value: { hex: '#FFFFFF', alpha: 1 },
+			description: 'The page.',
+			alias: 'white-950',
+			hiddenFromPublishing: false,
+		});
+		expect(first!.codeSyntax.ANDROID).toBe('LemonadeTheme.colors.background.bgDefault');
+	});
+
+	it('skips $-prefixed group metadata rather than treating it as a token', () => {
+		expect(parseFixture().some((t) => t.name.includes('$'))).toBe(false);
+	});
+
+	it('carries hiddenFromPublishing through', () => {
+		const hidden = parseFixture().find((t) => t.name.endsWith('bg-always-light'));
+
+		expect(hidden!.hiddenFromPublishing).toBe(true);
+	});
+
+	it('throws on a $type it cannot map rather than dropping the token', () => {
+		expect(() => flattenTokens({ Odd: { thing: { $type: 'duration', $value: 3 } } })).toThrow(
+			/unsupported \$type "duration"/,
+		);
+	});
+});
+
+describe('flattenTokens alias references', () => {
+	// The native export keeps aliases as DTCG references instead of resolving
+	// them, so `state/focus-ring` arrives as the string "{base.border-50}". Left
+	// alone it reaches the page as NaN — and it is the semantic tokens, the ones
+	// the docs tell people to prefer, that are written this way.
+	const scale = (extra = {}) =>
+		flattenTokens({
+			base: {
+				'border-50': { $type: 'number', $value: 2 },
+				'border-100': { $type: 'number', $value: 4 },
+			},
+			state: {
+				'focus-ring': { $type: 'number', $value: '{base.border-50}' },
+				...extra,
+			},
+		});
+
+	it('resolves a reference to the value it points at', () => {
+		const byName = new Map(scale().map((t) => [t.name, t]));
+
+		expect(byName.get('state/focus-ring')!.value).toBe(2);
+		expect(byName.get('base/border-50')!.value).toBe(2);
+	});
+
+	it('follows a chain of references', () => {
+		const byName = new Map(
+			scale({ 'ring-alias': { $type: 'number', $value: '{state.focus-ring}' } }).map((t) => [
+				t.name,
+				t,
+			]),
+		);
+
+		expect(byName.get('state/ring-alias')!.value).toBe(2);
+	});
+
+	it('throws on a reference that points nowhere', () => {
+		expect(() => scale({ orphan: { $type: 'number', $value: '{base.border-999}' } })).toThrow(
+			/aliases "base\/border-999"/,
+		);
+	});
+
+	it('throws on a loop rather than recursing forever', () => {
+		expect(() =>
+			flattenTokens({
+				a: { $type: 'number', $value: '{b}' },
+				b: { $type: 'number', $value: '{a}' },
+			}),
+		).toThrow(/Alias loop/);
+	});
+
+	it('leaves ordinary string values alone', () => {
+		const [weight] = flattenTokens({ 'font-weight': { $type: 'string', $value: 'SemiBold' } });
+
+		expect(weight!.value).toBe('SemiBold');
+	});
+});
+
+describe('themeColors', () => {
+	it('reads tokens from the Figma export', () => {
+		const groups = themeColors();
+		const tokens = groups.flatMap((g) => g.subgroups.flatMap((s) => s.tokens));
+
+		// Guards against a schema change that would leave the galleries empty
+		// while the site still builds clean.
+		expect(tokens.length).toBeGreaterThan(100);
+	});
+
+	it('resolves both themes for a known token', () => {
+		const tokens = themeColors().flatMap((g) => g.subgroups.flatMap((s) => s.tokens));
+		const bgDefault = tokens.find((t) => t.name === 'bg-default');
+
+		expect(bgDefault).toBeDefined();
+		expect(bgDefault!.light).toBe('#ffffff');
+		expect(bgDefault!.dark).toBe('#201f1d');
+	});
+
+	it('carries every published Content token, not just some of them', () => {
+		const content = themeColors().find((g) => g.label === 'Content')!;
+		const contentTokens = content.subgroups.flatMap((s) => s.tokens);
+
+		// Guards against #7: a schema change that silently drops a whole
+		// top-level group would still pass a bare `> 100` check.
+		//
+		// A floor, not an exact count. Design adds semantic tokens routinely —
+		// PR #326 added four across Content, Background, Border and Interaction —
+		// and pinning the number turns every legitimate addition into a red
+		// build, which trains people to bump the constant without reading it.
+		// The failure this guards against is a group emptying out, not growing.
+		expect(contentTokens.length).toBeGreaterThanOrEqual(28);
+		expect(contentTokens.map((t) => t.name)).toEqual(
+			expect.arrayContaining(['content-primary', 'content-secondary', 'content-tertiary']),
+		);
+	});
+
+	it('renders every top-level group the export contains', () => {
+		const groups = themeColors()
+			.map((g) => g.label)
+			.sort();
+
+		expect(groups).toEqual(['Background', 'Border', 'Content', 'Interaction', 'Scoped', 'Shadow']);
+	});
+});
+
+describe('unrenderedColorGroups', () => {
+	it('is empty when every exported group is a rendered one', () => {
+		expect(unrenderedColorGroups(['Background', 'Content'])).toEqual([]);
+	});
+
+	it('flags a group that is not in the rendered set', () => {
+		expect(unrenderedColorGroups(['Background', 'Vault'])).toEqual(['Vault']);
+	});
+});
+
+describe('assertAllColorGroupsRendered', () => {
+	it('does not throw against the real theme-colors.json export', () => {
+		expect(() => assertAllColorGroupsRendered()).not.toThrow();
+	});
+});
+
+describe('resolveColorTokens', () => {
+	const tokens: ColorToken[] = [
+		{ name: 'bg-brand', path: [], description: '', light: '#fff', dark: '#000', fixed: false },
+		{
+			name: 'content-positive',
+			path: [],
+			description: '',
+			light: '#fff',
+			dark: '#000',
+			fixed: false,
+		},
+	];
+
+	it('resolves every name, in the order given', () => {
+		expect(resolveColorTokens(['content-positive', 'bg-brand'], tokens)).toEqual([
+			tokens[1],
+			tokens[0],
+		]);
+	});
+
+	it('throws naming every token that does not resolve', () => {
+		expect(() => resolveColorTokens(['bg-brand', 'bg-accent', 'bg-ghost'], tokens)).toThrow(
+			/bg-accent, bg-ghost/,
+		);
+	});
+
+	it('does not throw against the real theme-colors.json export for the tokens the landing page uses', () => {
+		const flat = themeColors().flatMap((g) => g.subgroups.flatMap((s) => s.tokens));
+		expect(() =>
+			resolveColorTokens(
+				['bg-brand', 'content-positive', 'content-caution', 'content-critical'],
+				flat,
+			),
+		).not.toThrow();
+	});
+});
+
+describe('scale', () => {
+	it('reads spacing in ascending order', () => {
+		const spacing = scale('spacing.tokens.json');
+		const values = spacing.map((t) => t.value);
+
+		expect(values).toEqual([...values].sort((a, b) => a - b));
+		expect(spacing.find((t) => t.name === 'spacing-400')?.value).toBe(16);
+	});
+});
+
+describe('fontSizes', () => {
+	it('returns only font-size tokens, leaf-named and in ascending order', () => {
+		const sizes = fontSizes();
+
+		expect(sizes.length).toBe(15);
+		expect(sizes.map((t) => t.name)).toContain('font-size-400');
+		expect(sizes.every((t) => !t.name.startsWith('line-height'))).toBe(true);
+		expect(sizes.map((t) => t.value)).toEqual([...sizes.map((t) => t.value)].sort((a, b) => a - b));
+	});
+});
+
+describe('fontWeights', () => {
+	// The regression this covers: font weights are STRING variables, and the
+	// generic `scale()` reader keeps only FLOATs. That filter dropped all four
+	// tokens, so the Typography page rendered an empty Weights section and the
+	// build stayed green.
+	it('reads the STRING weight tokens the FLOAT reader drops', () => {
+		const weights = fontWeights();
+
+		expect(weights.length).toBeGreaterThanOrEqual(4);
+		expect(weights.map((t) => t.name)).toEqual(
+			expect.arrayContaining(['regular', 'medium', 'semibold', 'bold']),
+		);
+	});
+
+	it('maps each style name to its CSS numeric weight', () => {
+		const byName = new Map(fontWeights().map((t) => [t.name, t]));
+
+		expect(byName.get('regular')).toMatchObject({ style: 'Regular', value: 400 });
+		expect(byName.get('medium')).toMatchObject({ style: 'Medium', value: 500 });
+		expect(byName.get('semibold')).toMatchObject({ style: 'SemiBold', value: 600 });
+		expect(byName.get('bold')).toMatchObject({ style: 'Bold', value: 700 });
+	});
+
+	it('returns them in ascending weight order', () => {
+		const values = fontWeights().map((t) => t.value);
+
+		expect(values).toEqual([...values].sort((a, b) => a - b));
+	});
+});
+
+describe('composeFontWeights', () => {
+	it('sorts by weight rather than by export order', () => {
+		const weights = composeFontWeights([
+			{ name: 'bold', style: 'Bold' },
+			{ name: 'regular', style: 'Regular' },
+			{ name: 'semibold', style: 'SemiBold' },
+		]);
+
+		expect(weights.map((t) => t.value)).toEqual([400, 600, 700]);
+	});
+
+	it('throws when the export has no weight tokens at all', () => {
+		expect(() => composeFontWeights([])).toThrow(/no font-weight tokens/);
+		expect(() => composeFontWeights([])).toThrow(/Weights section/);
+	});
+
+	it('throws on a style name with no CSS equivalent', () => {
+		const entries = [
+			{ name: 'regular', style: 'Regular' },
+			{ name: 'ultra', style: 'UltraHeavy' },
+		];
+
+		expect(() => composeFontWeights(entries)).toThrow(/ultra/);
+		expect(() => composeFontWeights(entries)).toThrow(/UltraHeavy/);
+		expect(() => composeFontWeights(entries)).toThrow(/FONT_WEIGHT_SCALE/);
+	});
+});
+
+describe('semanticTextStyles', () => {
+	it('groups the styles the way the Foundations frame does', () => {
+		expect(semanticTextStyles().map((g) => g.label)).toEqual([
+			'Display',
+			'Heading',
+			'Body',
+			'Overline',
+		]);
+	});
+
+	it('reads every entry in the enum', () => {
+		const count = semanticTextStyles()
+			.flatMap((g) => g.subgroups)
+			.flatMap((s) => s.styles).length;
+
+		// A floor, not an exact count: design adds styles. The failure worth
+		// catching is the parser silently matching nothing.
+		expect(count).toBeGreaterThanOrEqual(30);
+	});
+
+	it('resolves each style against the scale tokens', () => {
+		const body = semanticTextStyles()
+			.find((g) => g.label === 'Body')!
+			.subgroups.flatMap((s) => s.styles);
+		const medium = body.find((s) => s.name === 'BodyMediumRegular');
+
+		expect(medium).toMatchObject({
+			label: 'Body Medium Regular',
+			fontSize: 16,
+			lineHeight: 24,
+			fontWeight: 400,
+			sizeToken: 'font-size-400',
+			lineHeightToken: 'line-height-600',
+			weightToken: 'regular',
+		});
+	});
+
+	it('splits Body by size step and leaves the other groups flat', () => {
+		const groups = new Map(semanticTextStyles().map((g) => [g.label, g]));
+
+		expect(groups.get('Body')!.subgroups.map((s) => s.label)).toEqual([
+			'Body XSmall',
+			'Body Small',
+			'Body Medium',
+			'Body Large',
+			'Body XLarge',
+		]);
+		expect(groups.get('Display')!.subgroups).toHaveLength(1);
+		expect(groups.get('Display')!.subgroups[0]!.label).toBeUndefined();
+	});
+
+	// The enum files the overline style under Body; Figma presents it on its own.
+	it('lifts the overline style out of Body', () => {
+		const groups = new Map(semanticTextStyles().map((g) => [g.label, g]));
+		const overline = groups.get('Overline')!.subgroups.flatMap((s) => s.styles);
+		const body = groups.get('Body')!.subgroups.flatMap((s) => s.styles);
+
+		expect(overline.map((s) => s.name)).toEqual(['BodyXSmallOverline']);
+		expect(overline[0]!.letterSpacing).toBe(1.5);
+		expect(body.some((s) => s.name === 'BodyXSmallOverline')).toBe(false);
+	});
+
+	it('orders each group by size, then by weight', () => {
+		for (const group of semanticTextStyles()) {
+			for (const subgroup of group.subgroups) {
+				const keys = subgroup.styles.map((s) => s.fontSize * 1000 + s.fontWeight);
+				expect(keys).toEqual([...keys].sort((a, b) => a - b));
+			}
+		}
+	});
+});
+
+describe('parseTextStyleName', () => {
+	it('splits names that generic PascalCase splitting gets wrong', () => {
+		expect(parseTextStyleName('BodyMediumSemiBold')).toEqual({
+			group: 'Body',
+			size: 'Medium',
+			weight: 'SemiBold',
+		});
+		expect(parseTextStyleName('Display3XLarge')).toEqual({
+			group: 'Display',
+			size: '3XLarge',
+			weight: '',
+		});
+		expect(parseTextStyleName('HeadingXXSmall')).toEqual({
+			group: 'Heading',
+			size: 'XXSmall',
+			weight: '',
+		});
+	});
+
+	it('throws rather than mislabelling an unknown name', () => {
+		expect(() => parseTextStyleName('CaptionSmall')).toThrow(/STYLE_GROUPS/);
+		expect(() => parseTextStyleName('BodyEnormous')).toThrow(/STYLE_SIZES/);
+		expect(() => parseTextStyleName('BodyMediumUltra')).toThrow(/STYLE_WEIGHTS/);
+	});
+});
+
+describe('parseTextStyleSource', () => {
+	it('throws when the enum shape changes and nothing matches', () => {
+		expect(() => parseTextStyleSource('public enum class LemonadeTypography { }')).toThrow(
+			/No LemonadeTypography entries parsed/,
+		);
+		expect(() => parseTextStyleSource('')).toThrow(/Typography page/);
+	});
+});
+
+describe('shadowSets', () => {
+	it('composes every shadow size', () => {
+		const names = shadowSets().map((s) => s.name);
+		expect(names).toEqual(['xsmall', 'small', 'medium', 'large', 'xlarge']);
+	});
+
+	it('gives xsmall one level and large two', () => {
+		const sets = shadowSets();
+		expect(sets.find((s) => s.name === 'xsmall')!.levels).toHaveLength(1);
+		expect(sets.find((s) => s.name === 'large')!.levels).toHaveLength(2);
+	});
+
+	it('builds the box-shadow value for every size', () => {
+		const css = Object.fromEntries(shadowSets().map((s) => [s.name, s.css]));
+		expect(css).toEqual({
+			xsmall: '0px 0.5px 1px 0px #0000000d',
+			small: '0px 1px 3px 0px #0000000d, 0px 1px 2px -1px #0000000d',
+			medium: '0px 2px 3px -2px #0000000d, 0px 4px 6px -2px #0000000d',
+			large: '0px 4px 6px -4px #0000000d, 0px 10px 15px -3px #0000000d',
+			xlarge: '0px 8px 10px -6px #0000000d, 0px 20px 25px -5px #0000000d',
+		});
+	});
+});
+
+describe('fixedLightSurface', () => {
+	it('resolves bg-always-light to white', () => {
+		expect(fixedLightSurface()).toBe('#ffffff');
+	});
+});
+
+describe('findFixedLightSurface', () => {
+	it('resolves the light value of bg-always-light', () => {
+		const variables = [
+			{ name: 'Background/Voice/bg-critical', value: { hex: '#F73C48', alpha: 1 } },
+			{ name: 'Background/Fixed/bg-always-light', value: { hex: '#FFFFFF', alpha: 1 } },
+		];
+
+		expect(findFixedLightSurface(variables)).toBe('#ffffff');
+	});
+
+	it('throws when the token is missing rather than guessing a surface', () => {
+		expect(() => findFixedLightSurface([])).toThrow(/bg-always-light/);
+	});
+});
+
+describe('composeShadowSizes', () => {
+	it('throws when a size is not in SHADOW_ORDER', () => {
+		const parts = new Map([
+			[
+				'huge',
+				new Map([
+					[
+						'level-1',
+						new Map<string, number | string>([
+							['offset-x', 0],
+							['offset-y', 1],
+							['blur', 2],
+							['spread', 0],
+							['color', '#0000000d'],
+						]),
+					],
+				]),
+			],
+		]);
+
+		expect(() => composeShadowSizes(parts)).toThrow(/huge/);
+		expect(() => composeShadowSizes(parts)).toThrow(/SHADOW_ORDER/);
+	});
+
+	it('throws when a level is missing a required property', () => {
+		const parts = new Map([
+			[
+				'xsmall',
+				new Map([
+					[
+						'level-1',
+						new Map<string, number | string>([
+							['offset-x', 0],
+							['offset-y', 1],
+							['blur', 2],
+							['spread', 0],
+							// color omitted
+						]),
+					],
+				]),
+			],
+		]);
+
+		expect(() => composeShadowSizes(parts)).toThrow(/xsmall/);
+		expect(() => composeShadowSizes(parts)).toThrow(/level-1/);
+		expect(() => composeShadowSizes(parts)).toThrow(/color/);
+	});
+
+	it('does not throw when a size legitimately has only one level', () => {
+		const parts = new Map([
+			[
+				'xsmall',
+				new Map([
+					[
+						'level-1',
+						new Map<string, number | string>([
+							['offset-x', 0],
+							['offset-y', 1],
+							['blur', 2],
+							['spread', 0],
+							['color', '#0000000d'],
+						]),
+					],
+				]),
+			],
+		]);
+
+		expect(() => composeShadowSizes(parts)).not.toThrow();
+		expect(composeShadowSizes(parts)[0]!.levels).toHaveLength(1);
+	});
+});
