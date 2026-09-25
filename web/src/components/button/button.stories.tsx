@@ -7,10 +7,14 @@ const VARIANTS: LemonadeButtonVariant[] = ['primary', 'secondary', 'neutral', 'c
 const TYPES: LemonadeButtonType[] = ['solid', 'subtle', 'ghost']
 const SIZES: LemonadeButtonSize[] = ['xSmall', 'small', 'medium', 'large']
 
-/** onBrand and onColor are meant to sit on a filled surface, so the grid gives them one. */
+/**
+ * onBrand and onColor are meant to sit on a filled surface, so the grid gives them one.
+ * onColor's content is always-light, so its surface has to stay dark in both themes —
+ * which is what the always-dark neutral is for.
+ */
 const SURFACE: Record<string, CSSProperties> = {
   onBrand: { background: 'var(--lmnd-color-bg-brand)' },
-  onColor: { background: 'var(--lmnd-color-bg-featured)' },
+  onColor: { background: 'var(--lmnd-color-bg-always-dark)' },
 }
 
 function Icon({ name }: { name: string }) {
@@ -36,7 +40,7 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
           alignItems: 'center',
           gap: 'var(--lmnd-spacing-300)',
           padding: 'var(--lmnd-spacing-300)',
-          borderRadius: 'var(--lmnd-radius-300)',
+          borderRadius: 'var(--lmnd-radius-400)',
           ...SURFACE[label.split(' ')[0]],
         }}
       >
