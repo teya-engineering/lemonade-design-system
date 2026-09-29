@@ -33,6 +33,13 @@ struct SymbolContainerDisplayView: View {
         (.xLarge, "XLarge"),
     ]
 
+    private let badgePositions: [SymbolContainerBadgePosition] = [
+        .topLeading,
+        .topTrailing,
+        .bottomLeading,
+        .bottomTrailing,
+    ]
+
     private let imageSizes: [(SymbolContainerSize, String)] = [
         (.small, "Small"),
         (.medium, "Medium"),
@@ -50,6 +57,7 @@ struct SymbolContainerDisplayView: View {
                 themesSection(title: "Themes (Subtle)", subtle: true)
                 shapesSection
                 badgeSection
+                badgePositionSection
                 imageSection
                 textSection
                 customContentSection
@@ -188,6 +196,27 @@ struct SymbolContainerDisplayView: View {
                             LemonadeUi.Badge(text: "3", size: .xSmall)
                         }
                         Text(label).font(.caption)
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Badge Position
+
+    private var badgePositionSection: some View {
+        sectionView(title: "Badge Position") {
+            FlowLayout(spacing: 24) {
+                ForEach(badgePositions, id: \.self) { position in
+                    VStack(spacing: 8) {
+                        LemonadeUi.SymbolContainer(
+                            icon: .heart,
+                            contentDescription: nil,
+                            badgePosition: position
+                        ) {
+                            LemonadeUi.Badge(text: "3", size: .xSmall)
+                        }
+                        Text(String(describing: position)).font(.caption)
                     }
                 }
             }

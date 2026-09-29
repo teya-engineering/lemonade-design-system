@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.DpOffset
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTextStyle
+import com.teya.lemonade.core.SymbolContainerBadgePosition
 import com.teya.lemonade.core.SymbolContainerShape
 import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.SymbolContainerVoice
@@ -47,7 +48,8 @@ import com.teya.lemonade.core.SymbolContainerVoice
  * @param voice [SymbolContainerVoice] driving the background color and the [icon] tint
  * @param size [SymbolContainerSize] driving the container's size
  * @param shape [SymbolContainerShape] driving the container's shape
- * @param badgeSlot composable slot for a badge overlay at the bottom-right corner
+ * @param badgeSlot composable slot for a badge overlay at the corner set by [badgePosition]
+ * @param badgePosition [SymbolContainerBadgePosition] for the corner the [badgeSlot] hangs off
  */
 @Composable
 public fun LemonadeUi.SymbolContainer(
@@ -58,6 +60,7 @@ public fun LemonadeUi.SymbolContainer(
     size: SymbolContainerSize = SymbolContainerSize.Medium,
     shape: SymbolContainerShape = SymbolContainerShape.Circle,
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
+    badgePosition: SymbolContainerBadgePosition = SymbolContainerBadgePosition.BottomEnd,
 ) {
     IconSymbolContainer(
         icon = icon,
@@ -67,6 +70,7 @@ public fun LemonadeUi.SymbolContainer(
         size = size,
         shape = shape,
         badgeSlot = badgeSlot,
+        badgePosition = badgePosition,
     )
 }
 
@@ -87,7 +91,8 @@ public fun LemonadeUi.SymbolContainer(
  * @param voice [SymbolContainerVoice] driving the background color and the [text] color
  * @param size [SymbolContainerSize] driving the container's size
  * @param shape [SymbolContainerShape] driving the container's shape
- * @param badgeSlot composable slot for a badge overlay at the bottom-right corner
+ * @param badgeSlot composable slot for a badge overlay at the corner set by [badgePosition]
+ * @param badgePosition [SymbolContainerBadgePosition] for the corner the [badgeSlot] hangs off
  */
 @Composable
 public fun LemonadeUi.SymbolContainer(
@@ -97,6 +102,7 @@ public fun LemonadeUi.SymbolContainer(
     size: SymbolContainerSize = SymbolContainerSize.Medium,
     shape: SymbolContainerShape = SymbolContainerShape.Circle,
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
+    badgePosition: SymbolContainerBadgePosition = SymbolContainerBadgePosition.BottomEnd,
 ) {
     TextSymbolContainer(
         text = text,
@@ -105,6 +111,7 @@ public fun LemonadeUi.SymbolContainer(
         size = size,
         shape = shape,
         badgeSlot = badgeSlot,
+        badgePosition = badgePosition,
     )
 }
 
@@ -129,7 +136,8 @@ public fun LemonadeUi.SymbolContainer(
  * @param modifier [Modifier] applied to the base component
  * @param size [SymbolContainerSize] driving the container's size
  * @param shape [SymbolContainerShape] driving the container's shape
- * @param badgeSlot composable slot for a badge overlay at the bottom-right corner
+ * @param badgeSlot composable slot for a badge overlay at the corner set by [badgePosition]
+ * @param badgePosition [SymbolContainerBadgePosition] for the corner the [badgeSlot] hangs off
  */
 @ExperimentalLemonadeApi
 @Composable
@@ -141,6 +149,7 @@ public fun LemonadeUi.SymbolContainer(
     size: SymbolContainerSize = SymbolContainerSize.Medium,
     shape: SymbolContainerShape = SymbolContainerShape.Circle,
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
+    badgePosition: SymbolContainerBadgePosition = SymbolContainerBadgePosition.BottomEnd,
 ) {
     IconSymbolContainer(
         icon = icon,
@@ -150,6 +159,7 @@ public fun LemonadeUi.SymbolContainer(
         size = size,
         shape = shape,
         badgeSlot = badgeSlot,
+        badgePosition = badgePosition,
     )
 }
 
@@ -172,7 +182,8 @@ public fun LemonadeUi.SymbolContainer(
  * @param modifier [Modifier] applied to the base component
  * @param size [SymbolContainerSize] driving the container's size
  * @param shape [SymbolContainerShape] driving the container's shape
- * @param badgeSlot composable slot for a badge overlay at the bottom-right corner
+ * @param badgeSlot composable slot for a badge overlay at the corner set by [badgePosition]
+ * @param badgePosition [SymbolContainerBadgePosition] for the corner the [badgeSlot] hangs off
  */
 @ExperimentalLemonadeApi
 @Composable
@@ -183,6 +194,7 @@ public fun LemonadeUi.SymbolContainer(
     size: SymbolContainerSize = SymbolContainerSize.Medium,
     shape: SymbolContainerShape = SymbolContainerShape.Circle,
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
+    badgePosition: SymbolContainerBadgePosition = SymbolContainerBadgePosition.BottomEnd,
 ) {
     TextSymbolContainer(
         text = text,
@@ -191,6 +203,7 @@ public fun LemonadeUi.SymbolContainer(
         size = size,
         shape = shape,
         badgeSlot = badgeSlot,
+        badgePosition = badgePosition,
     )
 }
 
@@ -216,7 +229,8 @@ public fun LemonadeUi.SymbolContainer(
  * @param voice [SymbolContainerVoice] driving the background color
  * @param size [SymbolContainerSize] driving the container's size
  * @param shape [SymbolContainerShape] driving the container's shape
- * @param badgeSlot composable slot for a badge overlay at the bottom-right corner
+ * @param badgeSlot composable slot for a badge overlay at the corner set by [badgePosition]
+ * @param badgePosition [SymbolContainerBadgePosition] for the corner the [badgeSlot] hangs off
  */
 @Composable
 public fun LemonadeUi.SymbolContainer(
@@ -228,6 +242,7 @@ public fun LemonadeUi.SymbolContainer(
     size: SymbolContainerSize = SymbolContainerSize.Medium,
     shape: SymbolContainerShape = SymbolContainerShape.Circle,
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
+    badgePosition: SymbolContainerBadgePosition = SymbolContainerBadgePosition.BottomEnd,
 ) {
     CoreSymbolContainer(
         colors = voice.symbolContainerColors,
@@ -236,6 +251,7 @@ public fun LemonadeUi.SymbolContainer(
         clipContent = fill,
         modifier = modifier,
         badgeSlot = badgeSlot,
+        badgePosition = badgePosition,
         contentSlot = { dimensions ->
             Image(
                 painter = painter,
@@ -280,7 +296,8 @@ public fun LemonadeUi.SymbolContainer(
  * @param voice [SymbolContainerVoice] driving the background color
  * @param size [SymbolContainerSize] driving the container's size
  * @param shape [SymbolContainerShape] driving the container's shape
- * @param badgeSlot composable slot for a badge overlay at the bottom-right corner
+ * @param badgeSlot composable slot for a badge overlay at the corner set by [badgePosition]
+ * @param badgePosition [SymbolContainerBadgePosition] for the corner the [badgeSlot] hangs off
  */
 @Composable
 public fun LemonadeUi.SymbolContainer(
@@ -290,6 +307,7 @@ public fun LemonadeUi.SymbolContainer(
     size: SymbolContainerSize = SymbolContainerSize.Medium,
     shape: SymbolContainerShape = SymbolContainerShape.Circle,
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
+    badgePosition: SymbolContainerBadgePosition = SymbolContainerBadgePosition.BottomEnd,
 ) {
     CoreSymbolContainer(
         colors = voice.symbolContainerColors,
@@ -298,6 +316,7 @@ public fun LemonadeUi.SymbolContainer(
         clipContent = true,
         modifier = modifier,
         badgeSlot = badgeSlot,
+        badgePosition = badgePosition,
         contentSlot = { dimensions ->
             Box(
                 content = contentSlot,
@@ -305,6 +324,160 @@ public fun LemonadeUi.SymbolContainer(
                 modifier = Modifier.requiredSize(size = dimensions.contentSize),
             )
         },
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with badgePosition.",
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.SymbolContainer(
+    icon: LemonadeIcons,
+    contentDescription: String?,
+    modifier: Modifier = Modifier,
+    voice: SymbolContainerVoice = SymbolContainerVoice.Neutral,
+    size: SymbolContainerSize = SymbolContainerSize.Medium,
+    shape: SymbolContainerShape = SymbolContainerShape.Circle,
+    badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
+) {
+    LemonadeUi.SymbolContainer(
+        icon = icon,
+        contentDescription = contentDescription,
+        modifier = modifier,
+        voice = voice,
+        size = size,
+        shape = shape,
+        badgeSlot = badgeSlot,
+        badgePosition = SymbolContainerBadgePosition.BottomEnd,
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with badgePosition.",
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.SymbolContainer(
+    text: String,
+    modifier: Modifier = Modifier,
+    voice: SymbolContainerVoice = SymbolContainerVoice.Neutral,
+    size: SymbolContainerSize = SymbolContainerSize.Medium,
+    shape: SymbolContainerShape = SymbolContainerShape.Circle,
+    badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
+) {
+    LemonadeUi.SymbolContainer(
+        text = text,
+        modifier = modifier,
+        voice = voice,
+        size = size,
+        shape = shape,
+        badgeSlot = badgeSlot,
+        badgePosition = SymbolContainerBadgePosition.BottomEnd,
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with badgePosition.",
+    level = DeprecationLevel.HIDDEN,
+)
+@ExperimentalLemonadeApi
+@Composable
+public fun LemonadeUi.SymbolContainer(
+    icon: LemonadeIcons,
+    contentDescription: String?,
+    theme: ThemedStyle,
+    modifier: Modifier = Modifier,
+    size: SymbolContainerSize = SymbolContainerSize.Medium,
+    shape: SymbolContainerShape = SymbolContainerShape.Circle,
+    badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
+) {
+    LemonadeUi.SymbolContainer(
+        icon = icon,
+        contentDescription = contentDescription,
+        theme = theme,
+        modifier = modifier,
+        size = size,
+        shape = shape,
+        badgeSlot = badgeSlot,
+        badgePosition = SymbolContainerBadgePosition.BottomEnd,
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with badgePosition.",
+    level = DeprecationLevel.HIDDEN,
+)
+@ExperimentalLemonadeApi
+@Composable
+public fun LemonadeUi.SymbolContainer(
+    text: String,
+    theme: ThemedStyle,
+    modifier: Modifier = Modifier,
+    size: SymbolContainerSize = SymbolContainerSize.Medium,
+    shape: SymbolContainerShape = SymbolContainerShape.Circle,
+    badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
+) {
+    LemonadeUi.SymbolContainer(
+        text = text,
+        theme = theme,
+        modifier = modifier,
+        size = size,
+        shape = shape,
+        badgeSlot = badgeSlot,
+        badgePosition = SymbolContainerBadgePosition.BottomEnd,
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with badgePosition.",
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.SymbolContainer(
+    painter: Painter,
+    contentDescription: String?,
+    modifier: Modifier = Modifier,
+    fill: Boolean = true,
+    voice: SymbolContainerVoice = SymbolContainerVoice.Neutral,
+    size: SymbolContainerSize = SymbolContainerSize.Medium,
+    shape: SymbolContainerShape = SymbolContainerShape.Circle,
+    badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
+) {
+    LemonadeUi.SymbolContainer(
+        painter = painter,
+        contentDescription = contentDescription,
+        modifier = modifier,
+        fill = fill,
+        voice = voice,
+        size = size,
+        shape = shape,
+        badgeSlot = badgeSlot,
+        badgePosition = SymbolContainerBadgePosition.BottomEnd,
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with badgePosition.",
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.SymbolContainer(
+    contentSlot: @Composable BoxScope.() -> Unit,
+    modifier: Modifier = Modifier,
+    voice: SymbolContainerVoice = SymbolContainerVoice.Neutral,
+    size: SymbolContainerSize = SymbolContainerSize.Medium,
+    shape: SymbolContainerShape = SymbolContainerShape.Circle,
+    badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
+) {
+    LemonadeUi.SymbolContainer(
+        contentSlot = contentSlot,
+        modifier = modifier,
+        voice = voice,
+        size = size,
+        shape = shape,
+        badgeSlot = badgeSlot,
+        badgePosition = SymbolContainerBadgePosition.BottomEnd,
     )
 }
 
@@ -317,6 +490,7 @@ private fun IconSymbolContainer(
     size: SymbolContainerSize,
     shape: SymbolContainerShape,
     badgeSlot: (@Composable BoxScope.() -> Unit)?,
+    badgePosition: SymbolContainerBadgePosition,
 ) {
     CoreSymbolContainer(
         colors = colors,
@@ -325,6 +499,7 @@ private fun IconSymbolContainer(
         clipContent = false,
         modifier = modifier,
         badgeSlot = badgeSlot,
+        badgePosition = badgePosition,
         contentSlot = { dimensions ->
             LemonadeUi.Icon(
                 icon = icon,
@@ -344,6 +519,7 @@ private fun TextSymbolContainer(
     size: SymbolContainerSize,
     shape: SymbolContainerShape,
     badgeSlot: (@Composable BoxScope.() -> Unit)?,
+    badgePosition: SymbolContainerBadgePosition,
 ) {
     CoreSymbolContainer(
         colors = colors,
@@ -352,6 +528,7 @@ private fun TextSymbolContainer(
         clipContent = false,
         modifier = modifier,
         badgeSlot = badgeSlot,
+        badgePosition = badgePosition,
         contentSlot = { dimensions ->
             LemonadeUi.Text(
                 text = text,
@@ -371,6 +548,7 @@ private fun CoreSymbolContainer(
     clipContent: Boolean,
     modifier: Modifier = Modifier,
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
+    badgePosition: SymbolContainerBadgePosition = SymbolContainerBadgePosition.BottomEnd,
 ) {
     val dimensions = size.defaultSymbolContainerPlatformDimensions()
     val resolvedShape = shape.resolveShape(size)
@@ -379,14 +557,22 @@ private fun CoreSymbolContainer(
         val spaces = LocalSpaces.current
         LemonadeBadgeBox(
             modifier = modifier,
+            // LemonadeBadgeBox aligns the badge's end and top to the anchor's, then shifts it by
+            // this offset, with y pointing up.
             badgeOffset = { badgeSize ->
-                val startingHeight = with(density) {
-                    badgeSize.height.toDp() - dimensions.containerSize
+                val (badgeWidth, badgeHeight) = with(density) {
+                    badgeSize.width.toDp() to badgeSize.height.toDp()
                 }
-                DpOffset(
-                    x = spaces.spacing100,
-                    y = startingHeight - spaces.spacing100,
-                )
+                val endX = spaces.spacing100
+                val startX = badgeWidth - dimensions.containerSize - spaces.spacing100
+                val topY = spaces.spacing100
+                val bottomY = badgeHeight - dimensions.containerSize - spaces.spacing100
+                when (badgePosition) {
+                    SymbolContainerBadgePosition.TopStart -> DpOffset(x = startX, y = topY)
+                    SymbolContainerBadgePosition.TopEnd -> DpOffset(x = endX, y = topY)
+                    SymbolContainerBadgePosition.BottomStart -> DpOffset(x = startX, y = bottomY)
+                    SymbolContainerBadgePosition.BottomEnd -> DpOffset(x = endX, y = bottomY)
+                }
             },
             badge = badgeSlot,
             content = {
