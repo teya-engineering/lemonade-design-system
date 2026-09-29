@@ -37,11 +37,20 @@ public val lemonadeFontFamily: FontFamily
     }
 
 /**
- * The font family every Lemonade text style resolves through.
+ * The family a host has asked for, or `null` for the design system's own.
  *
- * Defaults to [lemonadeFontFamily] (Figtree). Provide another to render the design system in a
- * different typeface — the type scale, weights and line heights are unchanged, only the faces they
- * are drawn with:
+ * Read [LemonadeTheme.fontFamily] instead — it resolves the `null` case.
+ */
+@InternalLemonadeApi
+public val LocalFontFamily: ProvidableCompositionLocal<FontFamily?> =
+    staticCompositionLocalOf { null }
+
+/**
+ * The font family every Lemonade text style is drawn with.
+ *
+ * Defaults to [lemonadeFontFamily] (Figtree). Pass another to [LemonadeTheme] to render the design
+ * system in a different typeface — the type scale, weights and line heights are unchanged, only the
+ * faces they are drawn with:
  *
  * ```kotlin
  * LemonadeTheme(fontFamily = myBrandFontFamily) {
@@ -52,11 +61,13 @@ public val lemonadeFontFamily: FontFamily
  * The tokens carry metrics only — size, line height, weight, letter spacing — and never a family,
  * so swapping this changes the faces without touching the scale.
  *
- * Note that the design system's line heights were drawn against Figtree's metrics. A face with a
- * very different ascender/descender ratio will sit differently inside them.
+ * The design system's line heights were drawn against Figtree's metrics, so a face with a very
+ * different ascender/descender ratio will sit differently inside them.
  */
-public val LocalFontFamily: ProvidableCompositionLocal<FontFamily?> =
-    staticCompositionLocalOf { null }
+@OptIn(InternalLemonadeApi::class)
+public val LemonadeTheme.fontFamily: FontFamily
+    @Composable get() = LocalFontFamily.current
+        ?: lemonadeFontFamily
 
 /**
  * Converts a [LemonadeTextStyle] to a Compose [TextStyle] using an already-resolved [fontFamily].
@@ -87,8 +98,7 @@ public fun LemonadeTextStyle.toTextStyle(fontFamily: FontFamily): TextStyle {
 @OptIn(InternalLemonadeApi::class)
 public val LemonadeTextStyle.textStyle: TextStyle
     @Composable get() {
-        val fontFamily = LocalFontFamily.current
-            ?: lemonadeFontFamily
+        val fontFamily = LemonadeTheme.fontFamily
         return remember(this, fontFamily) {
             toTextStyle(fontFamily)
         }

@@ -10,6 +10,7 @@ import androidx.compose.ui.text.font.FontFamily
     message = "Use the overload with the fontFamily parameter.",
     level = DeprecationLevel.HIDDEN,
 )
+@OptIn(InternalLemonadeApi::class)
 @Composable
 public fun LemonadeTheme(
     colors: LemonadeSemanticColors = if (isSystemInDarkTheme()) {
@@ -37,16 +38,18 @@ public fun LemonadeTheme(
         borderWidths = borderWidths,
         sizes = sizes,
         effects = effects,
-        fontFamily = null,
+        fontFamily = LocalFontFamily.current,
         content = content,
     )
 }
 
 /**
- * @param fontFamily The typeface every Lemonade component draws with. Defaults to Figtree. Pass a
- *   [FontFamily] to render the design system in another face — the type scale itself is unchanged,
- *   since the tokens carry metrics only. See [LocalFontFamily].
+ * @param fontFamily The typeface every Lemonade component draws with. Defaults to the family
+ *   already in scope, or Figtree at the root. Pass a [FontFamily] to render the design system in
+ *   another face — the type scale itself is unchanged, since the tokens carry metrics only. See
+ *   [LemonadeTheme.fontFamily].
  */
+@OptIn(InternalLemonadeApi::class)
 @Composable
 public fun LemonadeTheme(
     colors: LemonadeSemanticColors = if (isSystemInDarkTheme()) {
@@ -62,7 +65,7 @@ public fun LemonadeTheme(
     borderWidths: LemonadeBorderWidth = LemonadeTheme.borderWidths,
     sizes: LemonadeSizeValues = LemonadeTheme.sizes,
     effects: LemonadeEffects = LemonadeTheme.effects,
-    fontFamily: FontFamily? = null,
+    fontFamily: FontFamily? = LocalFontFamily.current,
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
