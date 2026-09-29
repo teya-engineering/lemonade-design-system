@@ -31,19 +31,19 @@ public final class com/teya/lemonade/BottomTabBarKt {
 public final class com/teya/lemonade/ComposableSingletons$BottomSheetKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$BottomSheetKt;
 	public fun <init> ()V
-	public final fun getLambda$-481709865$expressive_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-481709865$Lemonade_expressive_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$BottomTabBarKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$BottomTabBarKt;
 	public fun <init> ()V
-	public final fun getLambda$-692955140$expressive_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-692955140$Lemonade_expressive_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$OverlaySystemBarsKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$OverlaySystemBarsKt;
 	public fun <init> ()V
-	public final fun getLambda$522199578$expressive_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$522199578$Lemonade_expressive_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/teya/lemonade/DialogKt {

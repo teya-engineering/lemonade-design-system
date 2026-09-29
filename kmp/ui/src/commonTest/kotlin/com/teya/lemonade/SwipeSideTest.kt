@@ -170,7 +170,7 @@ class SwipeSideTest {
     }
 
     @Test
-    fun `a drag past the threshold crosses, either way`() {
+    fun `a drag past the threshold crosses either way`() {
         assertTrue(
             actual = crossed(travel = 200f),
         )

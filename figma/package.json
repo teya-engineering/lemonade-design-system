@@ -10,6 +10,6 @@
     "publish:swiftui": "figma connect publish --config figma.swiftui.config.json"
   },
   "devDependencies": {
-    "@figma/code-connect": "^2.0.0"
+    "@figma/code-connect": "^2.0.1"
   }
 }

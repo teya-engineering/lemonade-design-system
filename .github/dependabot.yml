@@ -1,0 +1,58 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /web
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: build(deps)
+      prefix-development: build(deps-dev)
+    groups:
+      web:
+        patterns:
+          - "*"
+
+  - package-ecosystem: npm
+    directory: /figma
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 2
+    commit-message:
+      prefix: build(deps)
+      prefix-development: build(deps-dev)
+    groups:
+      figma:
+        patterns:
+          - "*"
+
+  # Majors are withheld: the published modules are ABI-gated, so a major bump
+  # needs an apiDump and a maintainer to sign off the API Stability Review.
+  - package-ecosystem: gradle
+    directory: /kmp
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: build(deps)
+    groups:
+      kmp:
+        patterns:
+          - "*"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 2
+    commit-message:
+      prefix: ci(deps)
+    groups:
+      actions:
+        patterns:
+          - "*"
