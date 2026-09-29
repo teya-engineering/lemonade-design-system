@@ -4,7 +4,13 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.ui.text.font.FontFamily
 
+@Deprecated(
+    message = "Use the overload with the fontFamily parameter.",
+    level = DeprecationLevel.HIDDEN,
+)
+@OptIn(InternalLemonadeApi::class)
 @Composable
 public fun LemonadeTheme(
     colors: LemonadeSemanticColors = if (isSystemInDarkTheme()) {
@@ -22,7 +28,48 @@ public fun LemonadeTheme(
     effects: LemonadeEffects = LemonadeTheme.effects,
     content: @Composable () -> Unit,
 ) {
+    LemonadeTheme(
+        colors = colors,
+        typography = typography,
+        radius = radius,
+        shapes = shapes,
+        opacities = opacities,
+        spaces = spaces,
+        borderWidths = borderWidths,
+        sizes = sizes,
+        effects = effects,
+        fontFamily = LocalFontFamily.current,
+        content = content,
+    )
+}
+
+/**
+ * @param fontFamily The typeface every Lemonade component draws with. Defaults to the family
+ *   already in scope, or Figtree at the root. Pass a [FontFamily] to render the design system in
+ *   another face — the type scale itself is unchanged, since the tokens carry metrics only. See
+ *   [LemonadeTheme.fontFamily].
+ */
+@OptIn(InternalLemonadeApi::class)
+@Composable
+public fun LemonadeTheme(
+    colors: LemonadeSemanticColors = if (isSystemInDarkTheme()) {
+        LemonadeDarkTheme
+    } else {
+        LemonadeLightTheme
+    },
+    typography: LemonadeTypographyProvider = LemonadeTheme.typography,
+    radius: LemonadeRadiusValues = LemonadeTheme.radius,
+    shapes: LemonadeShapes = LemonadeTheme.shapes,
+    opacities: LemonadeOpacity = LemonadeTheme.opacities,
+    spaces: LemonadeSpaceValues = LemonadeTheme.spaces,
+    borderWidths: LemonadeBorderWidth = LemonadeTheme.borderWidths,
+    sizes: LemonadeSizeValues = LemonadeTheme.sizes,
+    effects: LemonadeEffects = LemonadeTheme.effects,
+    fontFamily: FontFamily? = LocalFontFamily.current,
+    content: @Composable () -> Unit,
+) {
     CompositionLocalProvider(
+        LocalFontFamily provides fontFamily,
         LocalTypographies provides typography,
         LocalColors provides colors,
         LocalThemedColors provides if (colors.isDark) {

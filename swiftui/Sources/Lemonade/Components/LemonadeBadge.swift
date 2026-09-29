@@ -82,6 +82,8 @@ public extension LemonadeUi {
 // MARK: - Internal Badge View
 
 private struct LemonadeBadgeView: View {
+    @Environment(\.lemonadeFontFamily) private var fontFamily
+
     let text: String
     let size: LemonadeBadgeSize
 
@@ -101,7 +103,7 @@ private struct LemonadeBadgeView: View {
 
     var body: some View {
         SwiftUI.Text(text)
-            .font(.custom(LemonadeTypography.fontFamily, size: size.fontSize).weight(.semibold))
+            .font(fontFamily.font(forWeight: .semibold, size: size.fontSize))
             .foregroundStyle(LemonadeTheme.colors.content.contentOnBrandHigh)
             .lineLimit(1)
             .padding(.horizontal, size.textHorizontalPadding)

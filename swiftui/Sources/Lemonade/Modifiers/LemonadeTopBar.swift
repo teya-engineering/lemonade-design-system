@@ -734,18 +734,20 @@ private extension View {
 /// Constrained to a single line each with tail truncation so the nav bar
 /// height stays stable regardless of label length.
 private struct LemonadePrincipalTwoLineTitle: View {
+    @Environment(\.lemonadeFontFamily) private var fontFamily
+
     let label: String
     let subheading: String
 
     var body: some View {
         VStack(spacing: 2) {
             SwiftUI.Text(label)
-                .font(.headingXSmall)
+                .font(LemonadeTypography.shared.headingXSmall.font(in: fontFamily))
                 .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
                 .lineLimit(1)
                 .truncationMode(.tail)
             SwiftUI.Text(subheading)
-                .font(.bodySmallRegular)
+                .font(LemonadeTypography.shared.bodySmallRegular.font(in: fontFamily))
                 .foregroundStyle(LemonadeTheme.colors.content.contentSecondary)
                 .lineLimit(1)
                 .truncationMode(.tail)
@@ -802,17 +804,19 @@ private extension View {
 
 @available(iOS 16.0, *)
 private struct LemonadeCompactLargeTitle: View {
+    @Environment(\.lemonadeFontFamily) private var fontFamily
+
     let label: String
     let subheading: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             SwiftUI.Text(label)
-                .font(.headingLarge)
+                .font(LemonadeTypography.shared.headingLarge.font(in: fontFamily))
                 .fixedSize(horizontal: true, vertical: false)
             if let subheading {
                 SwiftUI.Text(subheading)
-                    .font(.bodySmallRegular)
+                    .font(LemonadeTypography.shared.bodySmallRegular.font(in: fontFamily))
                     .fixedSize(horizontal: true, vertical: false)
                     .foregroundStyle(LemonadeTheme.colors.content.contentSecondary)
                     .padding(.bottom, LemonadeSpacing.spacing200.value)
