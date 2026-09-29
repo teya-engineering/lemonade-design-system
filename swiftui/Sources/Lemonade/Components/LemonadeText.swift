@@ -297,9 +297,10 @@ private struct LemonadeAttributedTextView: View {
 
     var body: some View {
         let resolvedFont = resolveFont()
+        let resolvedText = resolveText()
 
         if #available(iOS 16.0, macOS 13.0, *) {
-            SwiftUI.Text(text)
+            SwiftUI.Text(resolvedText)
                 .font(resolvedFont)
                 .foregroundStyle(color)
                 .multilineTextAlignment(textAlign)
@@ -309,7 +310,7 @@ private struct LemonadeAttributedTextView: View {
                 .tracking(textStyle?.letterSpacing ?? 0)
                 .frame(minHeight: textStyle?.lineHeight)
         } else {
-            SwiftUI.Text(text)
+            SwiftUI.Text(resolvedText)
                 .font(resolvedFont)
                 .foregroundStyle(color)
                 .multilineTextAlignment(textAlign)
@@ -318,6 +319,30 @@ private struct LemonadeAttributedTextView: View {
                 .lineSpacing(textStyle?.lineSpacing(in: fontFamily) ?? 0)
                 .frame(minHeight: textStyle?.lineHeight)
         }
+    }
+
+    /// Redraws the markdown spans in the family this subtree asked for.
+    ///
+    /// `String.toLemonadeMarkdown()` bakes a concrete font per span because it runs outside any
+    /// view; the span keeps what it asked for in ``LemonadeMarkdownFont`` so this can rebuild it.
+    private func resolveText() -> AttributedString {
+        guard fontFamily != .figtree else {
+            return text
+        }
+
+        var resolved = text
+        let spans = resolved.runs.compactMap { run -> (Range<AttributedString.Index>, Font)? in
+            guard let asked = run.lemonadeMarkdownFont,
+                  let font = asked.markdown.font(in: fontFamily, baseFontSize: asked.baseFontSize)
+            else {
+                return nil
+            }
+            return (run.range, font)
+        }
+        for (range, font) in spans {
+            resolved[range].font = font
+        }
+        return resolved
     }
 
     private func resolveFont() -> Font {
@@ -350,7 +375,7 @@ private struct LemonadeAttributedTextView: View {
 ///
 /// Use `String.toLemonadeMarkdown()` to parse a string containing these markers
 /// into an `AttributedString` with the corresponding styles applied.
-public enum LemonadeMarkdown {
+public enum LemonadeMarkdown: Sendable {
     /// Applies semi-bold font weight. Marker: `**`
     case semiBold
     /// Applies bold font weight. Marker: `***`
@@ -377,24 +402,69 @@ public enum LemonadeMarkdown {
         .bold, .strikeThrough, .semiBold, .underline, .italic
     ]
 
-    func toAttributes(
-        baseFontSize: CGFloat,
-        family: LemonadeFontFamily
-    ) -> AttributeContainer {
+    func toAttributes(baseFontSize: CGFloat) -> AttributeContainer {
         var container = AttributeContainer()
         switch self {
-        case .semiBold:
-            container.font = .custom(family.semibold, size: baseFontSize, relativeTo: .body)
-        case .bold:
-            container.font = .custom(family.semibold, size: baseFontSize, relativeTo: .body).bold()
         case .underline:
             container.underlineStyle = .single
         case .strikeThrough:
             container.strikethroughStyle = .single
-        case .italic:
-            container.font = .custom(family.regular, size: baseFontSize, relativeTo: .body).italic()
+        case .semiBold, .bold, .italic:
+            container.font = font(in: .figtree, baseFontSize: baseFontSize)
+            container.lemonadeMarkdownFont = LemonadeMarkdownFont(
+                markdown: self,
+                baseFontSize: baseFontSize
+            )
         }
         return container
+    }
+
+    func font(in family: LemonadeFontFamily, baseFontSize: CGFloat) -> Font? {
+        switch self {
+        case .semiBold:
+            return .custom(family.semibold, size: baseFontSize, relativeTo: .body)
+        case .bold:
+            return .custom(family.semibold, size: baseFontSize, relativeTo: .body).bold()
+        case .italic:
+            return .custom(family.regular, size: baseFontSize, relativeTo: .body).italic()
+        case .underline, .strikeThrough:
+            return nil
+        }
+    }
+}
+
+// MARK: - Markdown Font Attribute
+
+/// What a markdown span asked for, kept alongside the font it resolved to so the family can be
+/// swapped at render time.
+///
+/// The spans are parsed outside any view — `String.toLemonadeMarkdown()` has no environment to read
+/// — so the concrete font is the design system's own, and ``LemonadeUi/Text(_:textStyle:)`` rebuilds
+/// it when the subtree draws in another family. The KMP side gets this for free: its spans carry a
+/// weight, not a family.
+internal struct LemonadeMarkdownFont: Hashable, Sendable {
+    let markdown: LemonadeMarkdown
+    let baseFontSize: CGFloat
+}
+
+internal enum LemonadeMarkdownFontAttribute: AttributedStringKey {
+    typealias Value = LemonadeMarkdownFont
+    static let name = "lemonadeMarkdownFont"
+}
+
+extension AttributeScopes {
+    internal struct LemonadeAttributes: AttributeScope {
+        let lemonadeMarkdownFont: LemonadeMarkdownFontAttribute
+    }
+
+    internal var lemonade: LemonadeAttributes.Type { LemonadeAttributes.self }
+}
+
+extension AttributeDynamicLookup {
+    internal subscript<T: AttributedStringKey>(
+        dynamicMember keyPath: KeyPath<AttributeScopes.LemonadeAttributes, T>
+    ) -> T {
+        self[T.self]
     }
 }
 
@@ -411,17 +481,20 @@ public extension String {
     /// color token (e.g. `critical`, `positive`, `info`, `caution`, `brand`, `secondary`,
     /// `tertiary`, `primary`, `neutral`, and others). Unrecognized tags are left as plain text.
     ///
+    /// The spans are drawn in the design system's own faces. Rendered through
+    /// `LemonadeUi.Text(_:textStyle:)` they follow `.lemonadeFontFamily(_:)`; handed straight to a
+    /// `SwiftUI.Text` they do not.
+    ///
     /// - Parameter baseFontSize: The base font size used for font-related style markers
     ///   (semiBold, bold, italic). Defaults to the body medium regular font size.
     /// - Returns: An `AttributedString` with markers removed and corresponding styles applied.
     func toLemonadeMarkdown(
-        baseFontSize: CGFloat = LemonadeTypography.shared.bodyMediumRegular.fontSize,
-        family: LemonadeFontFamily = .figtree
+        baseFontSize: CGFloat = LemonadeTypography.shared.bodyMediumRegular.fontSize
     ) -> AttributedString {
         let colorMap = resolveContentColorMap()
         let state = MarkdownParseState()
         state.parseColorTags(source: self, colorMap: colorMap)
-        state.parseStyleMarkers(source: self, baseFontSize: baseFontSize, family: family)
+        state.parseStyleMarkers(source: self, baseFontSize: baseFontSize)
         return state.buildAttributedString(source: self)
     }
 }
@@ -492,7 +565,7 @@ private class MarkdownParseState {
         }
     }
 
-    func parseStyleMarkers(source: String, baseFontSize: CGFloat, family: LemonadeFontFamily) {
+    func parseStyleMarkers(source: String, baseFontSize: CGFloat) {
         let nsSource = source as NSString
         let sortedMarkdowns = LemonadeMarkdown.values.sorted { $0.key.count > $1.key.count }
 
@@ -531,7 +604,7 @@ private class MarkdownParseState {
 
                 spanStarts.append(contentStart)
                 spanEnds.append(closeRange.location)
-                spanAttributes.append(markdown.toAttributes(baseFontSize: baseFontSize, family: family))
+                spanAttributes.append(markdown.toAttributes(baseFontSize: baseFontSize))
 
                 searchFrom = closeRange.location + key.count
             }
