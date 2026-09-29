@@ -48,6 +48,20 @@ public struct LemonadeFontFamily: Sendable, Equatable {
         default: return regular
         }
     }
+
+    /// The face for `weight` at `size`, asked for the way ``LemonadeTextStyle/weightedFont`` asks
+    /// for it: family name plus a weight modifier for the default faces, the concrete face name for
+    /// any other family.
+    ///
+    /// No `relativeTo:`, deliberately — this is the non-scaling counterpart to
+    /// ``LemonadeTextStyle/font(in:)``, and adding one here would start scaling text with Dynamic
+    /// Type that does not scale today.
+    internal func font(forWeight weight: Font.Weight, size: CGFloat) -> Font {
+        guard self != .figtree else {
+            return .custom(LemonadeTypography.fontFamily, size: size).weight(weight)
+        }
+        return .custom(fontName(for: weight), size: size)
+    }
 }
 
 private struct LemonadeFontFamilyKey: EnvironmentKey {

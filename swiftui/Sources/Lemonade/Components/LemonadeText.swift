@@ -175,8 +175,7 @@ private struct LemonadeTextView: View {
             return style.weightedFont
         }
 
-        let size = fontSize ?? style.fontSize
-        return .custom(fontFamily.fontName(for: style.fontWeight), size: size, relativeTo: .body)
+        return fontFamily.font(forWeight: style.fontWeight, size: fontSize ?? style.fontSize)
     }
 }
 
