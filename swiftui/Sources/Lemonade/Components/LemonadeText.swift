@@ -86,6 +86,10 @@ private struct LemonadeTextView: View {
     let maxLines: Int?
     let minLines: Int
 
+    /// Line spacing has to grow with the font, so the gap is resolved per environment rather than
+    /// once from the unscaled style.
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     init(
         text: String,
         fontSize: CGFloat? = nil,
@@ -136,7 +140,7 @@ private struct LemonadeTextView: View {
                 .multilineTextAlignment(textAlign)
                 .lineLimit(maxLines)
                 .truncationMode(overflow)
-                .lineSpacing(textStyle?.lineSpacing ?? 0)
+                .lineSpacing(textStyle?.lineSpacing(for: dynamicTypeSize) ?? 0)
                 .tracking(textStyle?.letterSpacing ?? 0)
                 .frame(minHeight: textStyle?.lineHeight)
         } else {
@@ -146,7 +150,7 @@ private struct LemonadeTextView: View {
                 .multilineTextAlignment(textAlign)
                 .lineLimit(maxLines)
                 .truncationMode(overflow)
-                .lineSpacing(textStyle?.lineSpacing ?? 0)
+                .lineSpacing(textStyle?.lineSpacing(for: dynamicTypeSize) ?? 0)
                 .frame(minHeight: textStyle?.lineHeight)
         }
     }
@@ -258,6 +262,9 @@ private struct LemonadeAttributedTextView: View {
     let maxLines: Int?
     let minLines: Int
 
+    /// See the note on `LemonadeTextView`.
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     init(
         text: AttributedString,
         textStyle: LemonadeTextStyle = LemonadeTypography.shared.bodyMediumRegular,
@@ -304,7 +311,7 @@ private struct LemonadeAttributedTextView: View {
                 .multilineTextAlignment(textAlign)
                 .lineLimit(maxLines)
                 .truncationMode(overflow)
-                .lineSpacing(textStyle?.lineSpacing ?? 0)
+                .lineSpacing(textStyle?.lineSpacing(for: dynamicTypeSize) ?? 0)
                 .tracking(textStyle?.letterSpacing ?? 0)
                 .frame(minHeight: textStyle?.lineHeight)
         } else {
@@ -314,7 +321,7 @@ private struct LemonadeAttributedTextView: View {
                 .multilineTextAlignment(textAlign)
                 .lineLimit(maxLines)
                 .truncationMode(overflow)
-                .lineSpacing(textStyle?.lineSpacing ?? 0)
+                .lineSpacing(textStyle?.lineSpacing(for: dynamicTypeSize) ?? 0)
                 .frame(minHeight: textStyle?.lineHeight)
         }
     }
