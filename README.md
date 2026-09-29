@@ -24,7 +24,7 @@ Lemonade ships the same design language to three platforms:
 - **UI components** — a shared catalogue, implemented natively on each platform
 - **Unified design tokens** — colors, typography, spacing, radius, shadows, opacity and border widths, generated from one Figma export
 - **Theming** — every token group is overridable at the theme root
-- **Platform-native implementations** — Compose Multiplatform, SwiftUI and Flutter, each idiomatic to its ecosystem
+- **Platform-native implementations** — Compose Multiplatform and SwiftUI, each idiomatic to its ecosystem
 
 ---
 
@@ -33,7 +33,6 @@ Lemonade ships the same design language to three platforms:
 | Platform | Targets | Documentation |
 |----------|---------|---------------|
 | **Kotlin Multiplatform** | Android, iOS, JVM Desktop | [KMP Documentation](./kmp/README.md) |
-| **Flutter** | Android, iOS, Web | [Flutter Documentation](./flutter/README.md) |
 | **SwiftUI** | iOS 15+, macOS 12+ | [SwiftUI Documentation](./swiftui/README.md) |
 | **Web** | Design tokens, typography, icons (npm) | [Web Documentation](./web/README.md) |
 
@@ -45,7 +44,6 @@ Each platform versions independently, and the version lives only in the tag.
 |----------|-------------|---------|
 | KMP | `lemonade-kmp-X.Y.Z` | `lemonade-kmp-0.9.0` |
 | SwiftUI | `lemonade-swiftui-X.Y.Z` | `lemonade-swiftui-0.9.1` |
-| Flutter | `lemonade-flutter-vX.Y.Z` | `lemonade-flutter-v0.8.3` |
 | Web | `lemonade-mobile-web-X.Y.Z` | `lemonade-mobile-web-0.1.0` |
 
 Each SwiftUI release also carries a plain `X.Y.Z` tag at the same commit — that is
@@ -120,17 +118,15 @@ Every public API is documented with:
 
 ## Contributing
 
-Platform-specific workflows live with each platform:
-
-- [KMP Contributing Guide](./kmp/README.md#contributing)
-- [Flutter Contributing Guide](./flutter/README.md#contributing)
+Platform-specific workflows live with each platform — see the
+[KMP Contributing Guide](./kmp/README.md#contributing).
 
 ### General Guidelines
 
 1. **Design Validation** — Components must be validated by the design team before implementation
 2. **Figma First** — Public components must exist in Figma with "Ready for Dev" status
 3. **Documentation** — Every public API is documented
-4. **Testing** — Include unit tests and widget/UI tests for components
+4. **Testing** — Include unit tests and UI tests for components
 5. **Code Review** — All changes require at least one approval
 
 ---
