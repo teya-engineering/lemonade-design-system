@@ -8,6 +8,10 @@ import SwiftUI
 /// Text("Hello")
 ///     .font(.bodyMediumRegular)
 /// ```
+///
+/// These are always the design system's own faces. A `Font` is resolved outside any view, so it
+/// cannot see `.lemonadeFontFamily(_:)` — reach for `LemonadeTextStyle.font(in:)` in a subtree that
+/// swaps the family.
 
 public extension Font {
     // MARK: - Display Styles

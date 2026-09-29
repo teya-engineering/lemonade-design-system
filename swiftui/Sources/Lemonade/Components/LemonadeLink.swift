@@ -73,6 +73,8 @@ public extension LemonadeUi {
 // MARK: - Internal Link View
 
 private struct LemonadeLinkView: View {
+    @Environment(\.lemonadeFontFamily) private var fontFamily
+
     let text: String
     let onClick: () -> Void
     let enabled: Bool
@@ -92,7 +94,7 @@ private struct LemonadeLinkView: View {
         SwiftUI.Button(action: onClick) {
             HStack(spacing: LemonadeTheme.spaces.spacing100) {
                 SwiftUI.Text(text)
-                    .font(size.textStyle.font)
+                    .font(size.textStyle.font(in: fontFamily))
                     .foregroundColor(currentColor)
                     .underline(true, color: currentColor)
 

@@ -206,6 +206,17 @@ public struct LemonadeTextStyle: Sendable {
     public var uiFont: UIFont {
         Self.resolvedUIFont(name: fontName, size: fontSize)
     }
+
+    /// Returns a UIFont based on this text style, drawn with `family`.
+    ///
+    /// The UIKit counterpart of ``font(in:)``, for the components that hand a font to UIKit rather
+    /// than to SwiftUI.
+    public func uiFont(in family: LemonadeFontFamily) -> UIFont {
+        guard family != .figtree else {
+            return uiFont
+        }
+        return Self.resolvedUIFont(name: family.fontName(for: fontWeight), size: fontSize)
+    }
 #endif
 }
 
