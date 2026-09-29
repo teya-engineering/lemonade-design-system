@@ -16,11 +16,6 @@ Kotlin script converters in `scripts/*-token-converter.main.kts` read those JSON
 files and (over)write the generated source for each platform. This skill runs the
 right converters for whatever token files changed.
 
-**Flutter is out of scope.** `converters_for()` in `run-converters.sh` maps every
-token file to its KMP, SwiftUI and web converters only. The repo also ships `flutter-*`
-converters in `scripts/`; do not run them, and do not commit changes under
-`flutter/`.
-
 ## TL;DR
 
 Export from Figma, copy the files into `tokens/` under the names below, then:
@@ -141,8 +136,7 @@ version of the two that bite:
 | `typography.tokens.json`                                           | `kmp-typography`                 | `swiftui-typography`                                |
 
 (Converter names above omit the `-token-converter.main.kts` suffix, except
-`swiftui-color-assets-generator.main.kts` and `swiftui-themed-assets-generator.main.kts`. `flutter-*` converters exist in
-`scripts/` but are deliberately not run — see the note at the top.)
+`swiftui-color-assets-generator.main.kts` and `swiftui-themed-assets-generator.main.kts`.)
 
 ## When to run verify-generated.sh
 
@@ -166,8 +160,7 @@ means the "no-op" change actually moved something consumer-visible.
   typically touches `LemonadeSemanticColors.{kt,swift}`, the theme classes
   (`LemonadeLightTheme.kt` / `LemonadeDarkTheme.kt`,
   `LemonadeAdaptiveTheme.swift`), and the SwiftUI `Assets.xcassets/Colors` +
-  `Color+Lemonade.swift`. Nothing under `flutter/` should change — if it does,
-  a Flutter converter was run by mistake; revert it.
+  `Color+Lemonade.swift`.
 - <a id="binary-compatibility"></a>**Binary compatibility:** adding new public
   token symbols is additive (safe), but renaming/removing one is an ABI break.
   If public API may have shifted, run the classifier from `kmp/` and follow the

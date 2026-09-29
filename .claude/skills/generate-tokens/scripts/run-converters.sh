@@ -35,7 +35,6 @@ ensure_kotlin() {
 }
 
 # token file -> space-separated converter basenames (no extension).
-# Flutter converters are intentionally excluded — this repo generates KMP + SwiftUI + web.
 #
 # The web converters are consolidated into a single tokens.css artifact rather than
 # one converter per category, so every token file maps to the same three web

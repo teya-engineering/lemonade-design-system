@@ -25,10 +25,6 @@ reorderable() {
     # no enum, no ordered collection — so declaration order is not consumer-visible.
     */LemonadeBorderWidthExtension.kt) return 0 ;;
     */LemonadeBorderWidth.swift) return 0 ;;
-    flutter/lib/src/foundation/border.dart) return 0 ;;
-    flutter/lib/src/foundation/primitive_colors.dart) return 0 ;;
-    flutter/lib/src/foundation/semantic_colors.dart) return 0 ;;
-    flutter/lib/src/theme/colors.dart) return 0 ;;
     *) return 1 ;;
   esac
 }
@@ -53,7 +49,7 @@ strip_volatile_docs() {
   fi
 }
 
-if ! changed="$(git diff --name-only "$REF" -- kmp/ swiftui/ flutter/)"; then
+if ! changed="$(git diff --name-only "$REF" -- kmp/ swiftui/)"; then
   echo "FAIL: could not diff against $REF (bad or unreachable ref?)"
   exit 1
 fi
@@ -64,7 +60,7 @@ fi
 # code before the grep, so a git-status failure (lock contention, corrupt
 # or inaccessible .git, permission/disk errors) FAILs loudly instead of
 # looking identical to "zero untracked files" once it hits grep.
-if ! status_out="$(git status --porcelain -- kmp/ swiftui/ flutter/)"; then
+if ! status_out="$(git status --porcelain -- kmp/ swiftui/)"; then
   echo "FAIL: could not read git status"
   exit 1
 fi

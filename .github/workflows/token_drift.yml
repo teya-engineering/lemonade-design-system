@@ -2,7 +2,7 @@ name: Token Drift
 
 # This job catches the accidental case: a tokens/*.json value changed and the
 # generated KMP/SwiftUI code was never regenerated to match. It intentionally
-# does NOT trigger on changes under kmp/**, swiftui/**, or flutter/** — a
+# does NOT trigger on changes under kmp/** or swiftui/** — a
 # deliberate hand-edit of a generated file (against its DO NOT MODIFY banner)
 # is a different, rarer failure mode that code review is expected to catch.
 # Watching those trees would also run a multi-minute cold-Kotlin job on nearly
