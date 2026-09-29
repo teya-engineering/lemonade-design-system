@@ -2,6 +2,8 @@ import SwiftUI
 
 #if canImport(UIKit)
 import UIKit
+#else
+import CoreText
 #endif
 
 /// The set of faces the design system draws with.
@@ -180,16 +182,30 @@ public struct LemonadeTextStyle: Sendable {
         guard family != .figtree else {
             return lineSpacing
         }
+        let name = family.fontName(for: fontWeight)
 #if canImport(UIKit)
-        let natural = Self.resolvedUIFont(
-            name: family.fontName(for: fontWeight),
-            size: fontSize
-        ).lineHeight
+        let natural = Self.resolvedUIFont(name: name, size: fontSize).lineHeight
 #else
-        let natural = fontSize * Self.fallbackLineHeightRatio
+        let natural = Self.measuredLineHeight(name: name, size: fontSize)
+            ?? fontSize * Self.fallbackLineHeightRatio
 #endif
         return max(0, lineHeight - natural)
     }
+
+#if !canImport(UIKit)
+    /// The natural line height of `name`, or nil when that face is not installed.
+    ///
+    /// `CTFontCreateWithName` substitutes a default face rather than failing, so the name has to be
+    /// checked afterwards — otherwise an absent face would silently return the system font's
+    /// metrics, which is worse than the Figtree ratio the caller falls back to.
+    private static func measuredLineHeight(name: String, size: CGFloat) -> CGFloat? {
+        let font = CTFontCreateWithName(name as CFString, size, nil)
+        guard CTFontCopyPostScriptName(font) as String == name else {
+            return nil
+        }
+        return ceil(CTFontGetAscent(font) + CTFontGetDescent(font) + CTFontGetLeading(font))
+    }
+#endif
 
 #if canImport(UIKit)
     /// The single place a text style turns into a concrete face.
