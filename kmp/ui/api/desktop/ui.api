@@ -83,85 +83,85 @@ public final class com/teya/lemonade/ChipKt {
 public final class com/teya/lemonade/ComposableSingletons$BoxSelectionKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$BoxSelectionKt;
 	public fun <init> ()V
-	public final fun getLambda$1508943510$ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1508943510$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$CardItemsKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$CardItemsKt;
 	public fun <init> ()V
-	public final fun getLambda$-1532015688$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-201731540$ui ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda$1337565024$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$343069030$ui ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$-1532015688$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-201731540$Lemonade_ui ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$1337565024$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$343069030$Lemonade_ui ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$CardKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$CardKt;
 	public fun <init> ()V
-	public final fun getLambda$-184555069$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1863766657$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-33923509$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$262353886$ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-184555069$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1863766657$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-33923509$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$262353886$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$ContentListItemKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$ContentListItemKt;
 	public fun <init> ()V
-	public final fun getLambda$-1905262038$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1725511316$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$24968811$ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1905262038$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1725511316$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$24968811$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$HistoryTimelineKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$HistoryTimelineKt;
 	public fun <init> ()V
-	public final fun getLambda$-340347873$ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-340347873$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$ListItemKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$ListItemKt;
 	public fun <init> ()V
-	public final fun getLambda$-1242978266$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1808195552$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-965205749$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$787311865$ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1242978266$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1808195552$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-965205749$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$787311865$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$SelectFieldKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$SelectFieldKt;
 	public fun <init> ()V
-	public final fun getLambda$-2098274759$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-280548542$ui ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$-2098274759$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-280548542$Lemonade_ui ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$SelectListItemKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$SelectListItemKt;
 	public fun <init> ()V
-	public final fun getLambda$-1155961026$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$747205003$ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1155961026$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$747205003$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$TextFieldKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$TextFieldKt;
 	public fun <init> ()V
-	public final fun getLambda$-495982972$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1667559993$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$2075184005$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$967498816$ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-495982972$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1667559993$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$2075184005$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$967498816$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$TooltipKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$TooltipKt;
 	public fun <init> ()V
-	public final fun getLambda$-226253370$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$900957876$ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-226253370$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$900957876$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$TopBarKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$TopBarKt;
 	public fun <init> ()V
-	public final fun getLambda$-1023197263$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1971304850$ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1023197263$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1971304850$Lemonade_ui ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/teya/lemonade/ContentListItemKt {
