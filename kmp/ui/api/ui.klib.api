@@ -611,6 +611,8 @@ final val com.teya.lemonade/drawableResource // com.teya.lemonade/drawableResour
     final fun (com.teya.lemonade.core/LemonadeCountryFlags).<get-drawableResource>(): org.jetbrains.compose.resources/DrawableResource // com.teya.lemonade/drawableResource.<get-drawableResource>|<get-drawableResource>@com.teya.lemonade.core.LemonadeCountryFlags(){}[0]
 final val com.teya.lemonade/drawableResource // com.teya.lemonade/drawableResource|@com.teya.lemonade.core.LemonadeIcons{}drawableResource[0]
     final fun (com.teya.lemonade.core/LemonadeIcons).<get-drawableResource>(): org.jetbrains.compose.resources/DrawableResource // com.teya.lemonade/drawableResource.<get-drawableResource>|<get-drawableResource>@com.teya.lemonade.core.LemonadeIcons(){}[0]
+final val com.teya.lemonade/fontFamily // com.teya.lemonade/fontFamily|@com.teya.lemonade.LemonadeTheme{}fontFamily[0]
+    final fun (com.teya.lemonade/LemonadeTheme).<get-fontFamily>(androidx.compose.runtime/Composer?, kotlin/Int): androidx.compose.ui.text.font/FontFamily // com.teya.lemonade/fontFamily.<get-fontFamily>|<get-fontFamily>@com.teya.lemonade.LemonadeTheme(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 final val com.teya.lemonade/fontWeight // com.teya.lemonade/fontWeight|@com.teya.lemonade.core.LemonadeFontWeights{}fontWeight[0]
     final fun (com.teya.lemonade.core/LemonadeFontWeights).<get-fontWeight>(): androidx.compose.ui.text.font/FontWeight // com.teya.lemonade/fontWeight.<get-fontWeight>|<get-fontWeight>@com.teya.lemonade.core.LemonadeFontWeights(){}[0]
 final val com.teya.lemonade/lemonadeFontFamily // com.teya.lemonade/lemonadeFontFamily|{}lemonadeFontFamily[0]

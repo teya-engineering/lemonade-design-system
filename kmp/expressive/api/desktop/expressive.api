@@ -63,7 +63,8 @@ public final class com/teya/lemonade/LemonadeBottomSheetProperties {
 }
 
 public final class com/teya/lemonade/LemonadeExpressiveThemeKt {
-	public static final fun LemonadeExpressiveTheme (Lcom/teya/lemonade/LemonadeSemanticColors;Lcom/teya/lemonade/LemonadeTypographyProvider;Lcom/teya/lemonade/LemonadeRadiusValues;Lcom/teya/lemonade/LemonadeShapes;Lcom/teya/lemonade/LemonadeOpacity;Lcom/teya/lemonade/LemonadeSpaceValues;Lcom/teya/lemonade/LemonadeBorderWidth;Lcom/teya/lemonade/LemonadeSizeValues;Lcom/teya/lemonade/LemonadeEffects;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LemonadeExpressiveTheme (Lcom/teya/lemonade/LemonadeSemanticColors;Lcom/teya/lemonade/LemonadeTypographyProvider;Lcom/teya/lemonade/LemonadeRadiusValues;Lcom/teya/lemonade/LemonadeShapes;Lcom/teya/lemonade/LemonadeOpacity;Lcom/teya/lemonade/LemonadeSpaceValues;Lcom/teya/lemonade/LemonadeBorderWidth;Lcom/teya/lemonade/LemonadeSizeValues;Lcom/teya/lemonade/LemonadeEffects;Landroidx/compose/ui/text/font/FontFamily;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
+	public static final synthetic fun LemonadeExpressiveTheme (Lcom/teya/lemonade/LemonadeSemanticColors;Lcom/teya/lemonade/LemonadeTypographyProvider;Lcom/teya/lemonade/LemonadeRadiusValues;Lcom/teya/lemonade/LemonadeShapes;Lcom/teya/lemonade/LemonadeOpacity;Lcom/teya/lemonade/LemonadeSpaceValues;Lcom/teya/lemonade/LemonadeBorderWidth;Lcom/teya/lemonade/LemonadeSizeValues;Lcom/teya/lemonade/LemonadeEffects;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/teya/lemonade/LemonadeTimePickerDisplayMode : java/lang/Enum {
