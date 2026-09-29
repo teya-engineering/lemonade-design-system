@@ -114,6 +114,7 @@ fun App() {
         borderWidths = LemonadeTheme.borderWidths,
         sizes = LemonadeTheme.sizes,
         effects = LemonadeTheme.effects,
+        fontFamily = LemonadeTheme.fontFamily,
     ) {
         // Your application's content goes here
         MyScreenContent()
@@ -123,6 +124,12 @@ fun App() {
 
 `colors` defaults to `LemonadeLightTheme` or `LemonadeDarkTheme` depending on
 `isSystemInDarkTheme()`.
+
+`fontFamily` defaults to Figtree. Pass a `FontFamily` to draw every Lemonade
+component in a brand typeface — the type scale is unchanged, since the tokens
+carry metrics only and never a family. The line heights were drawn against
+Figtree's metrics, so a face with a very different ascender/descender ratio will
+sit differently inside them.
 
 ---
 
