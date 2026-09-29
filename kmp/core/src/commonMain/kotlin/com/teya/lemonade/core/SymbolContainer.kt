@@ -23,3 +23,14 @@ public enum class SymbolContainerShape {
     Circle,
     Rounded,
 }
+
+/**
+ * The corner of a symbol container that its badge hangs off. Start and end follow the layout
+ * direction, so [BottomEnd] sits bottom-right in LTR and bottom-left in RTL.
+ */
+public enum class SymbolContainerBadgePosition {
+    TopStart,
+    TopEnd,
+    BottomStart,
+    BottomEnd,
+}

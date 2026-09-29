@@ -136,6 +136,35 @@ public enum SymbolContainerShape {
     case rounded
 }
 
+// MARK: - SymbolContainer Badge Position
+
+/// The corner of a SymbolContainer that its badge hangs off. Leading and trailing follow the layout direction.
+public enum SymbolContainerBadgePosition {
+    case topLeading
+    case topTrailing
+    case bottomLeading
+    case bottomTrailing
+
+    var alignment: Alignment {
+        switch self {
+        case .topLeading: return .topLeading
+        case .topTrailing: return .topTrailing
+        case .bottomLeading: return .bottomLeading
+        case .bottomTrailing: return .bottomTrailing
+        }
+    }
+
+    var offset: CGSize {
+        let spacing = LemonadeTheme.spaces.spacing100
+        switch self {
+        case .topLeading: return CGSize(width: -spacing, height: -spacing)
+        case .topTrailing: return CGSize(width: spacing, height: -spacing)
+        case .bottomLeading: return CGSize(width: -spacing, height: spacing)
+        case .bottomTrailing: return CGSize(width: spacing, height: spacing)
+        }
+    }
+}
+
 // MARK: - SymbolContainer Component
 
 public extension LemonadeUi {
@@ -150,7 +179,8 @@ public extension LemonadeUi {
     ///   - voice: SymbolContainerVoice to define the tone. Defaults to .neutral
     ///   - size: SymbolContainerSize to define the container's size. Defaults to .medium
     ///   - shape: SymbolContainerShape to define the container's shape. Defaults to .circle
-    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the bottom-right corner
+    ///   - badgePosition: SymbolContainerBadgePosition for the corner the badge hangs off. Defaults to .bottomTrailing
+    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the corner set by badgePosition
     /// - Returns: A styled SymbolContainer view with icon
     @ViewBuilder
     static func SymbolContainer<Badge: View>(
@@ -159,6 +189,7 @@ public extension LemonadeUi {
         voice: SymbolContainerVoice = .neutral,
         size: SymbolContainerSize = .medium,
         shape: SymbolContainerShape = .circle,
+        badgePosition: SymbolContainerBadgePosition = .bottomTrailing,
         @ViewBuilder badgeSlot: @escaping () -> Badge
     ) -> some View {
         iconSymbolContainer(
@@ -167,6 +198,7 @@ public extension LemonadeUi {
             colors: voice.colors,
             size: size,
             shape: shape,
+            badgePosition: badgePosition,
             badgeSlot: badgeSlot
         )
     }
@@ -199,7 +231,8 @@ public extension LemonadeUi {
     ///   - voice: SymbolContainerVoice to define the tone. Defaults to .neutral
     ///   - size: SymbolContainerSize to define the container's size. Defaults to .medium
     ///   - shape: SymbolContainerShape to define the container's shape. Defaults to .circle
-    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the bottom-right corner
+    ///   - badgePosition: SymbolContainerBadgePosition for the corner the badge hangs off. Defaults to .bottomTrailing
+    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the corner set by badgePosition
     /// - Returns: A styled SymbolContainer view with text
     @ViewBuilder
     static func SymbolContainer<Badge: View>(
@@ -207,6 +240,7 @@ public extension LemonadeUi {
         voice: SymbolContainerVoice = .neutral,
         size: SymbolContainerSize = .medium,
         shape: SymbolContainerShape = .circle,
+        badgePosition: SymbolContainerBadgePosition = .bottomTrailing,
         @ViewBuilder badgeSlot: @escaping () -> Badge
     ) -> some View {
         textSymbolContainer(
@@ -214,6 +248,7 @@ public extension LemonadeUi {
             colors: voice.colors,
             size: size,
             shape: shape,
+            badgePosition: badgePosition,
             badgeSlot: badgeSlot
         )
     }
@@ -249,7 +284,8 @@ public extension LemonadeUi {
     ///     solid palette, `.blue.subtle` for its subtle one
     ///   - size: SymbolContainerSize to define the container's size. Defaults to .medium
     ///   - shape: SymbolContainerShape to define the container's shape. Defaults to .circle
-    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the bottom-right corner
+    ///   - badgePosition: SymbolContainerBadgePosition for the corner the badge hangs off. Defaults to .bottomTrailing
+    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the corner set by badgePosition
     /// - Returns: A styled SymbolContainer view with icon
     @ViewBuilder
     static func SymbolContainer<Badge: View>(
@@ -258,6 +294,7 @@ public extension LemonadeUi {
         theme: ThemedStyle,
         size: SymbolContainerSize = .medium,
         shape: SymbolContainerShape = .circle,
+        badgePosition: SymbolContainerBadgePosition = .bottomTrailing,
         @ViewBuilder badgeSlot: @escaping () -> Badge
     ) -> some View {
         iconSymbolContainer(
@@ -266,6 +303,7 @@ public extension LemonadeUi {
             colors: LemonadeTheme.themed.symbolContainerColors(theme: theme),
             size: size,
             shape: shape,
+            badgePosition: badgePosition,
             badgeSlot: badgeSlot
         )
     }
@@ -300,7 +338,8 @@ public extension LemonadeUi {
     ///     solid palette, `.blue.subtle` for its subtle one
     ///   - size: SymbolContainerSize to define the container's size. Defaults to .medium
     ///   - shape: SymbolContainerShape to define the container's shape. Defaults to .circle
-    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the bottom-right corner
+    ///   - badgePosition: SymbolContainerBadgePosition for the corner the badge hangs off. Defaults to .bottomTrailing
+    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the corner set by badgePosition
     /// - Returns: A styled SymbolContainer view with text
     @ViewBuilder
     static func SymbolContainer<Badge: View>(
@@ -308,6 +347,7 @@ public extension LemonadeUi {
         theme: ThemedStyle,
         size: SymbolContainerSize = .medium,
         shape: SymbolContainerShape = .circle,
+        badgePosition: SymbolContainerBadgePosition = .bottomTrailing,
         @ViewBuilder badgeSlot: @escaping () -> Badge
     ) -> some View {
         textSymbolContainer(
@@ -315,6 +355,7 @@ public extension LemonadeUi {
             colors: LemonadeTheme.themed.symbolContainerColors(theme: theme),
             size: size,
             shape: shape,
+            badgePosition: badgePosition,
             badgeSlot: badgeSlot
         )
     }
@@ -347,7 +388,8 @@ public extension LemonadeUi {
     ///   - voice: SymbolContainerVoice to define the tone. Defaults to .neutral
     ///   - size: SymbolContainerSize to define the container's size. Defaults to .medium
     ///   - shape: SymbolContainerShape to define the container's shape. Defaults to .circle
-    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the bottom-right corner
+    ///   - badgePosition: SymbolContainerBadgePosition for the corner the badge hangs off. Defaults to .bottomTrailing
+    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the corner set by badgePosition
     /// - Returns: A styled SymbolContainer view with image
     @ViewBuilder
     static func SymbolContainer<Badge: View>(
@@ -357,9 +399,10 @@ public extension LemonadeUi {
         voice: SymbolContainerVoice = .neutral,
         size: SymbolContainerSize = .medium,
         shape: SymbolContainerShape = .circle,
+        badgePosition: SymbolContainerBadgePosition = .bottomTrailing,
         @ViewBuilder badgeSlot: @escaping () -> Badge
     ) -> some View {
-        LemonadeSymbolContainerView(colors: voice.colors, size: size, shape: shape, clipsContent: fill, badgeSlot: badgeSlot) {
+        LemonadeSymbolContainerView(colors: voice.colors, size: size, shape: shape, clipsContent: fill, badgePosition: badgePosition, badgeSlot: badgeSlot) {
             SymbolContainerImageContent(
                 image: image,
                 contentDescription: contentDescription,
@@ -399,7 +442,8 @@ public extension LemonadeUi {
     ///   - voice: SymbolContainerVoice to define the tone. Defaults to .neutral
     ///   - size: SymbolContainerSize to define the container's size. Defaults to .medium
     ///   - shape: SymbolContainerShape to define the container's shape. Defaults to .circle
-    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the bottom-right corner
+    ///   - badgePosition: SymbolContainerBadgePosition for the corner the badge hangs off. Defaults to .bottomTrailing
+    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the corner set by badgePosition
     ///   - content: Custom content to display inside the container
     /// - Returns: A styled SymbolContainer view with custom content
     @ViewBuilder
@@ -407,10 +451,11 @@ public extension LemonadeUi {
         voice: SymbolContainerVoice = .neutral,
         size: SymbolContainerSize = .medium,
         shape: SymbolContainerShape = .circle,
+        badgePosition: SymbolContainerBadgePosition = .bottomTrailing,
         @ViewBuilder badgeSlot: @escaping () -> Badge,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View {
-        LemonadeSymbolContainerView(colors: voice.colors, size: size, shape: shape, badgeSlot: badgeSlot) {
+        LemonadeSymbolContainerView(colors: voice.colors, size: size, shape: shape, badgePosition: badgePosition, badgeSlot: badgeSlot) {
             content()
                 .frame(width: size.contentSize, height: size.contentSize)
         }
@@ -441,9 +486,10 @@ public extension LemonadeUi {
         colors: SymbolContainerColors,
         size: SymbolContainerSize,
         shape: SymbolContainerShape,
+        badgePosition: SymbolContainerBadgePosition,
         badgeSlot: @escaping () -> Badge
     ) -> some View {
-        LemonadeSymbolContainerView(colors: colors, size: size, shape: shape, badgeSlot: badgeSlot) {
+        LemonadeSymbolContainerView(colors: colors, size: size, shape: shape, badgePosition: badgePosition, badgeSlot: badgeSlot) {
             LemonadeUi.Icon(
                 icon: icon,
                 contentDescription: contentDescription,
@@ -458,9 +504,10 @@ public extension LemonadeUi {
         colors: SymbolContainerColors,
         size: SymbolContainerSize,
         shape: SymbolContainerShape,
+        badgePosition: SymbolContainerBadgePosition,
         badgeSlot: @escaping () -> Badge
     ) -> some View {
-        LemonadeSymbolContainerView(colors: colors, size: size, shape: shape, badgeSlot: badgeSlot) {
+        LemonadeSymbolContainerView(colors: colors, size: size, shape: shape, badgePosition: badgePosition, badgeSlot: badgeSlot) {
             LemonadeUi.Text(
                 text,
                 textStyle: size.textStyle,
@@ -504,6 +551,7 @@ private struct LemonadeSymbolContainerView<Content: View, Badge: View>: View {
     // draws a rounded background instead of masking the whole container, and masking is what
     // forces an offscreen render pass per symbol (one per row in every list).
     var clipsContent: Bool = false
+    var badgePosition: SymbolContainerBadgePosition = .bottomTrailing
     let badgeSlot: () -> Badge
     let content: () -> Content
 
@@ -550,14 +598,11 @@ private struct LemonadeSymbolContainerView<Content: View, Badge: View>: View {
         if Badge.self == EmptyView.self {
             containerView
         } else {
-            ZStack(alignment: .bottomTrailing) {
+            ZStack(alignment: badgePosition.alignment) {
                 containerView
 
                 badgeSlot()
-                    .offset(
-                        x: LemonadeTheme.spaces.spacing100,
-                        y: LemonadeTheme.spaces.spacing100
-                    )
+                    .offset(badgePosition.offset)
             }
         }
     }

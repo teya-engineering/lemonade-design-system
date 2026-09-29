@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
 import com.teya.lemonade.core.LemonadeBadgeSize
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.SymbolContainerBadgePosition
 import com.teya.lemonade.core.SymbolContainerShape
 import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.SymbolContainerVoice
@@ -325,6 +326,25 @@ internal fun SymbolContainerDisplay() {
                                         LemonadeUi.Badge(text = "3")
                                     }
                                 },
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        item(key = "Badge Position") {
+            SymbolContainerSection(title = "Badge Position") {
+                SymbolRow(spacing = LemonadeTheme.spaces.spacing600) {
+                    SymbolContainerBadgePosition.entries.forEach { position ->
+                        LabelledSymbol(label = position.name) {
+                            LemonadeUi.SymbolContainer(
+                                icon = LemonadeIcons.Heart,
+                                contentDescription = null,
+                                badgeSlot = {
+                                    LemonadeUi.Badge(text = "3")
+                                },
+                                badgePosition = position,
                             )
                         }
                     }

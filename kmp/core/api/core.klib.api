@@ -1204,6 +1204,19 @@ final enum class com.teya.lemonade.core/SelectListItemVariant : kotlin/Enum<com.
     final fun values(): kotlin/Array<com.teya.lemonade.core/SelectListItemVariant> // com.teya.lemonade.core/SelectListItemVariant.values|values#static(){}[0]
 }
 
+final enum class com.teya.lemonade.core/SymbolContainerBadgePosition : kotlin/Enum<com.teya.lemonade.core/SymbolContainerBadgePosition> { // com.teya.lemonade.core/SymbolContainerBadgePosition|null[0]
+    enum entry BottomEnd // com.teya.lemonade.core/SymbolContainerBadgePosition.BottomEnd|null[0]
+    enum entry BottomStart // com.teya.lemonade.core/SymbolContainerBadgePosition.BottomStart|null[0]
+    enum entry TopEnd // com.teya.lemonade.core/SymbolContainerBadgePosition.TopEnd|null[0]
+    enum entry TopStart // com.teya.lemonade.core/SymbolContainerBadgePosition.TopStart|null[0]
+
+    final val entries // com.teya.lemonade.core/SymbolContainerBadgePosition.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.teya.lemonade.core/SymbolContainerBadgePosition> // com.teya.lemonade.core/SymbolContainerBadgePosition.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.teya.lemonade.core/SymbolContainerBadgePosition // com.teya.lemonade.core/SymbolContainerBadgePosition.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.teya.lemonade.core/SymbolContainerBadgePosition> // com.teya.lemonade.core/SymbolContainerBadgePosition.values|values#static(){}[0]
+}
+
 final enum class com.teya.lemonade.core/SymbolContainerShape : kotlin/Enum<com.teya.lemonade.core/SymbolContainerShape> { // com.teya.lemonade.core/SymbolContainerShape|null[0]
     enum entry Circle // com.teya.lemonade.core/SymbolContainerShape.Circle|null[0]
     enum entry Rounded // com.teya.lemonade.core/SymbolContainerShape.Rounded|null[0]

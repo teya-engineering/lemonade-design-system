@@ -1088,6 +1088,16 @@ public final class com/teya/lemonade/core/SelectListItemVariant : java/lang/Enum
 	public static fun values ()[Lcom/teya/lemonade/core/SelectListItemVariant;
 }
 
+public final class com/teya/lemonade/core/SymbolContainerBadgePosition : java/lang/Enum {
+	public static final field BottomEnd Lcom/teya/lemonade/core/SymbolContainerBadgePosition;
+	public static final field BottomStart Lcom/teya/lemonade/core/SymbolContainerBadgePosition;
+	public static final field TopEnd Lcom/teya/lemonade/core/SymbolContainerBadgePosition;
+	public static final field TopStart Lcom/teya/lemonade/core/SymbolContainerBadgePosition;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/SymbolContainerBadgePosition;
+	public static fun values ()[Lcom/teya/lemonade/core/SymbolContainerBadgePosition;
+}
+
 public final class com/teya/lemonade/core/SymbolContainerShape : java/lang/Enum {
 	public static final field Circle Lcom/teya/lemonade/core/SymbolContainerShape;
 	public static final field Rounded Lcom/teya/lemonade/core/SymbolContainerShape;
