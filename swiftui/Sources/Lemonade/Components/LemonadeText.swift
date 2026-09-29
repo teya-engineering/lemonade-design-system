@@ -166,10 +166,15 @@ private struct LemonadeTextView: View {
             return .body
         }
 
-        // Only a caller-supplied size override has to build a font here; the style already
-        // carries the one it resolves to, so the common path is a stored-property load.
+        // A caller-supplied size override has to build a font here; otherwise the style's stored
+        // font carries both the size and the curve. The override changes the size, not the curve —
+        // the style still decides how the text grows.
         if let fontSize = fontSize {
-            return .custom(LemonadeTypography.fontFamily, size: fontSize).weight(style.fontWeight)
+            return .custom(
+                LemonadeTypography.fontFamily,
+                size: fontSize,
+                relativeTo: style.relativeTextStyle
+            ).weight(style.fontWeight)
         }
 
         return style.weightedFont
@@ -371,19 +376,22 @@ public enum LemonadeMarkdown {
         .bold, .strikeThrough, .semiBold, .underline, .italic
     ]
 
-    func toAttributes(baseFontSize: CGFloat) -> AttributeContainer {
+    func toAttributes(
+        baseFontSize: CGFloat,
+        relativeTextStyle: Font.TextStyle
+    ) -> AttributeContainer {
         var container = AttributeContainer()
         switch self {
         case .semiBold:
-            container.font = .custom("Figtree-SemiBold", size: baseFontSize, relativeTo: .body)
+            container.font = .custom("Figtree-SemiBold", size: baseFontSize, relativeTo: relativeTextStyle)
         case .bold:
-            container.font = .custom("Figtree-SemiBold", size: baseFontSize, relativeTo: .body).bold()
+            container.font = .custom("Figtree-SemiBold", size: baseFontSize, relativeTo: relativeTextStyle).bold()
         case .underline:
             container.underlineStyle = .single
         case .strikeThrough:
             container.strikethroughStyle = .single
         case .italic:
-            container.font = .custom("Figtree-Regular", size: baseFontSize, relativeTo: .body).italic()
+            container.font = .custom("Figtree-Regular", size: baseFontSize, relativeTo: relativeTextStyle).italic()
         }
         return container
     }
@@ -402,16 +410,26 @@ public extension String {
     /// color token (e.g. `critical`, `positive`, `info`, `caution`, `brand`, `secondary`,
     /// `tertiary`, `primary`, `neutral`, and others). Unrecognized tags are left as plain text.
     ///
-    /// - Parameter baseFontSize: The base font size used for font-related style markers
-    ///   (semiBold, bold, italic). Defaults to the body medium regular font size.
+    /// - Parameters:
+    ///   - baseFontSize: The base font size used for font-related style markers
+    ///     (semiBold, bold, italic). Defaults to the body medium regular font size.
+    ///   - relativeTextStyle: The Apple text style whose Dynamic Type curve the inline spans
+    ///     follow. Pass the `relativeTextStyle` of the surrounding `LemonadeTextStyle` so a bold
+    ///     run scales at the same rate as the text around it. Defaults to `.body`, which matches
+    ///     the default `baseFontSize`.
     /// - Returns: An `AttributedString` with markers removed and corresponding styles applied.
     func toLemonadeMarkdown(
-        baseFontSize: CGFloat = LemonadeTypography.shared.bodyMediumRegular.fontSize
+        baseFontSize: CGFloat = LemonadeTypography.shared.bodyMediumRegular.fontSize,
+        relativeTextStyle: Font.TextStyle = .body
     ) -> AttributedString {
         let colorMap = resolveContentColorMap()
         let state = MarkdownParseState()
         state.parseColorTags(source: self, colorMap: colorMap)
-        state.parseStyleMarkers(source: self, baseFontSize: baseFontSize)
+        state.parseStyleMarkers(
+            source: self,
+            baseFontSize: baseFontSize,
+            relativeTextStyle: relativeTextStyle
+        )
         return state.buildAttributedString(source: self)
     }
 }
@@ -482,7 +500,11 @@ private class MarkdownParseState {
         }
     }
 
-    func parseStyleMarkers(source: String, baseFontSize: CGFloat) {
+    func parseStyleMarkers(
+        source: String,
+        baseFontSize: CGFloat,
+        relativeTextStyle: Font.TextStyle
+    ) {
         let nsSource = source as NSString
         let sortedMarkdowns = LemonadeMarkdown.values.sorted { $0.key.count > $1.key.count }
 
@@ -521,7 +543,12 @@ private class MarkdownParseState {
 
                 spanStarts.append(contentStart)
                 spanEnds.append(closeRange.location)
-                spanAttributes.append(markdown.toAttributes(baseFontSize: baseFontSize))
+                spanAttributes.append(
+                    markdown.toAttributes(
+                        baseFontSize: baseFontSize,
+                        relativeTextStyle: relativeTextStyle
+                    )
+                )
 
                 searchFrom = closeRange.location + key.count
             }
