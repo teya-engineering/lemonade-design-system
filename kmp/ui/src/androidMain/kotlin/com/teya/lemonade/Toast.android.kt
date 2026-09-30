@@ -323,7 +323,6 @@ private class NavigationBarHiddenToastDialog(
         val window = checkNotNull(window)
         window.requestFeature(Window.FEATURE_NO_TITLE)
         window.layOutAsToast(bottomOffsetPx = 0)
-        window.hideNavigationBar()
         setCancelable(false)
         setCanceledOnTouchOutside(false)
         layout = ToastWindowLayout(
@@ -332,6 +331,8 @@ private class NavigationBarHiddenToastDialog(
             content = content,
         )
         setContentView(layout)
+        // After setContentView: from API 30 the window's insets controller lives on its decor view.
+        window.hideNavigationBar()
         window.decorView.apply {
             setViewTreeLifecycleOwner(hostView.findViewTreeLifecycleOwner())
             setViewTreeViewModelStoreOwner(hostView.findViewTreeViewModelStoreOwner())

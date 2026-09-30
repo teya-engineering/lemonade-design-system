@@ -11,6 +11,7 @@ api projects.core
 api projects.tokens
 debugImplementation libs.compose.ui.tooling
 implementation compose.components.resources
+implementation libs.androidx.activity.compose
 implementation compose.foundation
 implementation compose.runtime
 implementation compose.ui
@@ -18,3 +19,4 @@ implementation libs.androidx.lifecycle.runtimeCompose
 implementation libs.androidx.lifecycle.viewmodelCompose
 implementation libs.compose.ui.tooling.preview
 implementation libs.kotlin.test
+implementation libs.robolectric
