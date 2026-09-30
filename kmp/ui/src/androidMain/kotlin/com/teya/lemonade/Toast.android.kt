@@ -286,6 +286,20 @@ private class ToastDialog(
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
         )
+        setCancelable(false)
+        setCanceledOnTouchOutside(false)
+        layout = ToastWindowLayout(
+            window = window,
+            parentComposition = parentComposition,
+            content = content,
+        )
+        (window.decorView as? ViewGroup)?.disableClippingDownTo(layout)
+        setContentView(layout)
+        // Only after setContentView: installing the decor of a floating dialog theme resets the
+        // window to WRAP_CONTENT and to the theme's window animation and outline clipping, which is
+        // why Compose's own dialog also sizes its window after setContentView.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) window.setClipToOutline(false)
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED)
         window.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -296,15 +310,6 @@ private class ToastDialog(
             // run on top of it.
             windowAnimations = 0
         }
-        setCancelable(false)
-        setCanceledOnTouchOutside(false)
-        layout = ToastWindowLayout(
-            window = window,
-            parentComposition = parentComposition,
-            content = content,
-        )
-        (window.decorView as? ViewGroup)?.disableClippingDownTo(layout)
-        setContentView(layout)
         // After setContentView: from API 30 the window's insets controller lives on its decor view.
         if (hideNavigationBar) window.hideNavigationBar()
         window.decorView.apply {
