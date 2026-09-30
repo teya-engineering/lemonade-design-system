@@ -267,6 +267,62 @@ class ApiStabilityClassifierTest {
     }
 
     @Test
+    fun `re-hashed Compose getLambda singleton on a root-prefixed module is additions-only`() {
+        // Kotlin builds the mangle suffix from the compilation's module name, which the Gradle root
+        // project prefixes, so the module sits in the middle: Lemonade_expressive_release.
+        val diff = """
+            --- a/kmp/expressive/api/android/expressive.api
+            +++ b/kmp/expressive/api/android/expressive.api
+            @@ -1,3 +1,3 @@
+             public final class com/teya/lemonade/ComposableSingletons${'$'}BottomTabBarKt {
+            -${"\t"}public final fun getLambda${'$'}-692955140${'$'}Lemonade_expressive_release ()Lkotlin/jvm/functions/Function3;
+            +${"\t"}public final fun getLambda${'$'}-1327572986${'$'}Lemonade_expressive_release ()Lkotlin/jvm/functions/Function3;
+             }
+        """.trimIndent()
+        assertEquals(
+            expected = Verdict.AdditionsOnly,
+            actual = ApiStabilityClassifier.classify(diff),
+        )
+    }
+
+    @Test
+    fun `re-hashed Compose getLambda singleton on a root-prefixed desktop module is additions-only`() {
+        val diff = """
+            --- a/kmp/expressive/api/desktop/expressive.api
+            +++ b/kmp/expressive/api/desktop/expressive.api
+            @@ -1,3 +1,3 @@
+             public final class com/teya/lemonade/ComposableSingletons${'$'}BottomTabBarKt {
+            -${"\t"}public final fun getLambda${'$'}-692955140${'$'}Lemonade_expressive ()Lkotlin/jvm/functions/Function3;
+            +${"\t"}public final fun getLambda${'$'}-1327572986${'$'}Lemonade_expressive ()Lkotlin/jvm/functions/Function3;
+             }
+        """.trimIndent()
+        assertEquals(
+            expected = Verdict.AdditionsOnly,
+            actual = ApiStabilityClassifier.classify(diff),
+        )
+    }
+
+    @Test
+    fun `a mangle suffix naming another module is still breaking`() {
+        // The suffix has to name the module the file belongs to. A symbol mangled for :ui has no
+        // business in :core's dump, so it is not covered by the carve-out.
+        val diff = """
+            --- a/kmp/core/api/android/core.api
+            +++ b/kmp/core/api/android/core.api
+            @@ -1,3 +1,2 @@
+             public final class com/teya/lemonade/core/ComposableSingletons${'$'}WidgetKt {
+            -${"\t"}public final fun getLambda${'$'}123456${'$'}Lemonade_ui_release ()Lkotlin/jvm/functions/Function2;
+             }
+        """.trimIndent()
+        val verdict = ApiStabilityClassifier.classify(diff)
+        assertIs<Verdict.Breaking>(verdict)
+        assertTrue(
+            actual = verdict.reasons.any { reason -> reason.contains("Lemonade_ui_release") },
+            message = "Expected a foreign module's mangled symbol to stay flagged. Reasons: ${verdict.reasons}",
+        )
+    }
+
+    @Test
     fun `removing a mangled internal symbol outright is additions-only`() {
         val diff = """
             --- a/kmp/core/api/desktop/core.api
