@@ -229,9 +229,12 @@ internal fun CoreBottomTabBar(
             // of its content, and a SubcomposeLayout throws on intrinsic queries. The row width is
             // captured via onSizeChanged so the pill can be positioned in pixels.
             var rowWidthPx by remember { mutableIntStateOf(0) }
+            val slotWidthPx = rowWidthPx.toFloat() / items.size
+            val labelGutter = LemonadeTheme.spaces.spacing100
             val showLabels = rememberLabelsFit(
                 items = items,
-                rowWidthPx = rowWidthPx,
+                slotWidthPx = slotWidthPx,
+                labelGutter = labelGutter,
             )
             Box(
                 modifier = Modifier
@@ -240,7 +243,6 @@ internal fun CoreBottomTabBar(
                     .onSizeChanged { size -> rowWidthPx = size.width },
             ) {
                 if (rowWidthPx > 0) {
-                    val slotWidthPx = rowWidthPx.toFloat() / items.size
                     val slotWidthDp = with(LocalDensity.current) { slotWidthPx.toDp() }
                     val clampedPosition = selectionPosition.coerceIn(
                         minimumValue = 0f,
@@ -267,6 +269,7 @@ internal fun CoreBottomTabBar(
                             item = item,
                             isSelected = index == selectedIndex,
                             showLabel = showLabels,
+                            labelGutter = labelGutter,
                             onClick = { onItemSelected(index) },
                             modifier = Modifier.weight(weight = 1f),
                         )
@@ -278,44 +281,60 @@ internal fun CoreBottomTabBar(
 }
 
 /**
- * Whether every label fits its slot at the current text size, screen width and item count.
+ * Whether the bar shows its labels, by measuring them against the room a slot has.
  *
- * A label ellipsised down to a couple of characters carries no meaning, so the bar drops all of
- * them at once and lets the icons speak instead. The decision is measured rather than pinned to a
- * font-scale threshold: how much room a label needs depends just as much on the label itself, the
- * number of items and the width available — a tablet at 500dp keeps its labels at text sizes where
- * a 320dp phone cannot.
- *
- * The measurement is uniform on purpose. Hiding only the labels that overflow would leave a bar
- * with some items labelled and some not.
- *
- * Returns `true` until the row has been measured, so bars whose labels fit — the common case —
- * never flash through a label-less first frame.
+ * @param items items whose labels are measured
+ * @param slotWidthPx one item's share of the bar in px, `0` before the bar has been measured
+ * @param labelGutter space a label keeps either side of itself, which it pads itself by
  */
 @Composable
 private fun rememberLabelsFit(
     items: List<BottomTabBarItem>,
-    rowWidthPx: Int,
+    slotWidthPx: Float,
+    labelGutter: Dp,
 ): Boolean {
     val textMeasurer = rememberTextMeasurer()
     val labelStyle = LemonadeTheme.typography.bodyXSmallMedium.textStyle
-    val density = LocalDensity.current
-    // Mirrors the horizontal padding the label itself carries, so neighbouring slots never touch.
-    val labelGutterPx = with(density) { (LemonadeTheme.spaces.spacing100 * 2).roundToPx() }
-
-    return remember(rowWidthPx, items, labelStyle, textMeasurer, labelGutterPx) {
-        if (rowWidthPx == 0) return@remember true
-
-        val availableWidthPx = rowWidthPx / items.size - labelGutterPx
-        items.all { item ->
+    val labelWidthsPx = remember(items, labelStyle, textMeasurer) {
+        items.map { item ->
             val measured = textMeasurer.measure(
                 text = item.label,
                 style = labelStyle,
                 maxLines = 1,
             )
-            measured.size.width <= availableWidthPx
+            measured.size.width
         }
     }
+
+    return labelsFitSlot(
+        labelWidthsPx = labelWidthsPx,
+        slotWidthPx = slotWidthPx,
+        gutterPx = with(LocalDensity.current) { labelGutter.roundToPx() },
+    )
+}
+
+/**
+ * Whether every label in [labelWidthsPx] fits a slot [slotWidthPx] px wide.
+ *
+ * `true` for an unmeasured bar, so a bar whose labels fit never flashes through a label-less first
+ * frame. All or nothing by design: a bar with some items labelled and some not reads worse than a
+ * bar of icons.
+ *
+ * A label's room is the slot less [gutterPx] either side. The share floors, because [Row] hands the
+ * remainder of an inexact division to its first children, so the narrowest slot sets the limit.
+ * [gutterPx] is one side, doubled here rather than rounded as a pair, which is the arithmetic
+ * `Modifier.padding(horizontal = …)` does — rounding the pair lands a pixel out at some densities,
+ * and a pixel is enough to ellipsise a label the bar judged to fit.
+ */
+internal fun labelsFitSlot(
+    labelWidthsPx: List<Int>,
+    slotWidthPx: Float,
+    gutterPx: Int,
+): Boolean {
+    if (slotWidthPx <= 0f) return true
+
+    val budgetPx = slotWidthPx.toInt() - gutterPx * 2
+    return labelWidthsPx.all { labelWidthPx -> labelWidthPx <= budgetPx }
 }
 
 @Composable
@@ -323,6 +342,7 @@ private fun BottomTabBarItemContent(
     item: BottomTabBarItem,
     isSelected: Boolean,
     showLabel: Boolean,
+    labelGutter: Dp,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -386,7 +406,7 @@ private fun BottomTabBarItemContent(
 
             LemonadeUi.Text(
                 text = item.label,
-                modifier = Modifier.padding(horizontal = LemonadeTheme.spaces.spacing100),
+                modifier = Modifier.padding(horizontal = labelGutter),
                 textStyle = LemonadeTheme.typography.bodyXSmallMedium,
                 color = LemonadeTheme.colors.content.contentPrimary,
                 maxLines = 1,
