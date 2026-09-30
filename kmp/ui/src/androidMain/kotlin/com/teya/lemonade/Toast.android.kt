@@ -1,9 +1,12 @@
 package com.teya.lemonade
 
+import android.graphics.Outline
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.view.ViewOutlineProvider
 import android.view.Window
 import android.view.WindowInsetsController
 import android.view.WindowManager
@@ -41,8 +44,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
@@ -55,8 +57,11 @@ import android.app.Dialog as AndroidDialog
 import android.graphics.Color as AndroidColor
 import android.view.WindowInsets as AndroidWindowInsets
 
-/** Lets the window's flags, size and gravity settle before animating, else the enter flicks. */
+/** Lets the window's size and offset settle before animating, else the enter flicks. */
 private const val SHOW_DELAY_MS = 100L
+
+/** Room around the pill for its shadow, which the window would otherwise clip. */
+private val SHADOW_ELEVATION = 8.dp
 
 @Composable
 internal actual fun PlatformToastHost(
@@ -66,21 +71,19 @@ internal actual fun PlatformToastHost(
     content: @Composable () -> Unit,
 ) {
     Box(modifier = modifier) { content() }
-    if (hideNavigationBar) {
-        NavigationBarHiddenToastOverlayWindow(toastState = toastState)
-        return
-    }
-    ToastOverlayWindow(toastState = toastState)
+    ToastOverlayWindow(
+        toastState = toastState,
+        hideNavigationBar = hideNavigationBar,
+    )
 }
 
 /**
  * Renders toast overlays at the bottom of the screen, keeping the navigation bar hidden when
  * [hideNavigationBar].
  *
- * The toast draws in a window of its own, above any open modal. That window hides the navigation bar
- * before it is shown and never takes input focus, so a host that hides the bar keeps it hidden for as
- * long as a toast is up. The [LemonadeToastHost] without this flag leaves the bar to the window it
- * opens, which shows it.
+ * The toast draws in a window of its own, above any open modal. With [hideNavigationBar] that window
+ * hides the navigation bar too, so a host that hides the bar keeps it hidden for as long as a toast is
+ * up. Without it, the toast is the same as the common [LemonadeToastHost]'s.
  *
  * ## Usage
  * ```kotlin
@@ -107,24 +110,27 @@ public fun LemonadeToastHost(
 }
 
 /**
- * Draws the toast in its own [Dialog] window, above any open modal.
+ * Draws the toast in its own [ToastWindow], above any open modal.
  *
- * It z-orders above an [androidx.compose.material3.ModalBottomSheet] or another [Dialog].
- * `FLAG_NOT_FOCUSABLE` (implies `FLAG_NOT_TOUCH_MODAL`) passes touches outside the window through to
- * the content beneath and never takes input focus.
+ * It z-orders above an [androidx.compose.material3.ModalBottomSheet] or a
+ * [androidx.compose.ui.window.Dialog]. `FLAG_NOT_FOCUSABLE` and `FLAG_NOT_TOUCH_MODAL` pass touches
+ * outside the window through to the content beneath and never take input focus.
  *
- * Pass-through is bounded by the *window*, not the pill. The window spans the full width (see
- * [ConfigureToastWindow]), so while a toast is visible, taps in the horizontal band it occupies are
- * swallowed even beside a short, narrow pill — they don't reach the content behind. The band is the
- * height of the toast at the bottom of the screen and lasts only as long as the toast is on screen.
- * Sizing the window to the pill instead would restore that pass-through, but re-applies the platform's
- * 320dp dialog width cap and stops a wrapped label from ever filling the width.
+ * Pass-through is bounded by the *window*, not the pill. The window spans the full width, so while a
+ * toast is visible, taps in the horizontal band it occupies are swallowed even beside a short, narrow
+ * pill — they don't reach the content behind. The band is the height of the toast at the bottom of the
+ * screen and lasts only as long as the toast is on screen. Sizing the window to the pill instead would
+ * restore that pass-through, but re-applies the platform's 320dp dialog width cap and stops a wrapped
+ * label from ever filling the width.
  */
 @Composable
-private fun ToastOverlayWindow(toastState: LemonadeToastState) {
+private fun ToastOverlayWindow(
+    toastState: LemonadeToastState,
+    hideNavigationBar: Boolean,
+) {
     val toast = toastState.currentToast
 
-    // Outlive `currentToast` clearing so the exit animation can play before the Dialog unmounts.
+    // Outlive `currentToast` clearing so the exit animation can play before the window unmounts.
     var lastToast by remember { mutableStateOf<ToastData?>(null) }
     if (toast != null) lastToast = toast
 
@@ -140,14 +146,7 @@ private fun ToastOverlayWindow(toastState: LemonadeToastState) {
     val displayToast = lastToast
         ?: return
 
-    Dialog(
-        onDismissRequest = { toastState.dismiss() },
-        properties = DialogProperties(
-            dismissOnBackPress = false,
-            dismissOnClickOutside = false,
-            usePlatformDefaultWidth = false,
-        ),
-    ) {
+    ToastWindow(hideNavigationBar = hideNavigationBar) {
         val layoutDirection = LocalLayoutDirection.current
         val margins = rememberToastPadding(
             override = displayToast.paddingValues,
@@ -155,7 +154,10 @@ private fun ToastOverlayWindow(toastState: LemonadeToastState) {
         )
         val startInset = margins.calculateStartPadding(layoutDirection)
         val endInset = margins.calculateEndPadding(layoutDirection)
-        ConfigureToastWindow(bottomInset = margins.calculateBottomPadding())
+        OffsetToastWindow(
+            bottomMargin = margins.calculateBottomPadding(),
+            hideNavigationBar = hideNavigationBar,
+        )
 
         LaunchedEffect(toast) {
             if (toast != null) {
@@ -188,7 +190,7 @@ private fun ToastOverlayWindow(toastState: LemonadeToastState) {
             modifier = Modifier
                 .fillMaxWidth()
                 // The horizontal margins go on the content: the window itself has to stay
-                // `MATCH_PARENT` wide, see [ConfigureToastWindow].
+                // `MATCH_PARENT` wide, see [ToastOverlayWindow].
                 .padding(
                     start = startInset,
                     end = endInset,
@@ -208,182 +210,56 @@ private fun ToastOverlayWindow(toastState: LemonadeToastState) {
 }
 
 /**
- * Spans the dialog window across the screen and lifts it [bottomInset] above the bottom.
+ * Lifts the toast's window [bottomMargin] above the bottom of the screen, plus the navigation bar's
+ * inset unless [hideNavigationBar].
  *
- * The lift is a window attribute plus the navigation-bar inset, not padding, so the frame hugs the
- * pill vertically and taps above and below it fall through (but not beside it — see
- * [ToastOverlayWindow]). `MATCH_PARENT` is deliberate: `WRAP_CONTENT` re-applies the platform's 320dp
- * dialog width cap that `usePlatformDefaultWidth = false` exists to remove, which caps the toast well
- * short of the screen. The navigation-bar inset resolves to zero when the window already sits above
- * the bars and to the bar height on edge-to-edge screens, so the toast never lands under the
- * navigation bar.
+ * The lift is a window attribute, not padding, so the frame hugs the pill vertically and taps above and
+ * below it fall through. The navigation-bar inset resolves to zero when the window already sits above
+ * the bars and to the bar height on edge-to-edge screens, so the toast never lands under the navigation
+ * bar. It reaches the window's content only once the window is shown, so the offset is set here rather
+ * than with the rest of the window's layout.
  */
 @Composable
-private fun ConfigureToastWindow(bottomInset: Dp) {
-    val view = LocalView.current
-    val density = LocalDensity.current
-    val navigationBarInsetPx = WindowInsets.navigationBars.getBottom(density)
-    val bottomInsetPx = with(density) { bottomInset.roundToPx() } + navigationBarInsetPx
-    DisposableEffect(bottomInsetPx) {
-        (view.parent as? DialogWindowProvider)?.window?.apply {
-            setBackgroundDrawable(ColorDrawable(AndroidColor.TRANSPARENT))
-            clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-            addFlags(
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
-            )
-            setLayout(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-            )
-            attributes = attributes.apply {
-                gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-                y = bottomInsetPx
-                // Compose drives the enter/exit; suppress the platform window animation so it doesn't
-                // run on top of it.
-                windowAnimations = 0
-            }
-        }
-        onDispose { }
-    }
-}
-
-/**
- * [ToastOverlayWindow] for a host that hides the navigation bar: the same toast, in a
- * [NavigationBarHiddenToastWindow] instead of a Compose [Dialog].
- */
-@Composable
-private fun NavigationBarHiddenToastOverlayWindow(toastState: LemonadeToastState) {
-    val toast = toastState.currentToast
-
-    // Outlive `currentToast` clearing so the exit animation can play before the window unmounts.
-    var lastToast by remember { mutableStateOf<ToastData?>(null) }
-    if (toast != null) lastToast = toast
-
-    val animState = remember { MutableTransitionState(false) }
-    val animationSettled by remember {
-        derivedStateOf { !animState.currentState && !animState.targetState }
-    }
-
-    LaunchedEffect(toast, animationSettled) {
-        if (toast == null && animationSettled) lastToast = null
-    }
-
-    val displayToast = lastToast
-        ?: return
-
-    NavigationBarHiddenToastWindow {
-        val layoutDirection = LocalLayoutDirection.current
-        val margins = rememberToastPadding(
-            override = displayToast.paddingValues,
-            layoutDirection = layoutDirection,
-        )
-        val startInset = margins.calculateStartPadding(layoutDirection)
-        val endInset = margins.calculateEndPadding(layoutDirection)
-        ConfigureNavigationBarHiddenToastWindow(bottomInset = margins.calculateBottomPadding())
-
-        LaunchedEffect(toast) {
-            if (toast != null) {
-                delay(SHOW_DELAY_MS)
-                animState.targetState = true
-            } else {
-                animState.targetState = false
-            }
-        }
-
-        var toastHeightPx by remember { mutableIntStateOf(0) }
-        val transition = updateTransition(
-            transitionState = animState,
-            label = "toast",
-        )
-        val alpha by transition.animateFloat(label = "alpha") { visible -> if (visible) 1f else 0f }
-        val translationY by transition.animateFloat(
-            transitionSpec = {
-                spring(
-                    dampingRatio = 0.8f,
-                    stiffness = Spring.StiffnessMediumLow,
-                )
-            },
-            label = "translationY",
-        ) { visible -> if (visible) 0f else toastHeightPx.toFloat() }
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = startInset,
-                    end = endInset,
-                ).onSizeChanged { size -> toastHeightPx = size.height }
-                .graphicsLayer {
-                    this.alpha = alpha
-                    this.translationY = translationY
-                },
-            contentAlignment = Alignment.Center,
-        ) {
-            SwipeableToast(
-                toast = displayToast,
-                onDismiss = { toastState.dismiss() },
-            )
-        }
-    }
-}
-
-/**
- * [ConfigureToastWindow] for a window whose navigation bar is hidden: the offset leaves out the
- * navigation-bar inset, so the window does not move while the bar hides.
- */
-@Composable
-private fun ConfigureNavigationBarHiddenToastWindow(bottomInset: Dp) {
+private fun OffsetToastWindow(
+    bottomMargin: Dp,
+    hideNavigationBar: Boolean,
+) {
     val view = LocalView.current
     val density = LocalDensity.current
     val navigationBarInsets = WindowInsets.navigationBars
     val bottomOffsetPx = toastWindowBottomOffsetPx(
-        bottomMarginPx = with(density) { bottomInset.roundToPx() },
-        hideNavigationBar = true,
+        bottomMarginPx = with(density) { bottomMargin.roundToPx() },
+        hideNavigationBar = hideNavigationBar,
         navigationBarInsetPx = { navigationBarInsets.getBottom(density) },
     )
     DisposableEffect(bottomOffsetPx) {
-        (view.parent as? DialogWindowProvider)?.window?.layOutAsToast(bottomOffsetPx = bottomOffsetPx)
+        (view.parent as? DialogWindowProvider)?.window?.apply {
+            attributes = attributes.apply { y = bottomOffsetPx }
+        }
         onDispose { }
     }
 }
 
-private fun Window.layOutAsToast(bottomOffsetPx: Int) {
-    setBackgroundDrawable(ColorDrawable(AndroidColor.TRANSPARENT))
-    clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-    addFlags(
-        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
-    )
-    setLayout(
-        WindowManager.LayoutParams.MATCH_PARENT,
-        WindowManager.LayoutParams.WRAP_CONTENT,
-    )
-    attributes = attributes.apply {
-        gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-        y = bottomOffsetPx
-        windowAnimations = 0
-    }
-}
-
 /**
- * Shows [content] in a toast window that hides the navigation bar.
+ * Shows [content] in a window built and laid out as a toast before it is shown.
  *
- * Compose's [Dialog] shows its window focusable and without hide flags, and the flags an effect sets land
- * only after that: the focused window brings the bar back on API 30+, and on older versions Android shows
- * the bar again for every window while a focusable one is up. This window is laid out, made
- * `FLAG_NOT_FOCUSABLE` and told to hide the bar before it is shown, so it never takes focus and the host's
- * hidden bar stays hidden.
+ * A window that is focusable for even one frame makes Android before 11 show the navigation bar again
+ * on every window, and Compose's [androidx.compose.ui.window.Dialog] can only be adjusted after it is
+ * shown. So this window is non-focusable, sized and placed from the start.
  */
 @Composable
-private fun NavigationBarHiddenToastWindow(content: @Composable () -> Unit) {
+private fun ToastWindow(
+    hideNavigationBar: Boolean,
+    content: @Composable () -> Unit,
+) {
     val hostView = LocalView.current
     val parentComposition = rememberCompositionContext()
     val currentContent by rememberUpdatedState(content)
-    val dialog = remember(hostView) {
-        NavigationBarHiddenToastDialog(
+    val dialog = remember(hostView, hideNavigationBar) {
+        ToastDialog(
             hostView = hostView,
             parentComposition = parentComposition,
+            hideNavigationBar = hideNavigationBar,
             content = { currentContent() },
         )
     }
@@ -393,9 +269,10 @@ private fun NavigationBarHiddenToastWindow(content: @Composable () -> Unit) {
     }
 }
 
-private class NavigationBarHiddenToastDialog(
+private class ToastDialog(
     hostView: View,
     parentComposition: CompositionContext,
+    hideNavigationBar: Boolean,
     content: @Composable () -> Unit,
 ) : AndroidDialog(hostView.context) {
     private val layout: ToastWindowLayout
@@ -403,7 +280,22 @@ private class NavigationBarHiddenToastDialog(
     init {
         val window = checkNotNull(window)
         window.requestFeature(Window.FEATURE_NO_TITLE)
-        window.layOutAsToast(bottomOffsetPx = 0)
+        window.setBackgroundDrawable(ColorDrawable(AndroidColor.TRANSPARENT))
+        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        window.addFlags(
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+        )
+        window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+        )
+        window.attributes = window.attributes.apply {
+            gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+            // Compose drives the enter/exit; suppress the platform window animation so it doesn't
+            // run on top of it.
+            windowAnimations = 0
+        }
         setCancelable(false)
         setCanceledOnTouchOutside(false)
         layout = ToastWindowLayout(
@@ -411,9 +303,10 @@ private class NavigationBarHiddenToastDialog(
             parentComposition = parentComposition,
             content = content,
         )
+        (window.decorView as? ViewGroup)?.disableClippingDownTo(layout)
         setContentView(layout)
         // After setContentView: from API 30 the window's insets controller lives on its decor view.
-        window.hideNavigationBar()
+        if (hideNavigationBar) window.hideNavigationBar()
         window.decorView.apply {
             setViewTreeLifecycleOwner(hostView.findViewTreeLifecycleOwner())
             setViewTreeViewModelStoreOwner(hostView.findViewTreeViewModelStoreOwner())
@@ -427,7 +320,7 @@ private class NavigationBarHiddenToastDialog(
     }
 }
 
-/** Exposes its [window] the way Compose's own dialog layout does, so [ConfigureNavigationBarHiddenToastWindow] finds it. */
+/** Exposes its [window] the way Compose's own dialog layout does, so [OffsetToastWindow] finds it. */
 private class ToastWindowLayout(
     override val window: Window,
     parentComposition: CompositionContext,
@@ -436,11 +329,32 @@ private class ToastWindowLayout(
     DialogWindowProvider {
     init {
         setParentCompositionContext(parentComposition)
+        clipChildren = false
+        // An elevation with an invisible outline makes the window manager allocate room for the
+        // pill's shadow without drawing a shadow of its own.
+        elevation = SHADOW_ELEVATION.value * resources.displayMetrics.density
+        outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(
+                view: View,
+                outline: Outline,
+            ) {
+                outline.setRect(0, 0, view.width, view.height)
+                outline.alpha = 0f
+            }
+        }
     }
 
     @Composable
     override fun Content() {
         content()
+    }
+}
+
+private fun ViewGroup.disableClippingDownTo(layout: View) {
+    clipChildren = false
+    if (this === layout) return
+    for (index in 0 until childCount) {
+        (getChildAt(index) as? ViewGroup)?.disableClippingDownTo(layout)
     }
 }
 
