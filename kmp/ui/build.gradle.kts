@@ -14,7 +14,6 @@ lemonadePublishing {
 
 android {
     namespace = "com.teya.lemonade.ui"
-    testOptions.unitTests.isIncludeAndroidResources = true
 }
 
 kotlin {
@@ -42,10 +41,6 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
-        }
-        androidUnitTest.dependencies {
-            implementation(libs.robolectric)
-            implementation(libs.androidx.activity.compose)
         }
     }
 }

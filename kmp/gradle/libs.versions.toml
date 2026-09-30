@@ -1,5 +1,4 @@
 [versions]
-robolectric = "4.17"
 agp = "9.4.1"
 android-compileSdk = "36"
 android-minSdk = "23"
@@ -49,7 +48,6 @@ kotlinx-serializer = { module = "org.jetbrains.kotlinx:kotlinx-serialization-jso
 compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
 compose-ui-tooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "composeMultiplatform" }
 compose-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "composeMultiplatform" }
-robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "runtime" }
 
