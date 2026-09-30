@@ -82,15 +82,14 @@ public data class BottomTabBarItem(
  * The component already applies [androidx.compose.foundation.layout.navigationBarsPadding], so
  * callers do not have to pad around the system navigation bar themselves.
  *
- * ## Large font scales
- * Items grow with the user's font scale rather than clipping their label. When the labels no longer
- * fit their slots the bar drops all of them at once and shows only icons, rather than ellipsising
- * them down to a couple of meaningless characters. The labels are still announced by accessibility
- * services, as each item's content description.
+ * ## Design Notes
+ * Items grow with the user's font scale rather than clipping their label. Once the labels stop
+ * fitting their slots the bar drops all of them and shows only icons, rather than ellipsising them
+ * down to a couple of meaningless characters. Each item then carries its label as a content
+ * description, so accessibility services still announce it.
  *
- * The fit is measured, not pinned to a font-scale threshold, so how long the labels survive depends
- * on the space actually available: a tablet keeps its labels at text sizes where a compact phone
- * cannot.
+ * How long the labels survive depends on the room a slot actually has, so a wide bar keeps them at
+ * text sizes where a narrow one cannot.
  *
  * ## Usage
  * ```kotlin
@@ -147,6 +146,8 @@ public fun LemonadeUi.BottomTabBar(
  *
  * At rest, pass the selected index as a float. Rounding [selectionPosition] gives the discrete
  * selection used for the icon variant and accessibility.
+ *
+ * Grows and drops its labels at large font scales exactly as the index-based overload does.
  *
  * @param items non-empty list of [BottomTabBarItem] to show
  * @param selectionPosition fractional slot index of the pill, the selected index at rest
@@ -226,8 +227,7 @@ internal fun CoreBottomTabBar(
             contentPadding = PaddingValues(all = LemonadeTheme.spaces.spacing100),
         ) {
             // Plain Box (not BoxWithConstraints): HorizontalFloatingToolbar queries the intrinsic widths
-            // of its content, and a SubcomposeLayout throws on intrinsic queries. The row width is
-            // captured via onSizeChanged so the pill can be positioned in pixels.
+            // of its content, and a SubcomposeLayout throws on intrinsic queries.
             var rowWidthPx by remember { mutableIntStateOf(0) }
             val slotWidthPx = rowWidthPx.toFloat() / items.size
             val labelGutter = LemonadeTheme.spaces.spacing100
@@ -362,7 +362,6 @@ private fun BottomTabBarItemContent(
                 indication = LocalEffects.current.interactionIndication,
             ).semantics {
                 selected = isSelected
-                // With the label hidden the tab itself has to carry the name.
                 if (!showLabel) contentDescription = item.label
             }.padding(vertical = LemonadeTheme.spaces.spacing200),
     ) {
