@@ -66,10 +66,11 @@ internal actual fun PlatformToastHost(
     content: @Composable () -> Unit,
 ) {
     Box(modifier = modifier) { content() }
-    ToastOverlayWindow(
-        toastState = toastState,
-        hideNavigationBar = hideNavigationBar,
-    )
+    if (hideNavigationBar) {
+        NavigationBarHiddenToastOverlayWindow(toastState = toastState)
+        return
+    }
+    ToastOverlayWindow(toastState = toastState)
 }
 
 /**
@@ -120,10 +121,7 @@ public fun LemonadeToastHost(
  * 320dp dialog width cap and stops a wrapped label from ever filling the width.
  */
 @Composable
-private fun ToastOverlayWindow(
-    toastState: LemonadeToastState,
-    hideNavigationBar: Boolean,
-) {
+private fun ToastOverlayWindow(toastState: LemonadeToastState) {
     val toast = toastState.currentToast
 
     // Outlive `currentToast` clearing so the exit animation can play before the Dialog unmounts.
@@ -142,96 +140,70 @@ private fun ToastOverlayWindow(
     val displayToast = lastToast
         ?: return
 
-    val content: @Composable () -> Unit = {
-        ToastWindowContent(
-            toast = toast,
-            displayToast = displayToast,
-            animState = animState,
-            hideNavigationBar = hideNavigationBar,
-            onDismiss = { toastState.dismiss() },
-        )
-    }
-    if (hideNavigationBar) {
-        NavigationBarHiddenToastWindow(content = content)
-    } else {
-        Dialog(
-            onDismissRequest = { toastState.dismiss() },
-            properties = DialogProperties(
-                dismissOnBackPress = false,
-                dismissOnClickOutside = false,
-                usePlatformDefaultWidth = false,
-            ),
-            content = content,
-        )
-    }
-}
-
-@Composable
-private fun ToastWindowContent(
-    toast: ToastData?,
-    displayToast: ToastData,
-    animState: MutableTransitionState<Boolean>,
-    hideNavigationBar: Boolean,
-    onDismiss: () -> Unit,
-) {
-    val layoutDirection = LocalLayoutDirection.current
-    val margins = rememberToastPadding(
-        override = displayToast.paddingValues,
-        layoutDirection = layoutDirection,
-    )
-    val startInset = margins.calculateStartPadding(layoutDirection)
-    val endInset = margins.calculateEndPadding(layoutDirection)
-    ConfigureToastWindow(
-        bottomInset = margins.calculateBottomPadding(),
-        hideNavigationBar = hideNavigationBar,
-    )
-
-    LaunchedEffect(toast) {
-        if (toast != null) {
-            delay(SHOW_DELAY_MS)
-            animState.targetState = true
-        } else {
-            animState.targetState = false
-        }
-    }
-
-    // Keep the toast always composed so the window measures one fixed size. Enter and exit are a
-    // draw-only alpha and vertical translation, which never re-measure the window.
-    var toastHeightPx by remember { mutableIntStateOf(0) }
-    val transition = updateTransition(
-        transitionState = animState,
-        label = "toast",
-    )
-    val alpha by transition.animateFloat(label = "alpha") { visible -> if (visible) 1f else 0f }
-    val translationY by transition.animateFloat(
-        transitionSpec = {
-            spring(
-                dampingRatio = 0.8f,
-                stiffness = Spring.StiffnessMediumLow,
-            )
-        },
-        label = "translationY",
-    ) { visible -> if (visible) 0f else toastHeightPx.toFloat() }
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            // The horizontal margins go on the content: the window itself has to stay
-            // `MATCH_PARENT` wide, see [ConfigureToastWindow].
-            .padding(
-                start = startInset,
-                end = endInset,
-            ).onSizeChanged { size -> toastHeightPx = size.height }
-            .graphicsLayer {
-                this.alpha = alpha
-                this.translationY = translationY
-            },
-        contentAlignment = Alignment.Center,
+    Dialog(
+        onDismissRequest = { toastState.dismiss() },
+        properties = DialogProperties(
+            dismissOnBackPress = false,
+            dismissOnClickOutside = false,
+            usePlatformDefaultWidth = false,
+        ),
     ) {
-        SwipeableToast(
-            toast = displayToast,
-            onDismiss = onDismiss,
+        val layoutDirection = LocalLayoutDirection.current
+        val margins = rememberToastPadding(
+            override = displayToast.paddingValues,
+            layoutDirection = layoutDirection,
         )
+        val startInset = margins.calculateStartPadding(layoutDirection)
+        val endInset = margins.calculateEndPadding(layoutDirection)
+        ConfigureToastWindow(bottomInset = margins.calculateBottomPadding())
+
+        LaunchedEffect(toast) {
+            if (toast != null) {
+                delay(SHOW_DELAY_MS)
+                animState.targetState = true
+            } else {
+                animState.targetState = false
+            }
+        }
+
+        // Keep the toast always composed so the window measures one fixed size. Enter and exit are a
+        // draw-only alpha and vertical translation, which never re-measure the window.
+        var toastHeightPx by remember { mutableIntStateOf(0) }
+        val transition = updateTransition(
+            transitionState = animState,
+            label = "toast",
+        )
+        val alpha by transition.animateFloat(label = "alpha") { visible -> if (visible) 1f else 0f }
+        val translationY by transition.animateFloat(
+            transitionSpec = {
+                spring(
+                    dampingRatio = 0.8f,
+                    stiffness = Spring.StiffnessMediumLow,
+                )
+            },
+            label = "translationY",
+        ) { visible -> if (visible) 0f else toastHeightPx.toFloat() }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                // The horizontal margins go on the content: the window itself has to stay
+                // `MATCH_PARENT` wide, see [ConfigureToastWindow].
+                .padding(
+                    start = startInset,
+                    end = endInset,
+                ).onSizeChanged { size -> toastHeightPx = size.height }
+                .graphicsLayer {
+                    this.alpha = alpha
+                    this.translationY = translationY
+                },
+            contentAlignment = Alignment.Center,
+        ) {
+            SwipeableToast(
+                toast = displayToast,
+                onDismiss = { toastState.dismiss() },
+            )
+        }
     }
 }
 
@@ -247,16 +219,127 @@ private fun ToastWindowContent(
  * navigation bar.
  */
 @Composable
-private fun ConfigureToastWindow(
-    bottomInset: Dp,
-    hideNavigationBar: Boolean,
-) {
+private fun ConfigureToastWindow(bottomInset: Dp) {
+    val view = LocalView.current
+    val density = LocalDensity.current
+    val navigationBarInsetPx = WindowInsets.navigationBars.getBottom(density)
+    val bottomInsetPx = with(density) { bottomInset.roundToPx() } + navigationBarInsetPx
+    DisposableEffect(bottomInsetPx) {
+        (view.parent as? DialogWindowProvider)?.window?.apply {
+            setBackgroundDrawable(ColorDrawable(AndroidColor.TRANSPARENT))
+            clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            addFlags(
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+            )
+            setLayout(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+            )
+            attributes = attributes.apply {
+                gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+                y = bottomInsetPx
+                // Compose drives the enter/exit; suppress the platform window animation so it doesn't
+                // run on top of it.
+                windowAnimations = 0
+            }
+        }
+        onDispose { }
+    }
+}
+
+/**
+ * [ToastOverlayWindow] for a host that hides the navigation bar: the same toast, in a
+ * [NavigationBarHiddenToastWindow] instead of a Compose [Dialog].
+ */
+@Composable
+private fun NavigationBarHiddenToastOverlayWindow(toastState: LemonadeToastState) {
+    val toast = toastState.currentToast
+
+    // Outlive `currentToast` clearing so the exit animation can play before the window unmounts.
+    var lastToast by remember { mutableStateOf<ToastData?>(null) }
+    if (toast != null) lastToast = toast
+
+    val animState = remember { MutableTransitionState(false) }
+    val animationSettled by remember {
+        derivedStateOf { !animState.currentState && !animState.targetState }
+    }
+
+    LaunchedEffect(toast, animationSettled) {
+        if (toast == null && animationSettled) lastToast = null
+    }
+
+    val displayToast = lastToast
+        ?: return
+
+    NavigationBarHiddenToastWindow {
+        val layoutDirection = LocalLayoutDirection.current
+        val margins = rememberToastPadding(
+            override = displayToast.paddingValues,
+            layoutDirection = layoutDirection,
+        )
+        val startInset = margins.calculateStartPadding(layoutDirection)
+        val endInset = margins.calculateEndPadding(layoutDirection)
+        ConfigureNavigationBarHiddenToastWindow(bottomInset = margins.calculateBottomPadding())
+
+        LaunchedEffect(toast) {
+            if (toast != null) {
+                delay(SHOW_DELAY_MS)
+                animState.targetState = true
+            } else {
+                animState.targetState = false
+            }
+        }
+
+        var toastHeightPx by remember { mutableIntStateOf(0) }
+        val transition = updateTransition(
+            transitionState = animState,
+            label = "toast",
+        )
+        val alpha by transition.animateFloat(label = "alpha") { visible -> if (visible) 1f else 0f }
+        val translationY by transition.animateFloat(
+            transitionSpec = {
+                spring(
+                    dampingRatio = 0.8f,
+                    stiffness = Spring.StiffnessMediumLow,
+                )
+            },
+            label = "translationY",
+        ) { visible -> if (visible) 0f else toastHeightPx.toFloat() }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = startInset,
+                    end = endInset,
+                ).onSizeChanged { size -> toastHeightPx = size.height }
+                .graphicsLayer {
+                    this.alpha = alpha
+                    this.translationY = translationY
+                },
+            contentAlignment = Alignment.Center,
+        ) {
+            SwipeableToast(
+                toast = displayToast,
+                onDismiss = { toastState.dismiss() },
+            )
+        }
+    }
+}
+
+/**
+ * [ConfigureToastWindow] for a window whose navigation bar is hidden: the offset leaves out the
+ * navigation-bar inset, so the window does not move while the bar hides.
+ */
+@Composable
+private fun ConfigureNavigationBarHiddenToastWindow(bottomInset: Dp) {
     val view = LocalView.current
     val density = LocalDensity.current
     val navigationBarInsets = WindowInsets.navigationBars
     val bottomOffsetPx = toastWindowBottomOffsetPx(
         bottomMarginPx = with(density) { bottomInset.roundToPx() },
-        hideNavigationBar = hideNavigationBar,
+        hideNavigationBar = true,
         navigationBarInsetPx = { navigationBarInsets.getBottom(density) },
     )
     DisposableEffect(bottomOffsetPx) {
@@ -279,8 +362,6 @@ private fun Window.layOutAsToast(bottomOffsetPx: Int) {
     attributes = attributes.apply {
         gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
         y = bottomOffsetPx
-        // Compose drives the enter/exit; suppress the platform window animation so it doesn't
-        // run on top of it.
         windowAnimations = 0
     }
 }
@@ -346,7 +427,7 @@ private class NavigationBarHiddenToastDialog(
     }
 }
 
-/** Exposes its [window] the way Compose's own dialog layout does, so [ConfigureToastWindow] finds it. */
+/** Exposes its [window] the way Compose's own dialog layout does, so [ConfigureNavigationBarHiddenToastWindow] finds it. */
 private class ToastWindowLayout(
     override val window: Window,
     parentComposition: CompositionContext,
