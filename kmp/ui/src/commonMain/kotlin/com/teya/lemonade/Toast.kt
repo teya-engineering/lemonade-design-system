@@ -319,6 +319,19 @@ public fun LemonadeToastHost(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
+    CoreToastHost(
+        modifier = modifier,
+        hideNavigationBar = false,
+        content = content,
+    )
+}
+
+@Composable
+internal fun CoreToastHost(
+    modifier: Modifier,
+    hideNavigationBar: Boolean,
+    content: @Composable () -> Unit,
+) {
     val toastState = remember { LemonadeToastState() }
 
     val toast = toastState.currentToast
@@ -344,6 +357,7 @@ public fun LemonadeToastHost(
         PlatformToastHost(
             modifier = modifier,
             toastState = toastState,
+            hideNavigationBar = hideNavigationBar,
             content = content,
         )
     }
@@ -358,8 +372,20 @@ public fun LemonadeToastHost(
 internal expect fun PlatformToastHost(
     modifier: Modifier,
     toastState: LemonadeToastState,
+    hideNavigationBar: Boolean,
     content: @Composable () -> Unit,
 )
+
+/**
+ * How far the toast's window sits above the bottom of the screen: the toast's own bottom margin, plus the
+ * navigation bar's inset unless [hideNavigationBar]. A hidden bar has no inset to clear, so
+ * [navigationBarInsetPx] is never read then, and the window's offset cannot follow the bar while it hides.
+ */
+internal fun toastWindowBottomOffsetPx(
+    bottomMarginPx: Int,
+    hideNavigationBar: Boolean,
+    navigationBarInsetPx: () -> Int,
+): Int = if (hideNavigationBar) bottomMarginPx else bottomMarginPx + navigationBarInsetPx()
 
 /** Inline overlay: the animated toast pinned to the bottom of the host [Box], over [content]. */
 @Composable
