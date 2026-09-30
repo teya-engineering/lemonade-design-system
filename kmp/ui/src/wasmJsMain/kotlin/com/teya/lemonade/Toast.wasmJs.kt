@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 internal actual fun PlatformToastHost(
     modifier: Modifier,
     toastState: LemonadeToastState,
+    hideNavigationBar: Boolean,
     content: @Composable () -> Unit,
 ) {
     InlineToastHost(modifier = modifier, toastState = toastState, content = content)
