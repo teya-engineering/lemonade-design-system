@@ -23,6 +23,9 @@ internal fun LinkDisplay() {
         item(key = "With Icon") {
             WithIconLinkSection()
         }
+        item(key = "With Leading Icon") {
+            WithLeadingIconLinkSection()
+        }
         item(key = "Sizes") {
             SizesLinkSection()
         }
@@ -62,6 +65,17 @@ private fun WithIconLinkSection() {
                 icon = LemonadeIcons.ArrowRight,
             )
         }
+    }
+}
+
+@Composable
+private fun WithLeadingIconLinkSection() {
+    LinkSection(title = "With Leading Icon") {
+        LemonadeUi.Link(
+            text = "Agreement",
+            onClick = { },
+            leadingIcon = LemonadeIcons.File,
+        )
     }
 }
 
@@ -109,6 +123,12 @@ private fun DisabledLinkSection() {
                 onClick = { },
                 enabled = false,
                 icon = LemonadeIcons.ExternalLink,
+            )
+            LemonadeUi.Link(
+                text = "Agreement",
+                onClick = { },
+                enabled = false,
+                leadingIcon = LemonadeIcons.File,
             )
         }
     }
