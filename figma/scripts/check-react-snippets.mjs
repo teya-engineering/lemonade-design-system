@@ -10,7 +10,7 @@
 // this one hands the snippets to tsc, because the web package has a compiler already.
 
 import { execFileSync } from 'node:child_process'
-import { mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -83,7 +83,9 @@ if (!templates.length) {
 // Inside web/, so the snippets resolve react/jsx-runtime and the React types the way a
 // consumer's file would. node_modules/.cache is already ignored, so a crash cannot leave
 // the tree dirty and fail a later web-check.
-const scratch = mkdtempSync(join(web, 'node_modules', '.cache', 'lmnd-react-snippets-'))
+const cache = join(web, 'node_modules', '.cache')
+mkdirSync(cache, { recursive: true }) // a fresh npm ci leaves no .cache, and mkdtemp will not create it
+const scratch = mkdtempSync(join(cache, 'lmnd-react-snippets-'))
 let total = 0
 try {
   for (const template of templates) {
