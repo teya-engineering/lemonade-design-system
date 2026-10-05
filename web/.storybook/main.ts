@@ -22,8 +22,15 @@ const config: StorybookConfig = {
   // The MDX guides are left out until the package is published — stories/Installing.mdx
   // documents an npm install that does not resolve yet. Restore the '../stories/**/*.mdx'
   // entry once it does.
-  stories: ['../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-  addons: ['@storybook/addon-essentials', '@storybook/addon-interactions', '@storybook/addon-themes'],
+  // Foundations galleries live in stories/; component stories sit next to the component
+  // they document, under src/.
+  stories: ['../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)', '../src/**/*.stories.@(ts|tsx)'],
+  addons: [
+    '@storybook/addon-essentials',
+    '@storybook/addon-interactions',
+    '@storybook/addon-themes',
+    '@storybook/addon-a11y',
+  ],
   framework: {
     name: '@storybook/react-vite',
     options: {},

@@ -23,6 +23,12 @@ fun main() {
             appendLine()
             appendLine(".lmnd-text-${style.getString("css")} {")
             appendLine("  font-family: var(--lmnd-font-family-base);")
+            // Figtree is drawn for the weights the native platforms render with their own
+            // smoothing. Without these, the browser's subpixel antialiasing thickens it,
+            // and the same text looks heavier on web than in Figma or on device. Scoped to
+            // the class rather than an element selector: the package owns no global rules.
+            appendLine("  -webkit-font-smoothing: antialiased;")
+            appendLine("  -moz-osx-font-smoothing: grayscale;")
             appendLine("  font-size: var(${cssVar("font-size", style.getString("fontSize"), "font-size")});")
             appendLine("  line-height: var(${cssVar("line-height", style.getString("lineHeight"), "line-height")});")
             appendLine("  font-weight: var(${cssVar("font-weight", style.getString("fontWeight"))});")
