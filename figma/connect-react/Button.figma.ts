@@ -2,10 +2,21 @@
 // source=web/src/components/button/button.tsx
 // component=Button
 import figma from 'figma'
-import { renderer } from '../shared/render'
 
 const instance = figma.selectedInstance
-const { snippets, imports: slotImports, quote } = renderer(instance, figma.typescript)
+
+// `figma.code` is the tagged template; there is no figma.typescript, and a missing tag
+// throws inside Figma, which publishes as an empty snippet rather than failing the upload.
+const code = figma.code
+
+// Figma text is arbitrary, and this lands in a double-quoted JSX attribute: a quote would
+// end it, a backslash would escape the next character, a newline would break the line. The
+// shared renderer's version also escapes `$` for Kotlin, which JSX does not need.
+const quote = (value) =>
+  String(value ?? '')
+    .replace(/\\/g, '\\\\')
+    .replace(/"/g, '\\"')
+    .replace(/\r?\n/g, '\\n')
 
 const label = instance.getString('✍️ Label')
 
@@ -37,32 +48,26 @@ const disabled = instance.getEnum('◉ Is Disabled', { True: true, False: false 
 const leadingSlot = instance.getBoolean('◉ Show Leading')
 const trailingSlot = instance.getBoolean('◉ Show Trailing')
 
-// Web ships no asset templates — an icon is a `--lmnd-icon` URL rather than an enum
-// entry — so a nested icon usually has no React snippet to render and the prop falls back
-// to a placeholder. `undefined` carries the comment because a JSX attribute assigned only
-// a comment is a syntax error (TS17000), so the snippet would not compile.
-const iconProp = (name, slotName, placeholder) => {
-  const body = snippets(slotName, '    ')
-  return body
-    ? figma.typescript`
-  ${name}={${body}}`
-    : `
+// Web ships no asset templates — an icon reaches a React call site as a `--lmnd-icon` URL
+// rather than an enum entry — so there is no snippet for a nested icon to render as. The
+// prop carries a placeholder instead. `undefined` holds the comment because a JSX attribute
+// assigned only a comment is a syntax error (TS17000), so the snippet would not compile.
+const iconProp = (name, placeholder) => `
   ${name}={undefined /* ${placeholder} */}`
-}
 
 export default {
-  example: figma.typescript`<Button
+  example: code`<Button
   label="${quote(label)}"
   variant="${variant}"
   type="${type}"
   size="${size}"
-  onClick={() => {}}${leadingSlot ? iconProp('leadingIcon', '↪ 🧩 Leading Slot', 'leading icon') : ''}${
-    trailingSlot ? iconProp('trailingIcon', '↪ 🧩 Trailing Slot', 'trailing icon') : ''
+  onClick={() => {}}${leadingSlot ? iconProp('leadingIcon', 'leading icon') : ''}${
+    trailingSlot ? iconProp('trailingIcon', 'trailing icon') : ''
   }${disabled ? `
   enabled={false}` : ''}${loading ? `
   loading` : ''}
 />`,
-  imports: ["import { Button } from '@teya/lemonade-mobile-ds/react'", ...slotImports],
+  imports: ["import { Button } from '@teya/lemonade-mobile-ds/react'"],
   id: 'button',
   metadata: { nestable: true },
 }
