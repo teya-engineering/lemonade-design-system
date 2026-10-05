@@ -715,6 +715,8 @@ For Button:
 | Pill shape | — | `.fullShape()` | — (`--lmnd-radius-full` exists when it is wanted) |
 | Colours type | `LemonadeButtonColors.solidBackgroundColor` | `…backgroundColor` | none — CSS owns colour |
 | Hover, focus ring | — | — | web-only |
+| Overline casing | `text.uppercase()` in `Text` | `text.uppercased()` in `LemonadeText` | `text-transform` on the class, so the text stays as authored for a screen reader and a copy, and markup that never loads the JS gets it too |
+| Text layout | `color`, `textAlign`, `maxLines`, `overflow` params | the same, as modifiers | none — CSS owns them, through `className` and `style` |
 | `expandContents` | slot overloads only; the icon form hardcodes `false` | slot overloads only | every button — there is one component, so no narrower form to attach it to |
 | The fill treatment | `type` | `type` | `emphasis` — `type` on a `<button>` is the DOM's own attribute, and shadowing it would break form submission |
 

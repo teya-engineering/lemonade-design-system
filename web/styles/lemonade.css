@@ -1682,6 +1682,7 @@
   line-height: var(--lmnd-line-height-400);
   font-weight: var(--lmnd-font-weight-semibold);
   letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
 .lmnd-icon {

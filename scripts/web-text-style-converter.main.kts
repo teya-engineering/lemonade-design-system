@@ -35,6 +35,12 @@ fun main() {
             if (style.has("letterSpacing")) {
                 appendLine("  letter-spacing: ${pxValue(style.getDouble("letterSpacing"))};")
             }
+            // KMP and SwiftUI uppercase the string itself for this one style. CSS renders the
+            // same thing while leaving the text as authored, so a screen reader and a copy both
+            // get the original — and markup that never loads the JS gets it too.
+            if (style.getString("name") == "bodyXSmallOverline") {
+                appendLine("  text-transform: uppercase;")
+            }
             appendLine("}")
         }
     }

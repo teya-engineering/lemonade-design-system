@@ -6,5 +6,9 @@ export default defineConfig({
     // without this. The manifest and token tests are plain assertions and do not care.
     environment: 'jsdom',
     setupFiles: ['./tests/setup.ts'],
+    // Vitest stubs CSS imports to an empty string by default, and a `?raw` query does not
+    // escape that, so a test asserting against a stylesheet would pass over nothing.
+    // Processing CSS is cheap here: no component imports a stylesheet.
+    css: true,
   },
 })

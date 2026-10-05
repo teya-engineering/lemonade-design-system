@@ -1,3 +1,7 @@
+/// <reference types="vite/client" />
+// `?raw` rather than node:fs, so the package does not pull @types/node into a tsconfig it
+// shares with src — that would make `process` and `Buffer` typecheck in a browser library.
+import typographyCss from '../../../styles/typography.css?raw'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { textStyles } from '../../text-styles.generated'
@@ -43,5 +47,15 @@ describe('Text', () => {
   it.each(Object.keys(textStyles) as LemonadeTextStyle[])('renders %s with its generated class', (textStyle) => {
     render(<Text text={textStyle} textStyle={textStyle} />)
     expect(screen.getByText(textStyle)).toHaveClass(textStyles[textStyle].className)
+  })
+
+  // The platforms uppercase the string; web leaves the text alone and lets the class do it,
+  // so the rendered content must stay as authored while the rule carries the transform.
+  it('leaves overline text as authored and uppercases it in CSS', () => {
+    render(<Text text="account balance" textStyle="bodyXSmallOverline" />)
+    expect(screen.getByText('account balance')).toBeInTheDocument()
+
+    const rule = typographyCss.slice(typographyCss.indexOf('.lmnd-text-body-xsmall-overline'))
+    expect(rule.slice(0, rule.indexOf('}'))).toContain('text-transform: uppercase')
   })
 })
