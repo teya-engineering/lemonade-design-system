@@ -1723,6 +1723,12 @@
   opacity: var(--lmnd-opacity-disabled);
 }
 
+/* Loading takes the dim from :disabled, since the control is disabled while it runs, but
+   the affordance differs: the action was accepted and is in flight, not refused. */
+.lmnd-button--loading:disabled {
+  cursor: wait;
+}
+
 /* The label area stretches; the icons stay at the edges. */
 .lmnd-button--expand .lmnd-button__label {
   flex: 1;

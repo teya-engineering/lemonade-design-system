@@ -90,11 +90,40 @@ The traps are in the export format, not in the arithmetic.
   exported but unpackaged is simply absent from the tarball.
 - `main`, `module` and `types` sit alongside `exports`. TypeScript under
   `moduleResolution: "node"` ignores `exports` entirely.
-- No `dependencies` and no `peerDependencies`. The package is framework-agnostic on purpose.
+- No `dependencies`. React and `react-dom` appear only as **optional** `peerDependencies`, so the
+  tokens still install into a Vue app or a plain HTML page. `web/tests/package.test.ts` pins that
+  list to exactly those two, both optional.
+- Anything React-typed is reachable only through `./react`. The root export must stay
+  framework-free: both entries share a component's types module, so a React type in it lands in a
+  shared declaration chunk that `dist/index.d.ts` then imports, and a consumer without
+  `@types/react` fails to typecheck `import { tokens }`. Check the emitted `dist/index.d.ts` for
+  `react`, not just the source.
+- `tsup` externalises `react`, `react-dom` and `react/jsx-runtime`. It derives externals from the
+  dependency lists and `jsx-runtime` is in neither, so it needs naming explicitly; bundled React
+  breaks the host's hook dispatcher.
 - `sideEffects` lists `*.css`, or a bundler drops a bare stylesheet import and the page renders
   unstyled.
 - Verify with `npm ci`, never a regenerated lockfile: `npm install` resolves different transitive
   versions than the committed lockfile, which is what CI installs.
+
+### Components
+
+The CSS carries the component; React only composes class names. So the class names are public API
+for a stack that never loads the JavaScript, and the review question is whether they hold.
+
+- Every class the component can emit has a rule behind it. A name that appears in `buttonClasses`
+  and nowhere in the stylesheet renders unstyled, and no JS test notices — the builder and the
+  component agree with each other whatever the CSS says.
+- A component's stylesheet reaches `web-css-bundle`'s discovered glob, or the pasteable
+  `lemonade.css` ships without it while every check passes.
+- Hand-written component CSS lives under `web/src/components/`, not `web/styles/` — that directory
+  belongs to the converters, and `token_drift.yml` would run the Kotlin job on every component PR.
+- Interaction states come from the ladder the tokens already carry: `-interactive` for `:hover`,
+  `-pressed` for `:active`. Mobile has no hover and its components disagree about which rung means
+  pressed, so a divergence here is expected and belongs in §17.5, not in a fix.
+- A prop that cannot be mirrored from KMP and SwiftUI is enumerated in §17.5. `type` shadows the
+  DOM attribute, so the DOM one is `htmlType`; `enabled` mirrors the platforms and `disabled` is
+  not exposed.
 
 ### Assets
 

@@ -1,8 +1,16 @@
+import { readFileSync } from 'node:fs'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { Button } from './button'
 import { buttonClasses } from './button.classes'
+import type { LemonadeButtonSize, LemonadeButtonType, LemonadeButtonVariant } from './button.types'
+
+const VARIANTS: LemonadeButtonVariant[] = ['primary', 'secondary', 'neutral', 'critical', 'onBrand', 'onColor']
+const TYPES: LemonadeButtonType[] = ['solid', 'subtle', 'ghost']
+const SIZES: LemonadeButtonSize[] = ['xSmall', 'small', 'medium', 'large']
+
+const read = (path: string) => readFileSync(new URL(path, import.meta.url), 'utf8')
 
 describe('Button', () => {
   it('renders a button with its label', () => {
@@ -119,4 +127,69 @@ describe('buttonClasses', () => {
     expect(buttonClasses({ loading: true })).toContain('lmnd-button--loading')
     expect(buttonClasses({ expandContents: true })).toContain('lmnd-button--expand')
   })
+})
+
+// The class names are the public API: a non-React consumer writes them by hand, so a class
+// the component emits with no rule behind it renders unstyled for them and for us. Nothing
+// else catches it — the component and buttonClasses agree in JS whatever the CSS says.
+describe('the class contract', () => {
+  const css = read('./button.css')
+  const typography = read('../../../styles/typography.css')
+
+  const emitted = new Set<string>()
+  for (const variant of VARIANTS) {
+    for (const type of TYPES) {
+      for (const size of SIZES) {
+        for (const loading of [true, false]) {
+          for (const expandContents of [true, false]) {
+            for (const name of buttonClasses({ variant, type, size, loading, expandContents }).split(' ')) {
+              emitted.add(name)
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Rendered by the component rather than returned by buttonClasses.
+  const elements = ['lmnd-button__label', 'lmnd-button__spinner']
+
+  it('emits the set of classes this suite checks', () => {
+    // Guards the loops above: a vocabulary entry added to the unions without being added
+    // here would leave its class unchecked.
+    expect([...emitted].sort()).toEqual([
+      'lmnd-button',
+      'lmnd-button--critical',
+      'lmnd-button--expand',
+      'lmnd-button--ghost',
+      'lmnd-button--large',
+      'lmnd-button--loading',
+      'lmnd-button--medium',
+      'lmnd-button--neutral',
+      'lmnd-button--on-brand',
+      'lmnd-button--on-color',
+      'lmnd-button--primary',
+      'lmnd-button--secondary',
+      'lmnd-button--small',
+      'lmnd-button--solid',
+      'lmnd-button--subtle',
+      'lmnd-button--x-small',
+      'lmnd-text-body-medium-semibold',
+      'lmnd-text-body-small-semibold',
+    ])
+  })
+
+  it.each([...emitted].filter((name) => name.startsWith('lmnd-button')).concat(elements))(
+    '%s is defined in button.css',
+    (name) => {
+      expect(css).toContain(`.${name}`)
+    },
+  )
+
+  it.each([...emitted].filter((name) => name.startsWith('lmnd-text-')))(
+    '%s is defined in typography.css',
+    (name) => {
+      expect(typography).toContain(`.${name} {`)
+    },
+  )
 })
