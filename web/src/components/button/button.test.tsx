@@ -11,7 +11,7 @@ import { buttonClasses } from './button.classes'
 import type { LemonadeButtonSize, LemonadeButtonType, LemonadeButtonVariant } from './button.types'
 
 const VARIANTS: LemonadeButtonVariant[] = ['primary', 'secondary', 'neutral', 'critical', 'onBrand', 'onColor']
-const TYPES: LemonadeButtonType[] = ['solid', 'subtle', 'ghost']
+const EMPHASES: LemonadeButtonType[] = ['solid', 'subtle', 'ghost']
 const SIZES: LemonadeButtonSize[] = ['xSmall', 'small', 'medium', 'large']
 
 
@@ -33,13 +33,13 @@ describe('Button', () => {
   })
 
   it('renders the class list buttonClasses returns, so a non-React consumer gets the same result', () => {
-    const appearance = { variant: 'critical', type: 'ghost', size: 'xSmall' } as const
+    const appearance = { variant: 'critical', emphasis: 'ghost', size: 'xSmall' } as const
     render(<Button label="Delete" {...appearance} />)
     expect(screen.getByRole('button').className).toBe(buttonClasses(appearance))
   })
 
-  it('omits the type modifier for the variants that carry one treatment', () => {
-    render(<Button label="Continue" variant="onBrand" type="ghost" />)
+  it('omits the emphasis modifier for the variants that carry one treatment', () => {
+    render(<Button label="Continue" variant="onBrand" emphasis="ghost" />)
     expect(screen.getByRole('button').className).not.toContain('lmnd-button--ghost')
     expect(screen.getByRole('button')).toHaveClass('lmnd-button--on-brand')
   })
@@ -108,8 +108,8 @@ describe('Button', () => {
     expect(screen.getByRole('button')).toHaveAttribute('type', 'button')
   })
 
-  it('submits when htmlType says so', () => {
-    render(<Button label="Pay" htmlType="submit" />)
+  it('passes the DOM type through, so a submit button is possible', () => {
+    render(<Button label="Pay" type="submit" />)
     expect(screen.getByRole('button')).toHaveAttribute('type', 'submit')
   })
 })
@@ -141,11 +141,11 @@ describe('the class contract', () => {
 
   const emitted = new Set<string>()
   for (const variant of VARIANTS) {
-    for (const type of TYPES) {
+    for (const emphasis of EMPHASES) {
       for (const size of SIZES) {
         for (const loading of [true, false]) {
           for (const expandContents of [true, false]) {
-            for (const name of buttonClasses({ variant, type, size, loading, expandContents }).split(' ')) {
+            for (const name of buttonClasses({ variant, emphasis, size, loading, expandContents }).split(' ')) {
               emitted.add(name)
             }
           }

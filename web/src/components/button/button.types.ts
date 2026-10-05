@@ -1,7 +1,11 @@
 /** Mirrors `LemonadeButtonVariant`. */
 export type LemonadeButtonVariant = 'primary' | 'secondary' | 'neutral' | 'critical' | 'onBrand' | 'onColor'
 
-/** Mirrors `LemonadeButtonType`. `onBrand` and `onColor` carry one treatment and ignore it. */
+/**
+ * Mirrors `LemonadeButtonType`. Carried by the `emphasis` prop, because `type` on a
+ * <button> is the DOM's own attribute. `onBrand` and `onColor` carry one treatment and
+ * ignore it.
+ */
 export type LemonadeButtonType = 'solid' | 'subtle' | 'ghost'
 
 /** Mirrors `LemonadeButtonSize`. */
@@ -17,7 +21,7 @@ export type LemonadeButtonSize = 'xSmall' | 'small' | 'medium' | 'large'
  */
 export type ButtonAppearance = {
   variant?: LemonadeButtonVariant
-  type?: LemonadeButtonType
+  emphasis?: LemonadeButtonType
   size?: LemonadeButtonSize
   loading?: boolean
   expandContents?: boolean

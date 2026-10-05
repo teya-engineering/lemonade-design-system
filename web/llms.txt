@@ -473,8 +473,9 @@ root export builds the class list for you in any TypeScript stack.
 
 - Block: `lmnd-button`. Always pair it with one variant, one size and the size's text style.
 - Variant: `lmnd-button--primary`, `--secondary`, `--neutral`, `--critical`, `--on-brand`, `--on-color`.
-- Type: `lmnd-button--solid`, `--subtle`, `--ghost`. Omit it for `--on-brand` and `--on-color`,
-  which carry a single treatment.
+- Fill treatment: `lmnd-button--solid`, `--subtle`, `--ghost`. Omit it for `--on-brand` and
+  `--on-color`, which carry a single treatment. The React prop for this is `emphasis`, because
+  `type` on a `<button>` is the DOM's own attribute.
 - Size: `lmnd-button--x-small`, `--small`, `--medium`, `--large`.
 - Text style: `lmnd-text-body-small-semibold` for x-small and small,
   `lmnd-text-body-medium-semibold` for medium and large.

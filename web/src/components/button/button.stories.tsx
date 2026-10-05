@@ -4,7 +4,7 @@ import { Button } from './button'
 import type { LemonadeButtonSize, LemonadeButtonType, LemonadeButtonVariant } from './button.types'
 
 const VARIANTS: LemonadeButtonVariant[] = ['primary', 'secondary', 'neutral', 'critical', 'onBrand', 'onColor']
-const TYPES: LemonadeButtonType[] = ['solid', 'subtle', 'ghost']
+const EMPHASES: LemonadeButtonType[] = ['solid', 'subtle', 'ghost']
 const SIZES: LemonadeButtonSize[] = ['xSmall', 'small', 'medium', 'large']
 
 /**
@@ -62,8 +62,8 @@ export const Variants: StoryObj<typeof Button> = {
     <div style={{ display: 'grid', gap: 'var(--lmnd-spacing-500)' }}>
       {VARIANTS.map((variant) => (
         <Row key={variant} label={variant}>
-          {(variant === 'onBrand' || variant === 'onColor' ? ['solid' as const] : TYPES).map((type) => (
-            <Button key={type} {...args} variant={variant} type={type} />
+          {(variant === 'onBrand' || variant === 'onColor' ? ['solid' as const] : EMPHASES).map((emphasis) => (
+            <Button key={emphasis} {...args} variant={variant} emphasis={emphasis} />
           ))}
         </Row>
       ))}

@@ -2,40 +2,37 @@ import type { ComponentPropsWithoutRef, ReactNode } from 'react'
 import { buttonClasses } from './button.classes'
 import type { ButtonAppearance } from './button.types'
 
-export type ButtonProps = Omit<ComponentPropsWithoutRef<'button'>, 'type' | 'disabled' | 'children'> &
+export type ButtonProps = Omit<ComponentPropsWithoutRef<'button'>, 'disabled' | 'children'> &
   ButtonAppearance & {
     label: string
     leadingIcon?: ReactNode
     trailingIcon?: ReactNode
     /** Mirrors the platforms' `enabled`; the DOM's inverted `disabled` is not exposed. */
     enabled?: boolean
-    /**
-     * The DOM `type` attribute, which `type` itself shadows. Left at `button` so a
-     * button inside a form does not submit it by accident.
-     */
-    htmlType?: 'button' | 'submit' | 'reset'
   }
 
 export function Button({
   label,
   variant = 'primary',
-  type = 'solid',
+  emphasis = 'solid',
   size = 'large',
   enabled = true,
   loading = false,
   expandContents = false,
   leadingIcon,
   trailingIcon,
-  htmlType = 'button',
+  // The DOM defaults a button in a form to "submit"; defaulting to "button" means adding
+  // one to a form cannot submit it by accident.
+  type = 'button',
   className,
   ...rest
 }: ButtonProps) {
-  const classes = buttonClasses({ variant, type, size, loading, expandContents })
+  const classes = buttonClasses({ variant, emphasis, size, loading, expandContents })
 
   return (
     <button
       {...rest}
-      type={htmlType}
+      type={type}
       className={className ? `${classes} ${className}` : classes}
       disabled={!enabled || loading}
       aria-busy={loading || undefined}

@@ -17,9 +17,9 @@ function kebab(value: string): string {
  * writes the same classes by hand — and gets what the React component renders.
  */
 export function buttonClasses(appearance: ButtonAppearance = {}): string {
-  const { variant = 'primary', type = 'solid', size = 'large', loading = false, expandContents = false } = appearance
+  const { variant = 'primary', emphasis = 'solid', size = 'large', loading = false, expandContents = false } = appearance
   const classes = ['lmnd-button', `lmnd-button--${kebab(variant)}`, `lmnd-button--${kebab(size)}`, TEXT_STYLE[size]]
-  if (variant !== 'onBrand' && variant !== 'onColor') classes.push(`lmnd-button--${type}`)
+  if (variant !== 'onBrand' && variant !== 'onColor') classes.push(`lmnd-button--${emphasis}`)
   if (loading) classes.push('lmnd-button--loading')
   if (expandContents) classes.push('lmnd-button--expand')
   return classes.join(' ')

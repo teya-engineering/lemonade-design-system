@@ -716,6 +716,7 @@ For Button:
 | Colours type | `LemonadeButtonColors.solidBackgroundColor` | `…backgroundColor` | none — CSS owns colour |
 | Hover, focus ring | — | — | web-only |
 | `expandContents` | slot overloads only; the icon form hardcodes `false` | slot overloads only | every button — there is one component, so no narrower form to attach it to |
+| The fill treatment | `type` | `type` | `emphasis` — `type` on a `<button>` is the DOM's own attribute, and shadowing it would break form submission |
 
 Enum vocabularies are held by a parity check in the mould of
 `scripts/web-text-style-parity-check.main.kts`, which already parses Swift source to

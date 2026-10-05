@@ -121,9 +121,9 @@ for a stack that never loads the JavaScript, and the review question is whether 
 - Interaction states come from the ladder the tokens already carry: `-interactive` for `:hover`,
   `-pressed` for `:active`. Mobile has no hover and its components disagree about which rung means
   pressed, so a divergence here is expected and belongs in §17.5, not in a fix.
-- A prop that cannot be mirrored from KMP and SwiftUI is enumerated in §17.5. `type` shadows the
-  DOM attribute, so the DOM one is `htmlType`; `enabled` mirrors the platforms and `disabled` is
-  not exposed.
+- A prop that cannot be mirrored from KMP and SwiftUI is enumerated in §17.5. The platforms' `type`
+  is `emphasis` on web, because `type` on a `<button>` belongs to the DOM; `enabled` mirrors the
+  platforms and `disabled` is not exposed.
 
 ### Assets
 
