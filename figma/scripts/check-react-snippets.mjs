@@ -18,7 +18,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const repo = join(root, '..')
 const web = join(repo, 'web')
 
-/** Figma's tagged template, reduced to the string it would produce. */
+/** Figma's `figma.code` tagged template, reduced to the string it would produce. */
 const tag = (strings, ...values) =>
   Object.assign(new String(strings.reduce((o, s, i) => o + s + (i < values.length ? String(values[i]) : ''), '')), {
     language: 'typescript',
@@ -67,7 +67,7 @@ function render(source, props) {
   }
   const body = `const figma = arguments[0]; const renderer = arguments[1];\n${source}\nreturn globalThis.__result`
   // eslint-disable-next-line no-new-func
-  const result = new Function(body)({ selectedInstance: instance, typescript: tag }, renderer)
+  const result = new Function(body)({ selectedInstance: instance, code: tag }, renderer)
   return String(result.example)
 }
 
