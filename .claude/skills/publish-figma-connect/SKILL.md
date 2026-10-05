@@ -2,8 +2,8 @@
 name: publish-figma-connect
 description: >
   Publish the Lemonade Figma Code Connect mappings so Figma Dev Mode and
-  MCP-driven agents emit real LemonadeUi.* code. Use when a template under
-  `figma/connect/` or `figma/connect-swiftui/` changes, when icons, country flags
+  MCP-driven agents emit real Lemonade code. Use when a template under
+  `figma/connect/`, `figma/connect-swiftui/` or `figma/connect-react/` changes, when icons, country flags
   or brand logos are added and their templates need regenerating, when a Figma
   component is renamed, rebuilt or has its properties changed and the snippets
   have gone stale, or when the user asks to "publish Code Connect", "push the
@@ -12,15 +12,15 @@ description: >
 
 # Publish Lemonade Figma Code Connect
 
-Uploads the templates in `figma/connect/` under the **`Compose`** label and those
-in `figma/connect-swiftui/` under the **`SwiftUI`** label. Publishing writes to
-the **shared team library**, so everyone in the org sees the result immediately.
-There is no staging environment.
+Uploads the templates in `figma/connect/` under the **`Compose`** label, those in
+`figma/connect-swiftui/` under **`SwiftUI`**, and those in `figma/connect-react/`
+under **`React`**. Publishing writes to the **shared team library**, so everyone
+in the org sees the result immediately. There is no staging environment.
 
 | Thing | Value |
 |---|---|
-| Configs | `figma/figma.compose.config.json` and `figma/figma.swiftui.config.json` |
-| Labels | `Compose` and `SwiftUI`, each published from its own config. Neither touches the unrelated `React` label on the same file. |
+| Configs | `figma.compose.config.json`, `figma.swiftui.config.json` and `figma.react.config.json`, all under `figma/` |
+| Labels | `Compose`, `SwiftUI` and `React`, each published from its own config. The `React` label was previously published from another repo; publishing from here replaces that mapping. |
 | Components file | `91S16rhVrl5wivqV66fNjm` (components and brand logos) |
 | Icons file | `f7zokCdnayXejxc2y7r1Qt` |
 | Country flags file | `WdrbfE6UsxkbyEpqGpPozQ` |
@@ -100,11 +100,12 @@ of declaration order. Fix what it reports before publishing.
 CI needs the token as a secret. A config whose glob matches zero templates is an
 error, not a no-op.
 
-Neither config is named `figma.config.json`, the CLI default, so a bare
+No config is named `figma.config.json`, the CLI default, so a bare
 `figma connect publish` finds no config and errors rather than publishing one
 platform and reporting success. Always pass `--config`.
 
-Both are the checks to wire into CI; `check` needs no secret. Neither catches a
+Both are the checks to wire into CI; `check` needs no secret and is what
+`figma_code_connect.yml` runs, including the React snippet type-check. Neither catches a
 wrong Figma property name: `getEnum('◇ Varient', …)` parses fine and yields
 `undefined`. Only step 3 catches that.
 
@@ -113,7 +114,7 @@ wrong Figma property name: `getEnum('◇ Varient', …)` parses fine and yields
 ```bash
 (
   set -o pipefail
-  for cfg in figma.compose.config.json figma.swiftui.config.json; do
+  for cfg in figma.compose.config.json figma.swiftui.config.json figma.react.config.json; do
     FIGMA_ACCESS_TOKEN="$FIGMA_CODE_CONNECT_TOKEN" \
       ./node_modules/.bin/figma connect publish --config "$cfg" \
       2>&1 | grep -viE "^-> |\.figma\.ts$" | tail -8 || exit 1
@@ -121,16 +122,22 @@ wrong Figma property name: `getEnum('◇ Varient', …)` parses fine and yields
 )
 ```
 
-Publish both labels, and never a platform's components without its assets.
-Figma resolves a nested asset by node, and a label with no template for that node
-falls back to another label's, so a missing SwiftUI icon renders the Kotlin
-snippet inside a Swift call rather than rendering nothing.
+Publish every label, and never a platform's components without its assets. Figma
+resolves a nested asset by node, and a label with no template for that node falls
+back to another label's, so a missing SwiftUI icon renders the Kotlin snippet
+inside a Swift call rather than rendering nothing.
+
+`React` is the exception, deliberately: web has no asset templates at all, because
+an icon reaches a React call site as a `--lmnd-icon` URL rather than an enum entry.
+The templates' slot helper filters children to those connected **under the label
+being published**, so a nested icon renders the template's own placeholder — a
+`{undefined /* leading icon */}` prop — rather than another language's snippet.
 
 Pipe the output: the command prints a line per template and the success or error
 summary is the last line, so unfiltered a failure looks the same as a success.
 `pipefail` keeps the publish's exit status through the pipe, so the loop stops
-at the first failed label instead of publishing the other one and leaving the
-two out of step.
+at the first failed label instead of publishing the rest and leaving them out of
+step.
 
 Success ends with:
 
@@ -168,6 +175,12 @@ they should:
 A component with a nested icon should name a real enum entry, such as
 `icon = LemonadeIcons.Heart`, not an opaque instance. That confirms the
 cross-file resolution to the icons file works.
+
+Under `React`, that same component shows `{undefined /* leading icon */}` instead,
+which is correct — web has no asset templates to resolve to. Check the React
+snippet differently: it has to be valid JSX importing from
+`@teya/lemonade-mobile-ds/react`, with `enabled={false}` where Figma says
+`Is Disabled`, and `size="xSmall"` rather than the platforms' `XSmall`.
 
 The response usually exceeds the tool's token cap and is written to a file; query
 it with `python3` or `grep` rather than re-fetching.
