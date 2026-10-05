@@ -28,20 +28,16 @@
   opacity: var(--lmnd-opacity-disabled);
 }
 
-/* Loading takes the dim from :disabled, since the control is disabled while it runs, but
-   the affordance differs: the action was accepted and is in flight, not refused. */
 .lmnd-button--loading:disabled {
   cursor: wait;
 }
 
-/* The label area stretches; the icons stay at the edges. */
 .lmnd-button--expand .lmnd-button__label {
   flex: 1;
 }
 
-/* Sizes: padding, height and radius per size, with the gap standing in for labelPadding.
-   min-height rather than a fixed height, so a label that wraps at a large text size grows
-   the button instead of spilling out of it. */
+/* min-height rather than the platforms' fixed height, so a label that wraps at a large
+   text size grows the button instead of spilling out of it. */
 .lmnd-button--x-small {
   gap: var(--lmnd-spacing-100);
   padding: var(--lmnd-spacing-100) var(--lmnd-spacing-200);
@@ -70,8 +66,8 @@
   border-radius: var(--lmnd-radius-400);
 }
 
-/* Variant x type. Hover takes the family's -interactive rung and active its -pressed one.
-   A ghost button has no resting fill, so transparent is the value, not a missing token. */
+/* Hover takes each family's -interactive rung, active its -pressed one. Ghost has no
+   resting fill, so transparent is the value, not a missing token. */
 .lmnd-button--primary.lmnd-button--solid {
   --lmnd-button-content: var(--lmnd-color-content-on-brand-high);
   --lmnd-button-bg: var(--lmnd-color-bg-brand);
@@ -114,9 +110,9 @@
   --lmnd-button-bg-active: var(--lmnd-color-bg-neutral-subtle-pressed);
 }
 
-/* Secondary Solid's opaque inverse fill dims to opacity-40 while all content dims to
-   opacity-disabled. The rule above already multiplies the whole button by opacity-disabled,
-   so the fill carries the ratio of the two — 0.4 / 0.5 — and they multiply out. */
+/* Secondary Solid's fill dims further than the rest: to opacity-40, not opacity-disabled.
+   The rule above already applies opacity-disabled to the whole button, so the fill carries
+   the ratio of the two — 0.4 / 0.5 — and they multiply out. */
 .lmnd-button--secondary.lmnd-button--solid:disabled {
   background-color: color-mix(in srgb, var(--lmnd-color-bg-subtle-inverse) 80%, transparent);
 }
@@ -170,8 +166,7 @@
   --lmnd-button-bg-active: var(--lmnd-color-bg-brand-elevated-pressed);
 }
 
-/* The always-light family carries no -pressed rung, so hover and active share the one it
-   has — which is the colour the native platforms use for their press. */
+/* The always-light family has no -pressed rung, so hover and active share -interactive. */
 .lmnd-button--on-color {
   --lmnd-button-content: var(--lmnd-color-content-always-light);
   --lmnd-button-bg: var(--lmnd-color-bg-always-light-medium);
@@ -179,7 +174,6 @@
   --lmnd-button-bg-active: var(--lmnd-color-bg-always-light-medium-interactive);
 }
 
-/* Loading replaces the label, so the button keeps its width from min-width alone. */
 .lmnd-button__spinner {
   display: inline-block;
   width: var(--lmnd-size-500);
