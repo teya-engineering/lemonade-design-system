@@ -75,9 +75,15 @@ const templates = readdirSync(join(root, 'connect-react'))
   .filter((file) => file.endsWith('.figma.ts'))
   .map((file) => join(root, 'connect-react', file))
 
+// Reporting success over nothing would make deleting a template a green PR: this is the
+// only React guard CI runs, since `validate` needs a token and stays local. The config
+// existing is the claim that there are templates to check.
 if (!templates.length) {
-  console.log('No React templates to check.')
-  process.exit(0)
+  console.error(
+    'figma.react.config.json declares connect-react/**/*.figma.ts, but no template matched.\n' +
+      'Add one, or remove the config and its scripts.',
+  )
+  process.exit(1)
 }
 
 // Inside web/, so the snippets resolve react/jsx-runtime and the React types the way a
