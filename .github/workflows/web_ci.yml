@@ -42,3 +42,7 @@ jobs:
           test -f node_modules/@teya/lemonade-mobile-ds/dist/fonts.css
           test -f node_modules/@teya/lemonade-mobile-ds/llms.txt
           test -f node_modules/@teya/lemonade-mobile-ds/dist/assets/icons/airplane.svg
+          test -f node_modules/@teya/lemonade-mobile-ds/dist/react.d.ts
+          # React is an optional peer, so it is installed only after the rest is proven.
+          npm install react react-dom
+          node -e "const {Text}=require('@teya/lemonade-mobile-ds/react'); if(typeof Text!=='function') throw new Error('./react does not export Text')"

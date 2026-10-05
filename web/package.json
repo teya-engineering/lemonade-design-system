@@ -33,6 +33,16 @@
         "default": "./dist/index.cjs"
       }
     },
+    "./react": {
+      "import": {
+        "types": "./dist/react.d.ts",
+        "default": "./dist/react.js"
+      },
+      "require": {
+        "types": "./dist/react.d.cts",
+        "default": "./dist/react.cjs"
+      }
+    },
     "./tokens.css": "./styles/tokens.css",
     "./typography.css": "./styles/typography.css",
     "./icon.css": "./styles/icon.css",

@@ -9,6 +9,31 @@ import java.io.File
 /** The `$description` on a token, which the other platforms ignore. */
 fun descriptionOf(node: JSONObject): String = node.optString("\$description").trim()
 
+/**
+ * Component markup is not token data, so it is written by hand and appended verbatim.
+ * Requiring a heading per component directory is what stops a new component shipping
+ * with the AI-facing docs silently unaware of it.
+ */
+fun componentDocs(): String {
+    val source = File("web/llms-components.md")
+    require(source.isFile) { "${source.path} is missing — it holds the hand-written Components section" }
+    val text = source.readText().substringAfter("-->").trim()
+
+    val components = File("web/src/components").listFiles()
+        ?.filter { it.isDirectory }
+        ?.map { it.name }
+        ?.sorted()
+        .orEmpty()
+    val undocumented = components.filter { name ->
+        !Regex("""^### ${Regex.escape(name)}\b""", setOf(RegexOption.IGNORE_CASE, RegexOption.MULTILINE))
+            .containsMatchIn(text)
+    }
+    require(undocumented.isEmpty()) {
+        "${source.path} has no '### ' section for: ${undocumented.joinToString(", ")}"
+    }
+    return text + "\n"
+}
+
 fun main() {
     val out = StringBuilder()
     out.appendLine("# Lemonade Design System — web tokens")
@@ -65,6 +90,9 @@ fun main() {
     out.appendLine("## Text styles")
     out.appendLine()
     out.appendLine("Apply as a class, e.g. `<p class=\"lmnd-text-body-medium-regular\">`.")
+    out.appendLine("Each class also sets font smoothing, so Figtree renders at the weight it was drawn for.")
+    out.appendLine("Text styled with `var(--lmnd-font-family-base)` instead of a class needs")
+    out.appendLine("`-webkit-font-smoothing: antialiased` and `-moz-osx-font-smoothing: grayscale` added by hand.")
     out.appendLine()
     val styles = org.json.JSONArray(File("text-styles.json").readText())
     (0 until styles.length()).forEach { index ->
@@ -75,6 +103,11 @@ fun main() {
     out.appendLine("## Shadows")
     out.appendLine()
     listOf("xs", "sm", "md", "lg", "xl").forEach { out.appendLine("- `var(--lmnd-shadow-$it)`") }
+
+    out.appendLine()
+    out.appendLine("## Components")
+    out.appendLine()
+    out.append(componentDocs())
 
     File("web/llms.txt").apply { parentFile.mkdirs() }.writeText(out.toString())
     println("✓ web/llms.txt written (${out.length} chars)")

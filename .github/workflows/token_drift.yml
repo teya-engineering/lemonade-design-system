@@ -18,6 +18,8 @@ on:
       - 'web/styles/**'
       - 'web/src/*.generated.ts'
       - 'web/llms.txt'
+      # The hand-written half of llms.txt, which the converter appends verbatim.
+      - 'web/llms-components.md'
       - 'web/tokens.json'
       - 'web/assets/**'
       - '.claude/skills/generate-tokens/**'

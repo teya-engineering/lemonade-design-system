@@ -407,6 +407,9 @@ Always prefer a semantic token over a literal value.
 ## Text styles
 
 Apply as a class, e.g. `<p class="lmnd-text-body-medium-regular">`.
+Each class also sets font smoothing, so Figtree renders at the weight it was drawn for.
+Text styled with `var(--lmnd-font-family-base)` instead of a class needs
+`-webkit-font-smoothing: antialiased` and `-moz-osx-font-smoothing: grayscale` added by hand.
 
 - `.lmnd-text-display-xsmall`
 - `.lmnd-text-display-small`
@@ -445,3 +448,24 @@ Apply as a class, e.g. `<p class="lmnd-text-body-medium-regular">`.
 - `var(--lmnd-shadow-md)`
 - `var(--lmnd-shadow-lg)`
 - `var(--lmnd-shadow-xl)`
+
+## Components
+
+Every component is CSS plus markup. React is optional: the classes below are the API, so
+any framework — or none — produces the same result.
+
+With React: `import { Text } from '@teya/lemonade-mobile-ds/react'`. Without React, write
+the markup and apply the same classes; the `textStyles` manifest on the root export maps
+every style name to its class.
+
+### Text
+
+```html
+<p class="lmnd-text-body-medium-regular">Account balance</p>
+```
+
+- One class per style, from `lmnd-text-display-xsmall` through `lmnd-text-body-xsmall-overline`.
+  `llms.txt` lists all 29 under "Text styles".
+- The element is yours. Lemonade text carries no semantics, so pick the tag the content
+  needs — the class only sets family, size, line height, weight and letter spacing.
+- The React prop is `textStyle`, not `style`, which stays the DOM's own attribute.

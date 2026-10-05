@@ -54,8 +54,13 @@ drift=$(git status --porcelain -- kmp/ swiftui/ web/ text-styles.json)
 step "The packed tarball installs and imports"
 tgz=$(cd web && npm pack --silent --pack-destination "$TMPDIR")
 scratch=$(mktemp -d)
+pkg_dir="node_modules/@teya/lemonade-mobile-ds"
 ( cd "$scratch" && npm init -y >/dev/null && npm install "$TMPDIR/$tgz" --silent \
-  && node -e "require('$(node -p "require('$PWD/web/package.json').name" 2>/dev/null || echo @teya/lemonade-mobile-ds)')" )
+  && test -f "$pkg_dir/dist/react.d.ts" \
+  `# React is an optional peer, so everything but ./react has to work without it installed.` \
+  && node -e "require('@teya/lemonade-mobile-ds')" \
+  && npm install react react-dom --silent \
+  && node -e "const {Text}=require('@teya/lemonade-mobile-ds/react'); if(typeof Text!=='function') throw new Error('./react does not export Text')" )
 rm -rf "$scratch" "$TMPDIR/$tgz"
 
 printf '\nOK. Pipeline, package and drift all clean.\n'
