@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef } from 'react'
+import type { ComponentPropsWithoutRef, ReactNode } from 'react'
 import { textStyles } from '../../text-styles.generated'
 import type { LemonadeTextStyle } from './text.types'
 
@@ -9,20 +9,21 @@ import type { LemonadeTextStyle } from './text.types'
  */
 export type TextElement = 'span' | 'p' | 'div' | 'label' | 'strong' | 'em' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 
-export type TextProps = Omit<ComponentPropsWithoutRef<'span'>, 'children'> & {
-  text: string
+export type TextProps = ComponentPropsWithoutRef<'span'> & {
+  /** Required: text with nothing in it is not a thing worth rendering. */
+  children: ReactNode
   /** Defaults to the style KMP's theme provides ambiently. */
   textStyle?: LemonadeTextStyle
   as?: TextElement
 }
 
-export function Text({ text, textStyle = 'bodyMediumRegular', as = 'span', className, ...rest }: TextProps) {
+export function Text({ children, textStyle = 'bodyMediumRegular', as = 'span', className, ...rest }: TextProps) {
   const Tag = as
   const classes = textStyles[textStyle].className
 
   return (
     <Tag {...rest} className={className ? `${classes} ${className}` : classes}>
-      {text}
+      {children}
     </Tag>
   )
 }

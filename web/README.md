@@ -38,7 +38,7 @@ the API:
 ```jsx
 import { Text } from '@teya/lemonade-mobile-ds/react'
 
-<Text text="Account balance" textStyle="bodyMediumRegular" as="p" />
+<Text textStyle="bodyMediumRegular" as="p">Account balance</Text>
 ```
 
 Without React, write the markup against the same classes — the `textStyles` manifest on

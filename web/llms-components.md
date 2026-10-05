@@ -22,6 +22,7 @@ every style name to its class.
   `llms.txt` lists all 29 under "Text styles".
 - The element is yours. Lemonade text carries no semantics, so pick the tag the content
   needs — the class only sets family, size, line height, weight and letter spacing.
-- The React prop is `textStyle`, not `style`, which stays the DOM's own attribute.
+- The React component takes children, not a string prop, so a sentence can carry emphasis
+  or a link. Its style prop is `textStyle`; `style` stays the DOM's own attribute.
 - `lmnd-text-body-xsmall-overline` uppercases its text through CSS, so write the label in
   normal case and let the class transform it.
