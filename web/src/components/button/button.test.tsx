@@ -1,4 +1,8 @@
-import { readFileSync } from 'node:fs'
+/// <reference types="vite/client" />
+// `?raw` rather than node:fs, so the package does not pull @types/node into a tsconfig it
+// shares with src — that would make `process` and `Buffer` typecheck in a browser library.
+import buttonCss from './button.css?raw'
+import typographyCss from '../../../styles/typography.css?raw'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
@@ -10,7 +14,6 @@ const VARIANTS: LemonadeButtonVariant[] = ['primary', 'secondary', 'neutral', 'c
 const TYPES: LemonadeButtonType[] = ['solid', 'subtle', 'ghost']
 const SIZES: LemonadeButtonSize[] = ['xSmall', 'small', 'medium', 'large']
 
-const read = (path: string) => readFileSync(new URL(path, import.meta.url), 'utf8')
 
 describe('Button', () => {
   it('renders a button with its label', () => {
@@ -133,8 +136,8 @@ describe('buttonClasses', () => {
 // the component emits with no rule behind it renders unstyled for them and for us. Nothing
 // else catches it — the component and buttonClasses agree in JS whatever the CSS says.
 describe('the class contract', () => {
-  const css = read('./button.css')
-  const typography = read('../../../styles/typography.css')
+  const css = buttonCss
+  const typography = typographyCss
 
   const emitted = new Set<string>()
   for (const variant of VARIANTS) {
