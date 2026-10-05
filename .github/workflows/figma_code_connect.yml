@@ -8,6 +8,10 @@ on:
     paths:
       - 'figma/**'
       - 'kmp/**/api/**'
+      # The React snippets are type-checked against these, so a prop renamed here
+      # has to re-run the check that proves the templates still compile.
+      - 'web/src/components/**'
+      - 'web/src/react/**'
       - '.github/workflows/figma_code_connect.yml'
 
 concurrency:
@@ -27,9 +31,20 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version-file: web/.nvmrc
+          cache: npm
+          cache-dependency-path: web/package-lock.json
 
       - name: Snippets compile against the sources
         run: node figma/scripts/check-templates.mjs
+
+      # The React check renders every template and hands the snippets to tsc, so it
+      # needs the web package's compiler and React types.
+      - name: Install the web package
+        run: npm ci
+        working-directory: web
+
+      - name: React snippets type-check against the components
+        run: node figma/scripts/check-react-snippets.mjs
 
       # The generator writes nothing when an asset fails to validate, so a clean
       # tree alone would pass a failed run — the exit code is the real signal.
