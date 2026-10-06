@@ -36,10 +36,14 @@ The CSS carries the component and React only applies the class names, so the cla
 the API:
 
 ```jsx
-import { Text } from '@teya/lemonade-mobile-ds/react'
+import { Icon, Text } from '@teya/lemonade-mobile-ds/react'
 
 <Text textStyle="bodyMediumRegular" as="p">Account balance</Text>
+<Icon use="heart" size="large" label="Favourite" />
 ```
+
+Icons are CSS masks, so they take their colour from `currentColor` and need the SVGs
+served: copy `dist/assets/icons` to `/assets/icons`, or point `basePath` elsewhere.
 
 Without React, write the markup against the same classes — the `textStyles` manifest on
 the root export maps every style name to its class, and `llms.txt` documents the markup

@@ -634,14 +634,20 @@ cannot reproduce by hand.
 ### 17.2 Layout on disk
 
 ```
-web/src/components/button/
-  button.types.ts     every type the component declares
-  button.classes.ts   the class-name builder, framework-free
-  button.css          hand-written, committed; the class contract
-  button.tsx          composes class names, no styling logic
-  button.stories.tsx  Storybook page, with a copy-paste HTML snippet
-  button.test.tsx     behaviour and the class contract
+web/src/components/<name>/
+  <name>.types.ts     every type the component declares, with no React in it
+  <name>.classes.ts   the class-name builder, framework-free
+  <name>.css          hand-written, committed; the class contract
+  <name>.tsx          composes class names, no styling logic
+  <name>.stories.tsx  Storybook page, with a copy-paste HTML snippet
+  <name>.test.tsx     behaviour and the class contract
 ```
+
+Not every component needs all six. Text contributes no CSS, because the typography classes
+are already generated; Icon's live in `styles/icon.css`, which shipped as an entrypoint
+before the component existed. `slot/` has neither, being the one piece that renders no
+Lemonade markup at all — it only picks the element, so `llms-components.md` lists it as
+`no-markup` rather than documenting a snippet nobody can copy.
 
 Colocated CSS is committed source, not build output, so the rule that `web/dist/` holds
 everything a build produces still holds. It sits under `web/src/` rather than
@@ -718,6 +724,9 @@ For Button:
 | Overline casing | `text.uppercase()` in `Text` | `text.uppercased()` in `LemonadeText` | `text-transform` on the class, so the text stays as authored for a screen reader and a copy, and markup that never loads the JS gets it too |
 | Text layout | `color`, `textAlign`, `maxLines`, `overflow` params | the same, as modifiers | none — CSS owns them, through `className` and `style` |
 | Text content | `text: String` | `text: String` | `children` — a label is not always one flat string, and JSX can carry emphasis or a link inside a sentence |
+| Icon colour | `tint: Color` | `tint: Color` | none — the mask takes `currentColor`, so the containing element's colour applies |
+| Icon description | `contentDescription: String?` | the same | `label: string \| null`, required, so the decorative case is spelled rather than defaulted |
+| The asset size enum | `LemonadeAssetSize` | `LemonadeUiIconSize`, per component | `LemonadeAssetSize`, following KMP's shared one — Spinner and CountryFlag take the same sizes |
 | `expandContents` | slot overloads only; the icon form hardcodes `false` | slot overloads only | every button — there is one component, so no narrower form to attach it to |
 | The fill treatment | `type` | `type` | `emphasis` — `type` on a `<button>` is the DOM's own attribute, and shadowing it would break form submission |
 

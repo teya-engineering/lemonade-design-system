@@ -1687,10 +1687,53 @@
 
 .lmnd-icon {
   display: inline-block;
+  flex-shrink: 0;
   width: var(--lmnd-size-500);
   height: var(--lmnd-size-500);
   background-color: currentColor;
   -webkit-mask: var(--lmnd-icon) center / contain no-repeat;
   mask: var(--lmnd-icon) center / contain no-repeat;
+}
+
+/* One class per LemonadeAssetSize, resolving to the token Icon uses on the platforms.
+   The base class is already medium, so that modifier is for writing the size out. */
+.lmnd-icon--x-small {
+  width: var(--lmnd-size-300);
+  height: var(--lmnd-size-300);
+}
+
+.lmnd-icon--small {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+.lmnd-icon--medium {
+  width: var(--lmnd-size-500);
+  height: var(--lmnd-size-500);
+}
+
+.lmnd-icon--large {
+  width: var(--lmnd-size-600);
+  height: var(--lmnd-size-600);
+}
+
+.lmnd-icon--x-large {
+  width: var(--lmnd-size-800);
+  height: var(--lmnd-size-800);
+}
+
+.lmnd-icon--xx-large {
+  width: var(--lmnd-size-1000);
+  height: var(--lmnd-size-1000);
+}
+
+.lmnd-icon--xxx-large {
+  width: var(--lmnd-size-1200);
+  height: var(--lmnd-size-1200);
+}
+
+.lmnd-icon--xxxx-large {
+  width: var(--lmnd-size-1400);
+  height: var(--lmnd-size-1400);
 }
 

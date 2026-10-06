@@ -31,6 +31,9 @@ done
 step "Text styles match SwiftUI"
 [ -f scripts/web-text-style-parity-check.main.kts ] && "$KOTLIN" scripts/web-text-style-parity-check.main.kts
 
+step "Component vocabularies match KMP and SwiftUI"
+[ -f scripts/web-component-enum-parity-check.main.kts ] && "$KOTLIN" scripts/web-component-enum-parity-check.main.kts
+
 step "Package: install from the committed lockfile, typecheck, test, build"
 ( cd web && npm ci --silent && npm run typecheck && npm test && npm run build )
 

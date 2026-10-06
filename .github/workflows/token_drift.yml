@@ -18,6 +18,12 @@ on:
       - 'web/styles/**'
       - 'web/src/*.generated.ts'
       - 'web/llms.txt'
+      # The component vocabularies web mirrors. Named file by file rather than as whole
+      # trees, so a KMP or SwiftUI PR only pays for the Kotlin job when it touches an enum
+      # web has to match. Extend this with each component.
+      - 'kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeAssetSize.kt'
+      - 'swiftui/Sources/Lemonade/Components/LemonadeIcon.swift'
+      - 'web/src/components/**/*.types.ts'
       # The hand-written half of llms.txt, which the converter appends verbatim.
       - 'web/llms-components.md'
       - 'web/tokens.json'
@@ -74,6 +80,9 @@ jobs:
 
       - name: Text style parity with SwiftUI
         run: '"$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/web-text-style-parity-check.main.kts'
+
+      - name: Component vocabulary parity with KMP and SwiftUI
+        run: '"$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/web-component-enum-parity-check.main.kts'
 
       - name: Fail if generated code drifted
         run: |
