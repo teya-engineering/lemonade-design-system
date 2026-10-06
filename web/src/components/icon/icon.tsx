@@ -1,6 +1,7 @@
 import type { ComponentPropsWithoutRef, CSSProperties } from 'react'
 import { iconNames } from '../../icons.generated'
 import type { IconName } from '../../icons.generated'
+import { ariaFor } from '../aria'
 import { iconClasses } from './icon.classes'
 import type { IconAppearance } from './icon.types'
 
@@ -51,21 +52,11 @@ export function Icon({
 
   const classes = iconClasses({ size })
 
-  // Filled in only where the caller left no value, then spread after their props. The other
-  // order looks equivalent and is not: a wrapper forwarding `aria-label={undefined}` would
-  // spread that over the name and leave the icon unlabelled.
-  const aria: Record<string, unknown> = {}
-  if (contentDescription === null) {
-    if (rest['aria-hidden'] === undefined) aria['aria-hidden'] = true
-  } else {
-    if (rest.role === undefined) aria.role = 'img'
-    if (rest['aria-label'] === undefined) aria['aria-label'] = contentDescription
-  }
 
   return (
     <span
       {...rest}
-      {...aria}
+      {...ariaFor(contentDescription, 'img', rest)}
       className={className ? `${classes} ${className}` : classes}
       style={{ ...(style as CSSProperties), '--lmnd-icon': `url('${basePath}/${use}.svg')` } as CSSProperties}
     />
