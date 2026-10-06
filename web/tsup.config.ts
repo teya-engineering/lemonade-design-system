@@ -6,7 +6,10 @@ export default defineConfig({
   entry: { index: 'src/index.ts', react: 'src/react/index.ts' },
   format: ['esm', 'cjs'],
   dts: true,
-  clean: false, // dist/fonts is written by build-fonts.mjs before tsup runs
+  // build-fonts.mjs and optimize-svg.mjs write dist/fonts.css and dist/assets before tsup
+  // runs, and tsup's clean always empties outDir — an array of globs is cleaned in addition
+  // to '**/*', not instead of it. clean-bundle-output.mjs removes tsup's own files instead.
+  clean: false,
   sourcemap: true,
   // tsup derives externals from dependencies and peerDependencies, and jsx-runtime is
   // in neither. Bundling any of these ships a second copy of React, which breaks the
