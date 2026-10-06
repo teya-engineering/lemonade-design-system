@@ -1,10 +1,10 @@
 /// <reference types="vite/client" />
-import iconCss from '../../../styles/icon.css?raw'
+import iconCss from './icon.css?raw'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { Icon, defaultIconBasePath } from './icon'
 import { iconClasses } from './icon.classes'
-import type { LemonadeAssetSize } from './icon.types'
+import type { LemonadeAssetSize } from '../../asset-size'
 
 const SIZES: LemonadeAssetSize[] = [
   'xSmall',

@@ -196,7 +196,7 @@ the whole pipeline.
   ".":                  "./dist/index.js",           // tokens, textStyles, iconNames
   "./tokens.css":       "./styles/tokens.css",       // --lmnd-* only, zero selectors
   "./typography.css":   "./styles/typography.css",
-  "./icon.css":         "./styles/icon.css",         // .lmnd-icon mask utility
+  "./components.css":   "./styles/components.css",   // every component's classes
   "./styles.css":       "./styles/styles.css",       // barrel: tokens + typography
   "./lemonade.css":     "./styles/lemonade.css",     // self-contained, pasteable
   "./llms.txt":         "./llms.txt",                // AI token reference
@@ -644,10 +644,18 @@ web/src/components/<name>/
 ```
 
 Not every component needs all six. Text contributes no CSS, because the typography classes
-are already generated; Icon's live in `styles/icon.css`, which shipped as an entrypoint
-before the component existed. `slot/` has neither, being the one piece that renders no
-Lemonade markup at all — it only picks the element, so `llms-components.md` lists it as
-`no-markup` rather than documenting a snippet nobody can copy.
+are already generated. `slot/` has neither CSS nor a snippet, being the one piece that
+renders no Lemonade markup at all — it only picks the element, so `llms-components.md`
+lists it as `no-markup`.
+
+`web-css-bundle` discovers these stylesheets rather than naming them, and concatenates them
+into `styles/components.css`, which is what the package exports and what `styles.css`
+imports. Discovery is the point: a listed input is one a new component can be left out of,
+and the symptom would be a component that renders unstyled only for a consumer who writes
+the classes by hand, with every check green.
+
+The size vocabulary shared by Icon, Spinner and CountryFlag lives in `src/asset-size.ts`,
+mirroring KMP keeping `LemonadeAssetSize` in `core` rather than on one component.
 
 Colocated CSS is committed source, not build output, so the rule that `web/dist/` holds
 everything a build produces still holds. It sits under `web/src/` rather than

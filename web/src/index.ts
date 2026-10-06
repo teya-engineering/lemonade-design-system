@@ -10,4 +10,5 @@ export {
 export type { IconName, FlagName, BrandLogoName } from './icons.generated'
 export type { LemonadeTextStyle } from './components/text/text.types'
 export { iconClasses } from './components/icon/icon.classes'
-export type { IconAppearance, LemonadeAssetSize } from './components/icon/icon.types'
+export type { LemonadeAssetSize } from './asset-size'
+export type { IconAppearance } from './components/icon/icon.types'

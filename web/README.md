@@ -64,7 +64,7 @@ the tokens alone pulls in neither.
 | `@teya/lemonade-mobile-ds/react` | The React components. Needs React, which is an optional peer |
 | `@teya/lemonade-mobile-ds/styles.css` | Barrel: tokens + typography |
 | `@teya/lemonade-mobile-ds/fonts.css` | Figtree `@font-face` declarations |
-| `@teya/lemonade-mobile-ds/icon.css` | The `.lmnd-icon` mask utility |
+| `@teya/lemonade-mobile-ds/components.css` | Every component's classes, including the `.lmnd-icon` mask utility |
 | `@teya/lemonade-mobile-ds/lemonade.css` | Everything in one self-contained file, for prototypes |
 | `@teya/lemonade-mobile-ds/llms.txt` | Token reference for AI tools |
 | `@teya/lemonade-mobile-ds/icons/*.svg` | 295 icons, `currentColor` |
