@@ -29,7 +29,7 @@ const variant = instance.getEnum('◇ Variant', {
   'On Color': 'onColor',
 })
 
-const type = instance.getEnum('◇ Type', {
+const emphasis = instance.getEnum('◇ Type', {
   Solid: 'solid',
   Subtle: 'subtle',
   Ghost: 'ghost',
@@ -59,7 +59,7 @@ export default {
   example: code`<Button
   label="${quote(label)}"
   variant="${variant}"
-  type="${type}"
+  emphasis="${emphasis}"
   size="${size}"
   onClick={() => {}}${leadingSlot ? iconProp('leadingIcon', 'leading icon') : ''}${
     trailingSlot ? iconProp('trailingIcon', 'trailing icon') : ''
