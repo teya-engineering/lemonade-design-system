@@ -67,24 +67,24 @@ export const OnColor: StoryObj<typeof Spinner> = {
         color: 'var(--lmnd-color-content-on-brand-high)',
       }}
     >
-      <Spinner {...args} size="small" label={null} style={{ color: 'inherit' }} />
+      <Spinner {...args} size="small" contentDescription={null} style={{ color: 'inherit' }} />
       <Text textStyle="bodyMediumSemiBold">Saving your changes…</Text>
     </div>
   ),
 }
 
 /**
- * The spinner beside its own sentence is decorative — `label={null}`. A spinner standing
+ * The spinner beside its own sentence is decorative — `contentDescription={null}`. A spinner standing
  * alone is the announcement, so it carries the label and `role="status"`.
  */
 export const Labelling: StoryObj<typeof Spinner> = {
   render: (args) => (
     <div style={{ display: 'grid', gap: 'var(--lmnd-spacing-400)' }}>
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--lmnd-spacing-300)' }}>
-        <Spinner {...args} size="small" label={null} />
+        <Spinner {...args} size="small" contentDescription={null} />
         <Text>Checking your balance — the spinner is decorative here</Text>
       </span>
-      <Spinner {...args} label="Checking your balance" />
+      <Spinner {...args} contentDescription="Checking your balance" />
     </div>
   ),
 }

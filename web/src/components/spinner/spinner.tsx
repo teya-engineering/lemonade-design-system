@@ -12,8 +12,12 @@ export type SpinnerOwnProps = SpinnerAppearance & {
    * What a screen reader should say, or `null` when something adjacent already says it —
    * a button whose own label reads "Saving…". Required, like Icon's, because whether the
    * spinner is the announcement or a decoration of one is never the component's call.
+   *
+   * It is never rendered. A spinner with visible text beside it is two things: this, with
+   * `null`, and a Text, inside one `role="status"` — which is better than a name only a
+   * screen reader gets.
    */
-  label: string | null
+  contentDescription: string | null
 }
 
 export type SpinnerProps<E extends ElementType = typeof defaultSpinnerElement> = SlotProps<
@@ -29,11 +33,11 @@ export type SpinnerProps<E extends ElementType = typeof defaultSpinnerElement> =
  * `color` — which defaults to content-secondary, as it does on the platforms.
  *
  * @example
- * <Spinner label="Loading your balance" />
- * <Spinner size="small" label={null} />
+ * <Spinner contentDescription="Loading your balance" />
+ * <Spinner size="small" contentDescription={null} />
  */
 export function Spinner<E extends ElementType = typeof defaultSpinnerElement>({
-  label,
+  contentDescription,
   size = 'medium',
   className,
   ...rest
@@ -43,7 +47,7 @@ export function Spinner<E extends ElementType = typeof defaultSpinnerElement>({
   return (
     <Slot<ElementType>
       as={defaultSpinnerElement}
-      {...labelling(label, 'status')}
+      {...labelling(contentDescription, 'status')}
       {...rest}
       className={className ? `${classes} ${className}` : classes}
     />
