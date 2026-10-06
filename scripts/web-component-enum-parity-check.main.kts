@@ -66,7 +66,7 @@ fun main() {
             kotlinPath = "kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeAssetSize.kt",
             swiftName = "LemonadeUiIconSize",
             swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeIcon.swift",
-            webPath = "web/src/components/icon/icon.types.ts",
+            webPath = "web/src/asset-size.ts",
         ),
     )
 

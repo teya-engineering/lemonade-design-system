@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react'
 import { iconNames } from '../../icons.generated'
 import { Text } from '../text/text'
 import { Icon } from './icon'
-import type { LemonadeAssetSize } from './icon.types'
+import type { LemonadeAssetSize } from '../../asset-size'
 
 const SIZES: LemonadeAssetSize[] = [
   'xSmall',

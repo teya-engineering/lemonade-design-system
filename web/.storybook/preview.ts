@@ -4,7 +4,7 @@
 import '../dist/fonts.css'
 import '../styles/tokens.css'
 import '../styles/typography.css'
-import '../styles/icon.css'
+import '../src/components/icon/icon.css'
 import type { Preview } from '@storybook/react'
 import type { ReactElement } from 'react'
 import { createElement } from 'react'
