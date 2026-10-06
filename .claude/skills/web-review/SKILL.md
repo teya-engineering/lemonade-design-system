@@ -114,10 +114,16 @@ for a stack that never loads the JavaScript, and the review question is whether 
 - Every class the component can emit has a rule behind it. A name that appears in `buttonClasses`
   and nowhere in the stylesheet renders unstyled, and no JS test notices — the builder and the
   component agree with each other whatever the CSS says.
+- The rules reach the browser, not just the file. `web/tests/component-css.test.ts` holds the
+  Storybook preview to importing the generated barrel: a stylesheet that exists and is never loaded
+  passes every test that reads the CSS directly, and the component renders as nothing.
 - A component's stylesheet reaches `web-css-bundle`'s discovered glob, or the pasteable
   `lemonade.css` ships without it while every check passes.
-- Hand-written component CSS lives under `web/src/components/`, not `web/styles/` — that directory
-  belongs to the converters, and `token_drift.yml` would run the Kotlin job on every component PR.
+- Hand-written component CSS lives under `web/src/components/`, beside the component. `web-css-bundle`
+  discovers it there and concatenates it into `web/styles/components.css`, which is what the package
+  exports and what `lemonade.css` carries — so `web/styles/` holds only generated files and the
+  hand-written barrel that imports them. A component stylesheet is therefore an input to a converter:
+  `token_drift.yml` triggers on it, and editing one without regenerating fails the drift job.
 - Interaction states come from the ladder the tokens already carry: `-interactive` for `:hover`,
   `-pressed` for `:active`. Mobile has no hover and its components disagree about which rung means
   pressed, so a divergence here is expected and belongs in §17.5, not in a fix.
