@@ -18,6 +18,9 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const repo = join(root, '..')
 const web = join(repo, 'web')
 
+/** The glyph the instance-swap stub reports, and what a template reading it must emit. */
+const GLYPH = 'arrow-right'
+
 /** Figma's `figma.code` tagged template, reduced to the string it would produce. */
 const tag = (strings, ...values) =>
   Object.assign(new String(strings.reduce((o, s, i) => o + s + (i < values.length ? String(values[i]) : ''), '')), {
@@ -64,6 +67,10 @@ function render(source, props) {
     },
     getBoolean: (name) => props[name] === true,
     getSlot: () => undefined,
+    // A swapped asset, named the way Figma names its icon components. Deliberately not the
+    // template's own fallback: if reading the name broke, the fallback would still be a
+    // valid IconName and tsc would pass, so the two are forced apart and checked below.
+    getInstanceSwap: () => ({ type: 'INSTANCE', name: GLYPH }),
   }
   const body = `const figma = arguments[0]; const renderer = arguments[1];\n${source}\nreturn globalThis.__result`
   // eslint-disable-next-line no-new-func
@@ -116,7 +123,19 @@ try {
       )
       .join('\n')
 
-    const cases = combinations(raw).map((props, index) => `export const case${index} = (\n${render(source, props)}\n)`)
+    const rendered = combinations(raw).map((props) => render(source, props))
+
+    // tsc cannot tell a glyph that was read from one that fell back, because both are valid
+    // icon names. A template that asks for the swapped asset has to put it in the snippet.
+    if (raw.includes('getInstanceSwap') && !rendered.every((snippet) => snippet.includes(GLYPH))) {
+      console.error(
+        `${relative(root, template)} reads the swapped asset but does not emit it.\n` +
+          `Expected every snippet to name "${GLYPH}"; got:\n  ${rendered[0]}`,
+      )
+      process.exit(1)
+    }
+
+    const cases = rendered.map((snippet, index) => `export const case${index} = (\n${snippet}\n)`)
     total += cases.length
     const file = join(scratch, `${relative(root, template).replace(/[/\\.]/g, '_')}.tsx`)
     writeFileSync(file, `${header}\n\n${cases.join('\n\n')}\n`)
