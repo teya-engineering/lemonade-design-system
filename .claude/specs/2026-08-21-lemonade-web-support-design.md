@@ -735,6 +735,10 @@ For Button:
 | Icon colour | `tint: Color` | `tint: Color` | none — the mask takes `currentColor`, so the containing element's colour applies |
 | Icon description | `contentDescription: String?` | the same | `contentDescription: string \| null`, required, so the decorative case is spelled rather than defaulted. It is a name for assistive tech, never rendered — visible text beside an icon is the caller's own markup |
 | The asset size enum | `LemonadeAssetSize` | `LemonadeUiIconSize`, per component | `LemonadeAssetSize`, following KMP's shared one — Spinner and CountryFlag take the same sizes |
+| Spinner rendering | a `Canvas` arc, swept 285° and stroked at a tenth of the diameter | the native `ProgressView`, scaled | a conic gradient masked to a ring, following Compose's geometry — SwiftUI's is whatever iOS draws |
+| Spinner sizes | `LemonadeAssetSize` | its own `LemonadeSpinnerSize`, same eight entries | `LemonadeAssetSize`. `kmp/core` also holds a five-entry `LemonadeSpinnerSize` that nothing references; web follows the signature Spinner actually takes |
+| Spinner tint | defaults to content-secondary | the same | the same, set on the base class — so `color` overrides it rather than being inherited |
+| Reduced motion | not handled | not handled | the spin slows under `prefers-reduced-motion`. It does not stop: the motion is what says the component is working |
 | `expandContents` | slot overloads only; the icon form hardcodes `false` | slot overloads only | every button — there is one component, so no narrower form to attach it to |
 | The fill treatment | `type` | `type` | `emphasis` — `type` on a `<button>` is the DOM's own attribute, and shadowing it would break form submission |
 

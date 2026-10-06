@@ -10,7 +10,7 @@ no-markup: slot
 Every component is CSS plus markup. React is optional: the classes below are the API, so
 any framework — or none — produces the same result.
 
-With React: `import { Text, Icon } from '@teya/lemonade-mobile-ds/react'`. Without React, write
+With React: `import { Text, Icon, Spinner } from '@teya/lemonade-mobile-ds/react'`. Without React, write
 the markup and apply the same classes; the `textStyles` manifest on the root export maps
 every style name to its class.
 
@@ -52,3 +52,21 @@ every style name to its class.
   required, so the choice is always made. It never renders; visible text beside an icon is
   your own markup.
 - `llms.txt` lists every icon name under "Icons".
+
+### Spinner
+
+```html
+<span class="lmnd-spinner lmnd-spinner--medium" role="status" aria-label="Loading"></span>
+```
+
+- An empty element: the ring is a masked conic gradient, so there is nothing inside it and
+  no SVG or image to load.
+- Size: `lmnd-spinner--x-small` through `lmnd-spinner--xxxx-large`, the same
+  `LemonadeAssetSize` scale as Icon. The base class is already medium.
+- The tint defaults to content-secondary, as on the platforms. Override it by setting
+  `color` on the element — `color: inherit` to take it from a filled surface.
+- A spinner standing alone is the announcement: give it `role="status"` and an
+  `aria-label`. One beside text that already says it is loading takes `aria-hidden="true"`
+  and no role. The React prop is `label`, and `label={null}` is that second case.
+- Under `prefers-reduced-motion` the ring slows rather than stopping, because a still ring
+  reads as broken rather than busy.
