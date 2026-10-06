@@ -16,10 +16,11 @@ export type IconOwnProps = IconAppearance & {
   use: IconName
   /**
    * What a screen reader should say, or `null` when the icon repeats adjacent text and
-   * should be skipped. Required, like the platforms' `contentDescription`, because which
-   * one applies is never the component's call.
+   * should be skipped. Named as the platforms name it, and required for the same reason
+   * they make it required-but-nullable: which one applies is never the component's call.
+   * It is never rendered — visible text beside an icon is the caller's own markup.
    */
-  label: string | null
+  contentDescription: string | null
   /** Serving the icons elsewhere — a CDN, a different public directory — changes this. */
   basePath?: string
 }
@@ -31,12 +32,12 @@ export type IconProps<E extends ElementType = typeof defaultIconElement> = SlotP
  * and needs no fill rewriting.
  *
  * @example
- * <Icon use="heart" label="Favourite" />
- * <Icon use="arrow-right" size="small" label={null} />
+ * <Icon use="heart" contentDescription="Favourite" />
+ * <Icon use="arrow-right" size="small" contentDescription={null} />
  */
 export function Icon<E extends ElementType = typeof defaultIconElement>({
   use,
-  label,
+  contentDescription,
   size = 'medium',
   basePath = defaultIconBasePath,
   className,
@@ -57,9 +58,9 @@ export function Icon<E extends ElementType = typeof defaultIconElement>({
       {...rest}
       className={className ? `${classes} ${className}` : classes}
       style={{ ...(style as CSSProperties), '--lmnd-icon': `url('${basePath}/${use}.svg')` } as CSSProperties}
-      role={label === null ? undefined : 'img'}
-      aria-label={label ?? undefined}
-      aria-hidden={label === null ? true : undefined}
+      role={contentDescription === null ? undefined : 'img'}
+      aria-label={contentDescription ?? undefined}
+      aria-hidden={contentDescription === null ? true : undefined}
     />
   )
 }

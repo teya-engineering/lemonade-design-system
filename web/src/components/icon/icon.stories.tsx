@@ -55,16 +55,16 @@ export const Colour: StoryObj<typeof Icon> = {
   ),
 }
 
-/** `label={null}` hides the icon from assistive tech, for when the text beside it says the same. */
+/** `contentDescription={null}` hides the icon from assistive tech, for when the text beside it says the same. */
 export const Labelling: StoryObj<typeof Icon> = {
   render: (args) => (
     <div style={{ display: 'grid', gap: 'var(--lmnd-spacing-400)' }}>
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--lmnd-spacing-200)' }}>
-        <Icon {...args} use="check" label={null} />
+        <Icon {...args} use="check" contentDescription={null} />
         <Text>Payment received — the icon is decorative here</Text>
       </span>
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--lmnd-spacing-200)' }}>
-        <Icon {...args} use="check" label="Payment received" />
+        <Icon {...args} use="check" contentDescription="Payment received" />
         <Text textStyle="bodySmallRegular" style={{ color: 'var(--lmnd-color-content-secondary)' }}>
           with a label, it is announced as an image
         </Text>
@@ -119,7 +119,7 @@ export const Every: StoryObj<typeof Icon> = {
                 borderRadius: 'var(--lmnd-radius-400)',
               }}
             >
-              <Icon {...args} use={name} label={null} />
+              <Icon {...args} use={name} contentDescription={null} />
               <Text
                 textStyle="bodyXSmallRegular"
                 style={{
