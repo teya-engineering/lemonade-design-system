@@ -1,3 +1,5 @@
+export { Button } from '../components/button/button'
+export type { ButtonProps } from '../components/button/button'
 export { Icon, defaultIconBasePath, defaultIconElement } from '../components/icon/icon'
 export type { IconOwnProps, IconProps } from '../components/icon/icon'
 export { Slot } from '../components/slot/slot'

@@ -740,6 +740,7 @@ For Button:
 | Spinner tint | defaults to content-secondary | the same | the same, set on the base class — so `color` overrides it rather than being inherited |
 | Spinner description | none — the ring carries no semantics | none | `contentDescription: string \| null`, required. KMP draws on a Canvas and the screen around it carries the announcement; the web equivalent is an empty element a screen reader cannot see at all, so a spinner that replaces a page's content would otherwise say nothing. It never renders — a spinner with visible text is this with `null` plus a Text, inside one `role="status"` |
 | Reduced motion | not handled | not handled | the spin slows under `prefers-reduced-motion`. It does not stop: the motion is what says the component is working |
+| Button's loading ring | `LemonadeUi.Spinner`, tinted with the button's content colour | the same | the same — Spinner, tinted by a rule in `button.css` so markup written by hand gets it too |
 | `expandContents` | slot overloads only; the icon form hardcodes `false` | slot overloads only | every button — there is one component, so no narrower form to attach it to |
 | The fill treatment | `type` | `type` | `emphasis` — `type` on a `<button>` is the DOM's own attribute, and shadowing it would break form submission |
 
