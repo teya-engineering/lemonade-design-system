@@ -17,11 +17,23 @@ fun descriptionOf(node: JSONObject): String = node.optString("\$description").tr
 fun componentDocs(): String {
     val source = File("web/llms-components.md")
     require(source.isFile) { "${source.path} is missing — it holds the hand-written Components section" }
-    val text = source.readText().substringAfter("-->").trim()
+    val raw = source.readText()
+    val text = raw.substringAfter("-->").trim()
+
+    // Some components render no markup of their own — Slot only picks an element — so there
+    // is nothing for a non-React consumer to copy. Skipping one is declared in the file's
+    // header rather than inferred, so the exceptions stay visible.
+    val noMarkup = Regex("no-markup:([^\n]*)").find(raw.substringBefore("-->"))
+        ?.groupValues?.get(1)
+        ?.split(',')
+        ?.map { it.trim().lowercase() }
+        ?.filter { it.isNotEmpty() }
+        .orEmpty()
 
     val components = File("web/src/components").listFiles()
         ?.filter { it.isDirectory }
         ?.map { it.name }
+        ?.filterNot { it.lowercase() in noMarkup }
         ?.sorted()
         .orEmpty()
     val undocumented = components.filter { name ->

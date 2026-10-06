@@ -1,2 +1,6 @@
-export { Text } from '../components/text/text'
+export { Icon, defaultIconBasePath, defaultIconElement } from '../components/icon/icon'
+export type { IconOwnProps, IconProps } from '../components/icon/icon'
+export { Slot } from '../components/slot/slot'
+export type { SlotAsProps, SlotOwnProps, SlotProps } from '../components/slot/slot.types'
+export { Text, defaultTextElement } from '../components/text/text'
 export type { TextElement, TextProps } from '../components/text/text'
