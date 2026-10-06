@@ -1,4 +1,5 @@
 import type { ElementType } from 'react'
+import { labelling } from '../labelling'
 import { Slot } from '../slot/slot'
 import type { SlotProps } from '../slot/slot.types'
 import { spinnerClasses } from './spinner.classes'
@@ -42,11 +43,9 @@ export function Spinner<E extends ElementType = typeof defaultSpinnerElement>({
   return (
     <Slot<ElementType>
       as={defaultSpinnerElement}
+      {...labelling(label, 'status')}
       {...rest}
       className={className ? `${classes} ${className}` : classes}
-      role={label === null ? undefined : 'status'}
-      aria-label={label ?? undefined}
-      aria-hidden={label === null ? true : undefined}
     />
   )
 }
