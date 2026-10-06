@@ -19,40 +19,40 @@ const SIZES: LemonadeAssetSize[] = [
 
 describe('Icon', () => {
   it('masks the named asset', () => {
-    render(<Icon use="heart" label="Favourite" />)
+    render(<Icon use="heart" contentDescription="Favourite" />)
     expect(screen.getByRole('img', { name: 'Favourite' })).toHaveStyle({
       '--lmnd-icon': `url('${defaultIconBasePath}/heart.svg')`,
     })
   })
 
   it('defaults to medium, like the platforms', () => {
-    render(<Icon use="heart" label="Favourite" />)
+    render(<Icon use="heart" contentDescription="Favourite" />)
     expect(screen.getByRole('img')).toHaveClass('lmnd-icon', 'lmnd-icon--medium')
   })
 
   it('renders the class list iconClasses returns, so a non-React consumer matches', () => {
-    render(<Icon use="heart" label="Favourite" size="xxLarge" />)
+    render(<Icon use="heart" contentDescription="Favourite" size="xxLarge" />)
     expect(screen.getByRole('img').className).toBe(iconClasses({ size: 'xxLarge' }))
   })
 
   it('serves from somewhere else when told to', () => {
-    render(<Icon use="heart" label="Favourite" basePath="https://cdn.example.com/icons" />)
+    render(<Icon use="heart" contentDescription="Favourite" basePath="https://cdn.example.com/icons" />)
     expect(screen.getByRole('img')).toHaveStyle({ '--lmnd-icon': "url('https://cdn.example.com/icons/heart.svg')" })
   })
 
   it('renders a span unless asked otherwise', () => {
-    render(<Icon use="heart" label="Favourite" />)
+    render(<Icon use="heart" contentDescription="Favourite" />)
     expect(screen.getByRole('img').tagName).toBe('SPAN')
   })
 
   it('appends a caller className rather than replacing the contract', () => {
-    render(<Icon use="heart" label="Favourite" className="pulse" />)
+    render(<Icon use="heart" contentDescription="Favourite" className="pulse" />)
     expect(screen.getByRole('img')).toHaveClass('lmnd-icon', 'pulse')
   })
 
   describe('accessibility', () => {
     it('announces the label it is given', () => {
-      render(<Icon use="heart" label="Favourite" />)
+      render(<Icon use="heart" contentDescription="Favourite" />)
       const node = screen.getByRole('img', { name: 'Favourite' })
       expect(node).not.toHaveAttribute('aria-hidden')
     })
@@ -60,7 +60,7 @@ describe('Icon', () => {
     // The decorative case has to be spelled, not defaulted: an icon beside its own label
     // read twice is worse than one read never.
     it('hides itself from the tree when the label is null', () => {
-      render(<Icon use="heart" label={null} />)
+      render(<Icon use="heart" contentDescription={null} />)
       expect(screen.queryByRole('img')).toBeNull()
       expect(document.querySelector('.lmnd-icon')).toHaveAttribute('aria-hidden', 'true')
     })
@@ -69,7 +69,7 @@ describe('Icon', () => {
   it('reports an unknown name instead of rendering blank space', () => {
     const error = vi.spyOn(console, 'error').mockImplementation(() => {})
     // @ts-expect-error — the point is the name a JavaScript caller can still pass.
-    render(<Icon use="not-an-icon" label="Nothing" />)
+    render(<Icon use="not-an-icon" contentDescription="Nothing" />)
     expect(error).toHaveBeenCalledOnce()
     error.mockRestore()
   })

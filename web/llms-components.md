@@ -47,6 +47,8 @@ every style name to its class.
 - The URL points at the package's `dist/assets/icons/`. Serve that directory and pass the
   name; the React prop for it is `basePath`, defaulting to `/assets/icons`.
 - Decorative icons take `aria-hidden="true"` and no `role`. An icon that carries meaning
-  takes `role="img"` and an `aria-label`. The React prop is `label`, and `label={null}` is
-  the decorative case — it is required, so the choice is always made.
+  takes `role="img"` and an `aria-label`. The React prop is `contentDescription`, named as
+  the platforms name it, and `contentDescription={null}` is the decorative case — it is
+  required, so the choice is always made. It never renders; visible text beside an icon is
+  your own markup.
 - `llms.txt` lists every icon name under "Icons".
