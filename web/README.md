@@ -36,10 +36,11 @@ The CSS carries the component and React only applies the class names, so the cla
 the API:
 
 ```jsx
-import { Icon, Text } from '@teya/lemonade-mobile-ds/react'
+import { Icon, Spinner, Text } from '@teya/lemonade-mobile-ds/react'
 
 <Text textStyle="bodyMediumRegular" as="p">Account balance</Text>
 <Icon use="heart" size="large" contentDescription="Favourite" />
+<Spinner contentDescription="Loading your balance" />
 ```
 
 The components import no CSS of their own — `sideEffects` keeps a bundler from dropping a

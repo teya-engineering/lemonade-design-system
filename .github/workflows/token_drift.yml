@@ -23,6 +23,7 @@ on:
       # web has to match. Extend this with each component.
       - 'kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeAssetSize.kt'
       - 'swiftui/Sources/Lemonade/Components/LemonadeIcon.swift'
+      - 'swiftui/Sources/Lemonade/Components/LemonadeSpinner.swift'
       - 'web/src/asset-size.ts'
       - 'web/src/components/**/*.types.ts'
       # components.css and lemonade.css are generated from these, so a component
