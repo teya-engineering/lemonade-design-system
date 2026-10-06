@@ -67,6 +67,8 @@ every style name to its class.
   `color` on the element — `color: inherit` to take it from a filled surface.
 - A spinner standing alone is the announcement: give it `role="status"` and an
   `aria-label`. One beside text that already says it is loading takes `aria-hidden="true"`
-  and no role. The React prop is `label`, and `label={null}` is that second case.
+  and no role. The React prop is `contentDescription`, named as the platforms name it, and
+  `contentDescription={null}` is that second case. It never renders: for visible text, put
+  a decorative spinner and your own text inside one `role="status"`.
 - Under `prefers-reduced-motion` the ring slows rather than stopping, because a still ring
   reads as broken rather than busy.

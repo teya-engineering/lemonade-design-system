@@ -738,6 +738,7 @@ For Button:
 | Spinner rendering | a `Canvas` arc, swept 285° and stroked at a tenth of the diameter | the native `ProgressView`, scaled | a conic gradient masked to a ring, following Compose's geometry — SwiftUI's is whatever iOS draws |
 | Spinner sizes | `LemonadeAssetSize` | its own `LemonadeSpinnerSize`, same eight entries | `LemonadeAssetSize`. `kmp/core` also holds a five-entry `LemonadeSpinnerSize` that nothing references; web follows the signature Spinner actually takes |
 | Spinner tint | defaults to content-secondary | the same | the same, set on the base class — so `color` overrides it rather than being inherited |
+| Spinner description | none — the ring carries no semantics | none | `contentDescription: string \| null`, required. KMP draws on a Canvas and the screen around it carries the announcement; the web equivalent is an empty element a screen reader cannot see at all, so a spinner that replaces a page's content would otherwise say nothing. It never renders — a spinner with visible text is this with `null` plus a Text, inside one `role="status"` |
 | Reduced motion | not handled | not handled | the spin slows under `prefers-reduced-motion`. It does not stop: the motion is what says the component is working |
 | `expandContents` | slot overloads only; the icon form hardcodes `false` | slot overloads only | every button — there is one component, so no narrower form to attach it to |
 | The fill treatment | `type` | `type` | `emphasis` — `type` on a `<button>` is the DOM's own attribute, and shadowing it would break form submission |

@@ -8,22 +8,22 @@ import { Spinner } from './spinner/spinner'
 // which throws away a role or label the caller passed on purpose.
 describe('the caller has the last word on ARIA', () => {
   it('Icon keeps a role the caller supplied', () => {
-    render(<Icon use="heart" label={null} role="presentation" data-testid="icon" />)
+    render(<Icon use="heart" contentDescription={null} role="presentation" data-testid="icon" />)
     expect(screen.getByTestId('icon')).toHaveAttribute('role', 'presentation')
   })
 
   it('Icon keeps a label the caller supplied', () => {
-    render(<Icon use="heart" label={null} aria-label="Described elsewhere" data-testid="icon" />)
+    render(<Icon use="heart" contentDescription={null} aria-label="Described elsewhere" data-testid="icon" />)
     expect(screen.getByTestId('icon')).toHaveAttribute('aria-label', 'Described elsewhere')
   })
 
   it('Spinner keeps a role the caller supplied', () => {
-    render(<Spinner label={null} role="progressbar" data-testid="spinner" />)
+    render(<Spinner contentDescription={null} role="progressbar" data-testid="spinner" />)
     expect(screen.getByTestId('spinner')).toHaveAttribute('role', 'progressbar')
   })
 
   it('still applies its own when the caller supplies none', () => {
-    render(<Spinner label="Loading" />)
+    render(<Spinner contentDescription="Loading" />)
     expect(screen.getByRole('status', { name: 'Loading' })).toBeTruthy()
   })
 })

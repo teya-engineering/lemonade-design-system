@@ -19,22 +19,22 @@ const SIZES: LemonadeAssetSize[] = [
 
 describe('Spinner', () => {
   it('defaults to medium, like the platforms', () => {
-    render(<Spinner label="Loading" />)
+    render(<Spinner contentDescription="Loading" />)
     expect(screen.getByRole('status')).toHaveClass('lmnd-spinner', 'lmnd-spinner--medium')
   })
 
   it('renders the class list spinnerClasses returns, so a non-React consumer matches', () => {
-    render(<Spinner label="Loading" size="xLarge" />)
+    render(<Spinner contentDescription="Loading" size="xLarge" />)
     expect(screen.getByRole('status').className).toBe(spinnerClasses({ size: 'xLarge' }))
   })
 
   it('renders a span unless asked otherwise', () => {
-    render(<Spinner label="Loading" />)
+    render(<Spinner contentDescription="Loading" />)
     expect(screen.getByRole('status').tagName).toBe('SPAN')
   })
 
   it('appends a caller className rather than replacing the contract', () => {
-    render(<Spinner label="Loading" className="centred" />)
+    render(<Spinner contentDescription="Loading" className="centred" />)
     expect(screen.getByRole('status')).toHaveClass('lmnd-spinner', 'centred')
   })
 
@@ -42,12 +42,12 @@ describe('Spinner', () => {
     // role="status" is a live region, so the label is announced when the spinner appears
     // rather than only when something moves focus to it.
     it('announces itself as a status', () => {
-      render(<Spinner label="Loading your balance" />)
+      render(<Spinner contentDescription="Loading your balance" />)
       expect(screen.getByRole('status', { name: 'Loading your balance' })).not.toHaveAttribute('aria-hidden')
     })
 
     it('hides itself when something adjacent already says it is loading', () => {
-      render(<Spinner label={null} />)
+      render(<Spinner contentDescription={null} />)
       expect(screen.queryByRole('status')).toBeNull()
       expect(document.querySelector('.lmnd-spinner')).toHaveAttribute('aria-hidden', 'true')
     })
