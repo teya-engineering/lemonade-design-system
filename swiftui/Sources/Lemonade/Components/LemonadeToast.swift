@@ -32,18 +32,21 @@ public enum LemonadeToastVoice: Sendable {
         }
     }
 
-    /// The sensory feedback type for this voice.
-    @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
-    var sensoryFeedback: SensoryFeedback {
+    #if os(iOS)
+    /// Plays this voice's haptic. UIKit rather than `sensoryFeedback`, which silently skips the
+    /// feedback when a toast is shown straight after a navigation transition.
+    @MainActor
+    func playHaptic() {
         switch self {
         case .success:
-            return .success
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
         case .error:
-            return .error
+            UINotificationFeedbackGenerator().notificationOccurred(.error)
         case .neutral, .loading:
-            return .impact
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
     }
+    #endif
 }
 
 // MARK: - Toast Component

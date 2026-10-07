@@ -82,8 +82,6 @@ struct LemonadeToastContainerView<Content: View>: View {
     @State private var animationPhase: ToastAnimationPhase = .hidden
     /// Drag offset for swipe-to-dismiss gesture
     @State private var dragOffset: CGFloat = 0
-    /// Trigger counter for sensory feedback (iOS 17+)
-    @State private var feedbackTrigger: Int = 0
     /// Measured toast height for accurate slide animation
     @State private var toastHeight: CGFloat = 0
     /// Tracked exit task to prevent race conditions from fire-and-forget Tasks
@@ -100,10 +98,6 @@ struct LemonadeToastContainerView<Content: View>: View {
             .onChange(of: toastManager.currentToast?.id) { newToastId in
                 handleToastChange(newToastId: newToastId)
             }
-            .modifier(ToastSensoryFeedbackModifier(
-                trigger: feedbackTrigger,
-                voice: displayedToast?.voice
-            ))
     }
 
     // MARK: - Toast Change Handling
@@ -134,7 +128,9 @@ struct LemonadeToastContainerView<Content: View>: View {
     private func enterNewToast() {
         displayedToast = toastManager.currentToast
         animationPhase = .entering
-        feedbackTrigger += 1
+        #if os(iOS)
+        displayedToast?.voice.playHaptic()
+        #endif
 
         withAnimation(ToastAnimationConfig.spring) {
             animationPhase = .visible
