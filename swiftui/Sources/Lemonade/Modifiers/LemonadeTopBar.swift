@@ -969,7 +969,7 @@ public extension View {
     ///         }
     ///     }
     ///
-    /// // Inline title, for a screen that pins tabs under the bar
+    /// // Use an inline title on a screen that pins tabs under the bar.
     /// ScrollView { content }
     ///     .lemonadeTopBar(label: "Activity", titleDisplayMode: .inline)
     /// ```
