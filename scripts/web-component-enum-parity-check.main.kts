@@ -70,6 +70,36 @@ fun main() {
             webName = "LemonadeAssetSize",
             webPath = "web/src/asset-size.ts",
         ),
+        // Swift keeps Variant and Type on the icon button, which the button shares.
+        Vocabulary(
+            name = "LemonadeButtonVariant",
+            kotlinName = "LemonadeButtonVariant",
+            kotlinPath = "kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/Button.kt",
+            swiftName = "LemonadeButtonVariant",
+            swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeIconButton.swift",
+            webName = "LemonadeButtonVariant",
+            webPath = "web/src/components/button/button.types.ts",
+        ),
+        // The platforms' fill treatment. Web carries it on `emphasis`, because `type` on a
+        // <button> is the DOM's own attribute — the entries still have to agree.
+        Vocabulary(
+            name = "LemonadeButtonType",
+            kotlinName = "LemonadeButtonType",
+            kotlinPath = "kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/Button.kt",
+            swiftName = "LemonadeButtonType",
+            swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeIconButton.swift",
+            webName = "LemonadeButtonType",
+            webPath = "web/src/components/button/button.types.ts",
+        ),
+        Vocabulary(
+            name = "LemonadeButtonSize",
+            kotlinName = "LemonadeButtonSize",
+            kotlinPath = "kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/Button.kt",
+            swiftName = "LemonadeButtonSize",
+            swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeButton.swift",
+            webName = "LemonadeButtonSize",
+            webPath = "web/src/components/button/button.types.ts",
+        ),
         // Spinner takes the same eight sizes. SwiftUI declares its own copy, so it can
         // drift from the icon's on that platform alone, which this catches.
         Vocabulary(

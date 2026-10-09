@@ -9,6 +9,13 @@ export {
 } from './icons.generated'
 export type { IconName, FlagName, BrandLogoName } from './icons.generated'
 export type { LemonadeTextStyle } from './components/text/text.types'
+export { buttonClasses } from './components/button/button.classes'
+export type {
+  ButtonAppearance,
+  LemonadeButtonSize,
+  LemonadeButtonType,
+  LemonadeButtonVariant,
+} from './components/button/button.types'
 export { iconClasses } from './components/icon/icon.classes'
 export type { LemonadeAssetSize } from './asset-size'
 export type { IconAppearance } from './components/icon/icon.types'
