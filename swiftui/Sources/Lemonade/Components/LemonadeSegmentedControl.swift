@@ -9,7 +9,7 @@ public struct LemonadeTabButtonProperties: Identifiable, Hashable {
     public let label: String?
     /// Optional icon to display before the label.
     public let icon: LemonadeIcon?
-    /// The name VoiceOver reads for an icon-only tab.
+    /// The localized name VoiceOver reads for an icon-only tab.
     public let contentDescription: String?
 
     private init(
@@ -38,7 +38,7 @@ public struct LemonadeTabButtonProperties: Identifiable, Hashable {
     ///
     /// - Parameters:
     ///   - icon: The icon to display.
-    ///   - contentDescription: The name VoiceOver reads for the tab. When nil, the icon's raw name is read.
+    ///   - contentDescription: The localized name VoiceOver reads for the tab. When nil, the icon's raw name is read.
     public static func icon(_ icon: LemonadeIcon, contentDescription: String? = nil) -> Self {
         Self(label: nil, icon: icon, contentDescription: contentDescription)
     }
