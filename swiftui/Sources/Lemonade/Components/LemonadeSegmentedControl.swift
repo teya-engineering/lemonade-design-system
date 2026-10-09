@@ -153,6 +153,7 @@ private struct LemonadeSegmentedControlView: View {
                 segments(drawSelectionIndicator: false)
             }
             .allowsHitTesting(false)
+            .accessibilityHidden(true)
             .animation(.easeInOut(duration: 0.2), value: clampedSelectedTab)
             .background {
                 LemonadeNativeSegmentedControl(
