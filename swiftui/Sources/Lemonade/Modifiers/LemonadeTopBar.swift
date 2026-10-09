@@ -29,6 +29,22 @@ public struct NavigationAction {
     }
 }
 
+// MARK: - TopBarTitleDisplayMode
+
+/// How the title of a basic top bar is displayed.
+///
+/// Use `.inline` on a screen that pins its own bar under the top bar (for example tabs in a
+/// `safeAreaBar`): a large title above such a bar jumps when scrolled back to the top.
+public enum TopBarTitleDisplayMode {
+    /// A large title that collapses into the bar on scroll.
+    ///
+    /// Before iOS 26 a top bar with a `subheading` is always inline, with the title and
+    /// subheading stacked in the bar.
+    case large
+    /// A small title centred in the bar. Shows `collapsedLabel` when one is given, otherwise `label`.
+    case inline
+}
+
 // MARK: - Empty Toolbar Content
 
 /// Empty toolbar content for overloads that don't need toolbar items.
@@ -49,6 +65,7 @@ private struct BasicTopBarModifier<Toolbar: ToolbarContent, BottomContent: View>
     let label: String
     let subheading: String?
     let collapsedLabel: String?
+    let titleDisplayMode: TopBarTitleDisplayMode
     let navigationAction: NavigationAction?
     let toolbarContent: Toolbar
     let bottomSlot: (() -> BottomContent)?
@@ -56,7 +73,11 @@ private struct BasicTopBarModifier<Toolbar: ToolbarContent, BottomContent: View>
     func body(content: Content) -> some View {
         content
             .lemonadeSoftTopScrollEdge()
-            .lemonadeNavigationTitle(title: collapsedLabel ?? label, subheading: subheading)
+            .lemonadeNavigationTitle(
+                title: collapsedLabel ?? label,
+                subheading: subheading,
+                displayMode: titleDisplayMode
+            )
             .navigationBarBackButtonHidden(navigationAction?.action == .close)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -92,7 +113,11 @@ private struct SearchTopBarModifier<Toolbar: ToolbarContent, BottomContent: View
     func body(content: Content) -> some View {
         content
             .lemonadeSoftTopScrollEdge()
-            .lemonadeNavigationTitle(title: expandedLabel ?? label, subheading: subheading)
+            .lemonadeNavigationTitle(
+                title: expandedLabel ?? label,
+                subheading: subheading,
+                displayMode: .large
+            )
             .searchable(
                 text: $searchInput,
                 placement: .navigationBarDrawer(displayMode: .always),
@@ -663,39 +688,45 @@ private extension View {
     /// stacked `title` + `subheading` in the principal toolbar slot, at the cost of
     /// losing the large-title morph. The native `.navigationTitle` is kept (not
     /// emptied) so pushed screens still inherit a back button label.
+    func lemonadeNavigationTitle(
+        title: String,
+        subheading: String?,
+        displayMode: TopBarTitleDisplayMode
+    ) -> some View {
+        navigationTitle(title)
+            .lemonadeNativeSubtitle(subheading)
+            .navigationBarTitleDisplayMode(displayMode.native(hasSubheading: subheading != nil))
+    }
+
     @ViewBuilder
-    func lemonadeNavigationTitle(title: String, subheading: String?) -> some View {
+    func lemonadeNativeSubtitle(_ subheading: String?) -> some View {
         #if compiler(>=6.2)
         if #available(iOS 26, *), let subheading {
-            self
-                .navigationTitle(title)
-                .navigationSubtitle(subheading)
-                .navigationBarTitleDisplayMode(.large)
-        } else if #available(iOS 26, *) {
-            self
-                .navigationTitle(title)
-                .navigationBarTitleDisplayMode(.large)
-        } else if subheading != nil {
-            self
-                .navigationTitle(title)
-                .navigationBarTitleDisplayMode(.inline)
+            self.navigationSubtitle(subheading)
         } else {
             self
-                .navigationTitle(title)
-                .navigationBarTitleDisplayMode(.large)
         }
         #else
-        if subheading != nil {
-            self
-                .navigationTitle(title)
-                .navigationBarTitleDisplayMode(.inline)
-        } else {
-            self
-                .navigationTitle(title)
-                .navigationBarTitleDisplayMode(.large)
-        }
+        self
         #endif
     }
+}
+
+private extension TopBarTitleDisplayMode {
+    func native(hasSubheading: Bool) -> NavigationBarItem.TitleDisplayMode {
+        if hasSubheading, !lemonadeHasNativeSubtitle { return .inline }
+        switch self {
+        case .large: return .large
+        case .inline: return .inline
+        }
+    }
+}
+
+private var lemonadeHasNativeSubtitle: Bool {
+    #if compiler(>=6.2)
+    if #available(iOS 26, *) { return true }
+    #endif
+    return false
 }
 
 private extension View {
@@ -918,11 +949,13 @@ public extension View {
 
     // MARK: Basic TopBar
 
-    /// Applies a Lemonade-styled navigation bar with a collapsible large title.
+    /// Applies a Lemonade-styled navigation bar with a large title that collapses on scroll,
+    /// or an inline title when `titleDisplayMode` is `.inline`.
     ///
     /// Uses native iOS `.navigationTitle` and `.toolbar` under the hood,
     /// preserving all native navigation interactions (swipe-to-go-back, title morphing, etc.).
     /// The `toolbar` parameter uses `@ToolbarContentBuilder` — same API as native `.toolbar`.
+    /// See ``TopBarTitleDisplayMode`` for when to use `.inline`.
     ///
     /// ## Usage
     /// ```swift
@@ -935,11 +968,16 @@ public extension View {
     ///             LemonadeUi.IconButton(icon: .bell, contentDescription: "Notifications", onClick: {})
     ///         }
     ///     }
+    ///
+    /// // Use an inline title on a screen that pins tabs under the bar.
+    /// ScrollView { content }
+    ///     .lemonadeTopBar(label: "Activity", titleDisplayMode: .inline)
     /// ```
     func lemonadeTopBar<Toolbar: ToolbarContent, BottomContent: View>(
         label: String,
         subheading: String? = nil,
         collapsedLabel: String? = nil,
+        titleDisplayMode: TopBarTitleDisplayMode = .large,
         navigationAction: NavigationAction? = nil,
         @ViewBuilder bottomSlot: @escaping () -> BottomContent,
         @ToolbarContentBuilder toolbar: () -> Toolbar
@@ -948,6 +986,7 @@ public extension View {
             label: label,
             subheading: subheading,
             collapsedLabel: collapsedLabel,
+            titleDisplayMode: titleDisplayMode,
             navigationAction: navigationAction,
             toolbarContent: toolbar(),
             bottomSlot: bottomSlot
@@ -959,6 +998,7 @@ public extension View {
         label: String,
         subheading: String? = nil,
         collapsedLabel: String? = nil,
+        titleDisplayMode: TopBarTitleDisplayMode = .large,
         navigationAction: NavigationAction? = nil,
         @ToolbarContentBuilder toolbar: () -> Toolbar
     ) -> some View {
@@ -966,23 +1006,26 @@ public extension View {
             label: label,
             subheading: subheading,
             collapsedLabel: collapsedLabel,
+            titleDisplayMode: titleDisplayMode,
             navigationAction: navigationAction,
             toolbarContent: toolbar(),
             bottomSlot: nil as (() -> EmptyView)?
         ))
     }
 
-    /// Applies a Lemonade-styled navigation bar with a collapsible large title (no toolbar or bottom slot).
+    /// Applies a Lemonade-styled navigation bar with no toolbar or bottom slot.
     func lemonadeTopBar(
         label: String,
         subheading: String? = nil,
         collapsedLabel: String? = nil,
+        titleDisplayMode: TopBarTitleDisplayMode = .large,
         navigationAction: NavigationAction? = nil
     ) -> some View {
         modifier(BasicTopBarModifier(
             label: label,
             subheading: subheading,
             collapsedLabel: collapsedLabel,
+            titleDisplayMode: titleDisplayMode,
             navigationAction: navigationAction,
             toolbarContent: LemonadeEmptyToolbarContent(),
             bottomSlot: nil as (() -> EmptyView)?

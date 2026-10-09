@@ -22,6 +22,7 @@ struct TopBarDisplayView: View {
 /// pushed, and the raw value doubles as a stable, content-derived identity.
 private enum TopBarDemo: String, CaseIterable, Identifiable {
     case basic
+    case basicInline
     case basicClose
     case basicTrailingSlot
     case basicBottomSlot
@@ -39,6 +40,7 @@ private enum TopBarDemo: String, CaseIterable, Identifiable {
     var title: String {
         switch self {
         case .basic: return "Basic (native back)"
+        case .basicInline: return "Basic (inline title)"
         case .basicClose: return "Basic (close button)"
         case .basicTrailingSlot: return "Basic with Trailing Slot"
         case .basicBottomSlot: return "Basic with Bottom Slot"
@@ -57,6 +59,7 @@ private enum TopBarDemo: String, CaseIterable, Identifiable {
     var destination: some View {
         switch self {
         case .basic: BasicTopBarDemo()
+        case .basicInline: BasicInlineDemo()
         case .basicClose: BasicCloseDemo()
         case .basicTrailingSlot: BasicTrailingSlotDemo()
         case .basicBottomSlot: BasicBottomSlotDemo()
@@ -123,6 +126,20 @@ private struct BasicTopBarDemo: View {
         }
         .lemonadeTopBar(
             label: "Settings",
+            navigationAction: NavigationAction(action: .back, onAction: {})
+        )
+    }
+}
+
+private struct BasicInlineDemo: View {
+    var body: some View {
+        ScrollView {
+            SampleListContent()
+        }
+        .lemonadeTopBar(
+            label: "Settings",
+            subheading: "Signed in as john@example.com",
+            titleDisplayMode: .inline,
             navigationAction: NavigationAction(action: .back, onAction: {})
         )
     }
