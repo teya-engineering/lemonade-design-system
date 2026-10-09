@@ -1123,13 +1123,17 @@ public final class com/teya/lemonade/core/SymbolContainerVoice : java/lang/Enum 
 
 public final class com/teya/lemonade/core/TabButtonProperties {
 	public static final field Companion Lcom/teya/lemonade/core/TabButtonProperties$Companion;
+	public synthetic fun <init> (Ljava/lang/String;Lcom/teya/lemonade/core/LemonadeIcons;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public synthetic fun <init> (Ljava/lang/String;Lcom/teya/lemonade/core/LemonadeIcons;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getContentDescription ()Ljava/lang/String;
 	public final fun getIcon ()Lcom/teya/lemonade/core/LemonadeIcons;
 	public final fun getLabel ()Ljava/lang/String;
 }
 
 public final class com/teya/lemonade/core/TabButtonProperties$Companion {
-	public final fun icon (Lcom/teya/lemonade/core/LemonadeIcons;)Lcom/teya/lemonade/core/TabButtonProperties;
+	public final synthetic fun icon (Lcom/teya/lemonade/core/LemonadeIcons;)Lcom/teya/lemonade/core/TabButtonProperties;
+	public final fun icon (Lcom/teya/lemonade/core/LemonadeIcons;Ljava/lang/String;)Lcom/teya/lemonade/core/TabButtonProperties;
+	public static synthetic fun icon$default (Lcom/teya/lemonade/core/TabButtonProperties$Companion;Lcom/teya/lemonade/core/LemonadeIcons;Ljava/lang/String;ILjava/lang/Object;)Lcom/teya/lemonade/core/TabButtonProperties;
 	public final fun label (Ljava/lang/String;)Lcom/teya/lemonade/core/TabButtonProperties;
 	public final fun labelAndIcon (Ljava/lang/String;Lcom/teya/lemonade/core/LemonadeIcons;)Lcom/teya/lemonade/core/TabButtonProperties;
 }

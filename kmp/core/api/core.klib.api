@@ -1332,6 +1332,8 @@ final class com.teya.lemonade.core/LemonadeTextStyle { // com.teya.lemonade.core
 }
 
 final class com.teya.lemonade.core/TabButtonProperties { // com.teya.lemonade.core/TabButtonProperties|null[0]
+    final val contentDescription // com.teya.lemonade.core/TabButtonProperties.contentDescription|{}contentDescription[0]
+        final fun <get-contentDescription>(): kotlin/String? // com.teya.lemonade.core/TabButtonProperties.contentDescription.<get-contentDescription>|<get-contentDescription>(){}[0]
     final val icon // com.teya.lemonade.core/TabButtonProperties.icon|{}icon[0]
         final fun <get-icon>(): com.teya.lemonade.core/LemonadeIcons? // com.teya.lemonade.core/TabButtonProperties.icon.<get-icon>|<get-icon>(){}[0]
     final val label // com.teya.lemonade.core/TabButtonProperties.label|{}label[0]
@@ -1339,6 +1341,7 @@ final class com.teya.lemonade.core/TabButtonProperties { // com.teya.lemonade.co
 
     final object Companion { // com.teya.lemonade.core/TabButtonProperties.Companion|null[0]
         final fun icon(com.teya.lemonade.core/LemonadeIcons): com.teya.lemonade.core/TabButtonProperties // com.teya.lemonade.core/TabButtonProperties.Companion.icon|icon(com.teya.lemonade.core.LemonadeIcons){}[0]
+        final fun icon(com.teya.lemonade.core/LemonadeIcons, kotlin/String? = ...): com.teya.lemonade.core/TabButtonProperties // com.teya.lemonade.core/TabButtonProperties.Companion.icon|icon(com.teya.lemonade.core.LemonadeIcons;kotlin.String?){}[0]
         final fun label(kotlin/String): com.teya.lemonade.core/TabButtonProperties // com.teya.lemonade.core/TabButtonProperties.Companion.label|label(kotlin.String){}[0]
         final fun labelAndIcon(kotlin/String, com.teya.lemonade.core/LemonadeIcons): com.teya.lemonade.core/TabButtonProperties // com.teya.lemonade.core/TabButtonProperties.Companion.labelAndIcon|labelAndIcon(kotlin.String;com.teya.lemonade.core.LemonadeIcons){}[0]
     }
