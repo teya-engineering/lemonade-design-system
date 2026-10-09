@@ -243,31 +243,6 @@ private struct LemonadeSegmentedControlView: View {
     }
 }
 
-// The native control splits its width into equal segments, so the labels must too, even when hugging content.
-@available(iOS 16.0, *)
-private struct EqualWidthHStack: Layout {
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let idealSizes = subviews.map { $0.sizeThatFits(.unspecified) }
-        let widestSegment = idealSizes.map(\.width).max() ?? 0
-        let tallestSegment = idealSizes.map(\.height).max() ?? 0
-        return CGSize(
-            width: proposal.width.flatMap { $0.isFinite ? $0 : nil } ?? widestSegment * CGFloat(subviews.count),
-            height: proposal.height.flatMap { $0.isFinite ? $0 : nil } ?? tallestSegment
-        )
-    }
-
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        guard !subviews.isEmpty else { return }
-        let segmentWidth = bounds.width / CGFloat(subviews.count)
-        for (index, subview) in subviews.enumerated() {
-            subview.place(
-                at: CGPoint(x: bounds.minX + segmentWidth * CGFloat(index), y: bounds.minY),
-                proposal: ProposedViewSize(width: segmentWidth, height: bounds.height)
-            )
-        }
-    }
-}
-
 private struct SegmentPressStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
