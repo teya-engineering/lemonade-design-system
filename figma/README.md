@@ -67,13 +67,19 @@ The `React` label reads `connect-react/` and emits TypeScript, written the same 
 other two: Code Connect v2 dropped the framework-specific parsers, so React is not a native
 parser here either — every label is `parser: "html"` with tagged templates.
 
-Web has no asset templates: an icon reaches a React call site as a `--lmnd-icon` URL
-rather than an enum entry, so there is nothing to map one-to-one.
+Web has no asset templates: an icon reaches a React call site as a name, not an enum entry,
+so there is nothing to map one-to-one. The React `Icon` template reads the swapped
+instance's name instead of running its template, which is what Compose does. Figma names its
+icon components exactly as the package names the files, so no translation is needed — and
+because a name that failed to read would fall back to another valid icon and type-check
+anyway, the checker stubs a distinctive glyph and fails if a template that asks for the
+swapped asset does not emit it.
 
 `npm run check` renders every React template for every combination of its enum and boolean
 properties and hands the snippets to `tsc` against the component sources, so a prop the
 component does not take, an enum spelled the platform's way, or a placeholder that is not a
-valid expression fails offline. Today that is 1,152 combinations for Button. The
+valid expression fails offline. Today that is 1,165 combinations across Button, Icon and
+Spinner. The
 combinations come from the template's own `getEnum` maps, so a vocabulary added in Figma is
 covered without editing the checker.
 

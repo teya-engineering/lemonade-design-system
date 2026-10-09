@@ -743,6 +743,7 @@ For Button:
 | Button's loading ring | `LemonadeUi.Spinner`, tinted with the button's content colour | the same | the same — Spinner, tinted by a rule in `button.css` so markup written by hand gets it too |
 | `expandContents` | slot overloads only; the icon form hardcodes `false` | slot overloads only | every button — there is one component, so no narrower form to attach it to |
 | The fill treatment | `type` | `type` | `emphasis` — `type` on a `<button>` is the DOM's own attribute, and shadowing it would break form submission |
+| Enabling | `enabled: Boolean` | the same | `enabled`, mirroring the platforms rather than the DOM's inverted `disabled`, which is not exposed. The rendered element still carries `disabled`, so native focus and form behaviour are unchanged |
 
 Enum vocabularies are held by a parity check in the mould of
 `scripts/web-text-style-parity-check.main.kts`, which already parses Swift source to
