@@ -153,7 +153,6 @@ private struct LemonadeSegmentedControlView: View {
                 LemonadeNativeSegmentedControl(
                     segmentLabels: properties.map { $0.label ?? $0.icon?.rawValue ?? "" },
                     selectedIndex: clampedSelectedTab,
-                    containerPadding: size.containerPadding,
                     onSelectionChanged: onTabSelected
                 )
 
@@ -175,6 +174,7 @@ private struct LemonadeSegmentedControlView: View {
 
     private var fallbackControl: some View {
         labelsOverlay(drawSelectionIndicator: true)
+            .padding(size.containerPadding)
             .frame(
                 minWidth: size.buttonMinWidth,
                 minHeight: size.buttonMinHeight
@@ -236,7 +236,6 @@ private struct LemonadeSegmentedControlView: View {
                 }
             }
         }
-        .padding(size.containerPadding)
         .animation(.easeInOut(duration: 0.2), value: clampedSelectedTab)
     }
 }
@@ -257,7 +256,6 @@ import UIKit
 private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
     let segmentLabels: [String]
     let selectedIndex: Int
-    let containerPadding: CGFloat
     let onSelectionChanged: (Int) -> Void
 
     func makeCoordinator() -> Coordinator {
@@ -282,7 +280,7 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
 
         control.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(control)
-        insetControlToAlignWithOverlay(control, in: container, storingIn: context.coordinator)
+        pinControlToEdges(control, in: container)
 
         context.coordinator.control = control
         return container
@@ -292,7 +290,6 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
         guard let control = context.coordinator.control else { return }
         context.coordinator.onSelectionChanged = onSelectionChanged
 
-        syncContainerPadding(in: context.coordinator)
         syncSegments(of: control)
         syncSelectedIndex(of: control)
     }
@@ -305,29 +302,13 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
     }
 
     @MainActor
-    private func insetControlToAlignWithOverlay(
-        _ control: UISegmentedControl,
-        in container: UIView,
-        storingIn coordinator: Coordinator
-    ) {
-        let leading = control.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: containerPadding)
-        let trailing = control.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -containerPadding)
-        let top = control.topAnchor.constraint(equalTo: container.topAnchor, constant: containerPadding)
-        let bottom = control.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -containerPadding)
-        NSLayoutConstraint.activate([leading, trailing, top, bottom])
-
-        coordinator.leadingConstraint = leading
-        coordinator.trailingConstraint = trailing
-        coordinator.topConstraint = top
-        coordinator.bottomConstraint = bottom
-    }
-
-    @MainActor
-    private func syncContainerPadding(in coordinator: Coordinator) {
-        coordinator.leadingConstraint?.constant = containerPadding
-        coordinator.trailingConstraint?.constant = -containerPadding
-        coordinator.topConstraint?.constant = containerPadding
-        coordinator.bottomConstraint?.constant = -containerPadding
+    private func pinControlToEdges(_ control: UISegmentedControl, in container: UIView) {
+        NSLayoutConstraint.activate([
+            control.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            control.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            control.topAnchor.constraint(equalTo: container.topAnchor),
+            control.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+        ])
     }
 
     @MainActor
@@ -363,10 +344,6 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
     class Coordinator: NSObject {
         var onSelectionChanged: (Int) -> Void
         weak var control: UISegmentedControl?
-        var leadingConstraint: NSLayoutConstraint?
-        var trailingConstraint: NSLayoutConstraint?
-        var topConstraint: NSLayoutConstraint?
-        var bottomConstraint: NSLayoutConstraint?
 
         init(onSelectionChanged: @escaping (Int) -> Void) {
             self.onSelectionChanged = onSelectionChanged
