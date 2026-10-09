@@ -346,12 +346,17 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
 
     @MainActor
     private func syncSegments(of control: UISegmentedControl) {
-        guard control.numberOfSegments != segmentLabels.count else { return }
-        control.removeAllSegments()
-        for (index, label) in segmentLabels.enumerated() {
-            control.insertSegment(withTitle: label, at: index, animated: false)
+        guard control.numberOfSegments == segmentLabels.count else {
+            control.removeAllSegments()
+            for (index, label) in segmentLabels.enumerated() {
+                control.insertSegment(withTitle: label, at: index, animated: false)
+            }
+            hideNativeTitlesBehindOverlay(on: control)
+            return
         }
-        hideNativeTitlesBehindOverlay(on: control)
+        for (index, label) in segmentLabels.enumerated() where control.titleForSegment(at: index) != label {
+            control.setTitle(label, forSegmentAt: index)
+        }
     }
 
     @MainActor
