@@ -196,7 +196,7 @@ the whole pipeline.
   ".":                  "./dist/index.js",           // tokens, textStyles, iconNames
   "./tokens.css":       "./styles/tokens.css",       // --lmnd-* only, zero selectors
   "./typography.css":   "./styles/typography.css",
-  "./icon.css":         "./styles/icon.css",         // .lmnd-icon mask utility
+  "./components.css":   "./styles/components.css",   // every component's classes
   "./styles.css":       "./styles/styles.css",       // barrel: tokens + typography
   "./lemonade.css":     "./styles/lemonade.css",     // self-contained, pasteable
   "./llms.txt":         "./llms.txt",                // AI token reference
@@ -644,10 +644,18 @@ web/src/components/<name>/
 ```
 
 Not every component needs all six. Text contributes no CSS, because the typography classes
-are already generated; Icon's live in `styles/icon.css`, which shipped as an entrypoint
-before the component existed. `slot/` has neither, being the one piece that renders no
-Lemonade markup at all — it only picks the element, so `llms-components.md` lists it as
-`no-markup` rather than documenting a snippet nobody can copy.
+are already generated. `slot/` has neither CSS nor a snippet, being the one piece that
+renders no Lemonade markup at all — it only picks the element, so `llms-components.md`
+lists it as `no-markup`.
+
+`web-css-bundle` discovers these stylesheets rather than naming them, and concatenates them
+into `styles/components.css`, which is what the package exports and what `styles.css`
+imports. Discovery is the point: a listed input is one a new component can be left out of,
+and the symptom would be a component that renders unstyled only for a consumer who writes
+the classes by hand, with every check green.
+
+The size vocabulary shared by Icon, Spinner and CountryFlag lives in `src/asset-size.ts`,
+mirroring KMP keeping `LemonadeAssetSize` in `core` rather than on one component.
 
 Colocated CSS is committed source, not build output, so the rule that `web/dist/` holds
 everything a build produces still holds. It sits under `web/src/` rather than
@@ -727,6 +735,11 @@ For Button:
 | Icon colour | `tint: Color` | `tint: Color` | none — the mask takes `currentColor`, so the containing element's colour applies |
 | Icon description | `contentDescription: String?` | the same | `contentDescription: string \| null`, required, so the decorative case is spelled rather than defaulted. It is a name for assistive tech, never rendered — visible text beside an icon is the caller's own markup |
 | The asset size enum | `LemonadeAssetSize` | `LemonadeUiIconSize`, per component | `LemonadeAssetSize`, following KMP's shared one — Spinner and CountryFlag take the same sizes |
+| Spinner rendering | a `Canvas` arc, swept 285° and stroked at a tenth of the diameter | the native `ProgressView`, scaled | a conic gradient masked to a ring, following Compose's geometry — SwiftUI's is whatever iOS draws |
+| Spinner sizes | `LemonadeAssetSize` | its own `LemonadeSpinnerSize`, same eight entries | `LemonadeAssetSize`. `kmp/core` also holds a five-entry `LemonadeSpinnerSize` that nothing references; web follows the signature Spinner actually takes |
+| Spinner tint | defaults to content-secondary | the same | the same, set on the base class — so `color` overrides it rather than being inherited |
+| Spinner description | none — the ring carries no semantics | none | `contentDescription: string \| null`, required. KMP draws on a Canvas and the screen around it carries the announcement; the web equivalent is an empty element a screen reader cannot see at all, so a spinner that replaces a page's content would otherwise say nothing. It never renders — a spinner with visible text is this with `null` plus a Text, inside one `role="status"` |
+| Reduced motion | not handled | not handled | the spin slows under `prefers-reduced-motion`. It does not stop: the motion is what says the component is working |
 | `expandContents` | slot overloads only; the icon form hardcodes `false` | slot overloads only | every button — there is one component, so no narrower form to attach it to |
 | The fill treatment | `type` | `type` | `emphasis` — `type` on a `<button>` is the DOM's own attribute, and shadowing it would break form submission |
 

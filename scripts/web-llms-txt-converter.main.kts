@@ -30,12 +30,25 @@ fun componentDocs(): String {
         ?.filter { it.isNotEmpty() }
         .orEmpty()
 
-    val components = File("web/src/components").listFiles()
+    val allComponents = File("web/src/components").listFiles()
         ?.filter { it.isDirectory }
         ?.map { it.name }
-        ?.filterNot { it.lowercase() in noMarkup }
         ?.sorted()
         .orEmpty()
+
+    // A component with a stylesheet has markup a consumer can copy, so it cannot be opted
+    // out: otherwise one word in the header drops a component from the documentation while
+    // the converter still reports success.
+    val wrongfullySkipped = allComponents.filter { name ->
+        name.lowercase() in noMarkup &&
+            File("web/src/components/$name").listFiles().orEmpty().any { it.extension == "css" }
+    }
+    require(wrongfullySkipped.isEmpty()) {
+        "${source.path} lists ${wrongfullySkipped.joinToString(", ")} as no-markup, but it ships a " +
+            "stylesheet — document those classes instead of skipping them"
+    }
+
+    val components = allComponents.filterNot { it.lowercase() in noMarkup }
     val undocumented = components.filter { name ->
         !Regex("""^### ${Regex.escape(name)}\b""", setOf(RegexOption.IGNORE_CASE, RegexOption.MULTILINE))
             .containsMatchIn(text)

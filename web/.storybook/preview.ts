@@ -4,7 +4,9 @@
 import '../dist/fonts.css'
 import '../styles/tokens.css'
 import '../styles/typography.css'
-import '../styles/icon.css'
+// The generated barrel, not the component stylesheets one by one: Storybook then shows
+// what the package ships, and a new component cannot be left out of it.
+import '../styles/components.css'
 import type { Preview } from '@storybook/react'
 import type { ReactElement } from 'react'
 import { createElement } from 'react'

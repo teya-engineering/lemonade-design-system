@@ -55,6 +55,7 @@ data class Vocabulary(
     val kotlinPath: String,
     val swiftName: String,
     val swiftPath: String,
+    val webName: String,
     val webPath: String,
 )
 
@@ -66,7 +67,19 @@ fun main() {
             kotlinPath = "kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeAssetSize.kt",
             swiftName = "LemonadeUiIconSize",
             swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeIcon.swift",
-            webPath = "web/src/components/icon/icon.types.ts",
+            webName = "LemonadeAssetSize",
+            webPath = "web/src/asset-size.ts",
+        ),
+        // Spinner takes the same eight sizes. SwiftUI declares its own copy, so it can
+        // drift from the icon's on that platform alone, which this catches.
+        Vocabulary(
+            name = "LemonadeSpinnerSize",
+            kotlinName = "LemonadeAssetSize",
+            kotlinPath = "kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeAssetSize.kt",
+            swiftName = "LemonadeSpinnerSize",
+            swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeSpinner.swift",
+            webName = "LemonadeAssetSize",
+            webPath = "web/src/asset-size.ts",
         ),
     )
 
@@ -75,7 +88,7 @@ fun main() {
         val name = vocabulary.name
         val kotlin = kotlinEnum(readSource(vocabulary.kotlinPath), vocabulary.kotlinName)
         val swift = swiftEnum(readSource(vocabulary.swiftPath), vocabulary.swiftName)
-        val web = typeScriptUnion(readSource(vocabulary.webPath), name)
+        val web = typeScriptUnion(readSource(vocabulary.webPath), vocabulary.webName)
 
         val platforms = mapOf("kmp" to kotlin, "swiftui" to swift, "web" to web)
         val keys = platforms.mapValues { (_, entries) -> entries.map(::key) }

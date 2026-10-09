@@ -1,6 +1,7 @@
 import type { CSSProperties, ElementType } from 'react'
 import { iconNames } from '../../icons.generated'
 import type { IconName } from '../../icons.generated'
+import { labelling } from '../labelling'
 import { Slot } from '../slot/slot'
 import type { SlotProps } from '../slot/slot.types'
 import { iconClasses } from './icon.classes'
@@ -55,12 +56,10 @@ export function Icon<E extends ElementType = typeof defaultIconElement>({
   return (
     <Slot<ElementType>
       as={defaultIconElement}
+      {...labelling(contentDescription)}
       {...rest}
       className={className ? `${classes} ${className}` : classes}
       style={{ ...(style as CSSProperties), '--lmnd-icon': `url('${basePath}/${use}.svg')` } as CSSProperties}
-      role={contentDescription === null ? undefined : 'img'}
-      aria-label={contentDescription ?? undefined}
-      aria-hidden={contentDescription === null ? true : undefined}
     />
   )
 }

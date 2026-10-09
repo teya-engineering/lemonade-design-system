@@ -36,10 +36,11 @@ The CSS carries the component and React only applies the class names, so the cla
 the API:
 
 ```jsx
-import { Icon, Text } from '@teya/lemonade-mobile-ds/react'
+import { Icon, Spinner, Text } from '@teya/lemonade-mobile-ds/react'
 
 <Text textStyle="bodyMediumRegular" as="p">Account balance</Text>
 <Icon use="heart" size="large" label="Favourite" />
+<Spinner label="Loading your balance" />
 ```
 
 Icons are CSS masks, so they take their colour from `currentColor` and need the SVGs
@@ -64,7 +65,7 @@ the tokens alone pulls in neither.
 | `@teya/lemonade-mobile-ds/react` | The React components. Needs React, which is an optional peer |
 | `@teya/lemonade-mobile-ds/styles.css` | Barrel: tokens + typography |
 | `@teya/lemonade-mobile-ds/fonts.css` | Figtree `@font-face` declarations |
-| `@teya/lemonade-mobile-ds/icon.css` | The `.lmnd-icon` mask utility |
+| `@teya/lemonade-mobile-ds/components.css` | Every component's classes, including the `.lmnd-icon` mask utility |
 | `@teya/lemonade-mobile-ds/lemonade.css` | Everything in one self-contained file, for prototypes |
 | `@teya/lemonade-mobile-ds/llms.txt` | Token reference for AI tools |
 | `@teya/lemonade-mobile-ds/icons/*.svg` | 295 icons, `currentColor` |
