@@ -149,15 +149,17 @@ private struct LemonadeSegmentedControlView: View {
     var body: some View {
         #if canImport(UIKit)
         if #available(iOS 26.0, *) {
-            ZStack {
+            EqualWidthHStack {
+                segments(drawSelectionIndicator: false)
+            }
+            .allowsHitTesting(false)
+            .animation(.easeInOut(duration: 0.2), value: clampedSelectedTab)
+            .background {
                 LemonadeNativeSegmentedControl(
                     segmentLabels: properties.map { $0.label ?? $0.icon?.rawValue ?? "" },
                     selectedIndex: clampedSelectedTab,
                     onSelectionChanged: onTabSelected
                 )
-
-                labelsOverlay(drawSelectionIndicator: false)
-                    .allowsHitTesting(false)
             }
             .frame(
                 minWidth: size.buttonMinWidth,
@@ -173,70 +175,96 @@ private struct LemonadeSegmentedControlView: View {
     }
 
     private var fallbackControl: some View {
-        labelsOverlay(drawSelectionIndicator: true)
-            .padding(size.containerPadding)
-            .frame(
-                minWidth: size.buttonMinWidth,
-                minHeight: size.buttonMinHeight
-            )
-            .frame(height: size.containerHeight)
-            .background(
-                RoundedRectangle(cornerRadius: LemonadeTheme.radius.radiusFull)
-                    .fill(LemonadeTheme.colors.background.bgElevated)
-            )
+        HStack(spacing: 0) {
+            segments(drawSelectionIndicator: true)
+        }
+        .animation(.easeInOut(duration: 0.2), value: clampedSelectedTab)
+        .padding(size.containerPadding)
+        .frame(
+            minWidth: size.buttonMinWidth,
+            minHeight: size.buttonMinHeight
+        )
+        .frame(height: size.containerHeight)
+        .background(
+            RoundedRectangle(cornerRadius: LemonadeTheme.radius.radiusFull)
+                .fill(LemonadeTheme.colors.background.bgElevated)
+        )
     }
 
-    private func labelsOverlay(drawSelectionIndicator: Bool) -> some View {
-        HStack(spacing: 0) {
-            ForEach(properties.indices, id: \.self) { index in
-                let property = properties[index]
-                let isSelected = index == clampedSelectedTab
-                let tintColor = isSelected
-                    ? LemonadeTheme.colors.content.contentPrimary
-                    : LemonadeTheme.colors.content.contentSecondary
+    @ViewBuilder
+    private func segments(drawSelectionIndicator: Bool) -> some View {
+        ForEach(properties.indices, id: \.self) { index in
+            let property = properties[index]
+            let isSelected = index == clampedSelectedTab
+            let tintColor = isSelected
+                ? LemonadeTheme.colors.content.contentPrimary
+                : LemonadeTheme.colors.content.contentSecondary
 
-                Button {
-                    onTabSelected(index)
-                } label: {
-                    HStack(spacing: size.buttonContentGap) {
-                        if let icon = property.icon {
-                            LemonadeUi.Icon(
-                                icon: icon,
-                                contentDescription: property.label,
-                                size: .small,
-                                tint: tintColor
-                            )
-                        }
-
-                        if let label = property.label {
-                            LemonadeUi.Text(
-                                label,
-                                textStyle: size.textStyle,
-                                textAlign: .center,
-                                color: tintColor,
-                                maxLines: 1
-                            )
-                        }
+            Button {
+                onTabSelected(index)
+            } label: {
+                HStack(spacing: size.buttonContentGap) {
+                    if let icon = property.icon {
+                        LemonadeUi.Icon(
+                            icon: icon,
+                            contentDescription: property.label,
+                            size: .small,
+                            tint: tintColor
+                        )
                     }
-                    .padding(.horizontal, size.buttonHorizontalPadding)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .contentShape(Rectangle())
+
+                    if let label = property.label {
+                        LemonadeUi.Text(
+                            label,
+                            textStyle: size.textStyle,
+                            textAlign: .center,
+                            color: tintColor,
+                            maxLines: 1
+                        )
+                    }
                 }
-                .buttonStyle(SegmentPressStyle())
-                .frame(maxWidth: .infinity)
-                .accessibilityLabel(property.label ?? property.icon?.rawValue ?? "")
-                .accessibilityAddTraits(isSelected ? .isSelected : [])
-                .background {
-                    if drawSelectionIndicator && isSelected {
-                        RoundedRectangle(cornerRadius: LemonadeTheme.radius.radiusFull)
-                            .fill(LemonadeTheme.colors.background.bgDefault)
-                            .lemonadeShadow(.xsmall)
-                            .matchedGeometryEffect(id: "indicator", in: indicatorNamespace)
-                    }
+                .padding(.horizontal, size.buttonHorizontalPadding)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(SegmentPressStyle())
+            .frame(maxWidth: .infinity)
+            .accessibilityLabel(property.label ?? property.icon?.rawValue ?? "")
+            .accessibilityAddTraits(isSelected ? .isSelected : [])
+            .background {
+                if drawSelectionIndicator && isSelected {
+                    RoundedRectangle(cornerRadius: LemonadeTheme.radius.radiusFull)
+                        .fill(LemonadeTheme.colors.background.bgDefault)
+                        .lemonadeShadow(.xsmall)
+                        .matchedGeometryEffect(id: "indicator", in: indicatorNamespace)
                 }
             }
         }
-        .animation(.easeInOut(duration: 0.2), value: clampedSelectedTab)
+    }
+}
+
+// The native control splits its width into equal segments, so the labels must too, even when hugging content.
+@available(iOS 16.0, *)
+private struct EqualWidthHStack: Layout {
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let idealSizes = subviews.map { $0.sizeThatFits(.unspecified) }
+        let widestSegment = idealSizes.map(\.width).max() ?? 0
+        let tallestSegment = idealSizes.map(\.height).max() ?? 0
+        return CGSize(
+            width: proposal.width.flatMap { $0.isFinite ? $0 : nil } ?? widestSegment * CGFloat(subviews.count),
+            height: proposal.height.flatMap { $0.isFinite ? $0 : nil } ?? tallestSegment
+        )
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        guard !subviews.isEmpty else { return }
+        let segmentWidth = bounds.width / CGFloat(subviews.count)
+        for (index, subview) in subviews.enumerated() {
+            subview.place(
+                at: CGPoint(x: bounds.minX + segmentWidth * CGFloat(index), y: bounds.minY),
+                proposal: ProposedViewSize(width: segmentWidth, height: bounds.height)
+            )
+        }
     }
 }
 
@@ -329,16 +357,10 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
         }
     }
 
-    // Honor finite proposals (parent VStack width) so non-fixed-size callers fill.
-    // Fall back to intrinsic for nil (`.fixedSize()`) and `.infinity` probes,
-    // so `.fixedSize()` callers hug content instead of collapsing to `buttonMinWidth`.
+    // The labels own the size; as their background, the native control fills whatever they take.
     @available(iOS 16.0, *)
     func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIView, context: Context) -> CGSize? {
-        let intrinsic = uiView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-        return CGSize(
-            width: proposal.width.flatMap { $0.isFinite ? $0 : nil } ?? intrinsic.width,
-            height: proposal.height.flatMap { $0.isFinite ? $0 : nil } ?? intrinsic.height
-        )
+        proposal.replacingUnspecifiedDimensions()
     }
 
     class Coordinator: NSObject {
