@@ -33,7 +33,8 @@ public class TabButtonProperties private constructor(
         /**
          * Creates a tab that shows only [icon].
          *
-         * @param contentDescription the name screen readers announce for the tab
+         * @param contentDescription **localized** name screen readers announce for the tab. When null, the tab
+         * has no accessible name, so pass one unless the tab is purely decorative.
          */
         public fun icon(
             icon: LemonadeIcons,
