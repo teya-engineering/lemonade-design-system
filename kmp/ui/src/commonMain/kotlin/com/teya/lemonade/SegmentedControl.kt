@@ -64,7 +64,8 @@ import com.teya.lemonade.core.TabButtonProperties
  * )
  * ```
  *
- * Give icon-only tabs a `contentDescription` so screen readers have a name to announce:
+ * Give icon-only tabs a **localized** `contentDescription` through [TabButtonProperties.Companion.icon], so screen
+ * readers have a name to announce:
  * ```kotlin
  * TabButtonProperties.icon(icon = LemonadeIcons.List, contentDescription = "List")
  * ```
