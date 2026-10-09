@@ -1,10 +1,8 @@
 import SwiftUI
 
-/// Lays its children out in equal-width columns that together fill the proposed width.
-///
-/// With no proposed width (`.fixedSize()`), it hugs to the widest child times the child count,
-/// rounded up so pixel rounding can't truncate the widest child. An infinite proposal is passed
-/// through, so the layout stays as flexible as an `HStack` of `.frame(maxWidth: .infinity)` children.
+/// Equal-width columns. The hugged width rounds up so pixel rounding can't truncate the widest
+/// child, and a fully specified proposal (including infinity) passes straight through so the
+/// layout stays as flexible as an `HStack` of `.frame(maxWidth: .infinity)` children.
 @available(iOS 16, macOS 13, *)
 struct EqualWidthHStack: Layout {
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
