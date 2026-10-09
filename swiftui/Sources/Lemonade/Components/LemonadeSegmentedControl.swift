@@ -174,6 +174,7 @@ private struct LemonadeSegmentedControlView: View {
 
     private var fallbackControl: some View {
         labelsOverlay(drawSelectionIndicator: true)
+            .padding(size.containerPadding)
             .frame(
                 minWidth: size.buttonMinWidth,
                 minHeight: size.buttonMinHeight
@@ -235,7 +236,6 @@ private struct LemonadeSegmentedControlView: View {
                 }
             }
         }
-        .padding(size.containerPadding)
         .animation(.easeInOut(duration: 0.2), value: clampedSelectedTab)
     }
 }
