@@ -28,11 +28,19 @@ describe('package manifest', () => {
   })
 
   it('declares no runtime dependencies', () => {
-    // v0 is framework-agnostic on purpose: a Vue app, a plain HTML prototype or an
-    // existing React app must all be able to consume it. Anything that appears here
-    // becomes a requirement for every one of them.
+    // A Vue app, a plain HTML prototype or an existing React app must all be able to
+    // consume the tokens. Anything here becomes a requirement for every one of them.
     expect(pkg).not.toHaveProperty('dependencies')
-    expect(pkg).not.toHaveProperty('peerDependencies')
+  })
+
+  it('takes React only as an optional peer', () => {
+    // React components need the host app's React: two copies in one page break the
+    // hook dispatcher. A peer says "use yours"; optional keeps the tokens installable
+    // without React at all. This list is also what tsup externalises, so a name added
+    // here without a matching `external` entry gets bundled into dist instead.
+    expect(Object.keys(pkg.peerDependencies)).toEqual(['react', 'react-dom'])
+    expect(pkg.peerDependenciesMeta.react).toEqual({ optional: true })
+    expect(pkg.peerDependenciesMeta['react-dom']).toEqual({ optional: true })
   })
 
   it('pins the Node floor that CI reproduces', () => {

@@ -60,8 +60,15 @@ Those scripts need **Kotlin 2.3.20** (newer crashes `.main.kts`), and `const val
 at a script's top level — use `val`. A new converter is not done until it runs in both
 `run-converters.sh` and `token_drift.yml`; wired into neither, its output goes stale with CI green.
 
-`@teya/lemonade-mobile-ds` declares no `dependencies` and no `peerDependencies`, and it is verified
-with `npm ci` against the committed lockfile, never a regenerated one.
+`@teya/lemonade-mobile-ds` declares no `dependencies`, and React and `react-dom` only as
+**optional** peers — the tokens have to install into a Vue app or a plain HTML page. Anything React
+must be reachable only through the `./react` subpath, and `tsup` must externalise it, or a consumer
+gets a second copy of React and a broken hook dispatcher. Verify with `npm ci` against the committed
+lockfile, never a regenerated one.
+
+Component class names (`lmnd-button--primary`) are public API: a consumer that never loads the
+JavaScript writes them by hand. A class the component emits needs a rule behind it, which
+`button.test.tsx` asserts against the stylesheet.
 
 Run `scripts/web-check.sh` before opening a web PR, and review the diff with the **web-review**
 skill (`.claude/skills/web-review/SKILL.md`).

@@ -8,3 +8,4 @@ export {
   brandLogoNames,
 } from './icons.generated'
 export type { IconName, FlagName, BrandLogoName } from './icons.generated'
+export type { LemonadeTextStyle } from './components/text/text.types'
