@@ -5,7 +5,15 @@ package com.teya.lemonade.core
 public class TabButtonProperties private constructor(
     public val label: String?,
     public val icon: LemonadeIcons?,
+    public val contentDescription: String?,
 ) {
+    // The companion's calls compile to a public synthetic accessor for this signature, which the API baseline locks.
+    private constructor(label: String?, icon: LemonadeIcons?) : this(
+        label = label,
+        icon = icon,
+        contentDescription = null,
+    )
+
     public companion object {
         public fun label(label: String): TabButtonProperties =
             TabButtonProperties(
@@ -22,11 +30,27 @@ public class TabButtonProperties private constructor(
                 icon = icon,
             )
 
-        public fun icon(icon: LemonadeIcons): TabButtonProperties =
+        /**
+         * Creates a tab that shows only [icon].
+         *
+         * @param contentDescription the name screen readers announce for the tab
+         */
+        public fun icon(
+            icon: LemonadeIcons,
+            contentDescription: String? = null,
+        ): TabButtonProperties =
             TabButtonProperties(
                 label = null,
                 icon = icon,
+                contentDescription = contentDescription,
             )
+
+        @Deprecated(
+            message = "Use the overload with a contentDescription parameter.",
+            replaceWith = ReplaceWith("icon(icon, contentDescription = null)"),
+            level = DeprecationLevel.HIDDEN,
+        )
+        public fun icon(icon: LemonadeIcons): TabButtonProperties = icon(icon = icon, contentDescription = null)
     }
 }
 

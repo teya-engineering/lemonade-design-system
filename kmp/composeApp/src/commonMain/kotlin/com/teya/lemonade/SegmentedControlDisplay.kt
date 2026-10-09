@@ -142,8 +142,8 @@ internal fun SegmentedControlDisplay() {
                 size = LemonadeSegmentedControlSize.Small,
                 modifier = Modifier.width(IntrinsicSize.Min),
                 properties = listOf(
-                    TabButtonProperties.icon(icon = LemonadeIcons.List),
-                    TabButtonProperties.icon(icon = LemonadeIcons.StackThree),
+                    TabButtonProperties.icon(icon = LemonadeIcons.List, contentDescription = "List"),
+                    TabButtonProperties.icon(icon = LemonadeIcons.StackThree, contentDescription = "Grid"),
                 ),
             )
         }
