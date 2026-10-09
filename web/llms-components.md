@@ -2,13 +2,15 @@
 The hand-written half of llms.txt. Component markup is not token data, so
 web-llms-txt-converter appends this file verbatim under "## Components" instead of
 deriving it. Every directory under web/src/components/ needs a "### " heading here, or
-the converter fails.
+the converter fails. A component that renders no markup of its own is listed instead:
+
+no-markup: slot
 -->
 
 Every component is CSS plus markup. React is optional: the classes below are the API, so
 any framework — or none — produces the same result.
 
-With React: `import { Text } from '@teya/lemonade-mobile-ds/react'`. Without React, write
+With React: `import { Text, Icon } from '@teya/lemonade-mobile-ds/react'`. Without React, write
 the markup and apply the same classes; the `textStyles` manifest on the root export maps
 every style name to its class.
 
@@ -26,3 +28,27 @@ every style name to its class.
   or a link. Its style prop is `textStyle`; `style` stays the DOM's own attribute.
 - `lmnd-text-body-xsmall-overline` uppercases its text through CSS, so write the label in
   normal case and let the class transform it.
+
+### Icon
+
+```html
+<span
+  class="lmnd-icon lmnd-icon--medium"
+  style="--lmnd-icon: url('/assets/icons/heart.svg')"
+  role="img"
+  aria-label="Favourite"
+></span>
+```
+
+- The icon is a CSS mask, not an `<img>`, so it takes its colour from `currentColor` — set
+  `color` on the element or anything containing it.
+- Size: `lmnd-icon--x-small` through `lmnd-icon--xxxx-large`, matching the platforms'
+  `LemonadeAssetSize`. The base class is already medium.
+- The URL points at the package's `dist/assets/icons/`. Serve that directory and pass the
+  name; the React prop for it is `basePath`, defaulting to `/assets/icons`.
+- Decorative icons take `aria-hidden="true"` and no `role`. An icon that carries meaning
+  takes `role="img"` and an `aria-label`. The React prop is `contentDescription`, named as
+  the platforms name it, and `contentDescription={null}` is the decorative case — it is
+  required, so the choice is always made. It never renders; visible text beside an icon is
+  your own markup.
+- `llms.txt` lists every icon name under "Icons".
