@@ -9,11 +9,19 @@ public struct LemonadeTabButtonProperties: Identifiable, Hashable {
     public let label: String?
     /// Optional icon to display before the label.
     public let icon: LemonadeIcon?
+    /// The name VoiceOver reads for an icon-only tab.
+    public let contentDescription: String?
 
-    private init(id: String? = nil, label: String?, icon: LemonadeIcon?) {
+    private init(
+        id: String? = nil,
+        label: String?,
+        icon: LemonadeIcon?,
+        contentDescription: String? = nil
+    ) {
         self.id = id ?? UUID().uuidString
         self.label = label
         self.icon = icon
+        self.contentDescription = contentDescription
     }
 
     /// Creates a tab with a text label.
@@ -27,8 +35,16 @@ public struct LemonadeTabButtonProperties: Identifiable, Hashable {
     }
 
     /// Creates a tab with only an icon.
-    public static func icon(_ icon: LemonadeIcon) -> Self {
-        Self(label: nil, icon: icon)
+    ///
+    /// - Parameters:
+    ///   - icon: The icon to display.
+    ///   - contentDescription: The name VoiceOver reads for the tab. When nil, the icon's raw name is read.
+    public static func icon(_ icon: LemonadeIcon, contentDescription: String? = nil) -> Self {
+        Self(label: nil, icon: icon, contentDescription: contentDescription)
+    }
+
+    var accessibilityName: String {
+        label ?? contentDescription ?? icon?.rawValue ?? ""
     }
 }
 
@@ -110,6 +126,19 @@ public extension LemonadeUi {
     /// )
     /// ```
     ///
+    /// Give icon-only tabs a `contentDescription` so VoiceOver has a name to read:
+    /// ```swift
+    /// LemonadeUi.SegmentedControl(
+    ///     properties: [
+    ///         .icon(.list, contentDescription: "List"),
+    ///         .icon(.stackThree, contentDescription: "Grid"),
+    ///     ],
+    ///     selectedTab: selectedTabIndex,
+    ///     size: .small,
+    ///     onTabSelected: { tabIndex in /* ... */ }
+    /// )
+    /// ```
+    ///
     /// - Parameters:
     ///   - properties: A list of `LemonadeTabButtonProperties` that represent the tab buttons' information.
     ///   - selectedTab: Int that indicates what is the index of the selected tab.
@@ -157,7 +186,7 @@ private struct LemonadeSegmentedControlView: View {
             .animation(.easeInOut(duration: 0.2), value: clampedSelectedTab)
             .background {
                 LemonadeNativeSegmentedControl(
-                    segmentLabels: properties.map { $0.label ?? $0.icon?.rawValue ?? "" },
+                    segmentLabels: properties.map(\.accessibilityName),
                     selectedIndex: clampedSelectedTab,
                     onSelectionChanged: onTabSelected
                 )
@@ -230,7 +259,7 @@ private struct LemonadeSegmentedControlView: View {
             }
             .buttonStyle(SegmentPressStyle())
             .frame(maxWidth: .infinity)
-            .accessibilityLabel(property.label ?? property.icon?.rawValue ?? "")
+            .accessibilityLabel(property.accessibilityName)
             .accessibilityAddTraits(isSelected ? .isSelected : [])
             .background {
                 if drawSelectionIndicator && isSelected {
@@ -393,9 +422,9 @@ struct LemonadeSegmentedControl_Previews: PreviewProvider {
 
             LemonadeUi.SegmentedControl(
                 properties: [
-                    .icon(.heart),
-                    .icon(.star),
-                    .icon(.gear),
+                    .icon(.heart, contentDescription: "Favorites"),
+                    .icon(.star, contentDescription: "Starred"),
+                    .icon(.gear, contentDescription: "Settings"),
                 ],
                 selectedTab: 0,
                 size: .small,
