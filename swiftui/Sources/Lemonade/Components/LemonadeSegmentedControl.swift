@@ -152,11 +152,11 @@ private struct LemonadeSegmentedControlView: View {
             EqualWidthHStack {
                 segments(drawSelectionIndicator: false)
             }
-            .allowsHitTesting(false)
-            .animation(.easeInOut(duration: 0.2), value: clampedSelectedTab)
+            .hidden()
             .background {
                 LemonadeNativeSegmentedControl(
-                    segmentLabels: properties.map { $0.label ?? $0.icon?.rawValue ?? "" },
+                    properties: properties,
+                    size: size,
                     selectedIndex: clampedSelectedTab,
                     onSelectionChanged: onTabSelected
                 )
@@ -203,29 +203,10 @@ private struct LemonadeSegmentedControlView: View {
             Button {
                 onTabSelected(index)
             } label: {
-                HStack(spacing: size.buttonContentGap) {
-                    if let icon = property.icon {
-                        LemonadeUi.Icon(
-                            icon: icon,
-                            contentDescription: property.label,
-                            size: .small,
-                            tint: tintColor
-                        )
-                    }
-
-                    if let label = property.label {
-                        LemonadeUi.Text(
-                            label,
-                            textStyle: size.textStyle,
-                            textAlign: .center,
-                            color: tintColor,
-                            maxLines: 1
-                        )
-                    }
-                }
-                .padding(.horizontal, size.buttonHorizontalPadding)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .contentShape(Rectangle())
+                SegmentContent(property: property, size: size, tint: tintColor)
+                    .padding(.horizontal, size.buttonHorizontalPadding)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .contentShape(Rectangle())
             }
             .buttonStyle(SegmentPressStyle())
             .frame(maxWidth: .infinity)
@@ -238,6 +219,35 @@ private struct LemonadeSegmentedControlView: View {
                         .lemonadeShadow(.xsmall)
                         .matchedGeometryEffect(id: "indicator", in: indicatorNamespace)
                 }
+            }
+        }
+    }
+}
+
+private struct SegmentContent: View {
+    let property: LemonadeTabButtonProperties
+    let size: LemonadeSegmentedControlSize
+    let tint: Color
+
+    var body: some View {
+        HStack(spacing: size.buttonContentGap) {
+            if let icon = property.icon {
+                LemonadeUi.Icon(
+                    icon: icon,
+                    contentDescription: property.label,
+                    size: .small,
+                    tint: tint
+                )
+            }
+
+            if let label = property.label {
+                LemonadeUi.Text(
+                    label,
+                    textStyle: size.textStyle,
+                    textAlign: .center,
+                    color: tint,
+                    maxLines: 1
+                )
             }
         }
     }
@@ -256,8 +266,10 @@ private struct SegmentPressStyle: ButtonStyle {
 #if canImport(UIKit)
 import UIKit
 
+@available(iOS 26.0, *)
 private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
-    let segmentLabels: [String]
+    let properties: [LemonadeTabButtonProperties]
+    let size: LemonadeSegmentedControlSize
     let selectedIndex: Int
     let onSelectionChanged: (Int) -> Void
 
@@ -269,12 +281,9 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
         let container = UIView()
         container.backgroundColor = .clear
 
-        let control = UISegmentedControl(items: segmentLabels)
-        control.selectedSegmentIndex = min(selectedIndex, segmentLabels.count - 1)
+        let control = UISegmentedControl()
         control.backgroundColor = .clear
         control.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        hideNativeTitlesBehindOverlay(on: control)
-
         control.addTarget(
             context.coordinator,
             action: #selector(Coordinator.segmentChanged(_:)),
@@ -293,15 +302,53 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
         guard let control = context.coordinator.control else { return }
         context.coordinator.onSelectionChanged = onSelectionChanged
 
-        syncSegments(of: control)
+        syncTint(of: control)
+        syncSegments(of: control, context: context)
         syncSelectedIndex(of: control)
     }
 
+    // Template images take the title foreground colour, so one image per segment serves both states.
     @MainActor
-    private func hideNativeTitlesBehindOverlay(on control: UISegmentedControl) {
-        let clearAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.clear]
-        control.setTitleTextAttributes(clearAttributes, for: .normal)
-        control.setTitleTextAttributes(clearAttributes, for: .selected)
+    private func syncTint(of control: UISegmentedControl) {
+        control.setTitleTextAttributes(
+            [.foregroundColor: UIColor(LemonadeTheme.colors.content.contentSecondary)],
+            for: .normal
+        )
+        control.setTitleTextAttributes(
+            [.foregroundColor: UIColor(LemonadeTheme.colors.content.contentPrimary)],
+            for: .selected
+        )
+    }
+
+    // The content lives inside the native segments, not on top of them, so the glass thumb can refract it.
+    @MainActor
+    private func syncSegments(of control: UISegmentedControl, context: Context) {
+        let key = SegmentsKey(
+            labels: properties.map(\.label),
+            icons: properties.map(\.icon),
+            size: size,
+            displayScale: context.environment.displayScale,
+            dynamicTypeSize: context.environment.dynamicTypeSize
+        )
+        guard context.coordinator.segmentsKey != key else { return }
+        context.coordinator.segmentsKey = key
+
+        control.removeAllSegments()
+        for (index, property) in properties.enumerated() {
+            control.insertSegment(with: renderImage(for: property, key: key), at: index, animated: false)
+        }
+    }
+
+    @MainActor
+    private func renderImage(for property: LemonadeTabButtonProperties, key: SegmentsKey) -> UIImage? {
+        let renderer = ImageRenderer(
+            content: SegmentContent(property: property, size: size, tint: .black)
+                .environment(\.dynamicTypeSize, key.dynamicTypeSize)
+        )
+        renderer.scale = key.displayScale
+        let image = renderer.uiImage?.withRenderingMode(.alwaysTemplate)
+        image?.accessibilityLabel = property.label ?? property.icon?.rawValue
+        return image
     }
 
     @MainActor
@@ -315,32 +362,30 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
     }
 
     @MainActor
-    private func syncSegments(of control: UISegmentedControl) {
-        guard control.numberOfSegments != segmentLabels.count else { return }
-        control.removeAllSegments()
-        for (index, label) in segmentLabels.enumerated() {
-            control.insertSegment(withTitle: label, at: index, animated: false)
-        }
-        hideNativeTitlesBehindOverlay(on: control)
-    }
-
-    @MainActor
     private func syncSelectedIndex(of control: UISegmentedControl) {
-        let clampedIndex = min(selectedIndex, segmentLabels.count - 1)
+        let clampedIndex = min(selectedIndex, properties.count - 1)
         if control.selectedSegmentIndex != clampedIndex {
             control.selectedSegmentIndex = clampedIndex
         }
     }
 
     // The labels own the size; as their background, the native control fills whatever they take.
-    @available(iOS 16.0, *)
     func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIView, context: Context) -> CGSize? {
         proposal.replacingUnspecifiedDimensions()
+    }
+
+    struct SegmentsKey: Equatable {
+        let labels: [String?]
+        let icons: [LemonadeIcon?]
+        let size: LemonadeSegmentedControlSize
+        let displayScale: CGFloat
+        let dynamicTypeSize: DynamicTypeSize
     }
 
     class Coordinator: NSObject {
         var onSelectionChanged: (Int) -> Void
         weak var control: UISegmentedControl?
+        var segmentsKey: SegmentsKey?
 
         init(onSelectionChanged: @escaping (Int) -> Void) {
             self.onSelectionChanged = onSelectionChanged
