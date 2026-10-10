@@ -279,7 +279,7 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
 
     private var contentWidth: CGFloat {
         guard !properties.isEmpty else { return 0 }
-        return max(0, (width / CGFloat(properties.count) - size.buttonHorizontalPadding * 2).rounded(.down))
+        return max(0, (width / CGFloat(properties.count) - size.buttonHorizontalPadding * 2).rounded(.up))
     }
 
     func makeCoordinator() -> Coordinator {
