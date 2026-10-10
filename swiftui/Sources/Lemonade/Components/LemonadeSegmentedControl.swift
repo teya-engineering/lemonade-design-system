@@ -188,12 +188,15 @@ private struct LemonadeSegmentedControlView: View {
             }
             .hidden()
             .background {
-                LemonadeNativeSegmentedControl(
-                    properties: properties,
-                    size: size,
-                    selectedIndex: clampedSelectedTab,
-                    onSelectionChanged: onTabSelected
-                )
+                GeometryReader { proxy in
+                    LemonadeNativeSegmentedControl(
+                        properties: properties,
+                        size: size,
+                        width: proxy.size.width,
+                        selectedIndex: clampedSelectedTab,
+                        onSelectionChanged: onTabSelected
+                    )
+                }
             }
             .frame(
                 minWidth: size.buttonMinWidth,
@@ -304,8 +307,14 @@ import UIKit
 private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
     let properties: [LemonadeTabButtonProperties]
     let size: LemonadeSegmentedControlSize
+    let width: CGFloat
     let selectedIndex: Int
     let onSelectionChanged: (Int) -> Void
+
+    private var contentWidth: CGFloat {
+        guard !properties.isEmpty else { return 0 }
+        return max(0, (width / CGFloat(properties.count) - size.buttonHorizontalPadding * 2).rounded(.down))
+    }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(onSelectionChanged: onSelectionChanged)
@@ -362,8 +371,11 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
             contentDescriptions: properties.map(\.contentDescription),
             icons: properties.map(\.icon),
             size: size,
+            contentWidth: contentWidth,
             displayScale: context.environment.displayScale,
-            dynamicTypeSize: context.environment.dynamicTypeSize
+            dynamicTypeSize: context.environment.dynamicTypeSize,
+            layoutDirection: context.environment.layoutDirection,
+            legibilityWeight: context.environment.legibilityWeight
         )
         guard context.coordinator.segmentsKey != key else { return }
         context.coordinator.segmentsKey = key
@@ -379,8 +391,12 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
         let renderer = ImageRenderer(
             content: SegmentContent(property: property, size: size, tint: .black)
                 .environment(\.dynamicTypeSize, key.dynamicTypeSize)
+                .environment(\.layoutDirection, key.layoutDirection)
+                .environment(\.legibilityWeight, key.legibilityWeight)
         )
         renderer.scale = key.displayScale
+        // Without a proposed width the label renders untruncated, and UIKit squashes an image wider than its segment.
+        renderer.proposedSize = ProposedViewSize(width: key.contentWidth, height: nil)
         let image = renderer.uiImage?.withRenderingMode(.alwaysTemplate)
         image?.accessibilityLabel = property.accessibilityName
         return image
@@ -414,8 +430,11 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
         let contentDescriptions: [String?]
         let icons: [LemonadeIcon?]
         let size: LemonadeSegmentedControlSize
+        let contentWidth: CGFloat
         let displayScale: CGFloat
         let dynamicTypeSize: DynamicTypeSize
+        let layoutDirection: LayoutDirection
+        let legibilityWeight: LegibilityWeight?
     }
 
     class Coordinator: NSObject {
