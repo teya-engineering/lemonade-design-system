@@ -9,13 +9,9 @@ export const defaultSpinnerElement = 'span'
 
 export type SpinnerOwnProps = SpinnerAppearance & {
   /**
-   * What a screen reader should say, or `null` when something adjacent already says it —
-   * a button whose own label reads "Saving…". Required, like Icon's, because whether the
-   * spinner is the announcement or a decoration of one is never the component's call.
-   *
-   * It is never rendered. A spinner with visible text beside it is two things: this, with
-   * `null`, and a Text, inside one `role="status"` — which is better than a name only a
-   * screen reader gets.
+   * What a screen reader should say, or `null` when something adjacent already says it.
+   * Never rendered: for visible text, pair a `null` spinner with a Text inside one
+   * `role="status"`.
    */
   contentDescription: string | null
 }
