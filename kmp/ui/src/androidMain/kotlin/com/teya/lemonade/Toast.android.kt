@@ -67,6 +67,20 @@ private val SHADOW_ELEVATION = 8.dp
 internal actual fun PlatformToastHost(
     modifier: Modifier,
     toastState: LemonadeToastState,
+    content: @Composable () -> Unit,
+) {
+    WindowToastHost(
+        modifier = modifier,
+        toastState = toastState,
+        hideNavigationBar = false,
+        content = content,
+    )
+}
+
+@Composable
+private fun WindowToastHost(
+    modifier: Modifier,
+    toastState: LemonadeToastState,
     hideNavigationBar: Boolean,
     content: @Composable () -> Unit,
 ) {
@@ -102,11 +116,14 @@ public fun LemonadeToastHost(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    CoreToastHost(
-        modifier = modifier,
-        hideNavigationBar = hideNavigationBar,
-        content = content,
-    )
+    ToastStateHost { toastState ->
+        WindowToastHost(
+            modifier = modifier,
+            toastState = toastState,
+            hideNavigationBar = hideNavigationBar,
+            content = content,
+        )
+    }
 }
 
 /**
@@ -239,6 +256,17 @@ private fun OffsetToastWindow(
         onDispose { }
     }
 }
+
+/**
+ * How far the toast's window sits above the bottom of the screen: the toast's own bottom margin, plus the
+ * navigation bar's inset unless [hideNavigationBar]. A hidden bar has no inset to clear, so
+ * [navigationBarInsetPx] is never read then, and the window's offset cannot follow the bar while it hides.
+ */
+internal fun toastWindowBottomOffsetPx(
+    bottomMarginPx: Int,
+    hideNavigationBar: Boolean,
+    navigationBarInsetPx: () -> Int,
+): Int = if (hideNavigationBar) bottomMarginPx else bottomMarginPx + navigationBarInsetPx()
 
 /**
  * Shows [content] in a window built and laid out as a toast before it is shown.
