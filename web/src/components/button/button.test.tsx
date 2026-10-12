@@ -135,6 +135,13 @@ describe('Button', () => {
       expect(screen.getByTestId('button')).toHaveAttribute(attribute, value)
     })
 
+    // Forwarding `aria-label={undefined}` is how a wrapper passes "no opinion"; it must
+    // not blank the name the spinner-only button depends on.
+    it('keeps its loading name when the caller forwards an explicit undefined', () => {
+      render(<Button label="Saving" loading aria-label={undefined} />)
+      expect(screen.getByRole('button', { name: 'Saving' })).toBeTruthy()
+    })
+
     it('blocks clicks, matching enabled && !loading on the platforms', async () => {
       const onClick = vi.fn()
       render(<Button label="Saving" loading onClick={onClick} />)
@@ -215,8 +222,7 @@ describe('the class contract', () => {
   const elements = ['lmnd-button__label']
 
   it('emits the set of classes this suite checks', () => {
-    // Guards the loops above: a vocabulary entry added to the unions without being added
-    // here would leave its class unchecked.
+    // Guards the loops above: a class the builder can emit that nobody checks.
     expect([...emitted].sort()).toEqual([
       'lmnd-button',
       'lmnd-button--critical',
