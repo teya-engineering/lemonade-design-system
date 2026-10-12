@@ -86,6 +86,7 @@ export const Every: StoryObj<typeof Icon> = {
       <div style={{ display: 'grid', gap: 'var(--lmnd-spacing-400)' }}>
         <input
           type="search"
+          aria-label={`Search ${iconNames.length} icons`}
           placeholder={`Search ${iconNames.length} icons…`}
           value={query}
           onChange={(event) => setQuery(event.target.value)}

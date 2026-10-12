@@ -16,6 +16,12 @@ export type SlotAsProps<E extends ElementType = ElementType> = {
 export type SlotOwnProps<E extends ElementType, OmitIntrinsic extends string = ''> = SlotAsProps<E> &
   Omit<ComponentPropsWithoutRef<E>, keyof SlotAsProps<E> | OmitIntrinsic>
 
-/** A component's own props, plus the element's. `OmitIntrinsic` drops ones it owns. */
+/**
+ * A component's own props, plus the element's. `OmitIntrinsic` drops ones it owns.
+ *
+ * The component's keys are removed from the element's rather than intersected with them:
+ * a component `size` of `'small' | 'large'` against an `<input>`'s numeric one would
+ * otherwise resolve to `never`, making the prop impossible to pass.
+ */
 export type SlotProps<P extends object, E extends ElementType = ElementType, OmitIntrinsic extends string = ''> = P &
-  SlotOwnProps<E, OmitIntrinsic>
+  SlotOwnProps<E, OmitIntrinsic | Extract<keyof P, string>>

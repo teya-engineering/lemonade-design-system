@@ -66,6 +66,30 @@ describe('Icon', () => {
     })
   })
 
+  // The polymorphic API exists so an icon can be a link or a button. Those elements say
+  // what they are; overwriting that with role="img" would hide the interaction.
+  describe('an element the caller chose', () => {
+    it('keeps its own role and takes only the name', () => {
+      render(
+        <Icon as="a" href="/favourites" use="heart" contentDescription="Favourites" data-testid="icon" />,
+      )
+      const node = screen.getByTestId('icon')
+      expect(node.tagName).toBe('A')
+      expect(node).not.toHaveAttribute('role')
+      expect(node).toHaveAttribute('aria-label', 'Favourites')
+    })
+
+    it('still takes role="img" when it renders the default element', () => {
+      render(<Icon use="heart" contentDescription="Favourites" />)
+      expect(screen.getByRole('img', { name: 'Favourites' })).toBeTruthy()
+    })
+
+    it('does not discard a role the caller passed', () => {
+      render(<Icon use="heart" contentDescription={null} role="presentation" data-testid="icon" />)
+      expect(screen.getByTestId('icon')).toHaveAttribute('role', 'presentation')
+    })
+  })
+
   it('reports an unknown name instead of rendering blank space', () => {
     const error = vi.spyOn(console, 'error').mockImplementation(() => {})
     // @ts-expect-error — the point is the name a JavaScript caller can still pass.

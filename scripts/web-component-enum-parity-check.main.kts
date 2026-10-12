@@ -78,6 +78,11 @@ fun main() {
         val web = typeScriptUnion(readSource(vocabulary.webPath), name)
 
         val platforms = mapOf("kmp" to kotlin, "swiftui" to swift, "web" to web)
+        // Three empty lists agree with each other. An extractor that stops matching has to
+        // say so rather than report a vocabulary that matched on nothing.
+        platforms.forEach { (platform, entries) ->
+            require(entries.isNotEmpty()) { "$name has no entries on $platform — the extractor stopped matching" }
+        }
         val keys = platforms.mapValues { (_, entries) -> entries.map(::key) }
         if (keys.values.distinct().size == 1) {
             println("✓ $name — ${web.size} entries agree across kmp, swiftui and web")

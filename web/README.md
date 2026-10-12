@@ -43,7 +43,10 @@ import { Icon, Text } from '@teya/lemonade-mobile-ds/react'
 ```
 
 Icons are CSS masks, so they take their colour from `currentColor` and need the SVGs
-served: copy `dist/assets/icons` to `/assets/icons`, or point `basePath` elsewhere.
+served: copy `dist/assets/icons` to `/assets/icons`, or point `basePath` elsewhere. A
+cross-origin `basePath` has to send `Access-Control-Allow-Origin` — a mask image is
+fetched under CORS, and without it the browser renders nothing rather than reporting an
+error.
 
 Without React, write the markup against the same classes — the `textStyles` manifest on
 the root export maps every style name to its class, and `llms.txt` documents the markup

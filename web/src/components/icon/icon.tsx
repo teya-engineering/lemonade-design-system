@@ -40,6 +40,7 @@ export function Icon<E extends ElementType = typeof defaultIconElement>({
   contentDescription,
   size = 'medium',
   basePath = defaultIconBasePath,
+  as,
   className,
   style,
   ...rest
@@ -52,15 +53,24 @@ export function Icon<E extends ElementType = typeof defaultIconElement>({
 
   const classes = iconClasses({ size })
 
+  // An element the caller chose brings its own semantics — a link is a link, not an image —
+  // so it takes the name and keeps the rest. Spread before the caller's props, because an
+  // attribute written after them lands even when its expression is undefined, which throws
+  // away a role or label they passed on purpose.
+  const announce =
+    contentDescription === null
+      ? { 'aria-hidden': true }
+      : as === undefined
+        ? { role: 'img', 'aria-label': contentDescription }
+        : { 'aria-label': contentDescription }
+
   return (
     <Slot<ElementType>
-      as={defaultIconElement}
+      as={as ?? defaultIconElement}
+      {...announce}
       {...rest}
       className={className ? `${classes} ${className}` : classes}
       style={{ ...(style as CSSProperties), '--lmnd-icon': `url('${basePath}/${use}.svg')` } as CSSProperties}
-      role={contentDescription === null ? undefined : 'img'}
-      aria-label={contentDescription ?? undefined}
-      aria-hidden={contentDescription === null ? true : undefined}
     />
   )
 }
