@@ -634,14 +634,21 @@ cannot reproduce by hand.
 ### 17.2 Layout on disk
 
 ```
-web/src/components/button/
-  button.types.ts     every type the component declares
-  button.classes.ts   the class-name builder, framework-free
-  button.css          hand-written, committed; the class contract
-  button.tsx          composes class names, no styling logic
-  button.stories.tsx  Storybook page, with a copy-paste HTML snippet
-  button.test.tsx     behaviour and the class contract
+web/src/components/<name>/
+  <name>.types.ts     the vocabulary, with no React in it
+  <name>.classes.ts   the class-name builder, framework-free
+  <name>.css          hand-written, committed; the class contract
+  <name>.tsx          the component, and the props type that names React
+  <name>.stories.tsx  Storybook page, with a copy-paste HTML snippet
+  <name>.test.tsx     behaviour and the class contract
 ```
+
+The split between the two type files is load-bearing rather than stylistic. Both package
+entries share `<name>.types.ts`, so a React type in it lands in a declaration chunk that the
+framework-free root imports, and a consumer without `@types/react` can no longer typecheck
+`import { tokens }`. The props type therefore lives in the `.tsx`, where only `./react`
+reaches it, and `build/check-framework-free-root.mjs` follows the emitted chunks to hold
+that.
 
 Colocated CSS is committed source, not build output, so the rule that `web/dist/` holds
 everything a build produces still holds. It sits under `web/src/` rather than

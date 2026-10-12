@@ -68,7 +68,7 @@ lockfile, never a regenerated one.
 
 Component class names (`lmnd-button--primary`) are public API: a consumer that never loads the
 JavaScript writes them by hand. A class the component emits needs a rule behind it, which
-`button.test.tsx` asserts against the stylesheet.
+each component's tests assert against its stylesheet.
 
 Run `scripts/web-check.sh` before opening a web PR, and review the diff with the **web-review**
 skill (`.claude/skills/web-review/SKILL.md`).

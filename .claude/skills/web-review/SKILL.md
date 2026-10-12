@@ -114,8 +114,8 @@ for a stack that never loads the JavaScript, and the review question is whether 
 - Every class the component can emit has a rule behind it. A name that appears in `buttonClasses`
   and nowhere in the stylesheet renders unstyled, and no JS test notices — the builder and the
   component agree with each other whatever the CSS says.
-- A component's stylesheet reaches `web-css-bundle`'s discovered glob, or the pasteable
-  `lemonade.css` ships without it while every check passes.
+- A component's stylesheet reaches `web-css-bundle`, or the pasteable `lemonade.css` ships
+  without it while every check passes.
 - Hand-written component CSS lives under `web/src/components/`, not `web/styles/` — that directory
   belongs to the converters, and `token_drift.yml` would run the Kotlin job on every component PR.
 - Interaction states come from the ladder the tokens already carry: `-interactive` for `:hover`,

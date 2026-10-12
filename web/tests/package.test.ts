@@ -36,8 +36,8 @@ describe('package manifest', () => {
   it('takes React only as an optional peer', () => {
     // React components need the host app's React: two copies in one page break the
     // hook dispatcher. A peer says "use yours"; optional keeps the tokens installable
-    // without React at all. This list is also what tsup externalises, so a name added
-    // here without a matching `external` entry gets bundled into dist instead.
+    // without React at all. tsup externalises these automatically; a subpath that is not
+    // itself a peer, such as react/jsx-runtime, is the case that needs naming in `external`.
     expect(Object.keys(pkg.peerDependencies)).toEqual(['react', 'react-dom'])
     expect(pkg.peerDependenciesMeta.react).toEqual({ optional: true })
     expect(pkg.peerDependenciesMeta['react-dom']).toEqual({ optional: true })

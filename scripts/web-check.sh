@@ -34,6 +34,9 @@ step "Text styles match SwiftUI"
 step "Package: install from the committed lockfile, typecheck, test, build"
 ( cd web && npm ci --silent && npm run typecheck && npm test && npm run build )
 
+step "The root declarations stay framework-free"
+(cd web && node build/check-framework-free-root.mjs)
+
 step "The build must not touch committed files"
 dirty=$(git status --porcelain -- web/assets web/styles web/src web/llms.txt web/tokens.json text-styles.json)
 [ -z "$dirty" ] || { echo "Build modified committed output:"; echo "$dirty"; exit 1; }

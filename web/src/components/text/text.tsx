@@ -10,9 +10,9 @@ import type { LemonadeTextStyle } from './text.types'
 export type TextElement = 'span' | 'p' | 'div' | 'label' | 'strong' | 'em' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 
 export type TextProps = ComponentPropsWithoutRef<'span'> & {
-  /** Required: text with nothing in it is not a thing worth rendering. */
+  /** The text, or any markup that belongs inside it — an emphasis, a link. */
   children: ReactNode
-  /** Defaults to the style KMP's theme provides ambiently. */
+  /** Defaults to `bodyMediumRegular`. */
   textStyle?: LemonadeTextStyle
   as?: TextElement
 }

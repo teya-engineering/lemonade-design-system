@@ -1,9 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-// No component exists yet. This asserts the harness itself — jsx transform, jsdom,
-// Testing Library, jest-dom matchers — so the first component's red test means the
-// component is wrong, not that the environment was never wired up.
+// Asserts the harness itself — jsx transform, jsdom, Testing Library, jest-dom matchers —
+// so a red component test means the component is wrong rather than the environment.
 describe('react test environment', () => {
   it('renders JSX into a DOM and queries it', () => {
     render(<button type="button">Press</button>)

@@ -61,7 +61,11 @@ describe('Text', () => {
   // silently, and nothing else would notice.
   it.each(Object.keys(textStyles) as LemonadeTextStyle[])('renders %s with its generated class', (textStyle) => {
     render(<Text textStyle={textStyle}>{textStyle}</Text>)
-    expect(screen.getByText(textStyle)).toHaveClass(textStyles[textStyle].className)
+    const className = textStyles[textStyle].className
+    expect(screen.getByText(textStyle)).toHaveClass(className)
+    // Comparing the component against the same lookup it reads would hold whatever the
+    // stylesheet says, so the class has to exist in the CSS the package ships as well.
+    expect(typographyCss).toMatch(new RegExp(`\\.${className}\\s*[,{]`))
   })
 
   // The platforms uppercase the string; web leaves the text alone and lets the class do it,
