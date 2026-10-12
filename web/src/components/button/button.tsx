@@ -45,8 +45,8 @@ export function Button({
       aria-busy={loading || undefined}
     >
       {loading ? (
-        // KMP tints the spinner with the button's content colour and leaves it at the
-        // default size; button.css does the tinting, so this stays a plain Spinner.
+        // Plain on purpose: button.css tints it, so hand-written markup gets the same
+        // colour as this does.
         <Spinner contentDescription={null} />
       ) : (
         <>
