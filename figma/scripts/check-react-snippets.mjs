@@ -12,7 +12,6 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const repo = join(root, '..')
 const web = join(repo, 'web')
 
-/** A label carrying every character that has to survive a JSX attribute. */
 const TEXT = 'Pay "now" & <later>'
 
 /** Figma's `figma.code` tagged template, reduced to the string it would produce. */

@@ -128,10 +128,13 @@ back to another label's, so a missing SwiftUI icon renders the Kotlin snippet
 inside a Swift call rather than rendering nothing.
 
 `React` is the exception, deliberately: web has no asset templates at all, because
-an icon reaches a React call site as a `--lmnd-icon` URL rather than an enum entry.
-The templates' slot helper filters children to those connected **under the label
-being published**, so a nested icon renders the template's own placeholder — a
-`{undefined /* leading icon */}` prop — rather than another language's snippet.
+an icon reaches a React call site as a name rather than an enum entry. Its Button
+template resolves nothing — it reads the Figma booleans that say an icon is shown
+and emits its own placeholder, a `{undefined /* leading icon */}` prop — so nothing
+can fall through to another language's snippet. The React templates are
+self-contained for the same reason: a JSX attribute escapes nothing the way Kotlin
+and Swift do, so they do not use `shared/render.ts`, which still accepts only those
+two languages.
 
 Pipe the output: the command prints a line per template and the success or error
 summary is the last line, so unfiltered a failure looks the same as a success.
