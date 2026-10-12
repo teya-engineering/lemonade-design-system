@@ -1,8 +1,9 @@
 # Figma Code Connect
 
-Maps Lemonade Figma components to their call sites on **every platform**, so Figma
-Dev Mode and MCP-driven agents emit real Lemonade code instead of raw layer output.
-One Figma component, three labels: `Compose`, `SwiftUI` and `React`.
+Maps Lemonade Figma components to their call sites, so Figma Dev Mode and MCP-driven
+agents emit real Lemonade code instead of raw layer output. One Figma component, three
+labels: `Compose` and `SwiftUI` map components today; `React` is configured here and
+takes its first template in the PR that connects Button.
 
 ## Layout
 
@@ -130,9 +131,10 @@ a platform's components without its assets — Figma resolves a nested icon by
 node, and a label with no template for that node falls back to another label's,
 so a missing SwiftUI icon renders the *Kotlin* snippet inside a Swift call.
 
-The `React` label was previously published from another repo. Labels are independent
-namespaces, so publishing from here replaces that mapping, which is intended: the web
-components live here now.
+Labels are independent namespaces, so publishing `React` from here owns that label
+outright, replacing any mapping another repo set. That is intended: the web components
+live here now. Until a template exists under `connect-react/`, the config matches
+nothing and `publish:react` errors rather than publishing an empty label.
 
 ## A note on auditing coverage
 
