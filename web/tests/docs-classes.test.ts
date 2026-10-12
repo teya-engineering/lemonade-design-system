@@ -12,7 +12,7 @@ const published = `${componentsCss}\n${typographyCss}`
 
 const documented = [...new Set(docs.match(/\blmnd-[a-z0-9-]+/g) ?? [])]
 
-/** Modifiers are written relative to the block above them — today all of them Button's. */
+/** Modifiers are written relative to the block above them, which today is always Button. */
 const shorthands = [...new Set([...docs.matchAll(/`(--[a-z0-9-]+)`/g)].map((match) => match[1]))]
 
 describe('the class names the docs tell AI tools to write', () => {

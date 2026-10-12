@@ -35,8 +35,8 @@ function combinations(source) {
     keys: [...body.matchAll(/(?:'([^']+)'|(\w+)):/g)].map((m) => m[1] ?? m[2]),
   }))
   const booleans = [...source.matchAll(/getBoolean\('([^']+)'\)/g)].map(([, name]) => ({ name, keys: [true, false] }))
-  // A template that resolves a swapped asset has a second branch: the one where Figma
-  // gives it nothing. Rendering only the happy path left a fallback that did not compile.
+  // A template that resolves a swapped asset has two branches, and the one where Figma
+  // gives it nothing is the one a developer only sees when something is already wrong.
   if (source.includes('getInstanceSwap')) {
     enums.push({ name: '__unresolved', keys: [false, true] })
   }
@@ -123,14 +123,20 @@ try {
       )
       .join('\n')
 
-    const rendered = combinations(raw).map((props) => render(source, props))
+    const renderings = combinations(raw).map((props) => ({ props, snippet: render(source, props) }))
+    const rendered = renderings.map(({ snippet }) => snippet)
 
     // tsc cannot tell a glyph that was read from one that fell back, because both are valid
-    // icon names. A template that asks for the swapped asset has to put it in the snippet.
-    if (raw.includes('getInstanceSwap') && !rendered.some((snippet) => snippet.includes(GLYPH))) {
+    // icon names. Every combination where the stub *did* resolve has to name it — checking
+    // that merely one of them does would pass a template that resolves only by accident.
+    const resolved = renderings.filter(({ props }) => props.__unresolved === false)
+    const silent = resolved.find(({ snippet }) => !snippet.includes(GLYPH))
+    if (raw.includes('getInstanceSwap') && (resolved.length === 0 || silent)) {
       console.error(
         `${relative(root, template)} reads the swapped asset but does not emit it.\n` +
-          `Expected every snippet to name "${GLYPH}"; got:\n  ${rendered[0]}`,
+          (resolved.length === 0
+            ? 'No combination exercised a resolved swap, so the read was never checked.'
+            : `Expected "${GLYPH}" in every resolved snippet; got:\n  ${silent.snippet}`),
       )
       process.exit(1)
     }
