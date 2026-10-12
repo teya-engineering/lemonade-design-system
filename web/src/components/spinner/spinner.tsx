@@ -35,6 +35,7 @@ export type SpinnerProps<E extends ElementType = typeof defaultSpinnerElement> =
 export function Spinner<E extends ElementType = typeof defaultSpinnerElement>({
   contentDescription,
   size = 'medium',
+  as,
   className,
   ...rest
 }: SpinnerProps<E>) {
@@ -42,8 +43,8 @@ export function Spinner<E extends ElementType = typeof defaultSpinnerElement>({
 
   return (
     <Slot<ElementType>
-      as={defaultSpinnerElement}
-      {...labelling(contentDescription, 'status', rest)}
+      as={as ?? defaultSpinnerElement}
+      {...labelling(contentDescription, 'status', rest, as === undefined)}
       {...rest}
       className={className ? `${classes} ${className}` : classes}
     />
