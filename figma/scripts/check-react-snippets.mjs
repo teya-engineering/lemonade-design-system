@@ -18,6 +18,9 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const repo = join(root, '..')
 const web = join(repo, 'web')
 
+/** A label carrying every character that has to survive a JSX attribute. */
+const TEXT = 'Pay "now" & <later>'
+
 /** Figma's `figma.code` tagged template, reduced to the string it would produce. */
 const tag = (strings, ...values) =>
   Object.assign(new String(strings.reduce((o, s, i) => o + s + (i < values.length ? String(values[i]) : ''), '')), {
@@ -57,7 +60,10 @@ function combinations(source) {
 
 function render(source, props) {
   const instance = {
-    getString: () => 'Add item',
+    // Figma text is arbitrary, so the fixture is hostile: a benign label let a template
+    // escape quotes the JavaScript way and still pass every combination, while the snippet
+    // it published did not compile.
+    getString: () => TEXT,
     getEnum: (name, map) => {
       if (!(name in props)) throw new Error(`template read an unexpected enum: ${name}`)
       return map[props[name]]

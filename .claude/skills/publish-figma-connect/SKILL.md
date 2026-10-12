@@ -20,7 +20,7 @@ in the org sees the result immediately. There is no staging environment.
 | Thing | Value |
 |---|---|
 | Configs | `figma.compose.config.json`, `figma.swiftui.config.json` and `figma.react.config.json`, all under `figma/` |
-| Labels | `Compose`, `SwiftUI` and `React`, each published from its own config. The `React` label was previously published from another repo; publishing from here replaces that mapping. |
+| Labels | `Compose`, `SwiftUI` and `React`, each published from its own config. Publishing `React` from here owns that label outright, replacing any mapping another repo set. |
 | Components file | `91S16rhVrl5wivqV66fNjm` (components and brand logos) |
 | Icons file | `f7zokCdnayXejxc2y7r1Qt` |
 | Country flags file | `WdrbfE6UsxkbyEpqGpPozQ` |

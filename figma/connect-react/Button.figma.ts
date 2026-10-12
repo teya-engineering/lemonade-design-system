@@ -9,14 +9,17 @@ const instance = figma.selectedInstance
 // throws inside Figma, which publishes as an empty snippet rather than failing the upload.
 const code = figma.code
 
-// Figma text is arbitrary, and this lands in a double-quoted JSX attribute: a quote would
-// end it, a backslash would escape the next character, a newline would break the line. The
-// shared renderer's version also escapes `$` for Kotlin, which JSX does not need.
+// Figma text is arbitrary and this lands in a double-quoted JSX attribute, which is not a
+// JavaScript string: a backslash is literal there, so `\"` would end the attribute and
+// leave a stray backslash. Entities are the only escape JSX honours, and `&` has to go
+// first or it would re-encode the ones added after it.
 const quote = (value) =>
   String(value ?? '')
-    .replace(/\\/g, '\\\\')
-    .replace(/"/g, '\\"')
-    .replace(/\r?\n/g, '\\n')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\r?\n/g, ' ')
 
 const label = instance.getString('✍️ Label')
 
