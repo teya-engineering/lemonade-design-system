@@ -37,10 +37,9 @@ fun main() {
     }
 
     /**
-     * One header per generated file is enough, so a part's own opening banner is dropped —
-     * but only when the file actually opens with one. Cutting at the first close-comment
-     * unconditionally truncates a stylesheet that starts with a rule and explains something
-     * further down: every rule above that comment goes missing from the published CSS.
+     * One header per generated file is enough, so a part's own opening banner is dropped.
+     * Only a banner: a stylesheet may open with a rule and explain something further down,
+     * and cutting at the first close-comment would drop every rule above it.
      */
     fun body(path: String): String {
         val text = File(path).readText().trim()

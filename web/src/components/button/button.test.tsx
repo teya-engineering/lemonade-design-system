@@ -10,9 +10,24 @@ import { Button } from './button'
 import { buttonClasses } from './button.classes'
 import type { LemonadeButtonSize, LemonadeButtonType, LemonadeButtonVariant } from './button.types'
 
-const VARIANTS: LemonadeButtonVariant[] = ['primary', 'secondary', 'neutral', 'critical', 'onBrand', 'onColor']
-const EMPHASES: LemonadeButtonType[] = ['solid', 'subtle', 'ghost']
-const SIZES: LemonadeButtonSize[] = ['xSmall', 'small', 'medium', 'large']
+/**
+ * Annotating these as `T[]` only says every entry is a member, not that every member is an
+ * entry — so a value added to a union would leave this suite green while its class went
+ * unchecked. Keying a record by the union makes the compiler require all of them, and the
+ * values come back out as the list.
+ */
+const exhaustive = <T extends string>(members: Record<T, true>) => Object.keys(members) as T[]
+
+const VARIANTS = exhaustive<LemonadeButtonVariant>({
+  primary: true,
+  secondary: true,
+  neutral: true,
+  critical: true,
+  onBrand: true,
+  onColor: true,
+})
+const EMPHASES = exhaustive<LemonadeButtonType>({ solid: true, subtle: true, ghost: true })
+const SIZES = exhaustive<LemonadeButtonSize>({ xSmall: true, small: true, medium: true, large: true })
 
 
 describe('Button', () => {
@@ -84,6 +99,18 @@ describe('Button', () => {
     // defaults to content-secondary, which on a solid primary button is nearly invisible.
     it('tints the spinner with the button content colour', () => {
       expect(buttonCss).toMatch(/\.lmnd-button \.lmnd-spinner\s*\{[^}]*color:\s*inherit/)
+    })
+
+    // Writing aria-label after the spread sets it even where the expression is undefined,
+    // which is how Icon and Spinner used to discard a caller's name.
+    it('keeps a caller-supplied name rather than overwriting it', () => {
+      render(<Button label="Saving" loading aria-label="Saving your changes" />)
+      expect(screen.getByRole('button', { name: 'Saving your changes' })).toBeTruthy()
+    })
+
+    it('leaves an idle button named by its own label', () => {
+      render(<Button label="Pay" aria-label="Pay £42.00 to Merchant" />)
+      expect(screen.getByRole('button', { name: 'Pay £42.00 to Merchant' })).toBeTruthy()
     })
 
     it('blocks clicks, matching enabled && !loading on the platforms', async () => {

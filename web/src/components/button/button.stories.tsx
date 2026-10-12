@@ -94,9 +94,9 @@ export const States: StoryObj<typeof Button> = {
 export const WithIcons: StoryObj<typeof Button> = {
   render: (args) => (
     <Row label="icons">
-      <Button {...args} leadingIcon={<Icon use="plus" contentDescription={null} size="small" />} />
-      <Button {...args} trailingIcon={<Icon use="arrow-right" contentDescription={null} size="small" />} label="Continue" />
-      <Button {...args} leadingIcon={<Icon use="plus" contentDescription={null} size="small" />} trailingIcon={<Icon use="arrow-right" contentDescription={null} size="small" />} />
+      <Button {...args} leadingIcon={<Icon use="plus" contentDescription={null} />} />
+      <Button {...args} trailingIcon={<Icon use="arrow-right" contentDescription={null} />} label="Continue" />
+      <Button {...args} leadingIcon={<Icon use="plus" contentDescription={null} />} trailingIcon={<Icon use="arrow-right" contentDescription={null} />} />
     </Row>
   ),
 }
@@ -109,14 +109,14 @@ export const ExpandContents: StoryObj<typeof Button> = {
         {...args}
         expandContents
         style={{ width: '100%' }}
-        leadingIcon={<Icon use="plus" contentDescription={null} size="small" />}
-        trailingIcon={<Icon use="arrow-right" contentDescription={null} size="small" />}
+        leadingIcon={<Icon use="plus" contentDescription={null} />}
+        trailingIcon={<Icon use="arrow-right" contentDescription={null} />}
       />
       <Button
         {...args}
         style={{ width: '100%' }}
-        leadingIcon={<Icon use="plus" contentDescription={null} size="small" />}
-        trailingIcon={<Icon use="arrow-right" contentDescription={null} size="small" />}
+        leadingIcon={<Icon use="plus" contentDescription={null} />}
+        trailingIcon={<Icon use="arrow-right" contentDescription={null} />}
       />
     </div>
   ),

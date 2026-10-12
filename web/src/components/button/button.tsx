@@ -30,15 +30,19 @@ export function Button({
 }: ButtonProps) {
   const classes = buttonClasses({ variant, emphasis, size, loading, expandContents })
 
+  // While loading the spinner replaces the label, so the button needs a name from
+  // somewhere — but only when the caller has not given it one, since writing the attribute
+  // after the spread sets it even where the expression is undefined.
+  const naming = loading && rest['aria-label'] === undefined ? { 'aria-label': label } : {}
+
   return (
     <button
+      {...naming}
       {...rest}
       type={type}
       className={className ? `${classes} ${className}` : classes}
       disabled={!enabled || loading}
       aria-busy={loading || undefined}
-      // The spinner replaces the label, so the accessible name has to come from somewhere.
-      aria-label={loading ? label : undefined}
     >
       {loading ? (
         // KMP tints the spinner with the button's content colour and leaves it at the
