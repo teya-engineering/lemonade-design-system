@@ -19,6 +19,11 @@ const meta: Meta<typeof Spinner> = {
   component: Spinner,
   args: { contentDescription: 'Loading' },
 }
+
+// A gallery of live regions announces once per spinner, so a page of eight says "Loading"
+// eight times on open. The caption beside each one already names it, which makes the
+// spinner itself decorative — the Labelling story is where the announcement is shown.
+
 export default meta
 
 export const Sizes: StoryObj<typeof Spinner> = {
@@ -26,7 +31,7 @@ export const Sizes: StoryObj<typeof Spinner> = {
     <div style={{ display: 'flex', alignItems: 'flex-end', gap: 'var(--lmnd-spacing-500)' }}>
       {SIZES.map((size) => (
         <div key={size} style={{ display: 'grid', gap: 'var(--lmnd-spacing-200)', justifyItems: 'center' }}>
-          <Spinner {...args} size={size} />
+          <Spinner {...args} size={size} contentDescription={null} />
           <Text textStyle="bodyXSmallRegular" style={{ color: 'var(--lmnd-color-content-secondary)' }}>
             {size}
           </Text>
@@ -42,7 +47,12 @@ export const Colour: StoryObj<typeof Spinner> = {
     <div style={{ display: 'flex', gap: 'var(--lmnd-spacing-500)' }}>
       {[undefined, 'brand-high', 'critical', 'positive'].map((slot) => (
         <div key={slot ?? 'default'} style={{ display: 'grid', gap: 'var(--lmnd-spacing-200)', justifyItems: 'center' }}>
-          <Spinner {...args} size="large" style={slot ? { color: `var(--lmnd-color-content-${slot})` } : undefined} />
+          <Spinner
+            {...args}
+            size="large"
+            contentDescription={null}
+            style={slot ? { color: `var(--lmnd-color-content-${slot})` } : undefined}
+          />
           <Text textStyle="bodyXSmallRegular" style={{ color: 'var(--lmnd-color-content-secondary)' }}>
             {slot ?? 'default'}
           </Text>

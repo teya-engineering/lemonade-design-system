@@ -1,4 +1,5 @@
 import { readdir, rm } from 'node:fs/promises'
+import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
 
 /**
@@ -10,7 +11,9 @@ import { join } from 'node:path'
  * though, every past build's shared declaration chunk stays behind and ships, because
  * package.json's files[] takes all of dist.
  */
-const DIST = new URL('../dist/', import.meta.url).pathname
+// fileURLToPath, not .pathname: a checkout under a directory with a space would give
+// Design%20System, which is not a path on any platform.
+const DIST = fileURLToPath(new URL('../dist/', import.meta.url))
 const BUNDLE = /\.(js|cjs|mjs|d\.ts|d\.cts|map)$/
 
 const entries = await readdir(DIST, { withFileTypes: true }).catch(() => [])

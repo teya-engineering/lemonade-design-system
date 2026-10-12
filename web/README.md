@@ -44,8 +44,9 @@ import { Icon, Spinner, Text } from '@teya/lemonade-mobile-ds/react'
 ```
 
 The components import no CSS of their own — `sideEffects` keeps a bundler from dropping a
-bare stylesheet import, and which sheets you take stays your choice — so `icon.css` has to
-be imported alongside `styles.css` or the icon renders at the wrong size with no mask.
+bare stylesheet import, and which sheets you take stays your choice — so take `styles.css`,
+which carries the tokens, the type scale and every component's classes. Importing the
+individual files instead means adding `components.css` to them.
 
 Icons are CSS masks, so they take their colour from `currentColor` and need the SVGs
 served: copy `dist/assets/icons` to `/assets/icons`, or point `basePath` elsewhere. A

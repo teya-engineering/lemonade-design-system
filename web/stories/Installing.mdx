@@ -30,7 +30,9 @@ import '@teya/lemonade-mobile-ds/typography.css'
   and dark).
 - **`typography.css`** — the `.lmnd-text-*` classes shown in the
   [Typography](/docs/foundations-typography--docs) gallery.
-- **`components.css`** — every component's classes, including the `.lmnd-icon` mask class
+- **`components.css`** — every component's classes: the `.lmnd-icon` mask, the spinner,
+  the button. The React components import no CSS themselves, so this is not optional
+  once you render one.
   shown in the [Icons](/docs/foundations-icons--docs) gallery. Skip it if you inline
   SVGs yourself.
 - **`fonts.css`** — the self-hosted Figtree `@font-face` declarations, if you want
