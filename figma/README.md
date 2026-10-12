@@ -77,8 +77,10 @@ templates is an error, so folding it in would break the combined check whenever
 default filename, so a bare `figma connect publish` would silently publish just
 that one platform and report success. Always pass `--config`.
 
-Templates are **parserless** — they emit Kotlin, Swift or TypeScript as strings via
-`` figma.kotlin`...` ``, `` figma.swift`...` `` and `` figma.typescript`...` ``. Nothing is added to `kmp/ui` or
+Templates are **parserless** — they emit Kotlin, Swift or TypeScript as strings via a
+tagged template. The pinned CLI exposes `code`, `html`, `kotlin`, `swift` and `tsx`; there
+is no `typescript`, and an undefined tag throws inside Figma, which publishes as an empty
+snippet rather than failing the upload. React uses `` figma.code`...` ``. Nothing is added to `kmp/ui` or
 `swiftui/Sources`, so this has no effect on either published API surface or the
 Binary Compatibility Validator baseline.
 
