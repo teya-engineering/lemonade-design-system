@@ -84,6 +84,19 @@ describe('Icon', () => {
       expect(screen.getByRole('img', { name: 'Favourites' })).toBeTruthy()
     })
 
+    // A focusable element carrying aria-hidden is reachable by keyboard and absent from the
+    // accessibility tree, which is worse than either on its own. The component only ever
+    // hides the element it owns.
+    it.each(['a', 'button', 'div'] as const)('does not hide a %s the caller chose', (element) => {
+      render(<Icon as={element} use="heart" contentDescription={null} data-testid="icon" />)
+      expect(screen.getByTestId('icon')).not.toHaveAttribute('aria-hidden')
+    })
+
+    it('still hides the span it renders by default', () => {
+      render(<Icon use="heart" contentDescription={null} data-testid="icon" />)
+      expect(screen.getByTestId('icon')).toHaveAttribute('aria-hidden', 'true')
+    })
+
     it('does not discard a role the caller passed', () => {
       render(<Icon use="heart" contentDescription={null} role="presentation" data-testid="icon" />)
       expect(screen.getByTestId('icon')).toHaveAttribute('role', 'presentation')

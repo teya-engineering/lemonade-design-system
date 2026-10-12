@@ -42,6 +42,10 @@ import { Icon, Text } from '@teya/lemonade-mobile-ds/react'
 <Icon use="heart" size="large" contentDescription="Favourite" />
 ```
 
+The components import no CSS of their own — `sideEffects` keeps a bundler from dropping a
+bare stylesheet import, and which sheets you take stays your choice — so `icon.css` has to
+be imported alongside `styles.css` or the icon renders at the wrong size with no mask.
+
 Icons are CSS masks, so they take their colour from `currentColor` and need the SVGs
 served: copy `dist/assets/icons` to `/assets/icons`, or point `basePath` elsewhere. A
 cross-origin `basePath` has to send `Access-Control-Allow-Origin` — a mask image is

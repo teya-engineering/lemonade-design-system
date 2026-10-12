@@ -57,12 +57,20 @@ export function Icon<E extends ElementType = typeof defaultIconElement>({
   // so it takes the name and keeps the rest. Spread before the caller's props, because an
   // attribute written after them lands even when its expression is undefined, which throws
   // away a role or label they passed on purpose.
+  // Two rules, both about not overruling the caller. An element they named keeps its own
+  // semantics — a link is a link, not an image — so it takes only the name. And the
+  // element is hidden only when it is the one this component owns: aria-hidden on a link
+  // or a button leaves something reachable by keyboard and absent from the accessibility
+  // tree, which is worse than either alone.
+  const chosenByCaller = as !== undefined
   const announce =
     contentDescription === null
-      ? { 'aria-hidden': true }
-      : as === undefined
-        ? { role: 'img', 'aria-label': contentDescription }
-        : { 'aria-label': contentDescription }
+      ? chosenByCaller
+        ? {}
+        : { 'aria-hidden': true }
+      : chosenByCaller
+        ? { 'aria-label': contentDescription }
+        : { role: 'img', 'aria-label': contentDescription }
 
   return (
     <Slot<ElementType>

@@ -454,7 +454,9 @@ Text styled with `var(--lmnd-font-family-base)` instead of a class needs
 Every component is CSS plus markup. React is optional: the classes below are the API, so
 any framework — or none — produces the same result.
 
-With React: `import { Text, Icon } from '@teya/lemonade-mobile-ds/react'`. Without React, write
+With React: `import { Text, Icon } from '@teya/lemonade-mobile-ds/react'`, plus the
+stylesheets — the components import none themselves, so `styles.css` carries the type scale
+and `icon.css` the mask rules. Without React, write
 the markup and apply the same classes; the `textStyles` manifest on the root export maps
 every style name to its class.
 

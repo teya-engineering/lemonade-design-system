@@ -1,9 +1,9 @@
 import type { ComponentPropsWithoutRef, ElementType } from 'react'
 
 /**
- * The element a component renders. Lemonade components carry styling, not semantics, so
- * the tag is the caller's choice: a label that is also a heading, an icon that is also a
- * link.
+ * The element a component renders, chosen by the caller: a label that is also a heading,
+ * an icon that is also a link. A component may add semantics on top of its own default
+ * element — Icon names itself an image — but an element named here keeps its own.
  */
 export type SlotAsProps<E extends ElementType = ElementType> = {
   as?: E
