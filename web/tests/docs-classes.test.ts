@@ -12,9 +12,8 @@ const published = `${componentsCss}\n${typographyCss}`
 
 const documented = [...new Set(docs.match(/\blmnd-[a-z0-9-]+/g) ?? [])]
 
-/** Modifiers are written relative to the block above them, e.g. `--subtle` under Button. */
+/** Modifiers are written relative to the block above them — today all of them Button's. */
 const shorthands = [...new Set([...docs.matchAll(/`(--[a-z0-9-]+)`/g)].map((match) => match[1]))]
-const BLOCKS = ['button', 'icon', 'spinner', 'text']
 
 describe('the class names the docs tell AI tools to write', () => {
   it('finds classes to check', () => {
@@ -22,11 +21,18 @@ describe('the class names the docs tell AI tools to write', () => {
     expect(shorthands.length).toBeGreaterThan(0)
   })
 
+  // A class name ends where a CSS identifier can no longer continue: another class, a
+  // pseudo, a combinator, a comma or the brace. Substring matching would let `.lmnd-icon`
+  // be satisfied by `.lmnd-icon--medium`, so deleting the base rule would still pass.
+  const hasRule = (className: string) => new RegExp(`\\.${className}(?![\\w-])`).test(published)
+
   it.each(documented)('%s has a rule in the published CSS', (className) => {
-    expect(published).toContain(`.${className}`)
+    expect(hasRule(className)).toBe(true)
   })
 
-  it.each(shorthands)('%s resolves against one of the documented blocks', (shorthand) => {
-    expect(BLOCKS.some((block) => published.includes(`.lmnd-${block}${shorthand}`))).toBe(true)
+  // Every shorthand in the file documents Button, so it is the block they must resolve
+  // against: accepting any block would let Button's `--small` pass on Icon's rule.
+  it.each(shorthands)('%s resolves against the block that documents it', (shorthand) => {
+    expect(hasRule(`lmnd-button${shorthand}`)).toBe(true)
   })
 })
