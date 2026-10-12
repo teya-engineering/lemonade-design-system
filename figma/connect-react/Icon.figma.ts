@@ -35,12 +35,14 @@ const named = glyph && glyph.type === 'INSTANCE' && typeof glyph.name === 'strin
 const use = named || 'heart'
 // Say so when the name did not resolve. The fallback compiles, so without this the
 // developer gets a different icon than the design with nothing to tell them apart.
-const note = named ? '' : ' {/* NOTE: icon not resolved from Figma — check the name */}'
+// A line comment, not a JSX one: `{/* … */}` beside a self-closing element is a second
+// root expression, which does not compile.
+const note = named ? '' : '// NOTE: icon not resolved from Figma — check the name\n'
 
 export default {
   // Decorative by default: an icon in a design is nearly always beside the text that names
   // it, and `contentDescription` is required so the choice is visible either way.
-  example: code`<Icon use="${use}" size="${size}" contentDescription={null} />${note}`,
+  example: code`${note}<Icon use="${use}" size="${size}" contentDescription={null} />`,
   imports: ["import { Icon } from '@teya/lemonade-mobile-ds/react'"],
   id: 'icon',
   metadata: { nestable: true },

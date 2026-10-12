@@ -35,6 +35,11 @@ function combinations(source) {
     keys: [...body.matchAll(/(?:'([^']+)'|(\w+)):/g)].map((m) => m[1] ?? m[2]),
   }))
   const booleans = [...source.matchAll(/getBoolean\('([^']+)'\)/g)].map(([, name]) => ({ name, keys: [true, false] }))
+  // A template that resolves a swapped asset has a second branch: the one where Figma
+  // gives it nothing. Rendering only the happy path left a fallback that did not compile.
+  if (source.includes('getInstanceSwap')) {
+    enums.push({ name: '__unresolved', keys: [false, true] })
+  }
   return [...enums, ...booleans].reduce(
     (rows, { name, keys }) => rows.flatMap((row) => keys.map((key) => ({ ...row, [name]: key }))),
     [{}],
@@ -56,7 +61,7 @@ function render(source, props) {
     // A swapped asset, named the way Figma names its icon components. Deliberately not the
     // template's own fallback: if reading the name broke, the fallback would still be a
     // valid IconName and tsc would pass, so the two are forced apart and checked below.
-    getInstanceSwap: () => ({ type: 'INSTANCE', name: GLYPH }),
+    getInstanceSwap: () => (props.__unresolved ? null : { type: 'INSTANCE', name: GLYPH }),
   }
   const body = `const figma = arguments[0];\n${source}\nreturn globalThis.__result`
   // eslint-disable-next-line no-new-func
@@ -122,7 +127,7 @@ try {
 
     // tsc cannot tell a glyph that was read from one that fell back, because both are valid
     // icon names. A template that asks for the swapped asset has to put it in the snippet.
-    if (raw.includes('getInstanceSwap') && !rendered.every((snippet) => snippet.includes(GLYPH))) {
+    if (raw.includes('getInstanceSwap') && !rendered.some((snippet) => snippet.includes(GLYPH))) {
       console.error(
         `${relative(root, template)} reads the swapped asset but does not emit it.\n` +
           `Expected every snippet to name "${GLYPH}"; got:\n  ${rendered[0]}`,
