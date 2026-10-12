@@ -101,8 +101,8 @@ describe('Button', () => {
       expect(buttonCss).toMatch(/\.lmnd-button \.lmnd-spinner\s*\{[^}]*color:\s*inherit/)
     })
 
-    // Writing aria-label after the spread sets it even where the expression is undefined,
-    // which is how Icon and Spinner used to discard a caller's name.
+    // An attribute written after `{...rest}` lands even where its expression is undefined,
+    // so every ARIA default has to be spread before the caller's props.
     it('keeps a caller-supplied name rather than overwriting it', () => {
       render(<Button label="Saving" loading aria-label="Saving your changes" />)
       expect(screen.getByRole('button', { name: 'Saving your changes' })).toBeTruthy()
@@ -111,6 +111,28 @@ describe('Button', () => {
     it('leaves an idle button named by its own label', () => {
       render(<Button label="Pay" aria-label="Pay £42.00 to Merchant" />)
       expect(screen.getByRole('button', { name: 'Pay £42.00 to Merchant' })).toBeTruthy()
+    })
+
+    // Covering the two that were found by hand would leave the next one to be found the
+    // same way: the rule is about spread order, so it holds for every attribute at once.
+    it.each([
+      ['aria-label', 'Pay £42.00 to Merchant'],
+      ['aria-busy', 'false'],
+      ['aria-describedby', 'fee-note'],
+      ['aria-pressed', 'true'],
+      ['aria-controls', 'drawer'],
+    ])('keeps a caller %s while idle', (attribute, value) => {
+      render(<Button label="Pay" {...{ [attribute]: value }} data-testid="button" />)
+      expect(screen.getByTestId('button')).toHaveAttribute(attribute, value)
+    })
+
+    it.each([
+      ['aria-label', 'Saving your changes'],
+      ['aria-describedby', 'fee-note'],
+      ['aria-controls', 'drawer'],
+    ])('keeps a caller %s while loading', (attribute, value) => {
+      render(<Button label="Saving" loading {...{ [attribute]: value }} data-testid="button" />)
+      expect(screen.getByTestId('button')).toHaveAttribute(attribute, value)
     })
 
     it('blocks clicks, matching enabled && !loading on the platforms', async () => {

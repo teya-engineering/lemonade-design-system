@@ -3,7 +3,12 @@ import { Spinner } from '../spinner/spinner'
 import { buttonClasses } from './button.classes'
 import type { ButtonAppearance } from './button.types'
 
-export type ButtonProps = Omit<ComponentPropsWithoutRef<'button'>, 'disabled' | 'children'> &
+export type ButtonProps = Omit<
+  ComponentPropsWithoutRef<'button'>,
+  // `disabled` is inverted as `enabled`; the other two cannot work on a component that
+  // always renders its own children — React throws when both are given.
+  'disabled' | 'children' | 'dangerouslySetInnerHTML'
+> &
   ButtonAppearance & {
     label: string
     leadingIcon?: ReactNode
@@ -33,16 +38,22 @@ export function Button({
   // While loading the spinner replaces the label, so the button needs a name from
   // somewhere — but only when the caller has not given it one, since writing the attribute
   // after the spread sets it even where the expression is undefined.
-  const naming = loading && rest['aria-label'] === undefined ? { 'aria-label': label } : {}
+  // Every ARIA default goes in here, spread before the caller's props. An attribute
+  // written after `{...rest}` lands even when its expression is undefined, which is how a
+  // caller's own value gets discarded.
+  const aria: Record<string, unknown> = {}
+  if (loading) {
+    aria['aria-busy'] = true
+    aria['aria-label'] = label
+  }
 
   return (
     <button
-      {...naming}
+      {...aria}
       {...rest}
       type={type}
       className={className ? `${classes} ${className}` : classes}
       disabled={!enabled || loading}
-      aria-busy={loading || undefined}
     >
       {loading ? (
         // Plain on purpose: button.css tints it, so hand-written markup gets the same

@@ -45,28 +45,24 @@
 /* min-height rather than the platforms' fixed height, so a label that wraps at a large
    text size grows the button instead of spilling out of it. */
 .lmnd-button--x-small {
-  gap: var(--lmnd-spacing-100);
   padding: var(--lmnd-spacing-100) var(--lmnd-spacing-200);
   min-height: var(--lmnd-size-800);
   border-radius: var(--lmnd-radius-250);
 }
 
 .lmnd-button--small {
-  gap: var(--lmnd-spacing-200);
   padding: var(--lmnd-spacing-200) var(--lmnd-spacing-300);
   min-height: var(--lmnd-size-1000);
   border-radius: var(--lmnd-radius-300);
 }
 
 .lmnd-button--medium {
-  gap: var(--lmnd-spacing-200);
   padding: var(--lmnd-spacing-300) var(--lmnd-spacing-400);
   min-height: var(--lmnd-size-1200);
   border-radius: var(--lmnd-radius-350);
 }
 
 .lmnd-button--large {
-  gap: var(--lmnd-spacing-200);
   padding: var(--lmnd-spacing-300) var(--lmnd-spacing-400);
   min-height: var(--lmnd-size-1400);
   border-radius: var(--lmnd-radius-400);
@@ -178,6 +174,24 @@
   --lmnd-button-bg: var(--lmnd-color-bg-always-light-medium);
   --lmnd-button-bg-hover: var(--lmnd-color-bg-always-light-medium-interactive);
   --lmnd-button-bg-active: var(--lmnd-color-bg-always-light-medium-interactive);
+}
+
+/* The platforms pad the label itself rather than spacing the row, so the value still
+   applies when there are no icons to sit between. */
+.lmnd-button--x-small .lmnd-button__label {
+  padding-inline: var(--lmnd-spacing-100);
+}
+
+.lmnd-button--small .lmnd-button__label {
+  padding-inline: var(--lmnd-spacing-200);
+}
+
+.lmnd-button--medium .lmnd-button__label {
+  padding-inline: var(--lmnd-spacing-200);
+}
+
+.lmnd-button--large .lmnd-button__label {
+  padding-inline: var(--lmnd-spacing-200);
 }
 
 /* KMP tints the spinner with the button's content colour. The spinner defaults to
