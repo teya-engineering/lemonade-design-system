@@ -18,7 +18,7 @@ function reachable(file, seen = new Set()) {
   seen.add(file)
   const source = readFileSync(join(dist, file), 'utf8')
   const ext = file.endsWith('.d.cts') ? '.d.cts' : '.d.ts'
-  for (const [, specifier] of source.matchAll(/from '(\.\/[^']+)'/g)) {
+  for (const [, specifier] of source.matchAll(/from ['"](\.\/[^'"]+)['"]/g)) {
     reachable(specifier.replace(/^\.\//, '').replace(/\.(js|cjs|mjs)$/, ext), seen)
   }
   return seen
@@ -32,7 +32,7 @@ for (const entry of entries) {
   }
   for (const file of reachable(entry)) {
     const source = readFileSync(join(dist, file), 'utf8')
-    for (const [match] of source.matchAll(/(?:from|import\()\s*'(react[^']*)'/g)) {
+    for (const [match] of source.matchAll(/(?:from|import\()\s*['"](react[^'"]*)['"]/g)) {
       offenders.push(`${file}: ${match.trim()}`)
     }
   }

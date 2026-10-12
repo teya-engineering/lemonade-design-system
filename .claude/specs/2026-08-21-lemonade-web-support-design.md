@@ -628,7 +628,7 @@ cannot reproduce by hand.
 | Pressed | `-pressed` tokens | Same ladder. Diverges from mobile for Primary/Solid, accepted for now |
 | Focus | `--lmnd-color-border-selected` at `--lmnd-border-width-focus-ring` | The only focus token is a width; this pairs it with an existing colour rather than inventing one |
 | Canonical API | The surface KMP and SwiftUI already agree on | Those two agree prop-for-prop and token-for-token. Flutter's Button shows the cost of not having a canon |
-| Types | One `<component>.types.ts` per component | The whole contract in one place; the barrels, not the file, decide what is public — see §17.8 |
+| Types | A framework-free `<component>.types.ts`, with the props type in the `.tsx` | The vocabulary is shared by both package entries, so React in it reaches the framework-free root through a declaration chunk; the barrels, not the file, decide what is public — see §17.8 |
 | Divergence | Enumerated in §17.5, never implicit | Nothing in the repo compares component APIs across platforms |
 
 ### 17.2 Layout on disk
