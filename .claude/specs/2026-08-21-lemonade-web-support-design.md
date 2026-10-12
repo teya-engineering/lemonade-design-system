@@ -197,7 +197,7 @@ the whole pipeline.
   "./tokens.css":       "./styles/tokens.css",       // --lmnd-* only, zero selectors
   "./typography.css":   "./styles/typography.css",
   "./components.css":   "./styles/components.css",   // every component's classes
-  "./styles.css":       "./styles/styles.css",       // barrel: tokens + typography
+  "./styles.css":       "./styles/styles.css",       // barrel: tokens, typography, components
   "./lemonade.css":     "./styles/lemonade.css",     // self-contained, pasteable
   "./llms.txt":         "./llms.txt",                // AI token reference
   "./tokens.json":      "./tokens.json",             // non-JS consumers

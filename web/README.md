@@ -19,7 +19,7 @@ import '@teya/lemonade-mobile-ds/fonts.css'       // Figtree, self-hosted (opt-i
 Or take the first two together, and add fonts if you want the bundled typeface:
 
 ```js
-import '@teya/lemonade-mobile-ds/styles.css'      // tokens + typography
+import '@teya/lemonade-mobile-ds/styles.css'      // tokens, typography, components
 import '@teya/lemonade-mobile-ds/fonts.css'
 ```
 
@@ -70,7 +70,7 @@ the tokens alone pulls in neither.
 |---|---|
 | `@teya/lemonade-mobile-ds` | Typed tokens, text styles and asset manifests |
 | `@teya/lemonade-mobile-ds/react` | The React components. Needs React, which is an optional peer |
-| `@teya/lemonade-mobile-ds/styles.css` | Barrel: tokens + typography |
+| `@teya/lemonade-mobile-ds/styles.css` | Barrel: tokens, typography and every component's classes |
 | `@teya/lemonade-mobile-ds/fonts.css` | Figtree `@font-face` declarations |
 | `@teya/lemonade-mobile-ds/components.css` | Every component's classes, including the `.lmnd-icon` mask utility |
 | `@teya/lemonade-mobile-ds/lemonade.css` | Everything in one self-contained file, for prototypes |

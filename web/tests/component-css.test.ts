@@ -27,9 +27,9 @@ describe('the generated components.css', () => {
 })
 
 describe('Storybook', () => {
-  // Importing component stylesheets one by one is how Spinner came to render as nothing:
-  // the component landed, its stylesheet did not reach the preview, and no test noticed
-  // because the others read the CSS file directly rather than rendering with it.
+  // Storybook has to load what the package ships, not a list of stylesheets kept in step by
+  // hand. A component whose CSS never reaches the preview renders as nothing, and the tests
+  // that read the CSS file directly all still pass.
   it('loads the barrel rather than naming component stylesheets', () => {
     expect(previewSource).toContain("import '../styles/components.css'")
     expect(previewSource).not.toMatch(/import '\.\.\/src\/components\/.*\.css'/)

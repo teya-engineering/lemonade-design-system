@@ -47,7 +47,7 @@ export function Spinner<E extends ElementType = typeof defaultSpinnerElement>({
   return (
     <Slot<ElementType>
       as={defaultSpinnerElement}
-      {...labelling(contentDescription, 'status')}
+      {...labelling(contentDescription, 'status', rest)}
       {...rest}
       className={className ? `${classes} ${className}` : classes}
     />

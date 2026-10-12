@@ -17,7 +17,7 @@ const SIZES: LemonadeAssetSize[] = [
 const meta: Meta<typeof Spinner> = {
   title: 'Components/Spinner',
   component: Spinner,
-  args: { label: 'Loading' },
+  args: { contentDescription: 'Loading' },
 }
 export default meta
 
