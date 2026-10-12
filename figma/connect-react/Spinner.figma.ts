@@ -9,8 +9,8 @@ const instance = figma.selectedInstance
 // throws inside Figma, which publishes as an empty snippet rather than failing the upload.
 const code = figma.code
 
-// Figma writes 2X where LemonadeAssetSize repeats the X, and offers five of the eight
-// sizes the code carries. Web spells them camelCase, the platforms PascalCase.
+// Figma writes 2X where the size enums repeat the X, and offers five of the eight sizes
+// the code carries. Web and SwiftUI spell the entries camelCase; KMP spells them Pascal.
 const size = instance.getEnum('Size', {
   Small: 'small',
   Medium: 'medium',

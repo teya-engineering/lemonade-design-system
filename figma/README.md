@@ -79,10 +79,8 @@ swapped asset does not emit it.
 properties and hands the snippets to `tsc` against the component sources, so a prop the
 component does not take, an enum spelled the platform's way, or a placeholder that is not a
 valid expression fails offline. It derives the combinations from each template's own
-enum maps and reports the total it checked, so a vocabulary added in Figma is covered
-without editing the script. The
-combinations come from the template's own `getEnum` maps, so a vocabulary added in Figma is
-covered without editing the checker.
+`getEnum` maps and reports the total it checked, so a vocabulary added in Figma is covered
+without editing the checker.
 
 **No config is named `figma.config.json` on purpose.** That is the CLI's
 default filename, so a bare `figma connect publish` would silently publish just
