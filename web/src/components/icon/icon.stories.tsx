@@ -19,7 +19,7 @@ const SIZES: LemonadeAssetSize[] = [
 const meta: Meta<typeof Icon> = {
   title: 'Components/Icon',
   component: Icon,
-  args: { use: 'heart', label: 'Favourite' },
+  args: { use: 'heart', contentDescription: 'Favourite' },
 }
 export default meta
 

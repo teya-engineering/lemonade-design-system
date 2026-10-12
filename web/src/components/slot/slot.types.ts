@@ -1,4 +1,4 @@
-import type { ComponentProps, ElementType } from 'react'
+import type { ComponentPropsWithoutRef, ElementType } from 'react'
 
 /**
  * The element a component renders. Lemonade components carry styling, not semantics, so
@@ -14,7 +14,7 @@ export type SlotAsProps<E extends ElementType = ElementType> = {
  * and `as="a"` accepts `href` — which a fixed prop type cannot express.
  */
 export type SlotOwnProps<E extends ElementType, OmitIntrinsic extends string = ''> = SlotAsProps<E> &
-  Omit<ComponentProps<E>, keyof SlotAsProps<E> | OmitIntrinsic>
+  Omit<ComponentPropsWithoutRef<E>, keyof SlotAsProps<E> | OmitIntrinsic>
 
 /** A component's own props, plus the element's. `OmitIntrinsic` drops ones it owns. */
 export type SlotProps<P extends object, E extends ElementType = ElementType, OmitIntrinsic extends string = ''> = P &

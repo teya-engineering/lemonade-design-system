@@ -39,7 +39,7 @@ the API:
 import { Icon, Text } from '@teya/lemonade-mobile-ds/react'
 
 <Text textStyle="bodyMediumRegular" as="p">Account balance</Text>
-<Icon use="heart" size="large" label="Favourite" />
+<Icon use="heart" size="large" contentDescription="Favourite" />
 ```
 
 Icons are CSS masks, so they take their colour from `currentColor` and need the SVGs
