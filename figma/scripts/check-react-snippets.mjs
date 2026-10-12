@@ -1,13 +1,7 @@
-// Checks that the JSX the React templates emit compiles against the components it calls.
-// `npm run validate` only proves Figma can run a template; this renders every property
-// combination and type-checks the result, which is what catches a prop the component does
-// not take, an enum value spelled the platform's way, or a placeholder that is not a valid
-// expression. Runs offline, no token needed.
+// Type-checks the JSX the React templates emit against the components it calls.
 //
-//   node scripts/check-react-snippets.mjs
-//
-// The Kotlin and Swift equivalent is check-templates.mjs; that one parses declarations,
-// this one hands the snippets to tsc, because the web package has a compiler already.
+// `npm run validate` only proves Figma can run a template, and needs a token; this runs
+// offline, which is why CI can depend on it.
 
 import { execFileSync } from 'node:child_process'
 import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
