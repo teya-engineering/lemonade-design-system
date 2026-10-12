@@ -8,7 +8,7 @@
 //
 // scripts/web-svg-converter.main.kts decides what an icon *is* — its currentColor
 // behaviour, its filename, the typed manifest. This step only shrinks bytes.
-import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { optimize } from 'svgo'
@@ -40,6 +40,13 @@ for (const { dir, config } of FAMILIES) {
     after += data.length
     await writeFile(join(targetDir, file), data)
   }
+  // Writing over the target is not the same as matching it: an asset renamed or dropped
+  // upstream would stay here and ship, because package.json's files[] takes all of dist.
+  const expected = new Set(files)
+  const stale = (await readdir(targetDir)).filter((file) => !expected.has(file))
+  await Promise.all(stale.map((file) => rm(join(targetDir, file), { force: true })))
+
   const saved = before === 0 ? 0 : Math.round((1 - after / before) * 100)
-  console.log(`✓ dist/${dir}: ${files.length} files, ${saved}% smaller`)
+  const dropped = stale.length ? `, ${stale.length} stale removed` : ''
+  console.log(`✓ dist/${dir}: ${files.length} files, ${saved}% smaller${dropped}`)
 }
