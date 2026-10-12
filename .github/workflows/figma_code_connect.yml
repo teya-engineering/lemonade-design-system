@@ -12,6 +12,11 @@ on:
       # has to re-run the check that proves the templates still compile.
       - 'web/src/components/**'
       - 'web/src/react/**'
+      # The React check runs `npm ci` in web/ and type-checks with its TypeScript, so a
+      # dependency, manifest or Node change alters what this job proves.
+      - 'web/package.json'
+      - 'web/package-lock.json'
+      - 'web/.nvmrc'
       - '.github/workflows/figma_code_connect.yml'
 
 concurrency:
