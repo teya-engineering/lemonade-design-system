@@ -687,11 +687,22 @@ escalate from `α 0.1` through `0.2` to `0.3`. Web maps it directly:
 | `:disabled` | `--lmnd-opacity-disabled` over the whole control |
 | loading | dimmed as disabled, slots suppressed, spinner shown |
 
-Mobile has no hover, so its components take whichever rung suits them for press, and
-they disagree: KMP's Button uses `bgBrandInteractive` for a pressed Primary/Solid while
-IconButton and Link use `bgBrandPressed`. Web follows the ladder, which makes a pressed
-Primary button darker on web than on mobile. That divergence is accepted; interaction
-states are being revisited across the system.
+Mobile has no hover, so its components take whichever rung suits them for press, and they
+disagree. In `Button.kt` four variants reach for `-interactive` where web uses `-pressed`:
+
+| Variant | KMP's pressed colour | Web's |
+|---|---|---|
+| Primary / Solid | `bgBrandInteractive` | `bg-brand-pressed` |
+| Critical / Solid | `bgCriticalInteractive` | `bg-critical-pressed` |
+| Critical / Subtle | `bgCriticalSubtleInteractive` | `bg-critical-subtle-pressed` |
+| On Brand | `bgBrandElevatedInteractive` | `bg-brand-elevated-pressed` |
+
+while IconButton and Link use the `-pressed` rung for the same variants. On Color reaches
+for `-interactive` on both, but that one is forced rather than chosen: the always-light
+family has no `-pressed` rung to reach for.
+
+So a pressed button is darker on web than on mobile for those four. That divergence is
+accepted; interaction states are being revisited across the system.
 
 The variant × type colour triples and the size → geometry tuples are not restated here.
 Both platforms already agree token-for-token, in
