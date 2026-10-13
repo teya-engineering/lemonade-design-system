@@ -101,8 +101,6 @@ describe('Button', () => {
       expect(buttonCss).toMatch(/\.lmnd-button \.lmnd-spinner\s*\{[^}]*color:\s*inherit/)
     })
 
-    // An attribute written after `{...rest}` lands even where its expression is undefined,
-    // so every ARIA default has to be spread before the caller's props.
     it('keeps a caller-supplied name rather than overwriting it', () => {
       render(<Button label="Saving" loading aria-label="Saving your changes" />)
       expect(screen.getByRole('button', { name: 'Saving your changes' })).toBeTruthy()

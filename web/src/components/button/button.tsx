@@ -35,12 +35,6 @@ export function Button({
 }: ButtonProps) {
   const classes = buttonClasses({ variant, emphasis, size, loading, expandContents })
 
-  // While loading the spinner replaces the label, so the button needs a name from
-  // somewhere — but only when the caller has not given it one, since writing the attribute
-  // after the spread sets it even where the expression is undefined.
-  // Every ARIA default goes in here, spread before the caller's props. An attribute
-  // written after `{...rest}` lands even when its expression is undefined, which is how a
-  // caller's own value gets discarded.
   // Filled in only where the caller left no value, then spread after their props: a wrapper
   // forwarding `aria-label={undefined}` would otherwise leave the spinner-only button
   // unnamed.
