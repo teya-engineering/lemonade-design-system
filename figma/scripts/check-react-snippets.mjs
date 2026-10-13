@@ -20,19 +20,6 @@ const tag = (strings, ...values) =>
     language: 'typescript',
   })
 
-/** The subset of shared/render.ts a template can reach with no Figma document behind it. */
-const renderer = (instance, t) => {
-  const language = t``.language
-  if (language !== 'typescript') throw new Error(`expected typescript, got ${language}`)
-  const quote = (value) =>
-    String(value ?? '')
-      .replace(/\\/g, '\\\\')
-      .replace(/"/g, '\\"')
-      .replace(/\r?\n/g, '\\n')
-  // No document, so no slot has connected instances: every icon prop takes its placeholder,
-  // which is the branch a published snippet hits anyway while web has no asset templates.
-  return { imports: new Set(), quote, snippets: () => undefined, slot: () => '{}', slotIcon: () => undefined }
-}
 
 /**
  * Every combination of the enum and boolean properties a template reads. Derived from the
@@ -64,9 +51,9 @@ function render(source, props) {
     getBoolean: (name) => props[name] === true,
     getSlot: () => undefined,
   }
-  const body = `const figma = arguments[0]; const renderer = arguments[1];\n${source}\nreturn globalThis.__result`
+  const body = `const figma = arguments[0];\n${source}\nreturn globalThis.__result`
   // eslint-disable-next-line no-new-func
-  const result = new Function(body)({ selectedInstance: instance, code: tag }, renderer)
+  const result = new Function(body)({ selectedInstance: instance, code: tag })
   return String(result.example)
 }
 
@@ -95,9 +82,18 @@ let total = 0
 try {
   for (const template of templates) {
     const raw = readFileSync(template, 'utf8')
+    // The React templates are self-contained: shared/render.ts accepts only Kotlin and
+    // Swift, so a template reaching for it would throw inside Figma and publish an empty
+    // snippet. Saying so here beats the stub that used to make it appear to work.
+    if (raw.includes("from '../shared/render'")) {
+      console.error(
+        `${relative(root, template)} imports the shared renderer, which accepts only kotlin and swift.\n` +
+          'Teach shared/render.ts the language first, or keep the template self-contained.',
+      )
+      process.exit(1)
+    }
     const source = raw
       .replace(/^import figma from 'figma'$/m, '')
-      .replace(/^import \{ renderer \} from '\.\.\/shared\/render'$/m, '')
       .replace(/^export default /m, 'globalThis.__result = ')
 
     const imports = [...raw.matchAll(/"import \{ ([^}]+)\} from '([^']+)'"/g)].map(([, names, from]) => ({
