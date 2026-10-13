@@ -28,7 +28,7 @@ describe('Spinner', () => {
     expect(screen.getByRole('status').className).toBe(spinnerClasses({ size: 'xLarge' }))
   })
 
-  it('renders a span unless asked otherwise', () => {
+  it('renders a span', () => {
     render(<Spinner contentDescription="Loading" />)
     expect(screen.getByRole('status').tagName).toBe('SPAN')
   })
@@ -44,6 +44,15 @@ describe('Spinner', () => {
     it('announces itself as a status', () => {
       render(<Spinner contentDescription="Loading your balance" />)
       expect(screen.getByRole('status', { name: 'Loading your balance' })).not.toHaveAttribute('aria-hidden')
+    })
+
+    // The element is fixed because role="status" is what makes the announcement work, and
+    // a wrapper forwarding `aria-label={undefined}` means "no opinion", not "no name".
+    it('keeps its name when a wrapper forwards an explicit undefined', () => {
+      render(<Spinner contentDescription="Loading" aria-label={undefined} data-testid="spinner" />)
+      const node = screen.getByTestId('spinner')
+      expect(node).toHaveAttribute('role', 'status')
+      expect(node).toHaveAttribute('aria-label', 'Loading')
     })
 
     it('hides itself when something adjacent already says it is loading', () => {
