@@ -41,9 +41,9 @@ export function Button({
   // Every ARIA default goes in here, spread before the caller's props. An attribute
   // written after `{...rest}` lands even when its expression is undefined, which is how a
   // caller's own value gets discarded.
-  // Filled in only where the caller left no value, then spread *after* their props. The
-  // other order looks equivalent and is not: a wrapper forwarding `aria-label={undefined}`
-  // would spread that over the default and leave the spinner-only button unnamed.
+  // Filled in only where the caller left no value, then spread after their props: a wrapper
+  // forwarding `aria-label={undefined}` would otherwise leave the spinner-only button
+  // unnamed.
   const aria: Record<string, unknown> = {}
   if (loading) {
     if (rest['aria-busy'] === undefined) aria['aria-busy'] = true

@@ -548,4 +548,6 @@ every style name to its class.
 - Full width: set the width on the element. Add `lmnd-button--expand` to stretch the label
   area and leave the icons at the edges.
 
-Hover and press come from the stylesheet; do not add classes for them.
+Hover and press come from the stylesheet; do not add classes for them. Hover is inside
+`@media (hover: hover)`, so a tap on a touch screen does not leave the button stuck in
+the hover colour.

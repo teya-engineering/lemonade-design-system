@@ -1697,8 +1697,12 @@
   background-color: var(--lmnd-button-bg);
 }
 
-.lmnd-button:hover:not(:disabled) {
-  background-color: var(--lmnd-button-bg-hover);
+/* A tap leaves :hover stuck on until something else is tapped, and this package is for
+   mobile web prototypes, so that is the common case rather than the edge one. */
+@media (hover: hover) {
+  .lmnd-button:hover:not(:disabled) {
+    background-color: var(--lmnd-button-bg-hover);
+  }
 }
 
 .lmnd-button:active:not(:disabled) {
