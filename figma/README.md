@@ -2,8 +2,7 @@
 
 Maps Lemonade Figma components to their call sites, so Figma Dev Mode and MCP-driven
 agents emit real Lemonade code instead of raw layer output. One Figma component, three
-labels: `Compose` and `SwiftUI` map components today; `React` is configured here and
-takes its first template in the PR that connects Button.
+labels: `Compose`, `SwiftUI` and `React`.
 
 ## Layout
 
