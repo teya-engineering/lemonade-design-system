@@ -1,50 +1,48 @@
-import type { CSSProperties, ElementType } from 'react'
+import type { ComponentPropsWithoutRef, CSSProperties } from 'react'
 import { iconNames } from '../../icons.generated'
 import type { IconName } from '../../icons.generated'
-import { Slot } from '../slot/slot'
-import type { SlotProps } from '../slot/slot.types'
 import { iconClasses } from './icon.classes'
 import type { IconAppearance } from './icon.types'
 
 /** Where the package's `dist/assets/icons` are served from. */
 export const defaultIconBasePath = '/assets/icons'
 
-export const defaultIconElement = 'span'
-
-export type IconOwnProps = IconAppearance & {
-  /** The icon's name, e.g. `heart`, `arrow-right`. */
-  use: IconName
-  /**
-   * What a screen reader should say, or `null` when the icon repeats adjacent text and
-   * should be skipped. Named as the platforms name it, and required for the same reason
-   * they make it required-but-nullable: which one applies is never the component's call.
-   * It is never rendered — visible text beside an icon is the caller's own markup.
-   */
-  contentDescription: string | null
-  /** Serving the icons elsewhere — a CDN, a different public directory — changes this. */
-  basePath?: string
-}
-
-export type IconProps<E extends ElementType = typeof defaultIconElement> = SlotProps<IconOwnProps, E, 'children'>
+export type IconProps = Omit<ComponentPropsWithoutRef<'span'>, 'children'> &
+  IconAppearance & {
+    /** The icon's name, e.g. `heart`, `arrow-right`. */
+    use: IconName
+    /**
+     * What a screen reader should say, or `null` when the icon repeats adjacent text and
+     * should be skipped. Named as the platforms name it, and required for the same reason
+     * they make it required-but-nullable: which one applies is never the component's call.
+     * It is never rendered — visible text beside an icon is the caller's own markup.
+     */
+    contentDescription: string | null
+    /** Serving the icons elsewhere — a CDN, a different public directory — changes this. */
+    basePath?: string
+  }
 
 /**
- * Renders a Lemonade icon as a masked element, so it takes its colour from `currentColor`
- * and needs no fill rewriting.
+ * Renders a Lemonade icon as a masked span, so it takes its colour from `currentColor` and
+ * needs no fill rewriting.
+ *
+ * The element is fixed, as it is on the platforms. An icon that is also a link or a button
+ * is that element wrapping this one, which keeps the interactive semantics where the
+ * browser already puts them.
  *
  * @example
  * <Icon use="heart" contentDescription="Favourite" />
- * <Icon use="arrow-right" size="small" contentDescription={null} />
+ * <a href="/favourites"><Icon use="heart" contentDescription="Favourites" /></a>
  */
-export function Icon<E extends ElementType = typeof defaultIconElement>({
+export function Icon({
   use,
   contentDescription,
   size = 'medium',
   basePath = defaultIconBasePath,
-  as,
   className,
   style,
   ...rest
-}: IconProps<E>) {
+}: IconProps) {
   // A name off the generated list means the mask resolves to nothing and the element
   // renders as blank space — silent, and easy to miss in a prototype.
   if (!iconNames.includes(use)) {
@@ -53,30 +51,21 @@ export function Icon<E extends ElementType = typeof defaultIconElement>({
 
   const classes = iconClasses({ size })
 
-  // An element the caller chose brings its own semantics — a link is a link, not an image —
-  // so it takes the name and keeps the rest. Spread before the caller's props, because an
-  // attribute written after them lands even when its expression is undefined, which throws
-  // away a role or label they passed on purpose.
-  // Two rules, both about not overruling the caller. An element they named keeps its own
-  // semantics — a link is a link, not an image — so it takes only the name. And the
-  // element is hidden only when it is the one this component owns: aria-hidden on a link
-  // or a button leaves something reachable by keyboard and absent from the accessibility
-  // tree, which is worse than either alone.
-  const chosenByCaller = as !== undefined
-  const announce =
-    contentDescription === null
-      ? chosenByCaller
-        ? {}
-        : { 'aria-hidden': true }
-      : chosenByCaller
-        ? { 'aria-label': contentDescription }
-        : { role: 'img', 'aria-label': contentDescription }
+  // Filled in only where the caller left no value, then spread after their props. The other
+  // order looks equivalent and is not: a wrapper forwarding `aria-label={undefined}` would
+  // spread that over the name and leave the icon unlabelled.
+  const aria: Record<string, unknown> = {}
+  if (contentDescription === null) {
+    if (rest['aria-hidden'] === undefined) aria['aria-hidden'] = true
+  } else {
+    if (rest.role === undefined) aria.role = 'img'
+    if (rest['aria-label'] === undefined) aria['aria-label'] = contentDescription
+  }
 
   return (
-    <Slot<ElementType>
-      as={as ?? defaultIconElement}
-      {...announce}
+    <span
       {...rest}
+      {...aria}
       className={className ? `${classes} ${className}` : classes}
       style={{ ...(style as CSSProperties), '--lmnd-icon': `url('${basePath}/${use}.svg')` } as CSSProperties}
     />

@@ -40,7 +40,7 @@ describe('Icon', () => {
     expect(screen.getByRole('img')).toHaveStyle({ '--lmnd-icon': "url('https://cdn.example.com/icons/heart.svg')" })
   })
 
-  it('renders a span unless asked otherwise', () => {
+  it('renders a span', () => {
     render(<Icon use="heart" contentDescription="Favourite" />)
     expect(screen.getByRole('img').tagName).toBe('SPAN')
   })
@@ -68,38 +68,21 @@ describe('Icon', () => {
 
   // The polymorphic API exists so an icon can be a link or a button. Those elements say
   // what they are; overwriting that with role="img" would hide the interaction.
-  describe('an element the caller chose', () => {
-    it('keeps its own role and takes only the name', () => {
-      render(
-        <Icon as="a" href="/favourites" use="heart" contentDescription="Favourites" data-testid="icon" />,
-      )
-      const node = screen.getByTestId('icon')
-      expect(node.tagName).toBe('A')
-      expect(node).not.toHaveAttribute('role')
-      expect(node).toHaveAttribute('aria-label', 'Favourites')
+  // The element is fixed, as it is on the platforms: an icon that is also a link is an <a>
+  // wrapping this one, which keeps the interactive semantics where the browser puts them.
+  describe('the caller still has the last word on ARIA', () => {
+    it.each([
+      ['aria-label', 'Described elsewhere'],
+      ['role', 'presentation'],
+    ])('keeps a caller %s', (attribute, value) => {
+      render(<Icon use="heart" contentDescription="Favourite" {...{ [attribute]: value }} data-testid="icon" />)
+      expect(screen.getByTestId('icon')).toHaveAttribute(attribute, value)
     })
 
-    it('still takes role="img" when it renders the default element', () => {
-      render(<Icon use="heart" contentDescription="Favourites" />)
-      expect(screen.getByRole('img', { name: 'Favourites' })).toBeTruthy()
-    })
-
-    // A focusable element carrying aria-hidden is reachable by keyboard and absent from the
-    // accessibility tree, which is worse than either on its own. The component only ever
-    // hides the element it owns.
-    it.each(['a', 'button', 'div'] as const)('does not hide a %s the caller chose', (element) => {
-      render(<Icon as={element} use="heart" contentDescription={null} data-testid="icon" />)
-      expect(screen.getByTestId('icon')).not.toHaveAttribute('aria-hidden')
-    })
-
-    it('still hides the span it renders by default', () => {
-      render(<Icon use="heart" contentDescription={null} data-testid="icon" />)
-      expect(screen.getByTestId('icon')).toHaveAttribute('aria-hidden', 'true')
-    })
-
-    it('does not discard a role the caller passed', () => {
-      render(<Icon use="heart" contentDescription={null} role="presentation" data-testid="icon" />)
-      expect(screen.getByTestId('icon')).toHaveAttribute('role', 'presentation')
+    // A wrapper forwarding `aria-label={undefined}` means "no opinion", not "no name".
+    it('keeps its name when a wrapper forwards an explicit undefined', () => {
+      render(<Icon use="heart" contentDescription="Favourite" aria-label={undefined} data-testid="icon" />)
+      expect(screen.getByTestId('icon')).toHaveAttribute('aria-label', 'Favourite')
     })
   })
 

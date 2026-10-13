@@ -744,6 +744,7 @@ For Button:
 | Text content | `text: String` | `text: String` | `children` — a label is not always one flat string, and JSX can carry emphasis or a link inside a sentence |
 | Icon colour | `tint: Color` | `tint: Color` | none — the mask takes `currentColor`, so the containing element's colour applies |
 | Icon description | `contentDescription: String?` | the same | `contentDescription: string \| null`, required, so the decorative case is spelled rather than defaulted. It is a name for assistive tech, never rendered — visible text beside an icon is the caller's own markup |
+| Icon's element | a Composable, no element choice | a View | a fixed `<span>`. An icon that is also a link is an `<a>` wrapping it, which keeps the interactive semantics the browser already provides — a polymorphic `as` made the component responsible for ARIA it cannot get right for every host |
 | The asset size enum | `LemonadeAssetSize` | `LemonadeUiIconSize`, per component | `LemonadeAssetSize`, following KMP's shared one — Spinner and CountryFlag take the same sizes |
 | `expandContents` | slot overloads only; the icon form hardcodes `false` | slot overloads only | every button — there is one component, so no narrower form to attach it to |
 | The fill treatment | `type` | `type` | `emphasis` — `type` on a `<button>` is the DOM's own attribute, and shadowing it would break form submission |
