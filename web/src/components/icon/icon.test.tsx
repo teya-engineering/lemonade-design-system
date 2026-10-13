@@ -66,8 +66,6 @@ describe('Icon', () => {
     })
   })
 
-  // The polymorphic API exists so an icon can be a link or a button. Those elements say
-  // what they are; overwriting that with role="img" would hide the interaction.
   // The element is fixed, as it is on the platforms: an icon that is also a link is an <a>
   // wrapping this one, which keeps the interactive semantics where the browser puts them.
   describe('the caller still has the last word on ARIA', () => {
