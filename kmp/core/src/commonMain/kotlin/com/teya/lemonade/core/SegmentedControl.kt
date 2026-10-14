@@ -33,12 +33,11 @@ public class TabButtonProperties private constructor(
         /**
          * Creates a tab that shows only [icon].
          *
-         * @param contentDescription **localized** name screen readers announce for the tab. Always pass one: when
-         * null the tab has no accessible name, and the default exists only so existing `icon(icon)` calls compile.
+         * @param contentDescription **localized** name screen readers announce for the tab.
          */
         public fun icon(
             icon: LemonadeIcons,
-            contentDescription: String? = null,
+            contentDescription: String,
         ): TabButtonProperties =
             TabButtonProperties(
                 label = null,
@@ -47,11 +46,15 @@ public class TabButtonProperties private constructor(
             )
 
         @Deprecated(
-            message = "Use the overload with a contentDescription parameter.",
-            replaceWith = ReplaceWith("icon(icon, contentDescription = null)"),
-            level = DeprecationLevel.HIDDEN,
+            message = "This tab has no accessible name. Use icon(icon, contentDescription) with a localized name.",
+            level = DeprecationLevel.WARNING,
         )
-        public fun icon(icon: LemonadeIcons): TabButtonProperties = icon(icon = icon, contentDescription = null)
+        public fun icon(icon: LemonadeIcons): TabButtonProperties =
+            TabButtonProperties(
+                label = null,
+                icon = icon,
+                contentDescription = null,
+            )
     }
 }
 

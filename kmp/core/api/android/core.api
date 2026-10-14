@@ -1131,9 +1131,8 @@ public final class com/teya/lemonade/core/TabButtonProperties {
 }
 
 public final class com/teya/lemonade/core/TabButtonProperties$Companion {
-	public final synthetic fun icon (Lcom/teya/lemonade/core/LemonadeIcons;)Lcom/teya/lemonade/core/TabButtonProperties;
+	public final fun icon (Lcom/teya/lemonade/core/LemonadeIcons;)Lcom/teya/lemonade/core/TabButtonProperties;
 	public final fun icon (Lcom/teya/lemonade/core/LemonadeIcons;Ljava/lang/String;)Lcom/teya/lemonade/core/TabButtonProperties;
-	public static synthetic fun icon$default (Lcom/teya/lemonade/core/TabButtonProperties$Companion;Lcom/teya/lemonade/core/LemonadeIcons;Ljava/lang/String;ILjava/lang/Object;)Lcom/teya/lemonade/core/TabButtonProperties;
 	public final fun label (Ljava/lang/String;)Lcom/teya/lemonade/core/TabButtonProperties;
 	public final fun labelAndIcon (Ljava/lang/String;Lcom/teya/lemonade/core/LemonadeIcons;)Lcom/teya/lemonade/core/TabButtonProperties;
 }
