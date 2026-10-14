@@ -319,6 +319,21 @@ public fun LemonadeToastHost(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
+    ToastStateHost { toastState ->
+        PlatformToastHost(
+            modifier = modifier,
+            toastState = toastState,
+            content = content,
+        )
+    }
+}
+
+/**
+ * Supplies a [LemonadeToastState] to [overlay] and the composition beneath it, and plays each toast's
+ * haptic and auto-dismiss, so every platform's overlay shares them.
+ */
+@Composable
+internal fun ToastStateHost(overlay: @Composable (LemonadeToastState) -> Unit) {
     val toastState = remember { LemonadeToastState() }
 
     val toast = toastState.currentToast
@@ -341,11 +356,7 @@ public fun LemonadeToastHost(
     }
 
     CompositionLocalProvider(LocalLemonadeToastState provides toastState) {
-        PlatformToastHost(
-            modifier = modifier,
-            toastState = toastState,
-            content = content,
-        )
+        overlay(toastState)
     }
 }
 

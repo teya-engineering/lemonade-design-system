@@ -9,11 +9,19 @@ public struct LemonadeTabButtonProperties: Identifiable, Hashable {
     public let label: String?
     /// Optional icon to display before the label.
     public let icon: LemonadeIcon?
+    /// The localized name VoiceOver reads for an icon-only tab.
+    public let contentDescription: String?
 
-    private init(id: String? = nil, label: String?, icon: LemonadeIcon?) {
+    private init(
+        id: String? = nil,
+        label: String?,
+        icon: LemonadeIcon?,
+        contentDescription: String? = nil
+    ) {
         self.id = id ?? UUID().uuidString
         self.label = label
         self.icon = icon
+        self.contentDescription = contentDescription
     }
 
     /// Creates a tab with a text label.
@@ -27,8 +35,16 @@ public struct LemonadeTabButtonProperties: Identifiable, Hashable {
     }
 
     /// Creates a tab with only an icon.
-    public static func icon(_ icon: LemonadeIcon) -> Self {
-        Self(label: nil, icon: icon)
+    ///
+    /// - Parameters:
+    ///   - icon: The icon to display.
+    ///   - contentDescription: The localized name VoiceOver reads for the tab. When nil, the icon's raw name is read.
+    public static func icon(_ icon: LemonadeIcon, contentDescription: String? = nil) -> Self {
+        Self(label: nil, icon: icon, contentDescription: contentDescription)
+    }
+
+    var accessibilityName: String {
+        label ?? contentDescription ?? icon?.rawValue ?? ""
     }
 }
 
@@ -106,6 +122,19 @@ public extension LemonadeUi {
     ///         .label("Tab 3"),
     ///     ],
     ///     selectedTab: selectedTabIndex,
+    ///     onTabSelected: { tabIndex in /* ... */ }
+    /// )
+    /// ```
+    ///
+    /// Give icon-only tabs a `contentDescription` so VoiceOver has a name to read:
+    /// ```swift
+    /// LemonadeUi.SegmentedControl(
+    ///     properties: [
+    ///         .icon(.list, contentDescription: "List"),
+    ///         .icon(.stackThree, contentDescription: "Grid"),
+    ///     ],
+    ///     selectedTab: selectedTabIndex,
+    ///     size: .small,
     ///     onTabSelected: { tabIndex in /* ... */ }
     /// )
     /// ```
@@ -213,7 +242,7 @@ private struct LemonadeSegmentedControlView: View {
             }
             .buttonStyle(SegmentPressStyle())
             .frame(maxWidth: .infinity)
-            .accessibilityLabel(property.label ?? property.icon?.rawValue ?? "")
+            .accessibilityLabel(property.accessibilityName)
             .accessibilityAddTraits(isSelected ? .isSelected : [])
             .background {
                 if drawSelectionIndicator && isSelected {
@@ -334,6 +363,7 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
     private func syncSegments(of control: UISegmentedControl, context: Context) {
         let key = SegmentsKey(
             labels: properties.map(\.label),
+            contentDescriptions: properties.map(\.contentDescription),
             icons: properties.map(\.icon),
             size: size,
             contentWidth: contentWidth,
@@ -363,7 +393,7 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
         // Without a proposed width the label renders untruncated, and UIKit squashes an image wider than its segment.
         renderer.proposedSize = ProposedViewSize(width: key.contentWidth, height: nil)
         let image = renderer.uiImage?.withRenderingMode(.alwaysTemplate)
-        image?.accessibilityLabel = property.label ?? property.icon?.rawValue
+        image?.accessibilityLabel = property.accessibilityName
         return image
     }
 
@@ -392,6 +422,7 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
 
     struct SegmentsKey: Equatable {
         let labels: [String?]
+        let contentDescriptions: [String?]
         let icons: [LemonadeIcon?]
         let size: LemonadeSegmentedControlSize
         let contentWidth: CGFloat
@@ -456,9 +487,9 @@ struct LemonadeSegmentedControl_Previews: PreviewProvider {
 
             LemonadeUi.SegmentedControl(
                 properties: [
-                    .icon(.heart),
-                    .icon(.star),
-                    .icon(.gear),
+                    .icon(.heart, contentDescription: "Favorites"),
+                    .icon(.star, contentDescription: "Starred"),
+                    .icon(.gear, contentDescription: "Settings"),
                 ],
                 selectedTab: 0,
                 size: .small,

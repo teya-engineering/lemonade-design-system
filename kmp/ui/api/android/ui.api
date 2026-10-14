@@ -762,6 +762,10 @@ public final class com/teya/lemonade/ToastVoice : java/lang/Enum {
 	public static fun values ()[Lcom/teya/lemonade/ToastVoice;
 }
 
+public final class com/teya/lemonade/Toast_androidKt {
+	public static final fun LemonadeToastHost (ZLandroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/teya/lemonade/TooltipFooterScope : androidx/compose/foundation/layout/RowScope {
 	public static final field $stable I
 	public final fun Action (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/core/TooltipFooterActionVariant;Landroidx/compose/runtime/Composer;II)V
