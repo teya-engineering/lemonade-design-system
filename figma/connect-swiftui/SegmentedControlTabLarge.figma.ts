@@ -23,7 +23,7 @@ if (icon && icon.type === 'INSTANCE') {
 export default {
   example: iconCode
     ? (iconOnly
-        ? figma.swift`LemonadeTabButtonProperties.icon(${iconCode})`
+        ? figma.swift`LemonadeTabButtonProperties.icon(${iconCode}, contentDescription: "" /* TODO: localized name for this icon-only tab */)`
         : figma.swift`LemonadeTabButtonProperties.labelAndIcon("${quote(label)}", icon: ${iconCode})`)
     : figma.swift`LemonadeTabButtonProperties.label("${quote(label)}")`,
   id: 'segmented-control-tab-large',

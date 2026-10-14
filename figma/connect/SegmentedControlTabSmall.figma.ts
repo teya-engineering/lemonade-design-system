@@ -23,7 +23,7 @@ if (icon && icon.type === 'INSTANCE') {
 export default {
   example: iconCode
     ? (iconOnly
-        ? figma.kotlin`TabButtonProperties.icon(icon = ${iconCode})`
+        ? figma.kotlin`TabButtonProperties.icon(icon = ${iconCode}, contentDescription = "" /* TODO: localized name for this icon-only tab */)`
         : figma.kotlin`TabButtonProperties.labelAndIcon(label = "${quote(label)}", icon = ${iconCode})`)
     : figma.kotlin`TabButtonProperties.label(label = "${quote(label)}")`,
   imports: ['import com.teya.lemonade.core.TabButtonProperties', ...(iconCode ? ['import com.teya.lemonade.core.LemonadeIcons'] : [])],
