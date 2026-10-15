@@ -16,6 +16,15 @@ export type {
   LemonadeButtonType,
   LemonadeButtonVariant,
 } from './components/button/button.types'
+export { cardClasses } from './components/card/card.classes'
+export type {
+  CardAppearance,
+  LemonadeCardBackground,
+  LemonadeCardHeadingStyle,
+  LemonadeCardPadding,
+} from './components/card/card.types'
+export { dividerClasses } from './components/divider/divider.classes'
+export type { DividerAppearance, DividerVariant } from './components/divider/divider.types'
 export { iconClasses } from './components/icon/icon.classes'
 export type { LemonadeAssetSize } from './asset-size'
 export type { IconAppearance } from './components/icon/icon.types'

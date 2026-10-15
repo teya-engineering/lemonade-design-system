@@ -27,8 +27,12 @@ on:
       - 'swiftui/Sources/Lemonade/Components/LemonadeSpinner.swift'
       - 'kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/Button.kt'
       - 'kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeIconButtonShape.kt'
+      - 'kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeCard.kt'
+      - 'kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/DividerVariant.kt'
       - 'swiftui/Sources/Lemonade/Components/LemonadeButton.swift'
       - 'swiftui/Sources/Lemonade/Components/LemonadeIconButton.swift'
+      - 'swiftui/Sources/Lemonade/Components/LemonadeCard.swift'
+      - 'swiftui/Sources/Lemonade/Components/LemonadeDivider.swift'
       - 'web/src/asset-size.ts'
       - 'web/src/components/**/*.types.ts'
       # components.css and lemonade.css are generated from these, so a component

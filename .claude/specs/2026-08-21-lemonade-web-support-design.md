@@ -784,12 +784,43 @@ does web, in `button-palette.css`:
 | Shape | `shape: LemonadeIconButtonShape` | the same | `shape`, but only `circular` reaches the class list. Rounded is the shape unless something says otherwise, so each size modifier carries its own rounded radius and `lmnd-icon-button--circular` overrides all of them — a `--rounded` class would restate the default and carry nothing, which is how Divider treats `solid` and `horizontal` too |
 | The box | `requiredSize`, a fixed square | the same | fixed `width` and `height`. Button uses `min-height` so a wrapping label can grow it; there is no label here to wrap |
 
+For Card:
+
+| Difference | KMP | SwiftUI | Web |
+|---|---|---|---|
+| Header and footer | `header: CardHeaderConfig?`, `footerAction: CardFooterActionConfig?` | the same, generic over its two slot views | the same object props, with `ReactNode` where the platforms take a builder. The vocabulary is what has to match, and §17.5 leaves slot typing to each platform |
+| Content | a `ColumnScope` slot | a `@ViewBuilder` | `children`, start-aligned as both platforms align it — KMP's `Column` defaults to `Alignment.Start`, SwiftUI's `VStack` is `.leading`. A flex column stretches by default, so this is set rather than inherited, and a child that should span the card says so the way it would with `fillMaxWidth()` |
+| The navigation indicator's assets | `LemonadeIcons.ChevronRight`, bundled | the same | `basePath`, forwarded to the glyph. It is the one icon a card renders that the caller did not name, so it would otherwise miss a CDN the rest of the app's icons are served from |
+| Content padding | `.padding()` on the inner column | the same | a modifier on the card, `lmnd-card--padding-<size>`, whose rule reaches `lmnd-card__content`. One class list then covers the component, and the header and footer keep their own spacing |
+| Title truncation | `maxLines = 1`, `TextOverflow.Ellipsis` | the same | `text-overflow: ellipsis`, with `min-width: 0` on the text column — a flex item's automatic minimum would otherwise let a long title push the trailing slot out of the card |
+| The overline's text box | `defaultMinSize(minHeight = size500)`, in dp against an sp line box | the same | `min-height`, in rem against a rem line box, so the line box still wins when text is scaled up |
+| Footer press | fades to `0.5f`, a literal | the same | `opacity: var(--lmnd-opacity-50)`. The platforms hardcode the value; the token already exists, so web reads it |
+| The footer's element | a clickable `Column` | a `Button` | a `<button type="button">`, so it is reachable by keyboard and cannot submit a form it sits in |
+| Clipping | `.clip(shape)` on the card | the same | `overflow: hidden`. A focus ring is drawn outside the element it belongs to and the default content padding is none, so a control flush against the edge would lose its ring — the content gives it room from the inside instead, since a clip margin would widen the boundary for every descendant and let a full-bleed child paint over the corners |
+| `lemonadeCardItems` | a `LazyListScope` builder | — | — a lazy-list extension with no web equivalent |
+
+For Divider, which both platforms expose as two entry points rather than one with an
+orientation, and so does web:
+
+| Difference | KMP | SwiftUI | Web |
+|---|---|---|---|
+| Dashes | `PathEffect.dashPathEffect`, size-100 of line to spacing-100 of gap | a `Shape` drawing the same intervals | a `repeating-linear-gradient` over the same two tokens. `border-style: dashed` leaves the dash length to the browser, which would read as a different component per engine |
+| Dash direction | the Canvas knows the axis | the same | a custom property the orientation modifier sets, rather than two rules whose order decides the winner |
+| The element | a `Canvas` | a `Shape` | an `<hr>`, which is already a separator. The labelled form cannot be one — an `<hr>` holds no children — so it is a `<div role="separator">` named by its label |
+| The label | horizontal only | the same | the same, as `label`; the vertical component does not take one, and `DividerAppearance` makes that pairing unrepresentable rather than leaving it to the class builder |
+| Orientation for assistive tech | — | — | web-only: `aria-orientation="vertical"`. An `<hr>` is already a separator, but ARIA defaults one to horizontal, so without it the orientation lives only in the stylesheet |
+
 Enum vocabularies are held by a parity check in the mould of
 `scripts/web-text-style-parity-check.main.kts`, which already parses Swift source to
-keep typography identical: it extracts the `LemonadeButtonVariant`, `LemonadeButtonType`,
-`LemonadeButtonSize` and `LemonadeIconButtonShape` entries from the KMP and SwiftUI
+keep typography identical: it extracts each vocabulary's entries from the KMP and SwiftUI
 sources and asserts web's string unions match, case-insensitively. Web literals use
-SwiftUI's casing (`'xSmall'`), so the comparison is mechanical.
+SwiftUI's casing (`'xSmall'`), so the comparison is mechanical. A Swift case named after a
+keyword is written in backticks — `case \`default\`` on both of Card's — so the extractor
+strips them rather than reading one entry short.
+
+Divider's `orientation` is absent from the check on purpose: it mirrors no enum, being
+which of the two components you reached for, and exists only because one class builder
+serves both.
 
 ### 17.6 Consuming without React, or without npm
 

@@ -1,0 +1,151 @@
+/* A full-width container with the semantic container radius, which is what clips whatever
+   the content puts in the corners.
+
+   The clip is the card's own bounds, with nothing allowed past them: a clip margin would
+   buy room for a focus ring, but it widens the boundary for every descendant, so a
+   full-bleed child would paint over the rounded corners. The ring is given room from the
+   other side instead — see the rule below the content. */
+.lmnd-card {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--lmnd-radius-container-default);
+}
+
+/* Any author `display` beats the browser's own `[hidden]` rule, whatever the specificity,
+   so a component that sets one has to put `hidden` back. `until-found` is left alone: it is
+   hidden but still reachable by find-in-page, and the browser hides it a different way. */
+.lmnd-card[hidden]:not([hidden='until-found']) {
+  display: none;
+}
+
+.lmnd-card--default {
+  background-color: var(--lmnd-color-bg-default);
+}
+
+.lmnd-card--subtle {
+  background-color: var(--lmnd-color-bg-subtle);
+}
+
+.lmnd-card--elevated {
+  background-color: var(--lmnd-color-bg-elevated);
+}
+
+/* The padding sits inside the content, between the header and the footer, so the modifier
+   on the card reaches the element it pads — but only its own. A descendant selector would
+   also match a nested card's content, and since these four have equal specificity the outer
+   card's padding would win on source order. */
+.lmnd-card--padding-none > .lmnd-card__content {
+  padding: var(--lmnd-spacing-0);
+}
+
+.lmnd-card--padding-x-small > .lmnd-card__content {
+  padding: var(--lmnd-spacing-100);
+}
+
+.lmnd-card--padding-small > .lmnd-card__content {
+  padding: var(--lmnd-spacing-200);
+}
+
+.lmnd-card--padding-medium > .lmnd-card__content {
+  padding: var(--lmnd-spacing-400);
+}
+
+/* Start-aligned, as the platforms lay it out — KMP's Column defaults to Alignment.Start and
+   SwiftUI's VStack is .leading. A flex column stretches by default, which would widen an
+   intrinsically sized child like a button to the whole card. A child that should fill it
+   says so, the way it would with fillMaxWidth(). */
+.lmnd-card__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* A focus ring is drawn outside the element it belongs to, and the card clips to its own
+   bounds, so a control sitting flush against the edge would lose it. Inside the content the
+   ring is drawn inwards instead. Three classes, so it outranks a component's own
+   :focus-visible rule whatever order the bundle concatenates the stylesheets in.
+
+   Moving it inwards puts it on the control's own fill rather than on the card, so it takes
+   the control's content colour with it — border-selected is near-black on a secondary solid
+   button in the light theme and near-white on one in the dark, and either way the ring
+   would all but vanish. currentColor is the one colour guaranteed to read against whatever
+   the control is filled with, because it is what the control draws its own content in. */
+.lmnd-card .lmnd-card__content :focus-visible {
+  outline-color: currentColor;
+  outline-offset: calc(var(--lmnd-border-width-focus-ring) * -1);
+}
+
+/* No bottom padding: the content below supplies its own, so a card with a header and no
+   padding has the two meeting rather than a gap the platforms do not draw. */
+.lmnd-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  padding: var(--lmnd-spacing-300) var(--lmnd-spacing-400) var(--lmnd-spacing-0);
+}
+
+.lmnd-card__header-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  /* Both lines are one line each, ellipsised, so the column cannot be allowed to size to
+     its content: a flex item's min-width is auto, which would let a long title push the
+     trailing slot out of the card instead of truncating. */
+  min-width: 0;
+}
+
+/* An overline's line box is a third shorter than a default heading's, so an overline-only
+   header would sit noticeably tighter. The floor gives it back most of that — size-500
+   against a line box of line-height-400 — without matching a default heading outright,
+   which is where the platforms leave it too. */
+.lmnd-card__header--overline .lmnd-card__header-text {
+  min-height: var(--lmnd-size-500);
+}
+
+.lmnd-card__title,
+.lmnd-card__subtitle {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lmnd-card__title {
+  color: var(--lmnd-color-content-primary);
+}
+
+.lmnd-card__header--overline .lmnd-card__title {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-card__subtitle {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-card__navigation-indicator {
+  color: var(--lmnd-color-content-secondary);
+}
+
+/* A full-width button across the bottom, fading to half opacity while pressed rather than
+   taking a -pressed fill, as the platforms draw it. */
+.lmnd-card__footer-action {
+  width: 100%;
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-400) var(--lmnd-spacing-400);
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  color: var(--lmnd-color-content-primary);
+  background: none;
+}
+
+.lmnd-card__footer-action:active {
+  opacity: var(--lmnd-opacity-50);
+}
+
+.lmnd-card__footer-action:focus-visible {
+  outline: var(--lmnd-border-width-focus-ring) solid var(--lmnd-color-border-selected);
+  outline-offset: calc(var(--lmnd-spacing-50) * -1);
+}
