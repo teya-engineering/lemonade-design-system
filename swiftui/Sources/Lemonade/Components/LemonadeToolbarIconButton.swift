@@ -101,7 +101,9 @@ private struct LemonadeToolbarIconMenuView<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
     var body: some View {
-        menu.lemonadeToolbarProminence(prominence)
+        menu
+            .lemonadeToolbarProminence(prominence)
+            .modifier(FilledMenuShape(prominence: prominence))
     }
 
     @ViewBuilder
@@ -127,6 +129,31 @@ private struct LemonadeToolbarIconMenuView<Content: View>: View {
                 .tint(LemonadeTheme.colors.content.contentPrimary)
         } label: {
             LemonadeToolbarIconLabel(icon: icon, title: contentDescription)
+        }
+    }
+}
+
+/// Gives a filled `Menu` the circle a filled `Button` gets for free.
+///
+/// SwiftUI promotes a `ToolbarItem` to a `UIBarButtonItem` only when it recognises the label, and a
+/// `Menu` is not recognised — the same bridge documented on ``LemonadeUi/ToolbarIconButton``. It
+/// crosses as a plain view, so `.borderedProminent` sizes a capsule around the glyph instead of the
+/// bar item's square. `buttonBorderShape(.circle)` does not survive the trip either. Pinning the
+/// frame to the bar item's own diameter is what actually lands it on the circle, so the two
+/// components agree on what `.filled` looks like.
+private struct FilledMenuShape: ViewModifier {
+    let prominence: LemonadeToolbarIconProminence
+
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        switch prominence {
+        case .plain:
+            // Nothing to reshape: a plain menu draws no background.
+            content
+        case .filled:
+            content
+                .frame(width: LemonadeSizes.size900.value, height: LemonadeSizes.size900.value)
+                .clipShape(Circle())
         }
     }
 }

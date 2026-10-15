@@ -25,6 +25,7 @@ private enum TopBarDemo: String, CaseIterable, Identifiable {
     case basicInline
     case basicClose
     case basicTrailingSlot
+    case basicFilledActions
     case basicBottomSlot
     case basicSubheading
     case search
@@ -43,6 +44,7 @@ private enum TopBarDemo: String, CaseIterable, Identifiable {
         case .basicInline: return "Basic (inline title)"
         case .basicClose: return "Basic (close button)"
         case .basicTrailingSlot: return "Basic with Trailing Slot"
+        case .basicFilledActions: return "Basic with Filled Actions"
         case .basicBottomSlot: return "Basic with Bottom Slot"
         case .basicSubheading: return "Basic with Subheading"
         case .search: return "Search"
@@ -62,6 +64,7 @@ private enum TopBarDemo: String, CaseIterable, Identifiable {
         case .basicInline: BasicInlineDemo()
         case .basicClose: BasicCloseDemo()
         case .basicTrailingSlot: BasicTrailingSlotDemo()
+        case .basicFilledActions: BasicFilledActionsDemo()
         case .basicBottomSlot: BasicBottomSlotDemo()
         case .basicSubheading: BasicSubheadingDemo()
         case .search: SearchTopBarDemo()
@@ -186,6 +189,58 @@ private struct BasicTrailingSlotDemo: View {
                     contentDescription: "More",
                     action: {}
                 )
+            }
+        }
+    }
+}
+
+/// A filled button beside a filled menu, because `.filled` is one prominence and the two have to
+/// agree on what it looks like. They sit side by side so a difference in shape is obvious.
+private struct BasicFilledActionsDemo: View {
+    var body: some View {
+        ScrollView {
+            SampleListContent()
+        }
+        .lemonadeTopBar(
+            label: "Filled actions",
+            navigationAction: NavigationAction(action: .back, onAction: {})
+        ) {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                LemonadeUi.ToolbarIconButton(
+                    icon: .pencilLine,
+                    contentDescription: "Edit",
+                    prominence: .filled(tint: LemonadeTheme.colors.background.bgBrand),
+                    action: {}
+                )
+            }
+            #if compiler(>=6.2)
+            if #available(iOS 26, *) {
+                ToolbarSpacer(.fixed, placement: .navigationBarTrailing)
+            }
+            #endif
+            ToolbarItem(placement: .navigationBarTrailing) {
+                LemonadeUi.ToolbarIconMenu(
+                    icon: .plus,
+                    contentDescription: "Add",
+                    prominence: .filled(tint: LemonadeTheme.colors.background.bgBrand)
+                ) {
+                    Section {
+                        Button {} label: {
+                            Label {
+                                Text("New item")
+                            } icon: {
+                                LemonadeIcon.plus.image
+                            }
+                        }
+                        Button {} label: {
+                            Label {
+                                Text("Import")
+                            } icon: {
+                                LemonadeIcon.download.image
+                            }
+                        }
+                    }
+                }
             }
         }
     }
