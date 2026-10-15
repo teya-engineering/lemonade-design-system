@@ -38,6 +38,28 @@ private val fourTabItems: List<BottomTabBarItem> = listOf(
 
 private val threeTabItems: List<BottomTabBarItem> = fourTabItems.take(n = 3)
 
+private val longLabelTabItems: List<BottomTabBarItem> = listOf(
+    BottomTabBarItem(
+        label = "Bank transfers",
+        icon = LemonadeIcons.Wallet,
+        selectedIcon = LemonadeIcons.WalletSolid,
+    ),
+    BottomTabBarItem(
+        label = "Card payments",
+        icon = LemonadeIcons.ChartStats,
+        selectedIcon = LemonadeIcons.ChartStatsSolid,
+    ),
+    BottomTabBarItem(
+        label = "Notifications",
+        icon = LemonadeIcons.BrandTeyaSymbol,
+    ),
+    BottomTabBarItem(
+        label = "Subscriptions",
+        icon = LemonadeIcons.SparklesSoft,
+        selectedIcon = LemonadeIcons.SparklesSoftSolid,
+    ),
+)
+
 private val twoTabItems: List<BottomTabBarItem> = listOf(
     BottomTabBarItem(
         label = "Home",
@@ -78,6 +100,12 @@ internal fun BottomTabBarDisplay() {
             key = "two-items",
             title = "Two items",
             items = twoTabItems,
+            initialIndex = 0,
+        )
+        bottomTabBarSection(
+            key = "long-labels",
+            title = "Long labels (drops to icons)",
+            items = longLabelTabItems,
             initialIndex = 0,
         )
         item(key = "bottom-spacer") {

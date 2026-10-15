@@ -154,31 +154,76 @@ its content for width intrinsics, and `SubcomposeLayout` throws when you do that
 If a component really has to change shape once the text stops fitting, measure the text against
 the room it has:
 
+Split it in two: a composable that measures the labels, and a pure function that decides. The
+decision is the part worth testing, and it does not need a composition to run.
+
 ```kotlin
+// In the component. One gutter value, passed to both the predicate and the label that pads by it,
+// so the two can never drift.
+val slotWidthPx = rowWidthPx.toFloat() / items.size
+val labelGutter = LemonadeTheme.spaces.spacing100
+val showLabels = rememberLabelsFit(
+    items = items,
+    slotWidthPx = slotWidthPx,
+    labelGutter = labelGutter,
+)
+
 @Composable
-private fun rememberLabelsFit(items: List<Item>, rowWidthPx: Int): Boolean {
+private fun rememberLabelsFit(
+    items: List<Item>,
+    slotWidthPx: Float,
+    labelGutter: Dp,
+): Boolean {
     val textMeasurer = rememberTextMeasurer()
     val labelStyle = LemonadeTheme.typography.bodyXSmallMedium.textStyle
-    val gutterPx = with(LocalDensity.current) {
-        (LemonadeTheme.spaces.spacing100 * 2).roundToPx()
-    }
-
-    return remember(rowWidthPx, items, labelStyle, textMeasurer, gutterPx) {
-        if (rowWidthPx == 0 || items.isEmpty()) return@remember true
-        val availableWidthPx = rowWidthPx / items.size - gutterPx
-        items.all { item ->
-            textMeasurer.measure(
+    val labelWidthsPx = remember(items, labelStyle, textMeasurer) {
+        items.map { item ->
+            val measured = textMeasurer.measure(
                 text = item.label,
                 style = labelStyle,
                 maxLines = 1,
-            ).size.width <= availableWidthPx
+            )
+            measured.size.width
         }
     }
+
+    return labelsFitSlot(
+        labelWidthsPx = labelWidthsPx,
+        slotWidthPx = slotWidthPx,
+        gutterPx = with(LocalDensity.current) { labelGutter.roundToPx() },
+    )
+}
+
+internal fun labelsFitSlot(
+    labelWidthsPx: List<Int>,
+    slotWidthPx: Float,
+    gutterPx: Int,
+): Boolean {
+    if (slotWidthPx <= 0f) return true
+
+    val budgetPx = slotWidthPx.toInt() - gutterPx * 2
+    return labelWidthsPx.all { labelWidthPx -> labelWidthPx <= budgetPx }
 }
 ```
 
 `rememberTextMeasurer()` measures without laying anything out, so it works in the places
 `SubcomposeLayout` cannot.
+
+Three details the arithmetic depends on:
+
+- **Memoise the measurement, not the geometry.** Keys on exactly what is measured — the items, the
+  style and the measurer, which already carries density, resolver and layout direction. Geometry
+  left outside the memo can never be compared against a stale budget.
+- **Floor the slot share.** A `Row` hands the remainder of an inexact division to its first
+  children, so the narrowest slot is the floor of the share. Rounding up promises the last slot a
+  pixel it never gets.
+- **Double one side's gutter; do not round the pair.** `Modifier.padding(horizontal = x)` rounds
+  each side on its own, so `gutterPx * 2` is what the label actually carries.
+  `(x * 2).roundToPx()` lands a pixel out at some densities, and a pixel is enough to ellipsise a
+  label the bar judged to fit.
+
+Float division also makes an empty item list harmless: `slotWidthPx` is not a number, no label is
+measured, and the predicate answers `true`.
 
 ### SwiftUI: minHeight, or @ScaledMetric
 

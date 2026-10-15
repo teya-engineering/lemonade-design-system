@@ -20,8 +20,9 @@
  *     a function while keeping the old binary symbol" pattern, and it auto-passes.
  *
  *     Exception B: a `-` line for a member carrying Kotlin's internal
- *     name-mangling suffix `$<module>` (Android variants append `_<variant>`, e.g.
- *     `$expressive_release`) is NOT a break. Kotlin mangles `internal` members
+ *     name-mangling suffix `$<module>` (the Gradle root project prefixes it and
+ *     Android variants append `_<variant>`, e.g. `$Lemonade_expressive_release`)
+ *     is NOT a break. Kotlin mangles `internal` members
  *     that must stay public in bytecode with the module name so no other module
  *     can resolve them. They leak into the JVM `.api` dump as that artifact — the
  *     Kotlin-visibility-aware `.klib.api` dump omits them — and only the module's
@@ -162,17 +163,22 @@ public object ApiStabilityClassifier {
 
     /**
      * True when this `.api` line declares a member carrying Kotlin's internal
-     * name-mangling suffix `$<module>` (Android variants append `_<variant>`, e.g.
-     * `$expressive_release`). Such a member is `internal`: bytecode-public only so
-     * the same module's own call sites can link, name-mangled so no other module
-     * can resolve it, and absent from the `.klib.api` dump. Renaming or removing
-     * one — e.g. a Compose `getLambda$<hash>$<module>` singleton re-hashing when a
-     * surrounding `@Composable` gains a parameter — can never break an external
-     * consumer, so it is not an ABI break.
+     * name-mangling suffix `$<module>`. Such a member is `internal`: bytecode-public
+     * only so the same module's own call sites can link, name-mangled so no other
+     * module can resolve it, and absent from the `.klib.api` dump. Renaming or
+     * removing one — e.g. a Compose `getLambda$<hash>$<module>` singleton re-hashing
+     * when a surrounding `@Composable` gains a parameter — can never break an
+     * external consumer, so it is not an ABI break.
      *
-     * Only the trailing `$`-segment is compared to the module name, so the real
-     * default-argument symbols (`copy$default`, `show$default`, …) are left
-     * flagged: their suffix is `default`, never the module name.
+     * The suffix is not just the module name. Kotlin builds it from the compilation's
+     * module name, which the Gradle root project prefixes, and Android appends the
+     * variant: `expressive`, `expressive_release`, `Lemonade_expressive_release` are
+     * all the same `internal` member of `:expressive`. So the module has to appear as
+     * one `_`-delimited word of the suffix rather than as its head.
+     *
+     * Only the trailing `$`-segment is examined, so the real default-argument symbols
+     * (`copy$default`, `show$default`, …) stay flagged: their suffix is `default`,
+     * which is never a module name.
      */
     private fun String.isInternalMangled(module: String): Boolean {
         if (module.isEmpty()) return false
@@ -182,7 +188,7 @@ public object ApiStabilityClassifier {
             delimiter = '$',
             missingDelimiterValue = "",
         )
-        return mangleSuffix == module || mangleSuffix.startsWith("${module}_")
+        return module in mangleSuffix.split('_')
     }
 
     /**
