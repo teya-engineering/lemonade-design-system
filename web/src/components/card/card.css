@@ -1,0 +1,116 @@
+/* A full-width container with the semantic container radius, which is what clips whatever
+   the content puts in the corners. */
+.lmnd-card {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--lmnd-radius-container-default);
+}
+
+.lmnd-card--default {
+  background-color: var(--lmnd-color-bg-default);
+}
+
+.lmnd-card--subtle {
+  background-color: var(--lmnd-color-bg-subtle);
+}
+
+.lmnd-card--elevated {
+  background-color: var(--lmnd-color-bg-elevated);
+}
+
+/* The padding sits inside the content, between the header and the footer, so the modifier
+   on the card reaches the element it pads. */
+.lmnd-card--padding-none .lmnd-card__content {
+  padding: var(--lmnd-spacing-0);
+}
+
+.lmnd-card--padding-x-small .lmnd-card__content {
+  padding: var(--lmnd-spacing-100);
+}
+
+.lmnd-card--padding-small .lmnd-card__content {
+  padding: var(--lmnd-spacing-200);
+}
+
+.lmnd-card--padding-medium .lmnd-card__content {
+  padding: var(--lmnd-spacing-400);
+}
+
+.lmnd-card__content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* No bottom padding: the content below supplies its own, so a card with a header and no
+   padding has the two meeting rather than a gap the platforms do not draw. */
+.lmnd-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  padding: var(--lmnd-spacing-300) var(--lmnd-spacing-400) var(--lmnd-spacing-0);
+}
+
+.lmnd-card__header-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  /* Both lines are one line each, ellipsised, so the column cannot be allowed to size to
+     its content: a flex item's min-width is auto, which would let a long title push the
+     trailing slot out of the card instead of truncating. */
+  min-width: 0;
+}
+
+/* An overline's line box is shorter than a default heading's, so a header titled with only
+   an overline would sit tighter than one with a default heading. The floor evens that out,
+   and because it is a minimum the line box still wins at large text sizes. */
+.lmnd-card__header--overline .lmnd-card__header-text {
+  min-height: var(--lmnd-size-500);
+}
+
+.lmnd-card__title,
+.lmnd-card__subtitle {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lmnd-card__title {
+  color: var(--lmnd-color-content-primary);
+}
+
+.lmnd-card__header--overline .lmnd-card__title {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-card__subtitle {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-card__navigation-indicator {
+  color: var(--lmnd-color-content-secondary);
+}
+
+/* A full-width button across the bottom. The platforms fade it to half opacity while
+   pressed rather than changing its fill, so there is no -pressed token here to read. */
+.lmnd-card__footer-action {
+  width: 100%;
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-400) var(--lmnd-spacing-400);
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  color: var(--lmnd-color-content-primary);
+  background: none;
+}
+
+.lmnd-card__footer-action:active {
+  opacity: var(--lmnd-opacity-50);
+}
+
+.lmnd-card__footer-action:focus-visible {
+  outline: var(--lmnd-border-width-focus-ring) solid var(--lmnd-color-border-selected);
+  outline-offset: calc(var(--lmnd-spacing-50) * -1);
+}
