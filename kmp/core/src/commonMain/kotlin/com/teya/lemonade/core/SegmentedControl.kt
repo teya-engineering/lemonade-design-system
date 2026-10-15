@@ -5,7 +5,15 @@ package com.teya.lemonade.core
 public class TabButtonProperties private constructor(
     public val label: String?,
     public val icon: LemonadeIcons?,
+    public val contentDescription: String?,
 ) {
+    // The companion's calls compile to a public synthetic accessor for this signature, which the API baseline locks.
+    private constructor(label: String?, icon: LemonadeIcons?) : this(
+        label = label,
+        icon = icon,
+        contentDescription = null,
+    )
+
     public companion object {
         public fun label(label: String): TabButtonProperties =
             TabButtonProperties(
@@ -22,10 +30,30 @@ public class TabButtonProperties private constructor(
                 icon = icon,
             )
 
+        /**
+         * Creates a tab that shows only [icon].
+         *
+         * @param contentDescription **localized** name screen readers announce for the tab.
+         */
+        public fun icon(
+            icon: LemonadeIcons,
+            contentDescription: String,
+        ): TabButtonProperties =
+            TabButtonProperties(
+                label = null,
+                icon = icon,
+                contentDescription = contentDescription,
+            )
+
+        @Deprecated(
+            message = "This tab has no accessible name. Use icon(icon, contentDescription) with a localized name.",
+            level = DeprecationLevel.WARNING,
+        )
         public fun icon(icon: LemonadeIcons): TabButtonProperties =
             TabButtonProperties(
                 label = null,
                 icon = icon,
+                contentDescription = null,
             )
     }
 }

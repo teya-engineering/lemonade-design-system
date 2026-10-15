@@ -64,6 +64,12 @@ import com.teya.lemonade.core.TabButtonProperties
  * )
  * ```
  *
+ * Give icon-only tabs a **localized** `contentDescription` through [TabButtonProperties.Companion.icon], so screen
+ * readers have a name to announce:
+ * ```kotlin
+ * TabButtonProperties.icon(icon = LemonadeIcons.List, contentDescription = "List")
+ * ```
+ *
  * @param properties the tab buttons to draw
  * @param selectedTab index of the selected tab
  * @param onTabSelected called with the index of the newly selected tab
@@ -100,7 +106,7 @@ public fun LemonadeUi.SegmentedControl(
                 property.icon?.let { icon ->
                     LemonadeUi.Icon(
                         icon = icon,
-                        contentDescription = property.label,
+                        contentDescription = property.label ?: property.contentDescription,
                         size = LemonadeAssetSize.Small,
                         tint = contentColor,
                     )
