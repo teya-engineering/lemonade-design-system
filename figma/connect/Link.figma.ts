@@ -19,7 +19,7 @@ export default {
   example: figma.kotlin`LemonadeUi.Link(
     text = "${quote(text)}",
     onClick = { },${iconCode ? figma.kotlin`
-    icon = ${iconCode},` : ''}
+    leadingIcon = ${iconCode},` : ''}
 )`,
   imports: [
     'import com.teya.lemonade.LemonadeUi',
