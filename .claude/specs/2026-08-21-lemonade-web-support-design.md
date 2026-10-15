@@ -669,7 +669,10 @@ and the symptom would be a component that renders unstyled only for a consumer w
 the classes by hand, with every check green.
 
 The size vocabulary shared by Icon, Spinner and CountryFlag lives in `src/asset-size.ts`,
-mirroring KMP keeping `LemonadeAssetSize` in `core` rather than on one component.
+mirroring KMP keeping `LemonadeAssetSize` in `core` rather than on one component. The
+themed hues sit beside it in `src/themed-hue.ts` for the same reason, one level up from
+`components/`: KMP declares `ThemedHue` in `tokens`, and a component reads it rather than
+owning it.
 
 Colocated CSS is committed source, not build output, so the rule that `web/dist/` holds
 everything a build produces still holds. It sits under `web/src/` rather than
@@ -809,6 +812,23 @@ orientation, and so does web:
 | The element | a `Canvas` | a `Shape` | an `<hr>`, which is already a separator. The labelled form cannot be one — an `<hr>` holds no children — so it is a `<div role="separator">` named by its label |
 | The label | horizontal only | the same | the same, as `label`; the vertical component does not take one, and `DividerAppearance` makes that pairing unrepresentable rather than leaving it to the class builder |
 | Orientation for assistive tech | — | — | web-only: `aria-orientation="vertical"`. An `<hr>` is already a separator, but ARIA defaults one to horizontal, so without it the orientation lives only in the stylesheet |
+
+For Tag and SymbolContainer:
+
+| Difference | KMP | SwiftUI | Web |
+|---|---|---|---|
+| Tag's glyph | `icon: LemonadeIcons?` | `icon: LemonadeIcon?` | `use?: IconName`, decorative as it is on the platforms — the label beside it already says what the tag is |
+| Tag's label | `maxLines = 1`, ellipsis | the same | `text-overflow: ellipsis` on `lmnd-tag__label` |
+| Tag's role | none — a label, not a control | none | none. It is not a status region either: a tag announcing itself would repeat the row it sits in |
+| Tag's ring | `Modifier.border`, drawn without consuming layout | the same | an inset `box-shadow`. A tag is sized by its content, so `box-sizing` has no declared size to work against and a real border would add a pixel on every edge — a 20px tag on the platforms would be 22px here |
+| The voice palette | a `when` over the voice returning three colours | the same | three custom properties per voice class, so the geometry rules are written once |
+| SymbolContainer's forms | six overloads: glyph, initials or a slot, each by voice or by hue | eight, the four pairs doubled for the badge slot | one component whose props union the same six. A JavaScript call site has no overload resolution, so the alternatives are spelled with `never` and mixing them is a type error |
+| The themed palette | `LocalThemedColors.current.symbolContainerColors(theme)` | `LemonadeTheme.themed[style:]` | the same three custom properties, set from the hue rather than carried by a class. 34 hand-written blocks would be the alternative, and a hue added in Figma would then need a hand edit; written as `var()` references the container still follows the theme, and a non-React consumer sets the three properties itself |
+| `ThemedStyle` | `ThemedHue` entries, with `.subtle` | a struct of `hue` and `isSubtle` | `{ hue, subtle }`, following SwiftUI's shape. The hue vocabulary is parity-checked; the pairing is not, being a shape rather than an enum |
+| The badge's position | the layout measures the badge to compute an offset | the same | `position: absolute` at the corner. The platforms' arithmetic works out to the badge's corner overhanging the container's by spacing-100 on both axes, which CSS anchors without measuring, and it overflows without changing the container's size either way |
+| The two brand borders | `borderBrand` and `borderOnBrandLow` | the same | `borderNeutralLow` for both. Each of the platforms' tokens is drawn for a surface neither voice is: `border-brand` is a shade off `bg-brand` in the light theme and identical to it in the dark one, so no ring is drawn there at all; `border-on-brand-low` is white, for sitting on a saturated brand fill rather than on 30% of one. Neutral-low is translucent ink that reads against both fills in both themes, and is the ring `neutral` already uses. The platforms have the same gap — see issue #478 |
+| The badge's content | `badgeSlot`, usually a Lemonade Badge | the same | `badgeSlot`, any node — Lemonade has no web Badge yet |
+| `clipContent` | internal, for a slot that must be clipped | the same | `overflow` is the caller's through `className`; the container itself does not clip |
 
 Enum vocabularies are held by a parity check in the mould of
 `scripts/web-text-style-parity-check.main.kts`, which already parses Swift source to

@@ -203,3 +203,64 @@ the hover colour.
 - A vertical divider also needs `aria-orientation="vertical"`. An `<hr>` is a separator
   already, but ARIA reads one as horizontal unless it is told otherwise, so the orientation
   would exist only in the stylesheet.
+
+### Tag
+
+```html
+<span class="lmnd-tag lmnd-tag--positive lmnd-text-body-xsmall-semibold">
+  <span class="lmnd-icon" aria-hidden="true" style="--lmnd-icon: url('.../icons/heart.svg')"></span>
+  <span class="lmnd-tag__label">Settled</span>
+</span>
+```
+
+- Block: `lmnd-tag`. Always pair it with one voice and `lmnd-text-body-xsmall-semibold`.
+- Voice: `lmnd-tag--neutral`, `--critical`, `--warning`, `--info`, `--positive`,
+  `--neutral-on-color`, `--featured`. Each sets the fill, the border and the content colour,
+  so a tag without one has none of the three.
+- `lmnd-tag--neutral-on-color` is for a tag on a filled surface: it stays light-on-dark in
+  both themes rather than following the theme.
+- Wrap the label in `lmnd-tag__label`. It never wraps — a label too long for its container
+  truncates.
+- A glyph before the label is decorative, since the label says what the tag is. It takes no
+  size modifier: the tag sizes it.
+- A tag is a label, not a control or a status region. Give it no role.
+
+### SymbolContainer
+
+```html
+<span class="lmnd-symbol-container lmnd-symbol-container--medium lmnd-symbol-container--circle lmnd-symbol-container--brand">
+  <span class="lmnd-icon" aria-hidden="true" style="--lmnd-icon: url('.../icons/heart.svg')"></span>
+</span>
+```
+
+- Block: `lmnd-symbol-container`. A fixed square around one symbol: a glyph, a pair of
+  initials, or anything else.
+- Voice: `lmnd-symbol-container--neutral`, `--critical`, `--warning`, `--info`, `--positive`,
+  `--brand`, `--brand-subtle`. Each sets the fill, the border and the content colour.
+- Size: `lmnd-symbol-container--x-small` through `--xx-large`. Each sizes the container and
+  the glyph inside it, so the glyph takes no size modifier of its own.
+- Shape: `lmnd-symbol-container--circle` or `--rounded`. Rounded's radius steps up with the
+  size; circle is one value at every size.
+- Initials go in a span of their own carrying the type style the size pairs with:
+  `lmnd-text-body-xsmall-semibold` at x-small, through `lmnd-text-heading-small` at
+  xx-large. The container sets no typography, so initials written straight into it inherit
+  whatever the page is using.
+- Themed instead of a voice: leave the voice class off and set the container's three
+  properties from one of the seventeen hues.
+
+  ```html
+  <span
+    class="lmnd-symbol-container lmnd-symbol-container--large lmnd-symbol-container--rounded"
+    style="--lmnd-symbol-container-bg: var(--lmnd-color-themed-violet-background);
+           --lmnd-symbol-container-border: var(--lmnd-color-themed-violet-border);
+           --lmnd-symbol-container-content: var(--lmnd-color-themed-violet-on-background)"
+  >
+    <span class="lmnd-text-body-large-semibold">FM</span>
+  </span>
+  ```
+
+  Swap `violet` for any hue, and insert `-subtle` after it for that hue's subtle palette.
+  They are `var()` references rather than resolved colours, so the container still follows
+  the theme.
+- A badge goes in `lmnd-symbol-container__badge`, last. It sits over the bottom-right corner,
+  overhanging by spacing-100, and overflows without changing the container's size.
