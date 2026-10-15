@@ -4,6 +4,127 @@
  * Needs tokens.css for the custom properties these rules read.
  */
 
+.lmnd-button--primary.lmnd-button--solid,
+.lmnd-icon-button--primary.lmnd-icon-button--solid {
+  --lmnd-button-content: var(--lmnd-color-content-on-brand-high);
+  --lmnd-button-bg: var(--lmnd-color-bg-brand);
+  --lmnd-button-bg-hover: var(--lmnd-color-bg-brand-interactive);
+  --lmnd-button-bg-active: var(--lmnd-color-bg-brand-pressed);
+}
+
+.lmnd-button--primary.lmnd-button--subtle,
+.lmnd-icon-button--primary.lmnd-icon-button--subtle {
+  --lmnd-button-content: var(--lmnd-color-content-brand-high);
+  --lmnd-button-bg: var(--lmnd-color-bg-brand-subtle);
+  --lmnd-button-bg-hover: var(--lmnd-color-bg-subtle-interactive);
+  --lmnd-button-bg-active: var(--lmnd-color-bg-subtle-pressed);
+}
+
+.lmnd-button--primary.lmnd-button--ghost,
+.lmnd-icon-button--primary.lmnd-icon-button--ghost {
+  --lmnd-button-content: var(--lmnd-color-content-brand-high);
+  --lmnd-button-bg: transparent;
+  --lmnd-button-bg-hover: var(--lmnd-color-bg-subtle-interactive);
+  --lmnd-button-bg-active: var(--lmnd-color-bg-subtle-pressed);
+}
+
+.lmnd-button--secondary.lmnd-button--solid,
+.lmnd-icon-button--secondary.lmnd-icon-button--solid {
+  --lmnd-button-content: var(--lmnd-color-content-primary-inverse);
+  --lmnd-button-bg: var(--lmnd-color-bg-subtle-inverse);
+  --lmnd-button-bg-hover: var(--lmnd-color-bg-neutral-interactive);
+  --lmnd-button-bg-active: var(--lmnd-color-bg-neutral-pressed);
+}
+
+.lmnd-button--secondary.lmnd-button--subtle,
+.lmnd-icon-button--secondary.lmnd-icon-button--subtle {
+  --lmnd-button-content: var(--lmnd-color-content-primary);
+  --lmnd-button-bg: var(--lmnd-color-bg-neutral-subtle);
+  --lmnd-button-bg-hover: var(--lmnd-color-bg-neutral-subtle-interactive);
+  --lmnd-button-bg-active: var(--lmnd-color-bg-neutral-subtle-pressed);
+}
+
+.lmnd-button--secondary.lmnd-button--ghost,
+.lmnd-icon-button--secondary.lmnd-icon-button--ghost {
+  --lmnd-button-content: var(--lmnd-color-content-primary);
+  --lmnd-button-bg: transparent;
+  --lmnd-button-bg-hover: var(--lmnd-color-bg-neutral-subtle-interactive);
+  --lmnd-button-bg-active: var(--lmnd-color-bg-neutral-subtle-pressed);
+}
+
+/* Secondary Solid's fill dims further than the rest: to opacity-40, not opacity-disabled.
+   The rule above already applies opacity-disabled to the whole button, so the fill carries
+   the ratio of the two — 0.4 / 0.5 — and they multiply out. */
+.lmnd-button--secondary.lmnd-button--solid:disabled,
+.lmnd-icon-button--secondary.lmnd-icon-button--solid:disabled {
+  background-color: color-mix(in srgb, var(--lmnd-color-bg-subtle-inverse) 80%, transparent);
+}
+
+.lmnd-button--neutral.lmnd-button--solid,
+.lmnd-icon-button--neutral.lmnd-icon-button--solid {
+  --lmnd-button-content: var(--lmnd-color-content-primary);
+  --lmnd-button-bg: var(--lmnd-color-bg-elevated);
+  --lmnd-button-bg-hover: var(--lmnd-color-bg-elevated-interactive);
+  --lmnd-button-bg-active: var(--lmnd-color-bg-elevated-pressed);
+}
+
+.lmnd-button--neutral.lmnd-button--subtle,
+.lmnd-icon-button--neutral.lmnd-icon-button--subtle {
+  --lmnd-button-content: var(--lmnd-color-content-primary);
+  --lmnd-button-bg: var(--lmnd-color-bg-neutral-subtle);
+  --lmnd-button-bg-hover: var(--lmnd-color-bg-neutral-subtle-interactive);
+  --lmnd-button-bg-active: var(--lmnd-color-bg-neutral-subtle-pressed);
+}
+
+.lmnd-button--neutral.lmnd-button--ghost,
+.lmnd-icon-button--neutral.lmnd-icon-button--ghost {
+  --lmnd-button-content: var(--lmnd-color-content-primary);
+  --lmnd-button-bg: transparent;
+  --lmnd-button-bg-hover: var(--lmnd-color-bg-neutral-subtle-interactive);
+  --lmnd-button-bg-active: var(--lmnd-color-bg-neutral-subtle-pressed);
+}
+
+.lmnd-button--critical.lmnd-button--solid,
+.lmnd-icon-button--critical.lmnd-icon-button--solid {
+  --lmnd-button-content: var(--lmnd-color-content-always-light);
+  --lmnd-button-bg: var(--lmnd-color-bg-critical);
+  --lmnd-button-bg-hover: var(--lmnd-color-bg-critical-interactive);
+  --lmnd-button-bg-active: var(--lmnd-color-bg-critical-pressed);
+}
+
+.lmnd-button--critical.lmnd-button--subtle,
+.lmnd-icon-button--critical.lmnd-icon-button--subtle {
+  --lmnd-button-content: var(--lmnd-color-content-critical);
+  --lmnd-button-bg: var(--lmnd-color-bg-critical-subtle);
+  --lmnd-button-bg-hover: var(--lmnd-color-bg-critical-subtle-interactive);
+  --lmnd-button-bg-active: var(--lmnd-color-bg-critical-subtle-pressed);
+}
+
+.lmnd-button--critical.lmnd-button--ghost,
+.lmnd-icon-button--critical.lmnd-icon-button--ghost {
+  --lmnd-button-content: var(--lmnd-color-content-critical);
+  --lmnd-button-bg: transparent;
+  --lmnd-button-bg-hover: var(--lmnd-color-bg-critical-subtle-interactive);
+  --lmnd-button-bg-active: var(--lmnd-color-bg-critical-subtle-pressed);
+}
+
+.lmnd-button--on-brand,
+.lmnd-icon-button--on-brand {
+  --lmnd-button-content: var(--lmnd-color-content-on-brand-high);
+  --lmnd-button-bg: var(--lmnd-color-bg-brand-elevated);
+  --lmnd-button-bg-hover: var(--lmnd-color-bg-brand-elevated-interactive);
+  --lmnd-button-bg-active: var(--lmnd-color-bg-brand-elevated-pressed);
+}
+
+/* The always-light family has no -pressed rung, so hover and active share -interactive. */
+.lmnd-button--on-color,
+.lmnd-icon-button--on-color {
+  --lmnd-button-content: var(--lmnd-color-content-always-light);
+  --lmnd-button-bg: var(--lmnd-color-bg-always-light-medium);
+  --lmnd-button-bg-hover: var(--lmnd-color-bg-always-light-medium-interactive);
+  --lmnd-button-bg-active: var(--lmnd-color-bg-always-light-medium-interactive);
+}
+
 .lmnd-button {
   display: inline-flex;
   align-items: center;
@@ -72,114 +193,6 @@
   border-radius: var(--lmnd-radius-400);
 }
 
-/* Hover takes each family's -interactive rung, active its -pressed one. Ghost has no
-   resting fill, so transparent is the value, not a missing token. */
-.lmnd-button--primary.lmnd-button--solid {
-  --lmnd-button-content: var(--lmnd-color-content-on-brand-high);
-  --lmnd-button-bg: var(--lmnd-color-bg-brand);
-  --lmnd-button-bg-hover: var(--lmnd-color-bg-brand-interactive);
-  --lmnd-button-bg-active: var(--lmnd-color-bg-brand-pressed);
-}
-
-.lmnd-button--primary.lmnd-button--subtle {
-  --lmnd-button-content: var(--lmnd-color-content-brand-high);
-  --lmnd-button-bg: var(--lmnd-color-bg-brand-subtle);
-  --lmnd-button-bg-hover: var(--lmnd-color-bg-subtle-interactive);
-  --lmnd-button-bg-active: var(--lmnd-color-bg-subtle-pressed);
-}
-
-.lmnd-button--primary.lmnd-button--ghost {
-  --lmnd-button-content: var(--lmnd-color-content-brand-high);
-  --lmnd-button-bg: transparent;
-  --lmnd-button-bg-hover: var(--lmnd-color-bg-subtle-interactive);
-  --lmnd-button-bg-active: var(--lmnd-color-bg-subtle-pressed);
-}
-
-.lmnd-button--secondary.lmnd-button--solid {
-  --lmnd-button-content: var(--lmnd-color-content-primary-inverse);
-  --lmnd-button-bg: var(--lmnd-color-bg-subtle-inverse);
-  --lmnd-button-bg-hover: var(--lmnd-color-bg-neutral-interactive);
-  --lmnd-button-bg-active: var(--lmnd-color-bg-neutral-pressed);
-}
-
-.lmnd-button--secondary.lmnd-button--subtle {
-  --lmnd-button-content: var(--lmnd-color-content-primary);
-  --lmnd-button-bg: var(--lmnd-color-bg-neutral-subtle);
-  --lmnd-button-bg-hover: var(--lmnd-color-bg-neutral-subtle-interactive);
-  --lmnd-button-bg-active: var(--lmnd-color-bg-neutral-subtle-pressed);
-}
-
-.lmnd-button--secondary.lmnd-button--ghost {
-  --lmnd-button-content: var(--lmnd-color-content-primary);
-  --lmnd-button-bg: transparent;
-  --lmnd-button-bg-hover: var(--lmnd-color-bg-neutral-subtle-interactive);
-  --lmnd-button-bg-active: var(--lmnd-color-bg-neutral-subtle-pressed);
-}
-
-/* Secondary Solid's fill dims further than the rest: to opacity-40, not opacity-disabled.
-   The rule above already applies opacity-disabled to the whole button, so the fill carries
-   the ratio of the two — 0.4 / 0.5 — and they multiply out. */
-.lmnd-button--secondary.lmnd-button--solid:disabled {
-  background-color: color-mix(in srgb, var(--lmnd-color-bg-subtle-inverse) 80%, transparent);
-}
-
-.lmnd-button--neutral.lmnd-button--solid {
-  --lmnd-button-content: var(--lmnd-color-content-primary);
-  --lmnd-button-bg: var(--lmnd-color-bg-elevated);
-  --lmnd-button-bg-hover: var(--lmnd-color-bg-elevated-interactive);
-  --lmnd-button-bg-active: var(--lmnd-color-bg-elevated-pressed);
-}
-
-.lmnd-button--neutral.lmnd-button--subtle {
-  --lmnd-button-content: var(--lmnd-color-content-primary);
-  --lmnd-button-bg: var(--lmnd-color-bg-neutral-subtle);
-  --lmnd-button-bg-hover: var(--lmnd-color-bg-neutral-subtle-interactive);
-  --lmnd-button-bg-active: var(--lmnd-color-bg-neutral-subtle-pressed);
-}
-
-.lmnd-button--neutral.lmnd-button--ghost {
-  --lmnd-button-content: var(--lmnd-color-content-primary);
-  --lmnd-button-bg: transparent;
-  --lmnd-button-bg-hover: var(--lmnd-color-bg-neutral-subtle-interactive);
-  --lmnd-button-bg-active: var(--lmnd-color-bg-neutral-subtle-pressed);
-}
-
-.lmnd-button--critical.lmnd-button--solid {
-  --lmnd-button-content: var(--lmnd-color-content-always-light);
-  --lmnd-button-bg: var(--lmnd-color-bg-critical);
-  --lmnd-button-bg-hover: var(--lmnd-color-bg-critical-interactive);
-  --lmnd-button-bg-active: var(--lmnd-color-bg-critical-pressed);
-}
-
-.lmnd-button--critical.lmnd-button--subtle {
-  --lmnd-button-content: var(--lmnd-color-content-critical);
-  --lmnd-button-bg: var(--lmnd-color-bg-critical-subtle);
-  --lmnd-button-bg-hover: var(--lmnd-color-bg-critical-subtle-interactive);
-  --lmnd-button-bg-active: var(--lmnd-color-bg-critical-subtle-pressed);
-}
-
-.lmnd-button--critical.lmnd-button--ghost {
-  --lmnd-button-content: var(--lmnd-color-content-critical);
-  --lmnd-button-bg: transparent;
-  --lmnd-button-bg-hover: var(--lmnd-color-bg-critical-subtle-interactive);
-  --lmnd-button-bg-active: var(--lmnd-color-bg-critical-subtle-pressed);
-}
-
-.lmnd-button--on-brand {
-  --lmnd-button-content: var(--lmnd-color-content-on-brand-high);
-  --lmnd-button-bg: var(--lmnd-color-bg-brand-elevated);
-  --lmnd-button-bg-hover: var(--lmnd-color-bg-brand-elevated-interactive);
-  --lmnd-button-bg-active: var(--lmnd-color-bg-brand-elevated-pressed);
-}
-
-/* The always-light family has no -pressed rung, so hover and active share -interactive. */
-.lmnd-button--on-color {
-  --lmnd-button-content: var(--lmnd-color-content-always-light);
-  --lmnd-button-bg: var(--lmnd-color-bg-always-light-medium);
-  --lmnd-button-bg-hover: var(--lmnd-color-bg-always-light-medium-interactive);
-  --lmnd-button-bg-active: var(--lmnd-color-bg-always-light-medium-interactive);
-}
-
 /* The platforms pad the label itself rather than spacing the row, so the value still
    applies when there are no icons to sit between. */
 .lmnd-button--x-small .lmnd-button__label {
@@ -202,6 +215,128 @@
    content-secondary, so a rule rather than a prop keeps that true for markup written by
    hand as well. */
 .lmnd-button .lmnd-spinner {
+  color: inherit;
+}
+
+.lmnd-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--lmnd-size-1200);
+  height: var(--lmnd-size-1200);
+  padding: 0;
+  border: none;
+  border-radius: var(--lmnd-radius-350);
+  cursor: pointer;
+  color: var(--lmnd-button-content);
+  background-color: var(--lmnd-button-bg);
+}
+
+/* A tap leaves :hover stuck on until something else is tapped, and this package is for
+   mobile web prototypes, so that is the common case rather than the edge one. */
+@media (hover: hover) {
+  .lmnd-icon-button:hover:not(:disabled) {
+    background-color: var(--lmnd-button-bg-hover);
+  }
+}
+
+.lmnd-icon-button:active:not(:disabled) {
+  background-color: var(--lmnd-button-bg-active);
+}
+
+.lmnd-icon-button:focus-visible {
+  outline: var(--lmnd-border-width-focus-ring) solid var(--lmnd-color-border-selected);
+  outline-offset: var(--lmnd-spacing-50);
+}
+
+.lmnd-icon-button:disabled {
+  cursor: not-allowed;
+  opacity: var(--lmnd-opacity-disabled);
+}
+
+.lmnd-icon-button--loading:disabled {
+  cursor: wait;
+}
+
+.lmnd-icon-button--x-small {
+  width: var(--lmnd-size-800);
+  height: var(--lmnd-size-800);
+}
+
+.lmnd-icon-button--small {
+  width: var(--lmnd-size-1000);
+  height: var(--lmnd-size-1000);
+}
+
+.lmnd-icon-button--medium {
+  width: var(--lmnd-size-1200);
+  height: var(--lmnd-size-1200);
+}
+
+.lmnd-icon-button--large {
+  width: var(--lmnd-size-1400);
+  height: var(--lmnd-size-1400);
+}
+
+/* Shape owns the radius, so the size modifiers only carry the box. Rounded steps up with
+   the size the way the platforms step it; circular is one value at every size. */
+.lmnd-icon-button--rounded.lmnd-icon-button--x-small {
+  border-radius: var(--lmnd-radius-250);
+}
+
+.lmnd-icon-button--rounded.lmnd-icon-button--small {
+  border-radius: var(--lmnd-radius-300);
+}
+
+.lmnd-icon-button--rounded.lmnd-icon-button--medium {
+  border-radius: var(--lmnd-radius-350);
+}
+
+.lmnd-icon-button--rounded.lmnd-icon-button--large {
+  border-radius: var(--lmnd-radius-400);
+}
+
+.lmnd-icon-button--circular {
+  border-radius: var(--lmnd-radius-full);
+}
+
+/* The button owns the glyph's size, as it does on the platforms, so markup written by hand
+   gets the right one without repeating the table. These beat .lmnd-icon--<size> on
+   specificity, which is what makes a stray size modifier inside harmless. */
+.lmnd-icon-button--x-small .lmnd-icon {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+.lmnd-icon-button--small .lmnd-icon,
+.lmnd-icon-button--medium .lmnd-icon {
+  width: var(--lmnd-size-500);
+  height: var(--lmnd-size-500);
+}
+
+.lmnd-icon-button--large .lmnd-icon {
+  width: var(--lmnd-size-600);
+  height: var(--lmnd-size-600);
+}
+
+/* The loading ring is a size down from the glyph, as it is on the platforms. */
+.lmnd-icon-button--x-small .lmnd-spinner,
+.lmnd-icon-button--small .lmnd-spinner {
+  width: var(--lmnd-size-300);
+  height: var(--lmnd-size-300);
+}
+
+.lmnd-icon-button--medium .lmnd-spinner,
+.lmnd-icon-button--large .lmnd-spinner {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+/* The platforms tint the ring with the button's content colour. The spinner defaults to
+   content-secondary, so a rule rather than a prop keeps that true for hand-written markup
+   as well. */
+.lmnd-icon-button .lmnd-spinner {
   color: inherit;
 }
 
