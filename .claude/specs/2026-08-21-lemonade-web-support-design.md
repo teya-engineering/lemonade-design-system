@@ -655,6 +655,13 @@ are already generated. `slot/` has neither CSS nor a snippet, being the one piec
 renders no Lemonade markup at all — it only picks the element, so `llms-components.md`
 lists it as `no-markup`.
 
+A stylesheet two components share sits directly under `src/components/`, beside the shared
+TypeScript: `button-palette.css` holds the fill and content colour for every variant and
+emphasis, which Button and IconButton both read through `--lmnd-button-*`. The platforms
+resolve both components from one table, and a copy per component would let a token change
+land on one of them with every check still green. Each component's class-contract test
+reads its own stylesheet and the palette, since the contract spans both.
+
 `web-css-bundle` discovers these stylesheets rather than naming them, and concatenates them
 into `styles/components.css`, which is what the package exports and what `styles.css`
 imports. Discovery is the point: a listed input is one a new component can be left out of,
@@ -764,12 +771,25 @@ For Button:
 | The fill treatment | `type` | `type` | `emphasis` — `type` on a `<button>` is the DOM's own attribute, and shadowing it would break form submission |
 | Enabling | `enabled: Boolean` | the same | `enabled`, mirroring the platforms rather than the DOM's inverted `disabled`, which is not exposed. The rendered element still carries `disabled`, so native focus and form behaviour are unchanged |
 
+For IconButton, which takes Button's variant, emphasis and size enums and resolves them
+to the same colours — the platforms share one table between the two components, and so
+does web, in `button-palette.css`:
+
+| Difference | KMP | SwiftUI | Web |
+|---|---|---|---|
+| Press indication | `LocalEffects.current.interactionIndication`, a ripple | whole-view `opacityPressed` | `:active` background, from the same `-pressed` rung Button uses |
+| The glyph | `icon: LemonadeIcons` | `icon: LemonadeIcon` | `use: IconName`, as Icon takes it |
+| The glyph's name | `contentDescription: String?` on the icon | the same | `contentDescription: string`, required and **not** nullable, on the button. There is no text here for a glyph name to repeat, so the decorative case has no meaning: the name is the only one the control has. The glyph itself is `aria-hidden`, so it is announced once |
+| The glyph's size | the component picks it per button size | the same | the same, but in CSS — a descendant rule per size, so hand-written markup gets it without repeating the table. It outranks `.lmnd-icon--<size>`, which makes a stray size modifier inside harmless |
+| Shape | `shape: LemonadeIconButtonShape` | the same | `shape`, carried on `lmnd-icon-button--rounded` / `--circular`. Shape owns the radius and size owns the box, so the two modifiers compose |
+| The box | `requiredSize`, a fixed square | the same | fixed `width` and `height`. Button uses `min-height` so a wrapping label can grow it; there is no label here to wrap |
+
 Enum vocabularies are held by a parity check in the mould of
 `scripts/web-text-style-parity-check.main.kts`, which already parses Swift source to
-keep typography identical: it extracts the `LemonadeButtonVariant`, `LemonadeButtonType`
-and `LemonadeButtonSize` entries from the KMP and SwiftUI sources and asserts web's
-string unions match, case-insensitively. Web literals use SwiftUI's casing
-(`'xSmall'`), so the comparison is mechanical.
+keep typography identical: it extracts the `LemonadeButtonVariant`, `LemonadeButtonType`,
+`LemonadeButtonSize` and `LemonadeIconButtonShape` entries from the KMP and SwiftUI
+sources and asserts web's string unions match, case-insensitively. Web literals use
+SwiftUI's casing (`'xSmall'`), so the comparison is mechanical.
 
 ### 17.6 Consuming without React, or without npm
 

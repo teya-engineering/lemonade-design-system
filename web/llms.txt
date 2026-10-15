@@ -551,3 +551,32 @@ every style name to its class.
 Hover and press come from the stylesheet; do not add classes for them. Hover is inside
 `@media (hover: hover)`, so a tap on a touch screen does not leave the button stuck in
 the hover colour.
+
+### IconButton
+
+```html
+<button
+  type="button"
+  aria-label="Favourite"
+  class="lmnd-icon-button lmnd-icon-button--neutral lmnd-icon-button--medium lmnd-icon-button--rounded lmnd-icon-button--subtle"
+>
+  <span class="lmnd-icon" style="--lmnd-icon: url('.../icons/heart.svg')"></span>
+</button>
+```
+
+- Block: `lmnd-icon-button`. A fixed square, so there is no label and no text style.
+- Variant, fill treatment and size are Button's, and resolve to the same colours:
+  `lmnd-icon-button--primary` through `--on-color`, `--solid` / `--subtle` / `--ghost`, and
+  `--x-small` through `--large`. The defaults are not Button's — the platforms default an
+  icon button to neutral, subtle, medium.
+- Shape: `lmnd-icon-button--rounded` steps the radius up with the size,
+  `lmnd-icon-button--circular` is a pill at every size.
+- The glyph takes no size modifier: the button sizes it, as the platforms do, so
+  `lmnd-icon` on its own is right inside one.
+- Name it with `aria-label` on the button and leave the glyph decorative. There is no text
+  for a glyph name to repeat, so the React prop `contentDescription` is required and cannot
+  be null — a button without it announces only "button".
+- Disabled: the DOM `disabled` attribute. Do not add a class.
+- Loading: add `lmnd-icon-button--loading`, swap the glyph for
+  `<span class="lmnd-spinner" aria-hidden="true"></span>`, and set `disabled` and
+  `aria-busy="true"`. The button sizes and tints the ring.
