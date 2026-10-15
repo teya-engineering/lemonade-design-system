@@ -100,6 +100,15 @@ fun main() {
             webName = "LemonadeButtonSize",
             webPath = "web/src/components/button/button.types.ts",
         ),
+        Vocabulary(
+            name = "LemonadeIconButtonShape",
+            kotlinName = "LemonadeIconButtonShape",
+            kotlinPath = "kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeIconButtonShape.kt",
+            swiftName = "LemonadeIconButtonShape",
+            swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeIconButton.swift",
+            webName = "LemonadeIconButtonShape",
+            webPath = "web/src/components/icon-button/icon-button.types.ts",
+        ),
         // Spinner takes the same eight sizes. SwiftUI declares its own copy, so it can
         // drift from the icon's on that platform alone, which this catches.
         Vocabulary(
