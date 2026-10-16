@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 import componentsCss from '../styles/components.css?raw'
+import tokensCss from '../styles/tokens.css?raw'
 import typographyCss from '../styles/typography.css?raw'
 import docs from '../llms-components.md?raw'
 import { describe, expect, it } from 'vitest'
@@ -10,7 +11,16 @@ import { describe, expect, it } from 'vitest'
 // they check the component against the CSS, never the documentation against either.
 const published = `${componentsCss}\n${typographyCss}`
 
-const documented = [...new Set(docs.match(/\blmnd-[a-z0-9-]+/g) ?? [])]
+// Not preceded by a dash, so the tail of a custom property is not read as a class name:
+// `--lmnd-symbol-container-bg` is one name, not a `lmnd-symbol-container-bg` class.
+const documented = [...new Set(docs.match(/(?<![-\w])lmnd-[a-z0-9-]+/g) ?? [])]
+
+/**
+ * Custom properties the docs tell a consumer to set or to read. A themed container is styled
+ * through these rather than through a class, so a name that drifts leaves the surface
+ * transparent — and the class checks above would all still pass.
+ */
+const properties = [...new Set(docs.match(/--lmnd-[a-z0-9-]+/g) ?? [])]
 
 /** `IconButton` documents the `lmnd-icon-button` block. */
 const blockOf = (heading: string) =>
@@ -25,7 +35,12 @@ const shorthands = docs
   .slice(1)
   .flatMap((section) => {
     const block = blockOf(section.slice(0, section.indexOf('\n')).trim())
-    const found = new Set([...section.matchAll(/`(--[a-z0-9-]+)`/g)].map((match) => match[1]))
+    const found = new Set(
+      [...section.matchAll(/`(--[a-z0-9-]+)`/g)]
+        .map((match) => match[1])
+        // `--lmnd-…` is a custom property, checked as one below, not a modifier of this block.
+        .filter((shorthand) => !shorthand.startsWith('--lmnd-')),
+    )
     return [...found].map((shorthand) => [block, shorthand] as [string, string])
   })
 
@@ -33,6 +48,7 @@ describe('the class names the docs tell AI tools to write', () => {
   it('finds classes to check', () => {
     expect(documented.length).toBeGreaterThan(10)
     expect(shorthands.length).toBeGreaterThan(0)
+    expect(properties.length).toBeGreaterThan(0)
     // More than one block documents modifiers this way. A split that stopped matching the
     // headings would collapse to one block and still find shorthands to check.
     expect(new Set(shorthands.map(([block]) => block)).size).toBeGreaterThan(1)
@@ -51,5 +67,12 @@ describe('the class names the docs tell AI tools to write', () => {
   // shorthand documented under the wrong heading is exactly the drift this file catches.
   it.each(shorthands)('%s%s resolves against the block that documents it', (block, shorthand) => {
     expect(hasRule(`${block}${shorthand}`)).toBe(true)
+  })
+
+  // A property the component sets, one it reads, and one the tokens define all appear in the
+  // CSS the package ships. A documented name that appears nowhere is one a consumer would
+  // set to no effect.
+  it.each(properties)('%s is a property the published CSS knows', (property) => {
+    expect(`${published}\n${tokensCss}`).toContain(property)
   })
 })

@@ -2310,3 +2310,233 @@
   height: var(--lmnd-size-1400);
 }
 
+.lmnd-symbol-container {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--lmnd-size-1000);
+  height: var(--lmnd-size-1000);
+  border: var(--lmnd-border-width-25) solid var(--lmnd-symbol-container-border);
+  color: var(--lmnd-symbol-container-content);
+  background-color: var(--lmnd-symbol-container-bg);
+}
+
+/* The base class is already medium and a circle, so those two modifiers are for writing the
+   appearance out. Each size sets the box and the glyph inside it, as the platforms pair
+   them — so markup written by hand needs no size modifier on the glyph. */
+.lmnd-symbol-container--x-small {
+  width: var(--lmnd-size-600);
+  height: var(--lmnd-size-600);
+}
+
+.lmnd-symbol-container--x-small .lmnd-icon {
+  width: var(--lmnd-size-300);
+  height: var(--lmnd-size-300);
+}
+
+.lmnd-symbol-container--small {
+  width: var(--lmnd-size-800);
+  height: var(--lmnd-size-800);
+}
+
+.lmnd-symbol-container--small .lmnd-icon {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+.lmnd-symbol-container--medium {
+  width: var(--lmnd-size-1000);
+  height: var(--lmnd-size-1000);
+}
+
+.lmnd-symbol-container--medium .lmnd-icon {
+  width: var(--lmnd-size-500);
+  height: var(--lmnd-size-500);
+}
+
+.lmnd-symbol-container--large {
+  width: var(--lmnd-size-1200);
+  height: var(--lmnd-size-1200);
+}
+
+.lmnd-symbol-container--large .lmnd-icon {
+  width: var(--lmnd-size-600);
+  height: var(--lmnd-size-600);
+}
+
+.lmnd-symbol-container--x-large {
+  width: var(--lmnd-size-1600);
+  height: var(--lmnd-size-1600);
+}
+
+.lmnd-symbol-container--x-large .lmnd-icon {
+  width: var(--lmnd-size-800);
+  height: var(--lmnd-size-800);
+}
+
+.lmnd-symbol-container--xx-large {
+  width: var(--lmnd-size-1800);
+  height: var(--lmnd-size-1800);
+}
+
+.lmnd-symbol-container--xx-large .lmnd-icon {
+  width: var(--lmnd-size-1000);
+  height: var(--lmnd-size-1000);
+}
+
+/* Shape owns the radius, so the size modifiers only carry the box. Rounded steps up with
+   the size, levelling off at xLarge as it does on the platforms. */
+.lmnd-symbol-container--circle {
+  border-radius: var(--lmnd-radius-full);
+}
+
+.lmnd-symbol-container--rounded.lmnd-symbol-container--x-small {
+  border-radius: var(--lmnd-radius-200);
+}
+
+.lmnd-symbol-container--rounded.lmnd-symbol-container--small {
+  border-radius: var(--lmnd-radius-250);
+}
+
+.lmnd-symbol-container--rounded.lmnd-symbol-container--medium {
+  border-radius: var(--lmnd-radius-300);
+}
+
+.lmnd-symbol-container--rounded.lmnd-symbol-container--large {
+  border-radius: var(--lmnd-radius-400);
+}
+
+.lmnd-symbol-container--rounded.lmnd-symbol-container--x-large,
+.lmnd-symbol-container--rounded.lmnd-symbol-container--xx-large {
+  border-radius: var(--lmnd-radius-500);
+}
+
+/* The platforms measure the badge to offset it; that arithmetic works out to its corner
+   overhanging the container's by spacing-100 on both axes, which is what this anchors. Being
+   absolute, it overflows without changing the container's size, as the Compose layout does. */
+.lmnd-symbol-container__badge {
+  position: absolute;
+  right: calc(var(--lmnd-spacing-100) * -1);
+  bottom: calc(var(--lmnd-spacing-100) * -1);
+}
+
+.lmnd-symbol-container--neutral {
+  --lmnd-symbol-container-bg: var(--lmnd-color-bg-neutral-subtle);
+  --lmnd-symbol-container-border: var(--lmnd-color-border-neutral-low);
+  --lmnd-symbol-container-content: var(--lmnd-color-content-primary);
+}
+
+.lmnd-symbol-container--critical {
+  --lmnd-symbol-container-bg: var(--lmnd-color-bg-critical-subtle);
+  --lmnd-symbol-container-border: var(--lmnd-color-border-critical-subtle);
+  --lmnd-symbol-container-content: var(--lmnd-color-content-critical);
+}
+
+/* Warning reads from the caution family, which is what the platforms map it to. */
+.lmnd-symbol-container--warning {
+  --lmnd-symbol-container-bg: var(--lmnd-color-bg-caution-subtle);
+  --lmnd-symbol-container-border: var(--lmnd-color-border-caution-subtle);
+  --lmnd-symbol-container-content: var(--lmnd-color-content-caution);
+}
+
+.lmnd-symbol-container--info {
+  --lmnd-symbol-container-bg: var(--lmnd-color-bg-info-subtle);
+  --lmnd-symbol-container-border: var(--lmnd-color-border-info-subtle);
+  --lmnd-symbol-container-content: var(--lmnd-color-content-info);
+}
+
+.lmnd-symbol-container--positive {
+  --lmnd-symbol-container-bg: var(--lmnd-color-bg-positive-subtle);
+  --lmnd-symbol-container-border: var(--lmnd-color-border-positive-subtle);
+  --lmnd-symbol-container-content: var(--lmnd-color-content-positive);
+}
+
+.lmnd-symbol-container--brand {
+  --lmnd-symbol-container-bg: var(--lmnd-color-bg-brand);
+  --lmnd-symbol-container-border: var(--lmnd-color-border-brand);
+  --lmnd-symbol-container-content: var(--lmnd-color-content-on-brand-high);
+}
+
+.lmnd-symbol-container--brand-subtle {
+  --lmnd-symbol-container-bg: var(--lmnd-color-bg-brand-subtle);
+  --lmnd-symbol-container-border: var(--lmnd-color-border-on-brand-low);
+  --lmnd-symbol-container-content: var(--lmnd-color-content-on-brand-high);
+}
+
+.lmnd-tag {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  gap: var(--lmnd-spacing-50);
+  max-width: 100%;
+  padding: var(--lmnd-spacing-50) var(--lmnd-spacing-100);
+  border: var(--lmnd-border-width-25) solid var(--lmnd-tag-border);
+  border-radius: var(--lmnd-radius-150);
+  color: var(--lmnd-tag-content);
+  background-color: var(--lmnd-tag-bg);
+}
+
+/* The platforms pad the label itself rather than spacing the row, so the value still
+   applies when there is no glyph to sit beside. */
+.lmnd-tag__label {
+  overflow: hidden;
+  padding-inline: var(--lmnd-spacing-50);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* The glyph takes the size the platforms give it, so markup written by hand needs no size
+   modifier on it. */
+.lmnd-tag .lmnd-icon {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+.lmnd-tag--neutral {
+  --lmnd-tag-bg: var(--lmnd-color-bg-neutral-subtle);
+  --lmnd-tag-border: var(--lmnd-color-border-neutral-medium);
+  --lmnd-tag-content: var(--lmnd-color-content-primary);
+}
+
+.lmnd-tag--critical {
+  --lmnd-tag-bg: var(--lmnd-color-bg-critical-subtle);
+  --lmnd-tag-border: var(--lmnd-color-border-critical-subtle);
+  --lmnd-tag-content: var(--lmnd-color-content-critical);
+}
+
+/* Warning reads from the caution family, which is what the platforms map it to. */
+.lmnd-tag--warning {
+  --lmnd-tag-bg: var(--lmnd-color-bg-caution-subtle);
+  --lmnd-tag-border: var(--lmnd-color-border-caution-subtle);
+  --lmnd-tag-content: var(--lmnd-color-content-caution);
+}
+
+.lmnd-tag--info {
+  --lmnd-tag-bg: var(--lmnd-color-bg-info-subtle);
+  --lmnd-tag-border: var(--lmnd-color-border-info-subtle);
+  --lmnd-tag-content: var(--lmnd-color-content-info);
+}
+
+.lmnd-tag--positive {
+  --lmnd-tag-bg: var(--lmnd-color-bg-positive-subtle);
+  --lmnd-tag-border: var(--lmnd-color-border-positive-subtle);
+  --lmnd-tag-content: var(--lmnd-color-content-positive);
+}
+
+/* Meant to sit on a filled surface, so its fill and content stay light-on-dark in both
+   themes rather than following the theme. */
+.lmnd-tag--neutral-on-color {
+  --lmnd-tag-bg: var(--lmnd-color-bg-always-light);
+  --lmnd-tag-border: var(--lmnd-color-border-neutral-low);
+  --lmnd-tag-content: var(--lmnd-color-content-always-dark);
+}
+
+.lmnd-tag--featured {
+  --lmnd-tag-bg: var(--lmnd-color-bg-featured-subtle);
+  --lmnd-tag-border: var(--lmnd-color-border-featured-subtle);
+  --lmnd-tag-content: var(--lmnd-color-content-featured);
+}
+

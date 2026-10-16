@@ -1,0 +1,75 @@
+/* A pill of label, optionally preceded by a glyph. The voice sets the three colours through
+   custom properties, so one set of rules carries the geometry for all seven. */
+.lmnd-tag {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  gap: var(--lmnd-spacing-50);
+  max-width: 100%;
+  padding: var(--lmnd-spacing-50) var(--lmnd-spacing-100);
+  border: var(--lmnd-border-width-25) solid var(--lmnd-tag-border);
+  border-radius: var(--lmnd-radius-150);
+  color: var(--lmnd-tag-content);
+  background-color: var(--lmnd-tag-bg);
+}
+
+/* The platforms pad the label itself rather than spacing the row, so the value still
+   applies when there is no glyph to sit beside. */
+.lmnd-tag__label {
+  overflow: hidden;
+  padding-inline: var(--lmnd-spacing-50);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* The glyph takes the size the platforms give it, so markup written by hand needs no size
+   modifier on it. */
+.lmnd-tag .lmnd-icon {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+.lmnd-tag--neutral {
+  --lmnd-tag-bg: var(--lmnd-color-bg-neutral-subtle);
+  --lmnd-tag-border: var(--lmnd-color-border-neutral-medium);
+  --lmnd-tag-content: var(--lmnd-color-content-primary);
+}
+
+.lmnd-tag--critical {
+  --lmnd-tag-bg: var(--lmnd-color-bg-critical-subtle);
+  --lmnd-tag-border: var(--lmnd-color-border-critical-subtle);
+  --lmnd-tag-content: var(--lmnd-color-content-critical);
+}
+
+/* Warning reads from the caution family, which is what the platforms map it to. */
+.lmnd-tag--warning {
+  --lmnd-tag-bg: var(--lmnd-color-bg-caution-subtle);
+  --lmnd-tag-border: var(--lmnd-color-border-caution-subtle);
+  --lmnd-tag-content: var(--lmnd-color-content-caution);
+}
+
+.lmnd-tag--info {
+  --lmnd-tag-bg: var(--lmnd-color-bg-info-subtle);
+  --lmnd-tag-border: var(--lmnd-color-border-info-subtle);
+  --lmnd-tag-content: var(--lmnd-color-content-info);
+}
+
+.lmnd-tag--positive {
+  --lmnd-tag-bg: var(--lmnd-color-bg-positive-subtle);
+  --lmnd-tag-border: var(--lmnd-color-border-positive-subtle);
+  --lmnd-tag-content: var(--lmnd-color-content-positive);
+}
+
+/* Meant to sit on a filled surface, so its fill and content stay light-on-dark in both
+   themes rather than following the theme. */
+.lmnd-tag--neutral-on-color {
+  --lmnd-tag-bg: var(--lmnd-color-bg-always-light);
+  --lmnd-tag-border: var(--lmnd-color-border-neutral-low);
+  --lmnd-tag-content: var(--lmnd-color-content-always-dark);
+}
+
+.lmnd-tag--featured {
+  --lmnd-tag-bg: var(--lmnd-color-bg-featured-subtle);
+  --lmnd-tag-border: var(--lmnd-color-border-featured-subtle);
+  --lmnd-tag-content: var(--lmnd-color-content-featured);
+}
