@@ -28,12 +28,16 @@ fun kotlinEnum(source: String, name: String): List<String> {
     return Regex("""^\s{4}([A-Z]\w*)\s*,""", RegexOption.MULTILINE).findAll(body).map { it.groupValues[1] }.toList()
 }
 
-/** Entries of a Swift `public enum <name> { … }`. */
+/**
+ * Entries of a Swift `public enum <name> { … }`. A case whose name is a Swift keyword is
+ * written in backticks — `case \`default\`` — so they are stripped rather than letting the
+ * entry go unread.
+ */
 fun swiftEnum(source: String, name: String): List<String> {
     val body = Regex("""public enum $name\s*\{(.*?)\n\}""", RegexOption.DOT_MATCHES_ALL)
         .find(source)?.groupValues?.get(1)
         ?: error("enum $name not found")
-    return Regex("""^\s*case (\w+)""", RegexOption.MULTILINE).findAll(body).map { it.groupValues[1] }.toList()
+    return Regex("""^\s*case `?(\w+)`?""", RegexOption.MULTILINE).findAll(body).map { it.groupValues[1] }.toList()
 }
 
 /** Members of a TypeScript `export type <name> = 'a' | 'b'`, across line breaks. */
@@ -108,6 +112,42 @@ fun main() {
             swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeIconButton.swift",
             webName = "LemonadeIconButtonShape",
             webPath = "web/src/components/icon-button/icon-button.types.ts",
+        ),
+        Vocabulary(
+            name = "DividerVariant",
+            kotlinName = "DividerVariant",
+            kotlinPath = "kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/DividerVariant.kt",
+            swiftName = "DividerVariant",
+            swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeDivider.swift",
+            webName = "DividerVariant",
+            webPath = "web/src/components/divider/divider.types.ts",
+        ),
+        Vocabulary(
+            name = "LemonadeCardPadding",
+            kotlinName = "LemonadeCardPadding",
+            kotlinPath = "kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeCard.kt",
+            swiftName = "LemonadeCardPadding",
+            swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeCard.swift",
+            webName = "LemonadeCardPadding",
+            webPath = "web/src/components/card/card.types.ts",
+        ),
+        Vocabulary(
+            name = "LemonadeCardBackground",
+            kotlinName = "LemonadeCardBackground",
+            kotlinPath = "kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeCard.kt",
+            swiftName = "LemonadeCardBackground",
+            swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeCard.swift",
+            webName = "LemonadeCardBackground",
+            webPath = "web/src/components/card/card.types.ts",
+        ),
+        Vocabulary(
+            name = "LemonadeCardHeadingStyle",
+            kotlinName = "LemonadeCardHeadingStyle",
+            kotlinPath = "kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/LemonadeCard.kt",
+            swiftName = "LemonadeCardHeadingStyle",
+            swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeCard.swift",
+            webName = "LemonadeCardHeadingStyle",
+            webPath = "web/src/components/card/card.types.ts",
         ),
         // Spinner takes the same eight sizes. SwiftUI declares its own copy, so it can
         // drift from the icon's on that platform alone, which this catches.
