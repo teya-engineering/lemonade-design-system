@@ -563,6 +563,8 @@ private struct LemonadeTextInputField: View {
 }
 #else
 private struct LemonadeTextInputField: View {
+    @Environment(\.lemonadeFontFamily) private var fontFamily
+
     @Binding var input: String
     let isSecure: Bool
     let enabled: Bool
@@ -580,7 +582,7 @@ private struct LemonadeTextInputField: View {
                 SwiftUI.TextField("", text: $input)
             }
         }
-        .font(LemonadeTypography.shared.bodyMediumRegular.font)
+        .font(LemonadeTypography.shared.bodyMediumRegular.font(in: fontFamily))
         .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
         .tint(LemonadeTheme.colors.content.contentPrimary)
         .focused($fieldFocused)

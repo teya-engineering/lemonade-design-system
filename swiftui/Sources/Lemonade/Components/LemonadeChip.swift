@@ -202,6 +202,8 @@ public extension LemonadeUi {
 // MARK: - Internal Chip View
 
 private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: View {
+    @Environment(\.lemonadeFontFamily) private var fontFamily
+
     let label: String
     let selected: Bool
     let counter: Int?
@@ -253,7 +255,10 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
             .padding(.horizontal, LemonadeTheme.spaces.spacing100)
 
             if let counter = counter {
-                LemonadeUi.Text("\(counter)", font: .bodyXSmallSemiBold)
+                LemonadeUi.Text(
+                    "\(counter)",
+                    font: LemonadeTypography.shared.bodyXSmallSemiBold.font(in: fontFamily)
+                )
                     .foregroundStyle(LemonadeTheme.colors.content.contentOnBrandHigh)
                     .padding(.horizontal, LemonadeTheme.spaces.spacing100)
                     .frame(minWidth: .size.size450, minHeight: .size.size400)

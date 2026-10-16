@@ -11,8 +11,13 @@ import androidx.compose.material3.Typography
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.text.font.FontFamily
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Deprecated(
+    message = "Use the overload with the fontFamily parameter.",
+    level = DeprecationLevel.HIDDEN,
+)
+@OptIn(InternalLemonadeApi::class)
 @Composable
 public fun LemonadeExpressiveTheme(
     colors: LemonadeSemanticColors = LemonadeTheme.colors,
@@ -26,6 +31,40 @@ public fun LemonadeExpressiveTheme(
     effects: LemonadeEffects = LemonadeTheme.effects,
     content: @Composable () -> Unit,
 ) {
+    LemonadeExpressiveTheme(
+        colors = colors,
+        typography = typography,
+        radius = radius,
+        shapes = shapes,
+        opacities = opacities,
+        spaces = spaces,
+        borderWidths = borderWidths,
+        sizes = sizes,
+        effects = effects,
+        fontFamily = LocalFontFamily.current,
+        content = content,
+    )
+}
+
+/**
+ * @param fontFamily The typeface every Lemonade and Material component draws with. Defaults to the
+ *   family already in scope, or Figtree at the root. See [LemonadeTheme.fontFamily].
+ */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class, InternalLemonadeApi::class)
+@Composable
+public fun LemonadeExpressiveTheme(
+    colors: LemonadeSemanticColors = LemonadeTheme.colors,
+    typography: LemonadeTypographyProvider = LemonadeTheme.typography,
+    radius: LemonadeRadiusValues = LemonadeTheme.radius,
+    shapes: LemonadeShapes = LemonadeTheme.shapes,
+    opacities: LemonadeOpacity = LemonadeTheme.opacities,
+    spaces: LemonadeSpaceValues = LemonadeTheme.spaces,
+    borderWidths: LemonadeBorderWidth = LemonadeTheme.borderWidths,
+    sizes: LemonadeSizeValues = LemonadeTheme.sizes,
+    effects: LemonadeEffects = LemonadeTheme.effects,
+    fontFamily: FontFamily? = LocalFontFamily.current,
+    content: @Composable () -> Unit,
+) {
     LemonadeTheme(
         colors = colors,
         typography = typography,
@@ -36,6 +75,7 @@ public fun LemonadeExpressiveTheme(
         borderWidths = borderWidths,
         sizes = sizes,
         effects = lemonadeExpressiveEffects(effects = effects),
+        fontFamily = fontFamily,
     ) {
         MaterialExpressiveTheme(
             colorScheme = lemonadeExpressiveColorScheme(),
@@ -56,7 +96,7 @@ public fun LemonadeExpressiveTheme(
 @Composable
 internal fun lemonadeExpressiveTypography(): Typography {
     val typography = LemonadeTheme.typography
-    val fontFamily = lemonadeFontFamily
+    val fontFamily = LemonadeTheme.fontFamily
     return remember(typography, fontFamily) {
         Typography(
             displayLarge = typography.displayLarge.toTextStyle(fontFamily),

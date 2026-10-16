@@ -66,6 +66,8 @@ public extension LemonadeUi {
 // MARK: - Internal SearchField View
 
 private struct LemonadeSearchFieldView: View {
+    @Environment(\.lemonadeFontFamily) private var fontFamily
+
     @Binding var input: String
     let onInputChanged: ((String) -> Void)?
     let placeholder: String?
@@ -169,7 +171,7 @@ private struct LemonadeSearchFieldView: View {
             }
 
             SwiftUI.TextField("", text: $input)
-                .font(LemonadeTypography.shared.bodyMediumRegular.font)
+                .font(LemonadeTypography.shared.bodyMediumRegular.font(in: fontFamily))
                 .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
                 .tint(LemonadeTheme.colors.content.contentPrimary)
                 .focused($isFocused)

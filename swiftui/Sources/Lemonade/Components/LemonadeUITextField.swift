@@ -14,6 +14,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     @Environment(\.lemonadeTextInputTransformation) private var inputTransformation
     @Environment(\.lemonadeTextDisplayDecoration) private var displayDecoration
     @Environment(\.lemonadeTextSelectionConstraint) private var selectionConstraint
+    @Environment(\.lemonadeFontFamily) private var fontFamily
 
     @Binding var value: LemonadeTextFieldValue
     @Binding var isFocused: Bool
@@ -50,7 +51,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         let textField = LemonadeClampingTextField()
         textField.selectionConstraint = selectionConstraint
         textField.delegate = context.coordinator
-        textField.font = textStyle.uiFont
+        textField.font = textStyle.uiFont(in: fontFamily)
         textField.textColor = UIColor(textColor)
         textField.borderStyle = .none
         textField.backgroundColor = .clear
@@ -129,7 +130,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
 
     private func applyAppearance(_ textField: UITextField) {
         textField.isEnabled = isEnabled
-        textField.font = textStyle.uiFont
+        textField.font = textStyle.uiFont(in: fontFamily)
         textField.textColor = UIColor(textColor)
         textField.tintColor = UIColor(textColor)
     }
@@ -171,7 +172,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         let decorated = decoration.decorate(
             text,
             baseAttributes: [
-                .font: textStyle.uiFont,
+                .font: textStyle.uiFont(in: fontFamily),
                 .foregroundColor: UIColor(textColor),
             ]
         )

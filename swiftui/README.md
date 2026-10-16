@@ -165,6 +165,22 @@ from the Figma exports in `tokens/` by a converter in `scripts/`, carries a
 Typography is reached through `LemonadeTypography.shared` or the
 `\.lemonadeTypography` environment value.
 
+The faces are Figtree by default and swap per subtree:
+
+```swift
+ContentView().lemonadeFontFamily(
+    LemonadeFontFamily(regular: "Brand-Regular", medium: "Brand-Medium", semibold: "Brand-SemiBold")
+)
+```
+
+Registering those faces is the app's job — `LemonadeFonts.registerFonts()` only knows
+about Figtree, and an unregistered name falls back to the system font rather than
+failing. The type scale is unchanged either way, but its line heights were drawn
+against Figtree's metrics, so a face with a very different ascender/descender ratio
+will sit differently inside them. The `Font` shorthands in `Font+Lemonade.swift` are
+resolved outside any view and always use Figtree; `LemonadeTextStyle.font(in:)` is the
+one that follows the modifier.
+
 ---
 
 ## Contributing

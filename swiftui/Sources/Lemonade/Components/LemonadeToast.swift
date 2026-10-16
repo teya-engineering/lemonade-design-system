@@ -96,6 +96,8 @@ public extension LemonadeUi {
 // MARK: - Internal Toast View
 
 private struct LemonadeToastView: View {
+    @Environment(\.lemonadeFontFamily) private var fontFamily
+
     let label: String
     let voice: LemonadeToastVoice
     let customIcon: LemonadeIcon?
@@ -138,7 +140,7 @@ private struct LemonadeToastView: View {
             }
 
             Text(label)
-                .font(LemonadeTypography.shared.bodySmallMedium.font)
+                .font(LemonadeTypography.shared.bodySmallMedium.font(in: fontFamily))
                 .foregroundStyle(.content.contentAlwaysLight)
                 .lineLimit(nil)
                 .truncationMode(.tail)
@@ -147,7 +149,7 @@ private struct LemonadeToastView: View {
             if let actionLabel, let onAction {
                 Button(action: onAction) {
                     Text(actionLabel)
-                        .font(LemonadeTypography.shared.bodySmallMedium.font)
+                        .font(LemonadeTypography.shared.bodySmallMedium.font(in: fontFamily))
                         .foregroundStyle(.content.contentInfoAlwaysOnColor)
                         .lineLimit(1)
                         .fixedSize(horizontal: true, vertical: false)

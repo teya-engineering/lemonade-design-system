@@ -2,7 +2,87 @@ import SwiftUI
 
 #if canImport(UIKit)
 import UIKit
+#else
+import CoreText
 #endif
+
+/// The set of faces the design system draws with.
+///
+/// The type scale carries metrics only — size, line height, weight, letter spacing — and never a
+/// family, so the family is a separate axis. Supply one to render Lemonade in another typeface:
+///
+/// ```swift
+/// ContentView().lemonadeFontFamily(
+///     LemonadeFontFamily(regular: "Brand-Regular", medium: "Brand-Medium", semibold: "Brand-SemiBold")
+/// )
+/// ```
+///
+/// Registering the faces is the consumer's job — `LemonadeFonts.registerFonts()` only knows about
+/// Figtree. An unregistered name falls back to the system font rather than failing loudly.
+///
+/// The line heights in the scale were drawn against Figtree's metrics, so a face with a very
+/// different ascender/descender ratio will sit differently inside them.
+public struct LemonadeFontFamily: Sendable, Equatable {
+    public let regular: String
+    public let medium: String
+    public let semibold: String
+
+    public init(regular: String, medium: String, semibold: String) {
+        self.regular = regular
+        self.medium = medium
+        self.semibold = semibold
+    }
+
+    /// The design system's own faces, and the default everywhere.
+    public static let figtree = LemonadeFontFamily(
+        regular: "Figtree-Regular",
+        medium: "Figtree-Medium",
+        semibold: "Figtree-SemiBold"
+    )
+
+    /// Figtree ships no true bold, so `.bold` resolves to the semibold face — the same mapping the
+    /// design system has always used.
+    public func fontName(for fontWeight: Font.Weight) -> String {
+        switch fontWeight {
+        case .regular: return regular
+        case .medium: return medium
+        case .semibold, .bold: return semibold
+        default: return regular
+        }
+    }
+
+    /// The face for `weight` at `size`, asked for the way ``LemonadeTextStyle/weightedFont`` asks
+    /// for it: family name plus a weight modifier for the default faces, the concrete face name for
+    /// any other family.
+    ///
+    /// No `relativeTo:`, deliberately — this is the non-scaling counterpart to
+    /// ``LemonadeTextStyle/font(in:)``, and adding one here would start scaling text with Dynamic
+    /// Type that does not scale today.
+    internal func font(forWeight weight: Font.Weight, size: CGFloat) -> Font {
+        guard self != .figtree else {
+            return .custom(LemonadeTypography.fontFamily, size: size).weight(weight)
+        }
+        return .custom(fontName(for: weight), size: size)
+    }
+}
+
+private struct LemonadeFontFamilyKey: EnvironmentKey {
+    static let defaultValue: LemonadeFontFamily = .figtree
+}
+
+extension EnvironmentValues {
+    public var lemonadeFontFamily: LemonadeFontFamily {
+        get { self[LemonadeFontFamilyKey.self] }
+        set { self[LemonadeFontFamilyKey.self] = newValue }
+    }
+}
+
+extension View {
+    /// Draws every Lemonade component in this subtree with `family`.
+    public func lemonadeFontFamily(_ family: LemonadeFontFamily) -> some View {
+        environment(\.lemonadeFontFamily, family)
+    }
+}
 
 /// Represents a text style with typographic properties.
 public struct LemonadeTextStyle: Sendable {
@@ -62,16 +142,7 @@ public struct LemonadeTextStyle: Sendable {
     /// Static so ``init(fontSize:lineHeight:fontWeight:letterSpacing:)`` can resolve the font
     /// metric before `self` is fully initialized.
     private static func fontName(for fontWeight: Font.Weight) -> String {
-        switch fontWeight {
-        case .regular:
-            return "Figtree-Regular"
-        case .medium:
-            return "Figtree-Medium"
-        case .semibold, .bold:
-            return "Figtree-SemiBold"
-        default:
-            return "Figtree-Regular"
-        }
+        return LemonadeFontFamily.figtree.fontName(for: fontWeight)
     }
 
     /// The font name based on the weight
@@ -88,6 +159,54 @@ public struct LemonadeTextStyle: Sendable {
     /// ``font``.
     let weightedFont: Font
 
+    /// Returns a SwiftUI Font based on this text style, drawn with `family`.
+    ///
+    /// ``font`` is the stored fast path for the design system's own faces; only a consumer who has
+    /// swapped the family pays to build one here.
+    public func font(in family: LemonadeFontFamily) -> Font {
+        guard family != .figtree else {
+            return font
+        }
+        return .custom(family.fontName(for: fontWeight), size: fontSize, relativeTo: .body)
+    }
+
+    /// The line spacing needed to reach this style's `lineHeight` when drawn with `family`.
+    ///
+    /// ``lineSpacing`` is resolved once in `init` against Figtree, which is only correct for
+    /// Figtree: the top-up depends on the face's own natural line height. Any other family has to
+    /// be measured.
+    ///
+    /// The stored value is kept as the fast path, so consumers who never swap the family pay
+    /// nothing — which is the point of resolving it in `init` in the first place.
+    public func lineSpacing(in family: LemonadeFontFamily) -> CGFloat {
+        guard family != .figtree else {
+            return lineSpacing
+        }
+        let name = family.fontName(for: fontWeight)
+#if canImport(UIKit)
+        let natural = Self.resolvedUIFont(name: name, size: fontSize).lineHeight
+#else
+        let natural = Self.measuredLineHeight(name: name, size: fontSize)
+            ?? fontSize * Self.fallbackLineHeightRatio
+#endif
+        return max(0, lineHeight - natural)
+    }
+
+#if !canImport(UIKit)
+    /// The natural line height of `name`, or nil when that face is not installed.
+    ///
+    /// `CTFontCreateWithName` substitutes a default face rather than failing, so the name has to be
+    /// checked afterwards — otherwise an absent face would silently return the system font's
+    /// metrics, which is worse than the Figtree ratio the caller falls back to.
+    private static func measuredLineHeight(name: String, size: CGFloat) -> CGFloat? {
+        let font = CTFontCreateWithName(name as CFString, size, nil)
+        guard CTFontCopyPostScriptName(font) as String == name else {
+            return nil
+        }
+        return ceil(CTFontGetAscent(font) + CTFontGetDescent(font) + CTFontGetLeading(font))
+    }
+#endif
+
 #if canImport(UIKit)
     /// The single place a text style turns into a concrete face.
     ///
@@ -102,6 +221,17 @@ public struct LemonadeTextStyle: Sendable {
     /// Returns a UIFont based on this text style
     public var uiFont: UIFont {
         Self.resolvedUIFont(name: fontName, size: fontSize)
+    }
+
+    /// Returns a UIFont based on this text style, drawn with `family`.
+    ///
+    /// The UIKit counterpart of ``font(in:)``, for the components that hand a font to UIKit rather
+    /// than to SwiftUI.
+    public func uiFont(in family: LemonadeFontFamily) -> UIFont {
+        guard family != .figtree else {
+            return uiFont
+        }
+        return Self.resolvedUIFont(name: family.fontName(for: fontWeight), size: fontSize)
     }
 #endif
 }
