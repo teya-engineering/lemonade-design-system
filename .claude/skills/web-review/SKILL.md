@@ -75,6 +75,10 @@ The traps are in the export format, not in the arithmetic.
 - **`rem` for anything that scales with text** — spacing, size, radius, font size, line height.
   **`px` for optical constants** — border widths and shadow geometry.
 - **Font weights are strings** in the export (`SemiBold`), numbers in CSS.
+- **`tokens` and `tokenValues` split by purpose.** `tokens` holds what goes in a style, as
+  `tokens.css` writes it (rem/px strings, colour `var()` references). `tokenValues` holds plain
+  px numbers and per-theme `rgba()` colours. `web/tests/tokens.test.ts` holds both to
+  `tokens.css`.
 
 ### Naming
 
@@ -178,10 +182,11 @@ token's name or value with every platform's own tests green.
 A: `token_drift.yml` detects staleness by regenerating and diffing. Gitignored output has nothing
 to diff, which removes the guarantee that justifies the Kotlin decision above.
 
-**Q: Why are colours CSS-only, with no JS colour map?**
-A: A JS map cannot follow `data-lmnd-theme`, so it would be a second source of truth that goes
-stale the moment someone toggles dark mode. `tokens` carries scalars, which is what arithmetic
-needs.
+**Q: Why are the colours in `tokens` `var()` references rather than values?**
+A: A value cannot follow `data-lmnd-theme`, so a component styled with one breaks in dark mode.
+A reference resolves through `tokens.css` and switches theme with no JS. The resolved values live
+in `tokenValues.color.light` / `.dark`, for code that needs a real colour (charts, canvas). Using
+them to style a component is the dark-mode bug the references exist to prevent.
 
 **Q: Contrast is below WCAG AA on some light-theme text. Is that a bug?**
 A: No. Those levels are the design team's decision, recorded in §10 of the web design spec.
