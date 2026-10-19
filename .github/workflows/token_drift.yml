@@ -64,10 +64,10 @@ jobs:
       - name: Regenerate tokens
         run: .claude/skills/generate-tokens/scripts/run-converters.sh --all
 
-      # web-text-style-converter is driven by text-styles.json, not tokens/*.tokens.json,
-      # so run-converters.sh never calls it. Without this step, an out-of-date
-      # typography.css / text-styles.generated.ts would never be caught by the drift
-      # assertion below. web-css-bundle must re-run after it, since lemonade.css
+      # web-text-style-converter is driven by text-styles.json as well as
+      # typography.tokens.json, and run-converters.sh only calls it for the latter.
+      # Without this step, an out-of-date typography.css / text-styles.generated.ts
+      # would never be caught by the drift assertion below. web-css-bundle must re-run after it, since lemonade.css
       # concatenates typography.css.
       - name: Regenerate text styles
         run: |

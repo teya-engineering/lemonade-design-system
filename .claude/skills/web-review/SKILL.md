@@ -52,9 +52,10 @@ because the job only compares what it regenerates.
 - `token_drift.yml` **asserts** over the paths it triggers on. A path added to `on.paths` but
   missing from the final `git status --porcelain` check means the job runs and always passes.
 - `web-css-bundle` runs after the converters whose output it concatenates.
-- Converters driven by something other than `tokens/*.tokens.json` — `web-text-style-converter`
-  reads `text-styles.json`, `web-svg-converter` reads `svg/` — are absent from `converters_for()`
-  by design, so they need their own drift step instead.
+- Converters driven by something other than `tokens/*.tokens.json` need their own drift step.
+  `web-svg-converter` reads `svg/` and is absent from `converters_for()`. `web-text-style-converter`
+  reads `text-styles.json` and resolves its values from `typography.tokens.json`, so it is in
+  `converters_for()` under typography and also has its own step.
 
 ### Determinism
 

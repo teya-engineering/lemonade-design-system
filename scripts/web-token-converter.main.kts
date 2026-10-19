@@ -60,20 +60,6 @@ fun scalarTokens(): List<WebToken> {
     return tokens
 }
 
-private val FONT_WEIGHTS = mapOf(
-    "Regular" to "400",
-    "Medium" to "500",
-    "SemiBold" to "600",
-    "Bold" to "700",
-)
-
-/**
- * A bare `Figtree` leaves every machine without the font on its browser default.
- * The stack mirrors what the native platforms fall back to.
- */
-private val FONT_STACK =
-    "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif"
-
 fun typographyTokens(): List<WebToken> {
     val tokens = mutableListOf<WebToken>()
     readFileResourceFileRaw(tokenFile("typography.tokens.json")) { path, resolved ->

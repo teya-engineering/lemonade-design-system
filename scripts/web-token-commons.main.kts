@@ -137,3 +137,17 @@ fun jsObjectLiteral(entries: List<JsEntry>): String = renderTree(jsTree(entries)
 
 /** The same tree as JSON, hand-emitted so key order survives (`JSONObject` is HashMap-backed). */
 fun jsonObjectLiteral(entries: List<JsEntry>): String = renderTree(jsTree(entries), 0, json = true)
+
+val FONT_WEIGHTS = mapOf(
+    "Regular" to "400",
+    "Medium" to "500",
+    "SemiBold" to "600",
+    "Bold" to "700",
+)
+
+/**
+ * A bare `Figtree` leaves every machine without the font on its browser default.
+ * The stack mirrors what the native platforms fall back to.
+ */
+val FONT_STACK =
+    "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif"

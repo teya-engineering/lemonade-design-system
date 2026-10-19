@@ -12,6 +12,15 @@ import java.io.File
 
 val TEXT_STYLE_SCRIPT = "scripts/web-text-style-converter.main.kts"
 
+/** `font-size-600` -> 24.0, `semibold` -> "SemiBold", `base` -> "Figtree". */
+fun typographyByLeaf(): Map<String, Any> {
+    val values = mutableMapOf<String, Any>()
+    readFileResourceFileRaw(tokenFile("typography.tokens.json")) { path, resolved ->
+        values[leafOf(path)] = resolved.get("resolvedValue")
+    }
+    return values
+}
+
 fun main() {
     val json = JSONArray(File("text-styles.json").readText())
     val css = buildString {
@@ -47,25 +56,30 @@ fun main() {
     File("web/styles/typography.css").apply { parentFile.mkdirs() }.writeText(css)
     println("✓ web/styles/typography.css written with ${json.length()} classes")
 
+    val typography = typographyByLeaf()
+    val entries = (0 until json.length()).flatMap { index ->
+        val style = json.getJSONObject(index)
+        val name = style.getString("name")
+        val px = { leaf: String -> (typography.getValue(leaf) as Number).toDouble() }
+        listOfNotNull(
+            "className" to jsString("lmnd-text-${style.getString("css")}"),
+            "fontFamily" to jsString("\"${typography.getValue("base")}\", $FONT_STACK"),
+            "fontSize" to jsString(remValue(px(style.getString("fontSize")))),
+            "lineHeight" to jsString(remValue(px(style.getString("lineHeight")))),
+            "fontWeight" to FONT_WEIGHTS.getValue(typography.getValue(style.getString("fontWeight")) as String),
+            if (style.has("letterSpacing")) "letterSpacing" to jsString(pxValue(style.getDouble("letterSpacing"))) else null,
+            if (name == "bodyXSmallOverline") "textTransform" to jsString("uppercase") else null,
+            "WebkitFontSmoothing" to jsString("antialiased"),
+            "MozOsxFontSmoothing" to jsString("grayscale"),
+        ).map { (key, literal) -> JsEntry(listOf(name, key), literal) }
+    }
     val ts = buildString {
         appendLine("/**")
         append(defaultAutoGenerationMessage(scriptFilePath = TEXT_STYLE_SCRIPT))
         appendLine(" */")
         appendLine()
-        appendLine("export const textStyles = {")
-        (0 until json.length()).forEach { index ->
-            val style = json.getJSONObject(index)
-            appendLine("  ${style.getString("name")}: {")
-            appendLine("    className: \"lmnd-text-${style.getString("css")}\",")
-            appendLine("    fontSize: \"${style.getString("fontSize")}\",")
-            appendLine("    lineHeight: \"${style.getString("lineHeight")}\",")
-            appendLine("    fontWeight: \"${style.getString("fontWeight")}\",")
-            if (style.has("letterSpacing")) {
-                appendLine("    letterSpacing: ${style.getDouble("letterSpacing")},")
-            }
-            appendLine("  },")
-        }
-        appendLine("} as const")
+        appendLine("/** Each style as values ready to spread into a style object, plus the class that applies it. */")
+        appendLine("export const textStyles = ${jsObjectLiteral(entries)} as const")
         appendLine()
         appendLine("export type LemonadeTextStyles = typeof textStyles")
     }

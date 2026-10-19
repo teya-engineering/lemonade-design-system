@@ -38,7 +38,8 @@ ensure_kotlin() {
 #
 # The web converters are consolidated into a single tokens.css artifact rather than
 # one converter per category, so every token file maps to the same three web
-# converters: web-token-converter and web-llms-txt-converter must run before
+# converters (typography also runs web-text-style-converter, whose values it
+# resolves): web-token-converter and web-llms-txt-converter must run before
 # web-css-bundle, which concatenates their output. Each web converter reads all of
 # tokens/*.tokens.json itself and is idempotent, so listing them under every case
 # below is correct even though multiple changed files re-run them.
@@ -53,7 +54,7 @@ converters_for() {
     opacity.tokens.json)          echo "kmp-opacity-token-converter swiftui-opacity-token-converter web-token-converter web-llms-txt-converter web-css-bundle" ;;
     border-width.tokens.json)     echo "kmp-border-width-token-converter swiftui-border-token-converter web-token-converter web-llms-txt-converter web-css-bundle" ;;
     shadow.tokens.json)           echo "kmp-shadow-token-converter swiftui-shadow-token-converter web-token-converter web-llms-txt-converter web-css-bundle" ;;
-    typography.tokens.json)       echo "kmp-typography-token-converter swiftui-typography-token-converter web-token-converter web-llms-txt-converter web-css-bundle" ;;
+    typography.tokens.json)       echo "kmp-typography-token-converter swiftui-typography-token-converter web-token-converter web-text-style-converter web-llms-txt-converter web-css-bundle" ;;
     *) echo "" ;;
   esac
 }
