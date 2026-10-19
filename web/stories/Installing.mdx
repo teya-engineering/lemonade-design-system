@@ -75,7 +75,7 @@ import { tokens, tokenValues, textStyles } from '@teya/lemonade-mobile-ds'
 tokens.color.content.primary   // 'var(--lmnd-color-content-primary)' — follows the theme
 tokens.spacing[400]            // '1rem'
 tokens.shadow.md               // the composed box-shadow
-{ ...textStyles.bodyMediumSemiBold }  // fontFamily, fontSize, lineHeight, fontWeight, …
+const title = { ...textStyles.bodyMediumSemiBold } // fontFamily, fontSize, lineHeight, fontWeight, …
 
 tokenValues.spacing[400]                // 16
 tokenValues.color.light.content.primary // 'rgba(9, 8, 6, 0.925)'
