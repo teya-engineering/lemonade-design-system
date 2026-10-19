@@ -17,7 +17,8 @@ val TEXT_STYLE_SCRIPT = "scripts/web-text-style-converter.main.kts"
 fun typographyByLeaf(): Map<String, Any> {
     val values = mutableMapOf<String, Any>()
     readFileResourceFileRaw(tokenFile("typography.tokens.json")) { path, resolved ->
-        values[leafOf(path)] = resolved.get("resolvedValue")
+        val previous = values.put(leafOf(path), resolved.get("resolvedValue"))
+        require(previous == null) { "typography leaf '${leafOf(path)}' appears twice — text styles look tokens up by leaf" }
     }
     return values
 }
