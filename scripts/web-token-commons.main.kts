@@ -64,9 +64,9 @@ fun pxValue(px: Double): String {
  * opaque black. Emitting its hex would silently produce the wrong colour.
  */
 fun rgbValue(r: Double, g: Double, b: Double, a: Double): String {
-    val red = (r * 255).roundToInt()
-    val green = (g * 255).roundToInt()
-    val blue = (b * 255).roundToInt()
+    val red = channel(r)
+    val green = channel(g)
+    val blue = channel(b)
     val opaque = abs(a - 1.0) < 1e-6
     return if (opaque) {
         "rgb($red $green $blue)"
@@ -77,7 +77,9 @@ fun rgbValue(r: Double, g: Double, b: Double, a: Double): String {
 
 /** The same colour in the comma `rgba()` form, alpha always written: older JS colour parsers read only this. */
 fun rgbaValue(r: Double, g: Double, b: Double, a: Double): String =
-    "rgba(${(r * 255).roundToInt()}, ${(g * 255).roundToInt()}, ${(b * 255).roundToInt()}, ${trimNumber(a)})"
+    "rgba(${channel(r)}, ${channel(g)}, ${channel(b)}, ${trimNumber(a)})"
+
+private fun channel(component: Double): Int = (component * 255).roundToInt()
 
 /** JS key for a token leaf: numeric steps stay numeric (`400`), names are camelCased (`focusRing`). */
 fun jsKey(leaf: String, strip: String?): String {

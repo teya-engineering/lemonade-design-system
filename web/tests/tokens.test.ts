@@ -24,19 +24,8 @@ const flatten = (tree: Tree, path: string[] = []): [string[], Leaf][] =>
     typeof value === 'object' ? flatten(value, [...path, key]) : [[[...path, key], value] as [string[], Leaf]],
   )
 
-const CSS_GROUP: Record<string, string> = {
-  spacing: 'spacing',
-  radius: 'radius',
-  size: 'size',
-  borderWidth: 'border-width',
-  opacity: 'opacity',
-  lineHeight: 'line-height',
-  shadow: 'shadow',
-}
-const CSS_FONT_GROUP: Record<string, string> = { family: 'font-family', size: 'font-size', weight: 'font-weight' }
-
 const cssNameOf = (path: string[]) => {
-  const group = path[0] === 'font' ? CSS_FONT_GROUP[path[1]] : CSS_GROUP[path[0]]
+  const group = path[0] === 'font' ? `font-${path[1]}` : kebab(path[0])
   return `--lmnd-${group}-${kebab(path[path.length - 1])}`
 }
 
@@ -94,11 +83,11 @@ const channels = (colour: string) => {
 
 describe('colours', () => {
   const dark = declarations('[data-lmnd-theme="dark"]')
-  const colours = () => flatten(tokens.color)
+  const colours = flatten(tokens.color)
 
   it('references a declared custom property for every colour', () => {
-    expect(colours().length).toBeGreaterThan(300)
-    colours().forEach(([path, value]) => {
+    expect(colours.length).toBeGreaterThan(300)
+    colours.forEach(([path, value]) => {
       const name = `--lmnd-color-${path.map(kebab).join('-')}`
       expect(value).toBe(`var(${name})`)
       expect(root.has(name)).toBe(true)
