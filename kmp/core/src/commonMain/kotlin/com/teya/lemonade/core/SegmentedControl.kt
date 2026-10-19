@@ -33,11 +33,12 @@ public class TabButtonProperties private constructor(
         /**
          * Creates a tab that shows only [icon].
          *
-         * @param contentDescription **localized** name screen readers announce for the tab.
+         * @param contentDescription **localized** name screen readers announce for the tab. When null the tab has no
+         * accessible name.
          */
         public fun icon(
             icon: LemonadeIcons,
-            contentDescription: String,
+            contentDescription: String?,
         ): TabButtonProperties =
             TabButtonProperties(
                 label = null,
@@ -49,12 +50,7 @@ public class TabButtonProperties private constructor(
             message = "This tab has no accessible name. Use icon(icon, contentDescription) with a localized name.",
             level = DeprecationLevel.WARNING,
         )
-        public fun icon(icon: LemonadeIcons): TabButtonProperties =
-            TabButtonProperties(
-                label = null,
-                icon = icon,
-                contentDescription = null,
-            )
+        public fun icon(icon: LemonadeIcons): TabButtonProperties = icon(icon = icon, contentDescription = null)
     }
 }
 
