@@ -38,14 +38,14 @@ public struct LemonadeTabButtonProperties: Identifiable, Hashable {
     ///
     /// - Parameters:
     ///   - icon: The icon to display.
-    ///   - contentDescription: The localized name VoiceOver reads for the tab.
-    public static func icon(_ icon: LemonadeIcon, contentDescription: String) -> Self {
+    ///   - contentDescription: The localized name VoiceOver reads for the tab. When nil, the icon's raw name is read.
+    public static func icon(_ icon: LemonadeIcon, contentDescription: String?) -> Self {
         Self(label: nil, icon: icon, contentDescription: contentDescription)
     }
 
     @available(*, deprecated, message: "VoiceOver reads the icon's raw name. Use icon(_:contentDescription:) with a localized name.")
     public static func icon(_ icon: LemonadeIcon) -> Self {
-        Self(label: nil, icon: icon)
+        .icon(icon, contentDescription: nil)
     }
 
     var accessibilityName: String {
