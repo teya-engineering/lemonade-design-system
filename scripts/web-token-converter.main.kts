@@ -90,11 +90,11 @@ fun typographyTokens(): List<WebToken> {
             "font-weight" -> {
                 val weight = FONT_WEIGHTS[raw as String]
                     ?: error("unmapped font weight '$raw' on '$path' — add it to FONT_WEIGHTS")
-                WebToken(CssVar(cssVar(group, leaf), weight), listOf("font", "weight", leaf), weight, weight)
+                WebToken(CssVar(cssVar(group, leaf), weight), listOf("font", "weight", jsKey(leaf, null)), weight, weight)
             }
             "font-family" -> {
                 val stack = "\"$raw\", $FONT_STACK"
-                WebToken(CssVar(cssVar(group, leaf), stack), listOf("font", "family", leaf), jsString(stack), jsString(stack))
+                WebToken(CssVar(cssVar(group, leaf), stack), listOf("font", "family", jsKey(leaf, null)), jsString(stack), jsString(stack))
             }
             else -> error("unexpected typography group '$group' on token '$path'")
         }

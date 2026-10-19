@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 import tokensCss from '../styles/tokens.css?raw'
+import tokensJson from '../tokens.json'
 import { describe, expect, it } from 'vitest'
 import { tokens, tokenValues } from '../src/index'
 
@@ -62,6 +63,10 @@ describe('tokenValues', () => {
               : style
       expect([path.join('.'), value]).toEqual([path.join('.'), expected])
     })
+  })
+
+  it('is what tokens.json carries', () => {
+    expect(tokensJson).toEqual(tokenValues)
   })
 
   it('has no shadow', () => {
