@@ -74,3 +74,64 @@ fun rgbValue(r: Double, g: Double, b: Double, a: Double): String {
         "rgb($red $green $blue / ${trimNumber(a)})"
     }
 }
+
+/** The same colour in the comma `rgba()` form, alpha always written: older JS colour parsers read only this. */
+fun rgbaValue(r: Double, g: Double, b: Double, a: Double): String =
+    "rgba(${(r * 255).roundToInt()}, ${(g * 255).roundToInt()}, ${(b * 255).roundToInt()}, ${trimNumber(a)})"
+
+/** JS key for a token leaf: numeric steps stay numeric (`400`), names are camelCased (`focusRing`). */
+fun jsKey(leaf: String, strip: String?): String {
+    val trimmed = if (strip != null) leaf.removePrefix("$strip-") else leaf
+    if (trimmed.all { it.isDigit() }) return trimmed
+    return camelCase(trimmed)
+}
+
+/** `green-lime` -> `greenLime`. */
+fun camelCase(kebab: String): String =
+    kebab.split("-").mapIndexed { index, word ->
+        if (index == 0) word else word.replaceFirstChar { it.uppercase() }
+    }.joinToString("")
+
+fun jsString(value: String): String =
+    "\"" + value.replace("\\", "\\\\").replace("\"", "\\\"") + "\""
+
+/** One leaf of a generated JS object: its key path and its value as source text. */
+data class JsEntry(val path: List<String>, val literal: String)
+
+private class JsNode {
+    val children = LinkedHashMap<String, Any>()
+}
+
+private fun jsTree(entries: List<JsEntry>): JsNode {
+    val root = JsNode()
+    entries.forEach { entry ->
+        var node = root
+        entry.path.dropLast(1).forEach { key ->
+            val child = node.children.getOrPut(key) { JsNode() }
+            require(child is JsNode) { "'${entry.path.joinToString(".")}' nests under a value" }
+            node = child
+        }
+        val leaf = entry.path.last()
+        require(leaf !in node.children) { "duplicate JS path '${entry.path.joinToString(".")}'" }
+        node.children[leaf] = entry.literal
+    }
+    return root
+}
+
+private fun renderTree(node: JsNode, depth: Int, json: Boolean): String = buildString {
+    appendLine("{")
+    val pad = "  ".repeat(depth + 1)
+    node.children.entries.forEachIndexed { index, (key, value) ->
+        val name = if (json) "\"$key\"" else key
+        val rendered = if (value is JsNode) renderTree(value, depth + 1, json) else value as String
+        val comma = if (!json || index < node.children.size - 1) "," else ""
+        appendLine("$pad$name: $rendered$comma")
+    }
+    append("  ".repeat(depth) + "}")
+}
+
+/** A nested TS object literal in insertion order; keys are emitted bare. */
+fun jsObjectLiteral(entries: List<JsEntry>): String = renderTree(jsTree(entries), 0, json = false)
+
+/** The same tree as JSON, hand-emitted so key order survives (`JSONObject` is HashMap-backed). */
+fun jsonObjectLiteral(entries: List<JsEntry>): String = renderTree(jsTree(entries), 0, json = true)

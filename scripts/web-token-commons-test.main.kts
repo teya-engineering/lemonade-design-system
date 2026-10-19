@@ -97,6 +97,43 @@ fun main() {
         "the light-theme shadow alpha survives rounding",
     )
 
+    // --- rgbaValue ------------------------------------------------------
+    check(
+        rgbaValue(0.03529411926865578, 0.0313725508749485, 0.0235294122248888, 0.925000011920929)
+            == "rgba(9, 8, 6, 0.925)",
+        "the comma form rounds like rgbValue",
+    )
+    check(rgbaValue(1.0, 1.0, 1.0, 1.0) == "rgba(255, 255, 255, 1)", "opaque colours still carry alpha")
+
+    // --- jsKey ----------------------------------------------------------
+    check(jsKey("spacing-400", "spacing") == "400", "a numeric step stays a numeric key")
+    check(jsKey("border-focus-ring", "border") == "focusRing", "named tokens are camelCased")
+    check(jsKey("radius-container-default", "radius") == "containerDefault", "multi-word names join")
+    check(jsKey("semibold", null) == "semibold", "no strip leaves the leaf")
+
+    // --- jsString -------------------------------------------------------
+    check(
+        jsString("\"Figtree\", sans-serif") == "\"\\\"Figtree\\\", sans-serif\"",
+        "double quotes inside the value are escaped",
+    )
+
+    // --- jsObjectLiteral / jsonObjectLiteral ---------------------------
+    val entries = listOf(
+        JsEntry(listOf("a", "400"), "1"),
+        JsEntry(listOf("a", "full"), "2"),
+        JsEntry(listOf("b", "c", "d"), "3"),
+    )
+    check(
+        jsObjectLiteral(entries) ==
+            "{\n  a: {\n    400: 1,\n    full: 2,\n  },\n  b: {\n    c: {\n      d: 3,\n    },\n  },\n}",
+        "the TS literal nests in insertion order with bare keys and trailing commas",
+    )
+    check(
+        jsonObjectLiteral(entries) ==
+            "{\n  \"a\": {\n    \"400\": 1,\n    \"full\": 2\n  },\n  \"b\": {\n    \"c\": {\n      \"d\": 3\n    }\n  }\n}",
+        "the JSON literal quotes every key and drops trailing commas",
+    )
+
     println("All web token commons checks passed")
 }
 
