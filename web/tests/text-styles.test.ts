@@ -9,10 +9,10 @@ const ruleFor = (className: string) => {
   return new Map([...match[1].matchAll(/^\s+([\w-]+): (.+);$/gm)].map(([, name, value]) => [name, value]))
 }
 
-const step = (value: string | undefined, prefix: string) => {
-  const match = value?.match(new RegExp(`^var\\(--lmnd-${prefix}-([\\w-]+)\\)$`))
-  if (!match) throw new Error(`'${value}' is not a --lmnd-${prefix} reference`)
-  return match[1]
+const tokenFor = (value: string | undefined, path: string[]) => {
+  const match = value?.match(/^var\(--lmnd-[a-z-]+?-(\w+)\)$/)
+  if (!match) throw new Error(`'${value}' is not a token reference`)
+  return [...path, match[1]].reduce<unknown>((node, key) => (node as Record<string, unknown>)[key], tokens)
 }
 
 describe('textStyles', () => {
@@ -20,10 +20,10 @@ describe('textStyles', () => {
     const style: Record<string, string | number> = textStyles[name]
     const rule = ruleFor(style.className as string)
 
-    expect(style.fontFamily).toBe(tokens.font.family[step(rule.get('font-family'), 'font-family') as 'base'])
-    expect(style.fontSize).toBe(tokens.font.size[step(rule.get('font-size'), 'font-size') as unknown as 400])
-    expect(style.lineHeight).toBe(tokens.lineHeight[step(rule.get('line-height'), 'line-height') as unknown as 400])
-    expect(style.fontWeight).toBe(tokens.font.weight[step(rule.get('font-weight'), 'font-weight') as 'regular'])
+    expect(style.fontFamily).toBe(tokenFor(rule.get('font-family'), ['font', 'family']))
+    expect(style.fontSize).toBe(tokenFor(rule.get('font-size'), ['font', 'size']))
+    expect(style.lineHeight).toBe(tokenFor(rule.get('line-height'), ['lineHeight']))
+    expect(style.fontWeight).toBe(tokenFor(rule.get('font-weight'), ['font', 'weight']))
     expect(style.letterSpacing).toBe(rule.get('letter-spacing'))
     expect(style.textTransform).toBe(rule.get('text-transform'))
     expect(style.WebkitFontSmoothing).toBe(rule.get('-webkit-font-smoothing'))
