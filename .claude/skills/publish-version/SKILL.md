@@ -108,9 +108,11 @@ Before tagging, make sure the chosen tag does not already exist
 (`git tag -l <tag>`). Run the SDKs the user confirmed.
 
 **KMP** — tag → push (triggers Maven Central publish) → create the GitHub release
-(KMP CI does *not* create it). Mark it `--latest` and base its notes on the
-previous KMP tag so the auto-generated "What's Changed" + "Full Changelog" compare
-link are correct:
+(KMP CI does *not* create it). Mark it `--latest`. Build the notes with
+`release-notes.sh`, never `--generate-notes`: GitHub's generated notes list every
+PR merged in the range, so web, docs and SwiftUI-only work would show up as KMP
+changes. The script lists only PRs that touched shipped KMP source, in the same
+"What's Changed" + "Full Changelog" format:
 
 ```bash
 NEW=0.20.1                       # confirmed version
@@ -120,11 +122,12 @@ SHA=<RELEASE_SHA>
 git tag "lemonade-kmp-${NEW}" "$SHA"
 git push origin "lemonade-kmp-${NEW}"
 
-gh release create "lemonade-kmp-${NEW}" \
-  --title "Lemonade Release ${NEW}" \
-  --generate-notes \
-  --notes-start-tag "$PREV" \
-  --latest
+.claude/skills/publish-version/scripts/release-notes.sh \
+  "$PREV" "lemonade-kmp-${NEW}" "$SHA" kmp/ ':(exclude)kmp/composeApp/' \
+  | gh release create "lemonade-kmp-${NEW}" \
+      --title "Lemonade Release ${NEW}" \
+      --notes-file - \
+      --latest
 ```
 
 **SwiftUI** — push **both** tags at the same commit. The prefixed tag triggers
