@@ -67,18 +67,24 @@ CSS with no JavaScript re-render required in your own app.
 
 ## Using tokens
 
-Every token is also available as a plain TypeScript value, for places CSS can't
-reach — inline styles computed in JS, canvas drawing, native `<Text>` props, etc.
+For components styled in TypeScript, the root export carries the tokens as values.
 
 ```ts
-import { tokens, iconNames, textStyles } from '@teya/lemonade-mobile-ds'
+import { tokens, tokenValues, textStyles } from '@teya/lemonade-mobile-ds'
 
-tokens.spacing.spacing400 // 16 (a raw pixel number, not a rem string)
+tokens.color.content.primary   // 'var(--lmnd-color-content-primary)' — follows the theme
+tokens.spacing[400]            // '1rem'
+tokens.shadow.md               // the composed box-shadow
+{ ...textStyles.bodyMediumSemiBold }  // fontFamily, fontSize, lineHeight, fontWeight, …
+
+tokenValues.spacing[400]                // 16
+tokenValues.color.light.content.primary // 'rgba(9, 8, 6, 0.925)'
 ```
 
-Prefer the CSS custom property (`var(--lmnd-spacing-400)`) wherever you can — it's
-the one that stays theme-aware and re-resolves on toggle. Reach for the TS export
-only where a `var()` genuinely can't go.
+Style components with `tokens`: its colours are `var()` references into `tokens.css`, so they
+re-resolve on the theme toggle above with no re-render. `tokenValues` holds plain numbers and
+per-theme colours for code that needs a real value — a chart, a canvas, a `theme-color` meta
+tag. A component styled with `tokenValues.color.light` stays light in dark mode.
 
 ## Icons, flags and brand logos
 

@@ -7,6 +7,15 @@ with `data-lmnd-theme="dark"` on any element.
 
 Always prefer a semantic token over a literal value.
 
+## JavaScript
+
+`import { tokens, tokenValues, textStyles } from '@teya/lemonade-mobile-ds'` for styles written in TypeScript.
+
+- `tokens` goes in styles. Colours are `var()` references (`tokens.color.content.primary`), so they follow the theme; load `tokens.css`. Other values match `tokens.css` (`tokens.spacing[400]` = `1rem`).
+- `tokenValues` is for code that needs a real value (charts, canvas): px numbers and `tokenValues.color.light` / `.dark` as `rgba()`. Never style components with it — dark mode breaks.
+- `textStyles.<name>` spreads into a style object, or apply its `className`.
+- Keys mirror the CSS names: `--lmnd-color-bg-brand-elevated` ↔ `tokens.color.bg.brandElevated`.
+
 ## Colours
 
 - `var(--lmnd-color-bg-brand)` — Use for primary brand surfaces, such as key actions or highlights.

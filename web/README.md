@@ -30,6 +30,37 @@ import '@teya/lemonade-mobile-ds/fonts.css'
 `tokens.css` declares custom properties and nothing else — no element selectors — so it
 can be added to an existing app without affecting any current component.
 
+## Tokens in JavaScript
+
+For components styled in TypeScript (Emotion, styled-components, vanilla-extract, inline
+styles), the root export carries the same tokens as values:
+
+```ts
+import { tokens, tokenValues, textStyles } from '@teya/lemonade-mobile-ds'
+
+const Card = styled.div`
+  color: ${tokens.color.content.primary};       // 'var(--lmnd-color-content-primary)'
+  padding: ${tokens.spacing[400]};               // '1rem'
+  border-radius: ${tokens.radius[300]};
+  box-shadow: ${tokens.shadow.md};
+  gap: calc(${tokens.spacing[200]} * 2);
+`
+
+const title = { ...textStyles.bodyMediumSemiBold }  // fontFamily, fontSize, lineHeight, …
+```
+
+- **`tokens`** is what goes in a style. Colours are `var()` references, so load `tokens.css`
+  once and they follow dark mode with no JavaScript. Everything else is the value `tokens.css`
+  declares. Do arithmetic with `calc()`.
+- **`tokenValues`** is for code that needs a real value: charts, canvas, `<meta name="theme-color">`.
+  Dimensions are px numbers (`tokenValues.spacing[400]` is `16`), and colours come per theme
+  (`tokenValues.color.light.bg.brand`, `tokenValues.color.dark.bg.brand`) as `rgba()`. Styling a
+  component with them breaks dark mode. `tokens.json` carries the same values.
+- **`textStyles`** spread into a style object, or apply through `className`.
+
+Keys mirror the CSS names: `--lmnd-color-bg-brand-elevated` is `tokens.color.bg.brandElevated`,
+`--lmnd-spacing-400` is `tokens.spacing[400]`.
+
 ## Components
 
 The CSS carries the component and React only applies the class names, so the classes are
@@ -54,9 +85,8 @@ cross-origin `basePath` has to send `Access-Control-Allow-Origin` — a mask ima
 fetched under CORS, and without it the browser renders nothing rather than reporting an
 error.
 
-Without React, write the markup against the same classes — the `textStyles` manifest on
-the root export maps every style name to its class, and `llms.txt` documents the markup
-per component:
+Without React, write the markup against the same classes — `textStyles` on the root
+export gives every style's class, and `llms.txt` documents the markup per component:
 
 ```html
 <p class="lmnd-text-body-medium-regular">Account balance</p>
