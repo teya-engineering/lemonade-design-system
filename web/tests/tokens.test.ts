@@ -86,3 +86,52 @@ describe('tokenValues', () => {
     expect(tokenValues.lineHeight[650]).toBe(26)
   })
 })
+
+const channels = (colour: string) => {
+  const [r, g, b, a = '1'] = colour.match(/[\d.]+/g) ?? []
+  return [r, g, b, a].map(Number)
+}
+
+describe('colours', () => {
+  const dark = declarations('[data-lmnd-theme="dark"]')
+  const colours = () => flatten(tokens.color)
+
+  it('references a declared custom property for every colour', () => {
+    expect(colours().length).toBeGreaterThan(300)
+    colours().forEach(([path, value]) => {
+      const name = `--lmnd-color-${path.map(kebab).join('-')}`
+      expect(value).toBe(`var(${name})`)
+      expect(root.has(name)).toBe(true)
+    })
+  })
+
+  it('gives light and dark the same keys as tokens.color', () => {
+    const keys = (tree: Tree) => flatten(tree).map(([path]) => path.join('.'))
+    expect(keys(tokenValues.color.light)).toEqual(keys(tokens.color))
+    expect(keys(tokenValues.color.dark)).toEqual(keys(tokens.color))
+  })
+
+  it('matches tokens.css per theme', () => {
+    const check = (theme: Tree, css: Map<string, string>) =>
+      flatten(theme).forEach(([path, value]) => {
+        const name = `--lmnd-color-${path.map(kebab).join('-')}`
+        expect([name, channels(String(value))]).toEqual([name, channels(css.get(name)!)])
+      })
+    check(tokenValues.color.light, root)
+    check(tokenValues.color.dark, dark)
+  })
+
+  it('exposes theme-following references and per-theme values', () => {
+    expect(tokens.color.content.primary).toBe('var(--lmnd-color-content-primary)')
+    expect(tokenValues.color.light.content.primary).toBe('rgba(9, 8, 6, 0.925)')
+    expect(tokenValues.color.dark.content.primary).toBe('rgba(255, 255, 255, 0.9)')
+    expect(tokenValues.color.light.bg.brand).toBe('rgba(225, 229, 26, 1)')
+    expect(tokens.color.themed.greenLime.subtleOnBackground).toBe(
+      'var(--lmnd-color-themed-green-lime-subtle-on-background)',
+    )
+  })
+
+  it('leaves out colours hidden from publishing', () => {
+    expect('accent' in tokens.color.content).toBe(false)
+  })
+})

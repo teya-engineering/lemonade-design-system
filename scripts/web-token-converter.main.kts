@@ -202,7 +202,47 @@ fun shadowJsTokens(): List<JsToken> = shadowVars().map {
     JsToken(listOf("shadow", it.name.removePrefix("--lmnd-shadow-")), jsString(it.value), null)
 }
 
-fun jsTokens(): List<JsToken> = scalarJsTokens() + typographyJsTokens() + shadowJsTokens()
+private val COLOUR_GROUPS = setOf("bg", "content", "border", "shadow")
+
+/**
+ * `Themed/green-lime/subtle/on-background` -> `color.themed.greenLime.subtleOnBackground`. The hue
+ * comes from the path, not the CSS name, because a hue can itself contain a hyphen.
+ */
+fun colourJsPath(path: String): List<String> {
+    if (path.startsWith("Themed/")) {
+        val segments = path.split('/')
+        return listOf("color", "themed", camelCase(segments[1]), camelCase(segments.drop(2).joinToString("-")))
+    }
+    val leaf = leafOf(path)
+    val group = leaf.substringBefore('-')
+    require(group in COLOUR_GROUPS) { "colour '$path' has no JS group for '$group' — add it to COLOUR_GROUPS" }
+    return listOf("color", group, jsKey(leaf, group))
+}
+
+fun colourJsTokens(): List<JsToken> {
+    val tokens = mutableListOf<JsToken>()
+    readFileResourceFileByModeRaw(tokenFiles("theme-colors."), "Light") { path, _ ->
+        tokens.add(JsToken(colourJsPath(path), jsString("var(${cssVar("color", colourName(path))})"), null))
+    }
+    return tokens
+}
+
+fun colourValueEntries(mode: String): List<JsEntry> {
+    val entries = mutableListOf<JsEntry>()
+    readFileResourceFileByModeRaw(tokenFiles("theme-colors."), mode) { path, resolved ->
+        val value = rgbaValue(
+            r = resolved.getDouble("r"),
+            g = resolved.getDouble("g"),
+            b = resolved.getDouble("b"),
+            a = resolved.getDouble("a"),
+        )
+        val jsPath = colourJsPath(path)
+        entries.add(JsEntry(listOf(jsPath[0], mode.lowercase()) + jsPath.drop(1), jsString(value)))
+    }
+    return entries
+}
+
+fun jsTokens(): List<JsToken> = scalarJsTokens() + typographyJsTokens() + shadowJsTokens() + colourJsTokens()
 
 /** Writes web/src/tokens.generated.ts: `tokens` for styling and `tokenValues` for code. */
 fun writeTokensTs(tokens: List<JsToken>) {
@@ -227,8 +267,14 @@ fun writeTokensTs(tokens: List<JsToken>) {
     println("✓ web/src/tokens.generated.ts written")
 }
 
-fun valueEntries(tokens: List<JsToken>): List<JsEntry> =
-    tokens.mapNotNull { token -> token.value?.let { JsEntry(token.path, it) } }
+fun valueEntries(tokens: List<JsToken>): List<JsEntry> {
+    val light = colourValueEntries("Light")
+    val dark = colourValueEntries("Dark")
+    require(light.map { it.path.drop(2) } == dark.map { it.path.drop(2) }) {
+        "light and dark themes declare different colour tokens — one export is stale"
+    }
+    return tokens.mapNotNull { token -> token.value?.let { JsEntry(token.path, it) } } + light + dark
+}
 
 fun cssBanner(): String = buildString {
     appendLine("/**")
