@@ -186,7 +186,11 @@ private fun progressSteps(
     return labels.mapIndexed { index, label ->
         when {
             index < completed -> HistoryTimelineItem(label = label, voice = HistoryItemVoice.Positive)
-            index == completed -> HistoryTimelineItem(label = label, subheading = currentSubheading, voice = currentVoice)
+            index == completed -> HistoryTimelineItem(
+                label = label,
+                subheading = currentSubheading,
+                voice = currentVoice,
+            )
             else -> HistoryTimelineItem(label = label)
         }
     }
