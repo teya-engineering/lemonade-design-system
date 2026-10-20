@@ -1,5 +1,12 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.core.EaseInOut
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -40,6 +48,9 @@ private val HistoryProgressActiveDotSize: Dp = 8.dp
 private val HistoryProgressLineInset: Dp = 2.dp
 private val HistoryProgressDashPeriod: Dp = 10.dp
 private const val HISTORY_PROGRESS_DASH_FRACTION: Float = 0.4f
+private const val HISTORY_ACTIVE_LINE_FADE_START_MILLIS: Int = 1350
+private const val HISTORY_ACTIVE_LINE_FILL_MILLIS: Int = 1800
+private const val HISTORY_ACTIVE_LINE_CYCLE_MILLIS: Int = 2000
 
 /**
  * Describes a single row inside a [LemonadeUi.HistoryTimeline].
@@ -203,6 +214,11 @@ private fun CoreHistoryTimelineItem(
     val ringFillColor = colors.background.bgDefault
     val activeDotColor = colors.background.bgNeutral
     val activeLineColor = colors.border.borderPositive
+    val activeLineElapsedMillis: State<Float>? = if (state == HistoryItemState.Active && !isLast) {
+        rememberActiveLineElapsedMillis()
+    } else {
+        null
+    }
     val dotColor: Color = when (state) {
         HistoryItemState.Current -> item.voice.currentDotColor
         else -> mutedColor
@@ -287,26 +303,21 @@ private fun CoreHistoryTimelineItem(
                             )
 
                             else -> {
-                                val start = Offset(x = centerX, y = lineTop)
-                                val end = Offset(x = centerX, y = lineBottom)
                                 drawLine(
                                     color = mutedColor,
-                                    start = start,
-                                    end = end,
+                                    start = Offset(x = centerX, y = lineTop),
+                                    end = Offset(x = centerX, y = lineBottom),
                                     strokeWidth = lineWidth,
                                     cap = StrokeCap.Round,
                                 )
-                                if (state == HistoryItemState.Active) {
-                                    drawLine(
-                                        brush = Brush.verticalGradient(
-                                            colors = listOf(activeLineColor, activeLineColor.copy(alpha = 0f)),
-                                            startY = lineTop,
-                                            endY = lineBottom,
-                                        ),
-                                        start = start,
-                                        end = end,
+                                activeLineElapsedMillis?.let { elapsed ->
+                                    drawActiveProgressLine(
+                                        color = activeLineColor,
+                                        x = centerX,
+                                        top = lineTop,
+                                        bottom = lineBottom,
                                         strokeWidth = lineWidth,
-                                        cap = StrokeCap.Round,
+                                        elapsedMillis = elapsed.value,
                                     )
                                 }
                             }
@@ -373,6 +384,49 @@ private fun CoreHistoryTimelineItem(
             }
         }
     }
+}
+
+@Composable
+private fun rememberActiveLineElapsedMillis(): State<Float> =
+    rememberInfiniteTransition(label = "HistoryActiveLine").animateFloat(
+        initialValue = 0f,
+        targetValue = HISTORY_ACTIVE_LINE_CYCLE_MILLIS.toFloat(),
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = HISTORY_ACTIVE_LINE_CYCLE_MILLIS,
+                easing = LinearEasing,
+            ),
+            repeatMode = RepeatMode.Restart,
+        ),
+        label = "HistoryActiveLineElapsed",
+    )
+
+private fun DrawScope.drawActiveProgressLine(
+    color: Color,
+    x: Float,
+    top: Float,
+    bottom: Float,
+    strokeWidth: Float,
+    elapsedMillis: Float,
+) {
+    val fillFraction = min(elapsedMillis / HISTORY_ACTIVE_LINE_FILL_MILLIS, 1f)
+    val end = top + (bottom - top) * EaseInOut.transform(fillFraction)
+    val fadeFraction = (elapsedMillis - HISTORY_ACTIVE_LINE_FADE_START_MILLIS) /
+        (HISTORY_ACTIVE_LINE_FILL_MILLIS - HISTORY_ACTIVE_LINE_FADE_START_MILLIS)
+    val alpha = 1f - fadeFraction.coerceIn(minimumValue = 0f, maximumValue = 1f)
+    if (end <= top || alpha <= 0f) return
+    drawLine(
+        brush = Brush.verticalGradient(
+            colors = listOf(color, color.copy(alpha = 0f)),
+            startY = top,
+            endY = end,
+        ),
+        start = Offset(x = x, y = top),
+        end = Offset(x = x, y = end),
+        strokeWidth = strokeWidth,
+        cap = StrokeCap.Round,
+        alpha = alpha,
+    )
 }
 
 private fun DrawScope.drawDashedProgressLine(
