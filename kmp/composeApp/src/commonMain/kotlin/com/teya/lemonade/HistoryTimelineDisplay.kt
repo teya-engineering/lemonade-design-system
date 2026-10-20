@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.HistoryItemVoice
+import com.teya.lemonade.core.HistoryTimelineVariant
 import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonVariant
 import com.teya.lemonade.core.LemonadeCardPadding
@@ -13,6 +14,28 @@ import com.teya.lemonade.core.TagVoice
 @Composable
 internal fun HistoryTimelineDisplay() {
     SampleScreenDisplayLazyColumn(title = "HistoryTimeline") {
+        item(key = "Progress — completed steps") {
+            LemonadeUi.Card(
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
+                contentPadding = LemonadeCardPadding.Medium,
+                header = CardHeaderConfig(title = "Progress — completed steps"),
+            ) {
+                LemonadeUi.HistoryTimeline(
+                    items = listOf(
+                        HistoryTimelineItem(label = "Invitation accepted", voice = HistoryItemVoice.Positive),
+                        HistoryTimelineItem(label = "Logs into the Teya App", voice = HistoryItemVoice.Positive),
+                        HistoryTimelineItem(
+                            label = "Card activation",
+                            subheading = "The card was delivered. Sofia can now activate it.",
+                        ),
+                        HistoryTimelineItem(label = "First payment"),
+                    ),
+                    currentIndex = 2,
+                    variant = HistoryTimelineVariant.Progress,
+                )
+            }
+        }
+
         item(key = "Timeline — positive first") {
             LemonadeUi.Card(
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),

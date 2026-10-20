@@ -63,6 +63,17 @@ final enum class com.teya.lemonade.core/HistoryItemVoice : kotlin/Enum<com.teya.
     final fun values(): kotlin/Array<com.teya.lemonade.core/HistoryItemVoice> // com.teya.lemonade.core/HistoryItemVoice.values|values#static(){}[0]
 }
 
+final enum class com.teya.lemonade.core/HistoryTimelineVariant : kotlin/Enum<com.teya.lemonade.core/HistoryTimelineVariant> { // com.teya.lemonade.core/HistoryTimelineVariant|null[0]
+    enum entry Default // com.teya.lemonade.core/HistoryTimelineVariant.Default|null[0]
+    enum entry Progress // com.teya.lemonade.core/HistoryTimelineVariant.Progress|null[0]
+
+    final val entries // com.teya.lemonade.core/HistoryTimelineVariant.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.teya.lemonade.core/HistoryTimelineVariant> // com.teya.lemonade.core/HistoryTimelineVariant.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.teya.lemonade.core/HistoryTimelineVariant // com.teya.lemonade.core/HistoryTimelineVariant.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.teya.lemonade.core/HistoryTimelineVariant> // com.teya.lemonade.core/HistoryTimelineVariant.values|values#static(){}[0]
+}
+
 final enum class com.teya.lemonade.core/LemonadeAssetSize : kotlin/Enum<com.teya.lemonade.core/LemonadeAssetSize> { // com.teya.lemonade.core/LemonadeAssetSize|null[0]
     enum entry Large // com.teya.lemonade.core/LemonadeAssetSize.Large|null[0]
     enum entry Medium // com.teya.lemonade.core/LemonadeAssetSize.Medium|null[0]

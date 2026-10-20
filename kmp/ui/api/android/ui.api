@@ -202,7 +202,8 @@ public final class com/teya/lemonade/HistoryTimelineItem {
 }
 
 public final class com/teya/lemonade/HistoryTimelineKt {
-	public static final fun HistoryTimeline (Lcom/teya/lemonade/LemonadeUi;Ljava/util/List;Landroidx/compose/ui/Modifier;Ljava/lang/Integer;Landroidx/compose/runtime/Composer;II)V
+	public static final synthetic fun HistoryTimeline (Lcom/teya/lemonade/LemonadeUi;Ljava/util/List;Landroidx/compose/ui/Modifier;Ljava/lang/Integer;Landroidx/compose/runtime/Composer;II)V
+	public static final fun HistoryTimeline (Lcom/teya/lemonade/LemonadeUi;Ljava/util/List;Landroidx/compose/ui/Modifier;Ljava/lang/Integer;Lcom/teya/lemonade/core/HistoryTimelineVariant;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/teya/lemonade/IconButtonKt {

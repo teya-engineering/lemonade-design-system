@@ -40,6 +40,14 @@ public final class com/teya/lemonade/core/HistoryItemVoice : java/lang/Enum {
 	public static fun values ()[Lcom/teya/lemonade/core/HistoryItemVoice;
 }
 
+public final class com/teya/lemonade/core/HistoryTimelineVariant : java/lang/Enum {
+	public static final field Default Lcom/teya/lemonade/core/HistoryTimelineVariant;
+	public static final field Progress Lcom/teya/lemonade/core/HistoryTimelineVariant;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/HistoryTimelineVariant;
+	public static fun values ()[Lcom/teya/lemonade/core/HistoryTimelineVariant;
+}
+
 public abstract interface class com/teya/lemonade/core/LemonadeAsset {
 }
 

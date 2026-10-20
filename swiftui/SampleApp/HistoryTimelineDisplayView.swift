@@ -9,6 +9,7 @@ struct HistoryTimelineDisplayView: View {
                 howItWorksSection
                 criticalCurrentSection
                 neutralCurrentSection
+                progressSection
             }
             .padding(.horizontal, .space.spacing400)
             .padding(.vertical, .space.spacing400)
@@ -137,5 +138,26 @@ struct HistoryTimelineDisplayView: View {
 #Preview {
     NavigationStack {
         HistoryTimelineDisplayView()
+    }
+
+    private var progressSection: some View {
+        LemonadeUi.Card(
+            contentPadding: .medium,
+            header: CardHeaderConfig(title: "Progress — completed steps")
+        ) {
+            LemonadeUi.HistoryTimeline(
+                items: [
+                    LemonadeHistoryTimelineItem(label: "Invitation accepted", voice: .positive),
+                    LemonadeHistoryTimelineItem(label: "Logs into the Teya App", voice: .positive),
+                    LemonadeHistoryTimelineItem(
+                        label: "Card activation",
+                        subheading: "The card was delivered. Sofia can now activate it."
+                    ),
+                    LemonadeHistoryTimelineItem(label: "First payment")
+                ],
+                currentIndex: 2,
+                variant: .progress
+            )
+        }
     }
 }

@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.HistoryItemVoice
+import com.teya.lemonade.core.HistoryTimelineVariant
 
 private val HistoryItemIndicatorWidth: Dp = 20.dp
 private val HistoryItemDotSize: Dp = 10.dp
@@ -29,7 +30,8 @@ private val HistoryItemLineThickness: Dp = 1.dp
  * @param label primary row text
  * @param subheading optional secondary text rendered immediately below [label]
  * @param description optional tertiary paragraph text rendered below the subheading
- * @param voice semantic color of the indicator dot when this row is the current step
+ * @param voice semantic color of the indicator dot when this row is the current step, or a
+ *   completed step in a [HistoryTimelineVariant.Progress] timeline
  * @param contentSlot optional slot for custom composable content (e.g. a button or tag)
  *   rendered below the description
  */
@@ -45,6 +47,9 @@ public data class HistoryTimelineItem(
  * A vertical list of history steps with a left-aligned indicator column. The current row uses
  * the item's [HistoryItemVoice] colour; past rows render muted. A connecting line joins every
  * row except the last.
+ *
+ * Set [variant] to [HistoryTimelineVariant.Progress] for a stepper: completed rows keep their
+ * voice colour (typically [HistoryItemVoice.Positive]) and upcoming rows are muted.
  *
  * For rows with custom content, set [HistoryTimelineItem.contentSlot].
  *
@@ -70,44 +75,115 @@ public data class HistoryTimelineItem(
  *     ),
  *     currentIndex = 0,
  * )
+ *
+ * LemonadeUi.HistoryTimeline(
+ *     items = listOf(
+ *         HistoryTimelineItem(label = "Invitation accepted", voice = HistoryItemVoice.Positive),
+ *         HistoryTimelineItem(label = "Logs into the app"),
+ *         HistoryTimelineItem(label = "Card activation"),
+ *     ),
+ *     currentIndex = 1,
+ *     variant = HistoryTimelineVariant.Progress,
+ * )
  * ```
  *
  * @param items ordered list of [HistoryTimelineItem]s to display
  * @param modifier [Modifier] applied to the root column
  * @param currentIndex index of the row to render as the current step. Pass `null` to render
- *   every row in its non-current (muted) state. Defaults to `0` (first row is current)
+ *   every row in its non-current (muted) state. Defaults to `0` (first row is current). In a
+ *   [HistoryTimelineVariant.Progress] timeline, an index past the last row shows every step completed
+ * @param variant how rows around the current step are styled
  */
 @Composable
 public fun LemonadeUi.HistoryTimeline(
     items: List<HistoryTimelineItem>,
     modifier: Modifier = Modifier,
     currentIndex: Int? = 0,
+    variant: HistoryTimelineVariant = HistoryTimelineVariant.Default,
 ) {
     Column(modifier = modifier) {
         items.forEachIndexed { index, item ->
             CoreHistoryTimelineItem(
                 item = item,
-                isCurrent = index == currentIndex,
+                state = historyItemState(
+                    index = index,
+                    currentIndex = currentIndex,
+                    variant = variant,
+                ),
                 isLast = index == items.lastIndex,
             )
         }
     }
 }
 
+@Deprecated(
+    message = "Use the overload with a variant parameter.",
+    replaceWith = ReplaceWith(
+        expression = "HistoryTimeline(items, modifier, currentIndex, HistoryTimelineVariant.Default)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.HistoryTimeline(
+    items: List<HistoryTimelineItem>,
+    modifier: Modifier = Modifier,
+    currentIndex: Int? = 0,
+) {
+    HistoryTimeline(
+        items = items,
+        modifier = modifier,
+        currentIndex = currentIndex,
+        variant = HistoryTimelineVariant.Default,
+    )
+}
+
+private enum class HistoryItemState {
+    Current,
+    Inactive,
+    Reached,
+    Upcoming,
+}
+
+private fun historyItemState(
+    index: Int,
+    currentIndex: Int?,
+    variant: HistoryTimelineVariant,
+): HistoryItemState =
+    when (variant) {
+        HistoryTimelineVariant.Default -> if (index == currentIndex) {
+            HistoryItemState.Current
+        } else {
+            HistoryItemState.Inactive
+        }
+
+        HistoryTimelineVariant.Progress -> if (currentIndex != null && index <= currentIndex) {
+            HistoryItemState.Reached
+        } else {
+            HistoryItemState.Upcoming
+        }
+    }
+
 @Composable
 private fun CoreHistoryTimelineItem(
     item: HistoryTimelineItem,
-    isCurrent: Boolean,
+    state: HistoryItemState,
     isLast: Boolean,
 ) {
     val spaces = LocalSpaces.current
     val typographies = LocalTypographies.current
     val contentColors = LocalColors.current.content
     val mutedColor = LocalColors.current.border.borderNeutralMedium
-    val dotColor: Color = if (isCurrent) {
-        item.voice.currentDotColor
-    } else {
-        mutedColor
+    val dotColor: Color = when (state) {
+        HistoryItemState.Current, HistoryItemState.Reached -> item.voice.currentDotColor
+        HistoryItemState.Inactive, HistoryItemState.Upcoming -> mutedColor
+    }
+    val lineColor: Color = when (state) {
+        HistoryItemState.Reached -> LocalColors.current.border.borderSelected
+        HistoryItemState.Current, HistoryItemState.Inactive, HistoryItemState.Upcoming -> mutedColor
+    }
+    val labelColor: Color = when (state) {
+        HistoryItemState.Upcoming -> contentColors.contentTertiary
+        HistoryItemState.Current, HistoryItemState.Inactive, HistoryItemState.Reached -> contentColors.contentPrimary
     }
 
     Row(
@@ -125,7 +201,7 @@ private fun CoreHistoryTimelineItem(
             )
             if (!isLast) {
                 drawLine(
-                    color = mutedColor,
+                    color = lineColor,
                     start = Offset(
                         x = centerX,
                         y = dotCenterY + dotRadius,
@@ -150,7 +226,7 @@ private fun CoreHistoryTimelineItem(
                 LemonadeUi.Text(
                     text = item.label,
                     textStyle = typographies.bodyMediumMedium,
-                    color = contentColors.contentPrimary,
+                    color = labelColor,
                 )
 
                 val subheading = item.subheading
@@ -248,7 +324,7 @@ private fun HistoryItemPreview(
                 null
             },
         ),
-        isCurrent = previewData.isCurrent,
+        state = if (previewData.isCurrent) HistoryItemState.Current else HistoryItemState.Inactive,
         isLast = false,
     )
 }
@@ -273,5 +349,27 @@ private fun HistoryTimelinePreview() {
             ),
         ),
         currentIndex = 0,
+    )
+}
+
+@LemonadePreview
+@Composable
+private fun HistoryTimelineProgressPreview() {
+    LemonadeUi.HistoryTimeline(
+        items = listOf(
+            HistoryTimelineItem(
+                label = "Invitation accepted",
+                voice = HistoryItemVoice.Positive,
+            ),
+            HistoryTimelineItem(
+                label = "Logs into the Teya App",
+                subheading = "Sofia needs to download the Teya app and log in.",
+            ),
+            HistoryTimelineItem(
+                label = "Card activation",
+            ),
+        ),
+        currentIndex = 1,
+        variant = HistoryTimelineVariant.Progress,
     )
 }
