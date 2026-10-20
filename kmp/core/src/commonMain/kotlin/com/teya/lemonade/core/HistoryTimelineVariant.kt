@@ -10,9 +10,9 @@ public enum class HistoryTimelineVariant {
     Default,
 
     /**
-     * A progress stepper. The current row and every row before it keep their voice colour and
-     * join the next row with a selected-border line; rows after the current one are muted, with
-     * tertiary labels.
+     * A progress stepper. Rows before the current one show a check, the current row shows an
+     * in-progress ring with a positive gradient line, and rows after it are muted with a dashed
+     * line and tertiary labels. A reached row with a critical voice shows an error icon instead.
      */
     Progress,
 }

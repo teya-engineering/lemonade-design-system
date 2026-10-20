@@ -1,29 +1,45 @@
 package com.teya.lemonade
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.HistoryItemVoice
 import com.teya.lemonade.core.HistoryTimelineVariant
+import com.teya.lemonade.core.LemonadeAssetSize
+import com.teya.lemonade.core.LemonadeIcons
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.roundToInt
 
 private val HistoryItemIndicatorWidth: Dp = 20.dp
 private val HistoryItemDotSize: Dp = 10.dp
 private val HistoryItemDotTopOffset: Dp = 7.dp
 private val HistoryItemDotLineGap: Dp = 6.dp
+private val HistoryProgressDotAreaHeight: Dp = 24.dp
+private val HistoryProgressIconTopOffset: Dp = 2.dp
+private val HistoryProgressRingSize: Dp = 16.dp
+private val HistoryProgressActiveDotSize: Dp = 8.dp
+private val HistoryProgressLineInset: Dp = 2.dp
+private val HistoryProgressDashPeriod: Dp = 10.dp
+private const val HISTORY_PROGRESS_DASH_FRACTION: Float = 0.4f
 
 /**
  * Describes a single row inside a [LemonadeUi.HistoryTimeline].
@@ -31,8 +47,9 @@ private val HistoryItemDotLineGap: Dp = 6.dp
  * @param label primary row text
  * @param subheading optional secondary text rendered immediately below [label]
  * @param description optional tertiary paragraph text rendered below the subheading
- * @param voice semantic color of the indicator dot when this row is the current step, or a
- *   completed step in a [HistoryTimelineVariant.Progress] timeline
+ * @param voice semantic color of the indicator dot when this row is the current step. In a
+ *   [HistoryTimelineVariant.Progress] timeline, [HistoryItemVoice.Critical] marks a reached step
+ *   as failed; other voices are ignored
  * @param contentSlot optional slot for custom composable content (e.g. a button or tag)
  *   rendered below the description
  */
@@ -49,8 +66,9 @@ public data class HistoryTimelineItem(
  * the item's [HistoryItemVoice] colour; past rows render muted. A connecting line joins every
  * row except the last.
  *
- * Set [variant] to [HistoryTimelineVariant.Progress] for a stepper: completed rows keep their
- * voice colour (typically [HistoryItemVoice.Positive]) and upcoming rows are muted.
+ * Set [variant] to [HistoryTimelineVariant.Progress] for a stepper: rows before the current one
+ * show a check, the current row shows an in-progress ring, and upcoming rows are muted with a
+ * dashed line. A reached row with [HistoryItemVoice.Critical] shows an error icon instead.
  *
  * For rows with custom content, set [HistoryTimelineItem.contentSlot].
  *
@@ -79,7 +97,7 @@ public data class HistoryTimelineItem(
  *
  * LemonadeUi.HistoryTimeline(
  *     items = listOf(
- *         HistoryTimelineItem(label = "Invitation accepted", voice = HistoryItemVoice.Positive),
+ *         HistoryTimelineItem(label = "Invitation accepted"),
  *         HistoryTimelineItem(label = "Logs into the app"),
  *         HistoryTimelineItem(label = "Card activation"),
  *     ),
@@ -109,6 +127,7 @@ public fun LemonadeUi.HistoryTimeline(
                 state = historyItemState(
                     index = index,
                     currentIndex = currentIndex,
+                    voice = item.voice,
                     variant = variant,
                 ),
                 isLast = index == items.lastIndex,
@@ -141,13 +160,16 @@ public fun LemonadeUi.HistoryTimeline(
 private enum class HistoryItemState {
     Current,
     Inactive,
-    Reached,
-    Upcoming,
+    Completed,
+    Error,
+    Active,
+    Next,
 }
 
 private fun historyItemState(
     index: Int,
     currentIndex: Int?,
+    voice: HistoryItemVoice,
     variant: HistoryTimelineVariant,
 ): HistoryItemState =
     when (variant) {
@@ -157,10 +179,11 @@ private fun historyItemState(
             HistoryItemState.Inactive
         }
 
-        HistoryTimelineVariant.Progress -> if (currentIndex != null && index <= currentIndex) {
-            HistoryItemState.Reached
-        } else {
-            HistoryItemState.Upcoming
+        HistoryTimelineVariant.Progress -> when {
+            currentIndex == null || index > currentIndex -> HistoryItemState.Next
+            voice == HistoryItemVoice.Critical -> HistoryItemState.Error
+            index == currentIndex -> HistoryItemState.Active
+            else -> HistoryItemState.Completed
         }
     }
 
@@ -173,53 +196,146 @@ private fun CoreHistoryTimelineItem(
     val spaces = LocalSpaces.current
     val borderWidths = LocalBorderWidths.current
     val typographies = LocalTypographies.current
-    val contentColors = LocalColors.current.content
-    val mutedColor = LocalColors.current.border.borderNeutralMedium
+    val colors = LocalColors.current
+    val contentColors = colors.content
+    val mutedColor = colors.border.borderNeutralMedium
+    val ringColor = colors.border.borderNeutralHigh
+    val ringFillColor = colors.background.bgDefault
+    val activeDotColor = colors.background.bgNeutral
+    val activeLineColor = colors.border.borderPositive
     val dotColor: Color = when (state) {
-        HistoryItemState.Current, HistoryItemState.Reached -> item.voice.currentDotColor
-        HistoryItemState.Inactive, HistoryItemState.Upcoming -> mutedColor
-    }
-    val lineColor: Color = when (state) {
-        HistoryItemState.Reached -> LocalColors.current.border.borderSelected
-        HistoryItemState.Current, HistoryItemState.Inactive, HistoryItemState.Upcoming -> mutedColor
+        HistoryItemState.Current -> item.voice.currentDotColor
+        else -> mutedColor
     }
     val labelColor: Color = when (state) {
-        HistoryItemState.Upcoming -> contentColors.contentTertiary
-        HistoryItemState.Current, HistoryItemState.Inactive, HistoryItemState.Reached -> contentColors.contentPrimary
+        HistoryItemState.Next -> contentColors.contentTertiary
+        else -> contentColors.contentPrimary
     }
 
     Row(
         modifier = Modifier.drawBehind {
             val centerX = HistoryItemIndicatorWidth.toPx() / 2f
-            val dotRadius = HistoryItemDotSize.toPx() / 2f
-            val dotCenterY = HistoryItemDotTopOffset.toPx() + dotRadius
-            drawCircle(
-                color = dotColor,
-                radius = dotRadius,
-                center = Offset(
-                    x = centerX,
-                    y = dotCenterY,
-                ),
-            )
-            if (!isLast) {
-                drawLine(
-                    color = lineColor,
-                    start = Offset(
+            when (state) {
+                HistoryItemState.Current, HistoryItemState.Inactive -> {
+                    val dotRadius = HistoryItemDotSize.toPx() / 2f
+                    val dotCenterY = HistoryItemDotTopOffset.toPx() + dotRadius
+                    drawCircle(
+                        color = dotColor,
+                        radius = dotRadius,
+                        center = Offset(
+                            x = centerX,
+                            y = dotCenterY,
+                        ),
+                    )
+                    if (!isLast) {
+                        drawLine(
+                            color = mutedColor,
+                            start = Offset(
+                                x = centerX,
+                                y = dotCenterY + dotRadius + HistoryItemDotLineGap.toPx(),
+                            ),
+                            end = Offset(
+                                x = centerX,
+                                y = size.height,
+                            ),
+                            strokeWidth = borderWidths.base.border40.toPx(),
+                            cap = StrokeCap.Round,
+                        )
+                    }
+                }
+
+                HistoryItemState.Completed, HistoryItemState.Error, HistoryItemState.Active,
+                HistoryItemState.Next,
+                -> {
+                    val lineTop = HistoryProgressDotAreaHeight.toPx() + HistoryProgressLineInset.toPx()
+                    val lineBottom = size.height - HistoryProgressLineInset.toPx()
+                    val lineWidth = borderWidths.base.border50.toPx()
+                    val ringCenter = Offset(
                         x = centerX,
-                        y = dotCenterY + dotRadius + HistoryItemDotLineGap.toPx(),
-                    ),
-                    end = Offset(
-                        x = centerX,
-                        y = size.height,
-                    ),
-                    strokeWidth = borderWidths.base.border40.toPx(),
-                    cap = StrokeCap.Round,
-                )
+                        y = HistoryProgressDotAreaHeight.toPx() / 2f,
+                    )
+                    if (state == HistoryItemState.Active || state == HistoryItemState.Next) {
+                        val ringRadius = HistoryProgressRingSize.toPx() / 2f
+                        val ringWidth = borderWidths.base.border40.toPx()
+                        drawCircle(
+                            color = ringFillColor,
+                            radius = ringRadius,
+                            center = ringCenter,
+                        )
+                        drawCircle(
+                            color = ringColor,
+                            radius = ringRadius - ringWidth / 2f,
+                            center = ringCenter,
+                            style = Stroke(width = ringWidth),
+                        )
+                    }
+                    if (state == HistoryItemState.Active) {
+                        drawCircle(
+                            color = activeDotColor,
+                            radius = HistoryProgressActiveDotSize.toPx() / 2f,
+                            center = ringCenter,
+                        )
+                    }
+                    if (!isLast && lineBottom > lineTop) {
+                        when (state) {
+                            HistoryItemState.Next -> drawDashedProgressLine(
+                                color = ringColor,
+                                x = centerX,
+                                top = lineTop,
+                                bottom = lineBottom,
+                                strokeWidth = lineWidth,
+                            )
+
+                            else -> {
+                                val start = Offset(x = centerX, y = lineTop)
+                                val end = Offset(x = centerX, y = lineBottom)
+                                drawLine(
+                                    color = mutedColor,
+                                    start = start,
+                                    end = end,
+                                    strokeWidth = lineWidth,
+                                    cap = StrokeCap.Round,
+                                )
+                                if (state == HistoryItemState.Active) {
+                                    drawLine(
+                                        brush = Brush.verticalGradient(
+                                            colors = listOf(activeLineColor, activeLineColor.copy(alpha = 0f)),
+                                            startY = lineTop,
+                                            endY = lineBottom,
+                                        ),
+                                        start = start,
+                                        end = end,
+                                        strokeWidth = lineWidth,
+                                        cap = StrokeCap.Round,
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         horizontalArrangement = Arrangement.spacedBy(space = spaces.spacing300),
     ) {
-        Spacer(modifier = Modifier.width(width = HistoryItemIndicatorWidth))
+        Box(
+            modifier = Modifier.width(width = HistoryItemIndicatorWidth),
+            contentAlignment = Alignment.TopCenter,
+        ) {
+            val progressIcon = when (state) {
+                HistoryItemState.Completed -> LemonadeIcons.CircleCheckSolid to colors.background.bgPositive
+                HistoryItemState.Error -> LemonadeIcons.CircleXSolid to colors.background.bgCritical
+                else -> null
+            }
+            if (progressIcon != null) {
+                LemonadeUi.Icon(
+                    icon = progressIcon.first,
+                    contentDescription = null,
+                    size = LemonadeAssetSize.Medium,
+                    tint = progressIcon.second,
+                    modifier = Modifier.padding(top = HistoryProgressIconTopOffset),
+                )
+            }
+        }
 
         Column(
             modifier = Modifier.padding(bottom = if (isLast) 0.dp else spaces.spacing600),
@@ -256,6 +372,29 @@ private fun CoreHistoryTimelineItem(
                 contentSlot()
             }
         }
+    }
+}
+
+private fun DrawScope.drawDashedProgressLine(
+    color: Color,
+    x: Float,
+    top: Float,
+    bottom: Float,
+    strokeWidth: Float,
+) {
+    val length = bottom - top
+    val periods = max(1, (length / HistoryProgressDashPeriod.toPx()).roundToInt())
+    val period = length / periods
+    val halfDash = period * HISTORY_PROGRESS_DASH_FRACTION / 2f
+    for (index in 0..periods) {
+        val center = top + index * period
+        drawLine(
+            color = color,
+            start = Offset(x = x, y = max(top, center - halfDash)),
+            end = Offset(x = x, y = min(bottom, center + halfDash)),
+            strokeWidth = strokeWidth,
+            cap = StrokeCap.Round,
+        )
     }
 }
 

@@ -24,9 +24,9 @@ public enum LemonadeHistoryItemVoice {
 public enum LemonadeHistoryTimelineVariant {
     /// Only the current row takes its voice colour; every other row is muted.
     case `default`
-    /// A progress stepper. The current row and every row before it keep their voice colour and
-    /// join the next row with a selected-border line; rows after the current one are muted, with
-    /// tertiary labels.
+    /// A progress stepper. Rows before the current one show a check, the current row shows an
+    /// in-progress ring with a positive gradient line, and rows after it are muted with a dashed
+    /// line and tertiary labels. A reached row with a critical voice shows an error icon instead.
     case progress
 }
 
@@ -49,8 +49,9 @@ public struct LemonadeHistoryTimelineItem {
     ///   - label: Primary row text.
     ///   - subheading: Optional secondary text shown immediately below the label.
     ///   - description: Optional tertiary paragraph shown below the subheading.
-    ///   - voice: Semantic color of the indicator dot when this row is the current step, or a
-    ///     completed step in a ``LemonadeHistoryTimelineVariant/progress`` timeline.
+    ///   - voice: Semantic color of the indicator dot when this row is the current step. In a
+    ///     ``LemonadeHistoryTimelineVariant/progress`` timeline, `.critical` marks a reached step
+    ///     as failed; other voices are ignored.
     ///   - contentSlot: Optional view builder for custom content rendered below the
     ///     description (e.g. a button or tag).
     public init<Content: View>(
@@ -94,8 +95,9 @@ public extension LemonadeUi {
     /// For rows with custom content (buttons, tags, etc.), set `contentSlot` on the
     /// ``LemonadeHistoryTimelineItem``.
     ///
-    /// Set `variant` to ``LemonadeHistoryTimelineVariant/progress`` for a stepper: completed rows
-    /// keep their voice colour (typically `.positive`) and upcoming rows are muted.
+    /// Set `variant` to ``LemonadeHistoryTimelineVariant/progress`` for a stepper: rows before the
+    /// current one show a check, the current row shows an in-progress ring, and upcoming rows are
+    /// muted with a dashed line. A reached row with a `.critical` voice shows an error icon instead.
     ///
     /// ## Usage
     /// ```swift
@@ -118,7 +120,7 @@ public extension LemonadeUi {
     ///
     /// LemonadeUi.HistoryTimeline(
     ///     items: [
-    ///         LemonadeHistoryTimelineItem(label: "Invitation accepted", voice: .positive),
+    ///         LemonadeHistoryTimelineItem(label: "Invitation accepted"),
     ///         LemonadeHistoryTimelineItem(label: "Logs into the app"),
     ///         LemonadeHistoryTimelineItem(label: "Card activation")
     ///     ],
@@ -155,23 +157,40 @@ private enum HistoryTimelineMetrics {
     static let dotSize: CGFloat = 10
     static let dotTopOffset: CGFloat = 7
     static let dotLineGap: CGFloat = 6
+    static let progressDotAreaHeight: CGFloat = 24
+    static let progressRingSize: CGFloat = 16
+    static let progressActiveDotSize: CGFloat = 8
+    static let progressLineInset: CGFloat = 2
+    static let progressDashPeriod: CGFloat = 10
+    static let progressDashFraction: CGFloat = 0.4
 }
 
 private enum HistoryItemState {
     case current
     case inactive
-    case reached
-    case upcoming
+    case completed
+    case error
+    case active
+    case next
 
-    init(index: Int, currentIndex: Int?, variant: LemonadeHistoryTimelineVariant) {
+    init(
+        index: Int,
+        currentIndex: Int?,
+        voice: LemonadeHistoryItemVoice,
+        variant: LemonadeHistoryTimelineVariant
+    ) {
         switch variant {
         case .default:
             self = index == currentIndex ? .current : .inactive
         case .progress:
-            if let currentIndex, index <= currentIndex {
-                self = .reached
+            guard let currentIndex, index <= currentIndex else {
+                self = .next
+                return
+            }
+            if voice == .critical {
+                self = .error
             } else {
-                self = .upcoming
+                self = index == currentIndex ? .active : .completed
             }
         }
     }
@@ -187,7 +206,12 @@ private struct LemonadeHistoryTimelineView: View {
             ForEach(Array(items.enumerated()), id: \.offset) { index, item in
                 CoreHistoryTimelineItemView(
                     item: item,
-                    state: HistoryItemState(index: index, currentIndex: currentIndex, variant: variant),
+                    state: HistoryItemState(
+                        index: index,
+                        currentIndex: currentIndex,
+                        voice: item.voice,
+                        variant: variant
+                    ),
                     isLast: index == items.count - 1
                 )
             }
@@ -202,22 +226,15 @@ private struct CoreHistoryTimelineItemView: View {
 
     private var dotColor: Color {
         switch state {
-        case .current, .reached: return item.voice.currentColor
-        case .inactive, .upcoming: return LemonadeTheme.colors.border.borderNeutralMedium
-        }
-    }
-
-    private var lineColor: Color {
-        switch state {
-        case .reached: return LemonadeTheme.colors.border.borderSelected
-        case .current, .inactive, .upcoming: return LemonadeTheme.colors.border.borderNeutralMedium
+        case .current: return item.voice.currentColor
+        case .inactive, .completed, .error, .active, .next: return LemonadeTheme.colors.border.borderNeutralMedium
         }
     }
 
     private var labelColor: Color {
         switch state {
-        case .upcoming: return LemonadeTheme.colors.content.contentTertiary
-        case .current, .inactive, .reached: return LemonadeTheme.colors.content.contentPrimary
+        case .next: return LemonadeTheme.colors.content.contentTertiary
+        case .current, .inactive, .completed, .error, .active: return LemonadeTheme.colors.content.contentPrimary
         }
     }
 
@@ -259,14 +276,18 @@ private struct CoreHistoryTimelineItemView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .background(alignment: .topLeading) {
-            HistoryItemIndicator(dotColor: dotColor, lineColor: lineColor, isLast: isLast)
+            switch state {
+            case .current, .inactive:
+                HistoryItemIndicator(dotColor: dotColor, isLast: isLast)
+            case .completed, .error, .active, .next:
+                HistoryProgressIndicator(state: state, isLast: isLast)
+            }
         }
     }
 }
 
 private struct HistoryItemIndicator: View {
     let dotColor: Color
-    let lineColor: Color
     let isLast: Bool
 
     private var lineWidth: CGFloat { LemonadeTheme.borderWidth.base.border40 }
@@ -291,13 +312,135 @@ private struct HistoryItemIndicator: View {
                     .frame(height: HistoryTimelineMetrics.dotLineGap - lineCapRadius)
 
                 Capsule()
-                    .fill(lineColor)
+                    .fill(LemonadeTheme.colors.border.borderNeutralMedium)
                     .frame(width: lineWidth)
                     .frame(maxHeight: .infinity)
                     .padding(.bottom, -lineCapRadius)
             }
         }
         .frame(width: HistoryTimelineMetrics.indicatorWidth)
+    }
+}
+
+private struct HistoryProgressIndicator: View {
+    let state: HistoryItemState
+    let isLast: Bool
+
+    private var lineStyle: StrokeStyle {
+        StrokeStyle(lineWidth: LemonadeTheme.borderWidth.base.border50, lineCap: .round)
+    }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            marker
+                .frame(height: HistoryTimelineMetrics.progressDotAreaHeight)
+
+            if !isLast {
+                line
+                    .frame(maxHeight: .infinity)
+                    .padding(.vertical, HistoryTimelineMetrics.progressLineInset)
+            }
+        }
+        .frame(width: HistoryTimelineMetrics.indicatorWidth)
+    }
+
+    @ViewBuilder
+    private var marker: some View {
+        switch state {
+        case .completed:
+            LemonadeUi.Icon(
+                icon: .circleCheckSolid,
+                contentDescription: nil,
+                size: .medium,
+                tint: LemonadeTheme.colors.background.bgPositive
+            )
+        case .error:
+            LemonadeUi.Icon(
+                icon: .circleXSolid,
+                contentDescription: nil,
+                size: .medium,
+                tint: LemonadeTheme.colors.background.bgCritical
+            )
+        case .active:
+            ring.overlay {
+                Circle()
+                    .fill(LemonadeTheme.colors.background.bgNeutral)
+                    .frame(
+                        width: HistoryTimelineMetrics.progressActiveDotSize,
+                        height: HistoryTimelineMetrics.progressActiveDotSize
+                    )
+            }
+        case .next:
+            ring
+        case .current, .inactive:
+            EmptyView()
+        }
+    }
+
+    private var ring: some View {
+        Circle()
+            .fill(LemonadeTheme.colors.background.bgDefault)
+            .overlay {
+                Circle().strokeBorder(
+                    LemonadeTheme.colors.border.borderNeutralHigh,
+                    lineWidth: LemonadeTheme.borderWidth.base.border40
+                )
+            }
+            .frame(
+                width: HistoryTimelineMetrics.progressRingSize,
+                height: HistoryTimelineMetrics.progressRingSize
+            )
+    }
+
+    @ViewBuilder
+    private var line: some View {
+        switch state {
+        case .next:
+            HistoryProgressDashedLine()
+                .stroke(LemonadeTheme.colors.border.borderNeutralHigh, style: lineStyle)
+        case .active:
+            let activeColor = LemonadeTheme.colors.border.borderPositive
+            HistoryProgressLine()
+                .stroke(LemonadeTheme.colors.border.borderNeutralMedium, style: lineStyle)
+                .overlay {
+                    HistoryProgressLine().stroke(
+                        LinearGradient(
+                            colors: [activeColor, activeColor.opacity(0)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        ),
+                        style: lineStyle
+                    )
+                }
+        case .completed, .error, .current, .inactive:
+            HistoryProgressLine()
+                .stroke(LemonadeTheme.colors.border.borderNeutralMedium, style: lineStyle)
+        }
+    }
+}
+
+private struct HistoryProgressLine: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(to: CGPoint(x: rect.midX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
+        return path
+    }
+}
+
+private struct HistoryProgressDashedLine: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        guard rect.height > 0 else { return path }
+        let periods = max(1, Int((rect.height / HistoryTimelineMetrics.progressDashPeriod).rounded()))
+        let period = rect.height / CGFloat(periods)
+        let halfDash = period * HistoryTimelineMetrics.progressDashFraction / 2
+        for index in 0...periods {
+            let center = rect.minY + CGFloat(index) * period
+            path.move(to: CGPoint(x: rect.midX, y: max(rect.minY, center - halfDash)))
+            path.addLine(to: CGPoint(x: rect.midX, y: min(rect.maxY, center + halfDash)))
+        }
+        return path
     }
 }
 
