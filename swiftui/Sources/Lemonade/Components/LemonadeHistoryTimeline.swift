@@ -154,7 +154,7 @@ private enum HistoryTimelineMetrics {
     static let indicatorWidth: CGFloat = 20
     static let dotSize: CGFloat = 10
     static let dotTopOffset: CGFloat = 7
-    static let lineThickness: CGFloat = 1
+    static let dotLineGap: CGFloat = 6
 }
 
 private enum HistoryItemState {
@@ -255,7 +255,7 @@ private struct CoreHistoryTimelineItemView: View {
                     contentSlot()
                 }
             }
-            .padding(.bottom, isLast ? 0 : LemonadeTheme.spaces.spacing400)
+            .padding(.bottom, isLast ? 0 : LemonadeTheme.spaces.spacing600)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .background(alignment: .topLeading) {
@@ -268,6 +268,11 @@ private struct HistoryItemIndicator: View {
     let dotColor: Color
     let lineColor: Color
     let isLast: Bool
+
+    private var lineWidth: CGFloat { LemonadeTheme.borderWidth.base.border40 }
+
+    // Round caps extend past the path's endpoints by half the stroke, as in Figma.
+    private var lineCapRadius: CGFloat { lineWidth / 2 }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -282,10 +287,14 @@ private struct HistoryItemIndicator: View {
                 )
 
             if !isLast {
-                Rectangle()
+                Spacer()
+                    .frame(height: HistoryTimelineMetrics.dotLineGap - lineCapRadius)
+
+                Capsule()
                     .fill(lineColor)
-                    .frame(width: HistoryTimelineMetrics.lineThickness)
+                    .frame(width: lineWidth)
                     .frame(maxHeight: .infinity)
+                    .padding(.bottom, -lineCapRadius)
             }
         }
         .frame(width: HistoryTimelineMetrics.indicatorWidth)

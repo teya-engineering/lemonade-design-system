@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
@@ -22,7 +23,7 @@ import com.teya.lemonade.core.HistoryTimelineVariant
 private val HistoryItemIndicatorWidth: Dp = 20.dp
 private val HistoryItemDotSize: Dp = 10.dp
 private val HistoryItemDotTopOffset: Dp = 7.dp
-private val HistoryItemLineThickness: Dp = 1.dp
+private val HistoryItemDotLineGap: Dp = 6.dp
 
 /**
  * Describes a single row inside a [LemonadeUi.HistoryTimeline].
@@ -170,6 +171,7 @@ private fun CoreHistoryTimelineItem(
     isLast: Boolean,
 ) {
     val spaces = LocalSpaces.current
+    val borderWidths = LocalBorderWidths.current
     val typographies = LocalTypographies.current
     val contentColors = LocalColors.current.content
     val mutedColor = LocalColors.current.border.borderNeutralMedium
@@ -204,13 +206,14 @@ private fun CoreHistoryTimelineItem(
                     color = lineColor,
                     start = Offset(
                         x = centerX,
-                        y = dotCenterY + dotRadius,
+                        y = dotCenterY + dotRadius + HistoryItemDotLineGap.toPx(),
                     ),
                     end = Offset(
                         x = centerX,
                         y = size.height,
                     ),
-                    strokeWidth = HistoryItemLineThickness.toPx(),
+                    strokeWidth = borderWidths.base.border40.toPx(),
+                    cap = StrokeCap.Round,
                 )
             }
         },
@@ -219,7 +222,7 @@ private fun CoreHistoryTimelineItem(
         Spacer(modifier = Modifier.width(width = HistoryItemIndicatorWidth))
 
         Column(
-            modifier = Modifier.padding(bottom = if (isLast) 0.dp else spaces.spacing400),
+            modifier = Modifier.padding(bottom = if (isLast) 0.dp else spaces.spacing600),
             verticalArrangement = Arrangement.spacedBy(space = spaces.spacing200),
         ) {
             Column {
