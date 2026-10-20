@@ -2,14 +2,19 @@ import SwiftUI
 import Lemonade
 
 struct HistoryTimelineDisplayView: View {
+    @State private var progressVariant: LemonadeHistoryTimelineVariant = .progress
+
     var body: some View {
         ScrollView(.vertical) {
             LazyVStack(spacing: .space.spacing400) {
+                progressVariantPicker
+                ForEach(ProgressSample.all, id: \.title) { sample in
+                    progressCard(sample)
+                }
                 positiveFirstSection
                 howItWorksSection
                 criticalCurrentSection
                 neutralCurrentSection
-                progressSection
             }
             .padding(.horizontal, .space.spacing400)
             .padding(.vertical, .space.spacing400)
@@ -133,31 +138,96 @@ struct HistoryTimelineDisplayView: View {
             )
         }
     }
+
+    private var progressVariantPicker: some View {
+        LemonadeUi.SegmentedControl(
+            properties: [.label("Default"), .label("Progress")],
+            selectedTab: progressVariant == .default ? 0 : 1,
+            onTabSelected: { progressVariant = $0 == 0 ? .default : .progress }
+        )
+    }
+
+    private func progressCard(_ sample: ProgressSample) -> some View {
+        LemonadeUi.Card(
+            contentPadding: .medium,
+            header: CardHeaderConfig(title: sample.title)
+        ) {
+            LemonadeUi.HistoryTimeline(
+                items: sample.items,
+                currentIndex: sample.currentIndex,
+                variant: progressVariant
+            )
+        }
+    }
 }
 
 #Preview {
     NavigationStack {
         HistoryTimelineDisplayView()
     }
+}
 
-    private var progressSection: some View {
-        LemonadeUi.Card(
-            contentPadding: .medium,
-            header: CardHeaderConfig(title: "Progress — completed steps")
-        ) {
-            LemonadeUi.HistoryTimeline(
-                items: [
-                    LemonadeHistoryTimelineItem(label: "Invitation accepted", voice: .positive),
-                    LemonadeHistoryTimelineItem(label: "Logs into the Teya App", voice: .positive),
-                    LemonadeHistoryTimelineItem(
-                        label: "Card activation",
-                        subheading: "The card was delivered. Sofia can now activate it."
-                    ),
-                    LemonadeHistoryTimelineItem(label: "First payment")
-                ],
-                currentIndex: 2,
-                variant: .progress
+private struct ProgressSample {
+    let title: String
+    let currentIndex: Int?
+    let items: [LemonadeHistoryTimelineItem]
+
+    static let all: [ProgressSample] = [
+        ProgressSample(
+            title: "Progress — first step",
+            currentIndex: 0,
+            items: steps(completed: 0, currentSubheading: "An activation email was sent to sofia@teya.com")
+        ),
+        ProgressSample(
+            title: "Progress — second step",
+            currentIndex: 1,
+            items: steps(completed: 1, currentSubheading: "Sofia needs to download the Teya app and log in.")
+        ),
+        ProgressSample(
+            title: "Progress — last step",
+            currentIndex: 2,
+            items: steps(completed: 2, currentSubheading: "The card was delivered. Sofia can now activate it.")
+        ),
+        ProgressSample(title: "Progress — all steps completed", currentIndex: 3, items: steps(completed: 3)),
+        ProgressSample(
+            title: "Progress — critical current step",
+            currentIndex: 1,
+            items: steps(
+                completed: 1,
+                currentSubheading: "We couldn't verify Sofia's phone number.",
+                currentVoice: .critical
             )
+        ),
+        ProgressSample(
+            title: "Progress — current step with an action",
+            currentIndex: 1,
+            items: [
+                LemonadeHistoryTimelineItem(label: "Invitation accepted", voice: .positive),
+                LemonadeHistoryTimelineItem(
+                    label: "Logs into the Teya App",
+                    description: "Remind Sofia to log in so the card can be activated."
+                ) {
+                    LemonadeUi.Button(label: "Resend invite", onClick: {}, variant: .secondary)
+                },
+                LemonadeHistoryTimelineItem(label: "Card activation")
+            ]
+        ),
+        ProgressSample(title: "Progress — nothing reached", currentIndex: nil, items: steps(completed: 0))
+    ]
+
+    private static func steps(
+        completed: Int,
+        currentSubheading: String? = nil,
+        currentVoice: LemonadeHistoryItemVoice = .neutral
+    ) -> [LemonadeHistoryTimelineItem] {
+        ["Invitation accepted", "Logs into the Teya App", "Card activation"].enumerated().map { index, label in
+            if index < completed {
+                return LemonadeHistoryTimelineItem(label: label, voice: .positive)
+            } else if index == completed {
+                return LemonadeHistoryTimelineItem(label: label, subheading: currentSubheading, voice: currentVoice)
+            } else {
+                return LemonadeHistoryTimelineItem(label: label)
+            }
         }
     }
 }
