@@ -197,14 +197,16 @@ private enum HistoryItemState {
         }
     }
 
-    var stepStatus: String? {
+    func stepStatus(index: Int, count: Int) -> String? {
+        let status: String
         switch self {
-        case .completed: return "Completed"
-        case .error: return "Failed"
-        case .active: return "Current"
-        case .next: return "Upcoming"
+        case .completed: status = "Completed"
+        case .error: status = "Failed"
+        case .active: status = "Current"
+        case .next: status = "Upcoming"
         case .current, .inactive: return nil
         }
+        return "\(status), step \(index + 1) of \(count)"
     }
 }
 
@@ -216,14 +218,16 @@ private struct LemonadeHistoryTimelineView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(Array(items.enumerated()), id: \.offset) { index, item in
+                let state = HistoryItemState(
+                    index: index,
+                    currentIndex: currentIndex,
+                    voice: item.voice,
+                    variant: variant
+                )
                 CoreHistoryTimelineItemView(
                     item: item,
-                    state: HistoryItemState(
-                        index: index,
-                        currentIndex: currentIndex,
-                        voice: item.voice,
-                        variant: variant
-                    ),
+                    state: state,
+                    stepStatus: state.stepStatus(index: index, count: items.count),
                     isLast: index == items.count - 1
                 )
             }
@@ -234,6 +238,7 @@ private struct LemonadeHistoryTimelineView: View {
 private struct CoreHistoryTimelineItemView: View {
     let item: LemonadeHistoryTimelineItem
     let state: HistoryItemState
+    let stepStatus: String?
     let isLast: Bool
 
     private var dotColor: Color {
@@ -256,30 +261,33 @@ private struct CoreHistoryTimelineItemView: View {
                 .frame(width: HistoryTimelineMetrics.indicatorWidth)
 
             VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing200) {
-                VStack(alignment: .leading, spacing: 0) {
-                    LemonadeUi.Text(
-                        item.label,
-                        textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                        color: labelColor
-                    )
-                    .accessibilityValue(state.stepStatus ?? "")
-
-                    if let subheading = item.subheading {
+                VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing200) {
+                    VStack(alignment: .leading, spacing: 0) {
                         LemonadeUi.Text(
-                            subheading,
+                            item.label,
+                            textStyle: LemonadeTypography.shared.bodyMediumMedium,
+                            color: labelColor
+                        )
+
+                        if let subheading = item.subheading {
+                            LemonadeUi.Text(
+                                subheading,
+                                textStyle: LemonadeTypography.shared.bodySmallRegular,
+                                color: LemonadeTheme.colors.content.contentSecondary
+                            )
+                        }
+                    }
+
+                    if let description = item.description {
+                        LemonadeUi.Text(
+                            description,
                             textStyle: LemonadeTypography.shared.bodySmallRegular,
                             color: LemonadeTheme.colors.content.contentSecondary
                         )
                     }
                 }
-
-                if let description = item.description {
-                    LemonadeUi.Text(
-                        description,
-                        textStyle: LemonadeTypography.shared.bodySmallRegular,
-                        color: LemonadeTheme.colors.content.contentSecondary
-                    )
-                }
+                .accessibilityElement(children: .combine)
+                .accessibilityValue(stepStatus ?? "")
 
                 if let contentSlot = item.contentSlot {
                     contentSlot()

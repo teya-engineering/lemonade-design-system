@@ -136,13 +136,19 @@ public fun LemonadeUi.HistoryTimeline(
 ) {
     Column(modifier = modifier) {
         items.forEachIndexed { index, item ->
+            val state = historyItemState(
+                index = index,
+                currentIndex = currentIndex,
+                voice = item.voice,
+                variant = variant,
+            )
             CoreHistoryTimelineItem(
                 item = item,
-                state = historyItemState(
+                state = state,
+                stepStatus = historyStepStatus(
+                    state = state,
                     index = index,
-                    currentIndex = currentIndex,
-                    voice = item.voice,
-                    variant = variant,
+                    count = items.size,
                 ),
                 isLast = index == items.lastIndex,
             )
@@ -201,10 +207,26 @@ private fun historyItemState(
         }
     }
 
+private fun historyStepStatus(
+    state: HistoryItemState,
+    index: Int,
+    count: Int,
+): String? {
+    val status = when (state) {
+        HistoryItemState.Completed -> "Completed"
+        HistoryItemState.Error -> "Failed"
+        HistoryItemState.Active -> "Current"
+        HistoryItemState.Next -> "Upcoming"
+        HistoryItemState.Current, HistoryItemState.Inactive -> return null
+    }
+    return "$status, step ${index + 1} of $count"
+}
+
 @Composable
 private fun CoreHistoryTimelineItem(
     item: HistoryTimelineItem,
     state: HistoryItemState,
+    stepStatus: String?,
     isLast: Boolean,
 ) {
     val spaces = LocalSpaces.current
@@ -229,13 +251,6 @@ private fun CoreHistoryTimelineItem(
     val labelColor: Color = when (state) {
         HistoryItemState.Next -> contentColors.contentTertiary
         else -> contentColors.contentPrimary
-    }
-    val stepStatus: String? = when (state) {
-        HistoryItemState.Completed -> "Completed"
-        HistoryItemState.Error -> "Failed"
-        HistoryItemState.Active -> "Current"
-        HistoryItemState.Next -> "Upcoming"
-        HistoryItemState.Current, HistoryItemState.Inactive -> null
     }
 
     Row(
@@ -366,35 +381,39 @@ private fun CoreHistoryTimelineItem(
             modifier = Modifier.padding(bottom = if (isLast) 0.dp else spaces.spacing600),
             verticalArrangement = Arrangement.spacedBy(space = spaces.spacing200),
         ) {
-            Column {
-                LemonadeUi.Text(
-                    text = item.label,
-                    textStyle = typographies.bodyMediumMedium,
-                    color = labelColor,
-                    modifier = if (stepStatus != null) {
-                        Modifier.semantics { stateDescription = stepStatus }
-                    } else {
-                        Modifier
-                    },
-                )
-
-                val subheading = item.subheading
-                if (subheading != null) {
+            Column(
+                modifier = Modifier.semantics(mergeDescendants = true) {
+                    if (stepStatus != null) {
+                        stateDescription = stepStatus
+                    }
+                },
+                verticalArrangement = Arrangement.spacedBy(space = spaces.spacing200),
+            ) {
+                Column {
                     LemonadeUi.Text(
-                        text = subheading,
+                        text = item.label,
+                        textStyle = typographies.bodyMediumMedium,
+                        color = labelColor,
+                    )
+
+                    val subheading = item.subheading
+                    if (subheading != null) {
+                        LemonadeUi.Text(
+                            text = subheading,
+                            textStyle = typographies.bodySmallRegular,
+                            color = contentColors.contentSecondary,
+                        )
+                    }
+                }
+
+                val description = item.description
+                if (description != null) {
+                    LemonadeUi.Text(
+                        text = description,
                         textStyle = typographies.bodySmallRegular,
                         color = contentColors.contentSecondary,
                     )
                 }
-            }
-
-            val description = item.description
-            if (description != null) {
-                LemonadeUi.Text(
-                    text = description,
-                    textStyle = typographies.bodySmallRegular,
-                    color = contentColors.contentSecondary,
-                )
             }
 
             val contentSlot = item.contentSlot
@@ -540,6 +559,7 @@ private fun HistoryItemPreview(
             },
         ),
         state = if (previewData.isCurrent) HistoryItemState.Current else HistoryItemState.Inactive,
+        stepStatus = null,
         isLast = false,
     )
 }
