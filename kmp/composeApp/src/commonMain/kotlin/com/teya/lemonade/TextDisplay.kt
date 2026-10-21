@@ -15,14 +15,18 @@ private data class TypographyCategory(
     val styles: List<LemonadeTypography>,
 )
 
-private val categorizedStyles: List<TypographyCategory> = LemonadeTypography.entries
-    .groupBy { typography -> typography.category() }
-    .map { (category, styles) ->
-        TypographyCategory(
-            title = category,
-            styles = styles.sortedByDescending { typography -> typography.style.fontSize },
-        )
-    }
+// Lazy because `category()` reads `typographyLabels`, which is declared further down the file.
+// Top-level vals are assigned in declaration order, so an eager val here would read it as null.
+private val categorizedStyles: List<TypographyCategory> by lazy {
+    LemonadeTypography.entries
+        .groupBy { typography -> typography.category() }
+        .map { (category, styles) ->
+            TypographyCategory(
+                title = category,
+                styles = styles.sortedByDescending { typography -> typography.style.fontSize },
+            )
+        }
+}
 
 @Composable
 internal fun TextDisplay() {
