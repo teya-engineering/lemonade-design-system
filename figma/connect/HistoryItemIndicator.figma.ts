@@ -7,7 +7,7 @@ import figma from 'figma'
 // cannot read off a child directly.
 const instance = figma.selectedInstance
 
-const voice = instance.getEnum('◇ Voice', { Neutral: 'Neutral', Positive: 'Positive' })
+const voice = instance.getEnum('◇ Voice', { Neutral: 'Neutral', Positive: 'Positive', Critical: 'Critical' })
 const current = instance.getEnum('◉ Is Current', { True: 'true', False: 'false' })
 
 export default {

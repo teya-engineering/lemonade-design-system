@@ -242,10 +242,12 @@ needed more than a property lookup:
   `INSTANCE_SWAP` properties inline directly. Templates are bundled at publish
   time, so a helper import costs nothing at runtime; helpers must live under
   `figma/` outside the `connect*/**/*.figma.ts` globs.
-- `Tooltip` maps all thirteen indicator placements. `History Timeline` resolves
-  its rows through a `.History Item` template, which reads its text from the
-  nested content instance and its voice from the nested indicator via
-  `metadata.props`, then folds the current row into `currentIndex`.
+- `Tooltip` maps all thirteen indicator placements. `History Timeline` reads
+  its rows from `Items Slot`. An Events row reads its text from the nested
+  content instance and its voice and current flag from its indicator, and the
+  current row becomes `currentIndex`. A Steps row reports its indicator's
+  Completed, Current, Error or Next state instead; `shared/history.ts` folds
+  those into `currentIndex`, and an Error row gets `voice = Critical`.
 
 - `SwipeActionRow` maps its placement onto `leadingActions` or
   `trailingActions`, and renders its row content from the `Sliding Item` slot.

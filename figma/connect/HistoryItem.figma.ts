@@ -17,7 +17,7 @@ const label = read('Label') ?? ''
 const subheading = read('Subheading')
 const description = read('Description')
 
-const indicator = instance.findInstance('.History Item Indicator')
+const indicator = instance.findInstance('.History Events Item Indicator')
 let voice
 let current = 'false'
 if (indicator && indicator.type === 'INSTANCE') {
