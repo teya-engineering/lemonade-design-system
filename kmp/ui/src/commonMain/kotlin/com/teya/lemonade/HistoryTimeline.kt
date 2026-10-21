@@ -48,9 +48,9 @@ private val HistoryStepsActiveDotSize: Dp = 8.dp
 private val HistoryStepsLineInset: Dp = 2.dp
 private val HistoryStepsDashPeriod: Dp = 10.dp
 private const val HISTORY_STEPS_DASH_FRACTION: Float = 0.4f
-private const val HISTORY_ACTIVE_LINE_FADE_START_MILLIS: Int = 1350
-private const val HISTORY_ACTIVE_LINE_FILL_MILLIS: Int = 1800
-private const val HISTORY_ACTIVE_LINE_CYCLE_MILLIS: Int = 2000
+private const val HISTORY_ACTIVE_LINE_FADE_START_MILLIS: Int = 1800
+private const val HISTORY_ACTIVE_LINE_FILL_MILLIS: Int = 2400
+private const val HISTORY_ACTIVE_LINE_CYCLE_MILLIS: Int = 3000
 
 /**
  * Describes a single row inside a [LemonadeUi.HistoryTimeline].

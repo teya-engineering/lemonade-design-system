@@ -417,9 +417,9 @@ private struct HistoryActiveLineFill: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var startDate = Date()
 
-    private static let fadeStart: TimeInterval = 1.35
-    private static let fillDuration: TimeInterval = 1.8
-    private static let cycleDuration: TimeInterval = 2.0
+    private static let fadeStart: TimeInterval = 1.8
+    private static let fillDuration: TimeInterval = 2.4
+    private static let cycleDuration: TimeInterval = 3.0
 
     var body: some View {
         if reduceMotion {
