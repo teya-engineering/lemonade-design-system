@@ -196,6 +196,16 @@ private enum HistoryItemState {
             }
         }
     }
+
+    var stepStatus: String? {
+        switch self {
+        case .completed: return "Completed"
+        case .error: return "Failed"
+        case .active: return "Current"
+        case .next: return "Upcoming"
+        case .current, .inactive: return nil
+        }
+    }
 }
 
 private struct LemonadeHistoryTimelineView: View {
@@ -252,6 +262,7 @@ private struct CoreHistoryTimelineItemView: View {
                         textStyle: LemonadeTypography.shared.bodyMediumMedium,
                         color: labelColor
                     )
+                    .accessibilityValue(state.stepStatus ?? "")
 
                     if let subheading = item.subheading {
                         LemonadeUi.Text(

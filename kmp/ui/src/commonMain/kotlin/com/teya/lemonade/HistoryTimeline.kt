@@ -25,9 +25,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.HistoryItemVoice
 import com.teya.lemonade.core.HistoryTimelineVariant
@@ -227,10 +230,21 @@ private fun CoreHistoryTimelineItem(
         HistoryItemState.Next -> contentColors.contentTertiary
         else -> contentColors.contentPrimary
     }
+    val stepStatus: String? = when (state) {
+        HistoryItemState.Completed -> "Completed"
+        HistoryItemState.Error -> "Failed"
+        HistoryItemState.Active -> "Current"
+        HistoryItemState.Next -> "Upcoming"
+        HistoryItemState.Current, HistoryItemState.Inactive -> null
+    }
 
     Row(
         modifier = Modifier.drawBehind {
-            val centerX = HistoryItemIndicatorWidth.toPx() / 2f
+            val indicatorCenterX = HistoryItemIndicatorWidth.toPx() / 2f
+            val centerX = when (layoutDirection) {
+                LayoutDirection.Ltr -> indicatorCenterX
+                LayoutDirection.Rtl -> size.width - indicatorCenterX
+            }
             when (state) {
                 HistoryItemState.Current, HistoryItemState.Inactive -> {
                     val dotRadius = HistoryItemDotSize.toPx() / 2f
@@ -357,6 +371,11 @@ private fun CoreHistoryTimelineItem(
                     text = item.label,
                     textStyle = typographies.bodyMediumMedium,
                     color = labelColor,
+                    modifier = if (stepStatus != null) {
+                        Modifier.semantics { stateDescription = stepStatus }
+                    } else {
+                        Modifier
+                    },
                 )
 
                 val subheading = item.subheading
