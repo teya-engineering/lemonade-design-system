@@ -234,125 +234,41 @@ private fun CoreHistoryTimelineItem(
     val typographies = LocalTypographies.current
     val colors = LocalColors.current
     val contentColors = colors.content
-    val mutedColor = colors.border.borderNeutralMedium
-    val ringColor = colors.border.borderNeutralHigh
-    val ringFillColor = colors.background.bgDefault
-    val activeDotColor = colors.background.bgNeutral
-    val activeLineColor = colors.border.borderPositive
     val activeLineElapsedMillis: State<Float>? = if (state == HistoryItemState.Active && !isLast) {
         rememberActiveLineElapsedMillis()
     } else {
         null
     }
-    val dotColor: Color = when (state) {
-        HistoryItemState.Current -> item.voice.currentDotColor
-        else -> mutedColor
+    val dotColor: Color = if (state == HistoryItemState.Current) {
+        item.voice.currentDotColor
+    } else {
+        colors.border.borderNeutralMedium
     }
-    val labelColor: Color = when (state) {
-        HistoryItemState.Next -> contentColors.contentTertiary
-        else -> contentColors.contentPrimary
+    val labelColor: Color = if (state == HistoryItemState.Next) {
+        contentColors.contentTertiary
+    } else {
+        contentColors.contentPrimary
     }
 
     Row(
         modifier = Modifier.drawBehind {
-            val indicatorCenterX = HistoryItemIndicatorWidth.toPx() / 2f
-            val centerX = when (layoutDirection) {
-                LayoutDirection.Ltr -> indicatorCenterX
-                LayoutDirection.Rtl -> size.width - indicatorCenterX
-            }
             when (state) {
-                HistoryItemState.Current, HistoryItemState.Inactive -> {
-                    val dotRadius = HistoryItemDotSize.toPx() / 2f
-                    val dotCenterY = HistoryItemDotTopOffset.toPx() + dotRadius
-                    drawCircle(
-                        color = dotColor,
-                        radius = dotRadius,
-                        center = Offset(
-                            x = centerX,
-                            y = dotCenterY,
-                        ),
-                    )
-                    if (!isLast) {
-                        drawLine(
-                            color = mutedColor,
-                            start = Offset(
-                                x = centerX,
-                                y = dotCenterY + dotRadius + HistoryItemDotLineGap.toPx(),
-                            ),
-                            end = Offset(
-                                x = centerX,
-                                y = size.height,
-                            ),
-                            strokeWidth = borderWidths.base.border40.toPx(),
-                            cap = StrokeCap.Round,
-                        )
-                    }
-                }
+                HistoryItemState.Current, HistoryItemState.Inactive -> drawEventsIndicator(
+                    dotColor = dotColor,
+                    lineColor = colors.border.borderNeutralMedium,
+                    lineWidth = borderWidths.base.border40.toPx(),
+                    isLast = isLast,
+                )
 
                 HistoryItemState.Completed, HistoryItemState.Error, HistoryItemState.Active,
                 HistoryItemState.Next,
-                -> {
-                    val lineTop = HistoryStepsDotAreaHeight.toPx() + HistoryStepsLineInset.toPx()
-                    val lineBottom = size.height - HistoryStepsLineInset.toPx()
-                    val lineWidth = borderWidths.base.border50.toPx()
-                    val ringCenter = Offset(
-                        x = centerX,
-                        y = HistoryStepsDotAreaHeight.toPx() / 2f,
-                    )
-                    if (state == HistoryItemState.Active || state == HistoryItemState.Next) {
-                        val ringRadius = HistoryStepsRingSize.toPx() / 2f
-                        val ringWidth = borderWidths.base.border40.toPx()
-                        drawCircle(
-                            color = ringFillColor,
-                            radius = ringRadius,
-                            center = ringCenter,
-                        )
-                        drawCircle(
-                            color = ringColor,
-                            radius = ringRadius - ringWidth / 2f,
-                            center = ringCenter,
-                            style = Stroke(width = ringWidth),
-                        )
-                    }
-                    if (state == HistoryItemState.Active) {
-                        drawCircle(
-                            color = activeDotColor,
-                            radius = HistoryStepsActiveDotSize.toPx() / 2f,
-                            center = ringCenter,
-                        )
-                    }
-                    if (!isLast && lineBottom > lineTop) {
-                        when (state) {
-                            HistoryItemState.Next -> drawDashedStepsLine(
-                                color = ringColor,
-                                x = centerX,
-                                top = lineTop,
-                                bottom = lineBottom,
-                                strokeWidth = lineWidth,
-                            )
-
-                            else -> {
-                                drawLine(
-                                    color = mutedColor,
-                                    start = Offset(x = centerX, y = lineTop),
-                                    end = Offset(x = centerX, y = lineBottom),
-                                    strokeWidth = lineWidth,
-                                    cap = StrokeCap.Round,
-                                )
-                                activeLineElapsedMillis?.let { elapsed ->
-                                    drawActiveStepsLine(
-                                        color = activeLineColor,
-                                        x = centerX,
-                                        top = lineTop,
-                                        bottom = lineBottom,
-                                        strokeWidth = lineWidth,
-                                        elapsedMillis = elapsed.value,
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
+                -> drawStepsIndicator(
+                    state = state,
+                    isLast = isLast,
+                    colors = colors,
+                    borderWidths = borderWidths,
+                    activeLineElapsedMillis = activeLineElapsedMillis?.value,
+                )
             }
         },
         horizontalArrangement = Arrangement.spacedBy(space = spaces.spacing300),
@@ -361,20 +277,7 @@ private fun CoreHistoryTimelineItem(
             modifier = Modifier.width(width = HistoryItemIndicatorWidth),
             contentAlignment = Alignment.TopCenter,
         ) {
-            val stepIcon = when (state) {
-                HistoryItemState.Completed -> LemonadeIcons.CircleCheckSolid to colors.background.bgPositive
-                HistoryItemState.Error -> LemonadeIcons.CircleXSolid to colors.background.bgCritical
-                else -> null
-            }
-            if (stepIcon != null) {
-                LemonadeUi.Icon(
-                    icon = stepIcon.first,
-                    contentDescription = null,
-                    size = LemonadeAssetSize.Medium,
-                    tint = stepIcon.second,
-                    modifier = Modifier.padding(top = HistoryStepsIconTopOffset),
-                )
-            }
+            HistoryStepIcon(state = state)
         }
 
         Column(
@@ -425,6 +328,150 @@ private fun CoreHistoryTimelineItem(
 }
 
 @Composable
+private fun HistoryStepIcon(state: HistoryItemState) {
+    val colors = LocalColors.current
+    val stepIcon = when (state) {
+        HistoryItemState.Completed -> LemonadeIcons.CircleCheckSolid to colors.background.bgPositive
+        HistoryItemState.Error -> LemonadeIcons.CircleXSolid to colors.background.bgCritical
+        else -> null
+    }
+    if (stepIcon != null) {
+        LemonadeUi.Icon(
+            icon = stepIcon.first,
+            contentDescription = null,
+            size = LemonadeAssetSize.Medium,
+            tint = stepIcon.second,
+            modifier = Modifier.padding(top = HistoryStepsIconTopOffset),
+        )
+    }
+}
+
+private fun DrawScope.indicatorCenterX(): Float {
+    val indicatorCenterX = HistoryItemIndicatorWidth.toPx() / 2f
+    return when (layoutDirection) {
+        LayoutDirection.Ltr -> indicatorCenterX
+        LayoutDirection.Rtl -> size.width - indicatorCenterX
+    }
+}
+
+private fun DrawScope.drawEventsIndicator(
+    dotColor: Color,
+    lineColor: Color,
+    lineWidth: Float,
+    isLast: Boolean,
+) {
+    val centerX = indicatorCenterX()
+    val dotRadius = HistoryItemDotSize.toPx() / 2f
+    val dotCenterY = HistoryItemDotTopOffset.toPx() + dotRadius
+    drawCircle(
+        color = dotColor,
+        radius = dotRadius,
+        center = Offset(
+            x = centerX,
+            y = dotCenterY,
+        ),
+    )
+    if (!isLast) {
+        drawLine(
+            color = lineColor,
+            start = Offset(
+                x = centerX,
+                y = dotCenterY + dotRadius + HistoryItemDotLineGap.toPx(),
+            ),
+            end = Offset(
+                x = centerX,
+                y = size.height,
+            ),
+            strokeWidth = lineWidth,
+            cap = StrokeCap.Round,
+        )
+    }
+}
+
+private fun DrawScope.drawStepsIndicator(
+    state: HistoryItemState,
+    isLast: Boolean,
+    colors: LemonadeSemanticColors,
+    borderWidths: LemonadeBorderWidth,
+    activeLineElapsedMillis: Float?,
+) {
+    val centerX = indicatorCenterX()
+    val ringCenter = Offset(
+        x = centerX,
+        y = HistoryStepsDotAreaHeight.toPx() / 2f,
+    )
+    if (state == HistoryItemState.Active || state == HistoryItemState.Next) {
+        val ringRadius = HistoryStepsRingSize.toPx() / 2f
+        val ringWidth = borderWidths.base.border40.toPx()
+        drawCircle(
+            color = colors.background.bgDefault,
+            radius = ringRadius,
+            center = ringCenter,
+        )
+        drawCircle(
+            color = colors.border.borderNeutralHigh,
+            radius = ringRadius - ringWidth / 2f,
+            center = ringCenter,
+            style = Stroke(width = ringWidth),
+        )
+    }
+    if (state == HistoryItemState.Active) {
+        drawCircle(
+            color = colors.background.bgNeutral,
+            radius = HistoryStepsActiveDotSize.toPx() / 2f,
+            center = ringCenter,
+        )
+    }
+    if (!isLast) {
+        drawStepsLine(
+            state = state,
+            x = centerX,
+            colors = colors,
+            lineWidth = borderWidths.base.border50.toPx(),
+            activeLineElapsedMillis = activeLineElapsedMillis,
+        )
+    }
+}
+
+private fun DrawScope.drawStepsLine(
+    state: HistoryItemState,
+    x: Float,
+    colors: LemonadeSemanticColors,
+    lineWidth: Float,
+    activeLineElapsedMillis: Float?,
+) {
+    val lineTop = HistoryStepsDotAreaHeight.toPx() + HistoryStepsLineInset.toPx()
+    val lineBottom = size.height - HistoryStepsLineInset.toPx()
+    if (lineBottom <= lineTop) return
+    if (state == HistoryItemState.Next) {
+        drawDashedStepsLine(
+            color = colors.border.borderNeutralHigh,
+            x = x,
+            top = lineTop,
+            bottom = lineBottom,
+            strokeWidth = lineWidth,
+        )
+    } else {
+        drawLine(
+            color = colors.border.borderNeutralMedium,
+            start = Offset(x = x, y = lineTop),
+            end = Offset(x = x, y = lineBottom),
+            strokeWidth = lineWidth,
+            cap = StrokeCap.Round,
+        )
+        if (activeLineElapsedMillis != null) {
+            drawActiveStepsLine(
+                color = colors.border.borderPositive,
+                start = Offset(x = x, y = lineTop),
+                bottom = lineBottom,
+                strokeWidth = lineWidth,
+                elapsedMillis = activeLineElapsedMillis,
+            )
+        }
+    }
+}
+
+@Composable
 private fun rememberActiveLineElapsedMillis(): State<Float> =
     rememberInfiniteTransition(label = "HistoryActiveLine").animateFloat(
         initialValue = 0f,
@@ -441,12 +488,12 @@ private fun rememberActiveLineElapsedMillis(): State<Float> =
 
 private fun DrawScope.drawActiveStepsLine(
     color: Color,
-    x: Float,
-    top: Float,
+    start: Offset,
     bottom: Float,
     strokeWidth: Float,
     elapsedMillis: Float,
 ) {
+    val top = start.y
     val fillFraction = min(elapsedMillis / HISTORY_ACTIVE_LINE_FILL_MILLIS, 1f)
     val end = top + (bottom - top) * EaseInOut.transform(fillFraction)
     val fadeFraction = (elapsedMillis - HISTORY_ACTIVE_LINE_FADE_START_MILLIS) /
@@ -459,8 +506,8 @@ private fun DrawScope.drawActiveStepsLine(
             startY = top,
             endY = end,
         ),
-        start = Offset(x = x, y = top),
-        end = Offset(x = x, y = end),
+        start = start,
+        end = Offset(x = start.x, y = end),
         strokeWidth = strokeWidth,
         cap = StrokeCap.Round,
         alpha = alpha,
