@@ -2,14 +2,14 @@ import SwiftUI
 import Lemonade
 
 struct HistoryTimelineDisplayView: View {
-    @State private var progressVariant: LemonadeHistoryTimelineVariant = .progress
+    @State private var variant: LemonadeHistoryTimelineVariant = .steps
 
     var body: some View {
         ScrollView(.vertical) {
             LazyVStack(spacing: .space.spacing400) {
-                progressVariantPicker
-                ForEach(ProgressSample.all, id: \.title) { sample in
-                    progressCard(sample)
+                variantPicker
+                ForEach(StepsSample.all, id: \.title) { sample in
+                    stepsCard(sample)
                 }
                 positiveFirstSection
                 howItWorksSection
@@ -139,15 +139,15 @@ struct HistoryTimelineDisplayView: View {
         }
     }
 
-    private var progressVariantPicker: some View {
+    private var variantPicker: some View {
         LemonadeUi.SegmentedControl(
-            properties: [.label("Default"), .label("Progress")],
-            selectedTab: progressVariant == .default ? 0 : 1,
-            onTabSelected: { progressVariant = $0 == 0 ? .default : .progress }
+            properties: [.label("Events"), .label("Steps")],
+            selectedTab: variant == .events ? 0 : 1,
+            onTabSelected: { variant = $0 == 0 ? .events : .steps }
         )
     }
 
-    private func progressCard(_ sample: ProgressSample) -> some View {
+    private func stepsCard(_ sample: StepsSample) -> some View {
         LemonadeUi.Card(
             contentPadding: .medium,
             header: CardHeaderConfig(title: sample.title)
@@ -155,7 +155,7 @@ struct HistoryTimelineDisplayView: View {
             LemonadeUi.HistoryTimeline(
                 items: sample.items,
                 currentIndex: sample.currentIndex,
-                variant: progressVariant
+                variant: variant
             )
         }
     }
@@ -167,30 +167,30 @@ struct HistoryTimelineDisplayView: View {
     }
 }
 
-private struct ProgressSample {
+private struct StepsSample {
     let title: String
     let currentIndex: Int?
     let items: [LemonadeHistoryTimelineItem]
 
-    static let all: [ProgressSample] = [
-        ProgressSample(
-            title: "Progress — first step",
+    static let all: [StepsSample] = [
+        StepsSample(
+            title: "Steps — first step",
             currentIndex: 0,
             items: steps(completed: 0, currentSubheading: "An activation email was sent to sofia@teya.com")
         ),
-        ProgressSample(
-            title: "Progress — second step",
+        StepsSample(
+            title: "Steps — second step",
             currentIndex: 1,
             items: steps(completed: 1, currentSubheading: "Sofia needs to download the Teya app and log in.")
         ),
-        ProgressSample(
-            title: "Progress — last step",
+        StepsSample(
+            title: "Steps — last step",
             currentIndex: 2,
             items: steps(completed: 2, currentSubheading: "The card was delivered. Sofia can now activate it.")
         ),
-        ProgressSample(title: "Progress — all steps completed", currentIndex: 3, items: steps(completed: 3)),
-        ProgressSample(
-            title: "Progress — critical current step",
+        StepsSample(title: "Steps — all steps completed", currentIndex: 3, items: steps(completed: 3)),
+        StepsSample(
+            title: "Steps — critical current step",
             currentIndex: 1,
             items: steps(
                 completed: 1,
@@ -198,8 +198,8 @@ private struct ProgressSample {
                 currentVoice: .critical
             )
         ),
-        ProgressSample(
-            title: "Progress — current step with an action",
+        StepsSample(
+            title: "Steps — current step with an action",
             currentIndex: 1,
             items: [
                 LemonadeHistoryTimelineItem(label: "Invitation accepted", voice: .positive),
@@ -212,7 +212,7 @@ private struct ProgressSample {
                 LemonadeHistoryTimelineItem(label: "Card activation")
             ]
         ),
-        ProgressSample(title: "Progress — nothing reached", currentIndex: nil, items: steps(completed: 0))
+        StepsSample(title: "Steps — nothing reached", currentIndex: nil, items: steps(completed: 0))
     ]
 
     private static func steps(

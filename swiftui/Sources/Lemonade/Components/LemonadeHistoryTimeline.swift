@@ -22,12 +22,14 @@ public enum LemonadeHistoryItemVoice {
 /// How a ``LemonadeUi/HistoryTimeline(items:currentIndex:variant:)`` styles the rows around its
 /// current step.
 public enum LemonadeHistoryTimelineVariant {
-    /// Only the current row takes its voice colour; every other row is muted.
-    case `default`
-    /// A progress stepper. Rows before the current one show a check, the current row shows an
-    /// in-progress ring with an animated positive gradient line, and rows after it are muted with a dashed
-    /// line and tertiary labels. A reached row with a critical voice shows an error icon instead.
-    case progress
+    /// A record of updates as they happen, such as transactions or order status. Only the current
+    /// row takes its voice colour; every other row is muted.
+    case events
+    /// A known path of steps, such as card activation. Rows before the current one show a check,
+    /// the current row shows an in-progress ring with an animated positive gradient line, and rows
+    /// after it are muted with a dashed line and tertiary labels. A reached row with a critical
+    /// voice shows an error icon instead.
+    case steps
 }
 
 // MARK: - LemonadeHistoryTimelineItem
@@ -50,7 +52,7 @@ public struct LemonadeHistoryTimelineItem {
     ///   - subheading: Optional secondary text shown immediately below the label.
     ///   - description: Optional tertiary paragraph shown below the subheading.
     ///   - voice: Semantic color of the indicator dot when this row is the current step. In a
-    ///     ``LemonadeHistoryTimelineVariant/progress`` timeline, `.critical` marks a reached step
+    ///     ``LemonadeHistoryTimelineVariant/steps`` timeline, `.critical` marks a reached step
     ///     as failed; other voices are ignored.
     ///   - contentSlot: Optional view builder for custom content rendered below the
     ///     description (e.g. a button or tag).
@@ -95,7 +97,7 @@ public extension LemonadeUi {
     /// For rows with custom content (buttons, tags, etc.), set `contentSlot` on the
     /// ``LemonadeHistoryTimelineItem``.
     ///
-    /// Set `variant` to ``LemonadeHistoryTimelineVariant/progress`` for a stepper: rows before the
+    /// Set `variant` to ``LemonadeHistoryTimelineVariant/steps`` for a stepper: rows before the
     /// current one show a check, the current row shows an in-progress ring, and upcoming rows are
     /// muted with a dashed line. A reached row with a `.critical` voice shows an error icon instead.
     ///
@@ -125,7 +127,7 @@ public extension LemonadeUi {
     ///         LemonadeHistoryTimelineItem(label: "Card activation")
     ///     ],
     ///     currentIndex: 1,
-    ///     variant: .progress
+    ///     variant: .steps
     /// )
     /// ```
     ///
@@ -133,14 +135,14 @@ public extension LemonadeUi {
     ///   - items: Ordered list of rows to display.
     ///   - currentIndex: Index of the row to render as the current step. Pass `nil`
     ///     to render every row in its non-current (muted) state. Defaults to `0`. In a
-    ///     ``LemonadeHistoryTimelineVariant/progress`` timeline, an index past the last row
+    ///     ``LemonadeHistoryTimelineVariant/steps`` timeline, an index past the last row
     ///     shows every step completed.
-    ///   - variant: How rows around the current step are styled. Defaults to `.default`.
+    ///   - variant: How rows around the current step are styled. Defaults to `.events`.
     @ViewBuilder
     static func HistoryTimeline(
         items: [LemonadeHistoryTimelineItem],
         currentIndex: Int? = 0,
-        variant: LemonadeHistoryTimelineVariant = .default
+        variant: LemonadeHistoryTimelineVariant = .events
     ) -> some View {
         LemonadeHistoryTimelineView(
             items: items,
@@ -157,12 +159,12 @@ private enum HistoryTimelineMetrics {
     static let dotSize: CGFloat = 10
     static let dotTopOffset: CGFloat = 7
     static let dotLineGap: CGFloat = 6
-    static let progressDotAreaHeight: CGFloat = 24
-    static let progressRingSize: CGFloat = 16
-    static let progressActiveDotSize: CGFloat = 8
-    static let progressLineInset: CGFloat = 2
-    static let progressDashPeriod: CGFloat = 10
-    static let progressDashFraction: CGFloat = 0.4
+    static let stepsDotAreaHeight: CGFloat = 24
+    static let stepsRingSize: CGFloat = 16
+    static let stepsActiveDotSize: CGFloat = 8
+    static let stepsLineInset: CGFloat = 2
+    static let stepsDashPeriod: CGFloat = 10
+    static let stepsDashFraction: CGFloat = 0.4
 }
 
 private enum HistoryItemState {
@@ -180,9 +182,9 @@ private enum HistoryItemState {
         variant: LemonadeHistoryTimelineVariant
     ) {
         switch variant {
-        case .default:
+        case .events:
             self = index == currentIndex ? .current : .inactive
-        case .progress:
+        case .steps:
             guard let currentIndex, index <= currentIndex else {
                 self = .next
                 return
@@ -280,7 +282,7 @@ private struct CoreHistoryTimelineItemView: View {
             case .current, .inactive:
                 HistoryItemIndicator(dotColor: dotColor, isLast: isLast)
             case .completed, .error, .active, .next:
-                HistoryProgressIndicator(state: state, isLast: isLast)
+                HistoryStepsIndicator(state: state, isLast: isLast)
             }
         }
     }
@@ -322,7 +324,7 @@ private struct HistoryItemIndicator: View {
     }
 }
 
-private struct HistoryProgressIndicator: View {
+private struct HistoryStepsIndicator: View {
     let state: HistoryItemState
     let isLast: Bool
 
@@ -333,12 +335,12 @@ private struct HistoryProgressIndicator: View {
     var body: some View {
         VStack(spacing: 0) {
             marker
-                .frame(height: HistoryTimelineMetrics.progressDotAreaHeight)
+                .frame(height: HistoryTimelineMetrics.stepsDotAreaHeight)
 
             if !isLast {
                 line
                     .frame(maxHeight: .infinity)
-                    .padding(.vertical, HistoryTimelineMetrics.progressLineInset)
+                    .padding(.vertical, HistoryTimelineMetrics.stepsLineInset)
             }
         }
         .frame(width: HistoryTimelineMetrics.indicatorWidth)
@@ -366,8 +368,8 @@ private struct HistoryProgressIndicator: View {
                 Circle()
                     .fill(LemonadeTheme.colors.background.bgNeutral)
                     .frame(
-                        width: HistoryTimelineMetrics.progressActiveDotSize,
-                        height: HistoryTimelineMetrics.progressActiveDotSize
+                        width: HistoryTimelineMetrics.stepsActiveDotSize,
+                        height: HistoryTimelineMetrics.stepsActiveDotSize
                     )
             }
         case .next:
@@ -387,8 +389,8 @@ private struct HistoryProgressIndicator: View {
                 )
             }
             .frame(
-                width: HistoryTimelineMetrics.progressRingSize,
-                height: HistoryTimelineMetrics.progressRingSize
+                width: HistoryTimelineMetrics.stepsRingSize,
+                height: HistoryTimelineMetrics.stepsRingSize
             )
     }
 
@@ -396,14 +398,14 @@ private struct HistoryProgressIndicator: View {
     private var line: some View {
         switch state {
         case .next:
-            HistoryProgressDashedLine()
+            HistoryStepsDashedLine()
                 .stroke(LemonadeTheme.colors.border.borderNeutralHigh, style: lineStyle)
         case .active:
-            HistoryProgressLine()
+            HistoryStepsLine()
                 .stroke(LemonadeTheme.colors.border.borderNeutralMedium, style: lineStyle)
                 .overlay { HistoryActiveLineFill(style: lineStyle) }
         case .completed, .error, .current, .inactive:
-            HistoryProgressLine()
+            HistoryStepsLine()
                 .stroke(LemonadeTheme.colors.border.borderNeutralMedium, style: lineStyle)
         }
     }
@@ -434,7 +436,7 @@ private struct HistoryActiveLineFill: View {
     private func fill(progress: CGFloat, opacity: Double) -> some View {
         GeometryReader { proxy in
             let color = LemonadeTheme.colors.border.borderPositive
-            HistoryProgressLine()
+            HistoryStepsLine()
                 .stroke(
                     LinearGradient(colors: [color, color.opacity(0)], startPoint: .top, endPoint: .bottom),
                     style: style
@@ -469,7 +471,7 @@ private struct HistoryActiveLineFill: View {
     }
 }
 
-private struct HistoryProgressLine: Shape {
+private struct HistoryStepsLine: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
         path.move(to: CGPoint(x: rect.midX, y: rect.minY))
@@ -478,13 +480,13 @@ private struct HistoryProgressLine: Shape {
     }
 }
 
-private struct HistoryProgressDashedLine: Shape {
+private struct HistoryStepsDashedLine: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
         guard rect.height > 0 else { return path }
-        let periods = max(1, Int((rect.height / HistoryTimelineMetrics.progressDashPeriod).rounded()))
+        let periods = max(1, Int((rect.height / HistoryTimelineMetrics.stepsDashPeriod).rounded()))
         let period = rect.height / CGFloat(periods)
-        let halfDash = period * HistoryTimelineMetrics.progressDashFraction / 2
+        let halfDash = period * HistoryTimelineMetrics.stepsDashFraction / 2
         for index in 0...periods {
             let center = rect.minY + CGFloat(index) * period
             path.move(to: CGPoint(x: rect.midX, y: max(rect.minY, center - halfDash)))
@@ -595,7 +597,7 @@ struct LemonadeHistoryTimeline_Previews: PreviewProvider {
                         LemonadeHistoryTimelineItem(label: "Card activation")
                     ],
                     currentIndex: 1,
-                    variant: .progress
+                    variant: .steps
                 )
             }
             .padding()

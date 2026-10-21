@@ -18,18 +18,18 @@ import com.teya.lemonade.core.TagVoice
 
 @Composable
 internal fun HistoryTimelineDisplay() {
-    var progressVariant by remember { mutableStateOf(HistoryTimelineVariant.Progress) }
+    var variant by remember { mutableStateOf(HistoryTimelineVariant.Steps) }
     SampleScreenDisplayLazyColumn(title = "HistoryTimeline") {
-        item(key = "Progress — variant") {
+        item(key = "Steps — variant") {
             LemonadeUi.SegmentedControl(
-                selectedTab = HistoryTimelineVariant.entries.indexOf(progressVariant),
-                onTabSelected = { index -> progressVariant = HistoryTimelineVariant.entries[index] },
+                selectedTab = HistoryTimelineVariant.entries.indexOf(variant),
+                onTabSelected = { index -> variant = HistoryTimelineVariant.entries[index] },
                 properties = HistoryTimelineVariant.entries.map { TabButtonProperties.label(label = it.name) },
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing400),
             )
         }
 
-        progressSamples.forEach { sample ->
+        stepsSamples.forEach { sample ->
             item(key = sample.title) {
                 LemonadeUi.Card(
                     modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
@@ -39,7 +39,7 @@ internal fun HistoryTimelineDisplay() {
                     LemonadeUi.HistoryTimeline(
                         items = sample.items(),
                         currentIndex = sample.currentIndex,
-                        variant = progressVariant,
+                        variant = variant,
                     )
                 }
             }
@@ -171,13 +171,13 @@ internal fun HistoryTimelineDisplay() {
     }
 }
 
-private class ProgressSample(
+private class StepsSample(
     val title: String,
     val currentIndex: Int?,
     val items: () -> List<HistoryTimelineItem>,
 )
 
-private fun progressSteps(
+private fun steps(
     completed: Int,
     currentSubheading: String? = null,
     currentVoice: HistoryItemVoice = HistoryItemVoice.Neutral,
@@ -196,28 +196,28 @@ private fun progressSteps(
     }
 }
 
-private val progressSamples = listOf(
-    ProgressSample(title = "Progress — first step", currentIndex = 0) {
-        progressSteps(completed = 0, currentSubheading = "An activation email was sent to sofia@teya.com")
+private val stepsSamples = listOf(
+    StepsSample(title = "Steps — first step", currentIndex = 0) {
+        steps(completed = 0, currentSubheading = "An activation email was sent to sofia@teya.com")
     },
-    ProgressSample(title = "Progress — second step", currentIndex = 1) {
-        progressSteps(completed = 1, currentSubheading = "Sofia needs to download the Teya app and log in.")
+    StepsSample(title = "Steps — second step", currentIndex = 1) {
+        steps(completed = 1, currentSubheading = "Sofia needs to download the Teya app and log in.")
     },
-    ProgressSample(title = "Progress — last step", currentIndex = 2) {
-        progressSteps(completed = 2, currentSubheading = "The card was delivered. Sofia can now activate it.")
+    StepsSample(title = "Steps — last step", currentIndex = 2) {
+        steps(completed = 2, currentSubheading = "The card was delivered. Sofia can now activate it.")
     },
-    ProgressSample(title = "Progress — all steps completed", currentIndex = 3) {
-        progressSteps(completed = 3)
+    StepsSample(title = "Steps — all steps completed", currentIndex = 3) {
+        steps(completed = 3)
     },
-    ProgressSample(title = "Progress — critical current step", currentIndex = 1) {
-        progressSteps(
+    StepsSample(title = "Steps — critical current step", currentIndex = 1) {
+        steps(
             completed = 1,
             currentSubheading = "We couldn't verify Sofia's phone number.",
             currentVoice = HistoryItemVoice.Critical,
         )
     },
-    ProgressSample(title = "Progress — current step with an action", currentIndex = 1) {
-        progressSteps(completed = 1).mapIndexed { index, item ->
+    StepsSample(title = "Steps — current step with an action", currentIndex = 1) {
+        steps(completed = 1).mapIndexed { index, item ->
             if (index == 1) {
                 item.copy(
                     description = "Remind Sofia to log in so the card can be activated.",
@@ -235,7 +235,7 @@ private val progressSamples = listOf(
             }
         }
     },
-    ProgressSample(title = "Progress — nothing reached", currentIndex = null) {
-        progressSteps(completed = 0)
+    StepsSample(title = "Steps — nothing reached", currentIndex = null) {
+        steps(completed = 0)
     },
 )

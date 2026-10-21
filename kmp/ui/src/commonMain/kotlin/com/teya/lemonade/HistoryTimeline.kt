@@ -41,13 +41,13 @@ private val HistoryItemIndicatorWidth: Dp = 20.dp
 private val HistoryItemDotSize: Dp = 10.dp
 private val HistoryItemDotTopOffset: Dp = 7.dp
 private val HistoryItemDotLineGap: Dp = 6.dp
-private val HistoryProgressDotAreaHeight: Dp = 24.dp
-private val HistoryProgressIconTopOffset: Dp = 2.dp
-private val HistoryProgressRingSize: Dp = 16.dp
-private val HistoryProgressActiveDotSize: Dp = 8.dp
-private val HistoryProgressLineInset: Dp = 2.dp
-private val HistoryProgressDashPeriod: Dp = 10.dp
-private const val HISTORY_PROGRESS_DASH_FRACTION: Float = 0.4f
+private val HistoryStepsDotAreaHeight: Dp = 24.dp
+private val HistoryStepsIconTopOffset: Dp = 2.dp
+private val HistoryStepsRingSize: Dp = 16.dp
+private val HistoryStepsActiveDotSize: Dp = 8.dp
+private val HistoryStepsLineInset: Dp = 2.dp
+private val HistoryStepsDashPeriod: Dp = 10.dp
+private const val HISTORY_STEPS_DASH_FRACTION: Float = 0.4f
 private const val HISTORY_ACTIVE_LINE_FADE_START_MILLIS: Int = 1350
 private const val HISTORY_ACTIVE_LINE_FILL_MILLIS: Int = 1800
 private const val HISTORY_ACTIVE_LINE_CYCLE_MILLIS: Int = 2000
@@ -59,7 +59,7 @@ private const val HISTORY_ACTIVE_LINE_CYCLE_MILLIS: Int = 2000
  * @param subheading optional secondary text rendered immediately below [label]
  * @param description optional tertiary paragraph text rendered below the subheading
  * @param voice semantic color of the indicator dot when this row is the current step. In a
- *   [HistoryTimelineVariant.Progress] timeline, [HistoryItemVoice.Critical] marks a reached step
+ *   [HistoryTimelineVariant.Steps] timeline, [HistoryItemVoice.Critical] marks a reached step
  *   as failed; other voices are ignored
  * @param contentSlot optional slot for custom composable content (e.g. a button or tag)
  *   rendered below the description
@@ -77,7 +77,7 @@ public data class HistoryTimelineItem(
  * the item's [HistoryItemVoice] colour; past rows render muted. A connecting line joins every
  * row except the last.
  *
- * Set [variant] to [HistoryTimelineVariant.Progress] for a stepper: rows before the current one
+ * Set [variant] to [HistoryTimelineVariant.Steps] for a stepper: rows before the current one
  * show a check, the current row shows an in-progress ring, and upcoming rows are muted with a
  * dashed line. A reached row with [HistoryItemVoice.Critical] shows an error icon instead.
  *
@@ -113,7 +113,7 @@ public data class HistoryTimelineItem(
  *         HistoryTimelineItem(label = "Card activation"),
  *     ),
  *     currentIndex = 1,
- *     variant = HistoryTimelineVariant.Progress,
+ *     variant = HistoryTimelineVariant.Steps,
  * )
  * ```
  *
@@ -121,7 +121,7 @@ public data class HistoryTimelineItem(
  * @param modifier [Modifier] applied to the root column
  * @param currentIndex index of the row to render as the current step. Pass `null` to render
  *   every row in its non-current (muted) state. Defaults to `0` (first row is current). In a
- *   [HistoryTimelineVariant.Progress] timeline, an index past the last row shows every step completed
+ *   [HistoryTimelineVariant.Steps] timeline, an index past the last row shows every step completed
  * @param variant how rows around the current step are styled
  */
 @Composable
@@ -129,7 +129,7 @@ public fun LemonadeUi.HistoryTimeline(
     items: List<HistoryTimelineItem>,
     modifier: Modifier = Modifier,
     currentIndex: Int? = 0,
-    variant: HistoryTimelineVariant = HistoryTimelineVariant.Default,
+    variant: HistoryTimelineVariant = HistoryTimelineVariant.Events,
 ) {
     Column(modifier = modifier) {
         items.forEachIndexed { index, item ->
@@ -150,7 +150,7 @@ public fun LemonadeUi.HistoryTimeline(
 @Deprecated(
     message = "Use the overload with a variant parameter.",
     replaceWith = ReplaceWith(
-        expression = "HistoryTimeline(items, modifier, currentIndex, HistoryTimelineVariant.Default)",
+        expression = "HistoryTimeline(items, modifier, currentIndex, HistoryTimelineVariant.Events)",
     ),
     level = DeprecationLevel.HIDDEN,
 )
@@ -164,7 +164,7 @@ public fun LemonadeUi.HistoryTimeline(
         items = items,
         modifier = modifier,
         currentIndex = currentIndex,
-        variant = HistoryTimelineVariant.Default,
+        variant = HistoryTimelineVariant.Events,
     )
 }
 
@@ -184,13 +184,13 @@ private fun historyItemState(
     variant: HistoryTimelineVariant,
 ): HistoryItemState =
     when (variant) {
-        HistoryTimelineVariant.Default -> if (index == currentIndex) {
+        HistoryTimelineVariant.Events -> if (index == currentIndex) {
             HistoryItemState.Current
         } else {
             HistoryItemState.Inactive
         }
 
-        HistoryTimelineVariant.Progress -> when {
+        HistoryTimelineVariant.Steps -> when {
             currentIndex == null || index > currentIndex -> HistoryItemState.Next
             voice == HistoryItemVoice.Critical -> HistoryItemState.Error
             index == currentIndex -> HistoryItemState.Active
@@ -263,15 +263,15 @@ private fun CoreHistoryTimelineItem(
                 HistoryItemState.Completed, HistoryItemState.Error, HistoryItemState.Active,
                 HistoryItemState.Next,
                 -> {
-                    val lineTop = HistoryProgressDotAreaHeight.toPx() + HistoryProgressLineInset.toPx()
-                    val lineBottom = size.height - HistoryProgressLineInset.toPx()
+                    val lineTop = HistoryStepsDotAreaHeight.toPx() + HistoryStepsLineInset.toPx()
+                    val lineBottom = size.height - HistoryStepsLineInset.toPx()
                     val lineWidth = borderWidths.base.border50.toPx()
                     val ringCenter = Offset(
                         x = centerX,
-                        y = HistoryProgressDotAreaHeight.toPx() / 2f,
+                        y = HistoryStepsDotAreaHeight.toPx() / 2f,
                     )
                     if (state == HistoryItemState.Active || state == HistoryItemState.Next) {
-                        val ringRadius = HistoryProgressRingSize.toPx() / 2f
+                        val ringRadius = HistoryStepsRingSize.toPx() / 2f
                         val ringWidth = borderWidths.base.border40.toPx()
                         drawCircle(
                             color = ringFillColor,
@@ -288,13 +288,13 @@ private fun CoreHistoryTimelineItem(
                     if (state == HistoryItemState.Active) {
                         drawCircle(
                             color = activeDotColor,
-                            radius = HistoryProgressActiveDotSize.toPx() / 2f,
+                            radius = HistoryStepsActiveDotSize.toPx() / 2f,
                             center = ringCenter,
                         )
                     }
                     if (!isLast && lineBottom > lineTop) {
                         when (state) {
-                            HistoryItemState.Next -> drawDashedProgressLine(
+                            HistoryItemState.Next -> drawDashedStepsLine(
                                 color = ringColor,
                                 x = centerX,
                                 top = lineTop,
@@ -311,7 +311,7 @@ private fun CoreHistoryTimelineItem(
                                     cap = StrokeCap.Round,
                                 )
                                 activeLineElapsedMillis?.let { elapsed ->
-                                    drawActiveProgressLine(
+                                    drawActiveStepsLine(
                                         color = activeLineColor,
                                         x = centerX,
                                         top = lineTop,
@@ -332,18 +332,18 @@ private fun CoreHistoryTimelineItem(
             modifier = Modifier.width(width = HistoryItemIndicatorWidth),
             contentAlignment = Alignment.TopCenter,
         ) {
-            val progressIcon = when (state) {
+            val stepIcon = when (state) {
                 HistoryItemState.Completed -> LemonadeIcons.CircleCheckSolid to colors.background.bgPositive
                 HistoryItemState.Error -> LemonadeIcons.CircleXSolid to colors.background.bgCritical
                 else -> null
             }
-            if (progressIcon != null) {
+            if (stepIcon != null) {
                 LemonadeUi.Icon(
-                    icon = progressIcon.first,
+                    icon = stepIcon.first,
                     contentDescription = null,
                     size = LemonadeAssetSize.Medium,
-                    tint = progressIcon.second,
-                    modifier = Modifier.padding(top = HistoryProgressIconTopOffset),
+                    tint = stepIcon.second,
+                    modifier = Modifier.padding(top = HistoryStepsIconTopOffset),
                 )
             }
         }
@@ -401,7 +401,7 @@ private fun rememberActiveLineElapsedMillis(): State<Float> =
         label = "HistoryActiveLineElapsed",
     )
 
-private fun DrawScope.drawActiveProgressLine(
+private fun DrawScope.drawActiveStepsLine(
     color: Color,
     x: Float,
     top: Float,
@@ -429,7 +429,7 @@ private fun DrawScope.drawActiveProgressLine(
     )
 }
 
-private fun DrawScope.drawDashedProgressLine(
+private fun DrawScope.drawDashedStepsLine(
     color: Color,
     x: Float,
     top: Float,
@@ -437,9 +437,9 @@ private fun DrawScope.drawDashedProgressLine(
     strokeWidth: Float,
 ) {
     val length = bottom - top
-    val periods = max(1, (length / HistoryProgressDashPeriod.toPx()).roundToInt())
+    val periods = max(1, (length / HistoryStepsDashPeriod.toPx()).roundToInt())
     val period = length / periods
-    val halfDash = period * HISTORY_PROGRESS_DASH_FRACTION / 2f
+    val halfDash = period * HISTORY_STEPS_DASH_FRACTION / 2f
     for (index in 0..periods) {
         val center = top + index * period
         drawLine(
@@ -550,7 +550,7 @@ private fun HistoryTimelinePreview() {
 
 @LemonadePreview
 @Composable
-private fun HistoryTimelineProgressPreview() {
+private fun HistoryTimelineStepsPreview() {
     LemonadeUi.HistoryTimeline(
         items = listOf(
             HistoryTimelineItem(
@@ -566,6 +566,6 @@ private fun HistoryTimelineProgressPreview() {
             ),
         ),
         currentIndex = 1,
-        variant = HistoryTimelineVariant.Progress,
+        variant = HistoryTimelineVariant.Steps,
     )
 }
