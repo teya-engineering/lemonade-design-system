@@ -17,8 +17,8 @@ const tokenFor = (value: string | undefined, path: string[]) => {
 
 describe('textStyles', () => {
   it.each(Object.keys(textStyles) as (keyof typeof textStyles)[])('%s renders like its class', (name) => {
-    const style: Record<string, string | number> = textStyles[name]
-    const rule = ruleFor(style.className as string)
+    const { className, style }: { className: string; style: Record<string, string | number> } = textStyles[name]
+    const rule = ruleFor(className)
 
     expect(style.fontFamily).toBe(tokenFor(rule.get('font-family'), ['font', 'family']))
     expect(style.fontSize).toBe(tokenFor(rule.get('font-size'), ['font', 'size']))
@@ -30,9 +30,10 @@ describe('textStyles', () => {
     expect(style.MozOsxFontSmoothing).toBe(rule.get('-moz-osx-font-smoothing'))
   })
 
-  it('spreads into a style object', () => {
-    expect(textStyles.displayXSmall).toMatchObject({
-      className: 'lmnd-text-display-xsmall',
+  it('keeps the class name beside a spreadable style', () => {
+    expect(textStyles.displayXSmall.className).toBe('lmnd-text-display-xsmall')
+    expect('className' in textStyles.displayXSmall.style).toBe(false)
+    expect(textStyles.displayXSmall.style).toMatchObject({
       fontSize: '1.5rem',
       fontWeight: 600,
       letterSpacing: '-0.25px',
