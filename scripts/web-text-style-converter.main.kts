@@ -93,14 +93,14 @@ fun main() {
     val entries = styles.flatMap { style ->
         val name = style.getString("name")
         listOf(JsEntry(listOf(name, "className"), jsString("lmnd-text-${style.getString("css")}"))) +
-            declarations(style, typography).map { JsEntry(listOf(name, it.jsKey), it.jsLiteral) }
+            declarations(style, typography).map { JsEntry(listOf(name, "style", it.jsKey), it.jsLiteral) }
     }
     val ts = buildString {
         appendLine("/**")
         append(defaultAutoGenerationMessage(scriptFilePath = TEXT_STYLE_SCRIPT))
         appendLine(" */")
         appendLine()
-        appendLine("/** Each style as values ready to spread into a style object, plus the class that applies it. */")
+        appendLine("/** Each style's `className`, and its values as a `style` object ready to spread. */")
         appendLine("export const textStyles = ${jsObjectLiteral(entries)} as const")
         appendLine()
         appendLine("export type LemonadeTextStyles = typeof textStyles")
