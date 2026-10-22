@@ -120,7 +120,7 @@ describe('colours', () => {
     expect(tokenValues.color.light.content.primary).toBe('rgba(9, 8, 6, 0.925)')
     expect(tokenValues.color.dark.content.primary).toBe('rgba(255, 255, 255, 0.9)')
     expect(tokenValues.color.light.bg.brand).toBe('rgba(225, 229, 26, 1)')
-    expect(tokens.color.themed.greenLime.subtleOnBackground).toBe(
+    expect(tokens.color.themed.greenLime.subtle.onBackground).toBe(
       'var(--lmnd-color-themed-green-lime-subtle-on-background)',
     )
   })

@@ -162,13 +162,12 @@ fun shadowTokens(): List<WebToken> {
 private val COLOUR_GROUPS = setOf("bg", "content", "border", "shadow")
 
 /**
- * `Themed/green-lime/subtle/on-background` -> `color.themed.greenLime.subtleOnBackground`. The hue
- * comes from the path, not the CSS name, because a hue can itself contain a hyphen.
+ * `Themed/green-lime/subtle/on-background` -> `color.themed.greenLime.subtle.onBackground`, the KMP
+ * shape. The hue comes from the path, not the CSS name, because a hue can itself contain a hyphen.
  */
 fun colourJsPath(path: String): List<String> {
     if (path.startsWith("Themed/")) {
-        val segments = path.split('/')
-        return listOf("color", "themed", camelCase(segments[1]), camelCase(segments.drop(2).joinToString("-")))
+        return listOf("color", "themed") + path.split('/').drop(1).map(::camelCase)
     }
     val leaf = leafOf(path)
     val group = leaf.substringBefore('-')
