@@ -76,7 +76,7 @@ fun main() {
     out.appendLine()
     out.appendLine("- `tokens` goes in styles. Colours are `var()` references (`tokens.color.content.primary`), so they follow the theme; load `tokens.css`. Other values match `tokens.css` (`tokens.spacing[400]` = `1rem`).")
     out.appendLine("- `tokenValues` is for code that needs a real value (charts, canvas): px numbers and `tokenValues.color.light` / `.dark` as `rgba()`. Never style components with it — dark mode breaks.")
-    out.appendLine("- `textStyles.<name>` spreads into a style object, or apply its `className`.")
+    out.appendLine("- `textStyles.<name>.style` spreads into a style object; `textStyles.<name>.className` applies the same style as a class.")
     out.appendLine("- Keys mirror the CSS names: `--lmnd-color-bg-brand-elevated` ↔ `tokens.color.bg.brandElevated`.")
     out.appendLine()
     out.appendLine("## Colours")

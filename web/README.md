@@ -46,7 +46,7 @@ const Card = styled.div`
   gap: calc(${tokens.spacing[200]} * 2);
 `
 
-const title = { ...textStyles.bodyMediumSemiBold }  // fontFamily, fontSize, lineHeight, …
+const title = { ...textStyles.bodyMediumSemiBold.style }  // fontFamily, fontSize, lineHeight, …
 ```
 
 - **`tokens`** is what goes in a style. Colours are `var()` references, so load `tokens.css`
@@ -56,7 +56,7 @@ const title = { ...textStyles.bodyMediumSemiBold }  // fontFamily, fontSize, lin
   Dimensions are px numbers (`tokenValues.spacing[400]` is `16`), and colours come per theme
   (`tokenValues.color.light.bg.brand`, `tokenValues.color.dark.bg.brand`) as `rgba()`. Styling a
   component with them breaks dark mode. `tokens.json` carries the same values.
-- **`textStyles`** spread into a style object, or apply through `className`.
+- **`textStyles`** carry a `style` object to spread and the `className` that applies the same style.
 
 Keys mirror the CSS names: `--lmnd-color-bg-brand-elevated` is `tokens.color.bg.brandElevated`,
 `--lmnd-spacing-400` is `tokens.spacing[400]`.
