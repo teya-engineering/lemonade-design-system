@@ -2,6 +2,7 @@
 // `?raw` rather than node:fs, so the package does not pull @types/node into a tsconfig it
 // shares with src — that would make `process` and `Buffer` typecheck in a browser library.
 import buttonCss from './button.css?raw'
+import paletteCss from '../button-palette.css?raw'
 import typographyCss from '../../../styles/typography.css?raw'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -196,7 +197,9 @@ describe('buttonClasses', () => {
 // the component emits with no rule behind it renders unstyled for them and for us. Nothing
 // else catches it — the component and buttonClasses agree in JS whatever the CSS says.
 describe('the class contract', () => {
-  const css = buttonCss
+  // The variant and emphasis rules live in button-palette.css, shared with IconButton, so
+  // the contract spans both files rather than this component's stylesheet alone.
+  const css = `${buttonCss}\n${paletteCss}`
   const typography = typographyCss
 
   const emitted = new Set<string>()
@@ -243,10 +246,12 @@ describe('the class contract', () => {
     ])
   })
 
+  // A class name ends where a CSS identifier can no longer continue, so `.lmnd-button`
+  // cannot be satisfied by `.lmnd-button--primary` — deleting the base rule has to fail.
   it.each([...emitted].filter((name) => name.startsWith('lmnd-button')).concat(elements))(
-    '%s is defined in button.css',
+    '%s has a rule behind it',
     (name) => {
-      expect(css).toContain(`.${name}`)
+      expect(new RegExp(`\\.${name}(?![\\w-])`).test(css)).toBe(true)
     },
   )
 

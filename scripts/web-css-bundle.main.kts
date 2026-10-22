@@ -58,7 +58,7 @@ fun main() {
         }
     }
     File("web/styles/components.css").writeText(components + "\n")
-    println("✓ web/styles/components.css written (${componentCss.size} components)")
+    println("✓ web/styles/components.css written (${componentCss.size} stylesheets)")
 
     val bundle = buildString {
         appendLine("/* Lemonade Design System — self-contained stylesheet.")
