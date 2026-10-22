@@ -18,6 +18,7 @@ on:
       - 'web/styles/**'
       - 'web/src/*.generated.ts'
       - 'web/llms.txt'
+      - 'web/tokens.json'
       # The component vocabularies web mirrors. Named file by file rather than as whole
       # trees, so a KMP or SwiftUI PR only pays for the Kotlin job when it touches an enum
       # web has to match. Extend this with each component.
