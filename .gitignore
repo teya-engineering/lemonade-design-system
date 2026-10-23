@@ -120,6 +120,8 @@ kmp/.claude/settings.local.json
 swiftui/.claude/settings.local.json
 .build/
 .claude/scheduled_tasks.lock
+.claude/specs/
+.claude/plans/
 
 # Web package
 web/node_modules/

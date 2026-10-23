@@ -148,8 +148,7 @@ fun main() {
     }
     System.err.println(failures.joinToString("\n"))
     System.err.println(
-        "A vocabulary must match on every platform. Add the entry everywhere, or raise the divergence " +
-            "in section 17.5 of .claude/specs/2026-08-21-lemonade-web-support-design.md.",
+        "A vocabulary must match on every platform. Add the entry everywhere, or raise the divergence in review.",
     )
     kotlin.system.exitProcess(1)
 }
