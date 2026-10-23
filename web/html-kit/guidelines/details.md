@@ -53,6 +53,16 @@ this order, and only the main information is required:
 | Status | `lmnd-kit-hero__status` on a `lmnd-kit-tag` — Paid, In process, Declined | The thing has a status |
 | Metadata | `lmnd-kit-hero__meta` in `lmnd-text-body-small-regular`: the facts that place it, joined by ` • ` | There is more worth knowing |
 
+The hero draws its own spacing, so a screen adds none:
+
+| Between | Space |
+| --- | --- |
+| The top bar and the hero's first slot | `spacing-800` |
+| Artwork and main information | `spacing-200` |
+| Main information and status | `spacing-200` |
+| Status, or main information when there is no status, and metadata | `spacing-400` |
+| Below the hero's last slot, its bottom padding | `spacing-400`, before the content's gap to the first card |
+
 A transaction fills main information, status and metadata, with no artwork. A terminal fills artwork, its
 name and status. A struck-through amount, `lmnd-kit-hero__main--struck`, means the record was undone; the tag
 and metadata carry the reason ("Voided", "Voided on 7 Jun").

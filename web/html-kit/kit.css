@@ -2445,12 +2445,12 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--lmnd-spacing-800) var(--lmnd-spacing-400) var(--lmnd-spacing-600);
+  padding: var(--lmnd-spacing-800) var(--lmnd-spacing-400) var(--lmnd-spacing-400);
   text-align: center;
 }
 
 .lmnd-kit-hero__artwork {
-  margin-bottom: var(--lmnd-spacing-400);
+  margin-bottom: var(--lmnd-spacing-200);
 }
 
 .lmnd-kit-hero__main {
@@ -2469,7 +2469,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
 }
 
 .lmnd-kit-hero__meta {
-  margin-top: var(--lmnd-spacing-500);
+  margin-top: var(--lmnd-spacing-400);
   color: var(--lmnd-color-content-secondary);
 }
 
