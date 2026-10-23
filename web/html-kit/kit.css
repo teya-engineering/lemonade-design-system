@@ -1497,6 +1497,100 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   display: none;
 }
 
+/* ---------- Dropdown ---------- */
+
+/* Lemonade's Dropdown: a menu anchored under the button that opens it. It opens like a sheet, by a link to
+   the layer's id, and closes on a tap anywhere outside, which the layer's dismiss link covers. Anchored
+   under a top bar's trailing button by default; --start anchors it under the leading edge. */
+.lmnd-kit-dropdown-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+}
+
+.lmnd-kit-dropdown-layer[id]:not(:target) {
+  display: none;
+}
+
+.lmnd-kit-dropdown-layer__dismiss {
+  position: absolute;
+  inset: 0;
+}
+
+.lmnd-kit-dropdown {
+  position: absolute;
+  top: var(--lmnd-kit-dropdown-top, calc(var(--lmnd-kit-safe-top) + var(--lmnd-size-1400)));
+  right: var(--lmnd-spacing-400);
+  display: flex;
+  flex-direction: column;
+  min-width: 248px; /* literal: Dropdown's minimum width */
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-100);
+  border-radius: var(--lmnd-radius-500);
+  background: var(--lmnd-color-bg-default);
+  box-shadow: var(--lmnd-shadow-md);
+}
+
+.lmnd-kit-dropdown-layer--start .lmnd-kit-dropdown {
+  right: auto;
+  left: var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-dropdown__title {
+  padding: var(--lmnd-spacing-300) var(--lmnd-spacing-300) var(--lmnd-spacing-100);
+  color: var(--lmnd-color-content-secondary);
+  text-transform: uppercase;
+}
+
+.lmnd-kit-dropdown > .lmnd-kit-divider {
+  margin: var(--lmnd-spacing-100) 0;
+}
+
+.lmnd-kit-dropdown__item {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-300);
+  min-height: var(--lmnd-size-1200);
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-300);
+  border-radius: var(--lmnd-radius-400);
+  color: var(--lmnd-color-content-primary);
+  cursor: pointer;
+}
+
+.lmnd-kit-dropdown__item:active,
+.lmnd-kit-dropdown__item:focus-visible {
+  background: var(--lmnd-color-bg-subtle-interactive);
+}
+
+@media (hover: hover) {
+  .lmnd-kit-dropdown__item:hover {
+    background: var(--lmnd-color-bg-subtle-interactive);
+  }
+}
+
+.lmnd-kit-dropdown__item > .lmnd-icon:first-child {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-dropdown__label {
+  flex: 1;
+}
+
+/* The current choice is ticked. */
+.lmnd-kit-dropdown__item > .lmnd-icon:last-child:not(:first-child) {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+.lmnd-kit-dropdown__item--critical,
+.lmnd-kit-dropdown__item--critical > .lmnd-icon:first-child {
+  color: var(--lmnd-color-content-critical);
+}
+
+.lmnd-kit-dropdown__item--disabled {
+  opacity: var(--lmnd-opacity-disabled);
+  pointer-events: none;
+}
+
 .lmnd-kit-sheet {
   display: flex;
   flex-direction: column;
@@ -2869,6 +2963,8 @@ body:has(> .lmnd-kit-device) {
 }
 
 .lmnd-kit-device > .lmnd-kit-scrim,
+.lmnd-kit-device > .lmnd-kit-dropdown-layer,
+.lmnd-kit-device > .lmnd-kit-drawer-layer,
 .lmnd-kit-device > .lmnd-kit-toast-host {
   position: absolute;
 }
@@ -3091,3 +3187,267 @@ body:has(> .lmnd-kit-device) {
 .lmnd-kit-day-chip--glow-warning { --lmnd-kit-day-glow: var(--lmnd-color-bg-caution); }
 .lmnd-kit-day-chip--glow-info { --lmnd-kit-day-glow: var(--lmnd-color-bg-info); }
 .lmnd-kit-day-chip--glow-critical { --lmnd-kit-day-glow: var(--lmnd-color-bg-critical); }
+
+/* Home: a brand fade behind the top bar and the balance (top_bg_fade), scrolling with the content. The bar
+   is clear over it and fills with the page's colour once the screen scrolls. */
+.lmnd-kit-screen--home {
+  background:
+    linear-gradient(to bottom, var(--lmnd-color-bg-brand), var(--lmnd-color-bg-subtle) 440px) local, /* literal: the fade reaches size-2500 past the balance */
+    var(--lmnd-color-bg-subtle);
+}
+
+.lmnd-kit-screen--home .lmnd-kit-top-bar {
+  background: transparent;
+}
+
+@supports (animation-timeline: scroll()) {
+  .lmnd-kit-screen--home .lmnd-kit-top-bar {
+    animation: lmnd-kit-top-bar-fill-subtle linear both;
+    animation-timeline: scroll(nearest);
+    animation-range: 0 var(--lmnd-spacing-200);
+  }
+}
+
+@keyframes lmnd-kit-top-bar-fill-subtle {
+  to { background-color: var(--lmnd-color-bg-subtle); }
+}
+
+.lmnd-kit-top-bar__home {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-top-bar__home > :first-child {
+  margin-right: auto;
+  min-width: 0;
+}
+
+/* IdentifierButton: the app's own button on the brand header, for the company chip, Pay and "+". */
+.lmnd-kit-identifier-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--lmnd-spacing-200);
+  min-height: var(--lmnd-size-1200);
+  padding: var(--lmnd-spacing-100) var(--lmnd-spacing-200) var(--lmnd-spacing-100) var(--lmnd-spacing-100);
+  border-radius: var(--lmnd-radius-350);
+  background: var(--lmnd-color-bg-brand-elevated);
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-border-on-brand-medium);
+  color: var(--lmnd-color-content-on-brand-high);
+  cursor: pointer;
+}
+
+.lmnd-kit-identifier-button__name {
+  overflow: hidden;
+  color: var(--lmnd-color-content-primary);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lmnd-kit-identifier-button > .lmnd-icon:last-child:not(:first-child) {
+  color: var(--lmnd-color-content-secondary);
+}
+
+/* A text action, such as Pay, at least 96px wide; an icon action, such as "+", 48px square. */
+.lmnd-kit-identifier-button--text {
+  min-width: var(--lmnd-size-2400);
+  padding: 0 var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-identifier-button--icon {
+  min-width: var(--lmnd-size-1200);
+  padding: 0;
+}
+
+/* The balance's eye: a 40px brand circle with no border. */
+.lmnd-kit-identifier-button--circle {
+  width: var(--lmnd-size-1000);
+  min-height: var(--lmnd-size-1000);
+  height: var(--lmnd-size-1000);
+  padding: 0;
+  border-radius: var(--lmnd-radius-full);
+  box-shadow: none;
+  color: var(--lmnd-color-content-primary);
+}
+
+/* The balance header: spacing-600 under the top bar (the content already pads spacing-400). */
+.lmnd-kit-balance {
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-balance__label {
+  color: var(--lmnd-color-content-on-brand-low);
+}
+
+.lmnd-kit-balance__amount {
+  color: var(--lmnd-color-content-on-brand-high);
+}
+
+.lmnd-kit-balance__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--lmnd-spacing-200);
+  margin-top: var(--lmnd-spacing-300);
+}
+
+.lmnd-kit-balance__actions > .lmnd-button {
+  min-width: var(--lmnd-size-2400);
+}
+
+/* A widget's trend: a rising line in the brand colour over a fading fill. The shape is illustrative. */
+.lmnd-kit-sparkline {
+  position: relative;
+  height: var(--lmnd-size-1600);
+  margin: 0 var(--lmnd-spacing-200) var(--lmnd-spacing-300);
+}
+
+.lmnd-kit-sparkline::before,
+.lmnd-kit-sparkline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0 78%, 14% 64%, 28% 70%, 42% 46%, 56% 52%, 70% 30%, 84% 36%, 100% 8%, 100% 100%, 0 100%);
+}
+
+.lmnd-kit-sparkline::before {
+  background: var(--lmnd-color-border-brand);
+}
+
+.lmnd-kit-sparkline::after {
+  top: var(--lmnd-size-50);
+  background: linear-gradient(to bottom, var(--lmnd-color-bg-brand), var(--lmnd-color-bg-default));
+}
+
+/* A small pill at a widget's foot, such as "More details ›". */
+.lmnd-kit-widget__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-50);
+  padding: var(--lmnd-spacing-50) var(--lmnd-spacing-200);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-subtle);
+  color: var(--lmnd-color-content-primary);
+}
+
+.lmnd-kit-widget__pill > .lmnd-icon {
+  width: var(--lmnd-size-300);
+  height: var(--lmnd-size-300);
+}
+
+/* ContentCardCarousel's card: artwork, a title, a line and a call to action, with a dismiss. */
+.lmnd-kit-content-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-300);
+  padding: var(--lmnd-spacing-300);
+}
+
+.lmnd-kit-content-card__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  padding-right: var(--lmnd-spacing-600);
+}
+
+.lmnd-kit-content-card__text > :nth-child(2) {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-content-card__cta {
+  color: var(--lmnd-color-content-brand);
+}
+
+.lmnd-kit-content-card__dismiss {
+  position: absolute;
+  top: var(--lmnd-spacing-100);
+  right: var(--lmnd-spacing-100);
+  opacity: 0.6; /* literal: the app's 60% */
+}
+
+/* A carousel's page dots. */
+.lmnd-kit-page-indicator {
+  display: flex;
+  justify-content: center;
+  gap: var(--lmnd-spacing-100);
+  margin-top: calc(var(--lmnd-spacing-200) - var(--lmnd-spacing-400));
+}
+
+.lmnd-kit-page-indicator > span {
+  width: var(--lmnd-size-150);
+  height: var(--lmnd-size-150);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-content-tertiary);
+}
+
+.lmnd-kit-page-indicator > [aria-current] {
+  background: var(--lmnd-color-content-primary);
+}
+
+.lmnd-kit-card--brand {
+  background: var(--lmnd-color-bg-brand);
+}
+
+/* The side menu: a drawer from the left, at most 360px and 90% of the screen, over a scrim. It opens like a
+   sheet, by a link to its id. */
+.lmnd-kit-drawer-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: color-mix(in srgb, var(--lmnd-color-bg-always-dark) 32%, transparent); /* literal: M3 scrim alpha */
+}
+
+.lmnd-kit-drawer-layer[id]:not(:target) {
+  display: none;
+}
+
+.lmnd-kit-drawer-layer__dismiss {
+  position: absolute;
+  inset: 0;
+}
+
+.lmnd-kit-drawer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-400);
+  width: min(90%, 360px); /* literal: DrawerContainer's cap */
+  padding: calc(var(--lmnd-kit-safe-top) + var(--lmnd-spacing-200)) var(--lmnd-spacing-400) calc(var(--lmnd-spacing-800) + var(--lmnd-kit-safe-bottom));
+  overflow-y: auto;
+  scrollbar-width: none;
+  border-radius: 0 var(--lmnd-radius-800) var(--lmnd-radius-800) 0;
+  background: var(--lmnd-color-bg-subtle);
+  box-shadow: var(--lmnd-shadow-lg);
+}
+
+.lmnd-kit-drawer > * {
+  flex-shrink: 0;
+}
+
+.lmnd-kit-drawer__identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  margin-bottom: var(--lmnd-spacing-400);
+  text-align: center;
+}
+
+.lmnd-kit-drawer__identity > :last-child {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-drawer__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-800);
+  padding: var(--lmnd-spacing-400);
+}

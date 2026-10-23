@@ -25,8 +25,7 @@ when a change needs it.
 - **Trailing actions on the Settlements tab:**
   1. **View mode menu.** Its glyph shows the current mode: `calendar-day-timeline` for Daily report, `list`
      for List. Its label is "More options". It opens a menu with one section, "View mode", holding "Daily
-     report" and "List", the current one ticked. The kit has no menu component, so the baselines link
-     the button to the other mode.
+     report" and "List", the current one ticked (`#view-mode-menu` in both baselines).
   2. **Export** (`download`, "Export settlements"), only with permission to view reports. It opens the
      "Export report" picker: "Generate report" ("Download a PDF including a breakdown of your
      settlement") or "Settlement List CSV" ("Download all transactions included in the settlement").

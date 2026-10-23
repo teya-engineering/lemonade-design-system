@@ -54,7 +54,7 @@
   <h2 class="lmnd-text-body-xsmall-overline">Inputs</h2>
   <a href="#text-field">Text field</a><a href="#select-field">Select field</a><a href="#search">Search field</a><a href="#pin">Pin code</a><a href="#controls">Switch, checkbox, radio</a><a href="#box-selection">Box selection</a><a href="#segmented">Segmented control</a><a href="#tabs">Tabs</a>
   <h2 class="lmnd-text-body-xsmall-overline">Navigation and overlays</h2>
-  <a href="#top-bar">Top bar</a><a href="#tab-bar">Bottom tab bar</a><a href="#sheet">Bottom sheet</a><a href="#dialog">Dialog</a><a href="#toast">Toast</a><a href="#tooltip">Tooltip</a>
+  <a href="#top-bar">Top bar</a><a href="#tab-bar">Bottom tab bar</a><a href="#dropdown">Dropdown</a><a href="#sheet">Bottom sheet</a><a href="#dialog">Dialog</a><a href="#toast">Toast</a><a href="#tooltip">Tooltip</a>
 </nav>
 
 <main class="g-main">
@@ -808,6 +808,20 @@
     <a href="#" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="sparkles-soft" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Teya AI</span></a>
   </div>
 </nav>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="dropdown">
+    <h2 class="lmnd-text-heading-small">Dropdown</h2>
+    <p class="lmnd-text-body-small-regular">A menu under the button that opens it, such as a top bar's "+" or a view-mode switch. On a screen it is a <code>lmnd-kit-dropdown-layer</code> with an id, after the <code>lmnd-kit-screen</code>, opened by a link to <code>#its-id</code> like a sheet; the layer's dismiss link closes it. It sits under the top bar's trailing button, or under the leading edge with <code>lmnd-kit-dropdown-layer--start</code>. Sections get an upper-case title and a divider between them; the current choice is ticked with <code>check-small</code>; a destructive item takes <code>lmnd-kit-dropdown__item--critical</code>.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<div class="lmnd-kit-dropdown" role="menu" style="position: static">
+  <p class="lmnd-kit-dropdown__title lmnd-text-body-xsmall-semibold">View mode</p>
+  <a href="#" class="lmnd-kit-dropdown__item" role="menuitemradio" aria-checked="true"><span class="lmnd-icon" data-icon="calendar-day-timeline" aria-hidden="true"></span><span class="lmnd-kit-dropdown__label lmnd-text-body-medium-regular">Daily report</span><span class="lmnd-icon" data-icon="check-small" aria-hidden="true"></span></a>
+  <a href="#" class="lmnd-kit-dropdown__item" role="menuitemradio" aria-checked="false"><span class="lmnd-icon" data-icon="list" aria-hidden="true"></span><span class="lmnd-kit-dropdown__label lmnd-text-body-medium-regular">List</span></a>
+  <hr class="lmnd-kit-divider">
+  <a href="#" class="lmnd-kit-dropdown__item lmnd-kit-dropdown__item--critical" role="menuitem"><span class="lmnd-icon" data-icon="trash" aria-hidden="true"></span><span class="lmnd-kit-dropdown__label lmnd-text-body-medium-regular">Remove</span></a>
+</div>
     </div></div>
   </section>
 

@@ -21,7 +21,7 @@
       <div class="lmnd-kit-top-bar__compact">
         <div class="lmnd-kit-top-bar__large"><h1 class="lmnd-kit-top-bar__large-title lmnd-text-heading-large">Money</h1></div>
         <div class="lmnd-kit-top-bar__trailing">
-          <a href="money-settlements-list.html" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="More options"><span class="lmnd-icon" data-icon="calendar-day-timeline"></span></a>
+          <a href="#view-mode-menu" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="More options"><span class="lmnd-icon" data-icon="calendar-day-timeline"></span></a>
           <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Export settlements"><span class="lmnd-icon" data-icon="download"></span></button>
         </div>
       </div>
@@ -158,12 +158,21 @@
 
     <nav class="lmnd-kit-tab-bar">
       <div class="lmnd-kit-tab-bar__bar">
-        <a href="#" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="brand-teya-symbol" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Home</span></a>
+        <a href="home.html" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="brand-teya-symbol" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Home</span></a>
         <a href="../examples/sales.html" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="chart-stats" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Sales</span></a>
         <a href="#" class="lmnd-kit-tab-bar__item" aria-current="page"><span class="lmnd-icon" data-icon="wallet-solid" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Money</span></a>
         <a href="#" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="sparkles-soft" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Teya AI</span></a>
       </div>
     </nav>
+  </div>
+
+  <div class="lmnd-kit-dropdown-layer" id="view-mode-menu">
+    <a href="#" class="lmnd-kit-dropdown-layer__dismiss" aria-label="Close menu"></a>
+    <div class="lmnd-kit-dropdown" role="menu">
+      <p class="lmnd-kit-dropdown__title lmnd-text-body-xsmall-semibold">View mode</p>
+      <a href="#" class="lmnd-kit-dropdown__item" role="menuitemradio" aria-checked="true"><span class="lmnd-icon" data-icon="calendar-day-timeline" aria-hidden="true"></span><span class="lmnd-kit-dropdown__label lmnd-text-body-medium-regular">Daily report</span><span class="lmnd-icon" data-icon="check-small" aria-hidden="true"></span></a>
+      <a href="money-settlements-list.html" class="lmnd-kit-dropdown__item" role="menuitemradio" aria-checked="false"><span class="lmnd-icon" data-icon="list" aria-hidden="true"></span><span class="lmnd-kit-dropdown__label lmnd-text-body-medium-regular">List</span></a>
+    </div>
   </div>
 </div>
 </body>

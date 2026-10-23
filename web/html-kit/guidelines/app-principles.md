@@ -55,7 +55,7 @@ the flow's root closes with `Close`.
 Done, never both kinds at once.
 
 Past two, one action may stay as a button and the rest collapse into a menu behind an
-`ellipsis-horizontal` icon button. The one that stays out is the action the screen exists to support;
+`ellipsis-horizontal` icon button. A menu is a `lmnd-kit-dropdown` (`gallery.html`). The one that stays out is the action the screen exists to support;
 where two could each claim that, neither does and all of them go in the menu. A single trailing action is
 always a button, never a menu of one. A destructive action stays out of the menu only when removing
 something is what the screen is for.

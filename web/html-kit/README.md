@@ -36,7 +36,7 @@ instead.
 | `badges/` | The Teya app's transaction status badges, light and `-dark`, copied from its `shared-assets/source/vectors/` with `_badge` dropped and `_` as `-`. Copy them again when the app's change | part of `lemonade-kit.css` |
 | `gallery.html` | Every component with its markup | `gallery.html` |
 | `examples/` | Settings, Sales (with a filter sheet), Transactions (with a store picker), Card machines, Recipients, Transaction details, Add recipient | `examples/` |
-| `screens/` | The app's own screens as they are in production, faults included, and how they work: Money › Settlements (Daily report and List) and Settlement details, plus the app's site map. Baselines for a change to an existing screen | `screens/` |
+| `screens/` | The app's own screens as they are in production, faults included, and how they work: Home with its side menu, Money › Settlements (Daily report and List) and Settlement details, plus the app's site map. Baselines for a change to an existing screen | `screens/` |
 | `guidelines/` | The rules a prototype follows: Lemonade's `LDS-` rules in kit markup, and the kit's own `LHK-` rules | `guidelines/` |
 | `SKILL.md` | Instructions for an AI session | `SKILL.md` |
 | `share/README.md` | Instructions for the person who receives the kit | `README.md` |
