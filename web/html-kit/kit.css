@@ -108,6 +108,15 @@ h6 {
   color: var(--lmnd-color-content-primary);
 }
 
+/* A menu's footer (APP-MENU-FOOTER): the app version and the legal entity, centred under the last card. */
+.lmnd-kit-menu-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--lmnd-color-content-secondary);
+  text-align: center;
+}
+
 /* A list group (the Teya app's SectionGroup under a SubHeader): a header placing the group, such as a day
    and its total, over the group's card. Groups sit spacing-400 apart like any card. */
 .lmnd-kit-list-group {
@@ -1483,7 +1492,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   max-height: calc(100% - var(--lmnd-spacing-1800));
   padding-bottom: var(--lmnd-kit-safe-bottom);
   overflow-y: auto;
-  border-radius: var(--lmnd-radius-500) var(--lmnd-radius-500) 0 0;
+  border-radius: var(--lmnd-radius-900) var(--lmnd-radius-900) 0 0;
   background: var(--lmnd-kit-sheet-bg);
   --lmnd-kit-sheet-bg: var(--lmnd-color-bg-default);
 }

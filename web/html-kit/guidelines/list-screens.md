@@ -1,7 +1,7 @@
 # List screens
 
-Rules for the Teya app's list screens: the feeds of money moving, the lists of things a merchant has, and
-the sheets that pick from a list. They follow the app's `ResourceLazyListContainer` and its selector
+Rules for the Teya app's list screens: the feeds of money moving, the lists of things a merchant has, the
+menus, and the sheets that pick from a list. They follow the app's `ResourceLazyListContainer` and its selector
 template, so they carry the app's prefix, `APP-`. A list's filters are `APP-FILTER-BAR`, its empty state
 `APP-SCREEN-EMPTY`, its first load `APP-LOADING`, and the gaps between its cards `APP-SPACING-RHYTHM`.
 
@@ -10,7 +10,7 @@ template, so they carry the app's prefix, `APP-`. A list's filters are `APP-FILT
 | `examples/transactions.html` | Feed | Search, filter bar, day groups with totals, the next page loading under a spinner, and a multi-select picker sheet behind the Store chip |
 | `examples/card-machines.html` | Resource list | A segmented control, groups by state, the add action in the top bar |
 | `examples/recipients.html` | Resource list | Search and the add action over one card sorted by name |
-| `examples/settings.html` | Menu | Sections of plain-icon rows |
+| `examples/settings.html` | Menu | The signed-in person, sections of plain-icon rows, Log out and the version footer |
 
 ```html
 <div class="lmnd-kit-device">
@@ -36,7 +36,7 @@ template, so they carry the app's prefix, `APP-`. A list's filters are `APP-FILT
 | --- | --- | --- |
 | Records of money moving, newest first — sales, refunds, payment links, payouts, account activity | Feed | `APP-FEED-*` |
 | Things the merchant has or works with — card machines, stores, team members, recipients | Resource list | `APP-RESOURCE-*` |
-| Places to go — settings, a menu of tools | Menu | `settings.html`: a `lmnd-kit-section` per group, plain icons (`LDS-LIST-LEADING-SLOT`) |
+| Places to go — settings, a menu of tools | Menu | `APP-MENU-*` |
 | Options to choose from, in a sheet | Picker sheet | `APP-PICKER-*` |
 
 **Why.** Each kind answers a different question. A feed answers "what happened, and when"; a resource
@@ -227,6 +227,90 @@ It is never a row at the top or end of the list, a footer button, or a button be
 it is always one tap away.
 
 **Exceptions.** None.
+
+## `APP-MENU-SECTIONS` · A menu is sections of one card each
+
+**Kind.** Rule.
+
+**Rule.** A menu groups its rows by who or what they are about — Personal, Company — and each group is a
+`lmnd-kit-section`: a `lmnd-kit-section__title` in `lmnd-text-heading-xsmall`, then one `lmnd-kit-card` of its rows.
+The sections are spaced by `APP-SPACING-RHYTHM`, which `lmnd-kit-content` draws. A menu has no search, no
+filters and no add action.
+
+```html
+<section class="lmnd-kit-section">
+  <h2 class="lmnd-kit-section__title lmnd-text-heading-xsmall">Company</h2>
+  <div class="lmnd-kit-card">…</div>
+</section>
+```
+
+**Why.** A heading per group tells the merchant where to look before they read a row, and one card per
+group keeps the rows that belong together inside one edge.
+
+**Exceptions.** The signed-in person's card and the Log out card stand outside the sections
+(`APP-MENU-PROFILE`, `APP-MENU-LOG-OUT`).
+
+## `APP-MENU-ROWS` · A menu row: a plain icon, where it goes, a chevron
+
+**Kind.** Rule.
+
+**Rule.** Every row in a menu is a `lmnd-kit-list-item`:
+
+| Slot | Holds |
+| --- | --- |
+| Leading | A plain `lmnd-icon` for the place, never a `lmnd-kit-symbol` (`LDS-LIST-LEADING-SLOT`) |
+| Label | The place's name: "Card machines" |
+| Support | What is inside it: "View your card machines and terminal IDs". Optional, but every row in a card has one or none does |
+| Trailing | A chevron for a row that opens a screen, as an `<a>`. A switch for a setting that changes in place, as a `<label>`, with no chevron |
+
+**Why.** A menu is read for its labels. Plain icons help the eye down the list without competing with
+them, and the trailing slot says before the tap whether the row goes somewhere or changes something.
+
+**Exceptions.** None.
+
+## `APP-MENU-PROFILE` · The signed-in person comes first
+
+**Kind.** Rule.
+
+**Rule.** A settings menu opens with one card holding the signed-in person: a `lmnd-kit-symbol--large
+lmnd-kit-symbol--rounded` with their initials, their name as the label, their email as the support, and a
+chevron to their profile.
+
+**Why.** It answers "whose account is this" before anything is changed, which matters to a merchant who
+shares a device or runs more than one business.
+
+**Exceptions.** A menu that isn't about the account, such as a menu of tools, has no profile card.
+
+## `APP-MENU-LOG-OUT` · Log out is last, in a card of its own
+
+**Kind.** Rule.
+
+**Rule.** Log out is the last card: one row with the `log-out` icon and the label "Log out", in the
+default colours rather than critical, and with no chevron. Tapping it asks first, as a confirmation sheet.
+
+**Why.** On its own at the end it can't be hit while reaching for a neighbour. It ends a session, which
+the merchant can start again, so it is not drawn as destructive.
+
+**Exceptions.** None.
+
+## `APP-MENU-FOOTER` · The version closes the menu
+
+**Kind.** Rule.
+
+**Rule.** Under the last card, a `lmnd-kit-menu-footer` gives the app's version and the legal entity, each a
+`lmnd-text-body-small-regular` line, centred, in `content-secondary`:
+
+```html
+<footer class="lmnd-kit-menu-footer">
+  <p class="lmnd-text-body-small-regular">Version 2.51.8 (456)</p>
+  <p class="lmnd-text-body-small-regular">Teya Services Ltd.</p>
+</footer>
+```
+
+**Why.** Support asks for the version, and the legal entity is who the merchant has the contract with.
+Both are found by scrolling to the end, out of the way of everything else.
+
+**Exceptions.** A menu that isn't the settings menu has no footer.
 
 ## `APP-PICKER-OPTIONS` · Up to ten options in one card, more get search
 
