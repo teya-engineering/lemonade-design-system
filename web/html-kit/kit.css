@@ -2993,6 +2993,16 @@ body:has(> .lmnd-kit-device) {
 
 /* ---------- The Teya app's own components, used by its screens in screens/ ---------- */
 
+/* A segmented control in a card header keeps its width; the heading gives way. */
+.lmnd-kit-card__header > .lmnd-kit-segmented {
+  flex-shrink: 0;
+  width: auto;
+}
+
+.lmnd-kit-card__header > .lmnd-kit-segmented > .lmnd-kit-segmented__item {
+  flex: none;
+}
+
 /* A card header's trailing text, such as a "3 of 8" counter. */
 .lmnd-kit-card__trailing {
   flex-shrink: 0;
@@ -3469,4 +3479,152 @@ body:has(> .lmnd-kit-device) {
   flex-direction: column;
   gap: var(--lmnd-spacing-800);
   padding: var(--lmnd-spacing-400);
+}
+
+/* ---------- Sales Overview's widgets ---------- */
+
+/* A change against the previous period, such as "£120.00 vs Last Thursday": up in brand, down in critical. */
+.lmnd-kit-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-50);
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-delta > .lmnd-icon {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+  color: var(--lmnd-color-content-brand);
+}
+
+.lmnd-kit-delta--down > .lmnd-icon {
+  color: var(--lmnd-color-content-critical);
+}
+
+/* Stat cells side by side, such as Card / Cash / Meal cards: a label over a value. */
+.lmnd-kit-stats {
+  display: flex;
+  gap: var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-stats > * {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.lmnd-kit-stats__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-50);
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-stats__label > .lmnd-icon {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+/* A bar chart: one bar, or a previous and a current bar, per group. Each bar's height is its --lmnd-kit-value,
+   a percentage of the tallest. */
+.lmnd-kit-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--lmnd-spacing-200);
+  height: var(--lmnd-size-2400);
+}
+
+.lmnd-kit-bars__group {
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  gap: var(--lmnd-spacing-50);
+  height: 100%;
+}
+
+.lmnd-kit-bars__bar {
+  flex: 1;
+  height: var(--lmnd-kit-value, 0%);
+  min-height: var(--lmnd-size-50);
+  border-radius: var(--lmnd-radius-100) var(--lmnd-radius-100) 0 0;
+  background: var(--lmnd-color-bg-brand);
+}
+
+.lmnd-kit-bars__bar--previous {
+  background: var(--lmnd-color-bg-neutral-subtle);
+}
+
+.lmnd-kit-bars__axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--lmnd-spacing-100);
+  color: var(--lmnd-color-content-tertiary);
+}
+
+/* A chart's key: a swatch before each series' name. */
+.lmnd-kit-legend {
+  display: flex;
+  justify-content: center;
+  gap: var(--lmnd-spacing-400);
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-100);
+}
+
+.lmnd-kit-legend > span::before {
+  content: "";
+  width: var(--lmnd-size-200);
+  height: var(--lmnd-size-200);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-brand);
+}
+
+.lmnd-kit-legend > .lmnd-kit-legend__previous::before {
+  background: var(--lmnd-color-bg-neutral-subtle);
+}
+
+/* A small table on the subtle colour, such as the VAT summary's rates. */
+.lmnd-kit-table {
+  width: 100%;
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-300);
+  border-collapse: separate;
+  border-radius: var(--lmnd-radius-400);
+  background: var(--lmnd-color-bg-subtle);
+  text-align: end;
+}
+
+.lmnd-kit-table th {
+  padding: var(--lmnd-spacing-100) 0;
+  color: var(--lmnd-color-content-secondary);
+  font-weight: inherit;
+}
+
+.lmnd-kit-table td {
+  padding: var(--lmnd-spacing-100) 0;
+}
+
+.lmnd-kit-table :is(th, td):first-child {
+  text-align: start;
+}
+
+/* A share of a whole: a brand bar on the subtle colour. */
+.lmnd-kit-progress {
+  height: var(--lmnd-size-200);
+  overflow: hidden;
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-subtle);
+}
+
+.lmnd-kit-progress::before {
+  content: "";
+  display: block;
+  width: var(--lmnd-kit-value, 0%);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--lmnd-color-bg-brand);
 }

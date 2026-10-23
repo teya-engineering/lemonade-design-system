@@ -12,6 +12,7 @@ archetype.
 | Screen | Description | Baselines |
 | --- | --- | --- |
 | Home, its "+" menu and the side menu | `home.md` | `home.html` |
+| Sales: Overview, Transactions, Payment links, and Transaction details | `sales.md` | `sales-overview.html`, `sales-transactions.html`, `sales-payment-links.html`, `transaction-details.html` |
 | Money › Settlements, and Settlement details | `settlements.md` | `money-settlements.html` (Daily report), `money-settlements-list.html` (List, with its filter sheets), `settlement-details.html` |
 
 A screen not listed here has no baseline. Build it from the closest example and the rules, and say in the

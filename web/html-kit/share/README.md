@@ -40,7 +40,7 @@ the screen back as one file.
 | --- | --- |
 | `lemonade-kit.css` | Everything: tokens, type scale, components, Figtree, icons, flags and logos. Generated; don't edit it |
 | `gallery.html` | Every component with its markup |
-| `screens/` | The app's own screens as they are today, to change: Home and its side menu, Money › Settlements and Settlement details. `screens/index.md` has the site map |
+| `screens/` | The app's own screens as they are today, to change: Home and its side menu, Sales and Transaction details, Money › Settlements and Settlement details. `screens/index.md` has the site map |
 | `examples/` | Screens to start from: Settings, Sales (with a filter sheet), Transactions (with a store picker), Card machines, Recipients, Transaction details, Add recipient |
 | `guidelines/` | The rules a prototype follows |
 | `llms.txt` | Every token and what it is for |
