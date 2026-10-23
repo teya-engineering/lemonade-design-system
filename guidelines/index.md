@@ -9,11 +9,12 @@ which of two buttons is the secondary, which colour layer to reach for.
 
 | File | Rules |
 | --- | --- |
-| [cards.md](cards.md) | `LDS-CARD-GROUPED-ITEMS`, `LDS-CARD-NO-HANDROLL`, `LDS-CARD-PADDING` |
+| [cards.md](cards.md) | `LDS-CARD-GROUPED-ITEMS`, `LDS-CARD-NO-HANDROLL`, `LDS-CARD-SURFACE`, `LDS-CARD-PADDING` |
 | [lists.md](lists.md) | `LDS-LIST-NO-HANDROLL`, `LDS-LIST-LEADING-SLOT` |
 | [buttons.md](buttons.md) | `LDS-BUTTON-PAIR`, `LDS-BUTTON-EXPLICIT-TYPE` |
 | [colour.md](colour.md) | `LDS-COLOR-SEMANTIC` |
 | [sheets.md](sheets.md) | `LDS-SHEET-CHROME` |
+| [top-bar.md](top-bar.md) | `LDS-TOP-BAR-ACTIONS` |
 | [text.md](text.md) | `LDS-TEXT-INTRO` |
 
 ## How to read a rule

@@ -30,6 +30,26 @@ of those change in the design system.
 **Do / don't.** `LemonadeUi.Card { … }`. Not `Surface(shape = shapes.radius400, color =
 background.bgElevated)`, and not a `.background(bgElevated).clip(radius400)` modifier chain.
 
+## `LDS-CARD-SURFACE` · Cards sit on a subtle surface
+
+**Rule.** A screen or sheet that holds cards uses the subtle background — `colors.background.bgSubtle` for
+the screen, `LemonadeBottomSheetVariant.Subtle` for a sheet — and its cards use
+`LemonadeCardBackground.Default`, the component default.
+
+**Why.** A card stands out by being lighter than what is behind it. A default card on a default screen
+needs a grey fill to show at all, and a grey card reads as a disabled or secondary area rather than as
+content.
+
+**Exceptions.**
+
+- A screen or sheet with no cards — a form of text fields, a single message — may use the default
+  background.
+- `LemonadeCardBackground.Elevated` and `Subtle` are for a card inside a card or inside a coloured area,
+  never for a card on the screen.
+
+**Do / don't.** A `bgSubtle` screen holding `LemonadeUi.Card { … }` with the default background. Not a
+`bgDefault` screen holding `Card(background = LemonadeCardBackground.Elevated)`.
+
 ## `LDS-CARD-PADDING` · Padding follows what the card holds
 
 **Rule.** A card of list items uses `None`, which is the component default. A card of custom content
