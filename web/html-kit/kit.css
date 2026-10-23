@@ -3232,6 +3232,7 @@ body:has(> .lmnd-kit-device) {
   gap: var(--lmnd-spacing-200);
   min-height: var(--lmnd-size-1200);
   padding: var(--lmnd-spacing-100) var(--lmnd-spacing-200) var(--lmnd-spacing-100) var(--lmnd-spacing-100);
+  border: 0;
   border-radius: var(--lmnd-radius-350);
   background: var(--lmnd-color-bg-brand-elevated);
   box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-border-on-brand-medium);
@@ -3261,14 +3262,13 @@ body:has(> .lmnd-kit-device) {
   padding: 0;
 }
 
-/* The balance's eye: a 40px brand circle with no border. */
+/* The balance's eye: a 40px brand circle, with the chip's hairline. */
 .lmnd-kit-identifier-button--circle {
   width: var(--lmnd-size-1000);
   min-height: var(--lmnd-size-1000);
   height: var(--lmnd-size-1000);
   padding: 0;
   border-radius: var(--lmnd-radius-full);
-  box-shadow: none;
   color: var(--lmnd-color-content-primary);
 }
 
@@ -3298,11 +3298,18 @@ body:has(> .lmnd-kit-device) {
   min-width: var(--lmnd-size-2400);
 }
 
-/* A widget's trend: a rising line in the brand colour over a fading fill. The shape is illustrative. */
+/* A widget's trend (Mini Widget's Chart, 140 x 76): a brand line over an area that fades out at its foot,
+   at 20%. It sits at the top of the widget's bottom slot, 4px under the figure, and is cut by the widget. */
+.lmnd-kit-widget__bottom:has(> .lmnd-kit-sparkline) {
+  justify-content: flex-start;
+  padding-bottom: 0;
+}
+
 .lmnd-kit-sparkline {
   position: relative;
-  height: var(--lmnd-size-1600);
-  margin: 0 var(--lmnd-spacing-200) var(--lmnd-spacing-300);
+  flex-shrink: 0;
+  width: 140px; /* literal: the chart's size in the widget */
+  height: 76px; /* literal */
 }
 
 .lmnd-kit-sparkline::before,
@@ -3310,32 +3317,44 @@ body:has(> .lmnd-kit-device) {
   content: "";
   position: absolute;
   inset: 0;
-  clip-path: polygon(0 78%, 14% 64%, 28% 70%, 42% 46%, 56% 52%, 70% 30%, 84% 36%, 100% 8%, 100% 100%, 0 100%);
 }
 
 .lmnd-kit-sparkline::before {
-  background: var(--lmnd-color-border-brand);
+  background: linear-gradient(to bottom, var(--lmnd-color-bg-brand) 59px, transparent 76px); /* literal: the chart's gradient stops */
+  opacity: 0.2; /* literal */
+  clip-path: path("M137.234 11.5351L140 8.86676V76.0001H0V70.8964L3.73768 68.7646C4.69205 68.2202 5.75006 67.8823 6.84326 67.7726C9.08564 67.5477 11.1232 66.3698 12.4372 64.5389L14.3489 61.875C15.1403 60.7722 16.1993 59.8889 17.4262 59.3083L19.7629 58.2024C20.4118 57.8953 21.0165 57.5022 21.5605 57.0338L25.9259 53.2751L30.0599 48.8836C30.7544 48.1459 31.5827 47.5468 32.5007 47.1182L35.5798 45.6807C36.0563 45.4583 36.5097 45.1894 36.9334 44.878L40.5779 42.1994C41.1773 41.7588 41.8353 41.404 42.5328 41.1452L46.6667 39.6114L50.8002 38.1377C51.4979 37.8889 52.2268 37.7382 52.966 37.69L57.037 37.4244L61.1969 37.2344C61.8777 37.2033 62.5516 37.0853 63.2025 36.8834L66.6656 35.8089C67.159 35.6558 67.666 35.5509 68.1796 35.4956L70.4186 35.2544C71.8418 35.1012 73.1978 34.5688 74.3452 33.713L76.1109 32.3959C77.2028 31.5815 78.4903 31.0697 79.8433 30.9122C81.8438 30.6794 83.6748 29.6758 84.9472 28.1146L85.8578 26.9975C87.3134 25.2115 89.4685 24.1399 91.771 24.057L91.9288 24.0513C92.858 24.0178 93.7743 23.8227 94.6365 23.4745L97.3992 22.3588C98.1397 22.0598 98.9269 21.8932 99.7249 21.8665L101.241 21.8158C102.763 21.7649 104.194 22.5375 104.986 23.8377C106.699 26.6471 110.825 26.5042 112.339 23.5831L113.206 21.9106C113.767 20.8279 114.686 19.9728 115.806 19.4903L118.365 18.3879C118.959 18.1319 119.52 17.8048 120.035 17.4138L123.811 14.5488C124.232 14.2291 124.684 13.952 125.16 13.7216L127.545 12.5669C128.867 11.9268 130.404 11.9024 131.745 12.5002C133.6 13.3269 135.772 12.9451 137.234 11.5351Z");
 }
 
 .lmnd-kit-sparkline::after {
-  top: var(--lmnd-size-50);
-  background: linear-gradient(to bottom, var(--lmnd-color-bg-brand), var(--lmnd-color-bg-default));
+  background: var(--lmnd-color-border-brand);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 76'%3E%3Cpath d='M140 8.86676L137.233 11.5372C135.772 12.9476 133.6 13.3295 131.745 12.5024C130.404 11.9043 128.867 11.9287 127.545 12.5691L125.16 13.7244C124.684 13.9551 124.232 14.2324 123.811 14.5522L120.035 17.4188C119.52 17.8101 118.959 18.1374 118.365 18.3936L115.806 19.4967C114.686 19.9794 113.768 20.8348 113.207 21.9176L112.339 23.5917C110.825 26.5138 106.698 26.6566 104.986 23.8462C104.194 22.5456 102.762 21.7727 101.24 21.8236L99.7251 21.8743C98.9269 21.901 98.1396 22.0677 97.3991 22.3669L94.6371 23.483C93.7745 23.8315 92.8578 24.0269 91.9281 24.0604L91.7723 24.066C89.469 24.149 87.3134 25.2214 85.8578 27.0083L84.9465 28.1271C83.6745 29.6885 81.8438 30.6924 79.8434 30.9254C78.4903 31.0829 77.2029 31.595 76.1112 32.4098L74.3456 33.7275C73.198 34.5841 71.8415 35.1168 70.4177 35.2703L68.1801 35.5114C67.6662 35.5668 67.1588 35.6718 66.6652 35.8251L63.203 36.9C62.5518 37.1021 61.8775 37.2202 61.1963 37.2513L57.037 37.4415L52.9666 37.7072C52.227 37.7555 51.4977 37.9063 50.7997 38.1553L46.6667 39.6298L42.5331 41.1643C41.8354 41.4234 41.1773 41.7785 40.5778 42.2194L36.9335 44.8994C36.5097 45.2111 36.0563 45.4802 35.5797 45.7028L32.5009 47.141C31.5827 47.5699 30.7544 48.1693 30.06 48.9074L25.9259 53.3016L21.5605 57.0625C21.0165 57.5312 20.4118 57.9245 19.7628 58.2319L17.4262 59.3384C16.1993 59.9194 15.1404 60.803 14.3493 61.9061L12.4362 64.5734C11.1229 66.4046 9.08566 67.5827 6.84347 67.8078C5.75014 67.9175 4.69205 68.2557 3.7377 68.8003L0 70.9334' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
 
-/* A small pill at a widget's foot, such as "More details ›". */
-.lmnd-kit-widget__pill {
-  display: inline-flex;
+/* A widget's footer action, such as "More details ›": a full-width bar at the foot of the bottom slot,
+   spacing-200 from the widget's edges. */
+.lmnd-kit-widget__bottom:has(> .lmnd-kit-widget__footer) {
+  padding: 0;
+}
+
+.lmnd-kit-widget__footer {
+  display: flex;
   align-items: center;
-  gap: var(--lmnd-spacing-50);
-  padding: var(--lmnd-spacing-50) var(--lmnd-spacing-200);
-  border-radius: var(--lmnd-radius-full);
+  gap: var(--lmnd-spacing-200);
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-200) var(--lmnd-spacing-200) var(--lmnd-spacing-300);
+  border-radius: var(--lmnd-radius-400);
   background: var(--lmnd-color-bg-subtle);
   color: var(--lmnd-color-content-primary);
 }
 
-.lmnd-kit-widget__pill > .lmnd-icon {
-  width: var(--lmnd-size-300);
-  height: var(--lmnd-size-300);
+.lmnd-kit-widget__footer > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.lmnd-kit-widget__footer > .lmnd-icon {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+  color: var(--lmnd-color-content-secondary);
 }
 
 /* ContentCardCarousel's card: artwork, a title, a line and a call to action, with a dismiss. */

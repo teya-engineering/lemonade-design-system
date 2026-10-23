@@ -9,7 +9,7 @@ the rest of the company's setup.
 
 | Baseline | Shows |
 | --- | --- |
-| `home.html` | Home for a merchant with a Business Account: balance, Sell, Pay and "+", and the default widgets. The "+" menu is `#more-actions`, the side menu `#side-menu` |
+| `home.html` | Home for a merchant with a Business Account: balance, Sell, Pay and "+", and the default widgets except Savings Pots. The "+" menu is `#more-actions`, the side menu `#side-menu` |
 
 The baseline shows the ready state with the balance visible. The variants and other states are described
 below; build one from the baseline when a change needs it.
@@ -67,12 +67,14 @@ A grid (`lmnd-kit-widgets`), `spacing-300` across and `spacing-400` down. Half-w
 | --- | --- |
 | Gross sales today (half), Today's settlements (half), Offers (full), Savings Pots (full), Teya Account Activity (full) | Today's sales, Offers, Last settlements, Savings Pots (all full) |
 
-- **Gross sales today:** the label inline, not as an overline heading; the amount in `display-xsmall`;
-  "To be paid tomorrow" (or "To be paid on 15 Jun", "+ 2 currencies"); a sparkline
-  (`lmnd-kit-sparkline`, its curve illustrative). Empty: "Ready for your first sale of the day?" in
+- **Gross sales today:** the label (`lmnd-kit-widget__label`, `body-small-regular`) in the figure with
+  the amount, 4px above it, not as an overline heading; the amount in `display-xsmall`; "To be paid
+  tomorrow" (or "To be paid on 15 Jun", "+ 2 currencies"); then the day's chart, 140 × 76, 4px under the
+  figure and cut by the widget's edge (`lmnd-kit-sparkline`, the Figma Mini Widget's chart; its curve
+  doesn't follow the amount). Empty: "Ready for your first sale of the day?" in
   positive, over an empty chart.
-- **Today's settlements:** the label inline, the amount, the day's status in its voice ("Paid"), and a
-  "More details ›" pill (`lmnd-kit-widget__pill`). Opens Money › Settlements. Empty: "No settlements
+- **Today's settlements:** the label in the figure, as above; the amount, the day's status in its voice ("Paid"), and a
+  "More details ›" bar at its foot (`lmnd-kit-widget__footer`). Opens Money › Settlements. Empty: "No settlements
   yet". With stores on instant: "2 stores on instant" / "Total tomorrow".
 - **Offers:** a carousel of cards with no heading, turning every 4 seconds, with dots under it
   (`lmnd-kit-content-card`, `lmnd-kit-page-indicator`). Each card: artwork, a title, a line, a call to
@@ -132,8 +134,7 @@ The baseline copies these on purpose. Leave them unless the change is about them
   match (`LDS-BUTTON-PAIR`, marked in the baseline).
 - Account activity separates with "·", not "•" (`LHK-COPY`, marked).
 - Log out shares a card with Settings and Help, rather than having its own (`APP-MENU-LOG-OUT`, marked).
-- The half-width widgets have no overline heading, unlike the same widgets on Sales, and pad their top
-  12px against 8px at the sides.
+- The half-width widgets have no overline heading, unlike the same widgets on Sales.
 - The chip always shows `chevron-right`, even with one company; the side menu uses `chevron-down`, and
   only with several.
 - There are two pairs of edit-mode controls: Add and Done in the top bar and again under the grid.
@@ -145,7 +146,7 @@ The baseline copies these on purpose. Leave them unless the change is about them
 
 ## Android and iOS
 
-- The eye: a 40px brand circle on Android; glass at 48px on iOS 26; a Primary · Solid icon button before.
+- The eye: a 40px brand circle with no border on Android (the baseline gives it the chip's hairline); glass at 48px on iOS 26; a Primary · Solid icon button before.
 - The chip folds on scroll on Android and on iOS 18 and later only.
 - The side menu has no width cap on iOS, and its info cards are drawn by hand.
 - iOS shows a remove badge on each widget in edit mode; Android removes through the long-press menu only.
