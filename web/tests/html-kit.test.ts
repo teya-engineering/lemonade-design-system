@@ -7,7 +7,7 @@ import { kitLlmsTxt, kitStylesheet } from '../html-kit/build.mjs'
 import { inlinePage } from '../html-kit/share/build.mjs'
 import { describe, expect, it } from 'vitest'
 
-const pages = import.meta.glob(['../html-kit/gallery.html', '../html-kit/examples/*.html'], {
+const pages = import.meta.glob(['../html-kit/gallery.html', '../html-kit/examples/*.html', '../html-kit/screens/*.html'], {
   query: '?raw',
   import: 'default',
   eager: true,

@@ -1009,6 +1009,13 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   color: var(--lmnd-color-content-primary);
 }
 
+/* A support line held to one line, cut with an ellipsis (maxLines = 1). */
+.lmnd-kit-list-item__support--one-line {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .lmnd-kit-list-item__trailing {
   display: flex;
   flex-shrink: 0;
@@ -2887,3 +2894,200 @@ body:has(> .lmnd-kit-device) {
     display: none;
   }
 }
+
+/* ---------- The Teya app's own components, used by its screens in screens/ ---------- */
+
+/* A card header's trailing text, such as a "3 of 8" counter. */
+.lmnd-kit-card__trailing {
+  flex-shrink: 0;
+  color: var(--lmnd-color-content-secondary);
+}
+
+/* VoiceGradientCard: a card whose top fades from a status's subtle colour into the card, inset by
+   spacing-100 with a radius-500 corner. */
+.lmnd-kit-gradient-card {
+  position: relative;
+  isolation: isolate;
+}
+
+.lmnd-kit-gradient-card::before {
+  content: "";
+  position: absolute;
+  inset: var(--lmnd-spacing-100);
+  z-index: -1;
+  border-radius: var(--lmnd-radius-500);
+  background: linear-gradient(to bottom, var(--lmnd-kit-gradient-top, transparent), var(--lmnd-color-bg-default));
+}
+
+.lmnd-kit-gradient-card--positive { --lmnd-kit-gradient-top: var(--lmnd-color-bg-positive-subtle); }
+.lmnd-kit-gradient-card--warning { --lmnd-kit-gradient-top: var(--lmnd-color-bg-caution-subtle); }
+.lmnd-kit-gradient-card--info { --lmnd-kit-gradient-top: var(--lmnd-color-bg-info-subtle); }
+.lmnd-kit-gradient-card--critical { --lmnd-kit-gradient-top: var(--lmnd-color-bg-critical-subtle); }
+.lmnd-kit-gradient-card--neutral { --lmnd-kit-gradient-top: var(--lmnd-color-bg-neutral-subtle); }
+
+.lmnd-kit-gradient-card__body {
+  display: flex;
+  flex-direction: column;
+  padding: var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-gradient-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-300);
+  margin-bottom: var(--lmnd-spacing-200);
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-gradient-card__header > :first-child {
+  flex: 1;
+}
+
+/* RowData in a StackContainer: label-and-value rows with no dividers, spacing-400 apart inside
+   spacing-400 of padding. A group's sub-rows sit spacing-200 under it, a size smaller. */
+.lmnd-kit-row-data {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-400);
+  padding: var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-row-data__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-row-data__row {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-row-data__row > :first-child {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  min-width: 0;
+}
+
+/* The settlement frequency on a store's symbol: a 16px disc in the frequency's colour, ringed in the
+   card's colour, at the bottom-right corner. */
+.lmnd-kit-symbol__frequency {
+  position: absolute;
+  right: calc(-1 * var(--lmnd-spacing-100));
+  bottom: calc(-1 * var(--lmnd-spacing-100));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--lmnd-size-500);
+  height: var(--lmnd-size-500);
+  border: var(--lmnd-border-width-50) solid var(--lmnd-color-bg-default);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-kit-frequency-bg);
+  color: var(--lmnd-kit-frequency-content);
+}
+
+.lmnd-kit-symbol__frequency > .lmnd-icon {
+  width: var(--lmnd-size-300);
+  height: var(--lmnd-size-300);
+}
+
+.lmnd-kit-symbol__frequency--instant { --lmnd-kit-frequency-bg: var(--lmnd-color-bg-settlement-instant); --lmnd-kit-frequency-content: var(--lmnd-color-content-on-settlement-instant); }
+.lmnd-kit-symbol__frequency--business-days { --lmnd-kit-frequency-bg: var(--lmnd-color-bg-settlement-business-days); --lmnd-kit-frequency-content: var(--lmnd-color-content-on-settlement-business-days); }
+.lmnd-kit-symbol__frequency--everyday { --lmnd-kit-frequency-bg: var(--lmnd-color-bg-settlement-everyday); --lmnd-kit-frequency-content: var(--lmnd-color-content-on-settlement-everyday); }
+.lmnd-kit-symbol__frequency--scheduled { --lmnd-kit-frequency-bg: var(--lmnd-color-bg-settlement-scheduled); --lmnd-kit-frequency-content: var(--lmnd-color-content-on-settlement-scheduled); }
+
+/* The Daily report's month: Ghost chevrons either side of the month's name. */
+.lmnd-kit-month-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-300);
+  padding: var(--lmnd-spacing-100) var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-month-nav > span {
+  flex: 1;
+  text-align: center;
+}
+
+/* The Daily report's days: 64px chips, spacing-100 apart, scrolling sideways under the screen's edges. */
+.lmnd-kit-day-strip {
+  display: flex;
+  gap: var(--lmnd-spacing-100);
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-400);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.lmnd-kit-day-chip {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: center;
+  width: var(--lmnd-size-1600);
+  padding: var(--lmnd-spacing-200);
+  border-radius: var(--lmnd-radius-400);
+  color: var(--lmnd-color-content-secondary);
+  --lmnd-kit-day-bg: var(--lmnd-color-bg-subtle);
+}
+
+.lmnd-kit-day-chip__date {
+  color: var(--lmnd-color-content-primary);
+}
+
+/* The selected day: inverse, raised, with a glow from below in its status's colour. */
+.lmnd-kit-day-chip--selected {
+  background:
+    radial-gradient(150% 150% at 50% 125%, color-mix(in srgb, var(--lmnd-kit-day-glow, transparent) 55%, transparent), color-mix(in srgb, var(--lmnd-kit-day-glow, transparent) 18%, transparent) 50%, transparent 100%), /* literal: the app's glow stops */
+    var(--lmnd-color-bg-default-inverse);
+  box-shadow: var(--lmnd-shadow-lg);
+  color: var(--lmnd-color-content-primary-inverse);
+  --lmnd-kit-day-bg: var(--lmnd-color-bg-default-inverse);
+}
+
+.lmnd-kit-day-chip--selected .lmnd-kit-day-chip__date {
+  color: var(--lmnd-color-content-primary-inverse);
+}
+
+.lmnd-kit-day-chip__dots {
+  display: flex;
+  margin-top: var(--lmnd-spacing-50);
+}
+
+.lmnd-kit-day-chip__dot {
+  width: var(--lmnd-size-200);
+  height: var(--lmnd-size-200);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-kit-dot);
+}
+
+/* Each further dot overlaps the one before by 2px, cut out by a ring in the chip's colour. */
+.lmnd-kit-day-chip__dot + .lmnd-kit-day-chip__dot {
+  margin-left: calc(-1 * var(--lmnd-size-50));
+  box-shadow: 0 0 0 var(--lmnd-border-width-25) var(--lmnd-kit-day-bg);
+}
+
+.lmnd-kit-day-chip__dot--none {
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-content-tertiary);
+}
+
+.lmnd-kit-day-chip--selected .lmnd-kit-day-chip__dot--none {
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-content-tertiary-inverse);
+}
+
+.lmnd-kit-day-chip__dot--positive { --lmnd-kit-dot: var(--lmnd-color-content-positive); }
+.lmnd-kit-day-chip__dot--warning { --lmnd-kit-dot: var(--lmnd-color-content-caution); }
+.lmnd-kit-day-chip__dot--info { --lmnd-kit-dot: var(--lmnd-color-content-info); }
+.lmnd-kit-day-chip__dot--critical { --lmnd-kit-dot: var(--lmnd-color-content-critical); }
+.lmnd-kit-day-chip--selected .lmnd-kit-day-chip__dot--positive { --lmnd-kit-dot: var(--lmnd-color-content-positive-on-color); }
+.lmnd-kit-day-chip--selected .lmnd-kit-day-chip__dot--warning { --lmnd-kit-dot: var(--lmnd-color-bg-caution); }
+.lmnd-kit-day-chip--selected .lmnd-kit-day-chip__dot--info { --lmnd-kit-dot: var(--lmnd-color-bg-info); }
+.lmnd-kit-day-chip--selected .lmnd-kit-day-chip__dot--critical { --lmnd-kit-dot: var(--lmnd-color-bg-critical); }
+
+.lmnd-kit-day-chip--glow-positive { --lmnd-kit-day-glow: var(--lmnd-color-bg-positive); }
+.lmnd-kit-day-chip--glow-warning { --lmnd-kit-day-glow: var(--lmnd-color-bg-caution); }
+.lmnd-kit-day-chip--glow-info { --lmnd-kit-day-glow: var(--lmnd-color-bg-info); }
+.lmnd-kit-day-chip--glow-critical { --lmnd-kit-day-glow: var(--lmnd-color-bg-critical); }

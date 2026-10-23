@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Money · Settlements</title>
+<link rel="stylesheet" href="../lemonade-kit.css">
+<!-- Baseline: the Teya app's Settlements tab in Daily report mode, as it is in production. Described in
+     screens/settlements.md. Exemptions marked "as in production" are faults the app has today. -->
+<style>
+  .calendar { margin: calc(-1 * var(--lmnd-spacing-400)) calc(-1 * var(--lmnd-spacing-400)) 0; }
+  /* APP-SPACING-RHYTHM exempt: as in production, the amount, per-store and breakdown cards sit spacing-200 apart */
+  .day-cards { display: flex; flex-direction: column; gap: var(--lmnd-spacing-200); }
+</style>
+</head>
+<body>
+<p class="lmnd-kit-source-notice" style="margin:0;padding:16px;background:Mark;color:MarkText;font:16px/1.4 system-ui,sans-serif">This page needs <code>lemonade-kit.css</code> beside it. Open it from the packaged kit: run <code>npm run html-kit</code> in <code>web/</code>, then open <code>web/dist/lemonade-html-kit/</code>.</p>
+<div class="lmnd-kit-device">
+  <div class="lmnd-kit-screen">
+    <header class="lmnd-kit-top-bar">
+      <div class="lmnd-kit-top-bar__compact">
+        <div class="lmnd-kit-top-bar__large"><h1 class="lmnd-kit-top-bar__large-title lmnd-text-heading-large">Money</h1></div>
+        <div class="lmnd-kit-top-bar__trailing">
+          <a href="money-settlements-list.html" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="More options"><span class="lmnd-icon" data-icon="calendar-day-timeline"></span></a>
+          <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Export settlements"><span class="lmnd-icon" data-icon="download"></span></button>
+        </div>
+      </div>
+      <div class="lmnd-kit-tabs" role="tablist">
+        <label class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab"><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Overview">Overview</span></span></label>
+        <label class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab"><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Activity">Activity</span></span></label>
+        <label class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab" checked><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Settlements">Settlements</span></span></label>
+        <label class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab"><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Funding">Funding</span></span></label>
+      </div>
+    </header>
+
+    <main class="lmnd-kit-content">
+      <div class="calendar">
+        <div class="lmnd-kit-month-nav">
+          <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--ghost lmnd-kit-icon-button--circular" aria-label="Previous month"><span class="lmnd-icon" data-icon="chevron-left"></span></button>
+          <span class="lmnd-text-body-small-medium">October 2026</span>
+          <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--ghost lmnd-kit-icon-button--circular" aria-label="Next month" disabled><span class="lmnd-icon" data-icon="chevron-right"></span></button>
+        </div>
+        <div class="lmnd-kit-day-strip">
+          <a href="#" class="lmnd-kit-day-chip"><span class="lmnd-text-body-xsmall-medium">Mon</span><span class="lmnd-kit-day-chip__date lmnd-text-body-medium-medium">19</span><span class="lmnd-kit-day-chip__dots"><span class="lmnd-kit-day-chip__dot lmnd-kit-day-chip__dot--positive"></span></span></a>
+          <a href="#" class="lmnd-kit-day-chip"><span class="lmnd-text-body-xsmall-medium">Tue</span><span class="lmnd-kit-day-chip__date lmnd-text-body-medium-medium">20</span><span class="lmnd-kit-day-chip__dots"><span class="lmnd-kit-day-chip__dot lmnd-kit-day-chip__dot--positive"></span></span></a>
+          <a href="#" class="lmnd-kit-day-chip"><span class="lmnd-text-body-xsmall-medium">Wed</span><span class="lmnd-kit-day-chip__date lmnd-text-body-medium-medium">21</span><span class="lmnd-kit-day-chip__dots"><span class="lmnd-kit-day-chip__dot lmnd-kit-day-chip__dot--positive"></span><span class="lmnd-kit-day-chip__dot lmnd-kit-day-chip__dot--warning"></span></span></a>
+          <a href="#" class="lmnd-kit-day-chip lmnd-kit-day-chip--selected lmnd-kit-day-chip--glow-positive" aria-current="date"><span class="lmnd-text-body-xsmall-medium">Thu</span><span class="lmnd-kit-day-chip__date lmnd-text-body-medium-semibold">22</span><span class="lmnd-kit-day-chip__dots"><span class="lmnd-kit-day-chip__dot lmnd-kit-day-chip__dot--positive"></span></span></a>
+          <a href="#" class="lmnd-kit-day-chip"><span class="lmnd-text-body-xsmall-medium">Fri</span><span class="lmnd-kit-day-chip__date lmnd-text-body-medium-medium">23</span><span class="lmnd-kit-day-chip__dots"><span class="lmnd-kit-day-chip__dot lmnd-kit-day-chip__dot--info"></span></span></a>
+        </div>
+      </div>
+
+      <div class="day-cards">
+        <div class="lmnd-kit-card lmnd-kit-gradient-card lmnd-kit-gradient-card--positive">
+          <div class="lmnd-kit-gradient-card__body">
+            <div class="lmnd-kit-gradient-card__header">
+              <h2 class="lmnd-text-body-xsmall-overline">Settlement amount</h2>
+              <span class="lmnd-kit-tag lmnd-kit-tag--positive"><span class="lmnd-kit-tag__label lmnd-text-body-xsmall-semibold">Paid</span></span>
+            </div>
+            <span class="lmnd-text-display-small">£2,486.40</span>
+            <span class="lmnd-text-body-small-regular lmnd-kit-secondary">2 stores</span>
+          </div>
+          <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="bank" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Sending to</span></span>
+              <span class="lmnd-kit-list-item__trailing"><span class="lmnd-text-body-medium-regular lmnd-kit-secondary">Barclays •• 2210</span><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+            </span>
+          </a>
+          <a href="#" class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="calendar" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Settlement Frequency</span></span>
+              <span class="lmnd-kit-list-item__trailing"><span class="lmnd-text-body-medium-regular lmnd-kit-secondary">Business days</span><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+            </span>
+          </a>
+        </div>
+
+        <div class="lmnd-kit-card">
+          <div class="lmnd-kit-card__header">
+            <div class="lmnd-kit-card__heading"><h2 class="lmnd-kit-card__title lmnd-text-body-xsmall-overline">Per store</h2></div>
+          </div>
+          <a href="settlement-details.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-text-body-small-semibold">CM<span class="lmnd-kit-symbol__frequency lmnd-kit-symbol__frequency--business-days"><span class="lmnd-icon" data-icon="calendar-arrow-right" aria-hidden="true"></span></span></span></span>
+              <!-- LHK-COPY exempt: as in production, the support text separates with "·" -->
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Camden Market</span><span class="lmnd-kit-list-item__support lmnd-kit-list-item__support--one-line lmnd-text-body-small-regular">1 settlement · 48 transactions · Business days</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-semibold">£1,640.20</span><span class="lmnd-kit-tag lmnd-kit-tag--positive"><span class="lmnd-kit-tag__label lmnd-text-body-xsmall-semibold">Paid</span></span></span>
+            </span>
+          </a>
+          <a href="settlement-details.html" class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-text-body-small-semibold">SO<span class="lmnd-kit-symbol__frequency lmnd-kit-symbol__frequency--business-days"><span class="lmnd-icon" data-icon="calendar-arrow-right" aria-hidden="true"></span></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Soho</span><span class="lmnd-kit-list-item__support lmnd-kit-list-item__support--one-line lmnd-text-body-small-regular">1 settlement · 21 transactions · Business days</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-semibold">£846.20</span><span class="lmnd-kit-tag lmnd-kit-tag--positive"><span class="lmnd-kit-tag__label lmnd-text-body-xsmall-semibold">Paid</span></span></span>
+            </span>
+          </a>
+        </div>
+
+        <div class="lmnd-kit-card">
+          <div class="lmnd-kit-card__header">
+            <div class="lmnd-kit-card__heading"><h2 class="lmnd-kit-card__title lmnd-text-body-xsmall-overline">Breakdown overview</h2></div>
+          </div>
+          <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="card" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Card sales</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">69 transactions</span></span>
+              <span class="lmnd-kit-list-item__trailing"><span class="lmnd-text-body-medium-regular lmnd-kit-primary">£2,571.80</span><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+            </span>
+          </a>
+          <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="arrow-corner-down-left" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Refunds</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">2 transactions</span></span>
+              <span class="lmnd-kit-list-item__trailing"><span class="lmnd-text-body-medium-regular lmnd-kit-primary">-£42.00</span><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+            </span>
+          </a>
+          <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="coins-stack" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Fees</span></span>
+              <span class="lmnd-kit-list-item__trailing"><span class="lmnd-text-body-medium-regular lmnd-kit-primary">-£43.40</span><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+            </span>
+          </a>
+          <div class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="coins-double-stack" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Ending balance</span></span>
+              <span class="lmnd-kit-list-item__trailing"><span class="lmnd-text-body-medium-regular lmnd-kit-primary">£2,486.40</span></span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lmnd-kit-card">
+        <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+          <span class="lmnd-kit-list-item__row">
+            <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="download" aria-hidden="true"></span></span>
+            <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Download report</span></span>
+            <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+          </span>
+        </a>
+        <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+          <span class="lmnd-kit-list-item__row">
+            <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="gear" aria-hidden="true"></span></span>
+            <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Settlement preferences</span></span>
+            <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+          </span>
+        </a>
+        <a href="#" class="lmnd-kit-list-item">
+          <span class="lmnd-kit-list-item__row">
+            <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="support-chat" aria-hidden="true"></span></span>
+            <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Get help</span></span>
+            <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+          </span>
+        </a>
+      </div>
+    </main>
+
+    <nav class="lmnd-kit-tab-bar">
+      <div class="lmnd-kit-tab-bar__bar">
+        <a href="#" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="brand-teya-symbol" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Home</span></a>
+        <a href="../examples/sales.html" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="chart-stats" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Sales</span></a>
+        <a href="#" class="lmnd-kit-tab-bar__item" aria-current="page"><span class="lmnd-icon" data-icon="wallet-solid" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Money</span></a>
+        <a href="#" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="sparkles-soft" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Teya AI</span></a>
+      </div>
+    </nav>
+  </div>
+</div>
+</body>
+</html>

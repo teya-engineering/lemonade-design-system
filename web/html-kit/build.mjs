@@ -5,6 +5,7 @@
 //   gallery.html       every component with its markup
 //   examples/          screens to start from
 //   guidelines/        the rules a prototype follows
+//   screens/           the app's own screens as they are today, and their descriptions
 //   llms.txt           every token and what it is for: the token sections of web/llms.txt
 //   assets.txt         every icon, flag, logo and badge name
 //   classes.txt        every lmnd-kit- class the kit defines
@@ -114,8 +115,8 @@ export async function kitStylesheet() {
 }
 
 export async function kitPages() {
-  const examples = (await readdir(join(KIT, 'examples'))).filter((n) => n.endsWith('.html')).sort()
-  return ['gallery.html', ...examples.map((n) => `examples/${n}`)]
+  const html = async (dir) => (await readdir(join(KIT, dir))).filter((n) => n.endsWith('.html')).sort().map((n) => `${dir}/${n}`)
+  return ['gallery.html', ...(await html('examples')), ...(await html('screens'))]
 }
 
 // The token sections of web/llms.txt. The rest of that file is about the npm package — installing it,
@@ -270,6 +271,7 @@ async function zipFolder(dir, name, target) {
 
 async function writePages(dir) {
   await mkdir(join(dir, 'examples'), { recursive: true })
+  await mkdir(join(dir, 'screens'), { recursive: true })
   for (const page of await kitPages()) await writeFile(join(dir, page), await pageForKit(page))
 }
 
@@ -295,6 +297,10 @@ export async function classList() {
 
 async function writeReferences(dir) {
   await cp(join(KIT, 'guidelines'), join(dir, 'guidelines'), { recursive: true })
+  await mkdir(join(dir, 'screens'), { recursive: true })
+  for (const name of (await readdir(join(KIT, 'screens'))).filter((n) => n.endsWith('.md'))) {
+    await cp(join(KIT, 'screens', name), join(dir, 'screens', name))
+  }
   await writeFile(join(dir, 'llms.txt'), await kitLlmsTxt())
   await writeFile(join(dir, 'assets.txt'), await assetList())
   await writeFile(join(dir, 'classes.txt'), await classList())

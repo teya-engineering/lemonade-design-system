@@ -24,6 +24,7 @@ lists are complete.
 | An icon, flag or logo name | `assets.txt`: every name the kit carries; anything else does not exist |
 | A kit class | `classes.txt`: every `lmnd-kit-` class, by component; anything else does not exist |
 | A component's markup | `gallery.html`, then `examples/` |
+| An app screen as it is today, and where screens sit | `screens/index.md`: the site map, and the screens described with baselines to change |
 
 Never read or grep `lemonade-kit.css`: it is generated, and almost all of it is inline artwork.
 
@@ -31,9 +32,11 @@ Never read or grep `lemonade-kit.css`: it is generated, and almost all of it is 
 
 1. **Find the markup.** Read `gallery.html` for each component you need. Copy markup from there or from
    `examples/`, never from memory (`LHK-KIT-MARKUP`).
-2. **Start from the closest example.** Copy `examples/<screen>.html` to a new file in `examples/` and
-   change the content, keeping its stylesheet link, phone frame, screen wrapper, top bar and spacing
-   (`LHK-SCREEN`).
+2. **Start from the app, or from the closest example.** For a change to a screen `screens/index.md`
+   describes, copy its baseline from `screens/` to a new file there, read its description, and change only
+   what was asked; its "as in production" exemptions stay. For a new screen, copy `examples/<screen>.html`
+   to a new file in `examples/` and change the content. Either way keep the stylesheet link, phone frame,
+   screen wrapper, top bar and spacing (`LHK-SCREEN`).
 3. **Check.** Open the page in a window wider than 480px, where it shows in the phone frame, in light and
    dark (add `data-lmnd-theme="dark"` to `<html>` to force dark). Open every sheet and toast by its link. Fix anything that doesn't line up with the examples. If you can't render pages, say
    so in the hand-over.

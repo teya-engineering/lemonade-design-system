@@ -1,6 +1,6 @@
 ---
 name: design
-description: Design Teya app screens and flows as HTML that look like the app, with Lemonade's tokens, components and icons. Use for any Teya app prototype, mock-up, screen or flow.
+description: Design Teya app screens and flows as HTML that look like the app, with Lemonade's tokens, components and icons. Use for any Teya app prototype, mock-up, screen or flow, including a change to an existing app screen such as Settlements.
 ---
 
 # Design a Teya prototype

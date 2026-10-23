@@ -10,11 +10,12 @@ Nothing to install. Open a page in a browser and it works.
 
 1. Open `gallery.html`. It shows every component next to the markup that draws it, every colour and
    every icon. The switch at the top flips between light and dark.
-2. Copy the example in `examples/` closest to the screen you want, rename it, and edit it in any text
-   editor. Refresh the browser to see the change.
+2. To change a screen the app already has, copy its baseline in `screens/` (`screens/index.md` lists
+   them). For a new screen, copy the example in `examples/` closest to it. Rename the copy and edit it in
+   any text editor. Refresh the browser to see the change.
 3. Follow the rules in `guidelines/`. Start with `guidelines/index.md`.
 
-Keep your pages in this folder, or in `examples/`, so they find `lemonade-kit.css`.
+Keep your pages in `examples/` or `screens/`, so they find `lemonade-kit.css`.
 
 ## With an AI assistant
 
@@ -39,6 +40,7 @@ the screen back as one file.
 | --- | --- |
 | `lemonade-kit.css` | Everything: tokens, type scale, components, Figtree, icons, flags and logos. Generated; don't edit it |
 | `gallery.html` | Every component with its markup |
+| `screens/` | The app's own screens as they are today, to change: Money › Settlements and Settlement details. `screens/index.md` has the site map |
 | `examples/` | Screens to start from: Settings, Sales (with a filter sheet), Transactions (with a store picker), Card machines, Recipients, Transaction details, Add recipient |
 | `guidelines/` | The rules a prototype follows |
 | `llms.txt` | Every token and what it is for |

@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Money · Settlements list</title>
+<link rel="stylesheet" href="../lemonade-kit.css">
+<!-- Baseline: the Teya app's Settlements tab in List mode, as it is in production. Described in
+     screens/settlements.md. Exemptions marked "as in production" are faults the app has today. -->
+</head>
+<body>
+<p class="lmnd-kit-source-notice" style="margin:0;padding:16px;background:Mark;color:MarkText;font:16px/1.4 system-ui,sans-serif">This page needs <code>lemonade-kit.css</code> beside it. Open it from the packaged kit: run <code>npm run html-kit</code> in <code>web/</code>, then open <code>web/dist/lemonade-html-kit/</code>.</p>
+<div class="lmnd-kit-device">
+  <div class="lmnd-kit-screen">
+    <header class="lmnd-kit-top-bar">
+      <div class="lmnd-kit-top-bar__compact">
+        <div class="lmnd-kit-top-bar__large"><h1 class="lmnd-kit-top-bar__large-title lmnd-text-heading-large">Money</h1></div>
+        <div class="lmnd-kit-top-bar__trailing">
+          <a href="money-settlements.html" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="More options"><span class="lmnd-icon" data-icon="list"></span></a>
+          <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Export settlements"><span class="lmnd-icon" data-icon="download"></span></button>
+        </div>
+      </div>
+      <div class="lmnd-kit-tabs" role="tablist">
+        <label class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab"><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Overview">Overview</span></span></label>
+        <label class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab"><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Activity">Activity</span></span></label>
+        <label class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab" checked><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Settlements">Settlements</span></span></label>
+        <label class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab"><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Funding">Funding</span></span></label>
+      </div>
+    </header>
+
+    <main class="lmnd-kit-content">
+      <!-- APP-FILTER-BAR exempt: as in production, Status comes before Store -->
+      <div class="lmnd-kit-filter-bar">
+        <a href="#period-sheet" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Period</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+        <a href="#status-sheet" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Status</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+        <a href="#store-sheet" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Store</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+      </div>
+      <!-- APP-FEED-GROUPS exempt: as in production, a week's header carries no total -->
+      <section class="lmnd-kit-list-group">
+        <h2 class="lmnd-kit-list-group__header"><span class="lmnd-kit-list-group__heading"><span class="lmnd-text-body-small-semibold">26 Oct – 1 Nov 2026</span></span></h2>
+        <div class="lmnd-kit-card">
+          <a href="settlement-details.html" class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="calendar-day" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Camden Market</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Scheduled</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£1,318.75</span></span>
+            </span>
+          </a>
+        </div>
+      </section>
+      <section class="lmnd-kit-list-group">
+        <h2 class="lmnd-kit-list-group__header"><span class="lmnd-kit-list-group__heading"><span class="lmnd-text-body-small-semibold">19–25 Oct 2026</span></span></h2>
+        <div class="lmnd-kit-card">
+          <a href="settlement-details.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-kit-symbol--warning"><span class="lmnd-icon" data-icon="clock" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Camden Market</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">To be paid today, 23 Oct</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£1,102.30</span></span>
+            </span>
+          </a>
+          <a href="settlement-details.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-kit-symbol--warning"><span class="lmnd-icon" data-icon="clock" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Soho</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Postponed</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£380.00</span></span>
+            </span>
+          </a>
+          <a href="settlement-details.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-kit-symbol--positive"><span class="lmnd-icon" data-icon="check-double" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Camden Market</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Paid on 22 Oct</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£1,640.20</span></span>
+            </span>
+          </a>
+          <a href="settlement-details.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-kit-symbol--positive"><span class="lmnd-icon" data-icon="check-double" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Soho</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Paid on 22 Oct</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£846.20</span></span>
+            </span>
+          </a>
+          <a href="settlement-details.html" class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-kit-symbol--positive"><span class="lmnd-icon" data-icon="check-double" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Soho</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Paid on 21 Oct</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£512.90</span></span>
+            </span>
+          </a>
+        </div>
+      </section>
+      <section class="lmnd-kit-list-group">
+        <h2 class="lmnd-kit-list-group__header"><span class="lmnd-kit-list-group__heading"><span class="lmnd-text-body-small-semibold">12–18 Oct 2026</span></span></h2>
+        <div class="lmnd-kit-card">
+          <a href="settlement-details.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-kit-symbol--positive"><span class="lmnd-icon" data-icon="check-double" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Camden Market</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Paid on 16 Oct</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£2,104.60</span></span>
+            </span>
+          </a>
+          <a href="settlement-details.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-kit-symbol--positive"><span class="lmnd-icon" data-icon="check-double" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Soho</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Paid on 16 Oct</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£733.10</span></span>
+            </span>
+          </a>
+          <a href="settlement-details.html" class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-kit-symbol--positive"><span class="lmnd-icon" data-icon="check-double" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Camden Market</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Paid on 15 Oct</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£1,876.40</span></span>
+            </span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <nav class="lmnd-kit-tab-bar">
+      <div class="lmnd-kit-tab-bar__bar">
+        <a href="#" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="brand-teya-symbol" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Home</span></a>
+        <a href="../examples/sales.html" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="chart-stats" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Sales</span></a>
+        <a href="#" class="lmnd-kit-tab-bar__item" aria-current="page"><span class="lmnd-icon" data-icon="wallet-solid" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Money</span></a>
+        <a href="#" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="sparkles-soft" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Teya AI</span></a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="lmnd-kit-scrim" id="period-sheet">
+    <div class="lmnd-kit-sheet lmnd-kit-sheet--subtle" role="dialog" aria-labelledby="period-sheet-title">
+      <span class="lmnd-kit-sheet__handle"></span>
+      <div class="lmnd-kit-sheet__bar">
+        <a href="#" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></a>
+        <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-kit-button--full-shape lmnd-text-body-small-semibold"><span class="lmnd-button__label">Reset</span></button>
+      </div>
+      <h2 class="lmnd-kit-sheet__title lmnd-text-heading-large" id="period-sheet-title">Filter by period</h2>
+      <div class="lmnd-kit-sheet__body">
+        <div class="lmnd-kit-card">
+            <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+              <span class="lmnd-kit-list-item__row">
+                <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Today</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">23 Oct 2026</span></span>
+                <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="period"></span>
+              </span>
+            </label>
+            <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+              <span class="lmnd-kit-list-item__row">
+                <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Yesterday</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">22 Oct 2026</span></span>
+                <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="period"></span>
+              </span>
+            </label>
+            <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+              <span class="lmnd-kit-list-item__row">
+                <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">This week</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">19 Oct 2026 - 25 Oct 2026</span></span>
+                <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="period"></span>
+              </span>
+            </label>
+            <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+              <span class="lmnd-kit-list-item__row">
+                <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Last week</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">12 Oct 2026 - 18 Oct 2026</span></span>
+                <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="period"></span>
+              </span>
+            </label>
+            <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+              <span class="lmnd-kit-list-item__row">
+                <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">This month</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">1 Oct 2026 - 31 Oct 2026</span></span>
+                <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="period"></span>
+              </span>
+            </label>
+            <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+              <span class="lmnd-kit-list-item__row">
+                <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Last month</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">1 Sept 2026 - 30 Sept 2026</span></span>
+                <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="period"></span>
+              </span>
+            </label>
+            <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+              <span class="lmnd-kit-list-item__row">
+                <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Last 90 days</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">26 Jul 2026 - 23 Oct 2026</span></span>
+                <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="period"></span>
+              </span>
+            </label>
+            <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+              <span class="lmnd-kit-list-item__row">
+                <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">This year</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">1 Jan 2026 - 31 Dec 2026</span></span>
+                <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="period"></span>
+              </span>
+            </label>
+            <label class="lmnd-kit-list-item">
+              <span class="lmnd-kit-list-item__row">
+                <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Custom</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Choose a custom period</span></span>
+                <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="period"></span>
+              </span>
+            </label>
+        </div>
+      </div>
+      <div class="lmnd-kit-sheet__actions">
+        <a href="#" class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold"><span class="lmnd-button__label">Confirm</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="lmnd-kit-scrim" id="status-sheet">
+    <div class="lmnd-kit-sheet lmnd-kit-sheet--subtle" role="dialog" aria-labelledby="status-sheet-title">
+      <span class="lmnd-kit-sheet__handle"></span>
+      <div class="lmnd-kit-sheet__bar">
+        <a href="#" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></a>
+        <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-kit-button--full-shape lmnd-text-body-small-semibold"><span class="lmnd-button__label">Reset</span></button>
+      </div>
+      <h2 class="lmnd-kit-sheet__title lmnd-text-heading-large" id="status-sheet-title">Filter by status</h2>
+      <div class="lmnd-kit-sheet__body">
+        <div class="lmnd-kit-card">
+            <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+              <span class="lmnd-kit-list-item__row">
+                <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Paid</span></span>
+                <span class="lmnd-kit-list-item__trailing"><input type="checkbox" class="lmnd-kit-checkbox" name="status"></span>
+              </span>
+            </label>
+            <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+              <span class="lmnd-kit-list-item__row">
+                <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Partial payment</span></span>
+                <span class="lmnd-kit-list-item__trailing"><input type="checkbox" class="lmnd-kit-checkbox" name="status"></span>
+              </span>
+            </label>
+            <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+              <span class="lmnd-kit-list-item__row">
+                <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Postponed</span></span>
+                <span class="lmnd-kit-list-item__trailing"><input type="checkbox" class="lmnd-kit-checkbox" name="status"></span>
+              </span>
+            </label>
+            <label class="lmnd-kit-list-item">
+              <span class="lmnd-kit-list-item__row">
+                <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Scheduled</span></span>
+                <span class="lmnd-kit-list-item__trailing"><input type="checkbox" class="lmnd-kit-checkbox" name="status"></span>
+              </span>
+            </label>
+        </div>
+      </div>
+      <div class="lmnd-kit-sheet__actions">
+        <a href="#" class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold"><span class="lmnd-button__label">Confirm</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="lmnd-kit-scrim" id="store-sheet">
+    <div class="lmnd-kit-sheet lmnd-kit-sheet--subtle" role="dialog" aria-labelledby="store-sheet-title">
+      <span class="lmnd-kit-sheet__handle"></span>
+      <div class="lmnd-kit-sheet__bar">
+        <a href="#" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></a>
+        <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-kit-button--full-shape lmnd-text-body-small-semibold"><span class="lmnd-button__label">Reset</span></button>
+      </div>
+      <h2 class="lmnd-kit-sheet__title lmnd-text-heading-large" id="store-sheet-title">Filter by store</h2>
+      <div class="lmnd-kit-sheet__body">
+        <div class="lmnd-kit-card">
+            <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+              <span class="lmnd-kit-list-item__row">
+                <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-text-body-small-semibold">CM</span></span>
+                <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Camden Market</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">14 Camden High Street, London NW1 0JH</span></span>
+                <span class="lmnd-kit-list-item__trailing"><input type="checkbox" class="lmnd-kit-checkbox" name="store"></span>
+              </span>
+            </label>
+            <label class="lmnd-kit-list-item">
+              <span class="lmnd-kit-list-item__row">
+                <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-text-body-small-semibold">SO</span></span>
+                <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Soho</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">22 Old Compton Street, London W1D 4TT</span></span>
+                <span class="lmnd-kit-list-item__trailing"><input type="checkbox" class="lmnd-kit-checkbox" name="store"></span>
+              </span>
+            </label>
+        </div>
+      </div>
+      <div class="lmnd-kit-sheet__actions">
+        <a href="#" class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold"><span class="lmnd-button__label">Confirm</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

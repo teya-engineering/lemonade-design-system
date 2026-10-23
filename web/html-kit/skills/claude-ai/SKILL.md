@@ -1,6 +1,6 @@
 ---
 name: lemonade-prototype
-description: Design or review Teya app screens and flows as HTML that look like the app, with Lemonade's tokens, components and icons. Use for any Teya app prototype, mock-up or prototype review.
+description: Design or review Teya app screens and flows as HTML that look like the app, with Lemonade's tokens, components and icons. Use for any Teya app prototype, mock-up or prototype review, including a change to an existing app screen such as Settlements.
 ---
 
 # Lemonade prototype

@@ -10,6 +10,7 @@ report what breaks them. You do not restyle the page or judge taste; a finding i
 | `references/guidelines/` | The rules. `index.md` explains the three books: `LDS-` (Lemonade), `APP-` (the Teya app), `LHK-` (prototypes) |
 | `assets/gallery.html` | The correct markup for every component, to compare against |
 | `assets/examples/` | Finished screens that follow the rules: settings, sales, transactions, card machines, recipients, transaction details, add recipient |
+| `assets/screens/`, `references/screens/` | The app's own screens as they are in production, and how they work |
 | `references/llms.txt` | Every token that exists |
 | `references/assets.txt` | Every icon, flag and logo name that exists |
 | `references/classes.txt` | Every `lmnd-kit-` class that exists, by component |
@@ -31,6 +32,11 @@ report what breaks them. You do not restyle the page or judge taste; a finding i
    one of the kit's examples, report its broken rules as findings like any other page's.
 5. **Honour exemptions.** A comment like `<!-- LDS-CARD-PADDING exempt: … -->` at the site covers that
    rule there, if its reason holds. Report a reason that doesn't hold as a finding.
+6. **Review the change, not the app.** When the page is a change to one of the app's screens (it carries a
+   baseline's comment, or matches a baseline in `assets/screens/`), compare it with that baseline. Findings
+   are about what the change added or altered. A rule the baseline already breaks, marked "as in
+   production", is not a finding: list it under "Already in production" instead, unless the change made it
+   worse.
 
 ## Report
 
@@ -44,4 +50,5 @@ most serious first:
 "Where" names the screen and the element a reader can find. "Fix" is the change, in kit markup. Don't
 list rules the page follows. Under "Not checked", name any rule you couldn't judge from the source, such
 as how the page renders, unless you rendered it. Under "Questions", note any place a rule and an example
-disagree. Offer to apply the fixes.
+disagree. Under "Already in production", list the baseline's own faults the change kept, one line each,
+so they're known without drowning the change's findings. Offer to apply the fixes.
