@@ -1,3 +1,4 @@
+// @vitest-environment node
 /// <reference types="vite/client" />
 import kitCss from '../html-kit/kit.css?raw'
 import tokensCss from '../styles/tokens.css?raw'
