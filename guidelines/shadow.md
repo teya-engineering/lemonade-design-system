@@ -5,24 +5,22 @@ Five levels, from `LemonadeShadow.Xsmall` to `LemonadeShadow.Xlarge`, applied wi
 
 ## `LDS-SHADOW-LEVEL` · The level follows how far the element floats
 
-**Rule of thumb.** Take the lowest level that separates the element:
+**Rule of thumb.** Take the level the components use for the same kind of element:
 
-| Level | For |
-| --- | --- |
-| `Xsmall` | Something resting on its surface — a segmented control's thumb |
-| `Small` | Something raised to be touched — a switch's thumb, a dropdown |
-| `Medium` | Something floating over the page — a popover, a tooltip, a toast |
-| `Large` | The highest overlays — a dialog, a side panel |
+| Level | For | In Lemonade |
+| --- | --- | --- |
+| `Xsmall` | Something resting on its surface | `SegmentedControl`'s thumb |
+| `Small` | Something raised to be touched | `Switch`'s thumb |
+| `Large` | Something floating over the page for a moment | `Toast` |
+| `Xlarge` | Something floating over everything else | `Tooltip`, `BottomTabBar` |
 
-`Xlarge` has no use the system has named.
+No component uses `Medium`.
 
 **Why.** A shadow says how far an element is from the surface under it. A level higher than the
 element needs makes the page look stacked, and two neighbours at different levels look like they
 belong to different layers.
 
 **Exceptions.** None.
-
-**Deviations.** `Tooltip` uses `Xlarge` and `Toast` uses `Large`, where the table says `Medium`.
 
 **Do / don't.** `Small` on a custom draggable handle. Not `Large` on something that sits in the page.
 
