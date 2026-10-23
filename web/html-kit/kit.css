@@ -1492,6 +1492,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   max-height: calc(100% - var(--lmnd-spacing-1800));
   padding-bottom: var(--lmnd-kit-safe-bottom);
   overflow-y: auto;
+  scrollbar-width: none;
   border-radius: var(--lmnd-radius-900) var(--lmnd-radius-900) 0 0;
   background: var(--lmnd-kit-sheet-bg);
   --lmnd-kit-sheet-bg: var(--lmnd-color-bg-default);
