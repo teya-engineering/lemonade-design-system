@@ -38,7 +38,10 @@ needs Node 20.12 or later and no `npm install`. Pass `--out <dir>` (`npm run htm
 4. `claude plugin validate --strict dist/claude-code/lemonade` and
    `claude plugin validate dist/claude-code/lemonade/lemonade-prototype` pass.
 
-Then give the user the absolute paths of the zips. The kit zip is for people. The skill zip is uploaded to
+5. The build prints `• lemonade-prototype <version>`. A version ending in `-dev` means the kit had
+   uncommitted changes: fine for a test, but commit first for a build anyone else gets.
+
+Then give the user the absolute paths of the zips and the version. The kit zip is for people. The skill zip is uploaded to
 Claude.ai under Settings → Capabilities → Skills. The Claude Code zip is unzipped and added with
 `/plugin marketplace add <folder>`, then `/plugin install lemonade-prototype@lemonade`. `web/dist/` itself
 stays on this machine.

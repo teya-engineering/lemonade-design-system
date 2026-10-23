@@ -17,6 +17,12 @@ This writes `web/dist/lemonade-html-kit/` and `web/dist/lemonade-html-kit.zip`; 
 write them elsewhere. It needs only Node, with no `npm install`. Share the zip. What the person who
 receives it reads is `share/README.md`, which becomes the kit's `README.md`.
 
+The skills and the plugin carry a version, `<major.minor>.<commits>`: major and minor from
+`skills/plugin/plugin.json`, then the repository's commit count, so every commit is a new version. A build
+with uncommitted kit changes ends in `-dev`; build from a clean tree for anything you share. Raise
+major or minor in `plugin.json` by hand for a release that changes how the skill behaves. The skill names
+its version when it hands over a screen or a review.
+
 Open `web/dist/lemonade-html-kit/gallery.html` to see every component. The pages in this folder link
 `lemonade-kit.css`, which exists only in the packaged kit, so opened from here they show a notice
 instead.

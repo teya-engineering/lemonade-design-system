@@ -5,5 +5,7 @@ description: Design Teya app screens and flows as HTML that look like the app, w
 
 # Design a Teya prototype
 
+Version {{VERSION}}.
+
 Read `workflows/design.md` and follow it exactly. Paths in it are relative to this skill's folder. To check
 the result against the rules afterwards, use the `review` skill in this plugin.

@@ -5,4 +5,6 @@ description: Review a Teya app HTML prototype against the Lemonade and Teya app 
 
 # Review a Teya prototype
 
+Version {{VERSION}}.
+
 Read `workflows/review.md` and follow it exactly. Paths in it are relative to this skill's folder.

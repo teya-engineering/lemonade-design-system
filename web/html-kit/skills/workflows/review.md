@@ -34,7 +34,7 @@ report what breaks them. You do not restyle the page or judge taste; a finding i
 
 ## Report
 
-Lead with the verdict: how many findings, or that the page follows every rule. Then one row per finding,
+Start with the line "Reviewed with lemonade-prototype {{VERSION}}". Then lead with the verdict: how many findings, or that the page follows every rule. Then one row per finding,
 most serious first:
 
 | Rule | Where | What breaks it | Fix |

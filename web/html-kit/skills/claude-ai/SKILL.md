@@ -5,6 +5,8 @@ description: Design or review Teya app screens and flows as HTML that look like 
 
 # Lemonade prototype
 
+Version {{VERSION}}.
+
 Two jobs, one set of files. Pick the job from the request, then read its workflow and follow it exactly.
 
 | The user wants | Read and follow |

@@ -41,7 +41,8 @@ Paths inside the guidelines (`gallery.html`, `examples/`, `lemonade-kit.css`) ar
    It writes `<page>.standalone.html` with the stylesheet inlined and only the assets the page uses, and
    it fails on an icon, flag or logo name that doesn't exist.
 7. **Hand over** the `.standalone.html` file. Say which content is placeholder, list any exemptions, and
-   name any role the kit had no component for.
+   name any role the kit had no component for. End with the line "Built with lemonade-prototype
+   {{VERSION}}", so a screen from an old copy of the skill is easy to spot.
 
 ## Copy
 

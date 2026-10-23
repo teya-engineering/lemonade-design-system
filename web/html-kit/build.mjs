@@ -298,13 +298,31 @@ async function packageKit(dist, css) {
 
 // One skill folder: SKILL.md at its root, the pages Claude copies under assets/, what it reads under
 // references/, what it runs under scripts/, and the workflows the SKILL.md points to.
-async function writeSkill(dir, { skill, css, workflows, scripts = false }) {
-  await cp(join(KIT, 'skills', skill), join(dir, 'SKILL.md'))
+// The kit's release number: major.minor from the plugin's manifest, then the commit count, which rises
+// with every commit. A build with uncommitted kit changes is marked -dev so it can't pass for a release.
+async function kitVersion() {
+  const { version } = JSON.parse(await readFile(join(KIT, 'skills/plugin/plugin.json'), 'utf8'))
+  const base = version.split('.').slice(0, 2).join('.')
+  const git = (...args) => spawnSync('git', args, { cwd: KIT, encoding: 'utf8' })
+  const count = git('rev-list', '--count', 'HEAD')
+  if (count.status !== 0) return `${base}.0-dev`
+  const dirty = git('status', '--porcelain', '--', '.', ':!.impeccable').stdout.trim() !== ''
+  return `${base}.${count.stdout.trim()}${dirty ? '-dev' : ''}`
+}
+
+const copyVersioned = async (from, to, version) =>
+  writeFile(to, (await readFile(from, 'utf8')).replaceAll('{{VERSION}}', version))
+
+async function writeSkill(dir, { skill, css, workflows, version, scripts = false }) {
+  await mkdir(dir, { recursive: true })
+  await copyVersioned(join(KIT, 'skills', skill), join(dir, 'SKILL.md'), version)
   await writePages(join(dir, 'assets'))
   if (css) await writeFile(join(dir, 'assets/lemonade-kit.css'), css)
   await writeReferences(join(dir, 'references'))
   await mkdir(join(dir, 'workflows'), { recursive: true })
-  for (const name of workflows) await cp(join(KIT, 'skills/workflows', `${name}.md`), join(dir, `workflows/${name}.md`))
+  for (const name of workflows) {
+    await copyVersioned(join(KIT, 'skills/workflows', `${name}.md`), join(dir, `workflows/${name}.md`), version)
+  }
   if (scripts) {
     await mkdir(join(dir, 'scripts'), { recursive: true })
     await cp(join(KIT, 'share/build.py'), join(dir, 'scripts/build.py'))
@@ -312,28 +330,28 @@ async function writeSkill(dir, { skill, css, workflows, scripts = false }) {
 }
 
 // Claude.ai: one skill with both workflows, uploaded once.
-async function packageClaudeAiSkill(dist, css) {
+async function packageClaudeAiSkill(dist, css, version) {
   const out = join(dist, 'skills')
   await rm(out, { recursive: true, force: true })
   const skill = join(out, 'lemonade-prototype')
-  await writeSkill(skill, { skill: 'claude-ai/SKILL.md', css, workflows: ['design', 'review'], scripts: true })
+  await writeSkill(skill, { skill: 'claude-ai/SKILL.md', css, workflows: ['design', 'review'], version, scripts: true })
   await zipFolder(skill, 'lemonade-prototype', join(out, 'lemonade-prototype.zip'))
 }
 
 // Claude Code: a marketplace holding the lemonade-prototype plugin, whose skills are
 // /lemonade-prototype:design and /lemonade-prototype:review.
-async function packageClaudeCodePlugin(dist, css) {
+async function packageClaudeCodePlugin(dist, css, version) {
   const out = join(dist, 'claude-code')
   await rm(out, { recursive: true, force: true })
   const marketplace = join(out, 'lemonade')
   const plugin = join(marketplace, 'lemonade-prototype')
-  const manifest = JSON.parse(await readFile(join(KIT, 'skills/plugin/plugin.json'), 'utf8'))
+  const manifest = { ...JSON.parse(await readFile(join(KIT, 'skills/plugin/plugin.json'), 'utf8')), version }
 
   await mkdir(join(plugin, '.claude-plugin'), { recursive: true })
   await writeFile(join(plugin, '.claude-plugin/plugin.json'), `${JSON.stringify(manifest, null, 2)}\n`)
   await cp(join(KIT, 'skills/plugin/README.md'), join(plugin, 'README.md'))
-  await writeSkill(join(plugin, 'skills/design'), { skill: 'plugin/design/SKILL.md', css, workflows: ['design'], scripts: true })
-  await writeSkill(join(plugin, 'skills/review'), { skill: 'plugin/review/SKILL.md', workflows: ['review'] })
+  await writeSkill(join(plugin, 'skills/design'), { skill: 'plugin/design/SKILL.md', css, workflows: ['design'], version, scripts: true })
+  await writeSkill(join(plugin, 'skills/review'), { skill: 'plugin/review/SKILL.md', workflows: ['review'], version })
 
   await mkdir(join(marketplace, '.claude-plugin'), { recursive: true })
   const catalog = {
@@ -381,8 +399,10 @@ async function main(argv) {
   const css = await kitStylesheet()
   await checkPythonBuilder(dist, css)
   await packageKit(dist, css)
-  await packageClaudeAiSkill(dist, css)
-  await packageClaudeCodePlugin(dist, css)
+  const version = await kitVersion()
+  console.log(`• lemonade-prototype ${version}`)
+  await packageClaudeAiSkill(dist, css, version)
+  await packageClaudeCodePlugin(dist, css, version)
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) await main(process.argv.slice(2))
