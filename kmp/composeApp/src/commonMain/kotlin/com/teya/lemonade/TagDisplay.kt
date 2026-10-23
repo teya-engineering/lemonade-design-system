@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -115,6 +117,18 @@ internal fun TagDisplay() {
             }
         }
 
+        item(key = "Themes (Solid)") {
+            TagSection(title = "Themes (Solid)") {
+                ThemedTags(subtle = false)
+            }
+        }
+
+        item(key = "Themes (Subtle)") {
+            TagSection(title = "Themes (Subtle)") {
+                ThemedTags(subtle = true)
+            }
+        }
+
         item(key = "Use Cases") {
             TagSection(title = "Use Cases") {
                 Column(
@@ -186,6 +200,26 @@ internal fun TagDisplay() {
         }
     }
 }
+
+@OptIn(ExperimentalLemonadeApi::class, ExperimentalLayoutApi::class)
+@Composable
+private fun ThemedTags(subtle: Boolean) {
+    FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+    ) {
+        ThemedHue.entries.forEach { hue ->
+            LemonadeUi.Tag(
+                label = hue.displayName(),
+                icon = LemonadeIcons.Heart,
+                theme = if (subtle) hue.subtle else hue,
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalLemonadeApi::class)
+private fun ThemedHue.displayName(): String = name.replace(regex = Regex("(?<=.)(?=[A-Z])"), replacement = " ")
 
 @Composable
 private fun StatusTagRows() {

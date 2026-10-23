@@ -3,12 +3,12 @@
 // component=SymbolContainer
 import figma from 'figma'
 import { renderer } from '../shared/render'
-import { themeMap } from '../shared/themed'
+import { swiftThemes } from '../shared/themed'
 
 const instance = figma.selectedInstance
 const { snippets, quote } = renderer(instance, figma.swift)
 
-const theme = instance.getEnum('◇ Theme', themeMap(([first, ...rest]) => `.${first.toLowerCase()}${rest.join('')}`))
+const theme = instance.getEnum('◇ Theme', swiftThemes)
 
 const size = instance.getEnum('↕ Size', {
   XSmall: 'xSmall',

@@ -211,6 +211,7 @@ needed more than a property lookup:
   overloads, Icon and Text only. `◇ Theme` value `Violet Subtle` becomes
   `ThemedHue.Violet.subtle` / `.violet.subtle`. The Compose overloads are
   `@ExperimentalLemonadeApi`, so its snippet carries a NOTE about opting in.
+  `Tag (Themed)` works the same way and maps to Tag's `theme:` overload.
 
 - `Tabs` resolves its tab children the way SegmentedControl does, through a
   `TabItem` template on the internal `_Tab Item` component. Its `◇ Items` variant

@@ -3,12 +3,12 @@
 // component=SymbolContainer
 import figma from 'figma'
 import { renderer } from '../shared/render'
-import { themeMap } from '../shared/themed'
+import { kotlinThemes } from '../shared/themed'
 
 const instance = figma.selectedInstance
 const { slot, imports: slotImports, quote } = renderer(instance, figma.kotlin)
 
-const theme = instance.getEnum('◇ Theme', themeMap((words) => `ThemedHue.${words.join('')}`))
+const theme = instance.getEnum('◇ Theme', kotlinThemes)
 
 const size = instance.getEnum('↕ Size', {
   XSmall: 'XSmall',
