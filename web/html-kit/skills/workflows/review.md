@@ -9,7 +9,7 @@ report what breaks them. You do not restyle the page or judge taste; a finding i
 | --- | --- |
 | `references/guidelines/` | The rules. `index.md` explains the three books: `LDS-` (Lemonade), `APP-` (the Teya app), `LHK-` (prototypes) |
 | `assets/gallery.html` | The correct markup for every component, to compare against |
-| `assets/examples/` | Finished screens that follow the rules: settings, sales, transaction details, add recipient |
+| `assets/examples/` | Finished screens that follow the rules: settings, sales, transactions, card machines, recipients, transaction details, add recipient |
 | `references/llms.txt` | Every token that exists |
 | `references/assets.txt` | Every icon, flag and logo name that exists |
 | `references/classes.txt` | Every `lmnd-kit-` class that exists, by component |

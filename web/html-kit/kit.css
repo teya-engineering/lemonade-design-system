@@ -108,6 +108,47 @@ h6 {
   color: var(--lmnd-color-content-primary);
 }
 
+/* A list group (the Teya app's SectionGroup under a SubHeader): a header placing the group, such as a day
+   and its total, over the group's card. Groups sit spacing-400 apart like any card. */
+.lmnd-kit-list-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.lmnd-kit-list-group__header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--lmnd-spacing-200);
+  padding: var(--lmnd-spacing-200);
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-list-group__heading {
+  display: flex;
+  gap: var(--lmnd-spacing-100);
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.lmnd-kit-list-group__heading > * {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* The next page of a list loading (APP-FEED-PAGING): a spinner centred under the last group. */
+.lmnd-kit-load-more {
+  display: flex;
+  justify-content: center;
+  padding: var(--lmnd-spacing-200) 0;
+}
+
+.lmnd-kit-list-group__total {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding-right: var(--lmnd-spacing-200);
+}
+
 .lmnd-kit-stack {
   display: flex;
   flex-direction: column;
@@ -238,6 +279,19 @@ h6 {
   position: absolute;
   right: calc(-1 * var(--lmnd-spacing-100));
   bottom: calc(-1 * var(--lmnd-spacing-100));
+}
+
+/* A record's status on its symbol: the Teya app's badge artwork (data-badge) at 20px on the bottom-right
+   corner, over a disc of the card's colour, as ItemSymbolBadgeView draws it. */
+.lmnd-kit-symbol__status {
+  position: absolute;
+  right: calc(-1 * var(--lmnd-spacing-100));
+  bottom: calc(-1 * var(--lmnd-spacing-100));
+  width: var(--lmnd-size-500);
+  height: var(--lmnd-size-500);
+  background:
+    var(--lmnd-kit-asset) center / contain no-repeat,
+    radial-gradient(closest-side, var(--lmnd-color-bg-default) 99%, transparent 100%);
 }
 
 /* ---------- Tag ---------- */
@@ -398,7 +452,7 @@ h6 {
 }
 
 /* The filter bar (APP-FILTER-BAR): chips spacing-200 apart, spacing-400 around, ending in a Clear or Reset
-   filters button. It goes in the top bar's bottom slot, so it stays pinned as the list scrolls. */
+   filters button. It goes first in the content, under the search field, and scrolls with the list. */
 .lmnd-kit-filter-bar {
   display: flex;
   align-items: center;
@@ -412,8 +466,10 @@ h6 {
   flex-shrink: 0;
 }
 
-.lmnd-kit-top-bar__bottom:has(> .lmnd-kit-filter-bar) {
-  padding: 0;
+/* On a screen the chips scroll under the screen's edges, as in the app. */
+.lmnd-kit-content > .lmnd-kit-filter-bar {
+  margin: 0 calc(-1 * var(--lmnd-spacing-400));
+  padding: 0 var(--lmnd-spacing-400);
 }
 
 /* ---------- Icon button ---------- */
@@ -714,6 +770,13 @@ h6 {
 .lmnd-kit-skeleton--circle.lmnd-kit-skeleton--x-large { width: var(--lmnd-size-800); height: var(--lmnd-size-800); }
 .lmnd-kit-skeleton--circle.lmnd-kit-skeleton--xx-large { width: var(--lmnd-size-1000); height: var(--lmnd-size-1000); }
 
+/* A list row's symbol while it loads: the medium symbol container's size and rounded shape. */
+.lmnd-kit-skeleton--symbol {
+  width: var(--lmnd-size-1000);
+  height: var(--lmnd-size-1000);
+  border-radius: var(--lmnd-radius-300);
+}
+
 .lmnd-kit-skeleton--block {
   width: 100%;
   height: var(--lmnd-size-1600);
@@ -946,6 +1009,16 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   align-self: flex-start;
   gap: var(--lmnd-spacing-50);
   text-align: end;
+}
+
+/* The value's styles, as the app's ListItemValueStyle: money in, a record still pending, and one that was
+   declined or voided. */
+.lmnd-kit-list-item__value--positive > :first-child { color: var(--lmnd-color-content-positive); }
+.lmnd-kit-list-item__value--dimmed > :first-child { color: var(--lmnd-color-content-tertiary); }
+
+.lmnd-kit-list-item__value--strikethrough > :first-child {
+  color: var(--lmnd-color-content-secondary);
+  text-decoration: line-through;
 }
 
 .lmnd-kit-list-item__chevron {
@@ -1411,11 +1484,17 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   padding-bottom: var(--lmnd-kit-safe-bottom);
   overflow-y: auto;
   border-radius: var(--lmnd-radius-500) var(--lmnd-radius-500) 0 0;
-  background: var(--lmnd-color-bg-default);
+  background: var(--lmnd-kit-sheet-bg);
+  --lmnd-kit-sheet-bg: var(--lmnd-color-bg-default);
 }
 
 .lmnd-kit-sheet--subtle {
-  background: var(--lmnd-color-bg-subtle);
+  --lmnd-kit-sheet-bg: var(--lmnd-color-bg-subtle);
+}
+
+/* The footer action keeps the safe area itself, so it can stay fixed over the scrolling content. */
+.lmnd-kit-sheet:has(> .lmnd-kit-sheet__actions:last-child) {
+  padding-bottom: 0;
 }
 
 .lmnd-kit-sheet__handle {
@@ -1461,11 +1540,19 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   padding: var(--lmnd-spacing-400);
 }
 
+/* Fixed while the content scrolls, fading it where they meet (APP-FOOTER-PLACEMENT). */
 .lmnd-kit-sheet__actions {
+  position: sticky;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   gap: var(--lmnd-spacing-200);
   padding: var(--lmnd-spacing-200) var(--lmnd-spacing-400) var(--lmnd-spacing-400);
+  background: linear-gradient(to bottom, transparent, var(--lmnd-kit-sheet-bg) var(--lmnd-spacing-200));
+}
+
+.lmnd-kit-sheet__actions:last-child {
+  padding-bottom: calc(var(--lmnd-spacing-400) + var(--lmnd-kit-safe-bottom));
 }
 
 .lmnd-kit-sheet__actions .lmnd-button {

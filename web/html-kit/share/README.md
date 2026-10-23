@@ -39,7 +39,7 @@ the screen back as one file.
 | --- | --- |
 | `lemonade-kit.css` | Everything: tokens, type scale, components, Figtree, icons, flags and logos. Generated; don't edit it |
 | `gallery.html` | Every component with its markup |
-| `examples/` | Screens to start from: Settings, Sales (with a filter sheet), Transaction details, Add recipient |
+| `examples/` | Screens to start from: Settings, Sales (with a filter sheet), Transactions (with a store picker), Card machines, Recipients, Transaction details, Add recipient |
 | `guidelines/` | The rules a prototype follows |
 | `llms.txt` | Every token and what it is for |
 | `assets.txt` | Every icon, flag and logo name |

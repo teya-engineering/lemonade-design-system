@@ -34,9 +34,9 @@ describe('kit.css', () => {
 describe('the packaged stylesheet', () => {
   it('puts each asset on its own line, which the page builder prunes by', async () => {
     const lines = (await kitStylesheet()).split('\n')
-    const assetLines = lines.filter((line) => /\[data-(icon|flag|logo)="/.test(line))
+    const assetLines = lines.filter((line) => /\[data-(icon|flag|logo|badge)="/.test(line))
     expect(assetLines.length).toBeGreaterThan(500)
-    assetLines.forEach((line) => expect(line.match(/\[data-(icon|flag|logo)="/g)).toHaveLength(1))
+    assetLines.forEach((line) => expect(line.match(/\[data-(icon|flag|logo|badge)="/g)).toHaveLength(1))
   })
 })
 

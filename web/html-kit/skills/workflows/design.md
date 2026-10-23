@@ -9,7 +9,7 @@ from this skill's files; you never invent styles.
 | --- | --- |
 | `assets/lemonade-kit.css` | The whole kit: tokens, type, components, fonts, icons, flags, logos. Link it; never read or grep it — it is mostly inline artwork |
 | `assets/gallery.html` | Every component with the markup that draws it. Your source for markup |
-| `assets/examples/` | Finished screens to start from: `settings.html`, `sales.html` (widgets, filter sheet), `transaction-details.html`, `add-recipient.html` (form) |
+| `assets/examples/` | Finished screens to start from: `settings.html` (menu), `sales.html` (widgets, filter sheet), `transactions.html` (feed, multi-select picker), `card-machines.html` and `recipients.html` (resource lists), `transaction-details.html`, `add-recipient.html` (form) |
 | `references/guidelines/` | The rules a screen follows. Start with `index.md` |
 | `references/llms.txt` | Every token, and what each colour is for |
 | `references/assets.txt` | Every icon, flag and logo name; anything else does not exist |
@@ -24,7 +24,7 @@ Paths inside the guidelines (`gallery.html`, `examples/`, `lemonade-kit.css`) ar
 2. **Read the rules that apply.** Always read `references/guidelines/index.md`, `app-principles.md`,
    `prototypes.md` and `cards.md`. Then read the file for each part of your screen: `lists.md` for rows, `buttons.md` for
    buttons, `top-bar.md` for the top bar, `sheets.md` for a sheet or dialog, `widgets.md` for dashboard
-   widgets, `details.md` for a details screen, `text.md` for intros, `colour.md` before any custom colour.
+   widgets, `details.md` for a details screen, `list-screens.md` for a feed, a list of things or a picker sheet, `text.md` for intros, `colour.md` before any custom colour.
    Their exception lists are complete.
 3. **Start from the closest example.** Copy it into the working `examples/` folder under a new name and
    change its content. Keep its stylesheet link, `lmnd-kit-device` frame, `lmnd-kit-screen`, top bar and spacing.

@@ -33,8 +33,9 @@ instead.
 | --- | --- | --- |
 | `kit.css` | The components, as `lmnd-kit-*` classes, written against the `--lmnd-*` tokens | part of `lemonade-kit.css` |
 | `build.mjs` | Generates `lemonade-kit.css` and packages the kit, the Claude.ai skill and the Claude Code plugin | — |
+| `badges/` | The Teya app's transaction status badges, light and `-dark`, copied from its `shared-assets/source/vectors/` with `_badge` dropped and `_` as `-`. Copy them again when the app's change | part of `lemonade-kit.css` |
 | `gallery.html` | Every component with its markup | `gallery.html` |
-| `examples/` | Settings, Sales (with a filter sheet), Transaction details, Add recipient | `examples/` |
+| `examples/` | Settings, Sales (with a filter sheet), Transactions (with a store picker), Card machines, Recipients, Transaction details, Add recipient | `examples/` |
 | `guidelines/` | The rules a prototype follows: Lemonade's `LDS-` rules in kit markup, and the kit's own `LHK-` rules | `guidelines/` |
 | `SKILL.md` | Instructions for an AI session | `SKILL.md` |
 | `share/README.md` | Instructions for the person who receives the kit | `README.md` |

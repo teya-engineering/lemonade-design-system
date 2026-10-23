@@ -1,5 +1,5 @@
 """Turns a kit page into one self-contained HTML file: the linked lemonade-kit.css goes inline, keeping
-only the icons, flags and logos the page names. The same as build.mjs, for machines without Node.
+only the icons, flags, logos and badges the page names. The same as build.mjs, for machines without Node.
 
     python3 build.py <page.html> [more.html ...]
 
@@ -10,9 +10,9 @@ import sys
 from pathlib import Path
 
 LINK = re.compile(r'<link\b[^>]*\bhref="([^"]*lemonade-kit\.css)"[^>]*>')
-ASSET = re.compile(r'data-(icon|flag|logo)="([a-zA-Z0-9-]+)"')
+ASSET = re.compile(r'data-(icon|flag|logo|badge)="([a-zA-Z0-9-]+)"')
 # lemonade-kit.css carries one asset per line, so a page keeps exactly the lines it names.
-ASSET_LINE = re.compile(r'\[data-(icon|flag|logo)="([a-zA-Z0-9-]+)"\]')
+ASSET_LINE = re.compile(r'\[data-(icon|flag|logo|badge)="([a-zA-Z0-9-]+)"\]')
 
 
 def inline_page(html: str, css: str) -> str:

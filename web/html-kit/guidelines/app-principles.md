@@ -2,18 +2,19 @@
 
 The Teya app's rules that hold across every screen, from its `docs/design/principles.md`, written here in
 kit markup. The app owns them: their IDs, meaning and exceptions are the app's, and only the examples are
-the kit's. `APP-TOPBAR-COMPONENT`, `APP-FEED-CARD-APPEARANCE` and `APP-SHEET-OVER-SHEET` are about app code
-and navigation, so the kit doesn't carry them.
+the kit's. `APP-TOPBAR-COMPONENT` and `APP-SHEET-OVER-SHEET` are about app code and navigation, so the kit
+doesn't carry them. `APP-FEED-CARD-APPEARANCE` is with the other list rules, in `list-screens.md`.
 
 ## `APP-SCREEN-ARCHETYPE` · Every screen names its archetype
 
 **Kind.** Rule.
 
 **Rule.** Every screen names its archetype and follows that anatomy: explainer sheet, picker sheet,
-confirmation, intro screen, form, review or entity detail. The kit's examples cover two of them —
-`add-recipient.html` is a form and `transaction-details.html` an entity detail (`details.md`) — and a
-settings list, a dashboard of widgets and a full-screen list need none. A screen that fits none of them
-stops and asks rather than inventing one.
+confirmation, intro screen, form, review, entity detail, feed or resource list. The kit's examples cover
+five of them — `add-recipient.html` is a form, `transaction-details.html` an entity detail (`details.md`),
+`transactions.html` a feed with a picker sheet, and `card-machines.html` and `recipients.html` resource
+lists (`list-screens.md`) — and a settings list and a dashboard of widgets need none. A screen that fits
+none of them stops and asks rather than inventing one.
 
 **Why.** An invented anatomy is the drift. Most of the inconsistency in the app comes from screens
 building their own structure instead of reaching for a shared one.
@@ -161,8 +162,9 @@ the user needs to do next, so the bar that holds it stays where it was.
 
 **Kind.** Rule.
 
-**Rule.** Filters sit in a `lmnd-kit-filter-bar` in the top bar's bottom slot, `lmnd-kit-top-bar__bottom`, so the bar
-stays pinned while the list scrolls. Each filter is a `lmnd-kit-chip` carrying the filter's name and a
+**Rule.** Filters sit in a `lmnd-kit-filter-bar` first in `lmnd-kit-content`, under the search field when the
+list has one (`APP-LIST-SEARCH`), and scroll away with the list. Only the top bar, with a section's tabs,
+stays pinned. Each filter is a `lmnd-kit-chip` carrying the filter's name and a
 `chevron-down`, `lmnd-kit-chip--selected` while it has a value, and a `lmnd-kit-chip__counter` for how many values are
 picked. A chip shows its name and counter, never the chosen value, so it keeps its width. Tapping it opens
 that filter's picker sheet.
@@ -173,17 +175,18 @@ differs from the state the screen opened in: "Clear filters" on a list that open
 filters" on one that opens filtered.
 
 ```html
-<div class="lmnd-kit-top-bar__bottom">
+<main class="lmnd-kit-content">
   <div class="lmnd-kit-filter-bar">
     <a href="#period-sheet" class="lmnd-kit-chip lmnd-kit-chip--selected lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Period</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
     <a href="#store-sheet" class="lmnd-kit-chip lmnd-kit-chip--selected lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Store</span><span class="lmnd-kit-chip__counter lmnd-text-body-xsmall-semibold">1</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
     <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--ghost lmnd-button--x-small lmnd-text-body-small-semibold"><span class="lmnd-button__label">Reset filters</span></button>
   </div>
-</div>
+  …
+</main>
 ```
 
-**Why.** The filters in force are always on screen, and a chip that keeps its width doesn't shuffle the
-row every time someone picks.
+**Why.** Once the merchant starts reading the list, the list gets the screen, and the filters are one
+flick back up. A chip that keeps its width doesn't shuffle the row every time someone picks.
 
 **Exceptions.** None. "Status" is a chip; "Card payments" against "Bank transfers" is a tab.
 

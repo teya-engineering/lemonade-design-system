@@ -103,16 +103,18 @@ bar fills draws a seam the app never shows.
 **Do / don't.** A screen whose last card ends above the home indicator, and whose status bar turns white
 with its top bar. Not a `padding-bottom: 34px` on a page's own wrapper, and not a screen with no top bar.
 
-## `LHK-ASSETS` · Icons, flags and logos come from the kit
+## `LHK-ASSETS` · Icons, flags, logos and badges come from the kit
 
 **Kind.** Rule.
 
 **Rule.** Icons are `<span class="lmnd-icon" data-icon="…">`, flags `<span class="lmnd-kit-flag" data-flag="…">`,
-brand logos `<span class="lmnd-kit-logo" data-logo="…">`, using names from `assets.txt`. No inline SVG, icon
-font, emoji or image from elsewhere stands in for one.
+brand logos `<span class="lmnd-kit-logo" data-logo="…">`, and a transaction's status badge
+`<span class="lmnd-kit-symbol__status" data-badge="…">` (`APP-FEED-ROWS`), using names from `assets.txt`. No
+inline SVG, icon font, emoji or image from elsewhere stands in for one.
 
-**Why.** These are the app's assets, generated from the same Figma file. `lemonade-kit.css` carries
-them, the build refuses a name that doesn't exist, and logos swap to their dark artwork in dark mode.
+**Why.** These are the app's assets: the icons, flags and logos generated from Lemonade's Figma file, the
+badges copied from the app's own. `lemonade-kit.css` carries them, the build refuses a name that doesn't
+exist, and logos and badges swap to their dark artwork in dark mode.
 An asset from elsewhere gets none of that and won't be in the app.
 
 **Exceptions.** Content imagery the app loads at runtime — a product photo, a merchant's logo, an avatar

@@ -10,7 +10,7 @@ Three books of rules live here:
 | --- | --- | --- |
 | `LDS-` | Lemonade | How components are used and combined. The same rules, under the same IDs, as the Lemonade guidelines for KMP and SwiftUI, with the examples written in kit markup. |
 | `LHK-` | This kit | How a prototype is built: tokens, markup, screens, assets, copy and flows. |
-| `APP-` | The Teya app | How the app's own components and screen kinds are used, such as its dashboard widgets and details screens. The same book as the app's `docs/design/` rules, under the same prefix. The widget and details rules here are not in the app's docs yet; the details rules follow its entity-detail archetype. |
+| `APP-` | The Teya app | How the app's own components and screen kinds are used, such as its dashboard widgets and details screens. The same book as the app's `docs/design/` rules, under the same prefix. The widget rules here are not in the app's docs yet; the details and list rules follow its entity detail, feed, resource list and picker sheet archetypes. |
 
 | File | Rules |
 | --- | --- |
@@ -23,6 +23,7 @@ Three books of rules live here:
 | [text.md](text.md) | `LDS-TEXT-INTRO` |
 | [app-principles.md](app-principles.md) | `APP-SCREEN-ARCHETYPE`, `APP-TOPBAR-TITLE`, `APP-TOPBAR-ACTION`, `APP-TOPBAR-TRAILING`, `APP-TOPBAR-ACTION-STYLE`, `APP-SCREEN-STATES`, `APP-LOADING`, `APP-WIDGET-EMPTY`, `APP-SCREEN-EMPTY`, `APP-FILTER-BAR`, `APP-FOOTER-PLACEMENT`, `APP-SPACING-RHYTHM` |
 | [widgets.md](widgets.md) | `APP-WIDGET-GRID`, `APP-WIDGET-ONE-NAME`, `APP-WIDGET-ONE-VALUE`, `APP-WIDGET-SUPPORT`, `APP-WIDGET-STATUS-TINT`, `APP-WIDGET-BOTTOM`, `APP-WIDGET-BOX`, `APP-WIDGET-LIST-TITLE`, `APP-WIDGET-TAP` |
+| [list-screens.md](list-screens.md) | `APP-LIST-KIND`, `APP-FEED-CARD-APPEARANCE`, `APP-FEED-GROUPS`, `APP-FEED-ROWS`, `APP-FEED-PAGING`, `APP-LIST-SEARCH`, `APP-RESOURCE-ROWS`, `APP-RESOURCE-GROUPS`, `APP-RESOURCE-ADD`, `APP-PICKER-OPTIONS`, `APP-PICKER-LEADING` |
 | [details.md](details.md) | `APP-DETAILS-TOP-BAR`, `APP-DETAILS-HERO`, `APP-DETAILS-WASH`, `APP-DETAILS-CARD-HEADING`, `APP-DETAILS-ROWS`, `APP-DETAILS-ACTIONS`, `APP-DETAILS-STATES` |
 | [prototypes.md](prototypes.md) | `LHK-TOKENS-ONLY`, `LHK-KIT-MARKUP`, `LHK-SCREEN`, `LHK-SAFE-AREAS`, `LHK-ASSETS`, `LHK-COPY`, `LHK-FLOWS` |
 

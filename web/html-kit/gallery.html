@@ -50,7 +50,7 @@
   <h2 class="lmnd-text-body-xsmall-overline">Display</h2>
   <a href="#symbol">Symbol container</a><a href="#tag">Tag and badge</a><a href="#notice">Notice</a><a href="#skeleton">Skeleton</a><a href="#divider">Divider</a><a href="#flags">Flags and logos</a>
   <h2 class="lmnd-text-body-xsmall-overline">Lists</h2>
-  <a href="#card">Card</a><a href="#widget">Mini widget</a><a href="#list-item">List item</a><a href="#content-item">Content list item</a><a href="#select-item">Select list item</a><a href="#timeline">History timeline</a><a href="#swipe">Swipe action row</a>
+  <a href="#card">Card</a><a href="#widget">Mini widget</a><a href="#list-item">List item</a><a href="#list-group">List group</a><a href="#content-item">Content list item</a><a href="#select-item">Select list item</a><a href="#timeline">History timeline</a><a href="#swipe">Swipe action row</a>
   <h2 class="lmnd-text-body-xsmall-overline">Inputs</h2>
   <a href="#text-field">Text field</a><a href="#select-field">Select field</a><a href="#search">Search field</a><a href="#pin">Pin code</a><a href="#controls">Switch, checkbox, radio</a><a href="#box-selection">Box selection</a><a href="#segmented">Segmented control</a><a href="#tabs">Tabs</a>
   <h2 class="lmnd-text-body-xsmall-overline">Navigation and overlays</h2>
@@ -438,6 +438,47 @@
     </span>
   </a>
 </div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="list-group">
+    <h2 class="lmnd-text-heading-small">List group</h2>
+    <p class="lmnd-text-body-small-regular">A feed's group: a header placing it over one card of rows (<code>APP-FEED-GROUPS</code>). A money feed's header names the day and carries its total. A record's status is the app's badge on its symbol, <code>lmnd-kit-symbol__status</code> with a <code>data-badge</code> from <code>assets.txt</code>, and its amount takes a value style: <code>--dimmed</code> while pending, <code>--strikethrough</code> once declined or voided, <code>--positive</code> for money in (<code>APP-FEED-ROWS</code>). The next page loads under a spinner, <code>lmnd-kit-load-more</code>.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<section class="lmnd-kit-list-group">
+  <h3 class="lmnd-kit-list-group__header"><span class="lmnd-kit-list-group__heading"><span class="lmnd-text-body-small-semibold">Yesterday,</span><span class="lmnd-text-body-small-regular">22 Oct 2026</span></span><span class="lmnd-kit-list-group__total lmnd-text-body-small-medium">£1,284.50</span></h3>
+  <div class="lmnd-kit-card">
+    <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+      <span class="lmnd-kit-list-item__row">
+        <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-logo" data-logo="visa" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="sale-transaction-approved" aria-hidden="true"></span></span></span>
+        <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Visa •••• 4242</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">14:32 • Camden</span></span>
+        <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£24.00</span></span>
+      </span>
+    </a>
+    <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+      <span class="lmnd-kit-list-item__row">
+        <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-logo" data-logo="mastercard" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="sale-transaction-pending" aria-hidden="true"></span></span></span>
+        <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Mastercard •••• 8817</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">13:58 • Camden</span></span>
+        <span class="lmnd-kit-list-item__value lmnd-kit-list-item__value--dimmed"><span class="lmnd-text-body-medium-medium">£8.40</span></span>
+      </span>
+    </a>
+    <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+      <span class="lmnd-kit-list-item__row">
+        <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-logo" data-logo="visa" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="sale-transaction-declined" aria-hidden="true"></span></span></span>
+        <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Visa •••• 1290</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">13:11 • Soho</span></span>
+        <span class="lmnd-kit-list-item__value lmnd-kit-list-item__value--strikethrough"><span class="lmnd-text-body-medium-medium">£56.20</span></span>
+      </span>
+    </a>
+    <a href="#" class="lmnd-kit-list-item">
+      <span class="lmnd-kit-list-item__row">
+        <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-text-body-small-semibold">NB<span class="lmnd-kit-symbol__status" data-badge="money-in" aria-hidden="true"></span></span></span>
+        <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Northside Bakery</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">09:05 • Invoice 2231</span></span>
+        <span class="lmnd-kit-list-item__value lmnd-kit-list-item__value--positive"><span class="lmnd-text-body-medium-medium">+£310.00</span></span>
+      </span>
+    </a>
+  </div>
+</section>
+<div class="lmnd-kit-load-more" role="status" aria-label="Loading more transactions"><span class="lmnd-spinner lmnd-spinner--medium" aria-hidden="true"></span></div>
     </div></div>
   </section>
 
