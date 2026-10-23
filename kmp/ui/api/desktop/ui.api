@@ -667,6 +667,7 @@ public final class com/teya/lemonade/TabsKt {
 
 public final class com/teya/lemonade/TagKt {
 	public static final fun Tag (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/core/TagVoice;Landroidx/compose/runtime/Composer;II)V
+	public static final fun Tag (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lcom/teya/lemonade/ThemedStyle;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/core/LemonadeIcons;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/teya/lemonade/TextFieldKt {
