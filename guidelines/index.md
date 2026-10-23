@@ -1,20 +1,24 @@
 # Guidelines
 
-How Lemonade components are used and combined. These rules apply to every product built on
-Lemonade, so they name components and tokens and never a particular app's screens.
+How Lemonade components and foundations are used and combined. These rules apply to every product
+built on Lemonade, so they name components and tokens and never a particular app's screens.
 
 A component's own KDoc or doc comment says what it does and what its parameters mean. These rules
 say what to do with it next to another one: when rows need a card, what belongs in a leading slot,
-which of two buttons is the secondary, which colour layer to reach for.
+which of two buttons is the secondary, which control a choice needs. The foundation files — colour,
+text, dimension and shadow — say which token to reach for and when.
 
 | File | Rules |
 | --- | --- |
 | [cards.md](cards.md) | `LDS-CARD-GROUPED-ITEMS`, `LDS-CARD-NO-HANDROLL`, `LDS-CARD-PADDING` |
 | [lists.md](lists.md) | `LDS-LIST-NO-HANDROLL`, `LDS-LIST-LEADING-SLOT` |
 | [buttons.md](buttons.md) | `LDS-BUTTON-PAIR`, `LDS-BUTTON-EXPLICIT-TYPE` |
-| [colour.md](colour.md) | `LDS-COLOR-SEMANTIC` |
 | [sheets.md](sheets.md) | `LDS-SHEET-CHROME` |
-| [text.md](text.md) | `LDS-TEXT-INTRO` |
+| [controls.md](controls.md) | `LDS-CONTROL-CHOICE` |
+| [colour.md](colour.md) | `LDS-COLOR-SEMANTIC`, `LDS-COLOR-SURFACE`, `LDS-COLOR-ON-SURFACE`, `LDS-COLOR-INVERSE`, `LDS-COLOR-STATE` |
+| [text.md](text.md) | `LDS-TEXT-INTRO`, `LDS-TEXT-STYLE`, `LDS-TEXT-HEADING-DISPLAY` |
+| [dimension.md](dimension.md) | `LDS-DIMENSION-SCALE`, `LDS-DIMENSION-EDGE`, `LDS-DIMENSION-GAPS`, `LDS-DIMENSION-RADIUS` |
+| [shadow.md](shadow.md) | `LDS-SHADOW-LEVEL`, `LDS-SHADOW-NOT-A-BORDER` |
 
 ## How to read a rule
 

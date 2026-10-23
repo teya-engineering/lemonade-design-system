@@ -119,10 +119,10 @@ Every public API is documented with:
 
 ## Guidelines
 
-[`guidelines/`](./guidelines/index.md) holds the rules for using and combining components: when rows
-need a card, what belongs in a leading slot, which of two buttons is the secondary, which colour
-layer to reach for. A component's own documentation says what it does; the guidelines say what to do
-with it next to another one.
+[`guidelines/`](./guidelines/index.md) holds the rules for using and combining components and
+foundations: when rows need a card, which of two buttons is the secondary, which background a
+container takes, which text style a title gets, which shadow an overlay casts. A component's own
+documentation says what it does; the guidelines say what to do with it next to another one.
 
 Each rule carries a stable `LDS-` slug, so a review finding or an exemption comment in a consuming
 repository points at something written down.
