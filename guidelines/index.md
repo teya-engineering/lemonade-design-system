@@ -10,7 +10,7 @@ which of two buttons is the secondary, which colour layer to reach for.
 | File | Rules |
 | --- | --- |
 | [cards.md](cards.md) | `LDS-CARD-GROUPED-ITEMS`, `LDS-CARD-NO-HANDROLL`, `LDS-CARD-SURFACE`, `LDS-CARD-PADDING` |
-| [lists.md](lists.md) | `LDS-LIST-NO-HANDROLL`, `LDS-LIST-LEADING-SLOT` |
+| [lists.md](lists.md) | `LDS-LIST-NO-HANDROLL`, `LDS-LIST-LEADING-SLOT`, `LDS-LIST-SYMBOL-SHAPE` |
 | [buttons.md](buttons.md) | `LDS-BUTTON-PAIR`, `LDS-BUTTON-EXPLICIT-TYPE` |
 | [colour.md](colour.md) | `LDS-COLOR-SEMANTIC` |
 | [sheets.md](sheets.md) | `LDS-SHEET-CHROME` |

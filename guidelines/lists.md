@@ -44,3 +44,20 @@ colour is never the answer. See `LDS-COLOR-SEMANTIC`.
 settings list reads better with plain icons, an explainer with symbol containers — so the weight is
 settled once per kind rather than argued screen by screen. That table belongs in the product's own
 rules.
+
+## `LDS-LIST-SYMBOL-SHAPE` · A symbol in a row's leading slot is rounded
+
+**Rule.** When a row's leading slot holds a `SymbolContainer` (see `LDS-LIST-LEADING-SLOT`), it uses the
+rounded shape — `shape = SymbolContainerShape.Rounded` in Compose, `shape: .rounded` in SwiftUI — never the
+circle. This holds for every list row: `ActionListItem`, `ResourceListItem`, `SelectListItem` in both
+variants, and any other `ListItem`.
+
+**Why.** One shape down a list keeps its left edge reading as one column. The rounded square is the list
+shape; the circle is the component's default on both platforms, so a row that doesn't ask for rounded
+gets the wrong one.
+
+**Exceptions.** None in a list row. A `SymbolContainer` outside one — a screen's hero, a badge host —
+keeps whichever shape its layout calls for.
+
+**Do / don't.** `leadingSlot = { SymbolContainer(icon = Store, shape = SymbolContainerShape.Rounded) }`.
+Not `SymbolContainer(icon = Store)`, which is a circle.
