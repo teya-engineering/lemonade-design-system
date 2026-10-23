@@ -112,6 +112,13 @@ last. Each card chooses one layout for all its rows, by its longest value:
 | All short — a channel, a brand, four digits, a date | Label beside value, the default |
 | Any one of them long — an address, an IBAN, a reference, a full device id | `lmnd-kit-content-item--vertical` on every row: label above value |
 
+The rows' density is chosen once for the whole screen, by what the entity is:
+
+| The entity | Density |
+| --- | --- |
+| A thing the merchant has or works with — a card machine, a store, an account, a recipient | Comfortable, the default `lmnd-kit-content-item` |
+| A record of money moving — a sale, a refund, a transfer, a payout | `lmnd-kit-content-item--compact` on every row of every card |
+
 A value the user will want elsewhere — an account number, a reference, a device id — gets a copy button
 in its value: `lmnd-kit-icon-button--primary lmnd-kit-icon-button--ghost lmnd-kit-icon-button--x-small
 lmnd-kit-icon-button--circular` with the `copy` icon. A value the user can change gets the `pencil-line` icon the
@@ -119,12 +126,15 @@ same way, and edits in place or in a sheet. A row that points at a related entit
 refund — is the only row that may navigate: a `lmnd-kit-list-item` with that entity's own symbol.
 
 **Why.** Choosing per card rather than per row keeps the rows in a card aligned with each other. A long
-value beside its label wraps into two short lines that read as two values.
+value beside its label wraps into two short lines that read as two values. A money record is read like a
+receipt, many facts scanned together, so its rows sit closer; a thing's details are fewer facts read one
+at a time. One density per screen keeps every card on it in the same rhythm.
 
 **Exceptions.** None.
 
 **Do / don't.** A Record card with a long reference, every row vertical. Not one vertical row among
-horizontal ones, and not a reference that wraps beside its label.
+horizontal ones, and not a reference that wraps beside its label. A card machine's Details card with
+comfortable rows. Not compact rows on a card machine because the transaction example has them.
 
 ## `APP-DETAILS-ACTIONS` · Actions scroll with the content, in one place
 
