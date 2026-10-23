@@ -7,6 +7,8 @@ struct TagDisplayView: View {
             LazyVStack(alignment: .leading, spacing: 32) {
                 voicesSection
                 withIconsSection
+                themesSection(title: "Themes (Solid)", subtle: false)
+                themesSection(title: "Themes (Subtle)", subtle: true)
                 useCasesSection
                 inContextSection
             }
@@ -54,6 +56,27 @@ struct TagDisplayView: View {
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius150))
             }
         }
+    }
+
+    private func themesSection(title: String, subtle: Bool) -> some View {
+        sectionView(title: title) {
+            FlowLayout(spacing: 8) {
+                ForEach(ThemedHue.allCases, id: \.self) { hue in
+                    LemonadeUi.Tag(
+                        label: displayName(of: hue),
+                        icon: .heart,
+                        theme: subtle ? ThemedStyle(hue).subtle : ThemedStyle(hue)
+                    )
+                }
+            }
+        }
+    }
+
+    private func displayName(of hue: ThemedHue) -> String {
+        "\(hue)".reduce(into: "") { name, character in
+            if character.isUppercase { name.append(" ") }
+            name.append(character)
+        }.capitalized
     }
 
     private var useCasesSection: some View {
