@@ -13,7 +13,7 @@ which of two buttons is the secondary, which colour layer to reach for.
 | [lists.md](lists.md) | `LDS-LIST-NO-HANDROLL`, `LDS-LIST-LEADING-SLOT`, `LDS-LIST-SYMBOL-SHAPE` |
 | [buttons.md](buttons.md) | `LDS-BUTTON-PAIR`, `LDS-BUTTON-EXPLICIT-TYPE` |
 | [colour.md](colour.md) | `LDS-COLOR-SEMANTIC` |
-| [sheets.md](sheets.md) | `LDS-SHEET-CHROME` |
+| [sheets.md](sheets.md) | `LDS-SHEET-CHROME`, `LDS-SHEET-BAR-ACTIONS` |
 | [top-bar.md](top-bar.md) | `LDS-TOP-BAR-ACTIONS` |
 | [text.md](text.md) | `LDS-TEXT-INTRO` |
 
