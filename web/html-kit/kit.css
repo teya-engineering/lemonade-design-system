@@ -371,9 +371,9 @@ h6 {
   min-width: var(--lmnd-size-1600);
   min-height: var(--lmnd-size-800);
   padding: var(--lmnd-spacing-200);
-  border: var(--lmnd-border-width-40) solid var(--lmnd-kit-chip-border, transparent);
   border-radius: var(--lmnd-radius-full);
   background: var(--lmnd-kit-chip-bg, var(--lmnd-color-bg-elevated));
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-40) var(--lmnd-kit-chip-border, transparent);
   color: var(--lmnd-kit-chip-content, var(--lmnd-color-content-primary));
   cursor: pointer;
   transition: background-color 0.15s ease-in-out;
