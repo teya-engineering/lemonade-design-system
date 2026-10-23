@@ -1513,8 +1513,19 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   padding-bottom: 0;
 }
 
+/* The handle and the bar stay at the top while the sheet's content scrolls under them. */
 .lmnd-kit-sheet__handle {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   flex-shrink: 0;
+  height: calc(var(--lmnd-spacing-200) + var(--lmnd-size-100));
+  background: var(--lmnd-kit-sheet-bg);
+}
+
+.lmnd-kit-sheet__handle::after {
+  content: "";
+  display: block;
   width: var(--lmnd-size-800);
   height: var(--lmnd-size-100);
   margin: var(--lmnd-spacing-200) auto 0;
@@ -1525,12 +1536,20 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
 /* The scaffold's chrome: close on the left, optional actions on the right, sized like a top bar's row
    and following the same button rules (LDS-SHEET-BAR-ACTIONS). */
 .lmnd-kit-sheet__bar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--lmnd-kit-sheet-bg);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--lmnd-spacing-200);
   min-height: calc(var(--lmnd-size-1400) + 2 * var(--lmnd-spacing-50));
   padding: var(--lmnd-spacing-50) var(--lmnd-spacing-300);
+}
+
+.lmnd-kit-sheet__handle + .lmnd-kit-sheet__bar {
+  top: calc(var(--lmnd-spacing-200) + var(--lmnd-size-100));
 }
 
 .lmnd-kit-sheet__trailing {
