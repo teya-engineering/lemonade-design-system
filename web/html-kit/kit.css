@@ -193,6 +193,12 @@ h6 {
   background: linear-gradient(to bottom, transparent, var(--lmnd-color-bg-default) var(--lmnd-spacing-400));
 }
 
+/* A Button's pill shape, as SwiftUI's .fullShape() draws it. A top bar's and a sheet bar's text buttons
+   carry it (LDS-TOP-BAR-ACTIONS). */
+.lmnd-button.lmnd-kit-button--full-shape {
+  border-radius: var(--lmnd-radius-full);
+}
+
 .lmnd-kit-actions .lmnd-button {
   width: 100%;
 }

@@ -69,7 +69,7 @@ something is what the screen is for.
 **Kind.** Rule.
 
 **Rule.** A top bar's and a sheet bar's buttons are styled by `LDS-TOP-BAR-ACTIONS`: circular Small icon
-buttons, or a Small text button; the screen's primary action is Primary · Solid, and every other action is
+buttons, or a Small text button in its pill shape; the screen's primary action is Primary · Solid, and every other action is
 Neutral · Subtle. A destructive action's glyph is tinted `content-critical`. A disabled action uses the
 button's `disabled`; one that is working shows a spinner in place of its glyph.
 

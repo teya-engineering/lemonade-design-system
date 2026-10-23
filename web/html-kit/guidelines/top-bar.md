@@ -4,8 +4,9 @@
 
 **Kind.** Rule.
 
-**Rule.** A top bar's buttons are circular, Small icon buttons, or a single Small text button such as
-Reset or Done. Either way, the type says what the action is:
+**Rule.** A top bar's buttons are always round: circular, Small icon buttons
+(`lmnd-kit-icon-button--circular`), or a single Small text button such as Reset or Done in its pill shape
+(`lmnd-kit-button--full-shape`, SwiftUI's `.fullShape()`). Either way, the type says what the action is:
 
 - **The primary action** — the one thing the screen is for, such as adding, creating or saving — is
   Primary · Solid: `lmnd-kit-icon-button--primary lmnd-kit-icon-button--solid`, or
@@ -23,7 +24,7 @@ How many actions a bar carries is the app's call (`APP-TOPBAR-TRAILING`).
 </div>
 
 <div class="lmnd-kit-top-bar__trailing">
-  <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-text-body-small-semibold"><span class="lmnd-button__label">Reset</span></button>
+  <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-kit-button--full-shape lmnd-text-body-small-semibold"><span class="lmnd-button__label">Reset</span></button>
 </div>
 ```
 
@@ -32,7 +33,7 @@ a label rather than a control, and two treatments for the same weight of action 
 out which one matters. Solid marks the one action the screen wants; Subtle keeps every other action
 visible without competing with it.
 
-**Exceptions.** None. Ghost is never used in a top bar.
+**Exceptions.** None. Ghost is never used in a top bar, and neither is a button with square corners.
 
 **Do / don't.** A Primary · Solid add button next to a Subtle settings button. Not a ghost settings
 button, and not a Neutral · Solid one.

@@ -39,14 +39,14 @@ gesture does not go to.
 **Kind.** Rule.
 
 **Rule.** The buttons in `lmnd-kit-sheet__bar` follow `LDS-TOP-BAR-ACTIONS`, exactly as in an app's top bar:
-circular, Small icon buttons, or one Small text button such as Reset or Done. The sheet's primary action,
+circular, Small icon buttons, or one Small text button such as Reset or Done in its pill shape. The sheet's primary action,
 if it has one in the bar, is Primary · Solid, and every other action, Close included, is Neutral · Subtle.
 Two or more trailing actions go in a `lmnd-kit-sheet__trailing` group.
 
 ```html
 <div class="lmnd-kit-sheet__bar">
   <a href="#" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></a>
-  <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-text-body-small-semibold"><span class="lmnd-button__label">Reset</span></button>
+  <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-kit-button--full-shape lmnd-text-body-small-semibold"><span class="lmnd-button__label">Reset</span></button>
 </div>
 ```
 

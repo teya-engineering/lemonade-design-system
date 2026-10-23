@@ -111,7 +111,7 @@
 
   <section class="g-section" id="button">
     <h2 class="lmnd-text-heading-small">Button</h2>
-    <p class="lmnd-text-body-small-regular">The package's own Button. At most two per screen: the primary (Primary · Solid · Large) above a Neutral · Subtle secondary. <code>Secondary</code> is a branded treatment, never "the second button".</p>
+    <p class="lmnd-text-body-small-regular">The package's own Button. At most two per screen: the primary (Primary · Solid · Large) above a Neutral · Subtle secondary. <code>Secondary</code> is a branded treatment, never "the second button". <code>lmnd-kit-button--full-shape</code> gives the pill shape (SwiftUI's <code>.fullShape()</code>), which a text button in a top bar or sheet bar always takes.</p>
     <div class="g-example"><div class="g-demo g-demo--default" data-demo>
 <button type="button" class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold">
   <span class="lmnd-button__label">Continue</span>
@@ -129,6 +129,9 @@
   </button>
   <button type="button" class="lmnd-button lmnd-button--secondary lmnd-button--solid lmnd-button--small lmnd-text-body-small-semibold">
     <span class="lmnd-button__label">Secondary</span>
+  </button>
+  <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-kit-button--full-shape lmnd-text-body-small-semibold">
+    <span class="lmnd-button__label">Pill</span>
   </button>
   <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--ghost lmnd-button--x-small lmnd-text-body-small-semibold">
     <span class="lmnd-button__label">Ghost</span>
@@ -817,7 +820,7 @@
     <span class="lmnd-kit-sheet__handle"></span>
     <div class="lmnd-kit-sheet__bar">
       <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></button>
-      <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-text-body-small-semibold"><span class="lmnd-button__label">Reset</span></button>
+      <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-kit-button--full-shape lmnd-text-body-small-semibold"><span class="lmnd-button__label">Reset</span></button>
     </div>
     <h2 class="lmnd-kit-sheet__title lmnd-text-heading-large" id="g-sheet-title">Filter by payment method</h2>
     <div class="lmnd-kit-sheet__body">
