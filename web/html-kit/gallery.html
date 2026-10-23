@@ -443,17 +443,19 @@
 
   <section class="g-section" id="content-item">
     <h2 class="lmnd-text-heading-small">Content list item</h2>
-    <p class="lmnd-text-body-small-regular">Static label and value rows. Horizontal by default, <code>--vertical</code> stacks them, <code>--compact</code> halves the vertical padding. Dividers are separate <code>lmnd-kit-divider</code>s between rows.</p>
+    <p class="lmnd-text-body-small-regular">Static label and value rows. Horizontal by default, <code>--vertical</code> stacks them, <code>--compact</code> halves the vertical padding. A copy or edit action in a value is an <code>lmnd-kit-inline-action</code>: the icon alone, no bigger than the row. Dividers are separate <code>lmnd-kit-divider</code>s between rows.</p>
     <div class="g-example"><div class="g-demo" data-demo>
 <div class="lmnd-kit-card">
   <div class="lmnd-kit-content-item"><span class="lmnd-kit-content-item__label lmnd-text-body-medium-regular">Amount</span><span class="lmnd-kit-content-item__value lmnd-text-body-medium-medium">£24.00</span></div>
   <hr class="lmnd-kit-divider">
   <div class="lmnd-kit-content-item"><span class="lmnd-kit-content-item__label lmnd-text-body-medium-regular">Status</span><span class="lmnd-kit-content-item__value lmnd-text-body-medium-medium"><span class="lmnd-kit-tag lmnd-kit-tag--positive"><span class="lmnd-kit-tag__label lmnd-text-body-xsmall-semibold">Paid</span></span></span></div>
   <hr class="lmnd-kit-divider">
+  <div class="lmnd-kit-content-item"><span class="lmnd-kit-content-item__label lmnd-text-body-medium-regular">Serial number</span><span class="lmnd-kit-content-item__value lmnd-text-body-medium-medium">TRM-00291-P3<button type="button" class="lmnd-kit-inline-action" aria-label="Copy serial number"><span class="lmnd-icon" data-icon="copy" aria-hidden="true"></span></button></span></div>
+  <hr class="lmnd-kit-divider">
   <div class="lmnd-kit-content-item lmnd-kit-content-item--vertical">
     <div class="lmnd-kit-content-item__column">
       <span class="lmnd-text-body-small-regular lmnd-kit-secondary">Reference</span>
-      <span class="lmnd-kit-content-item__value lmnd-text-body-medium-medium">TXN-2024-118734<span class="lmnd-icon lmnd-kit-secondary" data-icon="copy" aria-hidden="true"></span></span>
+      <span class="lmnd-kit-content-item__value lmnd-text-body-medium-medium">TXN-2024-118734<button type="button" class="lmnd-kit-inline-action" aria-label="Copy reference"><span class="lmnd-icon" data-icon="copy" aria-hidden="true"></span></button></span>
     </div>
   </div>
 </div>

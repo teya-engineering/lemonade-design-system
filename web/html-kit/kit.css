@@ -1027,6 +1027,25 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   text-align: start;
 }
 
+/* An action inside a row's value — copy, edit. Only the icon is drawn, so it is never taller than the row
+   and adds no space around itself (APP-DETAILS-ROWS). */
+.lmnd-kit-inline-action {
+  display: inline-flex;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--lmnd-radius-200);
+  background: none;
+  color: var(--lmnd-color-content-brand);
+  font: inherit;
+  cursor: pointer;
+}
+
+.lmnd-kit-inline-action:focus-visible {
+  outline: var(--lmnd-border-width-focus-ring) solid var(--lmnd-color-border-selected);
+  outline-offset: var(--lmnd-spacing-50);
+}
+
 .lmnd-kit-content-item + .lmnd-kit-divider,
 .lmnd-kit-list-item + .lmnd-kit-divider {
   margin: 0 var(--lmnd-spacing-400);

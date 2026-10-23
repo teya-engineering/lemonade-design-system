@@ -129,10 +129,16 @@ The rows' density is chosen once for the whole screen, by what the entity is:
 | A thing the merchant has or works with — a card machine, a store, an account, a recipient | Comfortable, the default `lmnd-kit-content-item` |
 | A record of money moving — a sale, a refund, a transfer, a payout | `lmnd-kit-content-item--compact` on every row of every card |
 
-A value the user will want elsewhere — an account number, a reference, a device id — gets a copy button
-in its value: `lmnd-kit-icon-button--primary lmnd-kit-icon-button--ghost lmnd-kit-icon-button--x-small
-lmnd-kit-icon-button--circular` with the `copy` icon. A value the user can change gets the `pencil-line` icon the
-same way, and edits in place or in a sheet. A row that points at a related entity — the sale behind a
+A value the user will want elsewhere — an account number, a reference, a device id — gets a copy action
+after it, in its value: an `lmnd-kit-inline-action` holding the `copy` icon, with an `aria-label` naming
+what it copies. A value the user can change gets the `pencil-line` icon the same way, and edits in place or
+in a sheet. The inline action is the icon alone, 20px in `content-brand`: never an `lmnd-kit-icon-button`,
+whose box makes the row taller and pads the icon with space nobody sees.
+
+```html
+<span class="lmnd-kit-content-item__value lmnd-text-body-medium-medium">TRM-00291-P3<button type="button" class="lmnd-kit-inline-action" aria-label="Copy serial number"><span class="lmnd-icon" data-icon="copy" aria-hidden="true"></span></button></span>
+```
+ A row that points at a related entity — the sale behind a
 refund — is the only row that may navigate: a `lmnd-kit-list-item` with that entity's own symbol.
 
 **Why.** Choosing per card rather than per row keeps the rows in a card aligned with each other. A long
