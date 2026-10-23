@@ -11,11 +11,12 @@
 //   SKILL.md           instructions for an AI session
 //   README.md          instructions for a person
 //
-// and packages the same files as two Claude skills, lemonade-prototype and lemonade-prototype-review.
+// and packages the same files for Claude: one Claude.ai skill, lemonade-prototype, and a Claude Code
+// marketplace whose lemonade-prototype plugin has a design and a review skill.
 //
 //   node html-kit/build.mjs [--out <dir>]
 //
-// Output goes to web/dist/: lemonade-html-kit/ and its zip, and skills/ with a zip per skill, because
+// Output goes to web/dist/: lemonade-html-kit/ and its zip, skills/ and claude-code/ with a zip each, because
 // web/dist is the only place a build may write inside the repository.
 import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { dirname, join, relative, resolve } from 'node:path'
@@ -46,6 +47,11 @@ const KIT_ICONS = ['check-small', 'minus']
 
 const svgDataUri = (svg) => `data:image/svg+xml,${encodeURIComponent(svg.trim())}`
 
+const flagCode = (fileName) => {
+  const [country, region] = fileName.split('-')
+  return /^[A-Z0-9]{1,3}$/.test(region ?? '') ? `${country}-${region}` : country
+}
+
 async function readSvgs(dir) {
   const names = (await readdir(join(WEB, 'assets', dir))).filter((n) => n.endsWith('.svg')).sort()
   const entries = await Promise.all(
@@ -57,8 +63,10 @@ async function readSvgs(dir) {
 // One asset per line: share/build.mjs prunes lemonade-kit.css line by line to the assets a page names.
 export async function kitStylesheet() {
   const [icons, flagFiles, logos] = await Promise.all([readSvgs('icons'), readSvgs('flags'), readSvgs('brand-logos')])
-  // Flag files are named `GB-united-kingdom`; pages name them by ISO code alone.
-  const flags = new Map([...flagFiles].map(([name, uri]) => [name.split('-')[0], uri]))
+  // Flag files are named `GB-united-kingdom` or, for a region, `GB-SCT-scotland`; pages name a country by
+  // its ISO code and a region by country and region code, `GB` and `GB-SCT`.
+  const flags = new Map()
+  for (const [name, uri] of flagFiles) if (!flags.has(flagCode(name))) flags.set(flagCode(name), uri)
 
   const fonts = await Promise.all(
     FACES.map(async ({ file, weight }) => {
@@ -136,7 +144,13 @@ const iconNames = () => svgNames('icons')
 
 // The names lemonade-kit.css carries, without the artwork, so an assistant can look one up cheaply.
 async function assetList() {
-  const flags = (await svgNames('flags')).map((name) => `${name.split('-')[0]}  (${name.split('-').slice(1).join(' ')})`)
+  const seen = new Set()
+  const flags = (await svgNames('flags'))
+    .filter((name) => !seen.has(flagCode(name)) && seen.add(flagCode(name)))
+    .map((name) => {
+      const code = flagCode(name)
+      return `${code}  (${name.slice(code.length + 1).replaceAll('-', ' ')})`
+    })
   const logos = (await svgNames('brand-logos')).filter((name) => !name.endsWith('-dark'))
   const section = (title, usage, names) => `## ${title}\n\n${usage}\n\n${names.map((n) => `- ${n}`).join('\n')}\n`
   return [
@@ -145,7 +159,7 @@ async function assetList() {
     'Every name lemonade-kit.css carries. A name not listed here does not exist.',
     '',
     section('Icons', 'Take currentColor. `<span class="lmnd-icon" data-icon="NAME" aria-hidden="true"></span>`', await iconNames()),
-    section('Flags', 'By ISO code. `<span class="lmnd-kit-flag" data-flag="CODE" aria-hidden="true"></span>`', flags),
+    section('Flags', 'By ISO code, or country and region code for a region. `<span class="lmnd-kit-flag" data-flag="CODE" aria-hidden="true"></span>`', flags),
     section(
       'Brand logos',
       'Switch to their dark artwork in dark mode where one exists. `<span class="lmnd-kit-logo" data-logo="NAME" role="img" aria-label="…"></span>`',
@@ -282,26 +296,54 @@ async function packageKit(dist, css) {
   await zipFolder(out, NAME, join(dist, `${NAME}.zip`))
 }
 
-// The same kit as Agent Skills to upload to Claude: SKILL.md at the root, what Claude copies under
-// assets/, what it reads under references/, what it runs under scripts/.
-async function packageSkills(dist, css) {
-  const skills = join(dist, 'skills')
-  await rm(skills, { recursive: true, force: true })
+// One skill folder: SKILL.md at its root, the pages Claude copies under assets/, what it reads under
+// references/, what it runs under scripts/, and the workflows the SKILL.md points to.
+async function writeSkill(dir, { skill, css, workflows, scripts = false }) {
+  await cp(join(KIT, 'skills', skill), join(dir, 'SKILL.md'))
+  await writePages(join(dir, 'assets'))
+  if (css) await writeFile(join(dir, 'assets/lemonade-kit.css'), css)
+  await writeReferences(join(dir, 'references'))
+  await mkdir(join(dir, 'workflows'), { recursive: true })
+  for (const name of workflows) await cp(join(KIT, 'skills/workflows', `${name}.md`), join(dir, `workflows/${name}.md`))
+  if (scripts) {
+    await mkdir(join(dir, 'scripts'), { recursive: true })
+    await cp(join(KIT, 'share/build.py'), join(dir, 'scripts/build.py'))
+  }
+}
 
-  const build = join(skills, 'lemonade-prototype')
-  await cp(join(KIT, 'skills/lemonade-prototype/SKILL.md'), join(build, 'SKILL.md'))
-  await writePages(join(build, 'assets'))
-  await writeFile(join(build, 'assets/lemonade-kit.css'), css)
-  await writeReferences(join(build, 'references'))
-  await mkdir(join(build, 'scripts'), { recursive: true })
-  await cp(join(KIT, 'share/build.py'), join(build, 'scripts/build.py'))
-  await zipFolder(build, 'lemonade-prototype', join(skills, 'lemonade-prototype.zip'))
+// Claude.ai: one skill with both workflows, uploaded once.
+async function packageClaudeAiSkill(dist, css) {
+  const out = join(dist, 'skills')
+  await rm(out, { recursive: true, force: true })
+  const skill = join(out, 'lemonade-prototype')
+  await writeSkill(skill, { skill: 'claude-ai/SKILL.md', css, workflows: ['design', 'review'], scripts: true })
+  await zipFolder(skill, 'lemonade-prototype', join(out, 'lemonade-prototype.zip'))
+}
 
-  const review = join(skills, 'lemonade-prototype-review')
-  await cp(join(KIT, 'skills/lemonade-prototype-review/SKILL.md'), join(review, 'SKILL.md'))
-  await writeReferences(join(review, 'references'))
-  await writePages(join(review, 'references'))
-  await zipFolder(review, 'lemonade-prototype-review', join(skills, 'lemonade-prototype-review.zip'))
+// Claude Code: a marketplace holding the lemonade-prototype plugin, whose skills are
+// /lemonade-prototype:design and /lemonade-prototype:review.
+async function packageClaudeCodePlugin(dist, css) {
+  const out = join(dist, 'claude-code')
+  await rm(out, { recursive: true, force: true })
+  const marketplace = join(out, 'lemonade')
+  const plugin = join(marketplace, 'lemonade-prototype')
+  const manifest = JSON.parse(await readFile(join(KIT, 'skills/plugin/plugin.json'), 'utf8'))
+
+  await mkdir(join(plugin, '.claude-plugin'), { recursive: true })
+  await writeFile(join(plugin, '.claude-plugin/plugin.json'), `${JSON.stringify(manifest, null, 2)}\n`)
+  await cp(join(KIT, 'skills/plugin/README.md'), join(plugin, 'README.md'))
+  await writeSkill(join(plugin, 'skills/design'), { skill: 'plugin/design/SKILL.md', css, workflows: ['design'], scripts: true })
+  await writeSkill(join(plugin, 'skills/review'), { skill: 'plugin/review/SKILL.md', workflows: ['review'] })
+
+  await mkdir(join(marketplace, '.claude-plugin'), { recursive: true })
+  const catalog = {
+    name: 'lemonade',
+    owner: { name: 'Teya' },
+    description: 'Tools for building on the Lemonade design system.',
+    plugins: [{ name: manifest.name, source: './lemonade-prototype', description: manifest.description, version: manifest.version }],
+  }
+  await writeFile(join(marketplace, '.claude-plugin/marketplace.json'), `${JSON.stringify(catalog, null, 2)}\n`)
+  await zipFolder(marketplace, 'lemonade', join(out, 'lemonade-claude-code.zip'))
 }
 
 // The prototype skill makes standalone pages with build.py; it has to make the same file as build.mjs,
@@ -339,7 +381,8 @@ async function main(argv) {
   const css = await kitStylesheet()
   await checkPythonBuilder(dist, css)
   await packageKit(dist, css)
-  await packageSkills(dist, css)
+  await packageClaudeAiSkill(dist, css)
+  await packageClaudeCodePlugin(dist, css)
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) await main(process.argv.slice(2))

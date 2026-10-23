@@ -17,9 +17,10 @@ From `web/`:
 npm run html-kit
 ```
 
-It writes `web/dist/lemonade-html-kit/` and `web/dist/lemonade-html-kit.zip`, and the same kit as two
-Claude skills in `web/dist/skills/`: `lemonade-prototype.zip` and `lemonade-prototype-review.zip`. It also
-checks that `share/build.py` builds every page exactly as `share/build.mjs` does, and fails if not. It
+It writes `web/dist/lemonade-html-kit/` and `web/dist/lemonade-html-kit.zip`, and the same kit for Claude:
+`web/dist/skills/lemonade-prototype.zip`, one Claude.ai skill that designs and reviews, and
+`web/dist/claude-code/lemonade-claude-code.zip`, a Claude Code marketplace holding the
+`lemonade-prototype` plugin with `design` and `review` skills. It also checks that `share/build.py` builds every page exactly as `share/build.mjs` does, and fails if not. It
 needs Node 20.12 or later and no `npm install`. Pass `--out <dir>` (`npm run html-kit -- --out <dir>`) to write elsewhere.
 
 ## Verify before handing it over
@@ -34,8 +35,13 @@ needs Node 20.12 or later and no `npm install`. Pass `--out <dir>` (`npm run htm
    components, coloured swatches and icons, all changing with the theme. Unstyled black-on-white text
    means `lemonade-kit.css` is missing or failed to generate. If you can't render pages, say so.
 
-Then give the user the absolute paths of the zips. The kit zip is for people; the skill zips are uploaded
-to Claude.ai under Settings → Capabilities → Skills. `web/dist/` itself stays on this machine.
+4. `claude plugin validate --strict dist/claude-code/lemonade` and
+   `claude plugin validate dist/claude-code/lemonade/lemonade-prototype` pass.
+
+Then give the user the absolute paths of the zips. The kit zip is for people. The skill zip is uploaded to
+Claude.ai under Settings → Capabilities → Skills. The Claude Code zip is unzipped and added with
+`/plugin marketplace add <folder>`, then `/plugin install lemonade-prototype@lemonade`. `web/dist/` itself
+stays on this machine.
 
 ## What goes into the zip
 
@@ -48,10 +54,19 @@ to Claude.ai under Settings → Capabilities → Skills. `web/dist/` itself stay
 | `llms.txt` | Generated: the token sections of `web/llms.txt` |
 | `assets.txt` | Generated: every icon, flag and logo name in the kit's markup |
 
-Each skill zip holds its `SKILL.md` from `web/html-kit/skills/<name>/` at its root. `lemonade-prototype`
-adds the pages and stylesheet under `assets/`, the guidelines, `llms.txt` and `assets.txt` under
-`references/`, and `build.py` under `scripts/`. `lemonade-prototype-review` holds only `references/`, with
-the gallery among them.
+Every skill folder has the same layout: its entry `SKILL.md` at the root, the pages under `assets/`, the
+guidelines, `llms.txt`, `assets.txt` and `classes.txt` under `references/`, and the workflows its
+`SKILL.md` points to under `workflows/`. A skill that builds pages also has `lemonade-kit.css` in `assets/`
+and `build.py` under `scripts/`.
+
+| Package | Entry `SKILL.md` | Workflows |
+| --- | --- | --- |
+| Claude.ai `lemonade-prototype` | `web/html-kit/skills/claude-ai/SKILL.md` | design and review |
+| Claude Code `lemonade-prototype:design` | `web/html-kit/skills/plugin/design/SKILL.md` | design |
+| Claude Code `lemonade-prototype:review` | `web/html-kit/skills/plugin/review/SKILL.md` | review |
+
+The workflows live once, in `web/html-kit/skills/workflows/`; the plugin's manifest and README are in
+`web/html-kit/skills/plugin/`.
 
 ## When it fails
 

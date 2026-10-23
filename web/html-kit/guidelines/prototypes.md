@@ -49,9 +49,10 @@ belongs to the page and goes in a page class of its own, using tokens (`LHK-TOKE
 - starts from the closest file in `examples/`;
 - sits in a phone frame, `<div class="lmnd-kit-device">`, as the only thing in `<body>`. The frame is a 393 × 852
   phone with a status bar and home indicator on a wide window, and drops away on a phone;
-- is one `lmnd-kit-screen` (`bg-subtle`), or `lmnd-kit-screen lmnd-kit-screen--default` (`bg-default`) when it holds no
-  cards (`LDS-CARD-SURFACE`), holding a `lmnd-kit-top-bar`, a `lmnd-kit-content` and, when it has actions, an
-  `lmnd-kit-actions` block;
+- is one `lmnd-kit-screen` (`bg-subtle`), or `lmnd-kit-screen lmnd-kit-screen--default` (`bg-default`)
+  when it holds no cards (`LDS-CARD-SURFACE`), holding a `lmnd-kit-top-bar`, a `lmnd-kit-content`, an
+  `lmnd-kit-actions` block when it has fixed actions, and, on a section root such as Sales, an
+  `lmnd-kit-tab-bar` last;
 - is checked in the frame, in both light and dark, before it is handed over.
 
 A top-level screen uses the compact top bar with no back button; a pushed screen uses the navigation top
@@ -73,6 +74,34 @@ phone, and a screen only checked in light hides every literal colour.
 
 **Exceptions.** A page that isn't a phone screen, such as a gallery or a side-by-side comparison of
 screens.
+
+## `LHK-SAFE-AREAS` · Nothing sits under the status bar or the home indicator
+
+**Kind.** Rule.
+
+**Rule.** The phone keeps two areas for itself: the status bar at the top and the home indicator at the
+bottom. The kit's components keep clear of both, so a screen gets this by using them:
+
+- **The status bar** sits over the top bar. `lmnd-kit-top-bar` reaches up behind it and carries its own
+  background there, so the status bar always shows what the top bar shows — the screen's background at
+  rest, the filled bar once a details screen scrolls. Every screen starts with a top bar for that reason;
+  content never begins under the status bar.
+- **The home indicator** sits over the bottom of the screen. Whatever is last — `lmnd-kit-content`, the
+  `lmnd-kit-actions` block, the `lmnd-kit-tab-bar`, a sheet — keeps a safe area above it, and a toast sits
+  above it too.
+
+The areas are `--lmnd-kit-safe-top` and `--lmnd-kit-safe-bottom`: the phone frame's status bar and home
+indicator, or the real phone's safe areas when the page is opened on one. A screen never adds its own
+padding for them.
+
+**Why.** Content under the status bar collides with the time and the battery, and the last row of a list
+under the home indicator can't be read or tapped. A status bar that keeps the screen's colour while the top
+bar fills draws a seam the app never shows.
+
+**Exceptions.** None.
+
+**Do / don't.** A screen whose last card ends above the home indicator, and whose status bar turns white
+with its top bar. Not a `padding-bottom: 34px` on a page's own wrapper, and not a screen with no top bar.
 
 ## `LHK-ASSETS` · Icons, flags and logos come from the kit
 

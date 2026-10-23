@@ -21,6 +21,14 @@ body {
   margin: 0;
 }
 
+/* The space the phone keeps for itself: the status bar at the top, the home indicator at the bottom.
+   On a real phone it is the browser's safe area; in the kit's phone frame it is the frame's
+   (LHK-SAFE-AREAS). */
+:root {
+  --lmnd-kit-safe-top: env(safe-area-inset-top, 0px);
+  --lmnd-kit-safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 body {
   font-family: var(--lmnd-font-family-base);
   color: var(--lmnd-color-content-primary);
@@ -80,6 +88,10 @@ h6 {
   padding: var(--lmnd-spacing-400);
 }
 
+.lmnd-kit-content:last-child {
+  padding-bottom: calc(var(--lmnd-spacing-400) + var(--lmnd-kit-safe-bottom));
+}
+
 .lmnd-kit-content > .lmnd-kit-section + *,
 .lmnd-kit-content > * + .lmnd-kit-section {
   margin-top: var(--lmnd-spacing-400);
@@ -123,7 +135,7 @@ h6 {
   flex-direction: column;
   gap: var(--lmnd-spacing-200);
   padding: var(--lmnd-spacing-400);
-  padding-bottom: calc(var(--lmnd-spacing-400) + env(safe-area-inset-bottom));
+  padding-bottom: calc(var(--lmnd-spacing-400) + var(--lmnd-kit-safe-bottom));
   background: linear-gradient(to bottom, transparent, var(--lmnd-color-bg-subtle) var(--lmnd-spacing-400));
 }
 
@@ -1177,7 +1189,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   z-index: 2;
   display: flex;
   flex-direction: column;
-  padding-top: env(safe-area-inset-top);
+  padding-top: var(--lmnd-kit-safe-top);
   background: var(--lmnd-kit-top-bar-bg, var(--lmnd-color-bg-subtle));
 }
 
@@ -1296,7 +1308,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   display: flex;
   justify-content: center;
   padding: var(--lmnd-spacing-400);
-  padding-bottom: calc(var(--lmnd-spacing-400) + env(safe-area-inset-bottom));
+  padding-bottom: calc(var(--lmnd-spacing-400) + var(--lmnd-kit-safe-bottom));
   background: linear-gradient(to bottom, transparent, var(--lmnd-color-bg-subtle));
 }
 
@@ -1377,7 +1389,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   width: 100%;
   max-width: 640px; /* literal */
   max-height: calc(100% - var(--lmnd-spacing-1800));
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: var(--lmnd-kit-safe-bottom);
   overflow-y: auto;
   border-radius: var(--lmnd-radius-500) var(--lmnd-radius-500) 0 0;
   background: var(--lmnd-color-bg-default);
@@ -1501,7 +1513,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
 .lmnd-kit-toast-host {
   position: fixed;
   right: 0;
-  bottom: calc(var(--lmnd-spacing-600) + env(safe-area-inset-bottom));
+  bottom: calc(var(--lmnd-spacing-600) + var(--lmnd-kit-safe-bottom));
   left: 0;
   z-index: 20;
   display: flex;
@@ -2410,28 +2422,23 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
 }
 
 /* The wash: a radial gradient from the status's colour at the top, 85% of the width across, reaching
-   down past the hero, blended hard-light as the app draws it. The device repeats it behind its status
-   bar so the two meet without a seam. */
-.lmnd-kit-screen--details[class*="lmnd-kit-screen--wash-"],
-.lmnd-kit-device:has(> .lmnd-kit-screen[class*="lmnd-kit-screen--wash-"]) {
+   down past the hero, blended hard-light as the app draws it. */
+.lmnd-kit-screen--details[class*="lmnd-kit-screen--wash-"] {
   --lmnd-kit-wash-shape: 85% 300px; /* literal: DetailsListContainer's radius, over a typical bar and hero */
   background-color: var(--lmnd-color-bg-subtle);
-  background-image: radial-gradient(var(--lmnd-kit-wash-shape) at 50% var(--lmnd-kit-wash-top, 0), color-mix(in srgb, var(--lmnd-kit-wash) 30%, transparent), transparent); /* literal: 30% alpha in DetailsListContainer */
+  background-image: radial-gradient(var(--lmnd-kit-wash-shape) at 50% 0, color-mix(in srgb, var(--lmnd-kit-wash) 30%, transparent), transparent); /* literal: 30% alpha in DetailsListContainer */
   background-repeat: no-repeat;
   background-attachment: local;
   background-blend-mode: hard-light;
 }
 
-.lmnd-kit-device > .lmnd-kit-screen[class*="lmnd-kit-screen--wash-"] {
-  --lmnd-kit-wash-top: -62px; /* literal: the device's status bar, so the wash continues from behind it */
-}
 
-.lmnd-kit-screen--wash-positive, .lmnd-kit-device:has(> .lmnd-kit-screen--wash-positive) { --lmnd-kit-wash: var(--lmnd-color-bg-positive); }
-.lmnd-kit-screen--wash-info, .lmnd-kit-device:has(> .lmnd-kit-screen--wash-info) { --lmnd-kit-wash: var(--lmnd-color-bg-info); }
-.lmnd-kit-screen--wash-warning, .lmnd-kit-device:has(> .lmnd-kit-screen--wash-warning) { --lmnd-kit-wash: var(--lmnd-color-bg-caution); }
-.lmnd-kit-screen--wash-critical, .lmnd-kit-device:has(> .lmnd-kit-screen--wash-critical) { --lmnd-kit-wash: var(--lmnd-color-bg-critical); }
-.lmnd-kit-screen--wash-featured, .lmnd-kit-device:has(> .lmnd-kit-screen--wash-featured) { --lmnd-kit-wash: var(--lmnd-color-bg-featured); }
-.lmnd-kit-screen--wash-neutral, .lmnd-kit-device:has(> .lmnd-kit-screen--wash-neutral) { --lmnd-kit-wash: var(--lmnd-color-bg-neutral); }
+.lmnd-kit-screen--wash-positive { --lmnd-kit-wash: var(--lmnd-color-bg-positive); }
+.lmnd-kit-screen--wash-info { --lmnd-kit-wash: var(--lmnd-color-bg-info); }
+.lmnd-kit-screen--wash-warning { --lmnd-kit-wash: var(--lmnd-color-bg-caution); }
+.lmnd-kit-screen--wash-critical { --lmnd-kit-wash: var(--lmnd-color-bg-critical); }
+.lmnd-kit-screen--wash-featured { --lmnd-kit-wash: var(--lmnd-color-bg-featured); }
+.lmnd-kit-screen--wash-neutral { --lmnd-kit-wash: var(--lmnd-color-bg-neutral); }
 
 /* The hero: artwork, main information, status, metadata, centred, in that order (APP-DETAILS-HERO). */
 .lmnd-kit-hero {
@@ -2647,7 +2654,9 @@ body:has(> .lmnd-kit-device) {
 .lmnd-kit-device {
   position: relative;
   display: grid;
-  grid-template: 62px minmax(0, 1fr) / minmax(0, 1fr); /* literal: iOS status bar */
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  --lmnd-kit-safe-top: 62px; /* literal: iOS status bar */
+  --lmnd-kit-safe-bottom: 34px; /* literal: iOS home indicator */
   width: 393px; /* literal: the reference phone */
   height: min(852px, calc(100dvh - 2 * var(--lmnd-spacing-1200))); /* literal: the reference phone */
   margin: var(--lmnd-spacing-1200) auto;
@@ -2703,7 +2712,7 @@ body:has(> .lmnd-kit-device) {
 }
 
 .lmnd-kit-device > .lmnd-kit-screen {
-  grid-row: 2;
+  grid-row: 1;
   max-width: none;
   min-height: 0;
   margin: 0;
@@ -2722,7 +2731,9 @@ body:has(> .lmnd-kit-device) {
   }
 
   .lmnd-kit-device {
-    grid-template-rows: 0 minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    --lmnd-kit-safe-top: env(safe-area-inset-top, 0px);
+    --lmnd-kit-safe-bottom: env(safe-area-inset-bottom, 0px);
     width: 100%;
     height: 100dvh;
     margin: 0;

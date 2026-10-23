@@ -81,8 +81,9 @@ looks the same.
 
 **Kind.** Rule.
 
-**Rule.** A screen declares its loading, empty and error states before it is built. In a prototype each
-is its own file (`LHK-FLOWS`): `sales.html`, `sales-loading.html`, `sales-empty.html`.
+**Rule.** A screen declares its loading, empty and error states before it is built. In a prototype that
+needs them, each is its own file (`LHK-FLOWS`): `payouts.html`, `payouts-loading.html`,
+`payouts-empty.html`, `payouts-error.html`. The kit's examples show the ready state only.
 
 **Why.** A state nobody decided becomes a blank screen in production.
 

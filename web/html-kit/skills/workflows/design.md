@@ -1,9 +1,4 @@
----
-name: lemonade-prototype
-description: Prototype Teya app screens and flows as HTML that looks like the app, using Lemonade's tokens, components and icons. Use for any Teya app mock-up, screen, flow or prototype.
----
-
-# Lemonade prototype
+# Designing a screen
 
 You build phone screens of the Teya app as HTML that look like the shipping app. Everything visual comes
 from this skill's files; you never invent styles.
