@@ -13,12 +13,12 @@ colour the design system does not model: chart series, categories, per-role or p
 `SymbolContainer` that carries no voice. The layer is experimental and needs
 `@OptIn(ExperimentalLemonadeApi::class)`, so expect its call sites to be revisited.
 
-Pick a token by what it means, even when another holds the same value today. `bgAlwaysLight` and
-`bgDefault` match in the light theme and part in the dark one.
-
 **Primitive** — never in product code. The layer is marked `@InternalLemonadeApi`, and its own
 documentation says using it directly is a mistake. A primitive is as wrong as a hex literal and for
 the same reason: it cannot follow the theme.
+
+Pick a token by what it means, even when another holds the same value today. `bgAlwaysLight` and
+`bgDefault` match in the light theme and part in the dark one.
 
 **Why.** A primitive or a literal is a colour that looks right in the theme it was written in and
 wrong in the other one.
@@ -91,22 +91,20 @@ over a photo. Not `bgAlwaysDark` for a tooltip, and not `contentPrimaryInverse` 
 
 ## `LDS-COLOR-STATE` · Pressed and disabled come from tokens
 
-**Rule.** A pressed element with a fill of its own takes that fill's `Interactive` token — `bgBrand`
-becomes `bgBrandInteractive`. A pressed element with no fill of its own takes the `Pressed` token of
-the background it sits on — a transparent row on `bgSubtle` shows `bgSubtlePressed`. A disabled
+**Rule.** A pressed element takes an interaction token of the surface it is drawn on — the
+`Interactive` or `Pressed` variant of that background — never a colour picked by hand. A disabled
 element is drawn whole at `opacities.state.opacityDisabled`, in its usual colours.
 
-This is what the Lemonade controls do — a solid `Button` presses to its `Interactive` token, a
-`Subtle` or `Ghost` one to `bgSubtlePressed` — so the rule is for anything a product draws itself.
+The Lemonade controls show both variants. A solid `Button` presses its fill to the fill's own
+`Interactive` token (`bgBrand` to `bgBrandInteractive`); a `Subtle` or `Ghost` one, which has no fill
+of its own, shows `bgSubtlePressed`. `Switch` presses its track to `bgBrandHighPressed` when on and
+`bgElevatedPressed` when off.
 
 **Why.** Each background has its own interaction tokens, tuned so the change shows on it in both
 themes. A darker or greyer colour picked by hand is tuned for neither.
 
 **Exceptions.** A component that animates its press as opacity, as `BoxSelection` and `Tabs` do with
 `opacities.state.opacityPressed`.
-
-**Deviations.** `Switch` presses its own track to a `Pressed` token (`bgBrandHighPressed`,
-`bgElevatedPressed`) rather than an `Interactive` one.
 
 **Do / don't.** `bgSubtlePressed` under a finger on a transparent row in a `bgSubtle` card. Not
 `bgElevated` borrowed as a pressed colour, and not `contentTertiary` text for a disabled label.
