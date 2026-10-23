@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add recipient</title>
+<link rel="stylesheet" href="../lemonade-kit.css">
+<style>
+  .form { display: flex; flex-direction: column; gap: var(--lmnd-spacing-400); }
+</style>
+</head>
+<body>
+<p class="lmnd-kit-source-notice" style="margin:0;padding:16px;background:Mark;color:MarkText;font:16px/1.4 system-ui,sans-serif">This page needs <code>lemonade-kit.css</code> beside it. Open it from the packaged kit: run <code>npm run html-kit</code> in <code>web/</code>, then open <code>web/dist/lemonade-html-kit/</code>.</p>
+<div class="lmnd-kit-device">
+  <div class="lmnd-kit-screen lmnd-kit-screen--default">
+    <header class="lmnd-kit-top-bar lmnd-kit-top-bar--small">
+      <div class="lmnd-kit-top-bar__bar">
+        <div class="lmnd-kit-top-bar__leading"><a href="settings.html" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></a></div>
+        <div class="lmnd-kit-top-bar__center"><span class="lmnd-kit-top-bar__title lmnd-text-heading-xxsmall">Add recipient</span></div>
+        <div class="lmnd-kit-top-bar__trailing"></div>
+      </div>
+    </header>
+
+    <main class="lmnd-kit-content">
+      <div class="form">
+        <p class="lmnd-kit-intro lmnd-text-body-small-regular">We'll check the name matches the account.</p>
+      <div class="lmnd-kit-segmented lmnd-kit-segmented--medium" role="radiogroup" aria-label="Recipient type">
+        <label class="lmnd-kit-segmented__item lmnd-text-body-small-medium"><input type="radio" name="type" checked><span>Business</span></label>
+        <label class="lmnd-kit-segmented__item lmnd-text-body-small-medium"><input type="radio" name="type"><span>Person</span></label>
+      </div>
+
+      <label class="lmnd-kit-field">
+        <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Account name</span></span>
+        <span class="lmnd-kit-field__box"><input class="lmnd-kit-field__input" placeholder="As shown on their bank account" value="Acme Suppliers Ltd"></span>
+      </label>
+
+      <div class="lmnd-kit-field lmnd-kit-select">
+        <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Country</span></span>
+        <button type="button" class="lmnd-kit-field__box">
+          <span class="lmnd-kit-flag" data-flag="GB" aria-hidden="true"></span>
+          <span class="lmnd-kit-field__value lmnd-text-body-medium-regular">United Kingdom</span>
+          <span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <label class="lmnd-kit-field lmnd-kit-field--error">
+        <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Sort code</span></span>
+        <span class="lmnd-kit-field__box"><input class="lmnd-kit-field__input" inputmode="numeric" value="20-00-0"></span>
+        <span class="lmnd-kit-field__helper lmnd-text-body-xsmall-regular">Enter all 6 digits</span>
+      </label>
+
+      <label class="lmnd-kit-field">
+        <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Account number</span></span>
+        <span class="lmnd-kit-field__box"><input class="lmnd-kit-field__input" inputmode="numeric" placeholder="8 digits"></span>
+      </label>
+
+      <label class="lmnd-kit-field">
+        <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Email</span><span class="lmnd-kit-field__optional lmnd-text-body-small-regular">Optional</span></span>
+        <span class="lmnd-kit-field__box"><span class="lmnd-icon" data-icon="envelope" aria-hidden="true"></span><input class="lmnd-kit-field__input" type="email" placeholder="For payment confirmations"></span>
+        <span class="lmnd-kit-field__helper lmnd-text-body-xsmall-regular">We'll email them when a payment is sent.</span>
+      </label>
+
+      <label class="lmnd-kit-control">
+        <input type="checkbox" class="lmnd-kit-checkbox" checked>
+        <span class="lmnd-kit-control__text"><span class="lmnd-text-body-medium-medium">Save as a regular recipient</span><span class="lmnd-kit-control__support lmnd-text-body-small-regular">Show them first next time you pay</span></span>
+      </label>
+      </div>
+    </main>
+
+    <div class="lmnd-kit-actions">
+      <a href="settings.html" class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold"><span class="lmnd-button__label">Continue</span></a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

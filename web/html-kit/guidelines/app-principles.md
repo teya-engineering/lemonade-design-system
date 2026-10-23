@@ -1,0 +1,220 @@
+# App principles
+
+The Teya app's rules that hold across every screen, from its `docs/design/principles.md`, written here in
+kit markup. The app owns them: their IDs, meaning and exceptions are the app's, and only the examples are
+the kit's. `APP-TOPBAR-COMPONENT`, `APP-FEED-CARD-APPEARANCE` and `APP-SHEET-OVER-SHEET` are about app code
+and navigation, so the kit doesn't carry them.
+
+## `APP-SCREEN-ARCHETYPE` · Every screen names its archetype
+
+**Kind.** Rule.
+
+**Rule.** Every screen names its archetype and follows that anatomy: explainer sheet, picker sheet,
+confirmation, intro screen, form, review or entity detail. The kit's examples cover two of them —
+`add-recipient.html` is a form and `transaction-details.html` an entity detail (`details.md`) — and a
+settings list, a dashboard of widgets and a full-screen list need none. A screen that fits none of them
+stops and asks rather than inventing one.
+
+**Why.** An invented anatomy is the drift. Most of the inconsistency in the app comes from screens
+building their own structure instead of reaching for a shared one.
+
+**Exceptions.** None. "Stop and ask" is the exception path.
+
+## `APP-TOPBAR-TITLE` · Large titles belong to section roots
+
+**Kind.** Rule of thumb.
+
+**Rule.** A large title (`lmnd-kit-top-bar__large`, or the compact bar's) belongs to a section root — Sales,
+Activity, Cards — and to a sheet that is its own root, where the title names what the sheet is ("Filter by
+payment method"). Everything reached from inside a section, and every step of a flow, has an inline
+title: `lmnd-kit-top-bar--small`.
+
+**Why.** A large title says "you have arrived somewhere". Inside a flow it says it four times.
+
+This is a rule of thumb: a screen that reads better against it is an exception a person decides.
+
+## `APP-TOPBAR-ACTION` · Back is for pushed screens, Close for sheets
+
+**Kind.** Rule.
+
+**Rule.** A pushed screen leads with Back (`arrow-left`). A presented sheet, or a screen presented over
+another, leads with Close (`times`), which dismisses.
+
+**Why.** `Back` promises a screen underneath that the gesture doesn't go to. A sheet carrying `Back` is a
+violation.
+
+**Exceptions.** A step inside a sheet-hosted flow may carry `Back` to reach the previous step, as long as
+the flow's root closes with `Close`.
+
+## `APP-TOPBAR-TRAILING` · At most two icon actions, or one text action
+
+**Kind.** Rule.
+
+**Rule.** A top bar's trailing slot carries at most two icon actions, or one text action such as Reset or
+Done, never both kinds at once.
+
+Past two, one action may stay as a button and the rest collapse into a menu behind an
+`ellipsis-horizontal` icon button. The one that stays out is the action the screen exists to support;
+where two could each claim that, neither does and all of them go in the menu. A single trailing action is
+always a button, never a menu of one. A destructive action stays out of the menu only when removing
+something is what the screen is for.
+
+**Why.** Three touch targets in a 44pt strip is a row of guesses.
+
+**Exceptions.** None.
+
+## `APP-TOPBAR-ACTION-STYLE` · The bar's buttons follow the top bar rule
+
+**Kind.** Rule.
+
+**Rule.** A top bar's and a sheet bar's buttons are styled by `LDS-TOP-BAR-ACTIONS`: circular Small icon
+buttons, or a Small text button; the screen's primary action is Primary · Solid, and every other action is
+Neutral · Subtle. A destructive action's glyph is tinted `content-critical`. A disabled action uses the
+button's `disabled`; one that is working shows a spinner in place of its glyph.
+
+**Why.** One treatment per weight of action, on every screen and every sheet, so the same action always
+looks the same.
+
+**Exceptions.** None. The bar never holds a ghost button.
+
+## `APP-SCREEN-STATES` · All three states are decided first
+
+**Kind.** Rule.
+
+**Rule.** A screen declares its loading, empty and error states before it is built. In a prototype each
+is its own file (`LHK-FLOWS`): `sales.html`, `sales-loading.html`, `sales-empty.html`.
+
+**Why.** A state nobody decided becomes a blank screen in production.
+
+**Exceptions.** None.
+
+## `APP-LOADING` · The wait looks like what is being waited on
+
+**Kind.** Rule.
+
+**Rule.**
+
+| Waiting on | Shows |
+| --- | --- |
+| A screen of repeating content — lists, feeds, cards of rows | `lmnd-kit-skeleton`s in the real layout: the same cards, rows and indents |
+| A single-purpose screen — one object, one action | A centred `lmnd-spinner` |
+| One element inside a loaded screen — a widget, a card | That element skeletons in place at its own size |
+| An action in a control | The button's loading state: `lmnd-button--loading` with a spinner |
+| Background or optimistic work | Nothing |
+
+The chrome doesn't wait: the top bar keeps its real title and its Back or Close, and a footer action is
+present but disabled. An entity detail skeletons its cards under a hero it already knows (`details.md`).
+
+**Why.** A skeleton in the real layout means nothing shifts when the data lands, and the user can always
+leave.
+
+**Exceptions.** None.
+
+## `APP-WIDGET-EMPTY` · A widget's empty state follows what it draws
+
+**Kind.** Rule.
+
+**Rule.** An empty widget shows one of three bodies, picked by what it draws when it has data: a chart's
+empty body is decorative bars at reduced opacity under one line; a list's is the stacked-rows placeholder
+over one line; anything else is an illustration with a title and subtitle, or a caption with one
+Neutral · Subtle · Small action (`APP-WIDGET-BOX`).
+
+The copy says why it's empty: "No sales for the selected filters" where a filter narrows the window, "No
+transactions yet" where nothing has happened. The widget keeps its heading in every state, values it
+doesn't have are removed rather than greyed, and controls that could change the outcome stay.
+
+**Why.** A merchant who picked a quiet week isn't told to start taking payments.
+
+**Exceptions.** A fixed set of rows carrying zero isn't empty: a zero there is data.
+
+## `APP-SCREEN-EMPTY` · A list's empty state fills the list, not the screen
+
+**Kind.** Rule.
+
+**Rule.** The screen keeps its chrome — top bar, search field, filter bar — and a `lmnd-kit-empty` fills the
+space under it:
+
+```html
+<div class="lmnd-kit-empty">
+  <span class="lmnd-icon" data-icon="search" aria-hidden="true"></span>
+  <div class="lmnd-kit-empty__text">
+    <p class="lmnd-text-body-medium-semibold">No transactions for the selected filters</p>
+    <p class="lmnd-kit-empty__subtitle lmnd-text-body-small-regular">Try changing or removing a filter</p>
+  </div>
+  <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-text-body-small-semibold"><span class="lmnd-button__label">Clear filters</span></button>
+</div>
+```
+
+| Why it's empty | Icon | Title | Subtitle | Action |
+| --- | --- | --- | --- | --- |
+| Nothing yet | the subject's own, `receipt` for transactions | "No transactions yet" | what will appear here, and when | none |
+| Nothing for these filters | `search` | "No transactions for the selected filters" | "Try changing or removing a filter" | Clear or Reset filters |
+| Nothing for this search | `search` | names the term searched for | what the field accepts | none |
+
+**Why.** Replacing the screen takes away the control that caused the emptiness. Clearing a filter is what
+the user needs to do next, so the bar that holds it stays where it was.
+
+**Exceptions.** None for a list.
+
+## `APP-FILTER-BAR` · Filters are chips above the list
+
+**Kind.** Rule.
+
+**Rule.** Filters sit in a `lmnd-kit-filter-bar` in the top bar's bottom slot, `lmnd-kit-top-bar__bottom`, so the bar
+stays pinned while the list scrolls. Each filter is a `lmnd-kit-chip` carrying the filter's name and a
+`chevron-down`, `lmnd-kit-chip--selected` while it has a value, and a `lmnd-kit-chip__counter` for how many values are
+picked. A chip shows its name and counter, never the chosen value, so it keeps its width. Tapping it opens
+that filter's picker sheet.
+
+Order runs period, then scope — stores, devices — then attributes of the thing listed. A chip that can't
+apply is absent, not disabled. The bar ends with a Neutral · Ghost · X-Small button, only while a filter
+differs from the state the screen opened in: "Clear filters" on a list that opens unfiltered, "Reset
+filters" on one that opens filtered.
+
+```html
+<div class="lmnd-kit-top-bar__bottom">
+  <div class="lmnd-kit-filter-bar">
+    <a href="#period-sheet" class="lmnd-kit-chip lmnd-kit-chip--selected lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Period</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+    <a href="#store-sheet" class="lmnd-kit-chip lmnd-kit-chip--selected lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Store</span><span class="lmnd-kit-chip__counter lmnd-text-body-xsmall-semibold">1</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+    <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--ghost lmnd-button--x-small lmnd-text-body-small-semibold"><span class="lmnd-button__label">Reset filters</span></button>
+  </div>
+</div>
+```
+
+**Why.** The filters in force are always on screen, and a chip that keeps its width doesn't shuffle the
+row every time someone picks.
+
+**Exceptions.** None. "Status" is a chip; "Card payments" against "Bank transfers" is a tab.
+
+## `APP-FOOTER-PLACEMENT` · A fixed action sits in the faded footer
+
+**Kind.** Rule.
+
+**Rule.** An action fixed to the bottom while the content scrolls sits in `lmnd-kit-actions`, which fades the
+content where it meets the action; in a sheet, in `lmnd-kit-sheet__actions`. Never a button as the last thing
+in `lmnd-kit-content` held in place some other way.
+
+**Why.** The fade gives the scroll a visible end. A button over a hard edge doesn't.
+
+**Exceptions.** None. An entity detail fixes no action at all (`APP-DETAILS-ACTIONS`).
+
+## `APP-SPACING-RHYTHM` · The gaps
+
+**Kind.** Rule.
+
+**Rule.** A section is a heading and its card, `lmnd-kit-section` with a `lmnd-kit-section__title`. The gaps are:
+
+| Gap | Value | In the kit |
+| --- | --- | --- |
+| Screen side padding | `spacing-400` | `lmnd-kit-content` |
+| Between large elements — cards, blocks | `spacing-400` | `lmnd-kit-content` |
+| Between small elements — tiles, tags, chips | `spacing-200` | `lmnd-kit-row`, `lmnd-kit-chips`, `lmnd-kit-filter-bar` |
+| Between sections | `spacing-800` | `lmnd-kit-content` around a `lmnd-kit-section` |
+| Between a section's heading and its card | `spacing-200` | `lmnd-kit-section` |
+
+`lmnd-kit-content` draws all of these, so a screen puts its cards and sections straight in it and adds no gaps
+of its own.
+
+**Why.** One rhythm on every screen, so a section looks like a section wherever it sits.
+
+**Exceptions.** None.

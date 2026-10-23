@@ -74,6 +74,7 @@
     "build": "node build/clean-bundle-output.mjs && node build/build-fonts.mjs && node build/optimize-svg.mjs && tsup",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
+    "html-kit": "node html-kit/build.mjs",
     "prestorybook": "node build/build-fonts.mjs",
     "storybook": "storybook dev -p 6006",
     "prebuild-storybook": "node build/build-fonts.mjs",

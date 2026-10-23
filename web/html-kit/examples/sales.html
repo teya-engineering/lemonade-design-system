@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sales</title>
+<link rel="stylesheet" href="../lemonade-kit.css">
+<style>
+  .currencies { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--lmnd-spacing-200); }
+  .currency { display: flex; align-items: center; gap: var(--lmnd-spacing-300); }
+  .currency-text { display: flex; flex-direction: column; min-width: 0; }
+</style>
+</head>
+<body>
+<p class="lmnd-kit-source-notice" style="margin:0;padding:16px;background:Mark;color:MarkText;font:16px/1.4 system-ui,sans-serif">This page needs <code>lemonade-kit.css</code> beside it. Open it from the packaged kit: run <code>npm run html-kit</code> in <code>web/</code>, then open <code>web/dist/lemonade-html-kit/</code>.</p>
+<div class="lmnd-kit-device">
+  <div class="lmnd-kit-screen">
+    <header class="lmnd-kit-top-bar">
+      <div class="lmnd-kit-top-bar__compact">
+        <div class="lmnd-kit-top-bar__large"><h1 class="lmnd-kit-top-bar__large-title lmnd-text-heading-large">Sales</h1></div>
+        <div class="lmnd-kit-top-bar__trailing">
+          <a href="settings.html" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Settings"><span class="lmnd-icon" data-icon="gear"></span></a>
+          <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--primary lmnd-kit-icon-button--solid lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="New sale"><span class="lmnd-icon" data-icon="plus"></span></button>
+        </div>
+      </div>
+      <div class="lmnd-kit-tabs" role="tablist">
+        <label class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab" checked><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Overview">Overview</span></span></label>
+        <label class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab"><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Transactions">Transactions</span></span></label>
+        <label class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab"><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Payment links">Payment links</span></span></label>
+      </div>
+      <div class="lmnd-kit-top-bar__bottom">
+        <div class="lmnd-kit-filter-bar">
+          <a href="#" class="lmnd-kit-chip lmnd-kit-chip--selected lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Period</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+          <a href="#" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Store</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+          <a href="#" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Device</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+          <a href="#method-sheet" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Payment method</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+        </div>
+      </div>
+    </header>
+
+    <main class="lmnd-kit-content">
+      <div class="currencies">
+        <label class="lmnd-kit-box-selection">
+          <input type="radio" name="currency" checked>
+          <span class="currency">
+            <span class="lmnd-kit-flag lmnd-kit-flag--x-large" data-flag="GB" aria-hidden="true"></span>
+            <span class="currency-text"><span class="lmnd-text-body-medium-medium">GBP • £</span><span class="lmnd-text-body-small-regular lmnd-kit-secondary">11,645 sales</span></span>
+          </span>
+        </label>
+        <label class="lmnd-kit-box-selection">
+          <input type="radio" name="currency">
+          <span class="currency">
+            <span class="lmnd-kit-flag lmnd-kit-flag--x-large" data-flag="EU" aria-hidden="true"></span>
+            <span class="currency-text"><span class="lmnd-text-body-medium-medium">EUR • €</span><span class="lmnd-text-body-small-regular lmnd-kit-secondary">521 sales</span></span>
+          </span>
+        </label>
+      </div>
+
+      <div class="lmnd-kit-widgets">
+        <a href="#" class="lmnd-kit-widget lmnd-kit-widget--full">
+          <div class="lmnd-kit-widget__heading"><h2 class="lmnd-text-body-xsmall-overline">Gross sales</h2></div>
+          <div class="lmnd-kit-widget__content">
+            <div class="lmnd-kit-widget__figure">
+              <div class="lmnd-kit-widget__value-group"><span class="lmnd-kit-widget__value lmnd-text-display-small">£48,210.75</span><span class="lmnd-kit-widget__support lmnd-text-body-xsmall-regular">12% more than September</span></div>
+            </div>
+          </div>
+        </a>
+        <a href="#" class="lmnd-kit-widget">
+          <div class="lmnd-kit-widget__heading"><h2 class="lmnd-text-body-xsmall-overline">Transactions</h2></div>
+          <div class="lmnd-kit-widget__content">
+            <div class="lmnd-kit-widget__figure">
+              <div class="lmnd-kit-widget__value-group"><span class="lmnd-kit-widget__value lmnd-text-display-xsmall">11,645</span></div>
+            </div>
+            <div class="lmnd-kit-widget__bottom"><span class="lmnd-kit-widget__bottom-label lmnd-text-body-small-regular">Across 2 stores</span></div>
+          </div>
+        </a>
+        <a href="#" class="lmnd-kit-widget">
+          <div class="lmnd-kit-widget__heading"><h2 class="lmnd-text-body-xsmall-overline">Tips</h2></div>
+          <div class="lmnd-kit-widget__content">
+            <div class="lmnd-kit-widget__figure">
+              <div class="lmnd-kit-widget__value-group"><span class="lmnd-kit-widget__value lmnd-text-display-xsmall">£212.40</span></div>
+            </div>
+            <div class="lmnd-kit-widget__bottom"><span class="lmnd-kit-widget__bottom-label lmnd-text-body-small-regular">On 96 sales</span></div>
+          </div>
+        </a>
+        <a href="#" class="lmnd-kit-widget">
+          <div class="lmnd-kit-widget__heading"><h2 class="lmnd-text-body-xsmall-overline">Refunds</h2></div>
+          <div class="lmnd-kit-widget__content">
+            <div class="lmnd-kit-widget__figure">
+              <div class="lmnd-kit-widget__value-group"><span class="lmnd-kit-widget__value lmnd-text-display-xsmall">-£18.50</span></div>
+            </div>
+            <div class="lmnd-kit-widget__bottom"><span class="lmnd-kit-widget__bottom-label lmnd-text-body-small-regular">8 refunds</span></div>
+          </div>
+        </a>
+        <a href="#" class="lmnd-kit-widget">
+          <div class="lmnd-kit-widget__heading"><h2 class="lmnd-text-body-xsmall-overline">Chargebacks</h2></div>
+          <div class="lmnd-kit-widget__content">
+            <div class="lmnd-kit-widget__figure">
+              <div class="lmnd-kit-widget__value-group"><span class="lmnd-kit-widget__value lmnd-text-display-xsmall">-£84.30</span></div>
+            </div>
+            <div class="lmnd-kit-widget__bottom"><span class="lmnd-kit-widget__bottom-label lmnd-text-body-small-regular">3 chargebacks</span></div>
+          </div>
+        </a>
+        <div class="lmnd-kit-card">
+          <div class="lmnd-kit-card__header">
+            <div class="lmnd-kit-card__heading"><h2 class="lmnd-kit-card__title lmnd-text-body-xsmall-overline">Last transactions</h2></div>
+          </div>
+          <a href="transaction-details.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-logo" data-logo="visa" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Card payment</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Today, 14:32 • Camden</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£24.00</span></span>
+            </span>
+          </a>
+          <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-logo" data-logo="mastercard" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Card payment</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Today, 13:58 • Camden</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£8.40</span></span>
+            </span>
+          </a>
+          <a href="#" class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="money" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Refund</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Today, 11:20 • Soho</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">-£12.00</span><span class="lmnd-kit-tag lmnd-kit-tag--warning"><span class="lmnd-kit-tag__label lmnd-text-body-xsmall-semibold">Pending</span></span></span>
+            </span>
+          </a>
+          <a href="#" class="lmnd-kit-card__footer lmnd-text-body-small-semibold">Go to Sales Transactions</a>
+        </div>
+      </div>
+
+    </main>
+
+    <nav class="lmnd-kit-tab-bar">
+      <div class="lmnd-kit-tab-bar__bar">
+        <a href="#" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="home" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Home</span></a>
+        <a href="#" class="lmnd-kit-tab-bar__item" aria-current="page"><span class="lmnd-icon" data-icon="chart-stats-solid" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Sales</span></a>
+        <a href="#" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="wallet" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Money</span></a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="lmnd-kit-scrim" id="method-sheet">
+    <div class="lmnd-kit-sheet lmnd-kit-sheet--subtle" role="dialog" aria-labelledby="method-title">
+      <span class="lmnd-kit-sheet__handle"></span>
+      <div class="lmnd-kit-sheet__bar">
+        <a href="#" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></a>
+        <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-text-body-small-semibold"><span class="lmnd-button__label">Reset</span></button>
+      </div>
+      <h2 class="lmnd-kit-sheet__title lmnd-text-heading-large" id="method-title">Filter by payment method</h2>
+      <div class="lmnd-kit-sheet__body">
+        <div class="lmnd-kit-card">
+          <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="card" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Card</span></span>
+              <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="method" checked></span>
+            </span>
+          </label>
+          <label class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="money" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Cash</span></span>
+              <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="method"></span>
+            </span>
+          </label>
+        </div>
+      </div>
+      <div class="lmnd-kit-sheet__actions">
+        <a href="#" class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold"><span class="lmnd-button__label">Show results</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
