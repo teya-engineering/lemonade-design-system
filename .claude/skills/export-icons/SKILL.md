@@ -138,7 +138,8 @@ handles three traps that have each cost a bad commit before:
    `CreationDate` inside each PDF — hundreds of binary diffs for pixel-identical
    artwork. The script reverts every imageset whose source SVG did not change.
 
-It then regenerates the icon Code Connect templates with
+It then regenerates the web package's copies of the SVGs and `web/llms.txt`,
+which lists every icon name for AI tools, and the icon Code Connect templates with
 `figma/scripts/generate-asset-templates.mjs icons` and compile-checks them with
 `npm run check` in `figma/`. The generator fails if an enum entry has no node in
 `figma/icons.manifest.json`, the same check the **Templates compile and assets

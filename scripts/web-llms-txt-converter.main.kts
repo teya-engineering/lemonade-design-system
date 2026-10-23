@@ -59,6 +59,19 @@ fun componentDocs(): String {
     return text + "\n"
 }
 
+/**
+ * Reads `svg/`, the directory web-svg-converter copies into `web/assets/`, so the names
+ * match what ships whichever of the two converters runs first.
+ */
+fun assetNames(dir: String): List<String> {
+    val source = File(dir)
+    require(source.isDirectory) { "$dir is missing" }
+    return source.listFiles().orEmpty()
+        .filter { it.isFile && it.extension == "svg" }
+        .sortedBy { it.name }
+        .map { it.nameWithoutExtension }
+}
+
 fun main() {
     val out = StringBuilder()
     out.appendLine("# Lemonade Design System — web tokens")
@@ -137,6 +150,19 @@ fun main() {
     out.appendLine("## Shadows")
     out.appendLine()
     listOf("xs", "sm", "md", "lg", "xl").forEach { out.appendLine("- `var(--lmnd-shadow-$it)`") }
+
+    listOf(
+        Triple("Icons", "svg/icons", "Monochrome, for the Icon component below: `--lmnd-icon: url('/assets/icons/<name>.svg')`, or `use=\"<name>\"` in React."),
+        Triple("Flags", "svg/flags", "Multicolour artwork, used as an image: `<img src=\"/assets/flags/<name>.svg\" alt=\"…\">`."),
+        Triple("Brand logos", "svg/brandLogos", "Multicolour artwork, used as an image: `<img src=\"/assets/brand-logos/<name>.svg\" alt=\"…\">`."),
+    ).forEach { (heading, dir, usage) ->
+        out.appendLine()
+        out.appendLine("## $heading")
+        out.appendLine()
+        out.appendLine(usage)
+        out.appendLine()
+        assetNames(dir).forEach { out.appendLine("- `$it`") }
+    }
 
     out.appendLine()
     out.appendLine("## Components")

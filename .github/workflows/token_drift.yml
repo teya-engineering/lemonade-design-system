@@ -11,6 +11,7 @@ on:
   pull_request:
     paths:
       - 'tokens/**'
+      - 'svg/**'
       - 'scripts/*token*'
       - 'scripts/*resource-file-loading*'
       - 'scripts/web-*'
@@ -74,6 +75,12 @@ jobs:
         run: |
           "$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/web-text-style-converter.main.kts
           "$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/web-css-bundle.main.kts
+
+      # web-svg-converter reads svg/, not tokens/, so run-converters.sh never calls it.
+      # web-llms-txt-converter lists the same svg/ names, and run-converters.sh --all has
+      # already run it.
+      - name: Regenerate web assets
+        run: '"$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/web-svg-converter.main.kts'
 
       - name: DTCG loader unit test
         run: '"$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/kmp-loader-dtcg-test.main.kts'

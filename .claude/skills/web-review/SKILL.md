@@ -53,7 +53,8 @@ because the job only compares what it regenerates.
   missing from the final `git status --porcelain` check means the job runs and always passes.
 - `web-css-bundle` runs after the converters whose output it concatenates.
 - Converters driven by something other than `tokens/*.tokens.json` need their own drift step.
-  `web-svg-converter` reads `svg/` and is absent from `converters_for()`. `web-text-style-converter`
+  `web-svg-converter` reads `svg/` and is absent from `converters_for()`; `web-llms-txt-converter`
+  lists the same `svg/` names, so adding an icon has to regenerate both. `web-text-style-converter`
   reads `text-styles.json` and resolves its values from `typography.tokens.json`, so it is in
   `converters_for()` under typography and also has its own step.
 
