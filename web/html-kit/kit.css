@@ -3628,3 +3628,61 @@ body:has(> .lmnd-kit-device) {
   border-radius: inherit;
   background: var(--lmnd-color-bg-brand);
 }
+
+/* Home for a role with restricted access (RoleRestrictedHomeSurface): a dark strip under a dark status bar
+   stays at the top, and the screen scrolls inside a panel with radius-900 top corners beneath it. */
+.lmnd-kit-device > .lmnd-kit-screen--restricted,
+.lmnd-kit-screen--restricted {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--lmnd-color-bg-always-dark);
+}
+
+.lmnd-kit-role-strip {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: var(--lmnd-spacing-200);
+  padding: calc(var(--lmnd-kit-safe-top) + var(--lmnd-spacing-400)) var(--lmnd-spacing-400) var(--lmnd-spacing-400);
+  color: var(--lmnd-color-content-always-light);
+  text-align: center;
+}
+
+.lmnd-kit-role-strip > .lmnd-icon {
+  flex-shrink: 0;
+  opacity: 0.8; /* literal: the app's 80% */
+}
+
+/* The panel is the screen that scrolls; the strip already holds the status bar's space. */
+.lmnd-kit-screen--restricted > .lmnd-kit-screen {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  border-radius: var(--lmnd-radius-900) var(--lmnd-radius-900) 0 0;
+  --lmnd-kit-safe-top: 0px;
+}
+
+/* The status bar's time and icons turn light over the strip; the home indicator stays dark. */
+.lmnd-kit-device:has(> .lmnd-kit-screen--restricted)::before {
+  color: var(--lmnd-color-content-always-light);
+}
+
+.lmnd-kit-device:has(> .lmnd-kit-screen--restricted)::after {
+  background: linear-gradient(to bottom, var(--lmnd-color-content-always-light) var(--lmnd-kit-safe-top), var(--lmnd-color-content-primary) var(--lmnd-kit-safe-top));
+}
+
+/* The balance hidden from this role: the symbol and dots, with a lock at the far end. */
+.lmnd-kit-balance__locked {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--lmnd-spacing-200);
+}
+
+/* A card that stands above the page, such as Home's registration card. */
+.lmnd-kit-card--raised {
+  box-shadow: var(--lmnd-shadow-lg);
+}

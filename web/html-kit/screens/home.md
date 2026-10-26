@@ -9,6 +9,7 @@ the rest of the company's setup.
 
 | Baseline | Shows |
 | --- | --- |
+| `home-restricted.html` | Home for a Cashier on a business still finishing registration: the role strip, the locked balance, Sell and "+", the registration card and the feedback card |
 | `home.html` | Home for a merchant with a Business Account: balance, Sell, Pay and "+", and the default widgets except Savings Pots. The "+" menu is `#more-actions`, the side menu `#side-menu` |
 
 The baseline shows the ready state with the balance visible. The variants and other states are described
@@ -30,8 +31,9 @@ below; build one from the baseline when a change needs it.
 - "Available balance" in `body-small-regular` on-brand low, then the amount in `display-medium` on-brand
   high, "£12,345.67". Tapping it opens Money › Overview.
 - **Hidden:** the digits become "••••••"; the currency symbol stays.
-- **No permission to see it:** the symbol, the dots and a Primary · Solid circular `padlock` button,
-  which explains in a sheet.
+- **No permission to see it** (`home-restricted.html`): "£ • • • • • •" and, at the far end, a Primary ·
+  Solid circular `padlock` button, which reads as a bare lock on the yellow. The row opens the "You
+  don't have access" sheet.
 - **Balance Boost**, between the balance and the buttons when offered: "Balance Boost • Earn 4.5% AER" /
   "Daily interest on your full balance" as a switch row; once on, "+£12.40 interest earned this month ›".
 - **Buttons**, `spacing-200` apart, each shown only with its permission:
@@ -55,8 +57,13 @@ below; build one from the baseline when a change needs it.
    and a chevron when it leads somewhere.
 3. **Orders:** the same deck, for card and card-machine orders, with a "Processing / Dispatched /
    Delivered" stepper.
-4. **Role banner**, for a Manager, Accountant or Cashier: "Some features aren't available for your
-   current role.", with a `padlock`, light on `bg-always-dark`.
+4. **Role strip**, for a Manager, Accountant or Cashier (`home-restricted.html`). It isn't a block in the
+   page: it changes the whole screen (`lmnd-kit-screen--restricted`). A dark strip on `bg-always-dark`
+   takes the status bar, which turns light, and holds a `padlock` at 80% and "Some features aren't
+   available for your current role." in `body-small-regular`, light and centred, with `spacing-400`
+   around. It stays put; Home scrolls under it in a `bg-subtle` panel with `radius-900` top corners.
+   The same line serves all three roles. What the role can't use is gone from the screen rather than
+   disabled: Pay and the eye are missing, and a balance the role can't see is locked.
 
 ## Widgets
 
@@ -141,6 +148,8 @@ The baseline copies these on purpose. Leave them unless the change is about them
 - While the merchant's subscriptions load, Home assumes a Business Account and can switch widget sets
   when they arrive.
 - Title case in "New Savings Pot", "Teya Account Activity" and "Select Company".
+- In the restricted Home the "+" menu's items for this role are unverified; the baseline keeps Home's.
+- The restricted Home's registration artwork is an image in the app; the baseline stands in a symbol.
 - The yellow fade is an image in the app. The baseline draws it with `bg-brand`; how it looks in dark mode
   is unverified.
 
