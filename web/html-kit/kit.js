@@ -176,31 +176,40 @@
     }
   })
 
-  // ---------- A segmented control's sliding pill ----------
+  // ---------- The selection that slides: a segmented control's pill, a tab bar's underline ----------
 
-  // One pill under the selected option, moved to whichever is picked. It follows the control's size, so it
-  // lands right in a panel or screen that was hidden when the page loaded.
-  const slidePills = () => {
-    document.querySelectorAll('.lmnd-kit-segmented').forEach((control) => {
-      // Only a pick slides the pill; every other placement jumps it into place.
-      const place = (slide) => {
-        const item = control.querySelector('.lmnd-kit-segmented__item:has(input:checked), .lmnd-kit-segmented__item--selected')
-        if (!item || !item.offsetWidth) return
-        if (!slide) control.setAttribute('data-lmnd-kit-still', '')
-        control.style.setProperty('--lmnd-kit-pill-x', `${item.offsetLeft}px`)
-        control.style.setProperty('--lmnd-kit-pill-top', `${item.offsetTop}px`)
-        control.style.setProperty('--lmnd-kit-pill-width', `${item.offsetWidth}px`)
-        control.style.setProperty('--lmnd-kit-pill-height', `${item.offsetHeight}px`)
-        if (!slide) {
-          getComputedStyle(control, '::before').transform
-          requestAnimationFrame(() => control.removeAttribute('data-lmnd-kit-still'))
+  // One mark under the selected option, moved to whichever is picked. Only a pick slides it; on load, a
+  // resize or a font load it jumps into place, so it lands right in a panel that was hidden at first.
+  const SLIDERS = [
+    { control: '.lmnd-kit-segmented', selected: '.lmnd-kit-segmented__item:has(input:checked), .lmnd-kit-segmented__item--selected', mark: (item) => item },
+    { control: '.lmnd-kit-tabs', selected: '.lmnd-kit-tabs__item:has(input:checked), .lmnd-kit-tabs__item--selected', mark: (item) => item.querySelector('.lmnd-kit-tabs__pill') || item },
+  ]
+
+  const slideMarks = () => {
+    SLIDERS.forEach(({ control: selector, selected, mark }) => {
+      document.querySelectorAll(selector).forEach((control) => {
+        const place = (slide) => {
+          const item = control.querySelector(selected)
+          const target = item && mark(item)
+          if (!target || !target.offsetWidth) return
+          const box = control.getBoundingClientRect()
+          const rect = target.getBoundingClientRect()
+          if (!slide) control.setAttribute('data-lmnd-kit-still', '')
+          control.style.setProperty('--lmnd-kit-pill-x', `${rect.left - box.left + control.scrollLeft}px`)
+          control.style.setProperty('--lmnd-kit-pill-top', `${rect.top - box.top}px`)
+          control.style.setProperty('--lmnd-kit-pill-width', `${rect.width}px`)
+          control.style.setProperty('--lmnd-kit-pill-height', `${rect.height}px`)
+          if (!slide) {
+            getComputedStyle(control).width
+            requestAnimationFrame(() => control.removeAttribute('data-lmnd-kit-still'))
+          }
         }
-      }
-      control.setAttribute('data-lmnd-kit-still', '')
-      control.setAttribute('data-lmnd-kit-sliding', '')
-      place(false)
-      control.addEventListener('change', () => place(true))
-      new ResizeObserver(() => place(false)).observe(control)
+        control.setAttribute('data-lmnd-kit-still', '')
+        control.setAttribute('data-lmnd-kit-sliding', '')
+        place(false)
+        control.addEventListener('change', () => place(true))
+        new ResizeObserver(() => place(false)).observe(control)
+      })
     })
   }
 
@@ -269,7 +278,7 @@
     document.querySelectorAll('.lmnd-kit-tabs input[aria-controls]:checked, .lmnd-kit-segmented input[aria-controls]:checked').forEach(showPanel)
     foldTitles()
     fillBars()
-    slidePills()
+    slideMarks()
     centreDays()
     document.querySelectorAll('[data-lmnd-kit-max-length]').forEach(count)
     shown = openOverlay()

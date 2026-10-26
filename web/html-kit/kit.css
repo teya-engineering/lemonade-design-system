@@ -2665,6 +2665,44 @@ textarea.lmnd-kit-field__input {
   background: var(--lmnd-color-bg-brand-high);
 }
 
+/* With the kit's script, one underline slides to the selected tab, at its label's width, rather than
+   each tab drawing its own. Placing it without a pick doesn't animate it. */
+.lmnd-kit-tabs[data-lmnd-kit-sliding] {
+  position: relative;
+}
+
+.lmnd-kit-tabs[data-lmnd-kit-sliding]::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: var(--lmnd-kit-pill-width, 0);
+  height: var(--lmnd-border-width-75);
+  border-radius: var(--lmnd-radius-50) var(--lmnd-radius-50) 0 0;
+  background: var(--lmnd-color-bg-brand-high);
+  transform: translateX(var(--lmnd-kit-pill-x, 0));
+  transition: transform 0.28s cubic-bezier(0.2, 0, 0, 1), width 0.28s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.lmnd-kit-tabs[data-lmnd-kit-still]::after {
+  transition: none;
+}
+
+/* Outranks the selected tab's own underline, whose :has(input:checked) counts as a class and an element. */
+.lmnd-kit-tabs[data-lmnd-kit-sliding] > .lmnd-kit-tabs__item > .lmnd-kit-tabs__pill::after {
+  content: none;
+}
+
+.lmnd-kit-tabs[data-lmnd-kit-sliding] .lmnd-kit-tabs__item {
+  transition: color 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lmnd-kit-tabs[data-lmnd-kit-sliding]::after {
+    transition: none;
+  }
+}
+
 .lmnd-kit-tabs__item:has(input:focus-visible) .lmnd-kit-tabs__pill {
   outline: var(--lmnd-border-width-focus-ring) solid var(--lmnd-color-border-selected);
 }

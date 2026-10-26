@@ -198,7 +198,7 @@ one the same markup as a screen on its own.
 | --- | --- |
 | Screens with `id`s in one device (`LHK-SCREENS`) | Slides between them: in from the right on a link, back on Back or the browser's back button, no slide on a tab |
 | An overlay with an `id` (sheet, dialog, dropdown, side menu) | Animates it out as it closes, whichever way it closes — it animates in without the script. Esc and a tap on the scrim close it; focus moves into it and back to what opened it |
-| A `lmnd-kit-segmented` | Slides one pill to the option picked, rather than each option lighting up |
+| A `lmnd-kit-segmented` or `lmnd-kit-tabs` | Slides one pill, or one underline, to the option picked, rather than each option lighting up |
 | A tab or segmented option with `aria-controls="panel-id"` | Shows its panel and hides the others. The panels it doesn't show carry `hidden` in the markup, so without script the first stays |
 | A navigation top bar with a large title under its row | Folds the large title into the bar's small one as the screen scrolls |
 | The top bar of a details screen or of Home | Fills it once the screen scrolls, in browsers that can't do it in CSS |
