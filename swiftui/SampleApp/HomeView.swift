@@ -34,6 +34,7 @@ private enum Demo: String, CaseIterable, Identifiable, Hashable {
     case inlineCalendar = "InlineCalendar"
 
     case textField = "TextField"
+    case textArea = "TextArea"
     case searchField = "SearchField"
     case selectField = "SelectField"
     case pinCode = "PinCode"
@@ -95,7 +96,7 @@ private let demoSections: [DemoSection] = [
     ),
     DemoSection(
         title: "Input Fields",
-        items: [.textField, .searchField, .selectField, .pinCode]
+        items: [.textField, .textArea, .searchField, .selectField, .pinCode]
     ),
     DemoSection(
         title: "Display Components",
@@ -199,6 +200,7 @@ struct HomeView: View {
         case .datePicker: DatePickerDisplayView()
         case .inlineCalendar: InlineCalendarDisplayView()
         case .textField: TextFieldDisplayView()
+        case .textArea: TextAreaDisplayView()
         case .searchField: SearchFieldDisplayView()
         case .selectField: SelectFieldDisplayView()
         case .pinCode: PinCodeDisplayView()

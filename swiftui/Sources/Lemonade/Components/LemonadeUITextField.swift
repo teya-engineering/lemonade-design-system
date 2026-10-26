@@ -8,6 +8,22 @@ import UIKit
 ///
 /// - Note: Cursor positions are measured in UTF-16 code units, the units UIKit indexes text
 ///   positions in.
+extension UIView {
+    /// Runs on the next main-queue turn: a responder change inside a SwiftUI update can hand focus
+    /// back to a view that is redrawing in the same pass.
+    func scheduleFirstResponderUpdate(wantsFocus: Bool) {
+        guard wantsFocus != isFirstResponder else { return }
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if wantsFocus, !self.isFirstResponder, self.window != nil {
+                self.becomeFirstResponder()
+            } else if !wantsFocus, self.isFirstResponder {
+                self.resignFirstResponder()
+            }
+        }
+    }
+}
+
 internal struct LemonadeUITextField: UIViewRepresentable {
     /// Read from the environment rather than passed in, so a single change here covers every
     /// public TextField overload without touching any of their signatures.
@@ -186,18 +202,8 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         }
     }
 
-    /// Runs on the next main-queue turn: a responder change inside a SwiftUI update can hand focus
-    /// back to a field that is redrawing in the same pass.
     private func updateFocus(_ textField: UITextField) {
-        guard isFocused != textField.isFirstResponder else { return }
-        let wantsFocus = isFocused
-        DispatchQueue.main.async {
-            if wantsFocus, !textField.isFirstResponder, textField.window != nil {
-                textField.becomeFirstResponder()
-            } else if !wantsFocus, textField.isFirstResponder {
-                textField.resignFirstResponder()
-            }
-        }
+        textField.scheduleFirstResponderUpdate(wantsFocus: isFocused)
     }
 
     func makeCoordinator() -> Coordinator {
