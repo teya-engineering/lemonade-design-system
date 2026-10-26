@@ -1403,8 +1403,22 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   transform: none;
 }
 
-.lmnd-kit-top-bar--collapsed .lmnd-kit-top-bar__large {
-  display: none;
+/* A navigation bar's large title folds away rather than jumping. */
+.lmnd-kit-top-bar > .lmnd-kit-top-bar__large {
+  max-height: 160px; /* literal: room for two lines and a subtitle */
+  overflow: hidden;
+  transition: max-height 0.25s ease, padding 0.25s ease, opacity 0.2s ease;
+}
+
+.lmnd-kit-top-bar--collapsed > .lmnd-kit-top-bar__large {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+}
+
+.lmnd-kit-top-bar {
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .lmnd-kit-top-bar--collapsed {
@@ -2710,6 +2724,11 @@ textarea.lmnd-kit-field__input {
   to { background-color: var(--lmnd-color-bg-default); }
 }
 
+/* Where the browser can't drive that from scroll, kit.js marks the bar once the screen has scrolled. */
+.lmnd-kit-screen--details .lmnd-kit-top-bar--scrolled {
+  background: var(--lmnd-color-bg-default);
+}
+
 /* The wash: a radial gradient from the status's colour at the top, 85% of the width across, reaching
    down past the hero, blended hard-light as the app draws it. */
 .lmnd-kit-screen--details[class*="lmnd-kit-screen--wash-"] {
@@ -3270,6 +3289,10 @@ body:has(> .lmnd-kit-device) {
   to { background-color: var(--lmnd-color-bg-subtle); }
 }
 
+.lmnd-kit-screen--home .lmnd-kit-top-bar--scrolled {
+  background: var(--lmnd-color-bg-subtle);
+}
+
 .lmnd-kit-top-bar__home {
   display: flex;
   align-items: center;
@@ -3780,5 +3803,56 @@ body:has(> .lmnd-kit-device) {
   .lmnd-kit-screen--pop-in,
   .lmnd-kit-screen--pop-out {
     animation: none;
+  }
+}
+
+/* ---------- Overlays opening and closing ---------- */
+
+/* Opening needs no script: an overlay animates in as its link targets it. Closing does: kit.js keeps the
+   overlay on screen with --closing while it animates out. */
+/* The scrim's colour fades, not the scrim itself, so the sheet or menu inside stays solid as it moves. */
+.lmnd-kit-scrim[id]:target,
+.lmnd-kit-drawer-layer[id]:target { animation: lmnd-kit-scrim-in 0.3s ease both; }
+.lmnd-kit-scrim[id]:target > .lmnd-kit-sheet { animation: lmnd-kit-sheet-in 0.45s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-scrim[id]:target > .lmnd-kit-dialog { animation: lmnd-kit-grow-in 0.2s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-dropdown-layer[id]:target > .lmnd-kit-dropdown { animation: lmnd-kit-grow-in 0.15s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-drawer-layer[id]:target > .lmnd-kit-drawer { animation: lmnd-kit-drawer-in 0.42s cubic-bezier(0.2, 0, 0, 1) both; }
+
+.lmnd-kit-dropdown { transform-origin: top right; }
+.lmnd-kit-dropdown-layer--start .lmnd-kit-dropdown { transform-origin: top left; }
+
+.lmnd-kit-scrim.lmnd-kit-overlay--closing { display: flex !important; animation: lmnd-kit-scrim-out 0.32s ease both; }
+.lmnd-kit-dropdown-layer.lmnd-kit-overlay--closing,
+.lmnd-kit-drawer-layer.lmnd-kit-overlay--closing { display: block !important; }
+.lmnd-kit-drawer-layer.lmnd-kit-overlay--closing { animation: lmnd-kit-scrim-out 0.32s ease both; }
+.lmnd-kit-overlay--closing > .lmnd-kit-sheet { animation: lmnd-kit-sheet-out 0.32s cubic-bezier(0.3, 0, 1, 1) both; }
+.lmnd-kit-overlay--closing > .lmnd-kit-dialog,
+.lmnd-kit-overlay--closing > .lmnd-kit-dropdown { animation: lmnd-kit-grow-out 0.12s ease both; }
+.lmnd-kit-overlay--closing > .lmnd-kit-drawer { animation: lmnd-kit-drawer-out 0.32s cubic-bezier(0.3, 0, 1, 1) both; }
+
+@keyframes lmnd-kit-scrim-in { from { background-color: transparent; } }
+@keyframes lmnd-kit-scrim-out { to { background-color: transparent; } }
+@keyframes lmnd-kit-sheet-in { from { transform: translateY(100%); } }
+@keyframes lmnd-kit-sheet-out { to { transform: translateY(100%); } }
+@keyframes lmnd-kit-grow-in { from { opacity: 0; transform: scale(0.92); } }
+@keyframes lmnd-kit-grow-out { to { opacity: 0; transform: scale(0.92); } }
+@keyframes lmnd-kit-drawer-in { from { transform: translateX(-100%); } }
+@keyframes lmnd-kit-drawer-out { to { transform: translateX(-100%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .lmnd-kit-scrim[id]:target,
+  .lmnd-kit-drawer-layer[id]:target,
+  .lmnd-kit-overlay--closing,
+  :target > .lmnd-kit-sheet,
+  :target > .lmnd-kit-dialog,
+  :target > .lmnd-kit-dropdown,
+  :target > .lmnd-kit-drawer,
+  .lmnd-kit-overlay--closing > * {
+    animation: none;
+  }
+
+  .lmnd-kit-top-bar,
+  .lmnd-kit-top-bar > .lmnd-kit-top-bar__large {
+    transition: none;
   }
 }

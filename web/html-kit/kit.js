@@ -33,8 +33,21 @@
     if (event.key === 'Escape') close()
   })
 
+  // Opening animates in CSS. Closing, whichever way it happens — Esc, the scrim, a link, the browser's back
+  // button — keeps the overlay on screen while it animates out.
+  let shown = null
+  const CLOSE = 360
+
+  const animateClose = (overlay) => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    overlay.classList.add('lmnd-kit-overlay--closing')
+    setTimeout(() => overlay.classList.remove('lmnd-kit-overlay--closing'), CLOSE)
+  }
+
   window.addEventListener('hashchange', () => {
     const overlay = openOverlay()
+    if (shown && shown !== overlay) animateClose(shown)
+    shown = overlay
     if (overlay) {
       const first = [...overlay.querySelectorAll(FOCUSABLE)].find((el) => !el.matches('[class$="__dismiss"]'))
       first?.focus({ preventScroll: true })
@@ -196,6 +209,20 @@
     })
   }
 
+  // ---------- A top bar that fills once its screen scrolls ----------
+
+  // Details and Home bars start clear over their colour and fill once the screen scrolls. CSS does it from
+  // the scroll position where the browser can; this marks the bar everywhere else.
+  const fillBars = () => {
+    document.querySelectorAll('.lmnd-kit-screen--details > .lmnd-kit-top-bar, .lmnd-kit-screen--home > .lmnd-kit-top-bar').forEach((bar) => {
+      const screen = bar.parentElement
+      const scroller = screen.scrollHeight > screen.clientHeight ? screen : window
+      const update = () => bar.classList.toggle('lmnd-kit-top-bar--scrolled', (scroller === window ? scrollY : screen.scrollTop) > 8)
+      scroller.addEventListener('scroll', update, { passive: true })
+      update()
+    })
+  }
+
   // ---------- A strip of days that opens on the selected one ----------
 
   const centreDays = () => {
@@ -213,9 +240,11 @@
     route()
     document.querySelectorAll('.lmnd-kit-tabs input[aria-controls]:checked, .lmnd-kit-segmented input[aria-controls]:checked').forEach(showPanel)
     foldTitles()
+    fillBars()
     centreDays()
     document.querySelectorAll('[data-lmnd-kit-max-length]').forEach(count)
-    if (openOverlay()) window.dispatchEvent(new HashChangeEvent('hashchange'))
+    shown = openOverlay()
+    if (shown) window.dispatchEvent(new HashChangeEvent('hashchange'))
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start)
