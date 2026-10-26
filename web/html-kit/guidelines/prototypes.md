@@ -141,13 +141,45 @@ placeholder numbers hide how amounts and dates line up in a row.
 **Rule.** A flow is one `.html` file per screen, linked with `<a href="next.html">`. A sheet, dialog,
 dropdown, side menu or toast over a screen lives in that screen's file, in the `lmnd-kit-device` after the
 `lmnd-kit-screen`, with an `id`. A link to `#that-id` opens it and a link to `#` closes it. Script follows
-`LHK-SCRIPT`.
+`LHK-SCRIPT`. A flow that has to travel as one file keeps its screens together instead (`LHK-SCREENS`).
 
 **Why.** Linked pages and linked overlays click through on any device with nothing to install, the
 browser's back button closes an open sheet, and the markup stays the same markup a reader copies.
 
 **Exceptions.** A state that HTML can't reach without script — a timer, an animation sequence — is shown
 as its own screen instead.
+
+## `LHK-SCREENS` · A flow in one file is several screens in one device
+
+**Kind.** Rule.
+
+**Rule.** When a flow has to be one file — a Claude.ai artifact, a standalone page sent to someone — its
+screens sit side by side in the one `lmnd-kit-device`, each a `lmnd-kit-screen` with an `id`, the first being
+where the flow starts. Overlays follow the screens, as in `LHK-FLOWS`.
+
+- A link to a screen's id moves to it: `<a href="#details">`.
+- Back is a link to the screen it returns to, marked `data-lmnd-kit-back`: `<a href="#transactions"
+  data-lmnd-kit-back …>`.
+- A tab bar's links point at its tabs' screens.
+
+```html
+<div class="lmnd-kit-device">
+  <div class="lmnd-kit-screen" id="transactions">… <a href="#details" class="lmnd-kit-list-item">…</a> …</div>
+  <div class="lmnd-kit-screen lmnd-kit-screen--details" id="details">… <a href="#transactions" data-lmnd-kit-back class="lmnd-kit-icon-button …" aria-label="Back">…</a> …</div>
+  <div class="lmnd-kit-scrim" id="store-sheet">…</div>
+</div>
+```
+
+With the kit's script, a link pushes the next screen in from the right, Back and the browser's back button
+slide back, a tab switches without sliding, and closing a sheet stays on its screen. Without it, the screen a
+link targets shows, with no slide; a sheet over any screen but the first then shows over the first.
+`examples/flow.html` is two screens in one file.
+
+**Why.** A Claude.ai artifact or a standalone file can't link to another file, so a flow sent as one file
+needs its screens inside it. Keeping them as screens, not pages stitched together with script, keeps each
+one the same markup as a screen on its own.
+
+**Exceptions.** None. A flow that travels as a folder keeps one file per screen (`LHK-FLOWS`).
 
 ## `LHK-SCRIPT` · Only the kit's script, and nothing depends on it
 
@@ -164,6 +196,7 @@ as its own screen instead.
 
 | Kit markup | What the script adds |
 | --- | --- |
+| Screens with `id`s in one device (`LHK-SCREENS`) | Slides between them: in from the right on a link, back on Back or the browser's back button, no slide on a tab |
 | An overlay with an `id` (sheet, dialog, dropdown, side menu) | Esc and a tap on the scrim close it; focus moves into it and back to what opened it |
 | A tab or segmented option with `aria-controls="panel-id"` | Shows its panel and hides the others. The panels it doesn't show carry `hidden` in the markup, so without script the first stays |
 | A navigation top bar with a large title under its row | Folds the large title into the bar's small one as the screen scrolls |

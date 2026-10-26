@@ -44,6 +44,107 @@
     }
   })
 
+  // ---------- Several screens in one file ----------
+
+  // A device holding several screens with ids is a little app: a link to a screen's id pushes it in, the
+  // browser's back button and a link with data-lmnd-kit-back slide back, and a link in the tab bar switches
+  // without sliding. Closing a sheet keeps the screen it opened on.
+  let device = null
+  let screens = []
+  const stack = []
+  let current = null
+  let lastLink = null
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)')
+
+  const screenFor = (id) => screens.find((screen) => screen.id === id)
+
+  // An animation that never reports its end (a background tab, a headless render) still ends.
+  const SLIDE = 400
+  const animate = (screen, name, done) => {
+    const end = () => {
+      screen.classList.remove(name)
+      done?.()
+    }
+    if (reduceMotion.matches) return end()
+    screen.classList.add(name)
+    const timer = setTimeout(end, SLIDE)
+    screen.addEventListener('animationend', () => {
+      clearTimeout(timer)
+      end()
+    }, { once: true })
+  }
+
+  const show = (next, how) => {
+    if (!next || next === current) return
+    const previous = current
+    current = next
+    if (previous) {
+      previous.classList.remove('lmnd-kit-screen--current')
+      if (how !== 'switch' && !reduceMotion.matches) {
+        previous.classList.add('lmnd-kit-screen--leaving')
+        animate(previous, how === 'back' ? 'lmnd-kit-screen--pop-out' : 'lmnd-kit-screen--push-out', () => {
+          previous.classList.remove('lmnd-kit-screen--leaving')
+        })
+      }
+    }
+    next.classList.add('lmnd-kit-screen--current')
+    if (how === 'push') {
+      next.scrollTop = 0
+      animate(next, 'lmnd-kit-screen--push-in')
+    } else if (how === 'back') {
+      animate(next, 'lmnd-kit-screen--pop-in')
+    }
+  }
+
+  const go = (next) => {
+    const index = stack.indexOf(next.id)
+    let how = 'push'
+    if (lastLink?.closest('.lmnd-kit-tab-bar')) how = 'switch'
+    else if (index >= 0) how = 'back'
+    if (how === 'back') stack.length = index + 1
+    else if (how === 'switch') stack.splice(0, stack.length, next.id)
+    else stack.push(next.id)
+    show(next, how)
+    history.replaceState({ lmndKitScreen: next.id }, '')
+    lastLink = null
+  }
+
+  // Set up once the page is parsed: a standalone file inlines this script in its head.
+  const route = () => {
+    device = document.querySelector('.lmnd-kit-device')
+    screens = device ? [...device.querySelectorAll(':scope > .lmnd-kit-screen[id]')] : []
+    if (screens.length < 2) return
+    device.setAttribute('data-lmnd-kit-screens', '')
+    const first = screenFor(decodeURIComponent(location.hash.slice(1))) || screens[0]
+    stack.push(first.id)
+    show(first, 'switch')
+    history.replaceState({ lmndKitScreen: first.id }, '')
+
+    document.addEventListener('click', (event) => {
+      const link = event.target.closest('a[href]')
+      if (!link) return
+      lastLink = link
+      // Back goes back through history when there is somewhere to go; its href is the fallback.
+      if (link.hasAttribute('data-lmnd-kit-back') && stack.length > 1) {
+        event.preventDefault()
+        history.back()
+      }
+    }, true)
+
+    window.addEventListener('popstate', (event) => {
+      const next = screenFor(event.state?.lmndKitScreen)
+      if (next) go(next)
+    })
+
+    // Every entry remembers the screen it showed, so going back through a sheet's opening and closing
+    // lands on the right screen.
+    window.addEventListener('hashchange', () => {
+      const next = screenFor(decodeURIComponent(location.hash.slice(1)))
+      if (next && next !== current) go(next)
+      else if (!history.state?.lmndKitScreen) history.replaceState({ lmndKitScreen: current.id }, '')
+    })
+  }
+
   // ---------- Tabs and segmented controls that switch panels ----------
 
   // An option names the panel it shows with aria-controls; the panels it doesn't show carry `hidden`
@@ -109,6 +210,7 @@
   }
 
   const start = () => {
+    route()
     document.querySelectorAll('.lmnd-kit-tabs input[aria-controls]:checked, .lmnd-kit-segmented input[aria-controls]:checked').forEach(showPanel)
     foldTitles()
     centreDays()

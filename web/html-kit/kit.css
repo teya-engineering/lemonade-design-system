@@ -3002,6 +3002,7 @@ body:has(> .lmnd-kit-device) {
 
 .lmnd-kit-device > .lmnd-kit-screen {
   grid-row: 1;
+  grid-column: 1;
   max-width: none;
   min-height: 0;
   margin: 0;
@@ -3737,4 +3738,47 @@ body:has(> .lmnd-kit-device) {
 /* A card that stands above the page, such as Home's registration card. */
 .lmnd-kit-card--raised {
   box-shadow: var(--lmnd-shadow-lg);
+}
+
+/* ---------- Several screens in one file ---------- */
+
+/* A device may hold several screens, each with an id (LHK-SCREENS). Without the kit's script, the screen a
+   link targets shows, or else the first. With it, kit.js marks the current screen and slides between them. */
+.lmnd-kit-device:has(> .lmnd-kit-screen[id]:target) > .lmnd-kit-screen[id]:not(:target),
+.lmnd-kit-device:not(:has(> .lmnd-kit-screen[id]:target)) > .lmnd-kit-screen[id] ~ .lmnd-kit-screen[id] {
+  display: none;
+}
+
+.lmnd-kit-device[data-lmnd-kit-screens] > .lmnd-kit-screen[id] {
+  display: none !important;
+}
+
+.lmnd-kit-device[data-lmnd-kit-screens] > .lmnd-kit-screen--current[id],
+.lmnd-kit-device[data-lmnd-kit-screens] > .lmnd-kit-screen--leaving[id] {
+  display: flex !important;
+}
+
+.lmnd-kit-screen--current {
+  z-index: 1;
+}
+
+/* Pushed screens come in from the right over the one they leave, which drifts left; going back reverses
+   it. */
+.lmnd-kit-screen--push-in { animation: lmnd-kit-push-in 0.3s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-screen--push-out { animation: lmnd-kit-push-out 0.3s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-screen--pop-in { animation: lmnd-kit-pop-in 0.3s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-screen--pop-out { z-index: 2; animation: lmnd-kit-pop-out 0.3s cubic-bezier(0.2, 0, 0, 1) both; }
+
+@keyframes lmnd-kit-push-in { from { transform: translateX(100%); } }
+@keyframes lmnd-kit-push-out { to { transform: translateX(-30%); } }
+@keyframes lmnd-kit-pop-in { from { transform: translateX(-30%); } }
+@keyframes lmnd-kit-pop-out { to { transform: translateX(100%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .lmnd-kit-screen--push-in,
+  .lmnd-kit-screen--push-out,
+  .lmnd-kit-screen--pop-in,
+  .lmnd-kit-screen--pop-out {
+    animation: none;
+  }
 }

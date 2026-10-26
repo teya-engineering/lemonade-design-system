@@ -10,7 +10,7 @@ from this skill's files; you never invent styles.
 | `assets/lemonade-kit.css` | The whole kit: tokens, type, components, fonts, icons, flags, logos. Link it; never read or grep it — it is mostly inline artwork |
 | `assets/lemonade-kit.js` | The kit's optional behaviour: overlays that close on Esc, panels that switch, titles that fold. Link it after the stylesheet (`LHK-SCRIPT`); never write script of your own |
 | `assets/gallery.html` | Every component with the markup that draws it. Your source for markup |
-| `assets/examples/` | Finished screens to start from: `settings.html` (menu), `sales.html` (widgets, filter sheet), `transactions.html` (feed, multi-select picker), `card-machines.html` and `recipients.html` (resource lists), `transaction-details.html`, `add-recipient.html` (form) |
+| `assets/examples/` | Finished screens to start from: `flow.html` (two screens in one file, `LHK-SCREENS`), `settings.html` (menu), `sales.html` (widgets, filter sheet), `transactions.html` (feed, multi-select picker), `card-machines.html` and `recipients.html` (resource lists), `transaction-details.html`, `add-recipient.html` (form) |
 | `assets/screens/` | The app's own screens copied as they are in production, faults included: the baselines to change |
 | `references/screens/` | How those screens work, and the app's site map. Start with `index.md` |
 | `references/guidelines/` | The rules a screen follows. Start with `index.md` |
@@ -54,6 +54,8 @@ page a screen description names, such as `money-settlements.html`, is in `assets
 6. **Make one file.** Run `python3 scripts/build.py <page.html>`.
    It writes `<page>.standalone.html` with the stylesheet and the kit's script inlined and only the assets the page uses, and
    it fails on an icon, flag or logo name that doesn't exist.
+   A flow of several screens is one page with its screens side by side (`LHK-SCREENS`, `examples/flow.html`),
+   so it hands over as one file that clicks through.
 7. **Hand over** the `.standalone.html` file. Say which content is placeholder, list any exemptions, and
    name any role the kit had no component for. When it started from a baseline, list what changed against
    it, block by block, and say which baseline and which date it was copied from. End with the line "Built with lemonade-prototype
