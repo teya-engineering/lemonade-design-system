@@ -3665,6 +3665,11 @@ body:has(> .lmnd-kit-device) {
   --lmnd-kit-safe-top: 0px;
 }
 
+/* Under the strip, the top bar sits spacing-400 below the panel's edge rather than spacing-200. */
+.lmnd-kit-screen--restricted .lmnd-kit-top-bar__home {
+  padding-top: var(--lmnd-spacing-400);
+}
+
 /* The status bar's time and icons turn light over the strip; the home indicator stays dark. */
 .lmnd-kit-device:has(> .lmnd-kit-screen--restricted)::before {
   color: var(--lmnd-color-content-always-light);

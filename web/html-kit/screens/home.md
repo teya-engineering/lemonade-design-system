@@ -9,7 +9,7 @@ the rest of the company's setup.
 
 | Baseline | Shows |
 | --- | --- |
-| `home-restricted.html` | Home for a Cashier on a business still finishing registration: the role strip, the locked balance, Sell and "+", the registration card and the feedback card |
+| `home-restricted.html` | Home for a Cashier: the role strip over the regular Home's content |
 | `home.html` | Home for a merchant with a Business Account: balance, Sell, Pay and "+", and the default widgets except Savings Pots. The "+" menu is `#more-actions`, the side menu `#side-menu` |
 
 The baseline shows the ready state with the balance visible. The variants and other states are described
@@ -31,7 +31,7 @@ below; build one from the baseline when a change needs it.
 - "Available balance" in `body-small-regular` on-brand low, then the amount in `display-medium` on-brand
   high, "£12,345.67". Tapping it opens Money › Overview.
 - **Hidden:** the digits become "••••••"; the currency symbol stays.
-- **No permission to see it** (`home-restricted.html`): "£ • • • • • •" and, at the far end, a Primary ·
+- **No permission to see it:** "£ • • • • • •" and, at the far end, a Primary ·
   Solid circular `padlock` button, which reads as a bare lock on the yellow. The row opens the "You
   don't have access" sheet.
 - **Balance Boost**, between the balance and the buttons when offered: "Balance Boost • Earn 4.5% AER" /
@@ -63,7 +63,9 @@ below; build one from the baseline when a change needs it.
    available for your current role." in `body-small-regular`, light and centred, with `spacing-400`
    around. It stays put; Home scrolls under it in a `bg-subtle` panel with `radius-900` top corners.
    The same line serves all three roles. What the role can't use is gone from the screen rather than
-   disabled: Pay and the eye are missing, and a balance the role can't see is locked.
+   disabled: Pay and the eye go when the role can't pay bills or see the balance, and the balance then
+   shows locked (`lmnd-kit-balance__locked`). The baseline keeps the regular Home's content under the
+   strip.
 
 ## Widgets
 
@@ -148,8 +150,6 @@ The baseline copies these on purpose. Leave them unless the change is about them
 - While the merchant's subscriptions load, Home assumes a Business Account and can switch widget sets
   when they arrive.
 - Title case in "New Savings Pot", "Teya Account Activity" and "Select Company".
-- In the restricted Home the "+" menu's items for this role are unverified; the baseline keeps Home's.
-- The restricted Home's registration artwork is an image in the app; the baseline stands in a symbol.
 - The yellow fade is an image in the app. The baseline draws it with `bg-brand`; how it looks in dark mode
   is unverified.
 

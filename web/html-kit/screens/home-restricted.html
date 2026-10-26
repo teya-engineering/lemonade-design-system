@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Home · Restricted role</title>
 <link rel="stylesheet" href="../lemonade-kit.css">
-<!-- Baseline: the Teya app's Home tab for a Cashier, whose role hides some features, on a business still finishing registration, as it is in production. Described in screens/home.md. Exemptions marked
+<!-- Baseline: the Teya app's Home tab for a Manager, Accountant or Cashier, whose role hides some features, with the regular Home's content, as it is in production. Described in screens/home.md. Exemptions marked
      "as in production" are faults the app has today. -->
 </head>
 <body>
@@ -24,49 +24,89 @@
           <span class="lmnd-kit-identifier-button__name lmnd-text-body-medium-semibold">Brick &amp; Bean Coffee</span>
           <span class="lmnd-icon" data-icon="chevron-right" aria-hidden="true"></span>
         </a>
+        <button type="button" class="lmnd-kit-identifier-button lmnd-kit-identifier-button--circle" aria-label="Toggle balance visibility"><span class="lmnd-icon" data-icon="eye-open" aria-hidden="true"></span></button>
       </div>
     </header>
 
     <main class="lmnd-kit-content">
       <div class="lmnd-kit-balance">
         <p class="lmnd-kit-balance__label lmnd-text-body-small-regular">Available balance</p>
-        <a href="#" class="lmnd-kit-balance__locked" aria-label="You don't have access">
-          <span class="lmnd-kit-balance__amount lmnd-text-display-medium">£ • • • • • •</span>
-          <span class="lmnd-kit-icon-button lmnd-kit-icon-button--primary lmnd-kit-icon-button--solid lmnd-kit-icon-button--circular" aria-hidden="true"><span class="lmnd-icon" data-icon="padlock"></span></span>
-        </a>
-        <!-- LDS-BUTTON-PAIR exempt: as in production, Sell is a Lemonade button while "+" is the app's own -->
+        <a href="#" class="lmnd-kit-balance__amount lmnd-text-display-medium">£12,345.67</a>
+        <!-- LDS-BUTTON-PAIR exempt: as in production, Sell is a Lemonade button while Pay and "+" are the app's own -->
         <div class="lmnd-kit-balance__actions">
           <a href="#" class="lmnd-button lmnd-button--secondary lmnd-button--solid lmnd-button--medium lmnd-text-body-medium-semibold"><span class="lmnd-icon" data-icon="card-machine" aria-hidden="true"></span><span class="lmnd-button__label">Sell</span></a>
+          <a href="#" class="lmnd-kit-identifier-button lmnd-kit-identifier-button--text"><span class="lmnd-icon" data-icon="arrow-up-right" aria-hidden="true"></span><span class="lmnd-text-body-medium-semibold">Pay</span></a>
           <a href="#more-actions" class="lmnd-kit-identifier-button lmnd-kit-identifier-button--icon" aria-label="More actions"><span class="lmnd-icon" data-icon="plus" aria-hidden="true"></span></a>
         </div>
       </div>
 
-      <div class="lmnd-kit-card lmnd-kit-card--pad-medium lmnd-kit-card--raised">
-        <div class="lmnd-kit-card__body lmnd-kit-stack">
-          <span class="lmnd-kit-symbol lmnd-kit-symbol--xx-large lmnd-kit-symbol--rounded lmnd-kit-symbol--brand-subtle"><span class="lmnd-icon" data-icon="pencil-line" aria-hidden="true"></span></span>
-          <div>
-            <h2 class="lmnd-text-heading-small">Finish activating your account</h2>
-            <p class="lmnd-text-body-medium-regular lmnd-kit-secondary">You're almost there, follow the steps to finish the setup and start accepting payments.</p>
+      <div class="lmnd-kit-widgets">
+        <a href="sales-overview.html" class="lmnd-kit-widget">
+          <div class="lmnd-kit-widget__content">
+            <div class="lmnd-kit-widget__figure">
+              <h2 class="lmnd-kit-widget__label lmnd-text-body-small-regular">Gross sales today</h2>
+              <div class="lmnd-kit-widget__value-group"><span class="lmnd-kit-widget__value lmnd-text-display-xsmall">£1,284.50</span><span class="lmnd-kit-widget__support lmnd-text-body-xsmall-regular">To be paid tomorrow</span></div>
+            </div>
+            <div class="lmnd-kit-widget__bottom"><span class="lmnd-kit-sparkline" aria-hidden="true"></span></div>
           </div>
-          <a href="#" class="lmnd-button lmnd-button--secondary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold"><span class="lmnd-button__label">Continue registration</span></a>
-        </div>
+        </a>
+        <a href="money-settlements.html" class="lmnd-kit-widget lmnd-kit-widget--positive">
+          <div class="lmnd-kit-widget__content">
+            <div class="lmnd-kit-widget__figure">
+              <h2 class="lmnd-kit-widget__label lmnd-text-body-small-regular">Today’s settlements</h2>
+              <div class="lmnd-kit-widget__value-group"><span class="lmnd-kit-widget__value lmnd-text-display-xsmall">£2,486.40</span><span class="lmnd-kit-widget__support lmnd-text-body-xsmall-regular">Paid</span></div>
+            </div>
+            <div class="lmnd-kit-widget__bottom"><span class="lmnd-kit-widget__footer"><span class="lmnd-text-body-xsmall-semibold">More details</span><span class="lmnd-icon" data-icon="chevron-right" aria-hidden="true"></span></span></div>
+          </div>
+        </a>
       </div>
 
       <div>
         <div class="lmnd-kit-card">
           <div class="lmnd-kit-content-card">
-            <span class="lmnd-kit-symbol lmnd-kit-symbol--xx-large lmnd-kit-symbol--rounded lmnd-kit-symbol--brand-subtle"><span class="lmnd-icon" data-icon="heart" aria-hidden="true"></span></span>
+            <span class="lmnd-kit-symbol lmnd-kit-symbol--xx-large lmnd-kit-symbol--rounded lmnd-kit-symbol--brand-subtle"><span class="lmnd-icon" data-icon="card-machine" aria-hidden="true"></span></span>
             <span class="lmnd-kit-content-card__text">
-              <span class="lmnd-text-body-small-medium">How's the new Teya app?</span>
-              <span class="lmnd-text-body-small-regular">Tell us what's working well and what could be better.</span>
-              <a href="#" class="lmnd-kit-content-card__cta lmnd-text-body-small-medium">Share feedback ›</a>
+              <span class="lmnd-text-body-small-medium">Take payments on your phone</span>
+              <span class="lmnd-text-body-small-regular">Accept cards with Tap to Pay, no card machine needed.</span>
+              <a href="#" class="lmnd-kit-content-card__cta lmnd-text-body-small-medium">Find out more ›</a>
             </span>
             <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--ghost lmnd-kit-icon-button--small lmnd-kit-icon-button--circular lmnd-kit-content-card__dismiss" aria-label="Dismiss"><span class="lmnd-icon" data-icon="math-times"></span></button>
           </div>
         </div>
       </div>
-      <div class="lmnd-kit-page-indicator" aria-hidden="true"><span aria-current="true"></span><span></span></div>
+      <div class="lmnd-kit-page-indicator" aria-hidden="true"><span aria-current="true"></span><span></span><span></span></div>
 
+      <div class="lmnd-kit-widgets">
+
+        <div class="lmnd-kit-card">
+          <div class="lmnd-kit-card__header">
+            <div class="lmnd-kit-card__heading"><h2 class="lmnd-kit-card__title lmnd-text-body-xsmall-overline">Teya Account Activity</h2></div>
+          </div>
+          <!-- LHK-COPY exempt: as in production, account activity separates with "·" -->
+          <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-text-body-small-semibold">NB<span class="lmnd-kit-symbol__status" data-badge="money-in" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Northside Bakery</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Today, 11:05 · INV-2231</span></span>
+              <span class="lmnd-kit-list-item__value lmnd-kit-list-item__value--positive"><span class="lmnd-text-body-medium-medium">+£310.00</span></span>
+            </span>
+          </a>
+          <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-text-body-small-semibold">DF<span class="lmnd-kit-symbol__status" data-badge="money-out" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Daily Fresh Produce</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Today, 09:40 · Weekly order</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">-£186.40</span></span>
+            </span>
+          </a>
+          <a href="#" class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="brand-teya-symbol" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="money-in" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Teya settlement</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Yesterday, 18:02 · Card sales</span></span>
+              <span class="lmnd-kit-list-item__value lmnd-kit-list-item__value--positive"><span class="lmnd-text-body-medium-medium">+£2,486.40</span></span>
+            </span>
+          </a>
+          <a href="#" class="lmnd-kit-card__footer lmnd-text-body-small-semibold">See account activity</a>
+        </div>
+      </div>
     </main>
 
     <nav class="lmnd-kit-tab-bar">
