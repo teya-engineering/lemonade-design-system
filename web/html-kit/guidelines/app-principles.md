@@ -112,6 +112,66 @@ leave.
 
 **Exceptions.** None.
 
+## `APP-ROLE-STRIP` · A restricted role is told once, on Home
+
+**Kind.** Rule.
+
+**Rule.** When someone's role hides features — a Manager, Accountant or Cashier — Home says so once, with
+the role strip: Home becomes a `lmnd-kit-screen--restricted`, and a `lmnd-kit-role-strip` under the status
+bar carries a `padlock` and "Some features aren't available for your current role." No other screen
+repeats it, and no screen names the features it hides.
+
+```html
+<div class="lmnd-kit-screen lmnd-kit-screen--restricted">
+  <div class="lmnd-kit-role-strip">
+    <span class="lmnd-icon" data-icon="padlock" aria-hidden="true"></span>
+    <p class="lmnd-text-body-small-regular">Some features aren't available for your current role.</p>
+  </div>
+  <div class="lmnd-kit-screen lmnd-kit-screen--home">…</div>
+</div>
+```
+
+**Why.** The merchant needs to know why their app looks thinner than a colleague's, once. A strip on
+every screen turns a fact into a reproach, and a list of what's missing is a list of things they can't
+have.
+
+**Exceptions.** None. `screens/home-restricted.html` is the baseline.
+
+## `APP-ROLE-ABSENT` · What a role can't do isn't there
+
+**Kind.** Rule.
+
+**Rule.** An action the role can't take is absent: no button, no menu item, no row, no chip, no tab. It is
+never shown disabled. A card or widget the role can't use is removed, and the screen closes the gap.
+
+**Why.** A disabled control promises something the merchant can't get, and makes them look for a way to
+turn it on. Absent, the screen is simply the screen for their job.
+
+**Exceptions.** Data the role can't see but whose place matters follows `APP-ROLE-LOCKED`.
+
+**Do / don't.** A Cashier's Home with Sell and "+" only. Not a greyed-out Pay button.
+
+## `APP-ROLE-LOCKED` · Data a role can't see is masked, with a lock
+
+**Kind.** Rule.
+
+**Rule.** A figure the role can't see keeps its place, masked with six dots after its currency symbol
+("£ • • • • • •"), and ends with a Primary · Solid circular `padlock` button that opens a sheet saying
+why. It is never shown as zero, empty or a dash.
+
+```html
+<a href="#no-access" class="lmnd-kit-balance__locked" aria-label="You don't have access">
+  <span class="lmnd-kit-balance__amount lmnd-text-display-medium">£ • • • • • •</span>
+  <span class="lmnd-kit-icon-button lmnd-kit-icon-button--primary lmnd-kit-icon-button--solid lmnd-kit-icon-button--circular" aria-hidden="true"><span class="lmnd-icon" data-icon="padlock"></span></span>
+</a>
+```
+
+**Why.** A zero is a false fact, and an empty space looks like a fault. The dots say the figure exists
+and is held back, and the lock says why when asked.
+
+**Exceptions.** A figure that only matters to people who can see it, such as a widget of it, is removed
+instead (`APP-ROLE-ABSENT`).
+
 ## `APP-WIDGET-EMPTY` · A widget's empty state follows what it draws
 
 **Kind.** Rule.
