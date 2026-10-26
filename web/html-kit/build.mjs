@@ -2,6 +2,7 @@
 // network: unzip, open a page, edit it. The kit is
 //
 //   lemonade-kit.css   tokens, type scale, package components, kit.css, Figtree and every asset
+//   lemonade-kit.js    kit.js, minified: the optional behaviour pages link after the stylesheet
 //   gallery.html       every component with its markup
 //   examples/          screens to start from
 //   guidelines/        the rules a prototype follows
@@ -95,6 +96,13 @@ function themedRules(attr, svgs) {
 }
 
 let stylesheet
+let script
+
+// The kit's optional behaviour (kit.js), minified. Pages work without it.
+export function kitScript() {
+  script ??= readFile(join(KIT, 'kit.js'), 'utf8').then(async (source) => (await transform(source, { loader: 'js', minify: true })).code.trim())
+  return script
+}
 
 // One asset per line: share/build.mjs prunes lemonade-kit.css line by line to the assets a page names.
 export function kitStylesheet() {
@@ -336,6 +344,7 @@ async function packageKit(dist, css) {
   await rm(out, { recursive: true, force: true })
   await writePages(out)
   await writeFile(join(out, 'lemonade-kit.css'), css)
+  await writeFile(join(out, 'lemonade-kit.js'), await kitScript())
   await writeReferences(out)
   await cp(join(KIT, 'SKILL.md'), join(out, 'SKILL.md'))
   await cp(join(KIT, 'share/README.md'), join(out, 'README.md'))
@@ -363,7 +372,10 @@ async function writeSkill(dir, { skill, css, workflows, version, scripts = false
   await mkdir(dir, { recursive: true })
   await copyVersioned(join(KIT, 'skills', skill), join(dir, 'SKILL.md'), version)
   await writePages(join(dir, 'assets'))
-  if (css) await writeFile(join(dir, 'assets/lemonade-kit.css'), css)
+  if (css) {
+    await writeFile(join(dir, 'assets/lemonade-kit.css'), css)
+    await writeFile(join(dir, 'assets/lemonade-kit.js'), await kitScript())
+  }
   await writeReferences(join(dir, 'references'))
   await mkdir(join(dir, 'workflows'), { recursive: true })
   for (const name of workflows) {
@@ -418,6 +430,7 @@ async function checkPythonBuilder(dist, css) {
   await rm(scratch, { recursive: true, force: true })
   await writePages(scratch)
   await writeFile(join(scratch, 'lemonade-kit.css'), css)
+  await writeFile(join(scratch, 'lemonade-kit.js'), await kitScript())
   try {
     for (const page of await kitPages()) {
       const run = spawnSync('python3', [join(KIT, 'share/build.py'), join(scratch, page)], {
@@ -430,7 +443,7 @@ async function checkPythonBuilder(dist, css) {
       }
       if (run.error || run.status !== 0) throw new Error(`build.py failed on ${page}\n${run.error ?? run.stderr}`)
       const python = await readFile(join(scratch, page.replace(/\.html$/, '.standalone.html')), 'utf8')
-      const node = inlinePage(await readFile(join(scratch, page), 'utf8'), css)
+      const node = inlinePage(await readFile(join(scratch, page), 'utf8'), css, await kitScript())
       if (python !== node) throw new Error(`build.py and build.mjs disagree on ${page}`)
     }
     console.log('✓ build.py matches build.mjs on every page')

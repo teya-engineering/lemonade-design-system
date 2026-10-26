@@ -38,6 +38,7 @@ the screen back as one file.
 
 | Path | What it is |
 | --- | --- |
+| `lemonade-kit.js` | Optional behaviour: sheets close on Esc, tabs switch panels, titles fold on scroll. Pages work without it |
 | `lemonade-kit.css` | Everything: tokens, type scale, components, Figtree, icons, flags and logos. Generated; don't edit it |
 | `gallery.html` | Every component with its markup |
 | `screens/` | The app's own screens as they are today, to change: Home and its side menu, Sales and Transaction details, Money › Settlements and Settlement details. `screens/index.md` has the site map |

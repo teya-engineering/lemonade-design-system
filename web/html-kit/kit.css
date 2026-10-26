@@ -16,6 +16,11 @@
   box-sizing: border-box;
 }
 
+/* A panel kit.js hides stays hidden whatever display a page gives it. */
+[hidden] {
+  display: none !important;
+}
+
 html,
 body {
   margin: 0;

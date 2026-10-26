@@ -31,6 +31,7 @@ instead.
 
 | Path | What it is | In the zip as |
 | --- | --- | --- |
+| `kit.js` | The kit's optional behaviour: overlays, switching panels, folding titles, the day strip. Pages work without it (`LHK-SCRIPT`) | `lemonade-kit.js`, minified |
 | `kit.css` | The components, as `lmnd-kit-*` classes, written against the `--lmnd-*` tokens | part of `lemonade-kit.css` |
 | `build.mjs` | Generates `lemonade-kit.css` and packages the kit, the Claude.ai skill and the Claude Code plugin | — |
 | `badges/` | The Teya app's transaction status badges, light and `-dark`, copied from its `shared-assets/source/vectors/` with `_badge` dropped and `_` as `-`. Copy them again when the app's change | part of `lemonade-kit.css` |

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sales · Overview</title>
 <link rel="stylesheet" href="../lemonade-kit.css">
+<script src="../lemonade-kit.js" defer></script>
 <!-- Baseline: the Teya app's Sales tab on Overview, for a merchant with two stores and two currencies, as it is in production. Described in screens/sales.md. Exemptions marked
      "as in production" are faults the app has today. -->
 <style>
@@ -238,13 +239,13 @@
           <div class="lmnd-kit-card__header">
             <div class="lmnd-kit-card__heading"><h2 class="lmnd-kit-card__title lmnd-text-body-xsmall-overline">Busy times</h2></div>
             <div class="lmnd-kit-segmented lmnd-kit-segmented--small" role="radiogroup" aria-label="Busy times">
-              <label class="lmnd-kit-segmented__item lmnd-text-body-xsmall-medium"><input type="radio" name="busy" checked><span>Hourly</span></label>
-              <label class="lmnd-kit-segmented__item lmnd-text-body-xsmall-medium"><input type="radio" name="busy"><span>Daily</span></label>
-              <label class="lmnd-kit-segmented__item lmnd-text-body-xsmall-medium"><input type="radio" name="busy"><span>Monthly</span></label>
+              <label class="lmnd-kit-segmented__item lmnd-text-body-xsmall-medium"><input type="radio" name="busy" checked aria-controls="busy-hourly"><span>Hourly</span></label>
+              <label class="lmnd-kit-segmented__item lmnd-text-body-xsmall-medium"><input type="radio" name="busy" aria-controls="busy-daily"><span>Daily</span></label>
+              <label class="lmnd-kit-segmented__item lmnd-text-body-xsmall-medium"><input type="radio" name="busy" aria-controls="busy-monthly"><span>Monthly</span></label>
             </div>
           </div>
           <div class="lmnd-kit-card__body">
-            <div class="widget-body">
+            <div class="widget-body" id="busy-hourly">
               <div><p class="lmnd-text-heading-medium">13:00</p><p class="lmnd-text-body-small-regular lmnd-kit-secondary">Average sales per hour • vs Last week</p></div>
               <div>
                 <div class="lmnd-kit-bars" aria-hidden="true">
@@ -263,6 +264,42 @@
                 </div>
                 <div class="lmnd-kit-bars__axis lmnd-text-body-xsmall-regular"><span>08:00</span><span>14:00</span><span>19:00</span></div>
               </div>
+            </div>
+            <div class="widget-body" id="busy-daily" hidden>
+              <div><p class="lmnd-text-heading-medium">Saturday</p><p class="lmnd-text-body-small-regular lmnd-kit-secondary">Average sales per day • vs Last week</p></div>
+              <div>
+                <div class="lmnd-kit-bars" aria-hidden="true">
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 52%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 48%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 55%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 61%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 78%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 100%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 64%"></span></span>
+                </div>
+                <div class="lmnd-kit-bars__axis lmnd-text-body-xsmall-regular"><span>Mon</span><span>Thu</span><span>Sun</span></div>
+              </div>
+            </div>
+            <div class="widget-body" id="busy-monthly" hidden>
+              <div><p class="lmnd-text-heading-medium">October</p><p class="lmnd-text-body-small-regular lmnd-kit-secondary">Sales per month • vs Last year</p></div>
+              <div>
+                <div class="lmnd-kit-bars" aria-hidden="true">
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 40%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 44%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 52%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 58%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 62%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 70%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 74%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 72%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 66%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 100%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 0%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 0%"></span></span>
+                </div>
+                <div class="lmnd-kit-bars__axis lmnd-text-body-xsmall-regular"><span>Jan</span><span>Jun</span><span>Dec</span></div>
+              </div>
+            </div>
             </div>
           </div>
         </div>

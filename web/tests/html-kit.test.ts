@@ -4,7 +4,7 @@ import kitCss from '../html-kit/kit.css?raw'
 import tokensCss from '../styles/tokens.css?raw'
 import typographyCss from '../styles/typography.css?raw'
 import componentsCss from '../styles/components.css?raw'
-import { kitLlmsTxt, kitStylesheet } from '../html-kit/build.mjs'
+import { kitLlmsTxt, kitScript, kitStylesheet } from '../html-kit/build.mjs'
 import { inlinePage } from '../html-kit/share/build.mjs'
 import { describe, expect, it } from 'vitest'
 
@@ -66,5 +66,17 @@ describe.each(Object.keys(pages))('%s', (path) => {
 
   it('names only icons, flags and logos that exist', async () => {
     expect(inlinePage(html, await kitStylesheet())).not.toContain('lemonade-kit.css"')
+  })
+
+  // LHK-SCRIPT: the kit's script and nothing else. The gallery draws its own demos, so it is exempt.
+  it.skipIf(path.endsWith('gallery.html'))('links the kit script and no other', () => {
+    const scripts = [...html.matchAll(/<script\b[^>]*>/g)].map((m) => m[0])
+    expect(scripts).toEqual([expect.stringMatching(/src="[^"]*lemonade-kit\.js"/)])
+  })
+
+  it('inlines the kit script in its standalone copy', async () => {
+    const standalone = inlinePage(html, await kitStylesheet(), await kitScript())
+    expect(standalone).not.toContain('lemonade-kit.js"')
+    expect(standalone).toContain(await kitScript())
   })
 })

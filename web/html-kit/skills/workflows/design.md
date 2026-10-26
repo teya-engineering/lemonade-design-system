@@ -8,6 +8,7 @@ from this skill's files; you never invent styles.
 | Path | What it is |
 | --- | --- |
 | `assets/lemonade-kit.css` | The whole kit: tokens, type, components, fonts, icons, flags, logos. Link it; never read or grep it — it is mostly inline artwork |
+| `assets/lemonade-kit.js` | The kit's optional behaviour: overlays that close on Esc, panels that switch, titles that fold. Link it after the stylesheet (`LHK-SCRIPT`); never write script of your own |
 | `assets/gallery.html` | Every component with the markup that draws it. Your source for markup |
 | `assets/examples/` | Finished screens to start from: `settings.html` (menu), `sales.html` (widgets, filter sheet), `transactions.html` (feed, multi-select picker), `card-machines.html` and `recipients.html` (resource lists), `transaction-details.html`, `add-recipient.html` (form) |
 | `assets/screens/` | The app's own screens copied as they are in production, faults included: the baselines to change |
@@ -51,7 +52,7 @@ page a screen description names, such as `money-settlements.html`, is in `assets
    sheet or toast with its `#id` at the end of the URL to open it. Then read the page against the rules
    you loaded and fix each violation, or keep it with an exemption comment that names the rule and why.
 6. **Make one file.** Run `python3 scripts/build.py <page.html>`.
-   It writes `<page>.standalone.html` with the stylesheet inlined and only the assets the page uses, and
+   It writes `<page>.standalone.html` with the stylesheet and the kit's script inlined and only the assets the page uses, and
    it fails on an icon, flag or logo name that doesn't exist.
 7. **Hand over** the `.standalone.html` file. Say which content is placeholder, list any exemptions, and
    name any role the kit had no component for. When it started from a baseline, list what changed against
@@ -65,5 +66,6 @@ like `23 Oct 2026` — never lorem ipsum. `•` between items, `-£12.00` for a 
 
 ## Limits
 
-HTML reproduces the look, not native behaviour: no gestures, scroll physics or collapsing top bar.
+HTML reproduces the look, not native behaviour: no gestures or scroll physics. The kit's script adds a
+little (`LHK-SCRIPT`), and the page must work without it.
 Components follow the Compose measurements; the phone frame draws an iOS status bar.

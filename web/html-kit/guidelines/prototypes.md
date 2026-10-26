@@ -138,12 +138,41 @@ placeholder numbers hide how amounts and dates line up in a row.
 
 **Kind.** Rule.
 
-**Rule.** A flow is one `.html` file per screen, linked with `<a href="next.html">`. A sheet, dialog or
-toast over a screen lives in that screen's file, in the `lmnd-kit-device` after the `lmnd-kit-screen`, with an `id`. A
-link to `#that-id` opens it and a link to `#` closes it. A page adds no script.
+**Rule.** A flow is one `.html` file per screen, linked with `<a href="next.html">`. A sheet, dialog,
+dropdown, side menu or toast over a screen lives in that screen's file, in the `lmnd-kit-device` after the
+`lmnd-kit-screen`, with an `id`. A link to `#that-id` opens it and a link to `#` closes it. Script follows
+`LHK-SCRIPT`.
 
 **Why.** Linked pages and linked overlays click through on any device with nothing to install, the
-browser's back button closes an open sheet, and the markup stays the same markup a reader copies. Script makes a prototype that only its author can change.
+browser's back button closes an open sheet, and the markup stays the same markup a reader copies.
 
 **Exceptions.** A state that HTML can't reach without script — a timer, an animation sequence — is shown
 as its own screen instead.
+
+## `LHK-SCRIPT` · Only the kit's script, and nothing depends on it
+
+**Kind.** Rule.
+
+**Rule.** A page may link the kit's own script after its stylesheet, and no other script:
+
+```html
+<link rel="stylesheet" href="../lemonade-kit.css">
+<script src="../lemonade-kit.js" defer></script>
+```
+
+`lemonade-kit.js` only adds to markup that already works:
+
+| Kit markup | What the script adds |
+| --- | --- |
+| An overlay with an `id` (sheet, dialog, dropdown, side menu) | Esc and a tap on the scrim close it; focus moves into it and back to what opened it |
+| A tab or segmented option with `aria-controls="panel-id"` | Shows its panel and hides the others. The panels it doesn't show carry `hidden` in the markup, so without script the first stays |
+| A navigation top bar with a large title under its row | Folds the large title into the bar's small one as the screen scrolls |
+| A `lmnd-kit-day-strip` with an `aria-current` day | Opens scrolled to that day |
+
+Every page still works without it, in an email attachment, a preview that blocks script or a sandbox, so
+nothing a reader needs may depend on it.
+
+**Why.** The kit's script makes a demo feel like the app without making the page code. A page's own script
+makes a prototype only its author can change, and one no review can check against these rules.
+
+**Exceptions.** None.

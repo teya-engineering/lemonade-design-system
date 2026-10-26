@@ -10,12 +10,14 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const LINK = /<link\b[^>]*\bhref="([^"]*lemonade-kit\.css)"[^>]*>/
+const SCRIPT = /<script\b[^>]*\bsrc="([^"]*lemonade-kit\.js)"[^>]*><\/script>/
 const ASSET = /data-(icon|flag|logo|badge)="([a-zA-Z0-9-]+)"/g
 
 // lemonade-kit.css carries one asset per line, so a page keeps exactly the lines it names.
 const assetOf = (line) => line.match(/\[data-(icon|flag|logo|badge)="([a-zA-Z0-9-]+)"\]/)
 
-export function inlinePage(html, css) {
+// The kit's script, when the page links it and it's given, goes inline too. Without it the link stays.
+export function inlinePage(html, css, js) {
   if (!LINK.test(html)) throw new Error('link lemonade-kit.css with <link rel="stylesheet" href="lemonade-kit.css">')
 
   // The gallery lists every icon from script, so it keeps them all.
@@ -33,7 +35,8 @@ export function inlinePage(html, css) {
   if (unknown.length) {
     throw new Error(unknown.map((asset) => `unknown ${asset.replace(':', ' "')}"`).join('\n'))
   }
-  return html.replace(LINK, () => `<style>\n${kept.join('\n')}\n</style>`)
+  const styled = html.replace(LINK, () => `<style>\n${kept.join('\n')}\n</style>`)
+  return js === undefined ? styled : styled.replace(SCRIPT, () => `<script>\n${js.replaceAll('</script', '<\\/script')}\n</script>`)
 }
 
 async function main(pages) {
@@ -47,8 +50,10 @@ async function main(pages) {
     try {
       const html = await readFile(source, 'utf8')
       const css = await readFile(resolve(dirname(source), html.match(LINK)?.[1] ?? 'lemonade-kit.css'), 'utf8')
+      const scriptPath = html.match(SCRIPT)?.[1]
+      const js = scriptPath ? await readFile(resolve(dirname(source), scriptPath), 'utf8') : undefined
       const target = source.replace(/\.html$/, '.standalone.html')
-      await writeFile(target, inlinePage(html, css))
+      await writeFile(target, inlinePage(html, css, js))
       console.log(`✓ ${target}`)
     } catch (error) {
       failed = true
