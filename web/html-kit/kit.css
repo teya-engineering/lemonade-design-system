@@ -1337,7 +1337,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   text-align: center;
   opacity: 0;
   transform: translateY(var(--lmnd-spacing-200));
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .lmnd-kit-top-bar__title,
@@ -1403,22 +1403,33 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   transform: none;
 }
 
-/* A navigation bar's large title folds away rather than jumping. */
-.lmnd-kit-top-bar > .lmnd-kit-top-bar__large {
-  max-height: 160px; /* literal: room for two lines and a subtitle */
-  overflow: hidden;
-  transition: max-height 0.25s ease, padding 0.25s ease, opacity 0.2s ease;
+.lmnd-kit-top-bar--collapsed .lmnd-kit-top-bar__large {
+  display: none;
 }
 
-.lmnd-kit-top-bar--collapsed > .lmnd-kit-top-bar__large {
-  max-height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  opacity: 0;
-}
-
+/* The bar keeps its size: as it collapses, its divider and its small title fade in, the title rising into
+   place. */
 .lmnd-kit-top-bar {
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* A navigation bar's large title on a screen that scrolls: the title is the first thing in the content, so
+   it scrolls up under the bar with the page, and kit.js collapses the bar once it has gone under. */
+.lmnd-kit-large-title {
+  display: flex;
+  flex-direction: column;
+  margin: calc(var(--lmnd-spacing-50) - var(--lmnd-spacing-400)) 0 var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-large-title > :first-child {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.lmnd-kit-large-title > :not(:first-child) {
+  color: var(--lmnd-color-content-secondary);
 }
 
 .lmnd-kit-top-bar--collapsed {
@@ -3933,7 +3944,7 @@ body:has(> .lmnd-kit-device) {
   }
 
   .lmnd-kit-top-bar,
-  .lmnd-kit-top-bar > .lmnd-kit-top-bar__large {
+  .lmnd-kit-top-bar__center {
     transition: none;
   }
 }

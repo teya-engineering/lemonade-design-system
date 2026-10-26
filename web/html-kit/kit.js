@@ -230,18 +230,23 @@
     if (event.target.matches('[data-lmnd-kit-max-length]')) count(event.target)
   })
 
-  // ---------- A large title that folds into the bar on scroll ----------
+  // ---------- A large title that scrolls under the bar ----------
 
-  // A navigation top bar with a large title below its row folds it into the centred small title once the
-  // title has scrolled under the bar, as the app's collapsing top bar does.
+  // The large title is the first thing in the content and scrolls with the page. Once it has gone under the
+  // navigation bar, the bar collapses: its small title and divider fade in. Nothing changes size, so the
+  // title follows the finger.
   const foldTitles = () => {
-    document.querySelectorAll('.lmnd-kit-top-bar:has(> .lmnd-kit-top-bar__bar .lmnd-kit-top-bar__center):has(> .lmnd-kit-top-bar__large)').forEach((bar) => {
-      const screen = bar.closest('.lmnd-kit-screen')
-      const large = bar.querySelector(':scope > .lmnd-kit-top-bar__large')
-      if (!screen || !large) return
-      const fold = large.offsetHeight
-      const update = () => bar.classList.toggle('lmnd-kit-top-bar--collapsed', screen.scrollTop > fold)
-      ;(screen.scrollHeight > screen.clientHeight ? screen : window).addEventListener('scroll', update, { passive: true })
+    document.querySelectorAll('.lmnd-kit-screen').forEach((screen) => {
+      const bar = screen.querySelector(':scope > .lmnd-kit-top-bar')
+      const large = screen.querySelector(':scope > .lmnd-kit-content > .lmnd-kit-large-title')
+      if (!bar || !large || !bar.querySelector('.lmnd-kit-top-bar__center')) return
+      const scroller = screen.scrollHeight > screen.clientHeight ? screen : window
+      // Half under the bar is enough: the small title takes over as the large one disappears.
+      const update = () => {
+        const title = large.getBoundingClientRect()
+        bar.classList.toggle('lmnd-kit-top-bar--collapsed', (title.top + title.bottom) / 2 <= bar.getBoundingClientRect().bottom)
+      }
+      scroller.addEventListener('scroll', update, { passive: true })
       update()
     })
   }
