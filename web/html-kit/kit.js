@@ -176,6 +176,34 @@
     }
   })
 
+  // ---------- A segmented control's sliding pill ----------
+
+  // One pill under the selected option, moved to whichever is picked. It follows the control's size, so it
+  // lands right in a panel or screen that was hidden when the page loaded.
+  const slidePills = () => {
+    document.querySelectorAll('.lmnd-kit-segmented').forEach((control) => {
+      // Only a pick slides the pill; every other placement jumps it into place.
+      const place = (slide) => {
+        const item = control.querySelector('.lmnd-kit-segmented__item:has(input:checked), .lmnd-kit-segmented__item--selected')
+        if (!item || !item.offsetWidth) return
+        if (!slide) control.setAttribute('data-lmnd-kit-still', '')
+        control.style.setProperty('--lmnd-kit-pill-x', `${item.offsetLeft}px`)
+        control.style.setProperty('--lmnd-kit-pill-top', `${item.offsetTop}px`)
+        control.style.setProperty('--lmnd-kit-pill-width', `${item.offsetWidth}px`)
+        control.style.setProperty('--lmnd-kit-pill-height', `${item.offsetHeight}px`)
+        if (!slide) {
+          getComputedStyle(control, '::before').transform
+          requestAnimationFrame(() => control.removeAttribute('data-lmnd-kit-still'))
+        }
+      }
+      control.setAttribute('data-lmnd-kit-still', '')
+      control.setAttribute('data-lmnd-kit-sliding', '')
+      place(false)
+      control.addEventListener('change', () => place(true))
+      new ResizeObserver(() => place(false)).observe(control)
+    })
+  }
+
   // ---------- A text area's counter ----------
 
   // A field with a data-lmnd-kit-max-length input counts what's typed against it, in UTF-16 code units
@@ -241,6 +269,7 @@
     document.querySelectorAll('.lmnd-kit-tabs input[aria-controls]:checked, .lmnd-kit-segmented input[aria-controls]:checked').forEach(showPanel)
     foldTitles()
     fillBars()
+    slidePills()
     centreDays()
     document.querySelectorAll('[data-lmnd-kit-max-length]').forEach(count)
     shown = openOverlay()

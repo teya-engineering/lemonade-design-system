@@ -2511,6 +2511,49 @@ textarea.lmnd-kit-field__input {
   outline: var(--lmnd-border-width-focus-ring) solid var(--lmnd-color-border-selected);
 }
 
+/* With the kit's script, one pill slides under the selected option rather than each option lighting up.
+   kit.js measures the option and sets the pill's place; without it, the option's own background shows. */
+.lmnd-kit-segmented[data-lmnd-kit-sliding] {
+  position: relative;
+  isolation: isolate;
+}
+
+.lmnd-kit-segmented[data-lmnd-kit-sliding]::before {
+  content: "";
+  position: absolute;
+  top: var(--lmnd-kit-pill-top, 0);
+  left: 0;
+  z-index: -1;
+  width: var(--lmnd-kit-pill-width, 0);
+  height: var(--lmnd-kit-pill-height, 0);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-default);
+  box-shadow: var(--lmnd-shadow-xs);
+  transform: translateX(var(--lmnd-kit-pill-x, 0));
+  transition: transform 0.28s cubic-bezier(0.2, 0, 0, 1), width 0.28s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Placing the pill without a pick — on load, on a resize, once fonts load — doesn't animate it. */
+.lmnd-kit-segmented[data-lmnd-kit-still]::before {
+  transition: none;
+}
+
+.lmnd-kit-segmented[data-lmnd-kit-sliding] > .lmnd-kit-segmented__item {
+  transition: color 0.2s ease;
+}
+
+.lmnd-kit-segmented[data-lmnd-kit-sliding] > .lmnd-kit-segmented__item:has(input:checked),
+.lmnd-kit-segmented[data-lmnd-kit-sliding] > .lmnd-kit-segmented__item--selected {
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lmnd-kit-segmented[data-lmnd-kit-sliding]::before {
+    transition: none;
+  }
+}
+
 .lmnd-kit-segmented--medium { height: var(--lmnd-size-1000); }
 
 .lmnd-kit-segmented--small {
