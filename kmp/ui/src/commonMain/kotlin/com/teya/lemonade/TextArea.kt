@@ -26,14 +26,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * Shows a multi-line text input with optional label, support text, character counter, and error
- * state. The box keeps a fixed [height] and scrolls its content once the text outgrows it.
+ * Shows a multi-line text input with label, support text, counter and error state.
+ *
+ * The box keeps a fixed [height] and scrolls its content once the text outgrows it.
  *
  * ## Usage
  * ```kotlin
  * LemonadeUi.TextArea(
  *     input = "Sample text",
- *     onInputChanged = { /* Nothing */ },
+ *     onInputChanged = { },
  *     label = "What happened",
  *     optionalIndicator = "Optional",
  *     placeholderText = "For example: I didn't make this payment",
