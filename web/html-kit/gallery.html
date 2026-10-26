@@ -169,8 +169,18 @@
 
   <section class="g-section" id="chip">
     <h2 class="lmnd-text-heading-small">Chip</h2>
-    <p class="lmnd-text-body-small-regular">A checkbox inside a chip makes it toggle on its own; <code>lmnd-kit-chip--selected</code> fixes the state for a static screen.</p>
+    <p class="lmnd-text-body-small-regular">A chip that is a <code>&lt;label&gt;</code> around a hidden input selects itself as it's tapped, with no script: a radio to pick one of a group (give the group one <code>name</code>), a checkbox to pick any. <code>lmnd-kit-chip--selected</code> fixes the state for a static screen, and a chip that opens a sheet, like a filter, is a link.</p>
     <div class="g-example"><div class="g-demo" data-demo>
+<div class="lmnd-kit-chips" role="radiogroup" aria-label="Role">
+  <label class="lmnd-kit-chip lmnd-text-body-small-medium"><input type="radio" name="g-role" checked><span class="lmnd-kit-chip__label">Admin</span></label>
+  <label class="lmnd-kit-chip lmnd-text-body-small-medium"><input type="radio" name="g-role"><span class="lmnd-kit-chip__label">Manager</span></label>
+  <label class="lmnd-kit-chip lmnd-text-body-small-medium"><input type="radio" name="g-role"><span class="lmnd-kit-chip__label">Cashier</span></label>
+</div>
+<div class="lmnd-kit-chips">
+  <label class="lmnd-kit-chip lmnd-text-body-small-medium"><input type="checkbox" checked><span class="lmnd-kit-chip__label">Card</span></label>
+  <label class="lmnd-kit-chip lmnd-text-body-small-medium"><input type="checkbox"><span class="lmnd-kit-chip__label">Cash</span></label>
+  <label class="lmnd-kit-chip lmnd-text-body-small-medium"><input type="checkbox" disabled><span class="lmnd-kit-chip__label">PayPal</span></label>
+</div>
 <div class="lmnd-kit-chips">
   <label class="lmnd-kit-chip lmnd-kit-chip--selected lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">All</span></label>
   <label class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Card</span></label>

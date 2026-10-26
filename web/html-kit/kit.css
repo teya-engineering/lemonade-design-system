@@ -443,8 +443,31 @@ h6 {
   color: var(--lmnd-color-content-on-brand-high);
 }
 
+/* A chip that is a <label> around a radio (pick one of a group) or a checkbox (pick any) selects itself as
+   it's tapped, with no script; the input stays hidden. */
+.lmnd-kit-chip:has(> input) {
+  position: relative;
+}
+
+.lmnd-kit-chip > input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lmnd-kit-chip:has(> input:focus-visible) {
+  outline: var(--lmnd-border-width-focus-ring) solid var(--lmnd-color-border-selected);
+  outline-offset: var(--lmnd-spacing-50);
+}
+
+.lmnd-kit-chip:has(> input:disabled) {
+  cursor: not-allowed;
+  opacity: var(--lmnd-opacity-disabled);
+}
+
 .lmnd-kit-chip--selected,
-.lmnd-kit-chip[aria-pressed="true"] {
+.lmnd-kit-chip[aria-pressed="true"],
+.lmnd-kit-chip:has(> input:checked) {
   --lmnd-kit-chip-bg: var(--lmnd-color-bg-brand-high);
   --lmnd-kit-chip-hover: var(--lmnd-color-bg-brand-high-interactive);
   --lmnd-kit-chip-content: var(--lmnd-color-content-brand-inverse);
