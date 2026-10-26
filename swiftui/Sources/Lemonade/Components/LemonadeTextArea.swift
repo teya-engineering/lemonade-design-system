@@ -7,6 +7,9 @@ public extension LemonadeUi {
     /// character counter, and error state. The box keeps a fixed height and scrolls its
     /// content once the text outgrows it.
     ///
+    /// The return key inserts a new line, so on iOS a "Done" bar above the keyboard closes it.
+    /// Hide the bar with `.lemonadeKeyboardDoneButton(false)`.
+    ///
     /// ## Usage
     /// ```swift
     /// LemonadeUi.TextArea(

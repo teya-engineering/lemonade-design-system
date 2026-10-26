@@ -12,6 +12,7 @@ internal struct LemonadeUITextView: UIViewRepresentable {
     @Environment(\.lemonadeTextContentType) private var textContentType
     @Environment(\.lemonadeAutocapitalizationType) private var autocapitalizationType
     @Environment(\.lemonadeAutocorrectionType) private var autocorrectionType
+    @Environment(\.lemonadeKeyboardDoneButton) private var showsDoneButton
 
     @Binding var text: String
     @Binding var isFocused: Bool
@@ -44,6 +45,7 @@ internal struct LemonadeUITextView: UIViewRepresentable {
         context.coordinator.parent = self
         applyAppearance(textView)
         syncInputTraits(textView)
+        syncDoneButton(textView, coordinator: context.coordinator)
 
         // A change arriving on the binding carries no cursor position, so the caret lands at the end.
         if textView.text != text, textView.markedTextRange == nil {
@@ -82,6 +84,29 @@ internal struct LemonadeUITextView: UIViewRepresentable {
         }
     }
 
+    private func syncDoneButton(_ textView: UITextView, coordinator: Coordinator) {
+        guard showsDoneButton != (textView.inputAccessoryView != nil) else { return }
+        textView.inputAccessoryView = showsDoneButton ? doneToolbar(coordinator: coordinator) : nil
+        if textView.isFirstResponder {
+            textView.reloadInputViews()
+        }
+    }
+
+    private func doneToolbar(coordinator: Coordinator) -> UIToolbar {
+        let toolbar = UIToolbar()
+        toolbar.tintColor = UIColor(textColor)
+        toolbar.items = [
+            UIBarButtonItem(systemItem: .flexibleSpace),
+            UIBarButtonItem(
+                barButtonSystemItem: .done,
+                target: coordinator,
+                action: #selector(Coordinator.dismissKeyboard)
+            ),
+        ]
+        toolbar.sizeToFit()
+        return toolbar
+    }
+
     private func syncInputTraits(_ textView: UITextView) {
         if textView.keyboardType != keyboardType {
             textView.keyboardType = keyboardType
@@ -112,6 +137,10 @@ internal struct LemonadeUITextView: UIViewRepresentable {
         /// The page scroll view never brings a UITextView above the keyboard on its own: the text
         /// view scrolls internally to keep the caret on screen, which can leave the caret under the
         /// keyboard. So the enclosing scroll view is asked to reveal the box, then the caret.
+        @objc func dismissKeyboard() {
+            textView?.resignFirstResponder()
+        }
+
         @objc private func keyboardDidShow() {
             guard let textView else { return }
             reveal(textView.bounds, of: textView)
