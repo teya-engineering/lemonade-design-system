@@ -42,7 +42,9 @@ internal fun TextAreaDisplay() {
                     supportText = "Anything you add helps us look into it.",
                     placeholderText = "For example: I didn't make this payment and I've never heard of " +
                         "Acme Suppliers Ltd.",
+                    errorMessage = "Shorten this to $MAX_LENGTH characters",
                     maxLength = MAX_LENGTH,
+                    error = counterText.length > MAX_LENGTH,
                 )
             }
         }

@@ -131,7 +131,7 @@ public final class com/teya/lemonade/ComposableSingletons$SelectFieldKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$SelectFieldKt;
 	public fun <init> ()V
 	public final fun getLambda$-2098274759$Lemonade_ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1902280607$Lemonade_ui_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$-577199200$Lemonade_ui_release ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$SelectListItemKt {
