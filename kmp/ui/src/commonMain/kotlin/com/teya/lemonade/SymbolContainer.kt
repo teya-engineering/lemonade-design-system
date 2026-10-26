@@ -632,14 +632,10 @@ private fun SymbolContainerPreview(
     }
 }
 
-private class SymbolContainerThemedPreviewProvider : PreviewParameterProvider<ThemedHue> {
-    override val values: Sequence<ThemedHue> = ThemedHue.entries.asSequence()
-}
-
 @LemonadePreview
 @Composable
 private fun SymbolContainerThemedPreview(
-    @PreviewParameter(SymbolContainerThemedPreviewProvider::class)
+    @PreviewParameter(ThemedHuePreviewProvider::class)
     theme: ThemedHue,
 ) {
     Row(horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200)) {
