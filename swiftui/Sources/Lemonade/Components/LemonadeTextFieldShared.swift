@@ -158,6 +158,7 @@ struct TextFieldSupportText: View {
     let error: Bool
     let enabled: Bool
     var counter: String? = nil
+    var counterOverLimit = false
 
     private var showError: Bool { enabled && error && errorMessage != nil }
     private var message: String? { showError ? errorMessage : supportText }
@@ -184,7 +185,9 @@ struct TextFieldSupportText: View {
                     LemonadeUi.Text(
                         counter,
                         textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                        color: LemonadeTheme.colors.content.contentSecondary
+                        color: enabled && counterOverLimit
+                            ? LemonadeTheme.colors.content.contentCritical
+                            : LemonadeTheme.colors.content.contentSecondary
                     )
                 }
             }

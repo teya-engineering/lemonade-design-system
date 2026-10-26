@@ -17,7 +17,6 @@ internal struct LemonadeUITextView: UIViewRepresentable {
     @Binding var text: String
     @Binding var isFocused: Bool
     var isEnabled: Bool
-    var maxLength: Int?
     var textStyle: LemonadeTextStyle
     var textColor: Color
     var onTextChange: ((String) -> Void)?
@@ -182,19 +181,6 @@ internal struct LemonadeUITextView: UIViewRepresentable {
             let margin = LemonadeTheme.spaces.spacing400
             let target = textView.convert(rect, to: scrollView).insetBy(dx: 0, dy: -margin)
             scrollView.scrollRectToVisible(target, animated: true)
-        }
-
-        func textView(
-            _ textView: UITextView,
-            shouldChangeTextIn range: NSRange,
-            replacementText replacement: String
-        ) -> Bool {
-            let currentLength = (textView.text as NSString? ?? "").length
-            return TextAreaLimit.accepts(
-                oldLength: currentLength,
-                newLength: currentLength - range.length + (replacement as NSString).length,
-                maxLength: parent.maxLength
-            )
         }
 
         func textViewDidChange(_ textView: UITextView) {

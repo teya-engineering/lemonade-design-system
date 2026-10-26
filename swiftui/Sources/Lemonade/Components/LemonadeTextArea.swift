@@ -29,9 +29,10 @@ public extension LemonadeUi {
     ///   - supportText: Support text displayed below the text area
     ///   - placeholderText: Placeholder text when the text area is empty
     ///   - errorMessage: Error message displayed when error is true
-    ///   - maxLength: Rejects any edit that would take the text past this many UTF-16 code
-    ///     units (an emoji can count as 2), and shows a `count/maxLength` counter below the text
-    ///     area. Text already past the limit can still be shortened
+    ///   - maxLength: Shows a `count/maxLength` counter below the text area, in UTF-16 code
+    ///     units (an emoji can count as 2). Input is never blocked: past the limit the counter
+    ///     turns critical, and the caller should show an `errorMessage` and hold back submission
+    ///     until the text is shortened
     ///   - height: Height of the input box, excluding the label and the text below it
     ///   - error: Whether the text area has an error
     ///   - enabled: Whether the text area is enabled
@@ -98,7 +99,8 @@ private struct LemonadeTextAreaView: View {
                 errorMessage: errorMessage,
                 error: error,
                 enabled: enabled,
-                counter: maxLength.map { limit in "\(input.utf16.count)/\(limit)" }
+                counter: maxLength.map { limit in "\(input.utf16.count)/\(limit)" },
+                counterOverLimit: maxLength.map { limit in input.utf16.count > limit } ?? false
             )
         }
         .animation(.easeInOut(duration: 0.15), value: isFocused)
@@ -119,7 +121,6 @@ private struct LemonadeTextAreaView: View {
                 input: $input,
                 isFocused: focusBinding,
                 enabled: enabled,
-                maxLength: maxLength,
                 onInputChanged: onInputChanged
             )
         }
@@ -137,18 +138,6 @@ private struct LemonadeTextAreaView: View {
     }
 }
 
-// MARK: - Limit
-
-/// Lengths are UTF-16 code units, as in `NSRange` and the KMP TextArea, so both platforms count the
-/// same text alike. An edit that doesn't lengthen the text always fits, so text already past the
-/// limit can still be shortened.
-enum TextAreaLimit {
-    static func accepts(oldLength: Int, newLength: Int, maxLength: Int?) -> Bool {
-        guard let maxLength else { return true }
-        return newLength <= max(maxLength, oldLength)
-    }
-}
-
 // MARK: - Input
 
 #if canImport(UIKit)
@@ -156,7 +145,6 @@ private struct LemonadeTextAreaInput: View {
     @Binding var input: String
     @Binding var isFocused: Bool
     let enabled: Bool
-    let maxLength: Int?
     let onInputChanged: ((String) -> Void)?
 
     var body: some View {
@@ -164,7 +152,6 @@ private struct LemonadeTextAreaInput: View {
             text: $input,
             isFocused: $isFocused,
             isEnabled: enabled,
-            maxLength: maxLength,
             textStyle: LemonadeTypography.shared.bodyMediumRegular,
             textColor: LemonadeTheme.colors.content.contentPrimary,
             onTextChange: onInputChanged
@@ -176,11 +163,9 @@ private struct LemonadeTextAreaInput: View {
     @Binding var input: String
     @Binding var isFocused: Bool
     let enabled: Bool
-    let maxLength: Int?
     let onInputChanged: ((String) -> Void)?
 
     @FocusState private var editorFocused: Bool
-    @State private var acceptedInput = ""
 
     var body: some View {
         textEditor
@@ -189,19 +174,7 @@ private struct LemonadeTextAreaInput: View {
             .tint(LemonadeTheme.colors.content.contentPrimary)
             .focused($editorFocused)
             .disabled(!enabled)
-            .onAppear { acceptedInput = input }
             .onChange(of: input) { newValue in
-                guard newValue != acceptedInput else { return }
-                let fits = TextAreaLimit.accepts(
-                    oldLength: acceptedInput.utf16.count,
-                    newLength: newValue.utf16.count,
-                    maxLength: maxLength
-                )
-                if !fits {
-                    input = acceptedInput
-                    return
-                }
-                acceptedInput = newValue
                 onInputChanged?(newValue)
             }
             .onChange(of: editorFocused) { isFocused = $0 }

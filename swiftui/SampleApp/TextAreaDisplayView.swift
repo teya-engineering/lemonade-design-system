@@ -25,7 +25,9 @@ struct TextAreaDisplayView: View {
                         optionalIndicator: "Optional",
                         supportText: "Anything you add helps us look into it.",
                         placeholderText: "For example: I didn't make this payment and I've never heard of Acme Suppliers Ltd.",
-                        maxLength: Self.maxLength
+                        errorMessage: "Shorten this to \(Self.maxLength) characters",
+                        maxLength: Self.maxLength,
+                        error: counterText.utf16.count > Self.maxLength
                     )
                 }
 
