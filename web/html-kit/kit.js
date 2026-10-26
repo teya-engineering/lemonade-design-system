@@ -230,6 +230,15 @@
     if (event.target.matches('[data-lmnd-kit-max-length]')) count(event.target)
   })
 
+  // A screen scrolls itself in the phone frame and the page scrolls on a phone, so both are watched. Its size
+  // changing — not least from hidden to shown, or back to the top as it's pushed — measures it again.
+  const watchScroll = (screen, update) => {
+    screen.addEventListener('scroll', update, { passive: true })
+    window.addEventListener('scroll', update, { passive: true })
+    new ResizeObserver(update).observe(screen)
+    update()
+  }
+
   // ---------- A large title that scrolls under the bar ----------
 
   // The large title is the first thing in the content and scrolls with the page. Once it has gone under the
@@ -240,14 +249,14 @@
       const bar = screen.querySelector(':scope > .lmnd-kit-top-bar')
       const large = screen.querySelector(':scope > .lmnd-kit-content > .lmnd-kit-large-title')
       if (!bar || !large || !bar.querySelector('.lmnd-kit-top-bar__center')) return
-      const scroller = screen.scrollHeight > screen.clientHeight ? screen : window
-      // Half under the bar is enough: the small title takes over as the large one disappears.
+      // Half under the bar is enough: the small title takes over as the large one disappears. A screen that
+      // isn't showing yet (one of several in a file) has nothing to measure, so it waits until it shows.
       const update = () => {
+        if (!screen.offsetWidth) return
         const title = large.getBoundingClientRect()
         bar.classList.toggle('lmnd-kit-top-bar--collapsed', (title.top + title.bottom) / 2 <= bar.getBoundingClientRect().bottom)
       }
-      scroller.addEventListener('scroll', update, { passive: true })
-      update()
+      watchScroll(screen, update)
     })
   }
 
@@ -258,10 +267,11 @@
   const fillBars = () => {
     document.querySelectorAll('.lmnd-kit-screen--details > .lmnd-kit-top-bar, .lmnd-kit-screen--home > .lmnd-kit-top-bar').forEach((bar) => {
       const screen = bar.parentElement
-      const scroller = screen.scrollHeight > screen.clientHeight ? screen : window
-      const update = () => bar.classList.toggle('lmnd-kit-top-bar--scrolled', (scroller === window ? scrollY : screen.scrollTop) > 8)
-      scroller.addEventListener('scroll', update, { passive: true })
-      update()
+      const update = () => {
+        if (!screen.offsetWidth) return
+        bar.classList.toggle('lmnd-kit-top-bar--scrolled', Math.max(screen.scrollTop, scrollY) > 8)
+      }
+      watchScroll(screen, update)
     })
   }
 
