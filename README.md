@@ -56,7 +56,7 @@ the one Swift Package Manager consumers resolve.
 | Category | Components |
 |----------|------------|
 | **Actions** | Button, IconButton, Link, Chip |
-| **Form Controls** | TextField, SearchField, SelectField, PinCode, Switch, Checkbox, RadioButton, SegmentedControl, BoxSelection |
+| **Form Controls** | TextField, TextArea, SearchField, SelectField, PinCode, Switch, Checkbox, RadioButton, SegmentedControl, BoxSelection |
 | **Display** | Text, Icon, Badge, Tag, Card, Tile, SymbolContainer, HorizontalDivider, VerticalDivider, BrandLogo, CountryFlag |
 | **Lists & Navigation** | ListItem, ContentListItem, ActionListItem, ResourceListItem, SelectListItem, SwipeActionRow, Tabs, TopBar, BottomTabBar, HistoryTimeline |
 | **Feedback & Overlays** | Toast, Tooltip, Notice, Spinner, Skeleton, Dialog, BottomSheet, Dropdown |

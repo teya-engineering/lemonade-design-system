@@ -29,8 +29,9 @@ public extension LemonadeUi {
     ///   - supportText: Support text displayed below the text area
     ///   - placeholderText: Placeholder text when the text area is empty
     ///   - errorMessage: Error message displayed when error is true
-    ///   - maxLength: Rejects any edit that would take the text past this many characters,
-    ///     and shows a `count/maxLength` counter below the text area
+    ///   - maxLength: Rejects any edit that would take the text past this many UTF-16 code
+    ///     units (an emoji can count as 2), and shows a `count/maxLength` counter below the text
+    ///     area. Text already past the limit can still be shortened
     ///   - height: Height of the input box, excluding the label and the text below it
     ///   - error: Whether the text area has an error
     ///   - enabled: Whether the text area is enabled
@@ -97,7 +98,7 @@ private struct LemonadeTextAreaView: View {
                 errorMessage: errorMessage,
                 error: error,
                 enabled: enabled,
-                counter: maxLength.map { limit in "\(input.count)/\(limit)" }
+                counter: maxLength.map { limit in "\(input.utf16.count)/\(limit)" }
             )
         }
         .animation(.easeInOut(duration: 0.15), value: isFocused)
@@ -133,6 +134,18 @@ private struct LemonadeTextAreaView: View {
             minHeight: height,
             isHovered: $isHovered
         ))
+    }
+}
+
+// MARK: - Limit
+
+/// Lengths are UTF-16 code units, as in `NSRange` and the KMP TextArea, so both platforms count the
+/// same text alike. An edit that doesn't lengthen the text always fits, so text already past the
+/// limit can still be shortened.
+enum TextAreaLimit {
+    static func accepts(oldLength: Int, newLength: Int, maxLength: Int?) -> Bool {
+        guard let maxLength else { return true }
+        return newLength <= max(maxLength, oldLength)
     }
 }
 
@@ -179,7 +192,12 @@ private struct LemonadeTextAreaInput: View {
             .onAppear { acceptedInput = input }
             .onChange(of: input) { newValue in
                 guard newValue != acceptedInput else { return }
-                if let maxLength, newValue.count > maxLength {
+                let fits = TextAreaLimit.accepts(
+                    oldLength: acceptedInput.utf16.count,
+                    newLength: newValue.utf16.count,
+                    maxLength: maxLength
+                )
+                if !fits {
                     input = acceptedInput
                     return
                 }

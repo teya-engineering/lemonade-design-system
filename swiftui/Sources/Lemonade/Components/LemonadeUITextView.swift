@@ -177,11 +177,12 @@ internal struct LemonadeUITextView: UIViewRepresentable {
             shouldChangeTextIn range: NSRange,
             replacementText replacement: String
         ) -> Bool {
-            guard let maxLength = parent.maxLength,
-                  let current = textView.text,
-                  let swiftRange = Range(range, in: current)
-            else { return true }
-            return current.count - current[swiftRange].count + replacement.count <= maxLength
+            let currentLength = (textView.text as NSString? ?? "").length
+            return TextAreaLimit.accepts(
+                oldLength: currentLength,
+                newLength: currentLength - range.length + (replacement as NSString).length,
+                maxLength: parent.maxLength
+            )
         }
 
         func textViewDidChange(_ textView: UITextView) {
