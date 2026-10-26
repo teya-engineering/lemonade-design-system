@@ -478,7 +478,7 @@ internal fun CoreTextField(
             color = contentColor,
         ),
         singleLine = true,
-        modifier = modifier,
+        modifier = modifier.clearFocusOnKeyboardDismiss(),
         decorationBox = { innerTextField ->
             CoreTextFieldDecorator(
                 label = label,
@@ -531,7 +531,7 @@ internal fun CoreTextField(
             color = contentColor,
         ),
         singleLine = true,
-        modifier = modifier,
+        modifier = modifier.clearFocusOnKeyboardDismiss(),
         decorationBox = { innerTextField ->
             CoreTextFieldDecorator(
                 label = label,
