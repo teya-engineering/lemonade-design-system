@@ -92,7 +92,10 @@ internal struct LemonadeUITextView: UIViewRepresentable {
         }
     }
 
-    private func doneToolbar(coordinator: Coordinator) -> UIToolbar {
+    /// On iOS 26 the Done item is a glass button taller than the bar `sizeToFit()` reports, so the
+    /// toolbar sits in a taller container or the button overlaps the keyboard. Earlier versions
+    /// draw an opaque bar, where the same gap would show the page through it.
+    private func doneToolbar(coordinator: Coordinator) -> UIView {
         let toolbar = UIToolbar()
         toolbar.tintColor = UIColor(textColor)
         toolbar.items = [
@@ -104,7 +107,18 @@ internal struct LemonadeUITextView: UIViewRepresentable {
             ),
         ]
         toolbar.sizeToFit()
-        return toolbar
+        guard #available(iOS 26.0, *) else { return toolbar }
+        toolbar.autoresizingMask = [.flexibleWidth]
+
+        let container = UIView(frame: CGRect(
+            x: 0,
+            y: 0,
+            width: toolbar.frame.width,
+            height: toolbar.frame.height + LemonadeTheme.spaces.spacing200
+        ))
+        container.backgroundColor = .clear
+        container.addSubview(toolbar)
+        return container
     }
 
     private func syncInputTraits(_ textView: UITextView) {
