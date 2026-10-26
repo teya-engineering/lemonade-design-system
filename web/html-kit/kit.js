@@ -226,8 +226,29 @@
     counter.classList.toggle('lmnd-kit-field__counter--over', input.value.length > limit)
   }
 
+  // ---------- Text that follows a field ----------
+
+  // An element with data-lmnd-kit-mirror="field-id" shows what's typed in that field — a new role's name in
+  // the footer under it, on the screens after it and on its review — and its data-lmnd-kit-mirror-empty text
+  // while the field is empty. Without script it keeps the text in its markup. A field that mirrors another
+  // takes its value, so the same entry on two screens stays one entry.
+  const mirror = (input, seen = new Set()) => {
+    if (!input.id || seen.has(input)) return
+    seen.add(input)
+    const text = input.value.trim()
+    document.querySelectorAll(`[data-lmnd-kit-mirror="${CSS.escape(input.id)}"]`).forEach((target) => {
+      if (target.matches('input, textarea')) {
+        target.value = input.value
+        mirror(target, seen)
+      } else {
+        target.textContent = text || target.dataset.lmndKitMirrorEmpty || ''
+      }
+    })
+  }
+
   document.addEventListener('input', (event) => {
     if (event.target.matches('[data-lmnd-kit-max-length]')) count(event.target)
+    if (event.target.matches('input, textarea')) mirror(event.target)
   })
 
   // A screen scrolls itself in the phone frame and the page scrolls on a phone, so both are watched. Its size
@@ -296,6 +317,8 @@
     slideMarks()
     centreDays()
     document.querySelectorAll('[data-lmnd-kit-max-length]').forEach(count)
+    new Set([...document.querySelectorAll('[data-lmnd-kit-mirror]')].map((target) => document.getElementById(target.dataset.lmndKitMirror)))
+      .forEach((input) => input?.matches('input, textarea') && mirror(input))
     shown = openOverlay()
     if (shown) window.dispatchEvent(new HashChangeEvent('hashchange'))
   }

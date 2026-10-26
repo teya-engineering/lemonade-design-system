@@ -203,6 +203,7 @@ one the same markup as a screen on its own.
 | A navigation top bar, with the large title first in the content as a `lmnd-kit-large-title` | Collapses the bar once the title is halfway under it: the small title rises in and the divider fades in. The title itself scrolls with the page |
 | The top bar of a details screen or of Home | Fills it once the screen scrolls, in browsers that can't do it in CSS |
 | A `lmnd-kit-day-strip` with an `aria-current` day | Opens scrolled to that day |
+| An element with `data-lmnd-kit-mirror="field-id"`, and an optional `data-lmnd-kit-mirror-empty` | Shows what's typed in that field, or the empty text while it's empty. Without the script it keeps the text in its markup. A field that carries it takes the other field's value, so one entry on two screens stays one |
 
 Every page still works without it, in an email attachment, a preview that blocks script or a sandbox, so
 nothing a reader needs may depend on it.
