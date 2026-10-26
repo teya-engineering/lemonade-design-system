@@ -313,7 +313,7 @@ public fun LemonadeUi.TextFieldWithSelector(
         visualTransformation = visualTransformation,
         error = error,
         enabled = enabled,
-        modifier = modifier.clearFocusOnKeyboardDismiss(),
+        modifier = modifier,
         textBoxContent = { innerTextField ->
             DefaultTextFieldWithSelector(
                 placeholderText = placeholderText,
@@ -425,7 +425,7 @@ public fun LemonadeUi.TextFieldWithSelector(
         visualTransformation = visualTransformation,
         error = error,
         enabled = enabled,
-        modifier = modifier.clearFocusOnKeyboardDismiss(),
+        modifier = modifier,
         textBoxContent = { innerTextField ->
             DefaultTextFieldWithSelector(
                 placeholderText = placeholderText,
