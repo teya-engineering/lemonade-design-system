@@ -177,10 +177,10 @@ struct FieldAccessibilityLabel: ViewModifier {
     }
 }
 
-/// The visible label and optional indicator, or the placeholder when there is no label.
+/// The visible label, or the placeholder when there is no label, followed by the optional indicator.
 func textFieldAccessibilityLabel(label: String?, optionalIndicator: String?, placeholder: String?) -> String? {
-    guard let label else { return placeholder }
-    return [label, optionalIndicator].compactMap { $0 }.joined(separator: ", ")
+    let parts = [label ?? placeholder, optionalIndicator].compactMap { $0 }
+    return parts.isEmpty ? nil : parts.joined(separator: ", ")
 }
 
 // MARK: - Support / Error Text
