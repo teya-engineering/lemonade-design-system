@@ -128,6 +128,11 @@ internal interface Displays {
     }
 
     @Serializable
+    data object TextArea : Displays {
+        override val label: String = "TextArea"
+    }
+
+    @Serializable
     data object SearchField : Displays {
         override val label: String = "SearchField"
     }
