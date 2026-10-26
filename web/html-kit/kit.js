@@ -62,6 +62,23 @@
     }
   })
 
+  // ---------- A text area's counter ----------
+
+  // A field with a data-lmnd-kit-max-length input counts what's typed against it, in UTF-16 code units
+  // as the app does, and turns critical past it. It never blocks typing.
+  const count = (input) => {
+    const field = input.closest('.lmnd-kit-field')
+    const counter = field?.querySelector('.lmnd-kit-field__counter')
+    const limit = Number(input.dataset.lmndKitMaxLength)
+    if (!counter || !limit) return
+    counter.textContent = `${input.value.length}/${limit}`
+    counter.classList.toggle('lmnd-kit-field__counter--over', input.value.length > limit)
+  }
+
+  document.addEventListener('input', (event) => {
+    if (event.target.matches('[data-lmnd-kit-max-length]')) count(event.target)
+  })
+
   // ---------- A large title that folds into the bar on scroll ----------
 
   // A navigation top bar with a large title below its row folds it into the centred small title once the
@@ -95,6 +112,7 @@
     document.querySelectorAll('.lmnd-kit-tabs input[aria-controls]:checked, .lmnd-kit-segmented input[aria-controls]:checked').forEach(showPanel)
     foldTitles()
     centreDays()
+    document.querySelectorAll('[data-lmnd-kit-max-length]').forEach(count)
     if (openOverlay()) window.dispatchEvent(new HashChangeEvent('hashchange'))
   }
 

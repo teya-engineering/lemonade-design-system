@@ -53,7 +53,7 @@
   <h2 class="lmnd-text-body-xsmall-overline">Lists</h2>
   <a href="#card">Card</a><a href="#widget">Mini widget</a><a href="#list-item">List item</a><a href="#list-group">List group</a><a href="#content-item">Content list item</a><a href="#select-item">Select list item</a><a href="#timeline">History timeline</a><a href="#swipe">Swipe action row</a>
   <h2 class="lmnd-text-body-xsmall-overline">Inputs</h2>
-  <a href="#text-field">Text field</a><a href="#select-field">Select field</a><a href="#search">Search field</a><a href="#pin">Pin code</a><a href="#controls">Switch, checkbox, radio</a><a href="#box-selection">Box selection</a><a href="#segmented">Segmented control</a><a href="#tabs">Tabs</a>
+  <a href="#text-field">Text field</a><a href="#text-area">Text area</a><a href="#select-field">Select field</a><a href="#search">Search field</a><a href="#pin">Pin code</a><a href="#controls">Switch, checkbox, radio</a><a href="#box-selection">Box selection</a><a href="#segmented">Segmented control</a><a href="#tabs">Tabs</a>
   <h2 class="lmnd-text-body-xsmall-overline">Navigation and overlays</h2>
   <a href="#top-bar">Top bar</a><a href="#tab-bar">Bottom tab bar</a><a href="#dropdown">Dropdown</a><a href="#sheet">Bottom sheet</a><a href="#dialog">Dialog</a><a href="#toast">Toast</a><a href="#tooltip">Tooltip</a>
 </nav>
@@ -625,6 +625,27 @@
 <label class="lmnd-kit-field lmnd-kit-field--disabled">
   <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Password</span></span>
   <span class="lmnd-kit-field__box"><span class="lmnd-icon" data-icon="padlock" aria-hidden="true"></span><input class="lmnd-kit-field__input" type="password" value="secret" disabled><span class="lmnd-icon" data-icon="eye-closed" aria-hidden="true"></span></span>
+</label>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="text-area">
+    <h2 class="lmnd-text-heading-small">Text area</h2>
+    <p class="lmnd-text-body-small-regular">Lemonade's TextArea, for free text such as "Tell us what happened": the text field with a <code>&lt;textarea&gt;</code> in a box 180px tall (<code>--lmnd-kit-field-height</code> changes it), padded 16px, the text from the top. A limit goes on the textarea as <code>data-lmnd-kit-max-length</code> with a <code>lmnd-kit-field__counter</code> in the footer; it never blocks typing. Past the limit the counter takes <code>lmnd-kit-field__counter--over</code>, and the screen shows an error and holds back submission. With the kit's script the counter follows what's typed.</p>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<label class="lmnd-kit-field lmnd-kit-field--textarea">
+  <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">What happened</span><span class="lmnd-kit-field__optional lmnd-text-body-small-regular">Optional</span></span>
+  <span class="lmnd-kit-field__box"><textarea class="lmnd-kit-field__input" placeholder="For example: I didn't make this payment" data-lmnd-kit-max-length="1000"></textarea></span>
+  <span class="lmnd-kit-field__footer"><span class="lmnd-kit-field__helper lmnd-text-body-xsmall-regular">Anything you add helps us look into it.</span><span class="lmnd-kit-field__counter lmnd-text-body-xsmall-regular">0/1000</span></span>
+</label>
+<label class="lmnd-kit-field lmnd-kit-field--textarea lmnd-kit-field--error">
+  <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">What happened</span></span>
+  <span class="lmnd-kit-field__box"><textarea class="lmnd-kit-field__input" data-lmnd-kit-max-length="1000">I didn't make this payment.</textarea></span>
+  <span class="lmnd-kit-field__footer"><span class="lmnd-kit-field__helper lmnd-text-body-xsmall-regular">Tell us a bit more</span><span class="lmnd-kit-field__counter lmnd-text-body-xsmall-regular">27/1000</span></span>
+</label>
+<label class="lmnd-kit-field lmnd-kit-field--textarea lmnd-kit-field--disabled">
+  <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Notes</span></span>
+  <span class="lmnd-kit-field__box"><textarea class="lmnd-kit-field__input" disabled>Delivered to the back door.</textarea></span>
 </label>
     </div></div>
   </section>

@@ -1984,6 +1984,48 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   opacity: var(--lmnd-opacity-disabled);
 }
 
+/* TextArea: the text field's box, 180px tall by default (--lmnd-kit-field-height), padded spacing-400, with
+   the text starting at the top and scrolling inside. */
+.lmnd-kit-field--textarea .lmnd-kit-field__box {
+  align-items: stretch;
+  height: var(--lmnd-kit-field-height, 180px); /* literal: TextArea's default height */
+  padding: var(--lmnd-spacing-400);
+}
+
+textarea.lmnd-kit-field__input {
+  height: 100%;
+  resize: none;
+  scrollbar-width: none;
+}
+
+/* Under the box: the support or error text, and a count/limit counter at the end. */
+.lmnd-kit-field__footer {
+  display: flex;
+  gap: var(--lmnd-spacing-200);
+  padding: 0 var(--lmnd-spacing-50);
+}
+
+.lmnd-kit-field__footer > .lmnd-kit-field__helper {
+  flex: 1;
+  padding: 0;
+}
+
+.lmnd-kit-field__counter {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--lmnd-color-content-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Past the limit the counter turns critical; typing is never blocked. */
+.lmnd-kit-field__counter--over {
+  color: var(--lmnd-color-content-critical);
+}
+
+.lmnd-kit-field--disabled .lmnd-kit-field__counter--over {
+  color: var(--lmnd-color-content-secondary);
+}
+
 /* A selector (country code, currency) ahead of the input, split by a rule. */
 .lmnd-kit-field__selector {
   display: flex;
