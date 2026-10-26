@@ -91,8 +91,13 @@ private struct LemonadeTextAreaView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
             TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
+                .accessibilityHidden(true)
 
             fieldContainer
+                .environment(
+                    \.lemonadeFieldAccessibilityLabel,
+                    textFieldAccessibilityLabel(label: label, optionalIndicator: optionalIndicator, placeholder: placeholderText)
+                )
 
             TextFieldSupportText(
                 supportText: supportText,
@@ -115,6 +120,7 @@ private struct LemonadeTextAreaView: View {
                     textStyle: LemonadeTypography.shared.bodyMediumRegular,
                     color: LemonadeTheme.colors.content.contentSecondary
                 )
+                .accessibilityHidden(true)
             }
 
             LemonadeTextAreaInput(
@@ -173,10 +179,12 @@ private struct LemonadeTextAreaInput: View {
             .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
             .tint(LemonadeTheme.colors.content.contentPrimary)
             .focused($editorFocused)
+            .modifier(FieldAccessibilityLabel())
             .disabled(!enabled)
             .onChange(of: input) { newValue in
                 onInputChanged?(newValue)
             }
+            .onAppear { if editorFocused != isFocused { editorFocused = isFocused } }
             .onChange(of: editorFocused) { isFocused = $0 }
             .onChange(of: isFocused) { newValue in
                 if editorFocused != newValue { editorFocused = newValue }

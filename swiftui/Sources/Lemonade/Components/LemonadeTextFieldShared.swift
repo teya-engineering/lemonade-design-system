@@ -149,6 +149,40 @@ struct TextFieldSelectorDivider: View {
     }
 }
 
+// MARK: - Accessibility Name
+
+private struct LemonadeFieldAccessibilityLabelKey: EnvironmentKey {
+    static let defaultValue: String? = nil
+}
+
+extension EnvironmentValues {
+    /// Read by the platform input inside a text field or text area, which is the only element
+    /// VoiceOver focuses there: the visible label row and placeholder are hidden from it.
+    var lemonadeFieldAccessibilityLabel: String? {
+        get { self[LemonadeFieldAccessibilityLabelKey.self] }
+        set { self[LemonadeFieldAccessibilityLabelKey.self] = newValue }
+    }
+}
+
+/// Names a SwiftUI-backed input (the macOS fallbacks) from ``EnvironmentValues/lemonadeFieldAccessibilityLabel``.
+struct FieldAccessibilityLabel: ViewModifier {
+    @Environment(\.lemonadeFieldAccessibilityLabel) private var name
+
+    func body(content: Content) -> some View {
+        if let name {
+            content.accessibilityLabel(Text(name))
+        } else {
+            content
+        }
+    }
+}
+
+/// The visible label and optional indicator, or the placeholder when there is no label.
+func textFieldAccessibilityLabel(label: String?, optionalIndicator: String?, placeholder: String?) -> String? {
+    guard let label else { return placeholder }
+    return [label, optionalIndicator].compactMap { $0 }.joined(separator: ", ")
+}
+
 // MARK: - Support / Error Text
 
 /// Displays the support text or error message, and an optional counter, below a text/select field.
@@ -255,10 +289,41 @@ struct SelectFieldContainerModifier: ViewModifier {
     }
 }
 
-// MARK: - UIKit Focus
+// MARK: - UIKit Focus and Dynamic Type
 
 #if canImport(UIKit)
 import UIKit
+
+extension LemonadeTextStyle {
+    /// Scales the face the way `Font.custom(_:size:relativeTo: .body)` scales ``LemonadeUi/Text``,
+    /// so typed text grows with the label and placeholder around it.
+    func scaledUIFont(for dynamicTypeSize: DynamicTypeSize) -> UIFont {
+        UIFontMetrics(forTextStyle: .body).scaledFont(
+            for: uiFont,
+            compatibleWith: UITraitCollection(preferredContentSizeCategory: dynamicTypeSize.contentSizeCategory)
+        )
+    }
+}
+
+private extension DynamicTypeSize {
+    var contentSizeCategory: UIContentSizeCategory {
+        switch self {
+        case .xSmall: return .extraSmall
+        case .small: return .small
+        case .medium: return .medium
+        case .large: return .large
+        case .xLarge: return .extraLarge
+        case .xxLarge: return .extraExtraLarge
+        case .xxxLarge: return .extraExtraExtraLarge
+        case .accessibility1: return .accessibilityMedium
+        case .accessibility2: return .accessibilityLarge
+        case .accessibility3: return .accessibilityExtraLarge
+        case .accessibility4: return .accessibilityExtraExtraLarge
+        case .accessibility5: return .accessibilityExtraExtraExtraLarge
+        @unknown default: return .large
+        }
+    }
+}
 
 extension UIView {
     /// Runs on the next main-queue turn: a responder change inside a SwiftUI update can hand focus

@@ -13,6 +13,8 @@ internal struct LemonadeUITextView: UIViewRepresentable {
     @Environment(\.lemonadeAutocapitalizationType) private var autocapitalizationType
     @Environment(\.lemonadeAutocorrectionType) private var autocorrectionType
     @Environment(\.lemonadeKeyboardDoneButton) private var showsDoneButton
+    @Environment(\.lemonadeFieldAccessibilityLabel) private var accessibilityName
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     @Binding var text: String
     @Binding var isFocused: Bool
@@ -65,19 +67,22 @@ internal struct LemonadeUITextView: UIViewRepresentable {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = textStyle.lineSpacing
         return [
-            .font: textStyle.uiFont,
+            .font: textStyle.scaledUIFont(for: dynamicTypeSize),
             .foregroundColor: UIColor(textColor),
             .paragraphStyle: paragraphStyle,
         ]
     }
 
     private func applyAppearance(_ textView: UITextView, coordinator: Coordinator) {
+        if textView.accessibilityLabel != accessibilityName {
+            textView.accessibilityLabel = accessibilityName
+        }
         if textView.isEditable != isEnabled {
             textView.isEditable = isEnabled
             textView.isSelectable = isEnabled
         }
 
-        let font = textStyle.uiFont
+        let font = textStyle.scaledUIFont(for: dynamicTypeSize)
         guard coordinator.appliedColor != textColor || coordinator.appliedFont != font else { return }
         coordinator.appliedColor = textColor
         coordinator.appliedFont = font

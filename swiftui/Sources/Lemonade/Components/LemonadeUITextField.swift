@@ -14,6 +14,8 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     @Environment(\.lemonadeTextInputTransformation) private var inputTransformation
     @Environment(\.lemonadeTextDisplayDecoration) private var displayDecoration
     @Environment(\.lemonadeTextSelectionConstraint) private var selectionConstraint
+    @Environment(\.lemonadeFieldAccessibilityLabel) private var accessibilityName
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     @Binding var value: LemonadeTextFieldValue
     @Binding var isFocused: Bool
@@ -50,7 +52,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         let textField = LemonadeClampingTextField()
         textField.selectionConstraint = selectionConstraint
         textField.delegate = context.coordinator
-        textField.font = textStyle.uiFont
+        textField.font = font
         textField.textColor = UIColor(textColor)
         textField.borderStyle = .none
         textField.backgroundColor = .clear
@@ -127,9 +129,16 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.setCaret(toUTF16Offset: clampedPosition)
     }
 
+    private var font: UIFont {
+        textStyle.scaledUIFont(for: dynamicTypeSize)
+    }
+
     private func applyAppearance(_ textField: UITextField) {
         textField.isEnabled = isEnabled
-        textField.font = textStyle.uiFont
+        if textField.accessibilityLabel != accessibilityName {
+            textField.accessibilityLabel = accessibilityName
+        }
+        textField.font = font
         textField.textColor = UIColor(textColor)
         textField.tintColor = UIColor(textColor)
     }
@@ -171,7 +180,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         let decorated = decoration.decorate(
             text,
             baseAttributes: [
-                .font: textStyle.uiFont,
+                .font: font,
                 .foregroundColor: UIColor(textColor),
             ]
         )
