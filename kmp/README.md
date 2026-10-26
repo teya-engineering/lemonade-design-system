@@ -169,7 +169,7 @@ auto-complete lists the whole catalogue.
 | Artifact | Category | Components |
 |----------|----------|------------|
 | `lemonade-ui` | Actions | Button, IconButton, Link, Chip |
-| `lemonade-ui` | Form Controls | TextField, TextFieldWithSelector, SearchField, SelectField, PinCode, Switch, Checkbox, RadioButton, SegmentedControl, BoxSelection |
+| `lemonade-ui` | Form Controls | TextField, TextFieldWithSelector, TextArea, SearchField, SelectField, PinCode, Switch, Checkbox, RadioButton, SegmentedControl, BoxSelection |
 | `lemonade-ui` | Display | Text, Icon, Asset, Badge, Tag, Card, Tile, SymbolContainer, HorizontalDivider, VerticalDivider, BrandLogo, CountryFlag |
 | `lemonade-ui` | Lists & Navigation | ListItem, ContentListItem, ActionListItem, ResourceListItem, SelectListItem, SwipeActionRow, SwipeActionGroup, Tabs, TopBar (Android/iOS only), HistoryTimeline |
 | `lemonade-ui` | Feedback | Toast, Tooltip, Notice, Spinner, LineSkeleton, BlockSkeleton, CircleSkeleton |

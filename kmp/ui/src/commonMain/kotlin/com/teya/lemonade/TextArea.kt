@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
+import androidx.compose.foundation.text.input.TextFieldBuffer
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.then
 import androidx.compose.runtime.Composable
@@ -50,8 +50,9 @@ import androidx.compose.ui.unit.dp
  * @param supportText text shown below the field
  * @param placeholderText text shown inside the field while [input] is empty
  * @param errorMessage text shown below the field while [error] is `true`
- * @param maxLength rejects any edit that would take the text past this many characters, and shows
- *   a `length/maxLength` counter below the field
+ * @param maxLength rejects any edit that would take the text past this many UTF-16 code units (an
+ *   emoji can count as 2), and shows a `length/maxLength` counter below the field. Text already
+ *   past the limit can still be shortened
  * @param height height of the input box, excluding the label and the text below it
  * @param interactionSource [MutableInteractionSource] applied to the field
  * @param keyboardOptions [KeyboardOptions] applied to the field
@@ -80,7 +81,7 @@ public fun LemonadeUi.TextArea(
     BasicTextField(
         value = input,
         onValueChange = { value ->
-            if (maxLength == null || value.length <= maxLength) onInputChanged(value)
+            if (maxLength == null || value.length <= maxOf(maxLength, input.length)) onInputChanged(value)
         },
         interactionSource = interactionSource,
         enabled = enabled,
@@ -130,8 +131,9 @@ public fun LemonadeUi.TextArea(
  * @param supportText text shown below the field
  * @param placeholderText text shown inside the field while [state] is empty
  * @param errorMessage text shown below the field while [error] is `true`
- * @param maxLength rejects any edit that would take the text past this many characters, and shows
- *   a `length/maxLength` counter below the field
+ * @param maxLength rejects any edit that would take the text past this many UTF-16 code units (an
+ *   emoji can count as 2), and shows a `length/maxLength` counter below the field. Text already
+ *   past the limit can still be shortened
  * @param height height of the input box, excluding the label and the text below it
  * @param interactionSource [MutableInteractionSource] applied to the field
  * @param keyboardOptions [KeyboardOptions] applied to the field
@@ -159,7 +161,7 @@ public fun LemonadeUi.TextArea(
 ) {
     val contentColor = LocalColors.current.content.contentPrimary
     val combinedTransformation = remember(inputTransformation, maxLength) {
-        val limit = maxLength?.let { length -> InputTransformation.maxLength(maxLength = length) }
+        val limit = maxLength?.let { length -> MaxLengthTransformation(maxLength = length) }
         when {
             limit == null -> inputTransformation
             inputTransformation == null -> limit
@@ -196,6 +198,16 @@ public fun LemonadeUi.TextArea(
 }
 
 private val TextAreaDefaultHeight = 180.dp
+
+/**
+ * Unlike [InputTransformation.Companion.maxLength], lets text that is already past the limit be
+ * shortened, so a pre-filled value or a lowered limit never locks the field.
+ */
+private class MaxLengthTransformation(private val maxLength: Int) : InputTransformation {
+    override fun TextFieldBuffer.transformInput() {
+        if (length > maxOf(maxLength, originalText.length)) revertAllChanges()
+    }
+}
 
 private val TextAreaKeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
 
