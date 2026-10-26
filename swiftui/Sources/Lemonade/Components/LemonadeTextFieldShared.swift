@@ -151,27 +151,43 @@ struct TextFieldSelectorDivider: View {
 
 // MARK: - Support / Error Text
 
-/// Displays the support text or error message below a text/select field.
+/// Displays the support text or error message, and an optional counter, below a text/select field.
 struct TextFieldSupportText: View {
     let supportText: String?
     let errorMessage: String?
     let error: Bool
     let enabled: Bool
+    var counter: String? = nil
+
+    private var showError: Bool { enabled && error && errorMessage != nil }
+    private var message: String? { showError ? errorMessage : supportText }
+    private var messageColor: Color {
+        showError ? LemonadeTheme.colors.content.contentCritical : LemonadeTheme.colors.content.contentSecondary
+    }
 
     var body: some View {
-        if enabled && error, let errorMessage = errorMessage {
-            LemonadeUi.Text(
-                errorMessage,
-                textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                color: LemonadeTheme.colors.content.contentCritical
-            )
-            .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-        } else if let supportText = supportText {
-            LemonadeUi.Text(
-                supportText,
-                textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                color: LemonadeTheme.colors.content.contentSecondary
-            )
+        if message != nil || counter != nil {
+            HStack(alignment: .top, spacing: LemonadeTheme.spaces.spacing200) {
+                if let message = message {
+                    LemonadeUi.Text(
+                        message,
+                        textStyle: LemonadeTypography.shared.bodyXSmallRegular,
+                        color: messageColor
+                    )
+                    .frame(maxWidth: counter == nil ? nil : .infinity, alignment: .leading)
+                }
+
+                if let counter = counter {
+                    if message == nil {
+                        Spacer()
+                    }
+                    LemonadeUi.Text(
+                        counter,
+                        textStyle: LemonadeTypography.shared.bodyXSmallRegular,
+                        color: LemonadeTheme.colors.content.contentSecondary
+                    )
+                }
+            }
             .padding(.horizontal, LemonadeTheme.spaces.spacing50)
         }
     }
@@ -188,11 +204,12 @@ struct TextFieldContainerModifier: ViewModifier {
     let isFocused: Bool
     let cornerRadius: CGFloat
     var applyOpacity: Bool = true
+    var minHeight: CGFloat = TextFieldConstants.minHeight
     @Binding var isHovered: Bool
 
     func body(content: Content) -> some View {
         content
-            .frame(minHeight: TextFieldConstants.minHeight)
+            .frame(minHeight: minHeight)
             .background(RoundedRectangle(cornerRadius: cornerRadius).fill(backgroundColor))
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)

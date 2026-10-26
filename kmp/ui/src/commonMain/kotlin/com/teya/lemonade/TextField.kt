@@ -560,6 +560,8 @@ internal fun CoreTextFieldDecorator(
     error: Boolean,
     enabled: Boolean,
     modifier: Modifier = Modifier,
+    containerHeight: Dp? = size.data.minHeight,
+    counter: String? = null,
     textBoxContent: @Composable BoxScope.() -> Unit,
 ) {
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -634,8 +636,8 @@ internal fun CoreTextFieldDecorator(
             content = textBoxContent,
             modifier = Modifier
                 .then(
-                    other = size.data.minHeight?.let { minHeight ->
-                        Modifier.requiredHeight(height = minHeight)
+                    other = containerHeight?.let { height ->
+                        Modifier.requiredHeight(height = height)
                     }
                         ?: Modifier,
                 ).shadowBorder(
@@ -656,24 +658,64 @@ internal fun CoreTextFieldDecorator(
                 ),
         )
 
-        when {
-            enabled && error && errorMessage != null -> {
-                LemonadeUi.Text(
-                    text = errorMessage,
-                    textStyle = LocalTypographies.current.bodyXSmallRegular,
-                    color = LocalColors.current.content.contentCritical,
-                    modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing50),
-                )
-            }
+        TextFieldFooter(
+            supportText = supportText,
+            errorMessage = errorMessage,
+            error = error,
+            enabled = enabled,
+            counter = counter,
+        )
+    }
+}
 
-            supportText != null -> {
-                LemonadeUi.Text(
-                    text = supportText,
-                    textStyle = LocalTypographies.current.bodyXSmallRegular,
-                    color = LocalColors.current.content.contentSecondary,
-                    modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing50),
-                )
+@Composable
+private fun TextFieldFooter(
+    supportText: String?,
+    errorMessage: String?,
+    error: Boolean,
+    enabled: Boolean,
+    counter: String?,
+) {
+    val showError = enabled && error && errorMessage != null
+    val message = if (showError) {
+        errorMessage
+    } else {
+        supportText
+    }
+    val messageColor = if (showError) {
+        LocalColors.current.content.contentCritical
+    } else {
+        LocalColors.current.content.contentSecondary
+    }
+
+    if (message == null && counter == null) return
+
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),
+        modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing50),
+    ) {
+        if (message != null) {
+            LemonadeUi.Text(
+                text = message,
+                textStyle = LocalTypographies.current.bodyXSmallRegular,
+                color = messageColor,
+                modifier = if (counter != null) {
+                    Modifier.weight(weight = 1f)
+                } else {
+                    Modifier
+                },
+            )
+        }
+
+        if (counter != null) {
+            if (message == null) {
+                Spacer(modifier = Modifier.weight(weight = 1f))
             }
+            LemonadeUi.Text(
+                text = counter,
+                textStyle = LocalTypographies.current.bodyXSmallRegular,
+                color = LocalColors.current.content.contentSecondary,
+            )
         }
     }
 }
