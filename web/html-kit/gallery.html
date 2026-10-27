@@ -806,7 +806,7 @@
 
   <section class="g-section" id="top-bar">
     <h2 class="lmnd-text-heading-small">Top bar</h2>
-    <p class="lmnd-text-body-small-regular">Navigation: a back or close button, a centred title that shows when <code>lmnd-kit-top-bar--collapsed</code>, and the large title below. On a screen, the large title goes first in the content as a <code>lmnd-kit-large-title</code>, so it scrolls under the bar, and the kit's script collapses the bar as it does (<code>examples/settings.html</code>). Small (<code>lmnd-kit-top-bar--small</code>): only the centred title, naming the kind of thing, for a details screen; on <code>lmnd-kit-screen--details</code> it starts transparent and fills on scroll. Compact: a top-level screen's large title with actions beside it, no back button. Buttons are Subtle, Primary · Solid for the screen's primary action (<code>LDS-TOP-BAR-ACTIONS</code>), or Critical · Subtle, <code>lmnd-kit-icon-button--critical</code>, for a destructive one (<code>LDS-TOP-BAR-CRITICAL</code>).</p>
+    <p class="lmnd-text-body-small-regular">Navigation: a back or close button, a centred title that shows when <code>lmnd-kit-top-bar--collapsed</code>, and the large title below. On a screen, the large title goes first in the content as a <code>lmnd-kit-large-title</code>, so it scrolls under the bar, and the kit's script collapses the bar as it does (<code>examples/settings.html</code>). Small (<code>lmnd-kit-top-bar--small</code>): only the centred title, naming the kind of thing, for a details screen; on <code>lmnd-kit-screen--details</code> it starts transparent and fills on scroll. Compact: a top-level screen's large title with actions beside it, no back button. Buttons are Subtle, Primary · Solid for the screen's primary action (<code>LDS-TOP-BAR-ACTIONS</code>), or Critical · Subtle, <code>lmnd-kit-icon-button--critical</code>, for a destructive one that stays in the bar (<code>LDS-TOP-BAR-CRITICAL</code>). Past two actions, the rest go in a <code>lmnd-kit-dropdown</code> behind an <code>ellipsis-horizontal</code> button, a destructive one as a <code>lmnd-kit-dropdown__item--critical</code>, and a destructive action stays out of the menu only on a screen whose job is removing something (<code>APP-TOPBAR-TRAILING</code>).</p>
     <div class="g-example"><div class="g-demo g-demo--default" style="padding: 0" data-demo>
 <header class="lmnd-kit-top-bar">
   <div class="lmnd-kit-top-bar__bar">
@@ -826,16 +826,23 @@
     <div class="lmnd-kit-top-bar__trailing"></div>
   </div>
 </header>
+<div style="position: relative; height: 200px">
 <header class="lmnd-kit-top-bar lmnd-kit-top-bar--small">
   <div class="lmnd-kit-top-bar__bar">
     <div class="lmnd-kit-top-bar__leading"><button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Back"><span class="lmnd-icon" data-icon="arrow-left"></span></button></div>
     <div class="lmnd-kit-top-bar__center"><span class="lmnd-kit-top-bar__title lmnd-text-heading-xxsmall">Team member</span></div>
     <div class="lmnd-kit-top-bar__trailing">
       <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Edit member"><span class="lmnd-icon" data-icon="pencil-line"></span></button>
-      <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--critical lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Remove member"><span class="lmnd-icon" data-icon="trash"></span></button>
+      <a href="#" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="More options"><span class="lmnd-icon" data-icon="ellipsis-horizontal"></span></a>
     </div>
   </div>
 </header>
+<div class="lmnd-kit-dropdown" role="menu">
+  <a href="#" class="lmnd-kit-dropdown__item" role="menuitem"><span class="lmnd-icon" data-icon="user-key" aria-hidden="true"></span><span class="lmnd-kit-dropdown__label lmnd-text-body-medium-regular">Change role</span></a>
+  <hr class="lmnd-kit-divider">
+  <a href="#" class="lmnd-kit-dropdown__item lmnd-kit-dropdown__item--critical" role="menuitem"><span class="lmnd-icon" data-icon="trash" aria-hidden="true"></span><span class="lmnd-kit-dropdown__label lmnd-text-body-medium-regular">Remove member</span></a>
+</div>
+</div>
 <header class="lmnd-kit-top-bar lmnd-kit-top-bar--small">
   <div class="lmnd-kit-top-bar__bar">
     <div class="lmnd-kit-top-bar__leading"><button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Back"><span class="lmnd-icon" data-icon="arrow-left"></span></button></div>

@@ -45,15 +45,20 @@ button, and not a Neutral · Solid one.
 
 **Kind.** Rule.
 
-**Rule.** An action in a top bar or a sheet bar that removes or undoes something — remove, delete, cancel
-an invite — is Critical · Subtle: a `bg-critical-subtle` fill with a `content-critical` glyph or label,
-on every screen and in every bar. That is `lmnd-kit-icon-button--critical` for an icon button, or
+**Rule.** A destructive action — remove, delete, cancel an invite — that sits in a top bar or a sheet bar
+as a button is Critical · Subtle: a `bg-critical-subtle` fill with a `content-critical` glyph or label, on
+every screen and in every bar. That is `lmnd-kit-icon-button--critical` for an icon button, or
 `lmnd-button--critical lmnd-button--subtle lmnd-button--small` for text. It keeps the bar's round shape
 (`LDS-TOP-BAR-ACTIONS`).
 
+Whether it is a button at all is the app's call. In the Teya app it is one only on a screen whose job is
+removing something; anywhere else it goes in the bar's ellipsis menu (`APP-TOPBAR-TRAILING`), as a
+`lmnd-kit-dropdown__item--critical`.
+
 ```html
+<!-- A screen whose job is removing the members picked on it -->
 <div class="lmnd-kit-top-bar__trailing">
-  <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--critical lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Remove member"><span class="lmnd-icon" data-icon="trash"></span></button>
+  <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--critical lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Remove selected members"><span class="lmnd-icon" data-icon="trash"></span></button>
 </div>
 ```
 
@@ -64,8 +69,8 @@ together mark it the same way everywhere.
 **Exceptions.** None. Not a Neutral · Subtle button with a critical glyph (`lmnd-kit-critical` on the
 icon), and not Critical · Solid, which is for the confirming button in a dialog.
 
-**Do / don't.** A Critical · Subtle trash button next to a Subtle edit button. Not a red trash glyph on a
-grey fill.
+**Do / don't.** A Critical · Subtle trash button on a screen for removing what was picked on it. Not a
+red trash glyph on a grey fill.
 
 ## `LDS-TOP-BAR-DESCRIPTION` · A large title's description sits right under it
 

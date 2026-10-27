@@ -70,8 +70,9 @@ something is what the screen is for.
 
 **Rule.** A top bar's and a sheet bar's buttons are styled by `LDS-TOP-BAR-ACTIONS`: circular Small icon
 buttons, or a Small text button in its pill shape; the screen's primary action is Primary · Solid, and every other action is
-Neutral · Subtle. A destructive action — remove, delete, cancel an invite — is always Critical · Subtle
-(`LDS-TOP-BAR-CRITICAL`), on every screen and in every bar. A disabled action uses the
+Neutral · Subtle. A destructive action — remove, delete, cancel an invite — that stays in the bar by
+`APP-TOPBAR-TRAILING` is always Critical · Subtle (`LDS-TOP-BAR-CRITICAL`), and in the menu it is a
+`lmnd-kit-dropdown__item--critical`, on every screen and in every bar. A disabled action uses the
 button's `disabled`; one that is working shows a spinner in place of its glyph.
 
 **Why.** One treatment per weight of action, on every screen and every sheet, so the same action always
