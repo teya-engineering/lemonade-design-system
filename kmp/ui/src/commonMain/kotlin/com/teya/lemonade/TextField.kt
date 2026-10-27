@@ -579,6 +579,15 @@ internal fun CoreTextFieldDecorator(
             )
         },
     )
+    val animatedBaseColor by animateColorAsState(
+        targetValue = if (enabled) {
+            LocalColors.current.background.bgDefault
+        } else {
+            LocalColors.current.background.bgDefault.copy(
+                alpha = LocalOpacities.current.base.opacity0,
+            )
+        },
+    )
     val animatedBorderColor by animateColorAsState(
         targetValue = when {
             !enabled -> LocalColors.current.border.borderNeutralMedium.copy(
@@ -651,7 +660,7 @@ internal fun CoreTextFieldDecorator(
                     width = LocalBorderWidths.current.base.border25,
                     shape = size.data.containerShape,
                 ).background(
-                    color = LocalColors.current.background.bgDefault,
+                    color = animatedBaseColor,
                     shape = size.data.containerShape,
                 ).background(
                     color = animatedBackgroundColor,
