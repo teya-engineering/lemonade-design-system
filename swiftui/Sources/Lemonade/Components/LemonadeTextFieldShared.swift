@@ -158,6 +158,7 @@ struct TextFieldSupportText: View {
     let error: Bool
     let enabled: Bool
     var counter: String? = nil
+    var counterOverLimit = false
 
     private var showError: Bool { enabled && error && errorMessage != nil }
     private var message: String? { showError ? errorMessage : supportText }
@@ -184,7 +185,9 @@ struct TextFieldSupportText: View {
                     LemonadeUi.Text(
                         counter,
                         textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                        color: LemonadeTheme.colors.content.contentSecondary
+                        color: enabled && counterOverLimit
+                            ? LemonadeTheme.colors.content.contentCritical
+                            : LemonadeTheme.colors.content.contentSecondary
                     )
                 }
             }
@@ -251,3 +254,25 @@ struct SelectFieldContainerModifier: ViewModifier {
             }
     }
 }
+
+// MARK: - UIKit Focus
+
+#if canImport(UIKit)
+import UIKit
+
+extension UIView {
+    /// Runs on the next main-queue turn: a responder change inside a SwiftUI update can hand focus
+    /// back to a view that is redrawing in the same pass.
+    func scheduleFirstResponderUpdate(wantsFocus: Bool) {
+        guard wantsFocus != isFirstResponder else { return }
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if wantsFocus, !self.isFirstResponder, self.window != nil {
+                self.becomeFirstResponder()
+            } else if !wantsFocus, self.isFirstResponder {
+                self.resignFirstResponder()
+            }
+        }
+    }
+}
+#endif

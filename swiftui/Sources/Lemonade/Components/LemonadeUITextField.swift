@@ -186,18 +186,8 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         }
     }
 
-    /// Runs on the next main-queue turn: a responder change inside a SwiftUI update can hand focus
-    /// back to a field that is redrawing in the same pass.
     private func updateFocus(_ textField: UITextField) {
-        guard isFocused != textField.isFirstResponder else { return }
-        let wantsFocus = isFocused
-        DispatchQueue.main.async {
-            if wantsFocus, !textField.isFirstResponder, textField.window != nil {
-                textField.becomeFirstResponder()
-            } else if !wantsFocus, textField.isFirstResponder {
-                textField.resignFirstResponder()
-            }
-        }
+        textField.scheduleFirstResponderUpdate(wantsFocus: isFocused)
     }
 
     func makeCoordinator() -> Coordinator {
