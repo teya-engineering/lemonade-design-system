@@ -196,7 +196,7 @@ one the same markup as a screen on its own.
 
 | Kit markup | What the script adds |
 | --- | --- |
-| Screens with `id`s in one device (`LHK-SCREENS`) | Slides between them: in from the right on a link, back on Back or the browser's back button, no slide on a tab |
+| Screens with `id`s in one device (`LHK-SCREENS`) | Slides between them: in from the right on a link, back on Back or the browser's back button, no slide on a tab. A field marked `autofocus` takes focus as its screen slides in; without the script only the first screen's does, as the page loads |
 | An overlay with an `id` (sheet, dialog, dropdown, side menu) | Animates it out as it closes, whichever way it closes — it animates in without the script. Esc and a tap on the scrim close it, going back through history when a link opened it, so a later Back doesn't reopen it; focus moves into it and back to what opened it |
 | A `lmnd-kit-segmented` or `lmnd-kit-tabs` | Slides one pill, or one underline, to the option picked, rather than each option lighting up |
 | A tab or segmented option with `aria-controls="panel-id"` | Shows its panel and hides the others. The panels it doesn't show carry `hidden` in the markup, so without script the first stays |

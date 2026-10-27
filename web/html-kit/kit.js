@@ -112,6 +112,9 @@
     if (how === 'push') {
       next.scrollTop = 0
       animate(next, 'lmnd-kit-screen--push-in')
+      // A browser only autofocuses as the page loads, so a field marked autofocus takes focus as its screen
+      // is pushed in, as the app's keyboard opens on a form step.
+      next.querySelector('[autofocus]')?.focus({ preventScroll: true })
     } else if (how === 'back') {
       animate(next, 'lmnd-kit-screen--pop-in')
     }
