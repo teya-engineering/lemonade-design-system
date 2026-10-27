@@ -6,6 +6,12 @@ import kotlin.test.assertIs
 import kotlin.test.assertTrue
 import java.io.File
 
+private fun classify(diff: String): Verdict =
+    ApiStabilityClassifier.classify(
+        diff = diff,
+        rootProjectName = "Lemonade",
+    )
+
 /**
  * Each fixture is a real unified diff produced by running BCV's `apiDump` task
  * twice — once with a "before" source file, once with an "after" — and capturing
@@ -25,7 +31,7 @@ class ApiStabilityClassifierTest {
         loadBucket("additions-only")
             .map { fixture ->
                 DynamicTest.dynamicTest(fixture.name) {
-                    val verdict = ApiStabilityClassifier.classify(fixture.diff)
+                    val verdict = classify(fixture.diff)
                     assertEquals(
                         expected = Verdict.AdditionsOnly,
                         actual = verdict,
@@ -39,7 +45,7 @@ class ApiStabilityClassifierTest {
         loadBucket("breaking")
             .map { fixture ->
                 DynamicTest.dynamicTest(fixture.name) {
-                    val verdict = ApiStabilityClassifier.classify(fixture.diff)
+                    val verdict = classify(fixture.diff)
                     assertIs<Verdict.Breaking>(
                         value = verdict,
                         message = "Expected ${fixture.name} to classify as Breaking but got $verdict",
@@ -56,7 +62,7 @@ class ApiStabilityClassifierTest {
         loadBucket("no-changes")
             .map { fixture ->
                 DynamicTest.dynamicTest(fixture.name) {
-                    val verdict = ApiStabilityClassifier.classify(fixture.diff)
+                    val verdict = classify(fixture.diff)
                     assertEquals(
                         expected = Verdict.NoChanges,
                         actual = verdict,
@@ -68,7 +74,7 @@ class ApiStabilityClassifierTest {
     @Test
     fun `abstract member added to existing interface mentions abstract in reasons`() {
         val fixture = loadFixture("breaking/11-add-abstract-to-existing-iface.diff")
-        val verdict = ApiStabilityClassifier.classify(fixture)
+        val verdict = classify(fixture)
         assertIs<Verdict.Breaking>(verdict)
         assertTrue(
             actual = verdict.reasons.any { reason ->
@@ -84,7 +90,7 @@ class ApiStabilityClassifierTest {
     @Test
     fun `abstract member added to existing abstract class mentions abstract in reasons`() {
         val fixture = loadFixture("breaking/12-add-abstract-to-existing-class.diff")
-        val verdict = ApiStabilityClassifier.classify(fixture)
+        val verdict = classify(fixture)
         assertIs<Verdict.Breaking>(verdict)
         assertTrue(
             actual = verdict.reasons.any { reason ->
@@ -100,7 +106,7 @@ class ApiStabilityClassifierTest {
     @Test
     fun `removed function mentions removed in reasons`() {
         val fixture = loadFixture("breaking/07-remove-fun.diff")
-        val verdict = ApiStabilityClassifier.classify(fixture)
+        val verdict = classify(fixture)
         assertIs<Verdict.Breaking>(verdict)
         assertTrue(
             actual = verdict.reasons.any { reason ->
@@ -116,14 +122,14 @@ class ApiStabilityClassifierTest {
     @Test
     fun `default-parameter addition is classified breaking because JVM signature changes`() {
         val fixture = loadFixture("breaking/08-add-default-param.diff")
-        val verdict = ApiStabilityClassifier.classify(fixture)
+        val verdict = classify(fixture)
         assertIs<Verdict.Breaking>(verdict)
     }
 
     @Test
     fun `brand-new interface with abstract members is additions-only despite abstract keyword`() {
         val fixture = loadFixture("additions-only/05-brand-new-iface-with-abstracts.diff")
-        val verdict = ApiStabilityClassifier.classify(fixture)
+        val verdict = classify(fixture)
         assertEquals(
             expected = Verdict.AdditionsOnly,
             actual = verdict,
@@ -133,7 +139,7 @@ class ApiStabilityClassifierTest {
     @Test
     fun `default-body method on existing interface is additions-only (open or non-abstract)`() {
         val fixture = loadFixture("additions-only/06-add-default-method-existing-iface.diff")
-        val verdict = ApiStabilityClassifier.classify(fixture)
+        val verdict = classify(fixture)
         assertEquals(
             expected = Verdict.AdditionsOnly,
             actual = verdict,
@@ -155,7 +161,7 @@ class ApiStabilityClassifierTest {
         """.trimIndent()
         assertEquals(
             expected = Verdict.AdditionsOnly,
-            actual = ApiStabilityClassifier.classify(diff),
+            actual = classify(diff),
         )
     }
 
@@ -176,7 +182,7 @@ class ApiStabilityClassifierTest {
             +${"\t"}public static final synthetic fun bcvGone (Ljava/lang/String;)Ljava/lang/String;
              }
         """.trimIndent()
-        val verdict = ApiStabilityClassifier.classify(diff)
+        val verdict = classify(diff)
         assertIs<Verdict.Breaking>(verdict)
         assertTrue(
             actual = verdict.reasons.any { reason -> reason.contains("bcvGone") },
@@ -207,7 +213,7 @@ class ApiStabilityClassifierTest {
         """.trimIndent()
         assertEquals(
             expected = Verdict.AdditionsOnly,
-            actual = ApiStabilityClassifier.classify(diff),
+            actual = classify(diff),
         )
     }
 
@@ -222,7 +228,7 @@ class ApiStabilityClassifierTest {
             +${"\t"}public final fun copy (Ljava/lang/String;I)Lcom/teya/lemonade/core/BcvDataModel;
              }
         """.trimIndent()
-        val verdict = ApiStabilityClassifier.classify(diff)
+        val verdict = classify(diff)
         assertIs<Verdict.Breaking>(verdict)
         assertTrue(
             actual = verdict.reasons.any { reason -> reason.contains("copy") },
@@ -245,7 +251,7 @@ class ApiStabilityClassifierTest {
         """.trimIndent()
         assertEquals(
             expected = Verdict.AdditionsOnly,
-            actual = ApiStabilityClassifier.classify(diff),
+            actual = classify(diff),
         )
     }
 
@@ -262,8 +268,55 @@ class ApiStabilityClassifierTest {
         """.trimIndent()
         assertEquals(
             expected = Verdict.AdditionsOnly,
-            actual = ApiStabilityClassifier.classify(diff),
+            actual = classify(diff),
         )
+    }
+
+    @Test
+    fun `re-hashed Compose getLambda singleton with the root project prefix is additions-only`() {
+        val diff = """
+            --- a/kmp/ui/api/desktop/ui.api
+            +++ b/kmp/ui/api/desktop/ui.api
+            @@ -1,3 +1,3 @@
+             public final class com/teya/lemonade/ComposableSingletons${'$'}SelectFieldKt {
+            -${"\t"}public final fun getLambda${'$'}-280548542${'$'}Lemonade_ui ()Lkotlin/jvm/functions/Function4;
+            +${"\t"}public final fun getLambda${'$'}1902280607${'$'}Lemonade_ui ()Lkotlin/jvm/functions/Function4;
+             }
+        """.trimIndent()
+        assertEquals(
+            expected = Verdict.AdditionsOnly,
+            actual = classify(diff),
+        )
+    }
+
+    @Test
+    fun `re-hashed Compose getLambda singleton with the root project prefix on android is additions-only`() {
+        val diff = """
+            --- a/kmp/ui/api/android/ui.api
+            +++ b/kmp/ui/api/android/ui.api
+            @@ -1,3 +1,3 @@
+             public final class com/teya/lemonade/ComposableSingletons${'$'}SelectFieldKt {
+            -${"\t"}public final fun getLambda${'$'}-280548542${'$'}Lemonade_ui_release ()Lkotlin/jvm/functions/Function4;
+            +${"\t"}public final fun getLambda${'$'}1902280607${'$'}Lemonade_ui_release ()Lkotlin/jvm/functions/Function4;
+             }
+        """.trimIndent()
+        assertEquals(
+            expected = Verdict.AdditionsOnly,
+            actual = classify(diff),
+        )
+    }
+
+    @Test
+    fun `root project prefix on another module's name is still breaking`() {
+        val diff = """
+            --- a/kmp/ui/api/desktop/ui.api
+            +++ b/kmp/ui/api/desktop/ui.api
+            @@ -1,3 +1,2 @@
+             public final class com/teya/lemonade/ComposableSingletons${'$'}SelectFieldKt {
+            -${"\t"}public final fun getLambda${'$'}-280548542${'$'}Lemonade_core ()Lkotlin/jvm/functions/Function4;
+             }
+        """.trimIndent()
+        assertIs<Verdict.Breaking>(classify(diff))
     }
 
     @Test
@@ -278,7 +331,7 @@ class ApiStabilityClassifierTest {
         """.trimIndent()
         assertEquals(
             expected = Verdict.AdditionsOnly,
-            actual = ApiStabilityClassifier.classify(diff),
+            actual = classify(diff),
         )
     }
 
@@ -294,7 +347,7 @@ class ApiStabilityClassifierTest {
             -${"\t"}public static synthetic fun foo${'$'}default (Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
              }
         """.trimIndent()
-        val verdict = ApiStabilityClassifier.classify(diff)
+        val verdict = classify(diff)
         assertIs<Verdict.Breaking>(verdict)
         assertTrue(
             actual = verdict.reasons.any { reason -> reason.contains("foo\$default") },
@@ -315,7 +368,7 @@ class ApiStabilityClassifierTest {
         """.trimIndent()
         assertEquals(
             expected = Verdict.AdditionsOnly,
-            actual = ApiStabilityClassifier.classify(diff),
+            actual = classify(diff),
         )
     }
 
@@ -330,7 +383,7 @@ class ApiStabilityClassifierTest {
             +// Targets: [iosArm64, iosSimulatorArm64]
              // Library unique name: <Lemonade:core>
         """.trimIndent()
-        val verdict = ApiStabilityClassifier.classify(diff)
+        val verdict = classify(diff)
         assertIs<Verdict.Breaking>(verdict)
         assertTrue(
             actual = verdict.reasons.any { reason -> reason.contains("wasmJs") },
@@ -352,7 +405,7 @@ class ApiStabilityClassifierTest {
             +// Targets: [iosArm64]
              final fun com.teya.lemonade.core/foo(): kotlin/Int // com.teya.lemonade.core/foo|foo(){}[0]
         """.trimIndent()
-        assertIs<Verdict.Breaking>(ApiStabilityClassifier.classify(diff))
+        assertIs<Verdict.Breaking>(classify(diff))
     }
 
     @Test
@@ -371,7 +424,7 @@ class ApiStabilityClassifierTest {
         """.trimIndent()
         assertEquals(
             expected = Verdict.AdditionsOnly,
-            actual = ApiStabilityClassifier.classify(diff),
+            actual = classify(diff),
         )
     }
 
@@ -389,7 +442,7 @@ class ApiStabilityClassifierTest {
         """.trimIndent()
         assertEquals(
             expected = Verdict.AdditionsOnly,
-            actual = ApiStabilityClassifier.classify(diff),
+            actual = classify(diff),
         )
     }
 
@@ -404,18 +457,18 @@ class ApiStabilityClassifierTest {
             -}
             -
         """.trimIndent()
-        assertIs<Verdict.Breaking>(ApiStabilityClassifier.classify(diff))
+        assertIs<Verdict.Breaking>(classify(diff))
     }
 
     @Test
     fun `empty input is NoChanges`() {
         assertEquals(
             expected = Verdict.NoChanges,
-            actual = ApiStabilityClassifier.classify(""),
+            actual = classify(""),
         )
         assertEquals(
             expected = Verdict.NoChanges,
-            actual = ApiStabilityClassifier.classify("   \n  \n"),
+            actual = classify("   \n  \n"),
         )
     }
 
