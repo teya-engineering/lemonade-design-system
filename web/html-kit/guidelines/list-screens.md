@@ -209,8 +209,8 @@ A control that switches what is listed — Card machines or Tap to Pay, Members 
 **Why.** A merchant mostly opens a list of things to deal with one of them. Putting what needs action
 first answers that before they scroll.
 
-**Exceptions.** Team members group by role, which is what a team is organised by, and keep an "Invited"
-card last.
+**Exceptions.** Team members group by role, which is what a team is organised by, with an "Invited" card
+first: invitations still waiting to be accepted are what the merchant checks on after sending one.
 
 ## `APP-RESOURCE-ADD` · Adding is the top bar's primary action
 
