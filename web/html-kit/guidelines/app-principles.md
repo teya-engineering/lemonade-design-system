@@ -304,6 +304,9 @@ in `lmnd-kit-content` held in place some other way.
 `lmnd-kit-content` draws all of these, so a screen puts its cards and sections straight in it and adds no gaps
 of its own.
 
+A hero is not a section, so the first section after a `lmnd-kit-hero` takes the gap between large elements,
+`spacing-400`, not the gap between sections.
+
 **Why.** One rhythm on every screen, so a section looks like a section wherever it sits.
 
 **Exceptions.** None.

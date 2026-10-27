@@ -102,6 +102,11 @@ h6 {
   margin-top: var(--lmnd-spacing-400);
 }
 
+/* The hero is not a section: the first section after it sits a plain gap below, like a card would. */
+.lmnd-kit-content > .lmnd-kit-hero + .lmnd-kit-section {
+  margin-top: 0;
+}
+
 .lmnd-kit-section {
   display: flex;
   flex-direction: column;
