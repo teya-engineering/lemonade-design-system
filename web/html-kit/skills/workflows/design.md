@@ -28,7 +28,7 @@ page a screen description names, such as `money-settlements.html`, is in `assets
 2. **Read the rules that apply.** Always read `references/guidelines/index.md`, `app-principles.md`,
    `prototypes.md` and `cards.md`. Then read the file for each part of your screen: `lists.md` for rows, `buttons.md` for
    buttons, `top-bar.md` for the top bar, `sheets.md` for a sheet or dialog, `widgets.md` for dashboard
-   widgets, `details.md` for a details screen, `list-screens.md` for a feed, a list of things or a picker sheet, `text.md` for intros, `colour.md` before any custom colour.
+   widgets, `details.md` for a details screen, `list-screens.md` for a feed, a list of things or a picker sheet, `text.md` for intros, `toasts.md` for a toast, `colour.md` before any custom colour.
    Their exception lists are complete.
 3. **Start from the app, or from the closest example.**
    - **A change to a screen the app already has:** read `references/screens/index.md`. If the screen is

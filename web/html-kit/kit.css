@@ -1847,6 +1847,20 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   pointer-events: auto;
 }
 
+/* A toast in a host dismisses itself, as Lemonade's does: Short (3s) by default, --medium 6s, --long 9s. A
+   loading toast stays until something replaces it. */
+.lmnd-kit-toast-host > .lmnd-kit-toast {
+  --lmnd-kit-toast-time: 3s;
+  animation: lmnd-kit-toast-in 0.2s cubic-bezier(0.2, 0, 0, 1) both, lmnd-kit-toast-out 0.2s cubic-bezier(0.4, 0, 1, 1) var(--lmnd-kit-toast-time) forwards;
+}
+
+.lmnd-kit-toast--medium { --lmnd-kit-toast-time: 6s; }
+.lmnd-kit-toast--long { --lmnd-kit-toast-time: 9s; }
+
+.lmnd-kit-toast-host > .lmnd-kit-toast:has(> .lmnd-spinner) {
+  animation: lmnd-kit-toast-in 0.2s cubic-bezier(0.2, 0, 0, 1) both;
+}
+
 /* ---------- Tooltip ---------- */
 
 .lmnd-kit-tooltip {
@@ -4015,6 +4029,8 @@ body:has(> .lmnd-kit-device) {
 @keyframes lmnd-kit-grow-out { to { opacity: 0; transform: scale(0.92); } }
 @keyframes lmnd-kit-drawer-in { from { transform: translateX(-100%); } }
 @keyframes lmnd-kit-drawer-out { to { transform: translateX(-100%); } }
+@keyframes lmnd-kit-toast-in { from { opacity: 0; transform: translateY(var(--lmnd-spacing-200)); } }
+@keyframes lmnd-kit-toast-out { to { opacity: 0; visibility: hidden; transform: translateY(var(--lmnd-spacing-200)); } }
 
 @media (prefers-reduced-motion: reduce) {
   .lmnd-kit-scrim[id]:target,
@@ -4031,5 +4047,14 @@ body:has(> .lmnd-kit-device) {
   .lmnd-kit-top-bar,
   .lmnd-kit-top-bar__center {
     transition: none;
+  }
+
+  /* Still dismisses on time, without moving. */
+  .lmnd-kit-toast-host > .lmnd-kit-toast {
+    animation: lmnd-kit-toast-out 0s linear var(--lmnd-kit-toast-time) forwards;
+  }
+
+  .lmnd-kit-toast-host > .lmnd-kit-toast:has(> .lmnd-spinner) {
+    animation: none;
   }
 }
