@@ -250,6 +250,30 @@ flick back up. A chip that keeps its width doesn't shuffle the row every time so
 
 **Exceptions.** None. "Status" is a chip; "Card payments" against "Bank transfers" is a tab.
 
+## `APP-SEGMENTED-SIZE` · A screen's segmented control is Large
+
+**Kind.** Rule.
+
+**Rule.** A segmented control that switches what a whole screen shows — Members or Roles on Team and
+permissions, Card machines or Tap to Pay — is Large, the default `lmnd-kit-segmented` with no size
+modifier, first in the content. `lmnd-kit-segmented--medium` and `--small` are for a control inside the
+content: in a card, a widget, a sheet or a form.
+
+```html
+<main class="lmnd-kit-content">
+  <div class="lmnd-kit-segmented" role="radiogroup" aria-label="Team">
+    <label class="lmnd-kit-segmented__item lmnd-text-body-small-medium"><input type="radio" name="team" checked><span>Members</span></label>
+    <label class="lmnd-kit-segmented__item lmnd-text-body-small-medium"><input type="radio" name="team"><span>Roles</span></label>
+  </div>
+  …
+</main>
+```
+
+**Why.** The control that switches the screen is the screen's own navigation, so it takes the full size,
+as the native `SegmentedControl` does by default. A smaller one reads as a filter on part of the screen.
+
+**Exceptions.** None.
+
 ## `APP-FOOTER-PLACEMENT` · A fixed action sits in the faded footer
 
 **Kind.** Rule.

@@ -85,6 +85,11 @@ describe.each(Object.keys(pages))('%s', (path) => {
     expect(targets.filter((id) => !ids.has(id))).toEqual([])
   })
 
+  // APP-SEGMENTED-SIZE: the segmented control that switches a whole screen is Large.
+  it('keeps the segmented control that switches a screen Large', () => {
+    expect(html).not.toMatch(/<main class="lmnd-kit-content">\s*<div class="lmnd-kit-segmented lmnd-kit-segmented--/)
+  })
+
   it('names only icons, flags and logos that exist', async () => {
     expect(inlinePage(html, await kitStylesheet())).not.toContain('lemonade-kit.css"')
   })

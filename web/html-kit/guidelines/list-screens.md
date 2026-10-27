@@ -203,8 +203,8 @@ overline heading (`lmnd-kit-card__title lmnd-text-body-xsmall-overline`), in thi
 first, then active, then inactive. A state with nothing in it is left out. Where they don't, the list is
 one card. Either way, the rows in a card are sorted by name.
 
-A control that switches what is listed — Card machines or Tap to Pay, Members or Roles — is a
-`lmnd-kit-segmented` first in the content.
+A control that switches what is listed — Card machines or Tap to Pay, Members or Roles — is a Large
+`lmnd-kit-segmented` first in the content (`APP-SEGMENTED-SIZE`).
 
 **Why.** A merchant mostly opens a list of things to deal with one of them. Putting what needs action
 first answers that before they scroll.
