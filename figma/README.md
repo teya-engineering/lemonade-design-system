@@ -158,7 +158,7 @@ acted on.
 
 ## Components
 
-Thirty-eight components on both platforms, seven Compose-only ones (`Dropdown`,
+Thirty-nine components on both platforms, seven Compose-only ones (`Dropdown`,
 `DropdownItem`, `BottomTabBar`, `BottomSheet`, `TimePicker`, `TimeInput`,
 `TimePickerDialog`), and nine internal parts they nest, all hand-written. A few
 needed more than a property lookup:
@@ -187,7 +187,11 @@ needed more than a property lookup:
   compose optional arguments with a **leading** comma. Kotlin permits either.
 - `TextField.input` is a `Binding` on SwiftUI, so the snippet emits
   `.constant("…")` — it keeps the designed text visible and compiles as written;
-  swap it for real `@State` when wiring the screen up.
+  swap it for real `@State` when wiring the screen up. `TextArea` does the same.
+- `TextArea`'s counter is a text property ("0/1000"), so the template reads the
+  number after the slash as `maxLength`, and emits a `// TODO:` when the text has
+  no number. The leading and trailing slots it inherited from `TextField` have no
+  code equivalent and are not read.
 
 - `SearchField`'s query and placeholder are text layers rather than properties,
   read with `findText('Value')` / `findText('Placeholder')`. In the filled
