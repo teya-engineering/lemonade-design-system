@@ -843,14 +843,6 @@ h6 {
   margin: 0 var(--lmnd-spacing-400);
 }
 
-.lmnd-kit-divider--dashed {
-  background: repeating-linear-gradient(
-    to right,
-    var(--lmnd-color-border-neutral-medium) 0 var(--lmnd-size-100),
-    transparent var(--lmnd-size-100) calc(var(--lmnd-size-100) + var(--lmnd-spacing-100))
-  );
-}
-
 .lmnd-kit-divider--vertical {
   width: var(--lmnd-border-width-25);
   height: auto;
@@ -873,6 +865,19 @@ h6 {
 
 .lmnd-kit-divider-label > span {
   padding: 0 var(--lmnd-spacing-300);
+}
+
+/* Dashes size-100 long, spacing-100 apart, in border-neutral-medium, as Compose's dashPathEffect draws them. */
+.lmnd-kit-divider--dashed,
+.lmnd-kit-divider-label--dashed::before,
+.lmnd-kit-divider-label--dashed::after {
+  --lmnd-kit-divider-dash: var(--lmnd-color-border-neutral-medium) 0 var(--lmnd-size-100),
+    transparent var(--lmnd-size-100) calc(var(--lmnd-size-100) + var(--lmnd-spacing-100));
+  background: repeating-linear-gradient(to right, var(--lmnd-kit-divider-dash));
+}
+
+.lmnd-kit-divider--vertical.lmnd-kit-divider--dashed {
+  background: repeating-linear-gradient(to bottom, var(--lmnd-kit-divider-dash));
 }
 
 /* ---------- Card ---------- */
