@@ -184,6 +184,7 @@ internal object DisplayRegistry {
             title = "Input Fields",
             items = listOf(
                 Displays.TextField,
+                Displays.TextArea,
                 Displays.SearchField,
                 Displays.SelectField,
                 Displays.PinCode,

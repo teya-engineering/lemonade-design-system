@@ -562,6 +562,7 @@ internal fun CoreTextFieldDecorator(
     modifier: Modifier = Modifier,
     containerHeight: Dp? = size.data.minHeight,
     counter: String? = null,
+    counterOverLimit: Boolean = false,
     textBoxContent: @Composable BoxScope.() -> Unit,
 ) {
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -664,6 +665,7 @@ internal fun CoreTextFieldDecorator(
             error = error,
             enabled = enabled,
             counter = counter,
+            counterOverLimit = counterOverLimit,
         )
     }
 }
@@ -675,6 +677,7 @@ private fun TextFieldFooter(
     error: Boolean,
     enabled: Boolean,
     counter: String?,
+    counterOverLimit: Boolean,
 ) {
     val showError = enabled && error && errorMessage != null
     val message = if (showError) {
@@ -714,7 +717,11 @@ private fun TextFieldFooter(
             LemonadeUi.Text(
                 text = counter,
                 textStyle = LocalTypographies.current.bodyXSmallRegular,
-                color = LocalColors.current.content.contentSecondary,
+                color = if (enabled && counterOverLimit) {
+                    LocalColors.current.content.contentCritical
+                } else {
+                    LocalColors.current.content.contentSecondary
+                },
             )
         }
     }

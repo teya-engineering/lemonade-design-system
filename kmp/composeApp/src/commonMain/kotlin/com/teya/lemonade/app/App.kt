@@ -45,6 +45,7 @@ import com.teya.lemonade.SwitchDisplay
 import com.teya.lemonade.SymbolContainerDisplay
 import com.teya.lemonade.TabsDisplay
 import com.teya.lemonade.TagDisplay
+import com.teya.lemonade.TextAreaDisplay
 import com.teya.lemonade.TextDisplay
 import com.teya.lemonade.TextFieldDisplay
 import com.teya.lemonade.ThemedColorsDisplay
@@ -83,6 +84,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.SymbolContainer to { _ -> SymbolContainerDisplay() },
     Displays.Tag to { _ -> TagDisplay() },
     Displays.TextField to { _ -> TextFieldDisplay() },
+    Displays.TextArea to { _ -> TextAreaDisplay() },
     Displays.SearchField to { _ -> SearchFieldDisplay() },
     Displays.SelectField to { _ -> SelectFieldDisplay() },
     Displays.Card to { _ -> CardDisplay() },
