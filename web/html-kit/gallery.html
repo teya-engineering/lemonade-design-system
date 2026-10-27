@@ -665,23 +665,37 @@
 
   <section class="g-section" id="select-field">
     <h2 class="lmnd-text-heading-small">Select field</h2>
-    <p class="lmnd-text-body-small-regular">Looks like a text field and opens a sheet. An empty value shows <code>data-placeholder</code>.</p>
+    <p class="lmnd-text-body-small-regular">Looks like a text field and opens a picker (<code>LHK-SELECT-OPENS</code>). To open a kit sheet or dropdown, the box is a link to its id; an empty value shows <code>data-placeholder</code>. To open the phone's own picker, the box holds a <code>lmnd-kit-field__select</code>, a native <code>&lt;select&gt;</code> whose empty first option is the placeholder.</p>
     <div class="g-example"><div class="g-demo g-demo--default" data-demo>
 <div class="lmnd-kit-field lmnd-kit-select">
   <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Business type</span></span>
-  <button type="button" class="lmnd-kit-field__box">
+  <a href="#" class="lmnd-kit-field__box">
     <span class="lmnd-kit-field__value lmnd-text-body-medium-regular" data-placeholder="Select a type"></span>
     <span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span>
-  </button>
+  </a>
 </div>
 <div class="lmnd-kit-field lmnd-kit-select">
   <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Country</span></span>
-  <button type="button" class="lmnd-kit-field__box">
+  <a href="#" class="lmnd-kit-field__box">
     <span class="lmnd-kit-flag" data-flag="PT" aria-hidden="true"></span>
     <span class="lmnd-kit-field__value lmnd-text-body-medium-regular">Portugal</span>
     <span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span>
-  </button>
+  </a>
 </div>
+<label class="lmnd-kit-field lmnd-kit-select">
+  <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Industry</span></span>
+  <span class="lmnd-kit-field__box">
+    <select class="lmnd-kit-field__select lmnd-text-body-medium-regular">
+      <option value="" disabled selected hidden>Select an industry</option>
+      <option>Café or bakery</option>
+      <option>Restaurant</option>
+      <option>Bar or pub</option>
+      <option>Retail shop</option>
+      <option>Hair and beauty</option>
+    </select>
+    <span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span>
+  </span>
+</label>
     </div></div>
   </section>
 

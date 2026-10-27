@@ -76,6 +76,15 @@ describe.each(Object.keys(pages))('%s', (path) => {
     expect(missing).toEqual([])
   })
 
+  // LHK-SELECT-OPENS: a select field's box is a link to what it opens, or holds a native select.
+  it('opens every select field with a link or a native select', () => {
+    const boxes = [...html.matchAll(/class="lmnd-kit-field lmnd-kit-select[^"]*"[^>]*>[\s\S]*?<(\w+)[^>]*class="lmnd-kit-field__box"[^>]*>(?:\s*<(\w+))?/g)]
+    expect(boxes.filter(([, box, child]) => box !== 'a' && !(box === 'span' && child === 'select'))).toEqual([])
+    const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]))
+    const targets = [...html.matchAll(/<a href="#([^"]+)" class="lmnd-kit-field__box"/g)].map((m) => m[1])
+    expect(targets.filter((id) => !ids.has(id))).toEqual([])
+  })
+
   it('names only icons, flags and logos that exist', async () => {
     expect(inlinePage(html, await kitStylesheet())).not.toContain('lemonade-kit.css"')
   })

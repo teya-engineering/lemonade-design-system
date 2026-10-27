@@ -2107,13 +2107,41 @@ textarea.lmnd-kit-field__input {
   cursor: pointer;
 }
 
-/* Select field: the same shell, a value and a chevron, 16px inside. */
+/* Select field: the same shell, a value and a chevron, 16px inside. The box is a link to the sheet or
+   dropdown it opens, or holds a native <select> for the phone's own picker. */
 .lmnd-kit-select .lmnd-kit-field__box {
   width: 100%;
   padding: var(--lmnd-spacing-400);
   border: none;
   text-align: start;
+  text-decoration: none;
   cursor: pointer;
+}
+
+/* The native select covers the whole box, so any tap opens it; the chevron shows through it. */
+.lmnd-kit-select .lmnd-kit-field__box:has(> .lmnd-kit-field__select) {
+  position: relative;
+  justify-content: flex-end;
+}
+
+.lmnd-kit-field__select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  padding: 0 calc(var(--lmnd-spacing-400) + var(--lmnd-size-500) + var(--lmnd-spacing-300)) 0 var(--lmnd-spacing-400);
+  border: none;
+  border-radius: inherit;
+  outline: none;
+  background: none;
+  color: var(--lmnd-color-content-primary);
+  text-overflow: ellipsis;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.lmnd-kit-field__select:has(option[value=""]:checked) {
+  color: var(--lmnd-color-content-secondary);
 }
 
 .lmnd-kit-select .lmnd-kit-field__value {

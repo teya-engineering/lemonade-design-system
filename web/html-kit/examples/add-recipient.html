@@ -37,11 +37,11 @@
 
       <div class="lmnd-kit-field lmnd-kit-select">
         <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Country</span></span>
-        <button type="button" class="lmnd-kit-field__box">
+        <a href="#country-sheet" class="lmnd-kit-field__box">
           <span class="lmnd-kit-flag" data-flag="GB" aria-hidden="true"></span>
           <span class="lmnd-kit-field__value lmnd-text-body-medium-regular">United Kingdom</span>
           <span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span>
-        </button>
+        </a>
       </div>
 
       <label class="lmnd-kit-field lmnd-kit-field--error">
@@ -70,6 +70,72 @@
 
     <div class="lmnd-kit-actions">
       <a href="settings.html" class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold"><span class="lmnd-button__label">Continue</span></a>
+    </div>
+  </div>
+
+  <div class="lmnd-kit-scrim" id="country-sheet">
+    <div class="lmnd-kit-sheet lmnd-kit-sheet--subtle" role="dialog" aria-labelledby="country-title">
+      <span class="lmnd-kit-sheet__handle"></span>
+      <div class="lmnd-kit-sheet__bar">
+        <a href="#" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></a>
+      </div>
+      <h2 class="lmnd-kit-sheet__title lmnd-text-heading-large" id="country-title">Country</h2>
+      <div class="lmnd-kit-sheet__body">
+        <div class="lmnd-kit-card">
+          <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-flag" data-flag="CZ" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Czechia</span></span>
+              <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="country"></span>
+            </span>
+          </label>
+          <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-flag" data-flag="HU" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Hungary</span></span>
+              <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="country"></span>
+            </span>
+          </label>
+          <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-flag" data-flag="IS" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Iceland</span></span>
+              <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="country"></span>
+            </span>
+          </label>
+          <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-flag" data-flag="IE" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Ireland</span></span>
+              <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="country"></span>
+            </span>
+          </label>
+          <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-flag" data-flag="PT" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Portugal</span></span>
+              <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="country"></span>
+            </span>
+          </label>
+          <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-flag" data-flag="ES" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Spain</span></span>
+              <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="country"></span>
+            </span>
+          </label>
+          <label class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-flag" data-flag="GB" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">United Kingdom</span></span>
+              <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="country" checked></span>
+            </span>
+          </label>
+        </div>
+      </div>
+      <div class="lmnd-kit-sheet__actions">
+        <a href="#" class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold"><span class="lmnd-button__label">Done</span></a>
+      </div>
     </div>
   </div>
 </div>

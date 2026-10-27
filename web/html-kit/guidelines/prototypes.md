@@ -149,6 +149,27 @@ browser's back button closes an open sheet, and the markup stays the same markup
 **Exceptions.** A state that HTML can't reach without script — a timer, an animation sequence — is shown
 as its own screen instead.
 
+## `LHK-SELECT-OPENS` · A select field opens what the app opens
+
+**Kind.** Rule.
+
+**Rule.** A `lmnd-kit-select` field opens a picker, and its markup says which:
+
+| Opens | Markup |
+| --- | --- |
+| A kit sheet or dropdown, built in the page | The box is a link to the overlay: `<a href="#country-sheet" class="lmnd-kit-field__box">`, with the value in `lmnd-kit-field__value` |
+| The phone's own picker | The box holds a native `<select class="lmnd-kit-field__select">` and the chevron, in a `<label class="lmnd-kit-field lmnd-kit-select">`. An empty first option, `value="" disabled selected hidden`, is the placeholder |
+
+Use a sheet where the app's screen uses one: options with a flag, logo, icon or support line, more than a
+handful to search, or a confirming action (`APP-PICKER-OPTIONS`). Use the native select for a short list of
+plain words that the app shows in the system picker. A field that opens nothing yet is still a link, to
+`#`.
+
+**Why.** A sheet opened by a link and a native select both work with no script, so the picker opens in any
+browser. A `<button>` opens nothing without script.
+
+**Exceptions.** None.
+
 ## `LHK-SCREENS` · A flow in one file is several screens in one device
 
 **Kind.** Rule.
