@@ -274,7 +274,8 @@
       // isn't showing yet (one of several in a file) has nothing to measure, so it waits until it shows.
       const update = () => {
         if (!screen.offsetWidth) return
-        const title = large.getBoundingClientRect()
+        // The title, not the block: a description under it would hold the bar open for two more lines.
+        const title = large.firstElementChild.getBoundingClientRect()
         bar.classList.toggle('lmnd-kit-top-bar--collapsed', (title.top + title.bottom) / 2 <= bar.getBoundingClientRect().bottom)
       }
       watchScroll(screen, update)

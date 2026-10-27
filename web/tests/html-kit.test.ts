@@ -64,6 +64,11 @@ describe.each(Object.keys(pages))('%s', (path) => {
     expect(missing).toEqual([])
   })
 
+  // LDS-TOP-BAR-DESCRIPTION: a large title's description goes inside the title block, not after it.
+  it('keeps a large title and its description together', () => {
+    expect(html).not.toMatch(/class="lmnd-kit-large-title"[^>]*>[\s\S]*?<\/div>\s*<p\b[^>]*class="[^"]*lmnd-kit-intro/)
+  })
+
   it('names only icons, flags and logos that exist', async () => {
     expect(inlinePage(html, await kitStylesheet())).not.toContain('lemonade-kit.css"')
   })

@@ -5,8 +5,9 @@
 **Kind.** Rule.
 
 **Rule.** An intro sits below the title, runs to at most two lines, and uses
-`lmnd-text-body-small-regular` in `content-secondary`. Under a top bar's large title it is
-`lmnd-kit-top-bar__large-subtitle`; under a sheet title it is `lmnd-kit-sheet__intro`; anywhere else it is
+`lmnd-text-body-small-regular` in `content-secondary`. Under a large title it is
+`lmnd-kit-large-title__description`, or `lmnd-kit-top-bar__large-subtitle` in a top bar, right under the
+title (`LDS-TOP-BAR-DESCRIPTION`); under a sheet title it is `lmnd-kit-sheet__intro`; anywhere else it is
 `lmnd-kit-intro`. The same holds for any description or subheading under a heading.
 
 **Why.** An intro is read on the way to the content. Past two lines it becomes the content, pushing what

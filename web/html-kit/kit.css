@@ -1396,8 +1396,15 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   -webkit-line-clamp: 2;
 }
 
-.lmnd-kit-top-bar__large-subtitle {
+/* A large title's description sits right under it, with no gap, in at most two lines (LDS-TOP-BAR-DESCRIPTION,
+   LDS-TEXT-INTRO). The native TopBar draws its subtitle the same way. */
+.lmnd-kit-top-bar__large-subtitle,
+.lmnd-kit-large-title__description {
+  display: -webkit-box;
+  overflow: hidden;
   color: var(--lmnd-color-content-secondary);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 /* Compact: a top-level screen with the large title and actions on one row, no back button. */

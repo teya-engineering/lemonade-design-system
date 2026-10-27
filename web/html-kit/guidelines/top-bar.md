@@ -37,3 +37,34 @@ visible without competing with it.
 
 **Do / don't.** A Primary · Solid add button next to a Subtle settings button. Not a ghost settings
 button, and not a Neutral · Solid one.
+
+## `LDS-TOP-BAR-DESCRIPTION` · A large title's description sits right under it
+
+**Kind.** Rule.
+
+**Rule.** A screen with a large title puts its description inside the title block, directly under the
+title, with no gap: `lmnd-kit-large-title__description` in the screen's `lmnd-kit-large-title`, or
+`lmnd-kit-top-bar__large-subtitle` in a top bar's `lmnd-kit-top-bar__large`. It is never a paragraph of
+its own in the content. It follows `LDS-TEXT-INTRO`: at most two lines of `lmnd-text-body-small-regular`
+in `content-secondary`.
+
+```html
+<main class="lmnd-kit-content">
+  <div class="lmnd-kit-large-title">
+    <h1 class="lmnd-text-heading-large">What can Dan do?</h1>
+    <p class="lmnd-kit-large-title__description lmnd-text-body-small-regular">Tick what this role can do</p>
+  </div>
+  …
+</main>
+```
+
+**Why.** The title and its description are one unit, and the native TopBar draws them as one: its
+subtitle sits under the large title with nothing between. A description written as its own paragraph
+takes the content's gap above it, drifts away from the title it explains and reads as the start of the
+content.
+
+**Exceptions.** A screen with an inline title (`lmnd-kit-top-bar--small`, `APP-TOPBAR-TITLE`) has no
+title block to hold it; its intro is the content's first paragraph, `lmnd-kit-intro`.
+
+**Do / don't.** "What can Dan do?" with "Tick what this role can do" directly under it. Not the
+description as an `lmnd-kit-intro` after the `lmnd-kit-large-title`, a gap below the title.
