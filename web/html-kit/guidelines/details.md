@@ -60,7 +60,8 @@ The hero draws its own spacing, so a screen adds none:
 | The top bar and the hero's first slot | `spacing-800` |
 | Artwork and main information | `spacing-200` |
 | Main information and status | `spacing-200` |
-| Status, or main information when there is no status, and metadata | `spacing-400` |
+| Status and metadata | `spacing-400` |
+| Main information and metadata, when there is no status | `spacing-200` |
 | Below the hero's last slot, its bottom padding | `spacing-400`, before the content's gap to the first card |
 
 A transaction fills main information, status and metadata, with no artwork. A terminal fills artwork, its

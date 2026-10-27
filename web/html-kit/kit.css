@@ -2953,6 +2953,11 @@ textarea.lmnd-kit-field__input {
   color: var(--lmnd-color-content-secondary);
 }
 
+/* With no status between them, the metadata reads as the main information's own line. */
+.lmnd-kit-hero__main + .lmnd-kit-hero__meta {
+  margin-top: var(--lmnd-spacing-200);
+}
+
 /* ---------- Mini widget ---------- */
 
 /* The Teya app's dashboard tiles: HALF widgets on its widget grid, one column each, keeping the
