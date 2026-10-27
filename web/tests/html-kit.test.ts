@@ -90,6 +90,11 @@ describe.each(Object.keys(pages))('%s', (path) => {
     expect(html).not.toMatch(/<main class="lmnd-kit-content">\s*<div class="lmnd-kit-segmented lmnd-kit-segmented--/)
   })
 
+  // LDS-TOP-BAR-CRITICAL: a destructive icon button takes the critical variant, not a tinted glyph.
+  it('marks a destructive icon button with its critical variant', () => {
+    expect(html).not.toMatch(/class="lmnd-kit-icon-button\b[^"]*"[^>]*>\s*<span class="[^"]*lmnd-kit-critical/)
+  })
+
   it('names only icons, flags and logos that exist', async () => {
     expect(inlinePage(html, await kitStylesheet())).not.toContain('lemonade-kit.css"')
   })

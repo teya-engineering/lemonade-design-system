@@ -40,7 +40,8 @@ gesture does not go to.
 
 **Rule.** The buttons in `lmnd-kit-sheet__bar` follow `LDS-TOP-BAR-ACTIONS`, exactly as in an app's top bar:
 circular, Small icon buttons, or one Small text button such as Reset or Done in its pill shape. The sheet's primary action,
-if it has one in the bar, is Primary · Solid, and every other action, Close included, is Neutral · Subtle.
+if it has one in the bar, is Primary · Solid, a destructive one is Critical · Subtle (`LDS-TOP-BAR-CRITICAL`),
+and every other action, Close included, is Neutral · Subtle.
 Two or more trailing actions go in a `lmnd-kit-sheet__trailing` group.
 
 ```html

@@ -13,7 +13,8 @@
   `lmnd-button--primary lmnd-button--solid lmnd-button--small` for text.
 - **Every other action** is Neutral · Subtle: the icon button's default `lmnd-kit-icon-button`, or
   `lmnd-button--neutral lmnd-button--subtle lmnd-button--small` for text. Back and Close are secondary
-  actions, so they are Subtle too.
+  actions, so they are Subtle too. A destructive action is Critical · Subtle instead
+  (`LDS-TOP-BAR-CRITICAL`).
 
 Buttons side by side in a slot are always 8pt apart (`spacing-200`); `lmnd-kit-top-bar__leading` and
 `lmnd-kit-top-bar__trailing` set that gap, so a page never adds its own. How many actions a bar carries is
@@ -39,6 +40,32 @@ visible without competing with it.
 
 **Do / don't.** A Primary · Solid add button next to a Subtle settings button. Not a ghost settings
 button, and not a Neutral · Solid one.
+
+## `LDS-TOP-BAR-CRITICAL` · A destructive bar action is Critical · Subtle
+
+**Kind.** Rule.
+
+**Rule.** An action in a top bar or a sheet bar that removes or undoes something — remove, delete, cancel
+an invite — is Critical · Subtle: a `bg-critical-subtle` fill with a `content-critical` glyph or label,
+on every screen and in every bar. That is `lmnd-kit-icon-button--critical` for an icon button, or
+`lmnd-button--critical lmnd-button--subtle lmnd-button--small` for text. It keeps the bar's round shape
+(`LDS-TOP-BAR-ACTIONS`).
+
+```html
+<div class="lmnd-kit-top-bar__trailing">
+  <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--critical lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Remove member"><span class="lmnd-icon" data-icon="trash"></span></button>
+</div>
+```
+
+**Why.** A destructive action has to look different from the bar's other actions before it is pressed.
+A critical glyph on a neutral fill is easy to miss next to Subtle buttons; the critical fill and glyph
+together mark it the same way everywhere.
+
+**Exceptions.** None. Not a Neutral · Subtle button with a critical glyph (`lmnd-kit-critical` on the
+icon), and not Critical · Solid, which is for the confirming button in a dialog.
+
+**Do / don't.** A Critical · Subtle trash button next to a Subtle edit button. Not a red trash glyph on a
+grey fill.
 
 ## `LDS-TOP-BAR-DESCRIPTION` · A large title's description sits right under it
 
