@@ -883,7 +883,7 @@
 
   <section class="g-section" id="sheet">
     <h2 class="lmnd-text-heading-small">Bottom sheet</h2>
-    <p class="lmnd-text-body-small-regular">The scaffold: handle, close on the left, an optional text action, a large title. On a screen, the scrim goes in the <code>lmnd-kit-device</code>, after the <code>lmnd-kit-screen</code>, with an <code>id</code>: a link to <code>#that-id</code> opens it and a link to <code>#</code> closes it, with no script. A sheet closes with Close, never Back.</p>
+    <p class="lmnd-text-body-small-regular">The scaffold: handle, close on the left, an optional text action, a large title. On a screen, the scrim goes in the <code>lmnd-kit-device</code>, after the <code>lmnd-kit-screen</code>, with an <code>id</code>: a link to <code>#that-id</code> opens it and a link to <code>#</code> closes it, with no script. A sheet closes with Close, never Back. A confirming button that picks an option is a <code>&lt;label for="the-option-id"&gt;</code> with <code>data-lmnd-kit-close</code>, so one tap picks and closes; add <code>data-lmnd-kit-reset=&quot;element-id&quot;</code> to put the fields in that element back as the markup wrote them first, as when starting again from a role.</p>
     <div class="g-example"><div class="g-demo g-demo--frame" data-demo>
 <div class="lmnd-kit-scrim" style="position: absolute">
   <div class="lmnd-kit-sheet lmnd-kit-sheet--subtle" role="dialog" aria-labelledby="g-sheet-title">

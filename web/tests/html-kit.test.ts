@@ -69,6 +69,13 @@ describe.each(Object.keys(pages))('%s', (path) => {
     expect(html).not.toMatch(/class="lmnd-kit-large-title"[^>]*>[\s\S]*?<\/div>\s*<p\b[^>]*class="[^"]*lmnd-kit-intro/)
   })
 
+  // LHK-SCRIPT: a reset that names no element resets nothing, silently.
+  it('resets only elements that exist', () => {
+    const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]))
+    const missing = [...html.matchAll(/data-lmnd-kit-reset="([^"]+)"/g)].map((m) => m[1]).filter((id) => !ids.has(id))
+    expect(missing).toEqual([])
+  })
+
   it('names only icons, flags and logos that exist', async () => {
     expect(inlinePage(html, await kitStylesheet())).not.toContain('lemonade-kit.css"')
   })

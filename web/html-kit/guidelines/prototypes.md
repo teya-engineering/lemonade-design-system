@@ -197,13 +197,15 @@ one the same markup as a screen on its own.
 | Kit markup | What the script adds |
 | --- | --- |
 | Screens with `id`s in one device (`LHK-SCREENS`) | Slides between them: in from the right on a link, back on Back or the browser's back button, no slide on a tab |
-| An overlay with an `id` (sheet, dialog, dropdown, side menu) | Animates it out as it closes, whichever way it closes — it animates in without the script. Esc and a tap on the scrim close it; focus moves into it and back to what opened it |
+| An overlay with an `id` (sheet, dialog, dropdown, side menu) | Animates it out as it closes, whichever way it closes — it animates in without the script. Esc and a tap on the scrim close it, going back through history when a link opened it, so a later Back doesn't reopen it; focus moves into it and back to what opened it |
 | A `lmnd-kit-segmented` or `lmnd-kit-tabs` | Slides one pill, or one underline, to the option picked, rather than each option lighting up |
 | A tab or segmented option with `aria-controls="panel-id"` | Shows its panel and hides the others. The panels it doesn't show carry `hidden` in the markup, so without script the first stays |
 | A navigation top bar, with the large title first in the content as a `lmnd-kit-large-title` | Collapses the bar once the title is halfway under it: the small title rises in and the divider fades in. The title itself scrolls with the page |
 | The top bar of a details screen or of Home | Fills it once the screen scrolls, in browsers that can't do it in CSS |
 | A `lmnd-kit-day-strip` with an `aria-current` day | Opens scrolled to that day |
 | An element with `data-lmnd-kit-mirror="field-id"`, and an optional `data-lmnd-kit-mirror-empty` | Shows what's typed in that field, or the empty text while it's empty. Without the script it keeps the text in its markup. A field that carries it takes the other field's value, so one entry on two screens stays one |
+| A `<label>` or `<button>` in an overlay with `data-lmnd-kit-close` | Closes the overlay once it has done its own job, such as a label picking its option, so one tap can pick and close. Without the script the option is still picked and the overlay stays open until its Close |
+| A control with `data-lmnd-kit-reset="element-id"` | Puts every field inside that element back as its markup wrote it before the control acts, so picking a starting point shows that starting point rather than earlier edits. An option already picked resets nothing. Without the script the fields keep what was entered |
 
 Every page still works without it, in an email attachment, a preview that blocks script or a sandbox, so
 nothing a reader needs may depend on it.

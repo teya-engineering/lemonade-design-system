@@ -488,10 +488,13 @@ h6 {
   scrollbar-width: none;
 }
 
-/* On a screen the row scrolls under the screen's edges, as in the app. */
-.lmnd-kit-content > .lmnd-kit-chips {
+/* On a screen or in a sheet the row scrolls under the edges, as in the app, also when a label or another
+   wrapper sits around it. Inside a card it stays within the card's padding. */
+.lmnd-kit-content .lmnd-kit-chips:not(.lmnd-kit-card .lmnd-kit-chips),
+.lmnd-kit-sheet__body .lmnd-kit-chips:not(.lmnd-kit-card .lmnd-kit-chips) {
   margin: 0 calc(-1 * var(--lmnd-spacing-400));
   padding: 0 var(--lmnd-spacing-400);
+  scroll-padding-inline: var(--lmnd-spacing-400);
 }
 
 /* The filter bar (APP-FILTER-BAR): chips spacing-200 apart, spacing-400 around, ending in a Clear or Reset

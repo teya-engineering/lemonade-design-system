@@ -16,9 +16,13 @@
     return overlay && overlay.matches(OVERLAYS) ? overlay : null
   }
 
-  // The same as the overlay's own close link: an empty fragment, which :target follows.
+  // An overlay a link opened has its own history entry, so closing goes back through it: a later Back then
+  // returns to the screen, not to the overlay. One the page opened on has none to go back through, so it
+  // takes an empty fragment, which :target follows, as its own close link does.
   const close = () => {
-    if (openOverlay()) location.hash = ''
+    if (!openOverlay()) return
+    if (history.state?.lmndKitOverlay) history.back()
+    else location.hash = ''
   }
 
   document.addEventListener('click', (event) => {
@@ -27,6 +31,9 @@
     const overlay = openOverlay()
     // A tap on the scrim itself, outside the sheet or dialog, closes it.
     if (overlay && event.target === overlay) close()
+    // A label or button with data-lmnd-kit-close does its own job first — a label picks its option — and
+    // then closes the overlay it sits in. Without script the option is still picked and the overlay stays.
+    else if (overlay && event.target.closest('[data-lmnd-kit-close]')?.closest(OVERLAYS) === overlay) setTimeout(close)
   })
 
   document.addEventListener('keydown', (event) => {
@@ -46,6 +53,7 @@
 
   window.addEventListener('hashchange', () => {
     const overlay = openOverlay()
+    if (overlay && opener) history.replaceState({ ...history.state, lmndKitOverlay: true }, '')
     if (shown && shown !== overlay) animateClose(shown)
     shown = overlay
     if (overlay) {
@@ -154,7 +162,7 @@
     window.addEventListener('hashchange', () => {
       const next = screenFor(decodeURIComponent(location.hash.slice(1)))
       if (next && next !== current) go(next)
-      else if (!history.state?.lmndKitScreen) history.replaceState({ lmndKitScreen: current.id }, '')
+      else if (!history.state?.lmndKitScreen) history.replaceState({ ...history.state, lmndKitScreen: current.id }, '')
     })
   }
 
@@ -250,6 +258,33 @@
     if (event.target.matches('[data-lmnd-kit-max-length]')) count(event.target)
     if (event.target.matches('input, textarea')) mirror(event.target)
   })
+
+  // ---------- Starting over from what the markup says ----------
+
+  // A control with data-lmnd-kit-reset="element-id" puts every field inside that element back as its markup
+  // wrote it before the control acts — picking a role to start from shows that role's own permissions, not
+  // the ticks left from last time. An option already picked resets nothing, so tapping it again keeps the
+  // edits. Without script the fields keep what was entered.
+  const resetFields = (scope) => {
+    scope.querySelectorAll('input, textarea, select').forEach((field) => {
+      if (field.matches('[type="checkbox"], [type="radio"]')) field.checked = field.defaultChecked
+      else if (field.matches('select')) [...field.options].forEach((option) => { option.selected = option.defaultSelected })
+      else field.value = field.defaultValue
+    })
+    scope.querySelectorAll('input, textarea, select').forEach((field) => {
+      field.dispatchEvent(new Event('input', { bubbles: true }))
+      field.dispatchEvent(new Event('change', { bubbles: true }))
+    })
+  }
+
+  document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-lmnd-kit-reset]')
+    if (!trigger) return
+    const control = trigger.matches('input') ? trigger : trigger.control
+    if (control?.matches('[type="radio"]') && control.checked) return
+    const scope = document.getElementById(trigger.dataset.lmndKitReset)
+    if (scope) resetFields(scope)
+  }, true)
 
   // A screen scrolls itself in the phone frame and the page scrolls on a phone, so both are watched. Its size
   // changing — not least from hidden to shown, or back to the top as it's pushed — measures it again.
