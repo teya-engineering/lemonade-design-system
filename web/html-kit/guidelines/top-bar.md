@@ -15,7 +15,9 @@
   `lmnd-button--neutral lmnd-button--subtle lmnd-button--small` for text. Back and Close are secondary
   actions, so they are Subtle too.
 
-How many actions a bar carries is the app's call (`APP-TOPBAR-TRAILING`).
+Buttons side by side in a slot are always 8pt apart (`spacing-200`); `lmnd-kit-top-bar__leading` and
+`lmnd-kit-top-bar__trailing` set that gap, so a page never adds its own. How many actions a bar carries is
+the app's call (`APP-TOPBAR-TRAILING`).
 
 ```html
 <div class="lmnd-kit-top-bar__trailing">

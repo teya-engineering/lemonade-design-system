@@ -1358,6 +1358,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
 .lmnd-kit-top-bar__leading {
   display: flex;
   justify-self: start;
+  gap: var(--lmnd-spacing-200);
 }
 
 .lmnd-kit-top-bar__center {
@@ -1388,6 +1389,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   display: flex;
   justify-self: end;
   align-items: center;
+  gap: var(--lmnd-spacing-200);
   max-height: var(--lmnd-size-1000);
 }
 
