@@ -1,1 +1,1 @@
-export function inlinePage(html: string, css: string): string
+export function inlinePage(html: string, css: string, js?: string): string
