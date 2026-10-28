@@ -30,6 +30,9 @@ import com.teya.lemonade.core.SelectListItemVariant
  *
  * [type] picks both the selection behaviour and the control drawn on the trailing edge.
  *
+ * Grouping and leading slots are governed by `LDS-CARD-GROUPED-ITEMS` and `LDS-LIST-LEADING-SLOT` in
+ * `guidelines/`.
+ *
  * ## Usage
  * ```kotlin
  * LemonadeUi.SelectListItem(
