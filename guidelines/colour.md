@@ -17,6 +17,9 @@ colour the design system does not model: chart series, categories, per-role or p
 documentation says using it directly is a mistake. A primitive is as wrong as a hex literal and for
 the same reason: it cannot follow the theme.
 
+Pick a token by what it means, even when another holds the same value today. `bgAlwaysLight` and
+`bgDefault` match in the light theme and part in the dark one.
+
 **Why.** A primitive or a literal is a colour that looks right in the theme it was written in and
 wrong in the other one.
 
@@ -25,3 +28,83 @@ token carries the meaning.
 
 **Do / don't.** `colors.content.contentCritical` for an error. `LemonadeThemedColors` for the fourth
 series in a chart. Never a primitive palette entry, and never a hex literal.
+
+## `LDS-COLOR-SURFACE` · A container is lighter than the page
+
+**Rule of thumb.** Fill a container with a colour lighter than the page under it: a `bgDefault` card on
+a `bgSubtle` page. That is `LemonadeUi.Card`'s default `background`.
+
+A darker container — `bgSubtle` or `bgElevated` on a `bgDefault` page — is allowed, but crowds the
+screen.
+
+`bgElevatedHigh` is one step above `bgElevated`, for a surface inside an elevated one.
+
+**Why.** A lighter container lifts its content off the page. A container in its page's own colour reads
+as no container at all.
+
+**Exceptions.** A brand or voice surface — `bgBrandSubtle` behind a promotion, `bgCriticalSubtle`
+behind an error — is chosen for its meaning, not its depth.
+
+**Do / don't.** A `Default` card on a `bgSubtle` page. Not a `Default` card on a `bgDefault` page,
+and not a `bgElevatedHigh` card straight on the page.
+
+## `LDS-COLOR-ON-SURFACE` · Content on a filled surface uses that surface's pair
+
+**Rule.** Text and icons on a filled background use the content token made for it:
+
+| Background | Content |
+| --- | --- |
+| `bgBrand`, `bgBrandHigh`, `bgBrandElevated` | `contentOnBrandHigh`, and `contentOnBrandLow` for secondary content |
+| `bgBrandSubtle` | `contentBrandHigh` |
+| `bgCritical`, `bgCaution`, `bgInfo`, `bgPositive`, `bgNeutral`, `bgFeatured` | `content<Voice>OnColor` |
+| `bgDefaultInverse`, `bgSubtleInverse`, `bgElevatedInverse` | `contentPrimaryInverse`, `contentSecondaryInverse`, `contentTertiaryInverse` |
+
+On the neutral backgrounds and on a voice's subtle background, content is the ordinary
+`contentPrimary` / `contentSecondary` set, or the voice's own content token (`contentCritical` on
+`bgCriticalSubtle`).
+
+**Why.** A pair is checked for contrast as a pair, in both themes. `contentPrimary` on `bgCritical`
+can pass in one theme and fail in the other.
+
+**Exceptions.** None.
+
+**Do / don't.** `contentCriticalOnColor` on `bgCritical`. Not `contentPrimary`, and not
+`contentAlwaysLight` because it happens to look right in light mode.
+
+## `LDS-COLOR-INVERSE` · Inverse is an opposite surface, `Always` is a fixed one, neither is dark mode
+
+**Rule.** An `Inverse` token is for a surface that contrasts with the theme — a dark toast or tooltip
+in light mode, which turns light in dark mode. An `Always` token (`bgAlwaysDark`, `contentAlwaysLight`)
+is for something that keeps one look in both themes — content over a photo or a camera feed, a
+surface whose colour is part of the brand.
+
+Dark mode is the theme's job. A screen reaches it by using semantic tokens, never by picking inverse or
+`Always` tokens by hand.
+
+**Why.** An `Always` token where an inverse one belongs stays dark on a dark screen and disappears. An
+inverse token used to build dark mode flips back the moment the theme does.
+
+**Exceptions.** None.
+
+**Do / don't.** `bgDefaultInverse` with `contentPrimaryInverse` for a tooltip. `contentAlwaysLight`
+over a photo. Not `bgAlwaysDark` for a tooltip, and not `contentPrimaryInverse` to make a screen dark.
+
+## `LDS-COLOR-STATE` · Pressed and disabled come from tokens
+
+**Rule.** A pressed element takes an interaction token of the surface it is drawn on — the
+`Interactive` or `Pressed` variant of that background — never a colour picked by hand. A disabled
+element is drawn whole at `opacities.state.opacityDisabled`, in its usual colours.
+
+The Lemonade controls show both variants. A solid `Button` presses its fill to the fill's own
+`Interactive` token (`bgBrand` to `bgBrandInteractive`); a `Subtle` or `Ghost` one, which has no fill
+of its own, shows `bgSubtlePressed`. `Switch` presses its track to `bgBrandHighPressed` when on and
+`bgElevatedPressed` when off.
+
+**Why.** Each background has its own interaction tokens, tuned so the change shows on it in both
+themes. A darker or greyer colour picked by hand is tuned for neither.
+
+**Exceptions.** A component that animates its press as opacity, as `BoxSelection` and `Tabs` do with
+`opacities.state.opacityPressed`.
+
+**Do / don't.** `bgSubtlePressed` under a finger on a transparent row in a `bgSubtle` card. Not
+`bgElevated` borrowed as a pressed colour, and not `contentTertiary` text for a disabled label.
