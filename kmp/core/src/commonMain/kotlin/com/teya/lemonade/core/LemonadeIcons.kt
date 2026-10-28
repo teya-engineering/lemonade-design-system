@@ -253,6 +253,7 @@ public enum class LemonadeIcons : LemonadeAsset {
     ReceiptTax,
     RescueRing,
     RotateMoney,
+    ScanBarcode,
     ScanFace,
     ScriptSparkle,
     Search,
