@@ -584,11 +584,13 @@ private struct LemonadeTextInputField: View {
         .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
         .tint(LemonadeTheme.colors.content.contentPrimary)
         .focused($fieldFocused)
+        .modifier(FieldAccessibilityLabel())
         .disabled(!enabled)
         .onSubmit { onSubmit?() }
         .onChange(of: input) { newValue in
             onInputChanged?(newValue)
         }
+        .onAppear { if fieldFocused != isFocused { fieldFocused = isFocused } }
         .onChange(of: fieldFocused) { isFocused = $0 }
         .onChange(of: isFocused) { newValue in
             if fieldFocused != newValue { fieldFocused = newValue }
@@ -622,8 +624,13 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
             TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
+                .accessibilityHidden(true)
 
             fieldContainer
+                .environment(
+                    \.lemonadeFieldAccessibilityLabel,
+                    textFieldAccessibilityLabel(label: label, optionalIndicator: optionalIndicator, placeholder: placeholderText)
+                )
 
             TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }
@@ -644,6 +651,7 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
                         textStyle: LemonadeTypography.shared.bodyMediumRegular,
                         color: LemonadeTheme.colors.content.contentSecondary
                     )
+                    .accessibilityHidden(true)
                 }
 
                 LemonadeTextInputField(
@@ -700,8 +708,13 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
             TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
+                .accessibilityHidden(true)
 
             fieldContainer
+                .environment(
+                    \.lemonadeFieldAccessibilityLabel,
+                    textFieldAccessibilityLabel(label: label, optionalIndicator: optionalIndicator, placeholder: placeholderText)
+                )
 
             TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }
@@ -741,6 +754,7 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
                         textStyle: LemonadeTypography.shared.bodyMediumRegular,
                         color: LemonadeTheme.colors.content.contentSecondary
                     )
+                    .accessibilityHidden(true)
                 }
 
                 LemonadeTextInputField(
@@ -802,8 +816,13 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
             TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
+                .accessibilityHidden(true)
 
             fieldContainer
+                .environment(
+                    \.lemonadeFieldAccessibilityLabel,
+                    textFieldAccessibilityLabel(label: label, optionalIndicator: optionalIndicator, placeholder: placeholderText)
+                )
 
             TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }
@@ -824,6 +843,7 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
                         textStyle: LemonadeTypography.shared.bodyMediumRegular,
                         color: LemonadeTheme.colors.content.contentSecondary
                     )
+                    .accessibilityHidden(true)
                 }
 
                 LemonadeUITextField(
@@ -946,8 +966,13 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
             TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
+                .accessibilityHidden(true)
 
             fieldContainer
+                .environment(
+                    \.lemonadeFieldAccessibilityLabel,
+                    textFieldAccessibilityLabel(label: label, optionalIndicator: optionalIndicator, placeholder: placeholderText)
+                )
 
             TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }
@@ -987,6 +1012,7 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
                         textStyle: LemonadeTypography.shared.bodyMediumRegular,
                         color: LemonadeTheme.colors.content.contentSecondary
                     )
+                    .accessibilityHidden(true)
                 }
 
                 LemonadeUITextField(

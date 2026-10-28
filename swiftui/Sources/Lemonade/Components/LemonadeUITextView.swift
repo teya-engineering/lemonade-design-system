@@ -13,6 +13,8 @@ internal struct LemonadeUITextView: UIViewRepresentable {
     @Environment(\.lemonadeAutocapitalizationType) private var autocapitalizationType
     @Environment(\.lemonadeAutocorrectionType) private var autocorrectionType
     @Environment(\.lemonadeKeyboardDoneButton) private var showsDoneButton
+    @Environment(\.lemonadeFieldAccessibilityLabel) private var accessibilityName
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     @Binding var text: String
     @Binding var isFocused: Bool
@@ -65,31 +67,35 @@ internal struct LemonadeUITextView: UIViewRepresentable {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = textStyle.lineSpacing
         return [
-            .font: textStyle.uiFont,
+            .font: textStyle.scaledUIFont(for: dynamicTypeSize),
             .foregroundColor: UIColor(textColor),
             .paragraphStyle: paragraphStyle,
         ]
     }
 
     private func applyAppearance(_ textView: UITextView, coordinator: Coordinator) {
+        if textView.accessibilityLabel != accessibilityName {
+            textView.accessibilityLabel = accessibilityName
+        }
         if textView.isEditable != isEnabled {
             textView.isEditable = isEnabled
             textView.isSelectable = isEnabled
         }
 
-        let font = textStyle.uiFont
+        let font = textStyle.scaledUIFont(for: dynamicTypeSize)
         guard coordinator.appliedColor != textColor || coordinator.appliedFont != font else { return }
+        // Restyling cancels an in-progress IME composition, so the change waits, unrecorded, for the
+        // update that follows the composition.
+        guard textView.markedTextRange == nil else { return }
         coordinator.appliedColor = textColor
         coordinator.appliedFont = font
 
         let color = UIColor(textColor)
         textView.tintColor = color
         textView.inputAccessoryView?.tintColor = color
-        if textView.markedTextRange == nil {
-            let selection = textView.selectedRange
-            textView.attributedText = NSAttributedString(string: textView.text ?? "", attributes: textAttributes)
-            textView.selectedRange = selection
-        }
+        let selection = textView.selectedRange
+        textView.attributedText = NSAttributedString(string: textView.text ?? "", attributes: textAttributes)
+        textView.selectedRange = selection
         textView.typingAttributes = textAttributes
     }
 
