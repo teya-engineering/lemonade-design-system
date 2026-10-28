@@ -700,6 +700,7 @@ Monochrome, for the Icon component below: `--lmnd-icon: url('/assets/icons/<name
 - `receipt`
 - `rescue-ring`
 - `rotate-money`
+- `scan-barcode`
 - `scan-face`
 - `script-sparkle`
 - `search-ai`
