@@ -50,7 +50,7 @@ the rule of thumb is wrong, or it asks a machine for a judgment.
 
 A product following these rules keeps a copy of this directory in its own repository, synced at the
 Lemonade version it pins, because an agent follows what it can read and Lemonade is a dependency
-rather than a checkout. The Teya app does this with `scripts/sync-lemonade-guidelines.sh`.
+rather than a checkout, and runs the sync again whenever it bumps Lemonade.
 
 Rules about a product's own screens — which archetype a screen is, its anatomy, its states — belong
 in that product's repository, not here.
