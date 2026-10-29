@@ -228,7 +228,7 @@
 
   <section class="g-section" id="symbol">
     <h2 class="lmnd-text-heading-small">Symbol container</h2>
-    <p class="lmnd-text-body-small-regular">The leading slot for anything that isn't a plain icon: initials, logos, flags, or an icon with a voice. Sizes <code>--x-small</code> (24) to <code>--xx-large</code> (72), default 40. The icon inside takes the same size name as the container (<code>lmnd-kit-symbol--large</code> holds <code>lmnd-icon--large</code>, <code>--xx-large</code> holds <code>--xx-large</code>); initials take <code>body-xsmall-semibold</code> at x-small, <code>body-small-semibold</code> at small and the default, then <code>body-large-semibold</code>, <code>body-xlarge-semibold</code> and <code>heading-small</code>.</p>
+    <p class="lmnd-text-body-small-regular">The leading slot for anything that isn't a plain icon: initials, logos, flags, or an icon with a voice. Sizes <code>--x-small</code> (24) to <code>--xx-large</code> (72), default 40. The icon inside takes the same size name as the container (<code>lmnd-kit-symbol--large</code> holds <code>lmnd-icon--large</code>, <code>--xx-large</code> holds <code>--xx-large</code>); initials take <code>body-xsmall-semibold</code> at x-small, <code>body-small-semibold</code> at small and the default, then <code>body-large-semibold</code>, <code>body-xlarge-semibold</code> and <code>heading-small</code>. For a colour the design system doesn't model, such as a category, <code>lmnd-kit-symbol--themed</code> takes a hue from <code>data-hue</code> (the names are in <code>assets.txt</code>), and <code>lmnd-kit-symbol--subtle</code> its subtle palette.</p>
     <div class="g-example"><div class="g-demo g-demo--default" data-demo>
 <div class="lmnd-kit-row">
   <span class="lmnd-kit-symbol lmnd-kit-symbol--small"><span class="lmnd-icon lmnd-icon--small" data-icon="store" aria-hidden="true"></span></span>
@@ -240,6 +240,13 @@
   <span class="lmnd-kit-symbol"><span class="lmnd-kit-logo" data-logo="visa" role="img" aria-label="Visa"></span></span>
   <span class="lmnd-kit-symbol lmnd-kit-symbol--large lmnd-kit-symbol--critical lmnd-kit-symbol--rounded"><span class="lmnd-icon lmnd-icon--large" data-icon="triangle-alert" aria-hidden="true"></span></span>
   <span class="lmnd-kit-symbol"><span class="lmnd-icon" data-icon="bell" aria-hidden="true"></span><span class="lmnd-kit-badge lmnd-kit-badge--x-small"><span class="lmnd-kit-badge__label lmnd-text-body-xsmall-semibold">3</span></span></span>
+</div>
+<div class="lmnd-kit-row">
+  <span class="lmnd-kit-symbol lmnd-kit-symbol--themed lmnd-kit-symbol--rounded" data-hue="teal"><span class="lmnd-icon" data-icon="store" aria-hidden="true"></span></span>
+  <span class="lmnd-kit-symbol lmnd-kit-symbol--themed lmnd-kit-symbol--subtle lmnd-kit-symbol--rounded" data-hue="teal"><span class="lmnd-icon" data-icon="store" aria-hidden="true"></span></span>
+  <span class="lmnd-kit-symbol lmnd-kit-symbol--themed" data-hue="violet"><span class="lmnd-icon" data-icon="users" aria-hidden="true"></span></span>
+  <span class="lmnd-kit-symbol lmnd-kit-symbol--themed lmnd-kit-symbol--subtle" data-hue="violet"><span class="lmnd-icon" data-icon="users" aria-hidden="true"></span></span>
+  <span class="lmnd-kit-symbol lmnd-kit-symbol--themed lmnd-kit-symbol--subtle lmnd-text-body-small-semibold" data-hue="amber">MS</span>
 </div>
     </div></div>
   </section>

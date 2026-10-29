@@ -300,6 +300,11 @@ h6 {
 .lmnd-kit-symbol--brand { --lmnd-kit-symbol-bg: var(--lmnd-color-bg-brand); --lmnd-kit-symbol-border: var(--lmnd-color-border-brand); --lmnd-kit-symbol-content: var(--lmnd-color-content-on-brand-high); }
 .lmnd-kit-symbol--brand-subtle { --lmnd-kit-symbol-bg: var(--lmnd-color-bg-brand-subtle); --lmnd-kit-symbol-border: var(--lmnd-color-border-on-brand-low); --lmnd-kit-symbol-content: var(--lmnd-color-content-on-brand-high); }
 
+/* A colour the design system doesn't model, as ThemedStyle draws it: data-hue names the hue, and --subtle
+   takes its subtle palette. The build sets each hue's --lmnd-kit-hue-* from the themed tokens. */
+.lmnd-kit-symbol--themed { --lmnd-kit-symbol-bg: var(--lmnd-kit-hue-background); --lmnd-kit-symbol-border: var(--lmnd-kit-hue-border); --lmnd-kit-symbol-content: var(--lmnd-kit-hue-on-background); }
+.lmnd-kit-symbol--themed.lmnd-kit-symbol--subtle { --lmnd-kit-symbol-bg: var(--lmnd-kit-hue-subtle-background); --lmnd-kit-symbol-border: var(--lmnd-kit-hue-subtle-border); --lmnd-kit-symbol-content: var(--lmnd-kit-hue-subtle-on-background); }
+
 .lmnd-kit-symbol > .lmnd-kit-badge {
   position: absolute;
   right: calc(-1 * var(--lmnd-spacing-100));

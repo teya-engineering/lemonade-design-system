@@ -102,6 +102,17 @@ export function kitStylesheet() {
   return stylesheet
 }
 
+const HUE_ROLES = ['background', 'border', 'on-background', 'subtle-background', 'subtle-border', 'subtle-on-background']
+
+// The themed hues tokens.css carries, each named by data-hue: `teal`, `violet`.
+export async function themedHues() {
+  const tokens = await readFile(join(WEB, 'styles/tokens.css'), 'utf8')
+  return [...new Set([...tokens.matchAll(/--lmnd-color-themed-([a-z]+)-subtle-on-background:/g)].map((m) => m[1]))].sort()
+}
+
+const hueRule = (hue) =>
+  `[data-hue="${hue}"]{${HUE_ROLES.map((role) => `--lmnd-kit-hue-${role}:var(--lmnd-color-themed-${hue}-${role})`).join(';')}}`
+
 async function buildStylesheet() {
   const [icons, flagFiles, logos, badges] = await Promise.all([
     readSvgs(join(WEB, 'assets', 'icons'), iconConfig),
@@ -129,6 +140,7 @@ async function buildStylesheet() {
     ...fonts,
     css.trim(),
     `:root{${kitIcons}}`,
+    ...(await themedHues()).map(hueRule),
     '/* Assets: one per line. */',
     ...[...icons].map(([name, uri]) => `[data-icon="${name}"]{--lmnd-icon:url("${uri}")}`),
     ...[...flags].map(([name, uri]) => `[data-flag="${name}"]{--lmnd-kit-asset:url("${uri}")}`),
@@ -199,6 +211,11 @@ async function assetList() {
       'Brand logos',
       'Switch to their dark artwork in dark mode where one exists. `<span class="lmnd-kit-logo" data-logo="NAME" role="img" aria-label="…"></span>`',
       logos,
+    ),
+    section(
+      'Themed hues',
+      'For colour the design system does not model, such as a category (LDS-COLOR-SEMANTIC). `<span class="lmnd-kit-symbol lmnd-kit-symbol--themed" data-hue="NAME">…</span>`; add `lmnd-kit-symbol--subtle` for the subtle palette.',
+      await themedHues(),
     ),
     section(
       'Transaction status badges',

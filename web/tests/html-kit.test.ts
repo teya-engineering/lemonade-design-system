@@ -4,7 +4,7 @@ import kitCss from '../html-kit/kit.css?raw'
 import tokensCss from '../styles/tokens.css?raw'
 import typographyCss from '../styles/typography.css?raw'
 import componentsCss from '../styles/components.css?raw'
-import { kitLlmsTxt, kitScript, kitStylesheet } from '../html-kit/build.mjs'
+import { kitLlmsTxt, kitScript, kitStylesheet, themedHues } from '../html-kit/build.mjs'
 import { inlinePage } from '../html-kit/share/build.mjs'
 import { describe, expect, it } from 'vitest'
 
@@ -38,6 +38,20 @@ describe('the packaged stylesheet', () => {
     const assetLines = lines.filter((line) => /\[data-(icon|flag|logo|badge)="/.test(line))
     expect(assetLines.length).toBeGreaterThan(500)
     assetLines.forEach((line) => expect(line.match(/\[data-(icon|flag|logo|badge)="/g)).toHaveLength(1))
+  })
+})
+
+describe('themed hues', () => {
+  it('gives every hue a rule that reads only declared tokens', async () => {
+    const hues = await themedHues()
+    expect(hues.length).toBeGreaterThan(10)
+    const css = await kitStylesheet()
+    for (const hue of hues) {
+      const rule = css.match(new RegExp(`\\[data-hue="${hue}"\\]\\{([^}]*)\\}`))?.[1]
+      expect(rule).toBeDefined()
+      const read = [...rule!.matchAll(/var\((--lmnd-[\w-]+)\)/g)].map((m) => m[1])
+      expect(read.filter((name) => !declared.has(name))).toEqual([])
+    }
   })
 })
 
@@ -93,6 +107,12 @@ describe.each(Object.keys(pages))('%s', (path) => {
   // LDS-TOP-BAR-CRITICAL: a destructive icon button takes the critical variant, not a tinted glyph.
   it('marks a destructive icon button with its critical variant', () => {
     expect(html).not.toMatch(/class="lmnd-kit-icon-button\b[^"]*"[^>]*>\s*<span class="[^"]*lmnd-kit-critical/)
+  })
+
+  it('names only themed hues that exist', async () => {
+    const hues = new Set(await themedHues())
+    const named = [...html.matchAll(/data-hue="([^"]+)"/g)].map((m) => m[1])
+    expect(named.filter((hue) => !hues.has(hue))).toEqual([])
   })
 
   it('names only icons, flags and logos that exist', async () => {
