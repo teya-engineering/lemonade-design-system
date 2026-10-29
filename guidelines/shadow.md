@@ -1,7 +1,8 @@
 # Shadow
 
-Five levels, from `LemonadeShadow.Xsmall` to `LemonadeShadow.Xlarge`, applied with
-`Modifier.lemonadeShadow(shadow = …, shape = …)`.
+Five levels, from Xsmall to Xlarge. Compose applies one with `Modifier.lemonadeShadow(shadow = …,
+shape = …)`, SwiftUI with `.lemonadeShadow(_:)`, and the HTML kit with `box-shadow` and
+`--lmnd-shadow-xs` to `--lmnd-shadow-xl`.
 
 ## `LDS-SHADOW-LEVEL` · The level follows how far the element floats
 

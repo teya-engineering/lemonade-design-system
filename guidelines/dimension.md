@@ -7,8 +7,8 @@ token's number is its value divided by 4, times 100: `spacing-400` is 16 px, `ra
 
 **Rule.** Padding, margins and gaps come from the spacing scale. Corner radii come from the radius scale.
 Widths and heights come from the size scale. Stroke widths come from the border-width scale, and a
-selection or focus outline is `borderSelected` or `focusRing`. No `dp` or `pt` literal stands in for any
-of them.
+selection or focus outline is `borderSelected` or `focusRing`. No `dp`, `pt` or `px` literal stands in
+for any of them.
 
 **Why.** A literal that matches a token today stays put when the token moves. One that matches no
 token — 15, 18, 22 — breaks the rhythm the scale exists to keep.
@@ -72,15 +72,16 @@ HTML kit. The scales are `--lmnd-spacing-*`, `--lmnd-radius-*`, `--lmnd-size-*` 
 **Rule.** Content sits `spacing400` from the edge of the screen, and `spacing400` from the edge of a
 visible container. The distance is measured to what you see, not to the box.
 
-- A Lemonade list item already reaches the margin with its own padding, which is where its pressed
-  background is drawn. Stack list items without wrapping them in padding.
+- A list item always sits inside a card (`LDS-CARD-GROUPED-ITEMS`), and the card sits on the margin.
+  The item's own padding, where its pressed background is drawn, is its inset inside the card, so add
+  none of your own.
 - Inside a container that has its own padding, such as a `Card` with Medium padding, add no margin of
   your own.
 - A large container pads the same on all four sides.
 
 **Why.** Every screen's content starts on the same line, so a list, a card and a heading under one
-another read as one column. A list item wrapped in a 16 padding puts its text at 32, out of line with
-everything else.
+another read as one column. A list item wrapped in a 16 padding inside its card puts its text 32 from
+the card's edge, out of line with everything else.
 
 **Exceptions.**
 
@@ -165,8 +166,8 @@ HTML kit. `lmnd-kit-content` holds the screen's margin.
 </main>
 ```
 
-**Don't.** A `Column(Modifier.padding(16.dp))` or a padded `VStack` around list items that stand straight
-on the screen, a Medium card around list items, or a margin of your own inside a Medium card.
+**Don't.** List items straight on the screen with no card, padding of your own around list items inside
+a card, a Medium card around list items, or a margin of your own inside a Medium card.
 
 ## `LDS-DIMENSION-GAPS` · The gap follows what is being separated
 
