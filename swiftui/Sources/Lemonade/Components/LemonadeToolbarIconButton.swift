@@ -8,6 +8,9 @@ public enum LemonadeToolbarIconProminence {
     case plain
     /// Filled with `tint` — for the single primary action in a bar, if any.
     case filled(tint: Color)
+    /// The bar's own chrome with a `contentCritical` glyph — for a destructive action. iOS 26 and
+    /// later only; earlier versions draw it as ``plain``.
+    case critical
 }
 
 // MARK: - Toolbar Icon Button
@@ -157,6 +160,13 @@ private extension View {
             // `.borderedProminent`, not `.glassProminent`: a `Menu` loses the glass-prominent style
             // across the bar-item bridge, and its tint then colours the glyph rather than the fill.
             self.buttonStyle(.borderedProminent).tint(tint)
+        case .critical:
+            // The bar item redraws the glyph in the button's tint, ignoring the icon's own colour.
+            if #available(iOS 26.0, macOS 26.0, *) {
+                self.tint(LemonadeTheme.colors.content.contentCritical)
+            } else {
+                self
+            }
         }
     }
 }
