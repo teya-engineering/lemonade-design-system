@@ -112,7 +112,8 @@ critical item instead. Whether it is a bar button or a menu item is the product'
 A critical glyph on a neutral fill is easy to miss next to Subtle buttons; the critical fill and glyph
 together mark it the same way everywhere.
 
-**Exceptions.** None.
+**Exceptions.** On iOS 26 and later the system bar draws every button as its own neutral control, so a
+destructive action is that control with a `contentCritical` glyph.
 
 **Example.** A screen for removing the members picked on it.
 
@@ -130,14 +131,17 @@ LemonadeUi.IconButton(
 )
 ```
 
-SwiftUI. `ToolbarIconButton` has no Critical · Subtle treatment, so on iOS the action goes in the bar's
-menu, where `role: .destructive` draws it as a critical item.
+SwiftUI. `.critical` draws the bar's neutral control with a `contentCritical` glyph on iOS 26 and
+later, and `.plain` before that.
 
 ```swift
 ToolbarItem(placement: .navigationBarTrailing) {
-    LemonadeUi.ToolbarIconMenu(icon: .ellipsisHorizontal, contentDescription: "More") {
-        Button("Remove selected members", role: .destructive, action: onRemove)
-    }
+    LemonadeUi.ToolbarIconButton(
+        icon: .trash,
+        contentDescription: "Remove selected members",
+        prominence: .critical,
+        action: onRemove
+    )
 }
 ```
 
@@ -149,8 +153,8 @@ HTML kit.
 </div>
 ```
 
-**Don't.** A Neutral · Subtle button with a critical glyph, or Critical · Solid, which is for the
-confirming button in a dialog.
+**Don't.** A Neutral · Subtle button with a critical glyph outside iOS 26, or Critical · Solid, which is
+for the confirming button in a dialog.
 
 ## `LDS-TOP-BAR-DESCRIPTION` · A large title's description sits right under it
 
