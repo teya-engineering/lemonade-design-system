@@ -30,7 +30,9 @@ dark. Tools that support skills, such as Claude, can load it as one.
 
 ## Sharing a screen
 
-A page needs `lemonade-kit.css` beside it, so share the whole kit folder or the zip.
+A page needs `lemonade-kit.css` beside it, so share the whole kit folder or the zip. To send one screen as a
+single file that opens on its own, build it with Claude using the `lemonade-prototype` skill: it hands
+the screen back as one file.
 
 ## What's here
 

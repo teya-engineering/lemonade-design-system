@@ -1,0 +1,9 @@
+{
+  "name": "lemonade-prototype",
+  "version": "0.1.0",
+  "description": "Design and review Teya app prototypes as HTML with the Lemonade design system's tokens, components and icons.",
+  "author": {
+    "name": "Teya"
+  },
+  "keywords": ["teya", "lemonade", "prototype", "html", "design-system"]
+}
