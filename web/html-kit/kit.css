@@ -1792,7 +1792,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
 
 /* ---------- Toast ---------- */
 
-/* Always dark, as on iOS: the Compose toast inverts to white in dark mode. */
+/* The inverse surface, as Compose draws it: dark in light mode, light in dark mode. iOS keeps it dark for its glass. */
 .lmnd-kit-toast {
   display: inline-flex;
   align-items: center;
@@ -1801,18 +1801,18 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   min-height: var(--lmnd-size-1100);
   padding: var(--lmnd-spacing-300) var(--lmnd-spacing-400);
   border-radius: var(--lmnd-radius-full);
-  background: var(--lmnd-color-bg-always-dark);
+  background: var(--lmnd-color-bg-default-inverse);
   box-shadow: var(--lmnd-shadow-lg);
-  color: var(--lmnd-color-content-always-light);
+  color: var(--lmnd-color-content-primary-inverse);
 }
 
 .lmnd-kit-toast > .lmnd-icon,
 .lmnd-kit-toast > .lmnd-spinner {
-  color: var(--lmnd-color-content-neutral-always-on-color);
+  color: var(--lmnd-color-content-neutral-on-color);
 }
 
-.lmnd-kit-toast--success > .lmnd-icon { color: var(--lmnd-color-content-positive-always-on-color); }
-.lmnd-kit-toast--error > .lmnd-icon { color: var(--lmnd-color-content-critical-always-on-color); }
+.lmnd-kit-toast--success > .lmnd-icon { color: var(--lmnd-color-content-positive-on-color); }
+.lmnd-kit-toast--error > .lmnd-icon { color: var(--lmnd-color-content-critical-on-color); }
 
 .lmnd-kit-toast__label {
   padding: 0 var(--lmnd-spacing-100);
