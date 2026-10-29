@@ -13,13 +13,17 @@
 //   SKILL.md           instructions for an AI session
 //   README.md          instructions for a person
 //
+// and packages the same files for Claude: one Claude.ai skill, lemonade-prototype, and a Claude Code
+// marketplace whose lemonade-prototype plugin has a design and a review skill.
+//
 //   node html-kit/build.mjs [--out <dir>]
 //
-// Output goes to web/dist/: lemonade-html-kit/ and its zip, because web/dist is the only place a build may
-// write inside the repository.
+// Output goes to web/dist/: lemonade-html-kit/ and its zip, skills/ and claude-code/ with a zip each, because
+// web/dist is the only place a build may write inside the repository.
 import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { dirname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { spawnSync } from 'node:child_process'
 import { deflateRawSync } from 'node:zlib'
 import { transform } from 'esbuild'
 import { optimize } from 'svgo'
@@ -364,10 +368,117 @@ async function packageKit(dist, css) {
   await zipFolder(out, NAME, join(dist, `${NAME}.zip`))
 }
 
+// One skill folder: SKILL.md at its root, the pages Claude copies under assets/, what it reads under
+// references/, what it runs under scripts/, and the workflows the SKILL.md points to.
+// The kit's release number: major.minor from the plugin's manifest, then the commit count, which rises
+// with every commit. A build with uncommitted kit changes is marked -dev so it can't pass for a release.
+async function kitVersion() {
+  const { version } = JSON.parse(await readFile(join(KIT, 'skills/plugin/plugin.json'), 'utf8'))
+  const base = version.split('.').slice(0, 2).join('.')
+  const git = (...args) => spawnSync('git', args, { cwd: KIT, encoding: 'utf8' })
+  const count = git('rev-list', '--count', 'HEAD')
+  if (count.status !== 0) return `${base}.0-dev`
+  const dirty = git('status', '--porcelain', '--', '.', ':!.impeccable').stdout.trim() !== ''
+  return `${base}.${count.stdout.trim()}${dirty ? '-dev' : ''}`
+}
+
+const copyVersioned = async (from, to, version) =>
+  writeFile(to, (await readFile(from, 'utf8')).replaceAll('{{VERSION}}', version))
+
+async function writeSkill(dir, { skill, css, workflows, version, scripts = false }) {
+  await mkdir(dir, { recursive: true })
+  await copyVersioned(join(KIT, 'skills', skill), join(dir, 'SKILL.md'), version)
+  await writePages(join(dir, 'assets'))
+  if (css) {
+    await writeFile(join(dir, 'assets/lemonade-kit.css'), css)
+    await writeFile(join(dir, 'assets/lemonade-kit.js'), await kitScript())
+  }
+  await writeReferences(join(dir, 'references'))
+  await mkdir(join(dir, 'workflows'), { recursive: true })
+  for (const name of workflows) {
+    await copyVersioned(join(KIT, 'skills/workflows', `${name}.md`), join(dir, `workflows/${name}.md`), version)
+  }
+  if (scripts) {
+    await mkdir(join(dir, 'scripts'), { recursive: true })
+    await cp(join(KIT, 'share/build.py'), join(dir, 'scripts/build.py'))
+  }
+}
+
+// Claude.ai: one skill with both workflows, uploaded once.
+async function packageClaudeAiSkill(dist, css, version) {
+  const out = join(dist, 'skills')
+  await rm(out, { recursive: true, force: true })
+  const skill = join(out, 'lemonade-prototype')
+  await writeSkill(skill, { skill: 'claude-ai/SKILL.md', css, workflows: ['design', 'review'], version, scripts: true })
+  await zipFolder(skill, 'lemonade-prototype', join(out, 'lemonade-prototype.zip'))
+}
+
+// Claude Code: a marketplace holding the lemonade-prototype plugin, whose skills are
+// /lemonade-prototype:design and /lemonade-prototype:review.
+async function packageClaudeCodePlugin(dist, css, version) {
+  const out = join(dist, 'claude-code')
+  await rm(out, { recursive: true, force: true })
+  const marketplace = join(out, 'lemonade')
+  const plugin = join(marketplace, 'lemonade-prototype')
+  const manifest = { ...JSON.parse(await readFile(join(KIT, 'skills/plugin/plugin.json'), 'utf8')), version }
+
+  await mkdir(join(plugin, '.claude-plugin'), { recursive: true })
+  await writeFile(join(plugin, '.claude-plugin/plugin.json'), `${JSON.stringify(manifest, null, 2)}\n`)
+  await cp(join(KIT, 'skills/plugin/README.md'), join(plugin, 'README.md'))
+  await writeSkill(join(plugin, 'skills/design'), { skill: 'plugin/design/SKILL.md', css, workflows: ['design'], version, scripts: true })
+  await writeSkill(join(plugin, 'skills/review'), { skill: 'plugin/review/SKILL.md', workflows: ['review'], version })
+
+  await mkdir(join(marketplace, '.claude-plugin'), { recursive: true })
+  const catalog = {
+    name: 'lemonade',
+    owner: { name: 'Teya' },
+    description: 'Tools for building on the Lemonade design system.',
+    plugins: [{ name: manifest.name, source: './lemonade-prototype', description: manifest.description, version: manifest.version }],
+  }
+  await writeFile(join(marketplace, '.claude-plugin/marketplace.json'), `${JSON.stringify(catalog, null, 2)}\n`)
+  await zipFolder(marketplace, 'lemonade', join(out, 'lemonade-claude-code.zip'))
+}
+
+// The prototype skill makes standalone pages with build.py; it has to make the same file as build.mjs,
+// which the kit's tests check pages with.
+async function checkPythonBuilder(dist, css) {
+  const { inlinePage } = await import('./share/build.mjs')
+  const scratch = join(dist, '.build-py-check')
+  await rm(scratch, { recursive: true, force: true })
+  await writePages(scratch)
+  await writeFile(join(scratch, 'lemonade-kit.css'), css)
+  await writeFile(join(scratch, 'lemonade-kit.js'), await kitScript())
+  try {
+    for (const page of await kitPages()) {
+      const run = spawnSync('python3', [join(KIT, 'share/build.py'), join(scratch, page)], {
+        encoding: 'utf8',
+        timeout: 30_000,
+      })
+      if (run.error?.code === 'ENOENT') {
+        console.warn('! python3 not found; build.py not checked against build.mjs')
+        return
+      }
+      if (run.error || run.status !== 0) throw new Error(`build.py failed on ${page}\n${run.error ?? run.stderr}`)
+      const python = await readFile(join(scratch, page.replace(/\.html$/, '.standalone.html')), 'utf8')
+      const node = inlinePage(await readFile(join(scratch, page), 'utf8'), css, await kitScript())
+      if (python !== node) throw new Error(`build.py and build.mjs disagree on ${page}`)
+    }
+    console.log('✓ build.py matches build.mjs on every page')
+  } finally {
+    await rm(scratch, { recursive: true, force: true })
+  }
+}
+
 async function main(argv) {
   const outFlag = argv.indexOf('--out')
   const dist = outFlag >= 0 ? resolve(argv[outFlag + 1]) : join(WEB, 'dist')
-  await packageKit(dist, await kitStylesheet())
+  const css = await kitStylesheet()
+  await checkPythonBuilder(dist, css)
+  await packageKit(dist, css)
+  const version = await kitVersion()
+  console.log(`• lemonade-prototype ${version}`)
+  await packageClaudeAiSkill(dist, css, version)
+  await packageClaudeCodePlugin(dist, css, version)
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) await main(process.argv.slice(2))
