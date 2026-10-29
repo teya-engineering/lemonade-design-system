@@ -12,10 +12,9 @@ shape = …)`, SwiftUI with `.lemonadeShadow(_:)`, and the HTML kit with `box-sh
 | --- | --- | --- |
 | `Xsmall` | Something resting on its surface | `SegmentedControl`'s thumb |
 | `Small` | Something raised to be touched | `Switch`'s thumb |
+| `Medium` | Something floating over the page until it is dismissed | `Dropdown` |
 | `Large` | Something floating over the page for a moment | `Toast` |
 | `Xlarge` | Something floating over everything else | `Tooltip`, `BottomTabBar` |
-
-No component uses `Medium`.
 
 **Why.** A shadow says how far an element is from the surface under it. A level higher than the
 element needs makes the page look stacked, and two neighbours at different levels look like they
