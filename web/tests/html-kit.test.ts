@@ -99,10 +99,10 @@ describe.each(Object.keys(pages))('%s', (path) => {
     expect(inlinePage(html, await kitStylesheet())).not.toContain('lemonade-kit.css"')
   })
 
-  // LHK-SCRIPT: the kit's script and nothing else. The gallery draws its own demos, so it is exempt.
+  // LHK-SCRIPT: the kit's script is the only one linked; a page's own script is inline. The gallery draws its own demos, so it is exempt.
   it.skipIf(path.endsWith('gallery.html'))('links the kit script and no other', () => {
-    const scripts = [...html.matchAll(/<script\b[^>]*>/g)].map((m) => m[0])
-    expect(scripts).toEqual([expect.stringMatching(/src="[^"]*lemonade-kit\.js"/)])
+    const linked = [...html.matchAll(/<script\b[^>]*\bsrc=[^>]*>/g)].map((m) => m[0])
+    expect(linked).toEqual([expect.stringMatching(/src="[^"]*lemonade-kit\.js"/)])
   })
 
   it('inlines the kit script in its standalone copy', async () => {

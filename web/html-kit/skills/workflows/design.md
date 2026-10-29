@@ -8,7 +8,7 @@ from this skill's files; you never invent styles.
 | Path | What it is |
 | --- | --- |
 | `assets/lemonade-kit.css` | The whole kit: tokens, type, components, fonts, icons, flags, logos. Link it; never read or grep it — it is mostly inline artwork |
-| `assets/lemonade-kit.js` | The kit's optional behaviour: overlays that close on Esc, panels that switch, titles that fold. Link it after the stylesheet (`LHK-SCRIPT`); never write script of your own |
+| `assets/lemonade-kit.js` | The kit's optional behaviour: overlays that close on Esc, panels that switch, titles that fold. Link it after the stylesheet. A script of your own may drive state on kit markup (`LHK-SCRIPT`) |
 | `assets/gallery.html` | Every component with the markup that draws it. Your source for markup |
 | `assets/examples/` | Finished screens to start from: `flow.html` (two screens in one file, `LHK-SCREENS`), `settings.html` (menu), `sales.html` (widgets, filter sheet), `transactions.html` (feed, multi-select picker), `card-machines.html` and `recipients.html` (resource lists), `transaction-details.html`, `add-recipient.html` (form) |
 | `assets/screens/` | The app's own screens copied as they are in production, faults included: the baselines to change |
@@ -69,5 +69,5 @@ like `23 Oct 2026` — never lorem ipsum. `•` between items, `-£12.00` for a 
 ## Limits
 
 HTML reproduces the look, not native behaviour: no gestures or scroll physics. The kit's script adds a
-little (`LHK-SCRIPT`), and the page must work without it.
+little, and a page's own script can drive state on the kit's markup (`LHK-SCRIPT`).
 Components follow the Compose measurements; the phone frame draws an iOS status bar.

@@ -24,7 +24,8 @@ report what breaks them. You do not restyle the page or judge taste; a finding i
 3. **Check every rule against the page.** Also check that:
    - every `var(--lmnd-…)` the page uses appears in `references/llms.txt`;
    - every `data-icon`, `data-flag` and `data-logo` name appears in `references/assets.txt`;
-   - the only script is the kit's `lemonade-kit.js`, and the page still works without it (`LHK-SCRIPT`);
+   - the page links only the kit's `lemonade-kit.js`, and any script of its own is inline, loads nothing, and
+     builds or styles no component (`LHK-SCRIPT`);
    - every `lmnd-kit-` class appears in `references/classes.txt`, and every component's markup matches its
      markup in `assets/gallery.html` or the closest file in `assets/examples/`.
 4. **Rules decide, examples illustrate.** A finding is a broken rule. Where the page and an example differ

@@ -146,8 +146,8 @@ dropdown, side menu or toast over a screen lives in that screen's file, in the `
 **Why.** Linked pages and linked overlays click through on any device with nothing to install, the
 browser's back button closes an open sheet, and the markup stays the same markup a reader copies.
 
-**Exceptions.** A state that HTML can't reach without script — a timer, an animation sequence — is shown
-as its own screen instead.
+**Exceptions.** A state that HTML can't reach — a timer, an animation sequence — is shown as its own
+screen, or driven by the page's own script (`LHK-SCRIPT`).
 
 ## `LHK-SELECT-OPENS` · A select field opens what the app opens
 
@@ -202,11 +202,11 @@ one the same markup as a screen on its own.
 
 **Exceptions.** None. A flow that travels as a folder keeps one file per screen (`LHK-FLOWS`).
 
-## `LHK-SCRIPT` · Only the kit's script, and nothing depends on it
+## `LHK-SCRIPT` · The kit's script, and the page's own where it needs one
 
 **Kind.** Rule.
 
-**Rule.** A page may link the kit's own script after its stylesheet, and no other script:
+**Rule.** A page links the kit's own script after its stylesheet:
 
 ```html
 <link rel="stylesheet" href="../lemonade-kit.css">
@@ -228,10 +228,18 @@ one the same markup as a screen on its own.
 | A `<label>` or `<button>` in an overlay with `data-lmnd-kit-close` | Closes the overlay once it has done its own job, such as a label picking its option, so one tap can pick and close. Without the script the option is still picked and the overlay stays open until its Close |
 | A control with `data-lmnd-kit-reset="element-id"` | Puts every field inside that element back as its markup wrote it before the control acts, so picking a starting point shows that starting point rather than earlier edits. An option already picked resets nothing. Without the script the fields keep what was entered |
 
-Every page still works without it, in an email attachment, a preview that blocks script or a sandbox, so
-nothing a reader needs may depend on it.
+A page may also carry a script of its own, inline in a `<script>` at the end of the `<body>`, for state the
+markup can't reach simply: a count of what's picked, a summary of a choice, steps that change one
+another. A page's own script:
 
-**Why.** The kit's script makes a demo feel like the app without making the page code. A page's own script
-makes a prototype only its author can change, and one no review can check against these rules.
+- works on the kit markup already in the page: it reads fields and sets `hidden`, attributes, classes and
+  text. It never builds a component or styles one, so the markup still follows `LHK-KIT-MARKUP` and
+  `LHK-TOKENS-ONLY`;
+- loads nothing: no library, no other file, so the page still travels as one file.
+
+**Why.** The kit's script makes a demo feel like the app without making the page code. Some states, though,
+take CSS one rule per combination, and a flow with a few of them grows to megabytes of rules no one can
+read. A short script keeps the page small and the state easy to follow, and because it only drives the
+kit's markup, a review still checks the page against these rules.
 
 **Exceptions.** None.

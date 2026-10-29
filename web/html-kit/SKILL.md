@@ -27,7 +27,8 @@ lists are complete.
 | An app screen as it is today, and where screens sit | `screens/index.md`: the site map, and the screens described with baselines to change |
 
 Never read or grep `lemonade-kit.css`: it is generated, and almost all of it is inline artwork. Link
-`lemonade-kit.js` after it for the kit's optional behaviour, and write no script of your own (`LHK-SCRIPT`).
+`lemonade-kit.js` after it for the kit's optional behaviour. A script of your own may drive state the markup
+can't reach simply, on kit markup only (`LHK-SCRIPT`).
 
 ## Workflow
 
