@@ -10,9 +10,23 @@ Nothing to install. Open a page in a browser and it works.
 
 1. Open `gallery.html`. It shows every component next to the markup that draws it, every colour and
    every icon. The switch at the top flips between light and dark.
-2. Make a new page next to `gallery.html`, so it finds `lemonade-kit.css`, and copy the markup of each
-   component you need from the gallery. Edit it in any text editor and refresh the browser to see the
-   change.
+2. To change a screen the app already has, copy its baseline in `screens/` (`screens/index.md` lists
+   them). For a new screen, copy the example in `examples/` closest to it. Rename the copy and edit it in
+   any text editor. Refresh the browser to see the change.
+3. Follow the rules in `guidelines/`. Start with `guidelines/index.md`.
+
+Keep your pages in `examples/` or `screens/`, so they find `lemonade-kit.css`.
+
+## With an AI assistant
+
+Give the assistant this whole folder, or the zip, and ask for a screen:
+
+> Using the Lemonade HTML kit, prototype a payout details screen: amount, status, a timeline of when it
+> was sent and arrived, and the bank account it went to.
+
+`SKILL.md` tells the assistant how to work: read the guidelines, look tokens up in `llms.txt` and assets
+in `assets.txt`, start from an example, use only the kit's markup, and check the result in light and
+dark. Tools that support skills, such as Claude, can load it as one.
 
 ## Sharing a screen
 
@@ -25,9 +39,13 @@ A page needs `lemonade-kit.css` beside it, so share the whole kit folder or the 
 | `lemonade-kit.js` | Optional behaviour: sheets close on Esc, tabs switch panels, titles fold on scroll. Pages work without it |
 | `lemonade-kit.css` | Everything: tokens, type scale, components, Figtree, icons, flags and logos. Generated; don't edit it |
 | `gallery.html` | Every component with its markup |
+| `screens/` | The app's own screens as they are today, to change: Home and its side menu, Sales and Transaction details, Money › Settlements and Settlement details. `screens/index.md` has the site map |
+| `examples/` | Screens to start from: Settings, Sales (with a filter sheet), Transactions (with a store picker), Card machines, Recipients, Transaction details, Add recipient |
+| `guidelines/` | The rules a prototype follows |
 | `llms.txt` | Every token and what it is for |
 | `assets.txt` | Every icon, flag and logo name |
 | `classes.txt` | Every kit class, by component |
+| `SKILL.md` | Instructions for an AI assistant |
 
 ## Limits
 
