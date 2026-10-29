@@ -27,8 +27,17 @@
 
   document.addEventListener('click', (event) => {
     const link = event.target.closest('a[href^="#"]')
-    if (link && link.getAttribute('href').length > 1) opener = link
     const overlay = openOverlay()
+    const next = link && link.getAttribute('href').length > 1 && document.getElementById(decodeURIComponent(link.getAttribute('href').slice(1)))
+    // Whatever a link in an overlay opens takes the overlay's place in history: another overlay, such as a
+    // menu item opening a sheet, so closing it returns to the screen, and focus to what opened the first;
+    // or a screen, such as a sheet's Continue, so Back from that screen doesn't reopen the overlay.
+    if (overlay && next && next !== overlay && overlay.contains(link) && !link.hasAttribute('data-lmnd-kit-back')) {
+      event.preventDefault()
+      location.replace(link.getAttribute('href'))
+      return
+    }
+    if (link && link.getAttribute('href').length > 1) opener = link
     // A tap on the scrim itself, outside the sheet or dialog, closes it.
     if (overlay && event.target === overlay) close()
     // A label or button with data-lmnd-kit-close does its own job first — a label picks its option — and
