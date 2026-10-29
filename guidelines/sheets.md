@@ -131,6 +131,56 @@ HTML kit. An icon button with no variant or type class is Neutral · Subtle.
 </div>
 ```
 
+A filter sheet's text action: Close, and Reset.
+
+Compose. Reset is a small Neutral · Subtle `Button`.
+
+```kotlin
+LemonadeUi.TopBar(
+    label = "Filters",
+    navigationAction = NavigationAction(
+        navigationAction = TopBarAction.Close,
+        onNavigationActionClicked = onDismiss,
+        filled = true,
+    ),
+    trailingSlot = {
+        LemonadeUi.Button(
+            label = "Reset",
+            onClick = onReset,
+            variant = LemonadeButtonVariant.Neutral,
+            type = LemonadeButtonType.Subtle,
+            size = LemonadeButtonSize.Small,
+        )
+    },
+)
+```
+
+SwiftUI. Reset is a plain `Button` holding a Lemonade `Text`, which the navigation bar draws as its own
+control, as it does `.plain`.
+
+```swift
+FilterOptions()
+    .lemonadeTopBar(
+        label: "Filters",
+        navigationAction: NavigationAction(action: .close, onAction: onDismiss)
+    ) {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button(action: onReset) {
+                LemonadeUi.Text("Reset", textStyle: LemonadeTypography.shared.bodyMediumMedium)
+            }
+        }
+    }
+```
+
+HTML kit. `lmnd-kit-button--full-shape` gives the button its pill shape.
+
+```html
+<div class="lmnd-kit-sheet__bar">
+  <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></button>
+  <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-kit-button--full-shape lmnd-text-body-small-semibold"><span class="lmnd-button__label">Reset</span></button>
+</div>
+```
+
 **Don't.** A bare `Text` link in the bar, `IconButton(type = Ghost)` or `lmnd-kit-icon-button--ghost`,
 a Close `NavigationAction` left at `filled = false`, or a SwiftUI `LemonadeUi.IconButton` inside a
 `ToolbarItem`.
