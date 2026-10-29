@@ -1,0 +1,3355 @@
+/* Lemonade HTML kit — prototype components.
+ *
+ * Every value is a --lmnd-* token from web/styles/tokens.css. Where the native component uses a
+ * literal (a dp value with no token behind it) the literal is written out and marked `literal`.
+ * Measurements follow the Compose source in kmp/; SwiftUI is the tie-breaker where they differ.
+ *
+ * Classes use the lmnd-kit- prefix so they never collide with the package's own lmnd- components,
+ * which this kit loads alongside: lmnd-button, lmnd-icon, lmnd-spinner and lmnd-text-*.
+ */
+
+/* ---------- Page ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* A panel kit.js hides stays hidden whatever display a page gives it. */
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+}
+
+/* The space the phone keeps for itself: the status bar at the top, the home indicator at the bottom.
+   On a real phone it is the browser's safe area; in the kit's phone frame it is the frame's
+   (LHK-SAFE-AREAS). */
+:root {
+  --lmnd-kit-safe-top: env(safe-area-inset-top, 0px);
+  --lmnd-kit-safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+body {
+  font-family: var(--lmnd-font-family-base);
+  color: var(--lmnd-color-content-primary);
+  background: var(--lmnd-color-bg-subtle);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+/* Source pages carry a notice for anyone who opens them unbuilt; a built page hides it. */
+.lmnd-kit-source-notice {
+  display: none !important;
+}
+
+.lmnd-kit-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 480px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  background: var(--lmnd-color-bg-subtle);
+  overflow-x: clip;
+}
+
+.lmnd-kit-screen--default {
+  background: var(--lmnd-color-bg-default);
+}
+
+/* The app's spacing rhythm (APP-SPACING-RHYTHM): spacing-400 at the sides and between cards and blocks,
+   spacing-800 around a section, spacing-200 from a section's heading to its card. */
+.lmnd-kit-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-400);
+  padding: var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-content:last-child {
+  padding-bottom: calc(var(--lmnd-spacing-400) + var(--lmnd-kit-safe-bottom));
+}
+
+.lmnd-kit-content > .lmnd-kit-section + *,
+.lmnd-kit-content > * + .lmnd-kit-section {
+  margin-top: var(--lmnd-spacing-400);
+}
+
+/* The hero is not a section: the first section after it sits a plain gap below, like a card would. */
+.lmnd-kit-content > .lmnd-kit-hero + .lmnd-kit-section {
+  margin-top: 0;
+}
+
+.lmnd-kit-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-section__title {
+  padding: 0 var(--lmnd-spacing-100);
+  color: var(--lmnd-color-content-primary);
+}
+
+/* A menu's footer (APP-MENU-FOOTER): the app version and the legal entity, centred under the last card. */
+.lmnd-kit-menu-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--lmnd-color-content-secondary);
+  text-align: center;
+}
+
+/* A list group (the Teya app's SectionGroup under a SubHeader): a header placing the group, such as a day
+   and its total, over the group's card. Groups sit spacing-400 apart like any card. */
+.lmnd-kit-list-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.lmnd-kit-list-group__header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--lmnd-spacing-200);
+  padding: var(--lmnd-spacing-200);
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-list-group__heading {
+  display: flex;
+  gap: var(--lmnd-spacing-100);
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.lmnd-kit-list-group__heading > * {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* The next page of a list loading (APP-FEED-PAGING): a spinner centred under the last group. */
+.lmnd-kit-load-more {
+  display: flex;
+  justify-content: center;
+  padding: var(--lmnd-spacing-200) 0;
+}
+
+.lmnd-kit-list-group__total {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding-right: var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--lmnd-spacing-200);
+}
+
+/* The action block at the foot of a screen: primary above secondary, full width. */
+.lmnd-kit-actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-200);
+  padding: var(--lmnd-spacing-400);
+  padding-bottom: calc(var(--lmnd-spacing-400) + var(--lmnd-kit-safe-bottom));
+  background: linear-gradient(to bottom, transparent, var(--lmnd-color-bg-subtle) var(--lmnd-spacing-400));
+}
+
+.lmnd-kit-screen--default .lmnd-kit-actions {
+  background: linear-gradient(to bottom, transparent, var(--lmnd-color-bg-default) var(--lmnd-spacing-400));
+}
+
+/* A Button's pill shape, as SwiftUI's .fullShape() draws it. A top bar's and a sheet bar's text buttons
+   carry it (LDS-TOP-BAR-ACTIONS). */
+.lmnd-button.lmnd-kit-button--full-shape {
+  border-radius: var(--lmnd-radius-full);
+}
+
+.lmnd-kit-actions .lmnd-button {
+  width: 100%;
+}
+
+.lmnd-kit-intro {
+  color: var(--lmnd-color-content-secondary);
+}
+
+/* Text colour helpers. The lmnd-text-* classes set type only. */
+.lmnd-kit-primary { color: var(--lmnd-color-content-primary); }
+.lmnd-kit-secondary { color: var(--lmnd-color-content-secondary); }
+.lmnd-kit-tertiary { color: var(--lmnd-color-content-tertiary); }
+.lmnd-kit-brand { color: var(--lmnd-color-content-brand); }
+.lmnd-kit-critical { color: var(--lmnd-color-content-critical); }
+.lmnd-kit-positive { color: var(--lmnd-color-content-positive); }
+.lmnd-kit-caution { color: var(--lmnd-color-content-caution); }
+.lmnd-kit-info { color: var(--lmnd-color-content-info); }
+
+/* Flags and logos are full-colour artwork the stylesheet supplies, sized on the LemonadeAssetSize scale. */
+.lmnd-kit-flag,
+.lmnd-kit-logo {
+  display: inline-block;
+  flex-shrink: 0;
+  width: var(--lmnd-size-500);
+  height: var(--lmnd-size-500);
+  background: var(--lmnd-kit-asset) center / contain no-repeat;
+}
+
+.lmnd-kit-flag {
+  border-radius: var(--lmnd-radius-full);
+  background-size: cover;
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-border-neutral-medium);
+}
+
+.lmnd-kit-flag--small, .lmnd-kit-logo--small { width: var(--lmnd-size-400); height: var(--lmnd-size-400); }
+.lmnd-kit-flag--large, .lmnd-kit-logo--large { width: var(--lmnd-size-600); height: var(--lmnd-size-600); }
+.lmnd-kit-flag--x-large, .lmnd-kit-logo--x-large { width: var(--lmnd-size-800); height: var(--lmnd-size-800); }
+.lmnd-kit-flag--xx-large, .lmnd-kit-logo--xx-large { width: var(--lmnd-size-1000); height: var(--lmnd-size-1000); }
+.lmnd-kit-flag--xxx-large, .lmnd-kit-logo--xxx-large { width: var(--lmnd-size-1200); height: var(--lmnd-size-1200); }
+
+.lmnd-kit-flag--rounded {
+  border-radius: var(--lmnd-radius-150);
+}
+
+/* ---------- Symbol container ---------- */
+
+.lmnd-kit-symbol {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--lmnd-size-1000);
+  height: var(--lmnd-size-1000);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-kit-symbol-bg, var(--lmnd-color-bg-neutral-subtle));
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-kit-symbol-border, var(--lmnd-color-border-neutral-low));
+  color: var(--lmnd-kit-symbol-content, var(--lmnd-color-content-primary));
+  --lmnd-kit-symbol-radius: var(--lmnd-radius-300);
+}
+
+.lmnd-kit-symbol > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+.lmnd-kit-symbol > .lmnd-kit-flag,
+.lmnd-kit-symbol > .lmnd-kit-logo {
+  width: 50%;
+  height: 50%;
+}
+
+.lmnd-kit-symbol--x-small { width: var(--lmnd-size-600); height: var(--lmnd-size-600); --lmnd-kit-symbol-radius: var(--lmnd-radius-200); }
+.lmnd-kit-symbol--small { width: var(--lmnd-size-800); height: var(--lmnd-size-800); --lmnd-kit-symbol-radius: var(--lmnd-radius-250); }
+.lmnd-kit-symbol--large { width: var(--lmnd-size-1200); height: var(--lmnd-size-1200); --lmnd-kit-symbol-radius: var(--lmnd-radius-400); }
+.lmnd-kit-symbol--x-large { width: var(--lmnd-size-1600); height: var(--lmnd-size-1600); --lmnd-kit-symbol-radius: var(--lmnd-radius-500); }
+.lmnd-kit-symbol--xx-large { width: var(--lmnd-size-1800); height: var(--lmnd-size-1800); --lmnd-kit-symbol-radius: var(--lmnd-radius-500); }
+
+.lmnd-kit-symbol--rounded {
+  border-radius: var(--lmnd-kit-symbol-radius);
+}
+
+.lmnd-kit-symbol--critical { --lmnd-kit-symbol-bg: var(--lmnd-color-bg-critical-subtle); --lmnd-kit-symbol-border: var(--lmnd-color-border-critical-subtle); --lmnd-kit-symbol-content: var(--lmnd-color-content-critical); }
+.lmnd-kit-symbol--warning { --lmnd-kit-symbol-bg: var(--lmnd-color-bg-caution-subtle); --lmnd-kit-symbol-border: var(--lmnd-color-border-caution-subtle); --lmnd-kit-symbol-content: var(--lmnd-color-content-caution); }
+.lmnd-kit-symbol--info { --lmnd-kit-symbol-bg: var(--lmnd-color-bg-info-subtle); --lmnd-kit-symbol-border: var(--lmnd-color-border-info-subtle); --lmnd-kit-symbol-content: var(--lmnd-color-content-info); }
+.lmnd-kit-symbol--positive { --lmnd-kit-symbol-bg: var(--lmnd-color-bg-positive-subtle); --lmnd-kit-symbol-border: var(--lmnd-color-border-positive-subtle); --lmnd-kit-symbol-content: var(--lmnd-color-content-positive); }
+.lmnd-kit-symbol--brand { --lmnd-kit-symbol-bg: var(--lmnd-color-bg-brand); --lmnd-kit-symbol-border: var(--lmnd-color-border-brand); --lmnd-kit-symbol-content: var(--lmnd-color-content-on-brand-high); }
+.lmnd-kit-symbol--brand-subtle { --lmnd-kit-symbol-bg: var(--lmnd-color-bg-brand-subtle); --lmnd-kit-symbol-border: var(--lmnd-color-border-on-brand-low); --lmnd-kit-symbol-content: var(--lmnd-color-content-on-brand-high); }
+
+.lmnd-kit-symbol > .lmnd-kit-badge {
+  position: absolute;
+  right: calc(-1 * var(--lmnd-spacing-100));
+  bottom: calc(-1 * var(--lmnd-spacing-100));
+}
+
+/* A record's status on its symbol: the Teya app's badge artwork (data-badge) at 20px on the bottom-right
+   corner, over a disc of the card's colour, as ItemSymbolBadgeView draws it. */
+.lmnd-kit-symbol__status {
+  position: absolute;
+  right: calc(-1 * var(--lmnd-spacing-100));
+  bottom: calc(-1 * var(--lmnd-spacing-100));
+  width: var(--lmnd-size-500);
+  height: var(--lmnd-size-500);
+  background:
+    var(--lmnd-kit-asset) center / contain no-repeat,
+    radial-gradient(closest-side, var(--lmnd-color-bg-default) 99%, transparent 100%);
+}
+
+/* ---------- Tag ---------- */
+
+.lmnd-kit-tag {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--lmnd-spacing-50);
+  max-width: 100%;
+  padding: var(--lmnd-spacing-50) var(--lmnd-spacing-100);
+  border-radius: var(--lmnd-radius-150);
+  background: var(--lmnd-kit-tag-bg, var(--lmnd-color-bg-neutral-subtle));
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-kit-tag-border, var(--lmnd-color-border-neutral-medium));
+  color: var(--lmnd-kit-tag-content, var(--lmnd-color-content-primary));
+}
+
+.lmnd-kit-tag > .lmnd-icon {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+.lmnd-kit-tag__label {
+  padding: 0 var(--lmnd-spacing-50);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lmnd-kit-tag--critical { --lmnd-kit-tag-bg: var(--lmnd-color-bg-critical-subtle); --lmnd-kit-tag-border: var(--lmnd-color-border-critical-subtle); --lmnd-kit-tag-content: var(--lmnd-color-content-critical); }
+.lmnd-kit-tag--warning { --lmnd-kit-tag-bg: var(--lmnd-color-bg-caution-subtle); --lmnd-kit-tag-border: var(--lmnd-color-border-caution-subtle); --lmnd-kit-tag-content: var(--lmnd-color-content-caution); }
+.lmnd-kit-tag--info { --lmnd-kit-tag-bg: var(--lmnd-color-bg-info-subtle); --lmnd-kit-tag-border: var(--lmnd-color-border-info-subtle); --lmnd-kit-tag-content: var(--lmnd-color-content-info); }
+.lmnd-kit-tag--positive { --lmnd-kit-tag-bg: var(--lmnd-color-bg-positive-subtle); --lmnd-kit-tag-border: var(--lmnd-color-border-positive-subtle); --lmnd-kit-tag-content: var(--lmnd-color-content-positive); }
+.lmnd-kit-tag--featured { --lmnd-kit-tag-bg: var(--lmnd-color-bg-featured-subtle); --lmnd-kit-tag-border: var(--lmnd-color-border-featured-subtle); --lmnd-kit-tag-content: var(--lmnd-color-content-featured); }
+.lmnd-kit-tag--on-color { --lmnd-kit-tag-bg: var(--lmnd-color-bg-always-light); --lmnd-kit-tag-border: var(--lmnd-color-border-neutral-low); --lmnd-kit-tag-content: var(--lmnd-color-content-always-dark); }
+
+/* ---------- Badge ---------- */
+
+.lmnd-kit-badge {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  height: var(--lmnd-size-500);
+  padding: 0 var(--lmnd-spacing-100);
+  border-radius: var(--lmnd-radius-full);
+  overflow: hidden;
+  background:
+    linear-gradient(to bottom right, var(--lmnd-color-bg-default), transparent),
+    var(--lmnd-color-bg-brand);
+  background-blend-mode: overlay, normal;
+  color: var(--lmnd-color-content-on-brand-high);
+}
+
+.lmnd-kit-badge__label {
+  padding: 2px var(--lmnd-spacing-50); /* literal */
+  white-space: nowrap;
+}
+
+.lmnd-kit-badge--x-small {
+  height: var(--lmnd-size-400);
+  padding: 0 var(--lmnd-spacing-50);
+}
+
+.lmnd-kit-badge--x-small .lmnd-kit-badge__label {
+  padding-block: 1px; /* literal */
+  font-size: var(--lmnd-font-size-250);
+  line-height: var(--lmnd-line-height-350);
+}
+
+/* ---------- Chip ---------- */
+
+.lmnd-kit-chip {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--lmnd-size-1600);
+  min-height: var(--lmnd-size-800);
+  padding: var(--lmnd-spacing-200);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-kit-chip-bg, var(--lmnd-color-bg-elevated));
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-40) var(--lmnd-kit-chip-border, transparent);
+  color: var(--lmnd-kit-chip-content, var(--lmnd-color-content-primary));
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+  --lmnd-kit-chip-hover: var(--lmnd-color-bg-subtle-interactive);
+}
+
+.lmnd-kit-chip:active:not(:disabled) {
+  background: var(--lmnd-kit-chip-hover);
+}
+
+@media (hover: hover) {
+  .lmnd-kit-chip:hover:not(:disabled) {
+    background: var(--lmnd-kit-chip-hover);
+  }
+}
+
+.lmnd-kit-chip:disabled,
+.lmnd-kit-chip--disabled {
+  cursor: not-allowed;
+  opacity: var(--lmnd-opacity-disabled);
+}
+
+.lmnd-kit-chip > .lmnd-icon {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+.lmnd-kit-chip__leading {
+  color: var(--lmnd-kit-chip-leading, currentColor);
+}
+
+.lmnd-kit-chip__label {
+  padding: 0 var(--lmnd-spacing-100);
+  white-space: nowrap;
+}
+
+.lmnd-kit-chip__counter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--lmnd-size-450);
+  min-height: var(--lmnd-size-400);
+  margin: 0 var(--lmnd-spacing-100);
+  padding: 0 var(--lmnd-spacing-50);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-brand);
+  color: var(--lmnd-color-content-on-brand-high);
+}
+
+/* A chip that is a <label> around a radio (pick one of a group) or a checkbox (pick any) selects itself as
+   it's tapped, with no script; the input stays hidden. */
+.lmnd-kit-chip:has(> input) {
+  position: relative;
+}
+
+.lmnd-kit-chip > input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lmnd-kit-chip:has(> input:focus-visible) {
+  outline: var(--lmnd-border-width-focus-ring) solid var(--lmnd-color-border-selected);
+  outline-offset: var(--lmnd-spacing-50);
+}
+
+.lmnd-kit-chip:has(> input:disabled) {
+  cursor: not-allowed;
+  opacity: var(--lmnd-opacity-disabled);
+}
+
+.lmnd-kit-chip--selected,
+.lmnd-kit-chip[aria-pressed="true"],
+.lmnd-kit-chip:has(> input:checked) {
+  --lmnd-kit-chip-bg: var(--lmnd-color-bg-brand-high);
+  --lmnd-kit-chip-hover: var(--lmnd-color-bg-brand-high-interactive);
+  --lmnd-kit-chip-content: var(--lmnd-color-content-brand-inverse);
+}
+
+.lmnd-kit-chip--error {
+  --lmnd-kit-chip-bg: var(--lmnd-color-bg-critical-subtle);
+  --lmnd-kit-chip-hover: var(--lmnd-color-bg-critical-subtle-interactive);
+  --lmnd-kit-chip-content: var(--lmnd-color-content-primary);
+  --lmnd-kit-chip-leading: var(--lmnd-color-content-critical);
+  --lmnd-kit-chip-border: var(--lmnd-color-border-critical);
+}
+
+.lmnd-kit-chips {
+  display: flex;
+  gap: var(--lmnd-spacing-200);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+/* On a screen or in a sheet the row scrolls under the edges, as in the app, also when a label or another
+   wrapper sits around it. Inside a card it stays within the card's padding. */
+.lmnd-kit-content .lmnd-kit-chips:not(.lmnd-kit-card .lmnd-kit-chips),
+.lmnd-kit-sheet__body .lmnd-kit-chips:not(.lmnd-kit-card .lmnd-kit-chips) {
+  margin: 0 calc(-1 * var(--lmnd-spacing-400));
+  padding: 0 var(--lmnd-spacing-400);
+  scroll-padding-inline: var(--lmnd-spacing-400);
+}
+
+/* The filter bar (APP-FILTER-BAR): chips spacing-200 apart, spacing-400 around, ending in a Clear or Reset
+   filters button. It goes first in the content, under the search field, and scrolls with the list. */
+.lmnd-kit-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  padding: var(--lmnd-spacing-400);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.lmnd-kit-filter-bar > .lmnd-button {
+  flex-shrink: 0;
+}
+
+/* On a screen the chips scroll under the screen's edges, as in the app. */
+.lmnd-kit-content > .lmnd-kit-filter-bar {
+  margin: 0 calc(-1 * var(--lmnd-spacing-400));
+  padding: 0 var(--lmnd-spacing-400);
+}
+
+/* ---------- Icon button ---------- */
+
+.lmnd-kit-icon-button {
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: var(--lmnd-size-1200);
+  height: var(--lmnd-size-1200);
+  padding: 0;
+  border: none;
+  border-radius: var(--lmnd-radius-350);
+  background: var(--lmnd-kit-ib-bg);
+  color: var(--lmnd-kit-ib-content);
+  cursor: pointer;
+  transition: background-color 0.1s ease-in-out;
+  --lmnd-kit-ib-bg: var(--lmnd-color-bg-neutral-subtle);
+  --lmnd-kit-ib-hover: var(--lmnd-color-bg-neutral-subtle-interactive);
+  --lmnd-kit-ib-active: var(--lmnd-color-bg-neutral-subtle-pressed);
+  --lmnd-kit-ib-content: var(--lmnd-color-content-primary);
+}
+
+@media (hover: hover) {
+  .lmnd-kit-icon-button:hover:not(:disabled) {
+    background: var(--lmnd-kit-ib-hover);
+  }
+}
+
+.lmnd-kit-icon-button:active:not(:disabled) {
+  background: var(--lmnd-kit-ib-active);
+}
+
+.lmnd-kit-icon-button:focus-visible {
+  outline: var(--lmnd-border-width-focus-ring) solid var(--lmnd-color-border-selected);
+  outline-offset: var(--lmnd-spacing-50);
+}
+
+.lmnd-kit-icon-button:disabled {
+  cursor: not-allowed;
+  opacity: var(--lmnd-opacity-disabled);
+}
+
+.lmnd-kit-icon-button .lmnd-spinner {
+  color: inherit;
+}
+
+.lmnd-kit-icon-button--large { width: var(--lmnd-size-1400); height: var(--lmnd-size-1400); border-radius: var(--lmnd-radius-400); }
+.lmnd-kit-icon-button--large > .lmnd-icon { width: var(--lmnd-size-600); height: var(--lmnd-size-600); }
+.lmnd-kit-icon-button--small { width: var(--lmnd-size-1000); height: var(--lmnd-size-1000); border-radius: var(--lmnd-radius-300); }
+.lmnd-kit-icon-button--x-small { width: var(--lmnd-size-800); height: var(--lmnd-size-800); border-radius: var(--lmnd-radius-250); }
+.lmnd-kit-icon-button--x-small > .lmnd-icon { width: var(--lmnd-size-400); height: var(--lmnd-size-400); }
+
+.lmnd-kit-icon-button--circular {
+  border-radius: var(--lmnd-radius-full);
+}
+
+.lmnd-kit-icon-button--ghost {
+  --lmnd-kit-ib-bg: transparent;
+  --lmnd-kit-ib-hover: var(--lmnd-color-bg-subtle-interactive);
+  --lmnd-kit-ib-active: var(--lmnd-color-bg-neutral-subtle-pressed);
+}
+
+.lmnd-kit-icon-button--solid {
+  --lmnd-kit-ib-bg: var(--lmnd-color-bg-elevated);
+  --lmnd-kit-ib-hover: var(--lmnd-color-bg-elevated-interactive);
+  --lmnd-kit-ib-active: var(--lmnd-color-bg-elevated-pressed);
+}
+
+.lmnd-kit-icon-button--primary { --lmnd-kit-ib-bg: var(--lmnd-color-bg-brand-subtle); --lmnd-kit-ib-hover: var(--lmnd-color-bg-subtle-interactive); --lmnd-kit-ib-active: var(--lmnd-color-bg-subtle-pressed); --lmnd-kit-ib-content: var(--lmnd-color-content-brand-high); }
+.lmnd-kit-icon-button--primary.lmnd-kit-icon-button--solid { --lmnd-kit-ib-bg: var(--lmnd-color-bg-brand); --lmnd-kit-ib-hover: var(--lmnd-color-bg-brand-interactive); --lmnd-kit-ib-active: var(--lmnd-color-bg-brand-pressed); --lmnd-kit-ib-content: var(--lmnd-color-content-on-brand-high); }
+.lmnd-kit-icon-button--primary.lmnd-kit-icon-button--ghost { --lmnd-kit-ib-bg: transparent; }
+
+.lmnd-kit-icon-button--secondary.lmnd-kit-icon-button--solid { --lmnd-kit-ib-bg: var(--lmnd-color-bg-subtle-inverse); --lmnd-kit-ib-hover: var(--lmnd-color-bg-neutral-interactive); --lmnd-kit-ib-active: var(--lmnd-color-bg-neutral-pressed); --lmnd-kit-ib-content: var(--lmnd-color-content-primary-inverse); }
+.lmnd-kit-icon-button--secondary.lmnd-kit-icon-button--solid:disabled { --lmnd-kit-ib-bg: color-mix(in srgb, var(--lmnd-color-bg-subtle-inverse) 80%, transparent); }
+
+.lmnd-kit-icon-button--critical { --lmnd-kit-ib-bg: var(--lmnd-color-bg-critical-subtle); --lmnd-kit-ib-hover: var(--lmnd-color-bg-critical-subtle-interactive); --lmnd-kit-ib-active: var(--lmnd-color-bg-critical-subtle-pressed); --lmnd-kit-ib-content: var(--lmnd-color-content-critical); }
+.lmnd-kit-icon-button--critical.lmnd-kit-icon-button--solid { --lmnd-kit-ib-bg: var(--lmnd-color-bg-critical); --lmnd-kit-ib-hover: var(--lmnd-color-bg-critical-interactive); --lmnd-kit-ib-active: var(--lmnd-color-bg-critical-pressed); --lmnd-kit-ib-content: var(--lmnd-color-content-always-light); }
+.lmnd-kit-icon-button--critical.lmnd-kit-icon-button--ghost { --lmnd-kit-ib-bg: transparent; --lmnd-kit-ib-hover: var(--lmnd-color-bg-subtle-interactive); }
+
+.lmnd-kit-icon-button--on-brand { --lmnd-kit-ib-bg: var(--lmnd-color-bg-brand-elevated); --lmnd-kit-ib-hover: var(--lmnd-color-bg-brand-elevated-interactive); --lmnd-kit-ib-active: var(--lmnd-color-bg-brand-elevated-interactive); --lmnd-kit-ib-content: var(--lmnd-color-content-on-brand-high); }
+.lmnd-kit-icon-button--on-color { --lmnd-kit-ib-bg: var(--lmnd-color-bg-always-light-medium); --lmnd-kit-ib-hover: var(--lmnd-color-bg-always-light-medium-interactive); --lmnd-kit-ib-active: var(--lmnd-color-bg-always-light-medium-interactive); --lmnd-kit-ib-content: var(--lmnd-color-content-always-light); }
+
+/* ---------- Link ---------- */
+
+.lmnd-kit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-100);
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--lmnd-color-content-brand);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.lmnd-kit-link > .lmnd-icon {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+@media (hover: hover) {
+  .lmnd-kit-link:hover {
+    color: var(--lmnd-color-bg-brand-interactive);
+  }
+}
+
+.lmnd-kit-link:active {
+  color: var(--lmnd-color-bg-brand-pressed);
+}
+
+/* ---------- Tile ---------- */
+
+.lmnd-kit-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--lmnd-spacing-300);
+  min-width: 120px; /* literal */
+  padding: var(--lmnd-spacing-300);
+  border: none;
+  border-radius: var(--lmnd-radius-500);
+  background: var(--lmnd-color-bg-elevated);
+  color: var(--lmnd-color-content-primary);
+  text-align: start;
+  cursor: pointer;
+  transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out, background-color 0.15s ease-in-out;
+}
+
+.lmnd-kit-tile:active:not(:disabled) {
+  opacity: var(--lmnd-opacity-pressed);
+  transform: scale(0.96);
+}
+
+.lmnd-kit-tile:focus-visible {
+  outline: var(--lmnd-border-width-25) solid var(--lmnd-color-border-selected);
+  outline-offset: var(--lmnd-spacing-50);
+}
+
+.lmnd-kit-tile:disabled {
+  cursor: not-allowed;
+  opacity: var(--lmnd-opacity-disabled);
+}
+
+.lmnd-kit-tile__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.lmnd-kit-tile__text {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  margin-top: auto;
+}
+
+.lmnd-kit-tile__label,
+.lmnd-kit-tile__support {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lmnd-kit-tile__support {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-tile--outlined {
+  background: transparent;
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-40) var(--lmnd-color-border-neutral-medium);
+}
+
+.lmnd-kit-tile--horizontal {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  width: 100%;
+  min-height: var(--lmnd-size-1600);
+}
+
+.lmnd-kit-tile--horizontal .lmnd-kit-tile__text {
+  flex: 1;
+  margin-top: 0;
+}
+
+.lmnd-kit-tile--selected,
+.lmnd-kit-tile[aria-pressed="true"] {
+  background: var(--lmnd-color-bg-default);
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-50) var(--lmnd-color-border-selected);
+}
+
+/* ---------- Notice ---------- */
+
+.lmnd-kit-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--lmnd-spacing-300);
+  width: 100%;
+  padding: var(--lmnd-spacing-400);
+  border-radius: var(--lmnd-radius-500);
+  background: var(--lmnd-kit-notice-bg, var(--lmnd-color-bg-info-subtle));
+  color: var(--lmnd-color-content-primary);
+}
+
+.lmnd-kit-notice > .lmnd-icon {
+  height: var(--lmnd-size-500);
+  color: var(--lmnd-kit-notice-tint, var(--lmnd-color-content-info));
+}
+
+.lmnd-kit-notice:has(.lmnd-kit-notice__title) > .lmnd-icon {
+  height: var(--lmnd-size-600);
+  -webkit-mask-size: var(--lmnd-size-500);
+  mask-size: var(--lmnd-size-500);
+}
+
+.lmnd-kit-notice__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.lmnd-kit-notice__action {
+  margin-top: var(--lmnd-spacing-200);
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--lmnd-kit-notice-action, var(--lmnd-color-content-info));
+  cursor: pointer;
+}
+
+.lmnd-kit-notice--positive { --lmnd-kit-notice-bg: var(--lmnd-color-bg-positive-subtle); --lmnd-kit-notice-tint: var(--lmnd-color-content-positive); --lmnd-kit-notice-action: var(--lmnd-color-content-positive); }
+.lmnd-kit-notice--warning { --lmnd-kit-notice-bg: var(--lmnd-color-bg-caution-subtle); --lmnd-kit-notice-tint: var(--lmnd-color-content-caution); --lmnd-kit-notice-action: var(--lmnd-color-content-caution); }
+.lmnd-kit-notice--critical { --lmnd-kit-notice-bg: var(--lmnd-color-bg-critical-subtle); --lmnd-kit-notice-tint: var(--lmnd-color-content-critical); --lmnd-kit-notice-action: var(--lmnd-color-content-critical); }
+.lmnd-kit-notice--neutral { --lmnd-kit-notice-bg: var(--lmnd-color-bg-elevated); --lmnd-kit-notice-tint: var(--lmnd-color-content-secondary); --lmnd-kit-notice-action: var(--lmnd-color-content-neutral); }
+
+/* ---------- Skeleton ---------- */
+
+.lmnd-kit-skeleton {
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--lmnd-color-bg-elevated);
+  background-clip: content-box;
+}
+
+.lmnd-kit-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--lmnd-color-bg-elevated), var(--lmnd-color-bg-elevated-high), var(--lmnd-color-bg-elevated));
+  background-clip: inherit;
+  animation: lmnd-kit-shimmer 1s ease-in-out infinite alternate;
+}
+
+@keyframes lmnd-kit-shimmer {
+  from { transform: translateX(-150%); }
+  to { transform: translateX(50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lmnd-kit-skeleton::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* A line's height is the size token; the painted bar is inset by the vertical padding. */
+.lmnd-kit-skeleton--line {
+  width: 100%;
+  height: var(--lmnd-size-600);
+  padding: var(--lmnd-spacing-100) 0;
+  border-radius: var(--lmnd-radius-100);
+}
+
+.lmnd-kit-skeleton--line::after {
+  inset: var(--lmnd-spacing-100) 0;
+  border-radius: var(--lmnd-radius-100);
+}
+
+.lmnd-kit-skeleton--line.lmnd-kit-skeleton--small { height: var(--lmnd-size-500); }
+.lmnd-kit-skeleton--line.lmnd-kit-skeleton--large { height: var(--lmnd-size-700); }
+.lmnd-kit-skeleton--line.lmnd-kit-skeleton--x-large { height: var(--lmnd-size-800); }
+
+.lmnd-kit-skeleton--circle {
+  width: var(--lmnd-size-500);
+  height: var(--lmnd-size-500);
+  border-radius: var(--lmnd-radius-full);
+}
+
+.lmnd-kit-skeleton--circle.lmnd-kit-skeleton--large { width: var(--lmnd-size-600); height: var(--lmnd-size-600); }
+.lmnd-kit-skeleton--circle.lmnd-kit-skeleton--x-large { width: var(--lmnd-size-800); height: var(--lmnd-size-800); }
+.lmnd-kit-skeleton--circle.lmnd-kit-skeleton--xx-large { width: var(--lmnd-size-1000); height: var(--lmnd-size-1000); }
+
+/* A list row's symbol while it loads: the medium symbol container's size and rounded shape. */
+.lmnd-kit-skeleton--symbol {
+  width: var(--lmnd-size-1000);
+  height: var(--lmnd-size-1000);
+  border-radius: var(--lmnd-radius-300);
+}
+
+.lmnd-kit-skeleton--block {
+  width: 100%;
+  height: var(--lmnd-size-1600);
+  border-radius: var(--lmnd-radius-500);
+}
+
+/* ---------- Divider ---------- */
+
+.lmnd-kit-divider {
+  flex-shrink: 0;
+  height: var(--lmnd-border-width-25);
+  margin: 0;
+  border: none;
+  background: var(--lmnd-color-border-neutral-low);
+}
+
+.lmnd-kit-divider--inset {
+  margin: 0 var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-divider--vertical {
+  width: var(--lmnd-border-width-25);
+  height: auto;
+  align-self: stretch;
+}
+
+.lmnd-kit-divider-label {
+  display: flex;
+  align-items: center;
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-divider-label::before,
+.lmnd-kit-divider-label::after {
+  content: "";
+  flex: 1;
+  height: var(--lmnd-border-width-25);
+  background: var(--lmnd-color-border-neutral-low);
+}
+
+.lmnd-kit-divider-label > span {
+  padding: 0 var(--lmnd-spacing-300);
+}
+
+/* Dashes size-100 long, spacing-100 apart, in border-neutral-medium, as Compose's dashPathEffect draws them. */
+.lmnd-kit-divider--dashed,
+.lmnd-kit-divider-label--dashed::before,
+.lmnd-kit-divider-label--dashed::after {
+  --lmnd-kit-divider-dash: var(--lmnd-color-border-neutral-medium) 0 var(--lmnd-size-100),
+    transparent var(--lmnd-size-100) calc(var(--lmnd-size-100) + var(--lmnd-spacing-100));
+  background: repeating-linear-gradient(to right, var(--lmnd-kit-divider-dash));
+}
+
+.lmnd-kit-divider--vertical.lmnd-kit-divider--dashed {
+  background: repeating-linear-gradient(to bottom, var(--lmnd-kit-divider-dash));
+}
+
+/* ---------- Card ---------- */
+
+.lmnd-kit-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: var(--lmnd-radius-container-default);
+  overflow: hidden;
+  background: var(--lmnd-color-bg-default);
+}
+
+.lmnd-kit-card--subtle { background: var(--lmnd-color-bg-subtle); }
+.lmnd-kit-card--elevated { background: var(--lmnd-color-bg-elevated); }
+
+.lmnd-kit-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  padding: var(--lmnd-spacing-300) var(--lmnd-spacing-400) 0;
+}
+
+.lmnd-kit-card__heading {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.lmnd-kit-card__title,
+.lmnd-kit-card__subtitle {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lmnd-kit-card__title.lmnd-text-body-xsmall-overline {
+  min-height: var(--lmnd-size-500);
+  display: flex;
+  align-items: center;
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-card__subtitle {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-card__chevron {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-card__body {
+  display: flex;
+  flex-direction: column;
+}
+
+.lmnd-kit-card--pad-x-small .lmnd-kit-card__body { padding: var(--lmnd-spacing-100); }
+.lmnd-kit-card--pad-small .lmnd-kit-card__body { padding: var(--lmnd-spacing-200); }
+.lmnd-kit-card--pad-medium .lmnd-kit-card__body { padding: var(--lmnd-spacing-400); }
+
+.lmnd-kit-card__footer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-400) var(--lmnd-spacing-400);
+  border: none;
+  background: none;
+  color: var(--lmnd-color-content-primary);
+  cursor: pointer;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.lmnd-kit-card__footer:active {
+  opacity: var(--lmnd-opacity-50);
+}
+
+/* ---------- List item ---------- */
+
+.lmnd-kit-list-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: var(--lmnd-spacing-100);
+  border: none;
+  background: none;
+  text-align: start;
+}
+
+.lmnd-kit-list-item--divider {
+  padding-bottom: calc(var(--lmnd-spacing-100) + var(--lmnd-border-width-25));
+}
+
+.lmnd-kit-list-item--divider::after {
+  content: "";
+  position: absolute;
+  right: var(--lmnd-spacing-400);
+  bottom: 0;
+  left: var(--lmnd-spacing-400);
+  height: var(--lmnd-border-width-25);
+  background: var(--lmnd-color-border-neutral-low);
+}
+
+.lmnd-kit-list-item__row {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-300);
+  min-height: var(--lmnd-size-1200);
+  padding: var(--lmnd-spacing-300);
+  border-radius: var(--lmnd-radius-500);
+  transition: background-color 0.15s ease-in-out;
+}
+
+/* An <a> or <button> list item is interactive; a <div> one is not. */
+a.lmnd-kit-list-item,
+button.lmnd-kit-list-item,
+label.lmnd-kit-list-item {
+  cursor: pointer;
+}
+
+a.lmnd-kit-list-item:active .lmnd-kit-list-item__row,
+button.lmnd-kit-list-item:active .lmnd-kit-list-item__row,
+label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
+  background: var(--lmnd-kit-highlight, var(--lmnd-color-bg-subtle-interactive));
+}
+
+@media (hover: hover) {
+  a.lmnd-kit-list-item:hover .lmnd-kit-list-item__row,
+  button.lmnd-kit-list-item:hover .lmnd-kit-list-item__row,
+  label.lmnd-kit-list-item:hover .lmnd-kit-list-item__row {
+    background: var(--lmnd-kit-highlight, var(--lmnd-color-bg-subtle-interactive));
+  }
+}
+
+.lmnd-kit-list-item__leading {
+  display: flex;
+  flex-shrink: 0;
+  align-self: flex-start;
+  padding: var(--lmnd-spacing-50) 0;
+}
+
+/* Only a label: the leading content centres on it. */
+.lmnd-kit-list-item__leading:has(+ .lmnd-kit-list-item__content > .lmnd-kit-list-item__label:only-child) {
+  align-self: center;
+}
+
+.lmnd-kit-list-item__leading > .lmnd-icon {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-list-item__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.lmnd-kit-list-item__overline,
+.lmnd-kit-list-item__support {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-list-item__label {
+  color: var(--lmnd-color-content-primary);
+}
+
+/* A support line held to one line, cut with an ellipsis (maxLines = 1). */
+.lmnd-kit-list-item__support--one-line {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lmnd-kit-list-item__trailing {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-list-item__value {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: flex-end;
+  align-self: flex-start;
+  gap: var(--lmnd-spacing-50);
+  text-align: end;
+}
+
+/* The value's styles, as the app's ListItemValueStyle: money in, a record still pending, and one that was
+   declined or voided. */
+.lmnd-kit-list-item__value--positive > :first-child { color: var(--lmnd-color-content-positive); }
+.lmnd-kit-list-item__value--dimmed > :first-child { color: var(--lmnd-color-content-tertiary); }
+
+.lmnd-kit-list-item__value--strikethrough > :first-child {
+  color: var(--lmnd-color-content-secondary);
+  text-decoration: line-through;
+}
+
+.lmnd-kit-list-item__chevron {
+  margin-left: calc(var(--lmnd-spacing-100) - var(--lmnd-spacing-200));
+  color: var(--lmnd-color-content-tertiary);
+}
+
+.lmnd-kit-list-item__trailing > .lmnd-kit-list-item__chevron:first-child {
+  margin-left: var(--lmnd-spacing-100);
+}
+
+.lmnd-kit-list-item--critical {
+  --lmnd-kit-highlight: var(--lmnd-color-bg-critical-subtle-interactive);
+}
+
+.lmnd-kit-list-item--critical .lmnd-kit-list-item__label,
+.lmnd-kit-list-item--critical .lmnd-kit-list-item__leading > .lmnd-icon {
+  color: var(--lmnd-color-content-critical);
+}
+
+.lmnd-kit-list-item--disabled,
+.lmnd-kit-list-item:disabled {
+  pointer-events: none;
+}
+
+.lmnd-kit-list-item--disabled .lmnd-kit-list-item__leading,
+.lmnd-kit-list-item--disabled .lmnd-kit-list-item__content,
+.lmnd-kit-list-item--disabled .lmnd-kit-list-item__trailing,
+.lmnd-kit-list-item:disabled .lmnd-kit-list-item__leading,
+.lmnd-kit-list-item:disabled .lmnd-kit-list-item__content,
+.lmnd-kit-list-item:disabled .lmnd-kit-list-item__trailing {
+  opacity: var(--lmnd-opacity-disabled);
+}
+
+/* ---------- Content list item ---------- */
+
+.lmnd-kit-content-item {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-300);
+  padding: var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-content-item--compact {
+  padding-block: var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-content-item__label {
+  flex: 1 1 0;
+  min-width: 0;
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-content-item__value {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--lmnd-spacing-300);
+  min-width: 0;
+  color: var(--lmnd-color-content-primary);
+  text-align: end;
+}
+
+.lmnd-kit-content-item--vertical {
+  align-items: flex-start;
+}
+
+.lmnd-kit-content-item__column {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.lmnd-kit-content-item__column .lmnd-kit-content-item__value {
+  justify-content: flex-start;
+  gap: var(--lmnd-spacing-100);
+  text-align: start;
+}
+
+/* An action inside a row's value — copy, edit. Only the icon is drawn, so it is never taller than the row
+   and adds no space around itself (APP-DETAILS-ROWS). */
+.lmnd-kit-inline-action {
+  display: inline-flex;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--lmnd-radius-200);
+  background: none;
+  color: var(--lmnd-color-content-brand);
+  font: inherit;
+  cursor: pointer;
+}
+
+.lmnd-kit-inline-action:focus-visible {
+  outline: var(--lmnd-border-width-focus-ring) solid var(--lmnd-color-border-selected);
+  outline-offset: var(--lmnd-spacing-50);
+}
+
+.lmnd-kit-content-item + .lmnd-kit-divider,
+.lmnd-kit-list-item + .lmnd-kit-divider {
+  margin: 0 var(--lmnd-spacing-400);
+}
+
+/* ---------- History timeline ---------- */
+
+.lmnd-kit-timeline {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lmnd-kit-timeline__item {
+  position: relative;
+  display: flex;
+  gap: var(--lmnd-spacing-300);
+}
+
+.lmnd-kit-timeline__indicator {
+  position: relative;
+  flex-shrink: 0;
+  width: 20px; /* literal */
+}
+
+.lmnd-kit-timeline__indicator::before {
+  content: "";
+  position: absolute;
+  top: 7px; /* literal */
+  left: 5px; /* literal */
+  width: 10px; /* literal */
+  height: 10px; /* literal */
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-kit-dot, var(--lmnd-color-border-neutral-medium));
+}
+
+.lmnd-kit-timeline__item:not(:last-child) .lmnd-kit-timeline__indicator::after {
+  content: "";
+  position: absolute;
+  top: 23px; /* literal: dot top + dot + 6px gap */
+  bottom: 0;
+  left: calc(50% - var(--lmnd-border-width-40) / 2);
+  width: var(--lmnd-border-width-40);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-border-neutral-medium);
+}
+
+.lmnd-kit-timeline__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-200);
+  min-width: 0;
+  padding-bottom: var(--lmnd-spacing-600);
+}
+
+.lmnd-kit-timeline__item:last-child .lmnd-kit-timeline__body {
+  padding-bottom: 0;
+}
+
+.lmnd-kit-timeline__head {
+  display: flex;
+  flex-direction: column;
+}
+
+.lmnd-kit-timeline__subheading,
+.lmnd-kit-timeline__description {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-timeline__item--current { --lmnd-kit-dot: var(--lmnd-color-bg-neutral); }
+.lmnd-kit-timeline__item--current.lmnd-kit-timeline__item--positive { --lmnd-kit-dot: var(--lmnd-color-bg-positive); }
+.lmnd-kit-timeline__item--current.lmnd-kit-timeline__item--critical { --lmnd-kit-dot: var(--lmnd-color-bg-critical); }
+
+/* Steps: the indicator is an icon or a ring, and the line starts below a 24px dot area. */
+.lmnd-kit-timeline--steps .lmnd-kit-timeline__indicator::before {
+  top: 4px; /* literal: (24 - 16) / 2 */
+  left: 2px; /* literal */
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+  background: var(--lmnd-color-bg-default);
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-40) var(--lmnd-color-border-neutral-high);
+}
+
+.lmnd-kit-timeline--steps .lmnd-kit-timeline__item:not(:last-child) .lmnd-kit-timeline__indicator::after {
+  top: 26px; /* literal */
+  bottom: 2px; /* literal */
+  left: calc(50% - var(--lmnd-border-width-50) / 2);
+  width: var(--lmnd-border-width-50);
+}
+
+.lmnd-kit-timeline--steps .lmnd-kit-timeline__item--active .lmnd-kit-timeline__indicator::before {
+  background:
+    radial-gradient(circle, var(--lmnd-color-bg-neutral) 0 calc(var(--lmnd-size-200) / 2), transparent calc(var(--lmnd-size-200) / 2 + 0.5px)),
+    var(--lmnd-color-bg-default);
+}
+
+.lmnd-kit-timeline--steps .lmnd-kit-timeline__item--next .lmnd-kit-timeline__label {
+  color: var(--lmnd-color-content-tertiary);
+}
+
+.lmnd-kit-timeline--steps .lmnd-kit-timeline__item--next:not(:last-child) .lmnd-kit-timeline__indicator::after {
+  border-radius: 0;
+  background: repeating-linear-gradient(to bottom, var(--lmnd-color-border-neutral-high) 0 4px, transparent 4px 10px); /* literal: 40% of a 10px period */
+}
+
+.lmnd-kit-timeline--steps .lmnd-kit-timeline__item--completed .lmnd-kit-timeline__indicator::before,
+.lmnd-kit-timeline--steps .lmnd-kit-timeline__item--error .lmnd-kit-timeline__indicator::before {
+  display: none;
+}
+
+.lmnd-kit-timeline__indicator > .lmnd-icon {
+  position: absolute;
+  top: 2px; /* literal */
+  left: 0;
+}
+
+.lmnd-kit-timeline__item--completed .lmnd-kit-timeline__indicator > .lmnd-icon { color: var(--lmnd-color-bg-positive); }
+.lmnd-kit-timeline__item--error .lmnd-kit-timeline__indicator > .lmnd-icon { color: var(--lmnd-color-bg-critical); }
+
+/* ---------- Swipe action row (revealed) ---------- */
+
+.lmnd-kit-swipe-row {
+  position: relative;
+  overflow: hidden;
+}
+
+.lmnd-kit-swipe-row__actions {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  padding: 0 var(--lmnd-spacing-400) 0 var(--lmnd-spacing-300);
+}
+
+.lmnd-kit-swipe-row__content {
+  position: relative;
+  transform: translateX(calc(-1 * var(--lmnd-kit-reveal, 76px))); /* literal: 12 + 16 + 48 */
+}
+
+.lmnd-kit-swipe-row__content .lmnd-kit-list-item__row {
+  background: var(--lmnd-color-bg-subtle-interactive);
+}
+
+.lmnd-kit-swipe-row--two {
+  --lmnd-kit-reveal: 132px; /* literal: 12 + 16 + 48 + 8 + 48 */
+}
+
+/* ---------- Top bar ---------- */
+
+.lmnd-kit-top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--lmnd-kit-safe-top);
+  background: var(--lmnd-kit-top-bar-bg, var(--lmnd-color-bg-subtle));
+}
+
+.lmnd-kit-screen--default .lmnd-kit-top-bar {
+  --lmnd-kit-top-bar-bg: var(--lmnd-color-bg-default);
+}
+
+.lmnd-kit-top-bar__bar {
+  display: grid;
+  grid-template-columns: minmax(var(--lmnd-size-1000), 1fr) auto minmax(var(--lmnd-size-1000), 1fr);
+  align-items: center;
+  min-height: calc(var(--lmnd-size-1400) + 2 * var(--lmnd-spacing-50));
+  padding: var(--lmnd-spacing-50) var(--lmnd-spacing-300);
+}
+
+.lmnd-kit-top-bar__leading {
+  display: flex;
+  justify-self: start;
+  gap: var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-top-bar__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(var(--lmnd-spacing-200));
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lmnd-kit-top-bar__title,
+.lmnd-kit-top-bar__subtitle,
+.lmnd-kit-top-bar__center > * {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lmnd-kit-top-bar__subtitle {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-top-bar__trailing {
+  display: flex;
+  justify-self: end;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  max-height: var(--lmnd-size-1000);
+}
+
+.lmnd-kit-top-bar__large {
+  display: flex;
+  flex-direction: column;
+  padding: var(--lmnd-spacing-50) var(--lmnd-spacing-400) var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-top-bar__large-title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* A large title's description sits right under it, with no gap, in at most two lines (LDS-TOP-BAR-DESCRIPTION,
+   LDS-TEXT-INTRO). The native TopBar draws its subtitle the same way. */
+.lmnd-kit-top-bar__large-subtitle,
+.lmnd-kit-large-title__description {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--lmnd-color-content-secondary);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* Compact: a top-level screen with the large title and actions on one row, no back button. */
+.lmnd-kit-top-bar__compact {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--lmnd-spacing-200);
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-400) var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-top-bar__compact > .lmnd-kit-top-bar__large {
+  flex: 1;
+  padding: 0;
+}
+
+.lmnd-kit-top-bar__compact > .lmnd-kit-top-bar__trailing {
+  gap: var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-top-bar__bottom {
+  padding: 0 var(--lmnd-spacing-400) var(--lmnd-spacing-300);
+}
+
+.lmnd-kit-top-bar--collapsed .lmnd-kit-top-bar__center {
+  opacity: 1;
+  transform: none;
+}
+
+.lmnd-kit-top-bar--collapsed .lmnd-kit-top-bar__large {
+  display: none;
+}
+
+/* The bar keeps its size: as it collapses, its divider and its small title fade in, the title rising into
+   place. */
+.lmnd-kit-top-bar {
+  transition: background-color 0.2s ease, box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* A navigation bar's large title on a screen that scrolls: the title is the first thing in the content, so
+   it scrolls up under the bar with the page, and kit.js collapses the bar once it has gone under. */
+.lmnd-kit-large-title {
+  display: flex;
+  flex-direction: column;
+  margin: calc(var(--lmnd-spacing-50) - var(--lmnd-spacing-400)) 0 var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-large-title > :first-child {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.lmnd-kit-large-title > :not(:first-child) {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-top-bar--collapsed {
+  box-shadow: inset 0 calc(-1 * var(--lmnd-border-width-25)) var(--lmnd-color-border-neutral-medium);
+}
+
+/* Only ever the small centred title, as Compose draws a bar that starts collapsed and never expands:
+   no large title, and no divider. */
+.lmnd-kit-top-bar--small .lmnd-kit-top-bar__center {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Bottom tab bar ---------- */
+
+.lmnd-kit-tab-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  padding: var(--lmnd-spacing-400);
+  padding-bottom: calc(var(--lmnd-spacing-400) + var(--lmnd-kit-safe-bottom));
+  background: linear-gradient(to bottom, transparent, var(--lmnd-color-bg-subtle));
+}
+
+.lmnd-kit-screen--default .lmnd-kit-tab-bar {
+  background: linear-gradient(to bottom, transparent, var(--lmnd-color-bg-default));
+}
+
+.lmnd-kit-tab-bar__bar {
+  display: flex;
+  flex: 1;
+  max-width: 500px; /* literal */
+  padding: var(--lmnd-spacing-100);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-default);
+  box-shadow: var(--lmnd-shadow-xl);
+}
+
+.lmnd-kit-tab-bar__item {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--lmnd-spacing-50);
+  min-width: 0;
+  height: 54px; /* literal */
+  padding: var(--lmnd-spacing-200) 0;
+  border: none;
+  border-radius: var(--lmnd-radius-full);
+  background: transparent;
+  color: var(--lmnd-color-content-primary);
+  cursor: pointer;
+}
+
+.lmnd-kit-tab-bar__item > span:last-child {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lmnd-kit-tab-bar__item--selected,
+.lmnd-kit-tab-bar__item[aria-current="page"] {
+  background: var(--lmnd-color-bg-elevated);
+}
+
+.lmnd-kit-tab-bar__item--selected > .lmnd-icon,
+.lmnd-kit-tab-bar__item[aria-current="page"] > .lmnd-icon {
+  transform: scale(1.12); /* literal */
+}
+
+/* ---------- Scrim, bottom sheet, dialog ---------- */
+
+.lmnd-kit-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  background: color-mix(in srgb, var(--lmnd-color-bg-always-dark) 32%, transparent); /* literal: M3 scrim alpha */
+}
+
+.lmnd-kit-scrim--center {
+  align-items: center;
+  padding: var(--lmnd-spacing-600);
+}
+
+/* An overlay with an id opens when a link targets it (href="#its-id") and closes on any other link. */
+.lmnd-kit-scrim[id]:not(:target) {
+  display: none;
+}
+
+/* ---------- Dropdown ---------- */
+
+/* Lemonade's Dropdown: a menu anchored under the button that opens it. It opens like a sheet, by a link to
+   the layer's id, and closes on a tap anywhere outside, which the layer's dismiss link covers. Anchored
+   under a top bar's trailing button by default; --start anchors it under the leading edge. */
+.lmnd-kit-dropdown-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+}
+
+.lmnd-kit-dropdown-layer[id]:not(:target) {
+  display: none;
+}
+
+.lmnd-kit-dropdown-layer__dismiss {
+  position: absolute;
+  inset: 0;
+}
+
+.lmnd-kit-dropdown {
+  position: absolute;
+  top: var(--lmnd-kit-dropdown-top, calc(var(--lmnd-kit-safe-top) + var(--lmnd-size-1400)));
+  right: var(--lmnd-spacing-400);
+  display: flex;
+  flex-direction: column;
+  min-width: 248px; /* literal: Dropdown's minimum width */
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-100);
+  border-radius: var(--lmnd-radius-500);
+  background: var(--lmnd-color-bg-default);
+  box-shadow: var(--lmnd-shadow-md);
+}
+
+.lmnd-kit-dropdown-layer--start .lmnd-kit-dropdown {
+  right: auto;
+  left: var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-dropdown__title {
+  padding: var(--lmnd-spacing-300) var(--lmnd-spacing-300) var(--lmnd-spacing-100);
+  color: var(--lmnd-color-content-secondary);
+  text-transform: uppercase;
+}
+
+.lmnd-kit-dropdown > .lmnd-kit-divider {
+  margin: var(--lmnd-spacing-100) 0;
+}
+
+.lmnd-kit-dropdown__item {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-300);
+  min-height: var(--lmnd-size-1200);
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-300);
+  border-radius: var(--lmnd-radius-400);
+  color: var(--lmnd-color-content-primary);
+  cursor: pointer;
+}
+
+.lmnd-kit-dropdown__item:active,
+.lmnd-kit-dropdown__item:focus-visible {
+  background: var(--lmnd-color-bg-subtle-interactive);
+}
+
+@media (hover: hover) {
+  .lmnd-kit-dropdown__item:hover {
+    background: var(--lmnd-color-bg-subtle-interactive);
+  }
+}
+
+.lmnd-kit-dropdown__item > .lmnd-icon:first-child {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-dropdown__label {
+  flex: 1;
+}
+
+/* The current choice is ticked. */
+.lmnd-kit-dropdown__item > .lmnd-icon:last-child:not(:first-child) {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+.lmnd-kit-dropdown__item--critical,
+.lmnd-kit-dropdown__item--critical > .lmnd-icon:first-child {
+  color: var(--lmnd-color-content-critical);
+}
+
+.lmnd-kit-dropdown__item--disabled {
+  opacity: var(--lmnd-opacity-disabled);
+  pointer-events: none;
+}
+
+.lmnd-kit-sheet {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 640px; /* literal */
+  max-height: calc(100% - var(--lmnd-spacing-1800));
+  padding-bottom: var(--lmnd-kit-safe-bottom);
+  overflow-y: auto;
+  scrollbar-width: none;
+  border-radius: var(--lmnd-radius-900) var(--lmnd-radius-900) 0 0;
+  background: var(--lmnd-kit-sheet-bg);
+  --lmnd-kit-sheet-bg: var(--lmnd-color-bg-default);
+}
+
+.lmnd-kit-sheet--subtle {
+  --lmnd-kit-sheet-bg: var(--lmnd-color-bg-subtle);
+}
+
+/* The footer action keeps the safe area itself, so it can stay fixed over the scrolling content. */
+.lmnd-kit-sheet:has(> .lmnd-kit-sheet__actions:last-child) {
+  padding-bottom: 0;
+}
+
+/* The handle and the bar stay at the top while the sheet's content scrolls under them. */
+.lmnd-kit-sheet__handle {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  flex-shrink: 0;
+  height: calc(var(--lmnd-spacing-200) + var(--lmnd-size-100));
+  background: var(--lmnd-kit-sheet-bg);
+}
+
+.lmnd-kit-sheet__handle::after {
+  content: "";
+  display: block;
+  width: var(--lmnd-size-800);
+  height: var(--lmnd-size-100);
+  margin: var(--lmnd-spacing-200) auto 0;
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-content-tertiary);
+}
+
+/* The scaffold's chrome: close on the left, optional actions on the right, sized like a top bar's row
+   and following the same button rules (LDS-SHEET-BAR-ACTIONS). */
+.lmnd-kit-sheet__bar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--lmnd-kit-sheet-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--lmnd-spacing-200);
+  min-height: calc(var(--lmnd-size-1400) + 2 * var(--lmnd-spacing-50));
+  padding: var(--lmnd-spacing-50) var(--lmnd-spacing-300);
+}
+
+.lmnd-kit-sheet__handle + .lmnd-kit-sheet__bar {
+  top: calc(var(--lmnd-spacing-200) + var(--lmnd-size-100));
+}
+
+.lmnd-kit-sheet__trailing {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-sheet__title {
+  padding: var(--lmnd-spacing-50) var(--lmnd-spacing-400) var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-sheet__intro {
+  padding: 0 var(--lmnd-spacing-400) var(--lmnd-spacing-200);
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-sheet__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-400);
+  padding: var(--lmnd-spacing-400);
+}
+
+/* Fixed while the content scrolls, fading it where they meet (APP-FOOTER-PLACEMENT). */
+.lmnd-kit-sheet__actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-200);
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-400) var(--lmnd-spacing-400);
+  background: linear-gradient(to bottom, transparent, var(--lmnd-kit-sheet-bg) var(--lmnd-spacing-200));
+}
+
+.lmnd-kit-sheet__actions:last-child {
+  padding-bottom: calc(var(--lmnd-spacing-400) + var(--lmnd-kit-safe-bottom));
+}
+
+.lmnd-kit-sheet__actions .lmnd-button {
+  width: 100%;
+}
+
+.lmnd-kit-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-400);
+  width: min(560px, max(280px, 100%)); /* literal: M3 dialog width bounds */
+  padding: var(--lmnd-spacing-400);
+  border-radius: var(--lmnd-radius-container-default);
+  background: var(--lmnd-color-bg-default);
+}
+
+.lmnd-kit-dialog__body {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--lmnd-spacing-200);
+}
+
+/* ---------- Toast ---------- */
+
+/* Always dark, as on iOS: the Compose toast inverts to white in dark mode. */
+.lmnd-kit-toast {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  max-width: 100%;
+  min-height: var(--lmnd-size-1100);
+  padding: var(--lmnd-spacing-300) var(--lmnd-spacing-400);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-always-dark);
+  box-shadow: var(--lmnd-shadow-lg);
+  color: var(--lmnd-color-content-always-light);
+}
+
+.lmnd-kit-toast > .lmnd-icon,
+.lmnd-kit-toast > .lmnd-spinner {
+  color: var(--lmnd-color-content-neutral-always-on-color);
+}
+
+.lmnd-kit-toast--success > .lmnd-icon { color: var(--lmnd-color-content-positive-always-on-color); }
+.lmnd-kit-toast--error > .lmnd-icon { color: var(--lmnd-color-content-critical-always-on-color); }
+
+.lmnd-kit-toast__label {
+  padding: 0 var(--lmnd-spacing-100);
+}
+
+.lmnd-kit-toast__action {
+  padding: var(--lmnd-spacing-100);
+  border: none;
+  background: none;
+  color: var(--lmnd-color-content-info-always-on-color);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.lmnd-kit-toast-host {
+  position: fixed;
+  right: 0;
+  bottom: calc(var(--lmnd-spacing-600) + var(--lmnd-kit-safe-bottom));
+  left: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--lmnd-spacing-400);
+  pointer-events: none;
+}
+
+.lmnd-kit-toast-host[id]:not(:target) {
+  display: none;
+}
+
+.lmnd-kit-toast-host > * {
+  pointer-events: auto;
+}
+
+/* A toast in a host dismisses itself, as Lemonade's does: Short (3s) by default, --medium 6s, --long 9s. A
+   loading toast stays until something replaces it. */
+.lmnd-kit-toast-host > .lmnd-kit-toast {
+  --lmnd-kit-toast-time: 3s;
+  animation: lmnd-kit-toast-in 0.2s cubic-bezier(0.2, 0, 0, 1) both, lmnd-kit-toast-out 0.2s cubic-bezier(0.4, 0, 1, 1) var(--lmnd-kit-toast-time) forwards;
+}
+
+.lmnd-kit-toast--medium { --lmnd-kit-toast-time: 6s; }
+.lmnd-kit-toast--long { --lmnd-kit-toast-time: 9s; }
+
+.lmnd-kit-toast-host > .lmnd-kit-toast:has(> .lmnd-spinner) {
+  animation: lmnd-kit-toast-in 0.2s cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+/* ---------- Tooltip ---------- */
+
+.lmnd-kit-tooltip {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 280px; /* literal */
+  padding: var(--lmnd-spacing-100);
+  border-radius: var(--lmnd-radius-600);
+  background: var(--lmnd-color-bg-default-inverse);
+  box-shadow: var(--lmnd-shadow-xl);
+  color: var(--lmnd-color-content-primary-inverse);
+}
+
+.lmnd-kit-tooltip--top::before,
+.lmnd-kit-tooltip--bottom::before {
+  content: "";
+  position: absolute;
+  left: 40px; /* literal */
+  width: 15px; /* literal */
+  height: 8px; /* literal */
+  background: inherit;
+}
+
+.lmnd-kit-tooltip--top::before {
+  bottom: 100%;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.lmnd-kit-tooltip--bottom::before {
+  top: 100%;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.lmnd-kit-tooltip__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-300);
+  padding: var(--lmnd-spacing-300);
+}
+
+.lmnd-kit-tooltip__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-100);
+}
+
+.lmnd-kit-tooltip__content {
+  opacity: var(--lmnd-opacity-90);
+}
+
+.lmnd-kit-tooltip__footer {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-100);
+}
+
+.lmnd-kit-tooltip__steps {
+  flex: 1;
+  opacity: var(--lmnd-opacity-80);
+}
+
+.lmnd-kit-tooltip__action {
+  min-height: var(--lmnd-size-800);
+  padding: var(--lmnd-spacing-100) var(--lmnd-spacing-300);
+  border: none;
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-default);
+  color: var(--lmnd-color-content-primary);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.lmnd-kit-tooltip__action--secondary {
+  background: transparent;
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-border-neutral-medium-inverse);
+  color: var(--lmnd-color-content-primary-inverse);
+}
+
+.lmnd-kit-tooltip__close {
+  position: absolute;
+  top: var(--lmnd-spacing-100);
+  right: var(--lmnd-spacing-100);
+  display: grid;
+  place-items: center;
+  width: var(--lmnd-size-800);
+  height: var(--lmnd-size-800);
+  padding: 0;
+  border: none;
+  border-radius: var(--lmnd-radius-full);
+  background: none;
+  color: var(--lmnd-color-content-primary-inverse);
+  opacity: var(--lmnd-opacity-40);
+  mix-blend-mode: hard-light;
+  cursor: pointer;
+}
+
+/* ---------- Text field ---------- */
+
+/* Built from real inputs, so typing and focus work with no script. */
+.lmnd-kit-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-50);
+  width: 100%;
+}
+
+.lmnd-kit-field__label-row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--lmnd-spacing-200);
+  padding: 0 var(--lmnd-spacing-50);
+}
+
+.lmnd-kit-field__label {
+  flex: 1;
+  color: var(--lmnd-color-content-primary);
+}
+
+.lmnd-kit-field__optional {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-field__box {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-300);
+  height: var(--lmnd-size-1400);
+  padding: 0 var(--lmnd-spacing-300);
+  border-radius: var(--lmnd-radius-400);
+  background: linear-gradient(var(--lmnd-kit-field-overlay, transparent), var(--lmnd-kit-field-overlay, transparent)), var(--lmnd-color-bg-default);
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-kit-field-border, var(--lmnd-color-border-neutral-medium));
+  color: var(--lmnd-color-content-primary);
+  transition: box-shadow 0.15s ease-in-out;
+}
+
+.lmnd-kit-field__box > .lmnd-icon {
+  color: var(--lmnd-color-content-secondary);
+}
+
+@media (hover: hover) {
+  .lmnd-kit-field__box:hover {
+    --lmnd-kit-field-overlay: var(--lmnd-color-bg-subtle-interactive);
+  }
+}
+
+/* The input owns the box's padding and the gaps beside it, which are the same spacing-300, so a tap
+   anywhere but on an icon or selector lands on it. */
+.lmnd-kit-field__input {
+  flex: 1;
+  align-self: stretch;
+  min-width: 0;
+  margin: 0 calc(-1 * var(--lmnd-spacing-300));
+  padding: 0 var(--lmnd-spacing-300);
+  border: none;
+  outline: none;
+  background: none;
+  color: var(--lmnd-color-content-primary);
+  caret-color: var(--lmnd-color-content-primary);
+  font-family: var(--lmnd-font-family-base);
+  font-size: var(--lmnd-font-size-400);
+  line-height: var(--lmnd-line-height-600);
+  font-weight: var(--lmnd-font-weight-regular);
+}
+
+.lmnd-kit-field__input::placeholder {
+  color: var(--lmnd-color-content-secondary);
+  opacity: 1;
+}
+
+.lmnd-kit-field__helper {
+  padding: 0 var(--lmnd-spacing-50);
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-field--error {
+  --lmnd-kit-field-overlay: var(--lmnd-color-bg-critical-subtle);
+  --lmnd-kit-field-border: var(--lmnd-color-border-critical);
+}
+
+.lmnd-kit-field--error .lmnd-kit-field__helper {
+  color: var(--lmnd-color-content-critical);
+}
+
+.lmnd-kit-field__box:focus-within,
+.lmnd-kit-field--focused .lmnd-kit-field__box {
+  --lmnd-kit-field-overlay: transparent;
+  --lmnd-kit-field-border: var(--lmnd-color-border-selected);
+  box-shadow:
+    inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-border-selected),
+    0 0 0 var(--lmnd-border-width-50) var(--lmnd-color-bg-elevated);
+}
+
+.lmnd-kit-field--disabled {
+  pointer-events: none;
+}
+
+.lmnd-kit-field--disabled .lmnd-kit-field__label {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-field--disabled .lmnd-kit-field__box {
+  --lmnd-kit-field-overlay: var(--lmnd-color-bg-elevated);
+  --lmnd-kit-field-border: transparent;
+}
+
+.lmnd-kit-field--disabled .lmnd-kit-field__box > * {
+  opacity: var(--lmnd-opacity-disabled);
+}
+
+/* TextArea: the text field's box, 180px tall by default (--lmnd-kit-field-height), padded spacing-400, with
+   the text starting at the top and scrolling inside. */
+.lmnd-kit-field--textarea .lmnd-kit-field__box {
+  align-items: stretch;
+  height: var(--lmnd-kit-field-height, 180px); /* literal: TextArea's default height */
+  padding: 0;
+}
+
+textarea.lmnd-kit-field__input {
+  margin: 0;
+  padding: var(--lmnd-spacing-400);
+  resize: none;
+  scrollbar-width: none;
+}
+
+/* Under the box: the support or error text, and a count/limit counter at the end. */
+.lmnd-kit-field__footer {
+  display: flex;
+  gap: var(--lmnd-spacing-200);
+  padding: 0 var(--lmnd-spacing-50);
+}
+
+.lmnd-kit-field__footer > .lmnd-kit-field__helper {
+  flex: 1;
+  padding: 0;
+}
+
+.lmnd-kit-field__counter {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--lmnd-color-content-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Past the limit the counter turns critical; typing is never blocked. */
+.lmnd-kit-field__counter--over {
+  color: var(--lmnd-color-content-critical);
+}
+
+.lmnd-kit-field--disabled .lmnd-kit-field__counter--over {
+  color: var(--lmnd-color-content-secondary);
+}
+
+/* A selector (country code, currency) ahead of the input, split by a rule. */
+.lmnd-kit-field__selector {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-100);
+  align-self: stretch;
+  margin-left: calc(-1 * var(--lmnd-spacing-300));
+  padding: 0 var(--lmnd-spacing-300) 0 var(--lmnd-spacing-400);
+  border: none;
+  border-right: var(--lmnd-border-width-25) solid var(--lmnd-color-border-neutral-medium);
+  background: none;
+  cursor: pointer;
+}
+
+/* Select field: the same shell, a value and a chevron, 16px inside. The box is a link to the sheet or
+   dropdown it opens, or holds a native <select> for the phone's own picker. */
+.lmnd-kit-select .lmnd-kit-field__box {
+  width: 100%;
+  padding: var(--lmnd-spacing-400);
+  border: none;
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* The native select covers the whole box, so any tap opens it; the chevron shows through it. */
+.lmnd-kit-select .lmnd-kit-field__box:has(> .lmnd-kit-field__select) {
+  position: relative;
+  justify-content: flex-end;
+}
+
+.lmnd-kit-field__select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  padding: 0 calc(var(--lmnd-spacing-400) + var(--lmnd-size-500) + var(--lmnd-spacing-300)) 0 var(--lmnd-spacing-400);
+  border: none;
+  border-radius: inherit;
+  outline: none;
+  background: none;
+  color: var(--lmnd-color-content-primary);
+  text-overflow: ellipsis;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.lmnd-kit-field__select:has(option[value=""]:checked) {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-select .lmnd-kit-field__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lmnd-kit-select .lmnd-kit-field__value:empty::before,
+.lmnd-kit-select .lmnd-kit-field__value--placeholder {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-select .lmnd-kit-field__value:empty::before {
+  content: attr(data-placeholder);
+}
+
+/* ---------- Search field ---------- */
+
+.lmnd-kit-search {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  width: 100%;
+}
+
+.lmnd-kit-search__box {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  min-width: 0;
+  height: var(--lmnd-size-1100);
+  padding: 0 var(--lmnd-spacing-300);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-elevated);
+  color: var(--lmnd-color-content-primary);
+}
+
+.lmnd-kit-search__box:focus-within {
+  background: var(--lmnd-color-bg-default);
+  box-shadow:
+    inset 0 0 0 var(--lmnd-border-width-selected) var(--lmnd-color-border-selected),
+    0 0 0 var(--lmnd-border-width-50) var(--lmnd-color-bg-elevated-high);
+}
+
+/* As in the text field, the input owns the gaps beside it, so the box's whole height is the input. */
+.lmnd-kit-search__input {
+  flex: 1;
+  align-self: stretch;
+  min-width: 0;
+  margin: 0 calc(-1 * var(--lmnd-spacing-200));
+  padding: 0 var(--lmnd-spacing-200);
+  border: none;
+  outline: none;
+  background: none;
+  color: var(--lmnd-color-content-primary);
+  font-family: var(--lmnd-font-family-base);
+  font-size: var(--lmnd-font-size-400);
+  line-height: var(--lmnd-line-height-600);
+  font-weight: var(--lmnd-font-weight-regular);
+}
+
+.lmnd-kit-search__input::placeholder {
+  color: var(--lmnd-color-content-tertiary);
+  opacity: 1;
+}
+
+.lmnd-kit-search__input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.lmnd-kit-search__clear {
+  display: none;
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-search__box:has(.lmnd-kit-search__input:not(:placeholder-shown)) .lmnd-kit-search__clear {
+  display: inline-block;
+}
+
+/* ---------- Switch, checkbox, radio ---------- */
+
+.lmnd-kit-switch,
+.lmnd-kit-checkbox,
+.lmnd-kit-radio {
+  flex-shrink: 0;
+  margin: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.lmnd-kit-switch:disabled,
+.lmnd-kit-checkbox:disabled,
+.lmnd-kit-radio:disabled {
+  cursor: not-allowed;
+}
+
+.lmnd-kit-switch:focus-visible,
+.lmnd-kit-checkbox:focus-visible,
+.lmnd-kit-radio:focus-visible {
+  outline: var(--lmnd-border-width-focus-ring) solid var(--lmnd-color-border-selected);
+  outline-offset: 1px; /* literal */
+}
+
+.lmnd-kit-switch {
+  position: relative;
+  width: 48px; /* literal */
+  height: var(--lmnd-size-700);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-elevated-high);
+}
+
+.lmnd-kit-switch::before {
+  content: "";
+  position: absolute;
+  top: var(--lmnd-spacing-50);
+  left: var(--lmnd-spacing-50);
+  width: var(--lmnd-size-600);
+  height: var(--lmnd-size-600);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-default);
+  box-shadow:
+    inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-bg-elevated),
+    var(--lmnd-shadow-sm);
+  transition: left 0.2s ease, width 0.15s ease;
+}
+
+.lmnd-kit-switch:active:not(:disabled) {
+  background: var(--lmnd-color-bg-elevated-pressed);
+}
+
+.lmnd-kit-switch:active:not(:disabled)::before {
+  width: var(--lmnd-size-700);
+}
+
+.lmnd-kit-switch:checked {
+  background: var(--lmnd-color-bg-brand-high);
+}
+
+.lmnd-kit-switch:checked:active:not(:disabled) {
+  background: var(--lmnd-color-bg-brand-high-pressed);
+}
+
+.lmnd-kit-switch:checked::before {
+  left: calc(100% - var(--lmnd-size-600) - var(--lmnd-spacing-50));
+}
+
+.lmnd-kit-switch:checked:active:not(:disabled)::before {
+  left: calc(100% - var(--lmnd-size-700) - var(--lmnd-spacing-50));
+}
+
+.lmnd-kit-switch:disabled {
+  background: var(--lmnd-color-bg-elevated-high);
+}
+
+.lmnd-kit-switch:disabled::before {
+  background: var(--lmnd-color-bg-elevated-high);
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-bg-elevated);
+}
+
+.lmnd-kit-checkbox {
+  position: relative;
+  width: var(--lmnd-size-550);
+  height: var(--lmnd-size-550);
+  margin-top: 1px; /* literal: centres the 22px box on a 24px line */
+  border-radius: var(--lmnd-radius-150);
+  background: var(--lmnd-color-bg-default);
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-50) var(--lmnd-color-border-neutral-high);
+}
+
+@media (hover: hover) {
+  .lmnd-kit-checkbox:hover:not(:disabled):not(:checked):not(:indeterminate) {
+    background: var(--lmnd-color-bg-subtle-interactive);
+  }
+
+  .lmnd-kit-checkbox:checked:hover:not(:disabled),
+  .lmnd-kit-checkbox:indeterminate:hover:not(:disabled) {
+    background: var(--lmnd-color-bg-brand-high-interactive);
+  }
+}
+
+.lmnd-kit-checkbox:checked,
+.lmnd-kit-checkbox:indeterminate {
+  background: var(--lmnd-color-bg-brand-high);
+  box-shadow: none;
+}
+
+.lmnd-kit-checkbox:checked::before,
+.lmnd-kit-checkbox:indeterminate::before {
+  content: "";
+  position: absolute;
+  inset: 1px; /* literal: centres the 20px icon in the 22px box */
+  background: var(--lmnd-color-content-primary-inverse);
+  -webkit-mask: var(--lmnd-kit-icon-check-small) center / contain no-repeat;
+  mask: var(--lmnd-kit-icon-check-small) center / contain no-repeat;
+}
+
+.lmnd-kit-checkbox:indeterminate::before {
+  -webkit-mask-image: var(--lmnd-kit-icon-minus);
+  mask-image: var(--lmnd-kit-icon-minus);
+}
+
+.lmnd-kit-checkbox:disabled {
+  background: var(--lmnd-color-bg-elevated-high);
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-50) var(--lmnd-color-border-neutral-medium);
+}
+
+.lmnd-kit-checkbox:disabled:checked,
+.lmnd-kit-checkbox:disabled:indeterminate {
+  box-shadow: none;
+}
+
+.lmnd-kit-checkbox:disabled::before {
+  background: var(--lmnd-color-content-tertiary);
+}
+
+.lmnd-kit-radio {
+  position: relative;
+  width: var(--lmnd-size-500);
+  height: var(--lmnd-size-500);
+  margin-top: var(--lmnd-spacing-50);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-default);
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-50) var(--lmnd-color-border-neutral-medium);
+}
+
+@media (hover: hover) {
+  .lmnd-kit-radio:hover:not(:disabled):not(:checked) {
+    background: var(--lmnd-color-bg-subtle-interactive);
+  }
+}
+
+.lmnd-kit-radio:checked {
+  background: var(--lmnd-color-bg-brand-high);
+  box-shadow: none;
+}
+
+.lmnd-kit-radio::before {
+  content: "";
+  position: absolute;
+  inset: calc((var(--lmnd-size-500) - var(--lmnd-size-250)) / 2);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-default);
+  transform: scale(0);
+  transition: transform 0.15s ease-in-out;
+}
+
+.lmnd-kit-radio:checked::before {
+  transform: scale(1);
+}
+
+.lmnd-kit-radio:disabled {
+  background: var(--lmnd-color-bg-elevated-high);
+}
+
+.lmnd-kit-radio:disabled:checked {
+  box-shadow: none;
+}
+
+.lmnd-kit-radio:disabled::before {
+  background: color-mix(in srgb, var(--lmnd-color-bg-default-inverse) 50%, transparent);
+}
+
+/* Labelled control: the control first, then the label and support text. */
+.lmnd-kit-control {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--lmnd-spacing-200);
+  cursor: pointer;
+}
+
+.lmnd-kit-control__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.lmnd-kit-control__support {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-control:has(:disabled) {
+  cursor: not-allowed;
+}
+
+.lmnd-kit-control:has(:disabled) .lmnd-kit-control__text {
+  opacity: var(--lmnd-opacity-disabled);
+}
+
+/* ---------- Select list item, outlined ---------- */
+
+.lmnd-kit-select-item {
+  display: flex;
+  align-items: center;
+  padding: var(--lmnd-spacing-300) var(--lmnd-spacing-400) var(--lmnd-spacing-300) var(--lmnd-spacing-300);
+  border-radius: var(--lmnd-radius-500);
+  background: var(--lmnd-color-bg-default);
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-40) var(--lmnd-color-border-neutral-low);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.lmnd-kit-select-item:has(input:checked) {
+  background: var(--lmnd-color-bg-brand-subtle);
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-50) var(--lmnd-color-border-selected);
+}
+
+.lmnd-kit-select-item__leading {
+  display: flex;
+  align-self: flex-start;
+  padding: var(--lmnd-spacing-50) var(--lmnd-spacing-300) var(--lmnd-spacing-50) 0;
+}
+
+.lmnd-kit-select-item__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  padding-right: var(--lmnd-spacing-300);
+}
+
+.lmnd-kit-select-item__support {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-select-item > input {
+  margin-left: var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-select-item:has(:disabled) {
+  cursor: not-allowed;
+}
+
+.lmnd-kit-select-item:has(:disabled) .lmnd-kit-select-item__leading,
+.lmnd-kit-select-item:has(:disabled) .lmnd-kit-select-item__content {
+  opacity: var(--lmnd-opacity-disabled);
+}
+
+/* ---------- Box selection ---------- */
+
+.lmnd-kit-box-selection {
+  display: flex;
+  flex-direction: column;
+  padding: var(--lmnd-spacing-300);
+  border-radius: var(--lmnd-radius-500);
+  background: var(--lmnd-color-bg-default);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, opacity 0.1s ease-in-out;
+}
+
+.lmnd-kit-box-selection--elevated {
+  background: var(--lmnd-color-bg-elevated);
+}
+
+.lmnd-kit-box-selection--outlined {
+  background: transparent;
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-40) var(--lmnd-color-border-neutral-medium);
+}
+
+.lmnd-kit-box-selection:active {
+  opacity: var(--lmnd-opacity-pressed);
+}
+
+.lmnd-kit-box-selection:has(> input:checked),
+.lmnd-kit-box-selection--selected {
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-50) var(--lmnd-color-border-selected);
+}
+
+.lmnd-kit-box-selection:not(.lmnd-kit-box-selection--outlined):has(> input:checked),
+.lmnd-kit-box-selection--selected:not(.lmnd-kit-box-selection--outlined) {
+  background: var(--lmnd-color-bg-default);
+}
+
+/* The input that drives the selection is hidden; a visible radio goes inside the content. */
+.lmnd-kit-box-selection > input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lmnd-kit-box-selection:has(> input:disabled) {
+  cursor: not-allowed;
+  opacity: var(--lmnd-opacity-disabled);
+}
+
+/* ---------- Segmented control ---------- */
+
+.lmnd-kit-segmented {
+  display: flex;
+  height: var(--lmnd-size-1200);
+  padding: var(--lmnd-spacing-100);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-elevated);
+}
+
+.lmnd-kit-segmented__item {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  gap: var(--lmnd-spacing-100);
+  min-width: 0;
+  padding: 0 var(--lmnd-spacing-300);
+  border-radius: var(--lmnd-radius-full);
+  color: var(--lmnd-color-content-secondary);
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lmnd-kit-segmented__item > input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lmnd-kit-segmented__item > .lmnd-icon {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+.lmnd-kit-segmented__item > span:last-child {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@media (hover: hover) {
+  .lmnd-kit-segmented__item:hover {
+    background: var(--lmnd-color-bg-default-interactive);
+  }
+}
+
+.lmnd-kit-segmented__item:active {
+  background: var(--lmnd-color-bg-default-pressed);
+}
+
+.lmnd-kit-segmented__item:has(input:checked),
+.lmnd-kit-segmented__item--selected {
+  background: var(--lmnd-color-bg-default);
+  box-shadow: var(--lmnd-shadow-xs);
+  color: var(--lmnd-color-content-primary);
+}
+
+.lmnd-kit-segmented__item:has(input:focus-visible) {
+  outline: var(--lmnd-border-width-focus-ring) solid var(--lmnd-color-border-selected);
+}
+
+/* With the kit's script, one pill slides under the selected option rather than each option lighting up.
+   kit.js measures the option and sets the pill's place; without it, the option's own background shows. */
+.lmnd-kit-segmented[data-lmnd-kit-sliding] {
+  position: relative;
+  isolation: isolate;
+}
+
+.lmnd-kit-segmented[data-lmnd-kit-sliding]::before {
+  content: "";
+  position: absolute;
+  top: var(--lmnd-kit-pill-top, 0);
+  left: 0;
+  z-index: -1;
+  width: var(--lmnd-kit-pill-width, 0);
+  height: var(--lmnd-kit-pill-height, 0);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-default);
+  box-shadow: var(--lmnd-shadow-xs);
+  transform: translateX(var(--lmnd-kit-pill-x, 0));
+  transition: transform 0.28s cubic-bezier(0.2, 0, 0, 1), width 0.28s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Placing the pill without a pick — on load, on a resize, once fonts load — doesn't animate it. */
+.lmnd-kit-segmented[data-lmnd-kit-still]::before {
+  transition: none;
+}
+
+.lmnd-kit-segmented[data-lmnd-kit-sliding] > .lmnd-kit-segmented__item {
+  transition: color 0.2s ease;
+}
+
+.lmnd-kit-segmented[data-lmnd-kit-sliding] > .lmnd-kit-segmented__item:has(input:checked),
+.lmnd-kit-segmented[data-lmnd-kit-sliding] > .lmnd-kit-segmented__item--selected {
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lmnd-kit-segmented[data-lmnd-kit-sliding]::before {
+    transition: none;
+  }
+}
+
+.lmnd-kit-segmented--medium { height: var(--lmnd-size-1000); }
+
+.lmnd-kit-segmented--small {
+  height: var(--lmnd-size-800);
+  padding: var(--lmnd-spacing-50);
+}
+
+.lmnd-kit-segmented--small .lmnd-kit-segmented__item {
+  gap: var(--lmnd-spacing-50);
+  padding: 0 var(--lmnd-spacing-200);
+}
+
+/* ---------- Tabs ---------- */
+
+.lmnd-kit-tabs {
+  display: flex;
+  box-shadow: inset 0 calc(-1 * var(--lmnd-border-width-25)) var(--lmnd-color-border-neutral-low);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.lmnd-kit-tabs__item {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--lmnd-size-1100);
+  padding: 0 var(--lmnd-spacing-200);
+  color: var(--lmnd-color-content-secondary);
+  cursor: pointer;
+}
+
+.lmnd-kit-tabs--stretch .lmnd-kit-tabs__item {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.lmnd-kit-tabs__item > input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lmnd-kit-tabs__pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-100);
+  min-width: 0;
+  padding: var(--lmnd-spacing-100) var(--lmnd-spacing-200);
+  border-radius: var(--lmnd-radius-150);
+}
+
+.lmnd-kit-tabs__pill > .lmnd-icon {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+  color: var(--lmnd-color-content-primary);
+}
+
+/* A hidden semibold copy reserves the selected width, so the label doesn't shift. */
+.lmnd-kit-tabs__label {
+  display: inline-grid;
+  white-space: nowrap;
+}
+
+.lmnd-kit-tabs__label::after {
+  content: attr(data-label);
+  height: 0;
+  visibility: hidden;
+  font-weight: var(--lmnd-font-weight-semibold);
+}
+
+@media (hover: hover) {
+  .lmnd-kit-tabs__item:hover .lmnd-kit-tabs__pill {
+    background: var(--lmnd-color-bg-subtle-interactive);
+  }
+}
+
+.lmnd-kit-tabs__item:active .lmnd-kit-tabs__pill {
+  background: var(--lmnd-color-bg-subtle-interactive);
+  opacity: var(--lmnd-opacity-pressed);
+}
+
+.lmnd-kit-tabs__item:has(input:checked),
+.lmnd-kit-tabs__item--selected {
+  color: var(--lmnd-color-content-brand-high);
+}
+
+.lmnd-kit-tabs__item:has(input:checked) .lmnd-kit-tabs__label,
+.lmnd-kit-tabs__item--selected .lmnd-kit-tabs__label {
+  font-weight: var(--lmnd-font-weight-semibold);
+}
+
+.lmnd-kit-tabs__item:has(input:checked) .lmnd-kit-tabs__pill > .lmnd-icon,
+.lmnd-kit-tabs__item--selected .lmnd-kit-tabs__pill > .lmnd-icon {
+  color: var(--lmnd-color-content-brand-high);
+}
+
+.lmnd-kit-tabs__item:has(input:checked) .lmnd-kit-tabs__pill::after,
+.lmnd-kit-tabs__item--selected .lmnd-kit-tabs__pill::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: calc(-1 * (var(--lmnd-size-1100) - 100%) / 2);
+  left: 0;
+  height: var(--lmnd-border-width-75);
+  border-radius: var(--lmnd-radius-50) var(--lmnd-radius-50) 0 0;
+  background: var(--lmnd-color-bg-brand-high);
+}
+
+/* With the kit's script, one underline slides to the selected tab, at its label's width, rather than
+   each tab drawing its own. Placing it without a pick doesn't animate it. */
+.lmnd-kit-tabs[data-lmnd-kit-sliding] {
+  position: relative;
+}
+
+.lmnd-kit-tabs[data-lmnd-kit-sliding]::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: var(--lmnd-kit-pill-width, 0);
+  height: var(--lmnd-border-width-75);
+  border-radius: var(--lmnd-radius-50) var(--lmnd-radius-50) 0 0;
+  background: var(--lmnd-color-bg-brand-high);
+  transform: translateX(var(--lmnd-kit-pill-x, 0));
+  transition: transform 0.28s cubic-bezier(0.2, 0, 0, 1), width 0.28s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.lmnd-kit-tabs[data-lmnd-kit-still]::after {
+  transition: none;
+}
+
+/* Outranks the selected tab's own underline, whose :has(input:checked) counts as a class and an element. */
+.lmnd-kit-tabs[data-lmnd-kit-sliding] > .lmnd-kit-tabs__item > .lmnd-kit-tabs__pill::after {
+  content: none;
+}
+
+.lmnd-kit-tabs[data-lmnd-kit-sliding] .lmnd-kit-tabs__item {
+  transition: color 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lmnd-kit-tabs[data-lmnd-kit-sliding]::after {
+    transition: none;
+  }
+}
+
+.lmnd-kit-tabs__item:has(input:focus-visible) .lmnd-kit-tabs__pill {
+  outline: var(--lmnd-border-width-focus-ring) solid var(--lmnd-color-border-selected);
+}
+
+.lmnd-kit-tabs__item:has(input:disabled) {
+  cursor: not-allowed;
+  opacity: var(--lmnd-opacity-disabled);
+}
+
+/* ---------- Pin code ---------- */
+
+.lmnd-kit-pin {
+  display: flex;
+  gap: var(--lmnd-spacing-200);
+  width: 100%;
+}
+
+.lmnd-kit-pin__box {
+  display: grid;
+  flex: 1 1 0;
+  place-items: center;
+  min-width: 0;
+  height: var(--lmnd-size-1400);
+  border-radius: var(--lmnd-radius-400);
+  background: var(--lmnd-color-bg-default);
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-border-neutral-medium);
+  color: var(--lmnd-color-content-primary);
+}
+
+.lmnd-kit-pin__box--active {
+  box-shadow:
+    inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-border-selected),
+    0 0 0 var(--lmnd-border-width-50) var(--lmnd-color-bg-elevated);
+}
+
+.lmnd-kit-pin--error .lmnd-kit-pin__box:not(.lmnd-kit-pin__box--active) {
+  background: linear-gradient(var(--lmnd-color-bg-critical-subtle), var(--lmnd-color-bg-critical-subtle)), var(--lmnd-color-bg-default);
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-border-critical);
+}
+
+.lmnd-kit-pin--disabled .lmnd-kit-pin__box {
+  background: linear-gradient(var(--lmnd-color-bg-elevated), var(--lmnd-color-bg-elevated)), var(--lmnd-color-bg-default);
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-border-neutral-low);
+  color: var(--lmnd-color-content-tertiary);
+}
+
+/* ---------- Empty state ---------- */
+
+/* A list's empty state (APP-SCREEN-EMPTY): it fills the space under the screen's chrome, centred a little
+   above the true middle. */
+.lmnd-kit-empty {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--lmnd-spacing-400);
+  padding: var(--lmnd-spacing-400) var(--lmnd-spacing-400) var(--lmnd-spacing-1000);
+  text-align: center;
+}
+
+.lmnd-kit-empty > .lmnd-icon {
+  width: var(--lmnd-size-1200);
+  height: var(--lmnd-size-1200);
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-empty__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.lmnd-kit-empty__subtitle {
+  color: var(--lmnd-color-content-secondary);
+}
+
+/* ---------- Details screen ---------- */
+
+/* An entity detail screen (the Teya app's DetailsListContainer): a top bar that starts transparent and
+   fills on scroll, a hero of up to four slots, and an optional wash in the status's colour. */
+.lmnd-kit-screen--details .lmnd-kit-top-bar {
+  background: transparent;
+}
+
+/* The container pads the sides only; the hero carries its own space below the bar. */
+.lmnd-kit-screen--details .lmnd-kit-content {
+  padding-top: 0;
+}
+
+/* The bar fills as the screen scrolls, where the browser can drive an animation from scroll position. */
+@supports (animation-timeline: scroll()) {
+  .lmnd-kit-screen--details .lmnd-kit-top-bar {
+    animation: lmnd-kit-top-bar-fill linear both;
+    animation-timeline: scroll(nearest);
+    animation-range: 0 var(--lmnd-size-1400);
+  }
+}
+
+@keyframes lmnd-kit-top-bar-fill {
+  to { background-color: var(--lmnd-color-bg-default); }
+}
+
+/* Where the browser can't drive that from scroll, kit.js marks the bar once the screen has scrolled. */
+.lmnd-kit-screen--details .lmnd-kit-top-bar--scrolled {
+  background: var(--lmnd-color-bg-default);
+}
+
+/* The wash: a radial gradient from the status's colour at the top, 85% of the width across, reaching
+   down past the hero, blended hard-light as the app draws it. */
+.lmnd-kit-screen--details[class*="lmnd-kit-screen--wash-"] {
+  --lmnd-kit-wash-shape: 85% 300px; /* literal: DetailsListContainer's radius, over a typical bar and hero */
+  background-color: var(--lmnd-color-bg-subtle);
+  background-image: radial-gradient(var(--lmnd-kit-wash-shape) at 50% 0, color-mix(in srgb, var(--lmnd-kit-wash) 30%, transparent), transparent); /* literal: 30% alpha in DetailsListContainer */
+  background-repeat: no-repeat;
+  background-attachment: local;
+  background-blend-mode: hard-light;
+}
+
+
+.lmnd-kit-screen--wash-positive { --lmnd-kit-wash: var(--lmnd-color-bg-positive); }
+.lmnd-kit-screen--wash-info { --lmnd-kit-wash: var(--lmnd-color-bg-info); }
+.lmnd-kit-screen--wash-warning { --lmnd-kit-wash: var(--lmnd-color-bg-caution); }
+.lmnd-kit-screen--wash-critical { --lmnd-kit-wash: var(--lmnd-color-bg-critical); }
+.lmnd-kit-screen--wash-featured { --lmnd-kit-wash: var(--lmnd-color-bg-featured); }
+.lmnd-kit-screen--wash-neutral { --lmnd-kit-wash: var(--lmnd-color-bg-neutral); }
+
+/* The hero: artwork, main information, status, metadata, centred, in that order (APP-DETAILS-HERO). */
+.lmnd-kit-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--lmnd-spacing-800) var(--lmnd-spacing-400) var(--lmnd-spacing-400);
+  text-align: center;
+}
+
+.lmnd-kit-hero__artwork {
+  margin-bottom: var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-hero__main {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--lmnd-color-content-primary);
+  white-space: nowrap;
+}
+
+.lmnd-kit-hero__main--struck {
+  text-decoration: line-through;
+}
+
+.lmnd-kit-hero__status {
+  margin-top: var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-hero__meta {
+  margin-top: var(--lmnd-spacing-400);
+  color: var(--lmnd-color-content-secondary);
+}
+
+/* With no status between them, the metadata reads as the main information's own line. */
+.lmnd-kit-hero__main + .lmnd-kit-hero__meta {
+  margin-top: var(--lmnd-spacing-200);
+}
+
+/* ---------- Mini widget ---------- */
+
+/* The Teya app's dashboard tiles: HALF widgets on its widget grid, one column each, keeping the
+   173 × 172 Figma footprint as their aspect ratio. The grid's gaps match the app's: 12px across,
+   16px down. Generic carries a figure; Box carries one free slot. */
+.lmnd-kit-widgets {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--lmnd-spacing-400) var(--lmnd-spacing-300);
+}
+
+.lmnd-kit-widget {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 173 / 172; /* literal: MiniWidgetDimensions in the Teya app */
+  min-width: 0;
+  overflow: hidden;
+  border-radius: var(--lmnd-radius-container-default);
+  background: var(--lmnd-color-bg-default);
+  color: var(--lmnd-color-content-primary);
+}
+
+/* The app's FULL span: the whole row, sized to its content rather than the mini footprint. A card of
+   rows on the grid takes the same span. */
+.lmnd-kit-widgets > .lmnd-kit-card,
+.lmnd-kit-widget--full {
+  grid-column: 1 / -1;
+  aspect-ratio: auto;
+}
+
+.lmnd-kit-widget--full .lmnd-kit-widget__content {
+  padding-bottom: var(--lmnd-spacing-400);
+}
+
+a.lmnd-kit-widget,
+button.lmnd-kit-widget {
+  border: none;
+  text-align: start;
+  cursor: pointer;
+  transition: opacity 0.1s ease-in-out;
+}
+
+a.lmnd-kit-widget:active,
+button.lmnd-kit-widget:active {
+  opacity: var(--lmnd-opacity-pressed);
+}
+
+.lmnd-kit-widget__heading {
+  display: flex;
+  align-items: center;
+  min-height: calc(var(--lmnd-size-500) + var(--lmnd-spacing-300));
+  padding: var(--lmnd-spacing-300) var(--lmnd-spacing-600) 0 var(--lmnd-spacing-400);
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-widget__heading > * {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lmnd-kit-widget__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-100);
+  min-height: 0;
+  padding: var(--lmnd-spacing-100) var(--lmnd-spacing-200) var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-widget__figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-100);
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-200) 0;
+}
+
+.lmnd-kit-widget__label {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-widget__value-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.lmnd-kit-widget__value,
+.lmnd-kit-widget__support {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lmnd-kit-widget__support {
+  color: var(--lmnd-color-content-secondary);
+}
+
+/* The bottom slot: one thing, pinned to the bottom of the widget. */
+.lmnd-kit-widget__bottom {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 0;
+  padding: 0 var(--lmnd-spacing-200) var(--lmnd-spacing-100);
+  overflow: hidden;
+}
+
+.lmnd-kit-widget__bottom-label {
+  color: var(--lmnd-color-content-secondary);
+}
+
+/* Box: the heading over one free slot. */
+.lmnd-kit-widget__slot {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  padding: var(--lmnd-spacing-100) var(--lmnd-spacing-200) var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-widget__slot > .lmnd-button {
+  width: 100%;
+  margin-top: auto;
+}
+
+/* Overlapping circular avatars, each cut out of the one before it by a ring of the widget's background. */
+.lmnd-kit-avatars {
+  display: flex;
+}
+
+.lmnd-kit-avatars > .lmnd-kit-symbol + .lmnd-kit-symbol {
+  margin-left: -10px; /* literal: the Figma overlap */
+  box-shadow:
+    inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-kit-symbol-border, var(--lmnd-color-border-neutral-low)),
+    0 0 0 var(--lmnd-border-width-50) var(--lmnd-color-bg-default);
+}
+
+/* A status tint behind the figure, in the status's colour, fading out down the widget. */
+.lmnd-kit-widget--positive::before,
+.lmnd-kit-widget--caution::before,
+.lmnd-kit-widget--critical::before {
+  content: "";
+  position: absolute;
+  inset: var(--lmnd-spacing-100) var(--lmnd-spacing-100) auto;
+  z-index: -1;
+  height: 128px; /* literal: MiniWidgetDimensions.contentHeight */
+  border-radius: var(--lmnd-radius-500) var(--lmnd-radius-500) 0 0;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--lmnd-kit-widget-tint) 10%, transparent), transparent); /* literal: 10% from the Figma template */
+}
+
+.lmnd-kit-widget--positive { --lmnd-kit-widget-tint: var(--lmnd-color-bg-positive); --lmnd-kit-widget-status: var(--lmnd-color-content-positive); }
+.lmnd-kit-widget--caution { --lmnd-kit-widget-tint: var(--lmnd-color-bg-caution); --lmnd-kit-widget-status: var(--lmnd-color-content-caution); }
+.lmnd-kit-widget--critical { --lmnd-kit-widget-tint: var(--lmnd-color-bg-critical); --lmnd-kit-widget-status: var(--lmnd-color-content-critical); }
+
+/* A status widget's support line is the status, in the tint's colour. */
+.lmnd-kit-widget--positive .lmnd-kit-widget__support,
+.lmnd-kit-widget--caution .lmnd-kit-widget__support,
+.lmnd-kit-widget--critical .lmnd-kit-widget__support {
+  color: var(--lmnd-kit-widget-status);
+}
+
+/* ---------- Device frame ---------- */
+
+/* A phone around the screen: 393 × 852 with an iOS status bar and home indicator. The screen scrolls
+   inside it, and overlays placed in the device cover the phone, not the window. On a phone-sized window
+   the frame drops away and the screen fills it. The status bar is phone chrome, not app UI, so it
+   draws the system's own shapes and type rather than Lemonade's. */
+body:has(> .lmnd-kit-device) {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  background: var(--lmnd-color-bg-default);
+}
+
+.lmnd-kit-device {
+  position: relative;
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  --lmnd-kit-safe-top: 62px; /* literal: iOS status bar */
+  --lmnd-kit-safe-bottom: 34px; /* literal: iOS home indicator */
+  width: 393px; /* literal: the reference phone */
+  height: min(852px, calc(100dvh - 2 * var(--lmnd-spacing-1200))); /* literal: the reference phone */
+  margin: var(--lmnd-spacing-1200) auto;
+  overflow: hidden;
+  border-radius: 52px; /* literal: the reference phone's screen corners */
+  background: var(--lmnd-color-bg-subtle);
+  box-shadow:
+    0 0 0 var(--lmnd-spacing-300) var(--lmnd-color-bg-always-dark),
+    var(--lmnd-shadow-xl);
+}
+
+.lmnd-kit-device:has(> .lmnd-kit-screen--default) {
+  background: var(--lmnd-color-bg-default);
+}
+
+/* The time, centred in the status bar's left half. */
+.lmnd-kit-device::before {
+  content: "9:41";
+  position: absolute;
+  top: 21px; /* literal: iOS status bar */
+  left: 0;
+  z-index: 30;
+  width: 50%;
+  color: var(--lmnd-color-content-primary);
+  font: 600 17px/22px -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif; /* literal: iOS status bar */
+  text-align: center;
+  pointer-events: none;
+}
+
+/* Signal, wifi and battery, centred in the right half of the 393px bar, and the home indicator at the
+   bottom: one layer, masked to those shapes, so all of them take the content colour in either theme. */
+.lmnd-kit-device::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background: var(--lmnd-color-content-primary);
+  pointer-events: none;
+  --lmnd-kit-signal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 19.2 12.2264'%3E%3Cpath fill-rule='evenodd' d='M19.2 1.14623C19.2 0.513183 18.7224 0 18.1333 0H17.0667C16.4776 0 16 0.513183 16 1.14623V11.0802C16 11.7132 16.4776 12.2264 17.0667 12.2264H18.1333C18.7224 12.2264 19.2 11.7132 19.2 11.0802V1.14623ZM11.7659 2.44528H12.8326C13.4217 2.44528 13.8992 2.97078 13.8992 3.61902V11.0527C13.8992 11.7009 13.4217 12.2264 12.8326 12.2264H11.7659C11.1768 12.2264 10.6992 11.7009 10.6992 11.0527V3.61902C10.6992 2.97078 11.1768 2.44528 11.7659 2.44528ZM7.43411 5.09433H6.36745C5.77834 5.09433 5.30078 5.62652 5.30078 6.28301V11.0377C5.30078 11.6942 5.77834 12.2264 6.36745 12.2264H7.43411C8.02322 12.2264 8.50078 11.6942 8.50078 11.0377V6.28301C8.50078 5.62652 8.02322 5.09433 7.43411 5.09433ZM2.13333 7.53962H1.06667C0.477563 7.53962 0 8.06421 0 8.71132V11.0547C0 11.7018 0.477563 12.2264 1.06667 12.2264H2.13333C2.72244 12.2264 3.2 11.7018 3.2 11.0547V8.71132C3.2 8.06421 2.72244 7.53962 2.13333 7.53962Z'/%3E%3C/svg%3E");
+  --lmnd-kit-wifi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 17.1417 12.3283'%3E%3Cpath fill-rule='evenodd' d='M8.5713 2.46628C11.0584 2.46639 13.4504 3.38847 15.2529 5.04195C15.3887 5.1696 15.6056 5.16799 15.7393 5.03834L17.0368 3.77487C17.1045 3.70911 17.1422 3.62004 17.1417 3.52735C17.1411 3.43467 17.1023 3.34603 17.0338 3.28104C12.3028 -1.09368 4.83907 -1.09368 0.108056 3.28104C0.039524 3.34598 0.000639766 3.4346 7.82398e-06 3.52728C-0.000624118 3.61996 0.0370483 3.70906 0.104689 3.77487L1.40255 5.03834C1.53615 5.16819 1.75327 5.1698 1.88893 5.04195C3.69167 3.38836 6.08395 2.46628 8.5713 2.46628ZM8.56795 6.68656C9.92527 6.68647 11.2341 7.19821 12.2403 8.12234C12.3763 8.2535 12.5907 8.25065 12.7234 8.11593L14.0106 6.79663C14.0784 6.72742 14.1161 6.63355 14.1151 6.53599C14.1141 6.43844 14.0746 6.34536 14.0054 6.27757C10.9416 3.38672 6.19688 3.38672 3.13305 6.27757C3.06384 6.34536 3.02435 6.43849 3.02345 6.53607C3.02254 6.63365 3.06028 6.72752 3.12822 6.79663L4.41513 8.11593C4.54778 8.25065 4.76215 8.2535 4.89823 8.12234C5.90368 7.19882 7.21152 6.68713 8.56795 6.68656ZM11.0924 9.48011C11.0943 9.58546 11.0572 9.68703 10.9899 9.76084L8.81327 12.2156C8.74946 12.2877 8.66247 12.3283 8.5717 12.3283C8.48093 12.3283 8.39394 12.2877 8.33013 12.2156L6.1531 9.76084C6.08585 9.68697 6.04886 9.58537 6.05085 9.48002C6.05284 9.37467 6.09365 9.27491 6.16364 9.20429C7.55374 7.8904 9.58966 7.8904 10.9798 9.20429C11.0497 9.27497 11.0904 9.37476 11.0924 9.48011Z'/%3E%3C/svg%3E");
+  --lmnd-kit-battery: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 27.328 13'%3E%3Crect opacity='.35' x='.5' y='.5' width='24' height='12' rx='3.8' fill='none' stroke='black'/%3E%3Cpath opacity='.4' d='M26 4.5v4.075a2.21 2.21 0 0 0 0-4.075'/%3E%3Crect x='2' y='2' width='21' height='9' rx='2.5'/%3E%3C/svg%3E");
+  --lmnd-kit-home: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 144 5'%3E%3Crect width='144' height='5' rx='2.5'/%3E%3C/svg%3E");
+  -webkit-mask:
+    var(--lmnd-kit-signal) 256px 26px / 19.2px 12.2px no-repeat,
+    var(--lmnd-kit-wifi) 282px 26px / 17.1px 12.3px no-repeat,
+    var(--lmnd-kit-battery) 306px 25.5px / 27.3px 13px no-repeat,
+    var(--lmnd-kit-home) 50% calc(100% - 8px) / 144px 5px no-repeat;
+  mask:
+    var(--lmnd-kit-signal) 256px 26px / 19.2px 12.2px no-repeat,
+    var(--lmnd-kit-wifi) 282px 26px / 17.1px 12.3px no-repeat,
+    var(--lmnd-kit-battery) 306px 25.5px / 27.3px 13px no-repeat,
+    var(--lmnd-kit-home) 50% calc(100% - 8px) / 144px 5px no-repeat; /* literal: iOS status bar and home indicator */
+}
+
+.lmnd-kit-device > .lmnd-kit-screen {
+  grid-row: 1;
+  grid-column: 1;
+  max-width: none;
+  min-height: 0;
+  margin: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.lmnd-kit-device > .lmnd-kit-scrim,
+.lmnd-kit-device > .lmnd-kit-dropdown-layer,
+.lmnd-kit-device > .lmnd-kit-drawer-layer,
+.lmnd-kit-device > .lmnd-kit-toast-host {
+  position: absolute;
+}
+
+@media (max-width: 480px) {
+  body:has(> .lmnd-kit-device) {
+    display: block;
+  }
+
+  .lmnd-kit-device {
+    grid-template-rows: minmax(0, 1fr);
+    --lmnd-kit-safe-top: env(safe-area-inset-top, 0px);
+    --lmnd-kit-safe-bottom: env(safe-area-inset-bottom, 0px);
+    width: 100%;
+    height: 100dvh;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .lmnd-kit-device::before,
+  .lmnd-kit-device::after {
+    display: none;
+  }
+}
+
+/* ---------- Several screens in one file ---------- */
+
+/* A device may hold several screens, each with an id (LHK-SCREENS). Without the kit's script, the screen a
+   link targets shows, or else the first. With it, kit.js marks the current screen and slides between them. */
+.lmnd-kit-device:has(> .lmnd-kit-screen[id]:target) > .lmnd-kit-screen[id]:not(:target),
+.lmnd-kit-device:not(:has(> .lmnd-kit-screen[id]:target)) > .lmnd-kit-screen[id] ~ .lmnd-kit-screen[id] {
+  display: none;
+}
+
+.lmnd-kit-device[data-lmnd-kit-screens] > .lmnd-kit-screen[id] {
+  display: none !important;
+}
+
+.lmnd-kit-device[data-lmnd-kit-screens] > .lmnd-kit-screen--current[id],
+.lmnd-kit-device[data-lmnd-kit-screens] > .lmnd-kit-screen--leaving[id] {
+  display: flex !important;
+}
+
+.lmnd-kit-screen--current {
+  z-index: 1;
+}
+
+/* Pushed screens come in from the right over the one they leave, which drifts left; going back reverses
+   it. */
+.lmnd-kit-screen--push-in { animation: lmnd-kit-push-in 0.3s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-screen--push-out { animation: lmnd-kit-push-out 0.3s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-screen--pop-in { animation: lmnd-kit-pop-in 0.3s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-screen--pop-out { z-index: 2; animation: lmnd-kit-pop-out 0.3s cubic-bezier(0.2, 0, 0, 1) both; }
+
+@keyframes lmnd-kit-push-in { from { transform: translateX(100%); } }
+@keyframes lmnd-kit-push-out { to { transform: translateX(-30%); } }
+@keyframes lmnd-kit-pop-in { from { transform: translateX(-30%); } }
+@keyframes lmnd-kit-pop-out { to { transform: translateX(100%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .lmnd-kit-screen--push-in,
+  .lmnd-kit-screen--push-out,
+  .lmnd-kit-screen--pop-in,
+  .lmnd-kit-screen--pop-out {
+    animation: none;
+  }
+}
+
+/* ---------- Overlays opening and closing ---------- */
+
+/* Opening needs no script: an overlay animates in as its link targets it. Closing does: kit.js keeps the
+   overlay on screen with --closing while it animates out. */
+/* The scrim's colour fades, not the scrim itself, so the sheet or menu inside stays solid as it moves. */
+.lmnd-kit-scrim[id]:target,
+.lmnd-kit-drawer-layer[id]:target { animation: lmnd-kit-scrim-in 0.3s ease both; }
+.lmnd-kit-scrim[id]:target > .lmnd-kit-sheet { animation: lmnd-kit-sheet-in 0.45s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-scrim[id]:target > .lmnd-kit-dialog { animation: lmnd-kit-grow-in 0.2s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-dropdown-layer[id]:target > .lmnd-kit-dropdown { animation: lmnd-kit-grow-in 0.15s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-drawer-layer[id]:target > .lmnd-kit-drawer { animation: lmnd-kit-drawer-in 0.42s cubic-bezier(0.2, 0, 0, 1) both; }
+
+.lmnd-kit-dropdown { transform-origin: top right; }
+.lmnd-kit-dropdown-layer--start .lmnd-kit-dropdown { transform-origin: top left; }
+
+.lmnd-kit-scrim.lmnd-kit-overlay--closing { display: flex !important; animation: lmnd-kit-scrim-out 0.32s ease both; }
+.lmnd-kit-dropdown-layer.lmnd-kit-overlay--closing,
+.lmnd-kit-drawer-layer.lmnd-kit-overlay--closing { display: block !important; }
+.lmnd-kit-drawer-layer.lmnd-kit-overlay--closing { animation: lmnd-kit-scrim-out 0.32s ease both; }
+.lmnd-kit-overlay--closing > .lmnd-kit-sheet { animation: lmnd-kit-sheet-out 0.32s cubic-bezier(0.3, 0, 1, 1) both; }
+.lmnd-kit-overlay--closing > .lmnd-kit-dialog,
+.lmnd-kit-overlay--closing > .lmnd-kit-dropdown { animation: lmnd-kit-grow-out 0.12s ease both; }
+.lmnd-kit-overlay--closing > .lmnd-kit-drawer { animation: lmnd-kit-drawer-out 0.32s cubic-bezier(0.3, 0, 1, 1) both; }
+
+@keyframes lmnd-kit-scrim-in { from { background-color: transparent; } }
+@keyframes lmnd-kit-scrim-out { to { background-color: transparent; } }
+@keyframes lmnd-kit-sheet-in { from { transform: translateY(100%); } }
+@keyframes lmnd-kit-sheet-out { to { transform: translateY(100%); } }
+@keyframes lmnd-kit-grow-in { from { opacity: 0; transform: scale(0.92); } }
+@keyframes lmnd-kit-grow-out { to { opacity: 0; transform: scale(0.92); } }
+@keyframes lmnd-kit-drawer-in { from { transform: translateX(-100%); } }
+@keyframes lmnd-kit-drawer-out { to { transform: translateX(-100%); } }
+@keyframes lmnd-kit-toast-in { from { opacity: 0; transform: translateY(var(--lmnd-spacing-200)); } }
+@keyframes lmnd-kit-toast-out { to { opacity: 0; visibility: hidden; transform: translateY(var(--lmnd-spacing-200)); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .lmnd-kit-scrim[id]:target,
+  .lmnd-kit-drawer-layer[id]:target,
+  .lmnd-kit-overlay--closing,
+  :target > .lmnd-kit-sheet,
+  :target > .lmnd-kit-dialog,
+  :target > .lmnd-kit-dropdown,
+  :target > .lmnd-kit-drawer,
+  .lmnd-kit-overlay--closing > * {
+    animation: none;
+  }
+
+  .lmnd-kit-top-bar,
+  .lmnd-kit-top-bar__center {
+    transition: none;
+  }
+
+  /* Still dismisses on time, without moving. */
+  .lmnd-kit-toast-host > .lmnd-kit-toast {
+    animation: lmnd-kit-toast-out 0s linear var(--lmnd-kit-toast-time) forwards;
+  }
+
+  .lmnd-kit-toast-host > .lmnd-kit-toast:has(> .lmnd-spinner) {
+    animation: none;
+  }
+}
