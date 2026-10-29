@@ -4,18 +4,16 @@
 
 **Rule.** Three layers, in this order.
 
-**Semantic** — `colors.content.contentPrimary`, `colors.background.bgSubtle` — whenever one fits,
-which is nearly always. A semantic token names what the colour means, so it follows the theme and it
-survives a palette change.
+**Semantic** — `contentPrimary`, `bgSubtle` — whenever one fits, which is nearly always. A semantic
+token names what the colour means, so it follows the theme and it survives a palette change.
 
-**Themed** — `LemonadeThemedColors`, theme-aware hues each with a saturated and a subtle palette — for
-colour the design system does not model: chart series, categories, per-role or per-product accents, a
-`SymbolContainer` that carries no voice. The layer is experimental and needs
-`@OptIn(ExperimentalLemonadeApi::class)`, so expect its call sites to be revisited.
+**Themed** — theme-aware hues, each with a saturated and a subtle palette — for colour the design
+system does not model: chart series, categories, per-role or per-product accents, a `SymbolContainer`
+that carries no voice. The layer is experimental, so expect its call sites to be revisited.
 
-**Primitive** — never in product code. The layer is marked `@InternalLemonadeApi`, and its own
-documentation says using it directly is a mistake. A primitive is as wrong as a hex literal and for
-the same reason: it cannot follow the theme.
+**Primitive** — never in product code. The layer is marked internal, and its own documentation says to
+use the theme instead. A primitive is as wrong as a hex literal and for the same reason: it cannot follow
+the theme.
 
 Pick a token by what it means, even when another holds the same value today. `bgAlwaysLight` and
 `bgDefault` match in the light theme and part in the dark one.
@@ -26,13 +24,48 @@ wrong in the other one.
 **Exceptions.** None for primitives. Reach for the themed layer only after checking that no semantic
 token carries the meaning.
 
-**Do / don't.** `colors.content.contentCritical` for an error. `LemonadeThemedColors` for the fourth
-series in a chart. Never a primitive palette entry, and never a hex literal.
+**Example.** An error under a failed payment, and the fourth series in a sales chart.
+
+Compose. The themed layer needs `@OptIn(ExperimentalLemonadeApi::class)`.
+
+```kotlin
+LemonadeUi.Text(
+    text = "Payment failed",
+    textStyle = LemonadeTheme.typography.bodySmallRegular,
+    color = LemonadeTheme.colors.content.contentCritical,
+)
+
+@OptIn(ExperimentalLemonadeApi::class)
+val refundsSeries = LemonadeTheme.themed.teal.background
+```
+
+SwiftUI. The themed layer has no opt-in here, but it is just as experimental.
+
+```swift
+LemonadeUi.Text(
+    "Payment failed",
+    textStyle: LemonadeTypography.shared.bodySmallRegular,
+    color: LemonadeTheme.colors.content.contentCritical
+)
+
+let refundsSeries = LemonadeTheme.themed.teal.background
+```
+
+HTML kit. The package ships no primitive tokens, so the wrong layer here is a literal.
+
+```html
+<p class="lmnd-text-body-small-regular lmnd-kit-critical">Payment failed</p>
+<div style="height: 40%; background: var(--lmnd-color-themed-teal-background)"></div>
+```
+
+**Don't.** `LemonadePrimitiveColors` in Compose (`@InternalLemonadeApi`) or SwiftUI, a `Color(0xFF…)` or
+`Color(red:green:blue:)` literal, a hex or `rgb()` value in a page's CSS, or a themed hue where a semantic
+token such as `contentCritical` fits.
 
 ## `LDS-COLOR-SURFACE` · A container is lighter than the page
 
 **Rule of thumb.** Fill a container with a colour lighter than the page under it: a `bgDefault` card on
-a `bgSubtle` page. That is `LemonadeUi.Card`'s default `background`.
+a `bgSubtle` page. That is the Card's default background.
 
 A darker container — `bgSubtle` or `bgElevated` on a `bgDefault` page — is allowed, but crowds the
 screen.
@@ -45,8 +78,49 @@ as no container at all.
 **Exceptions.** A brand or voice surface — `bgBrandSubtle` behind a promotion, `bgCriticalSubtle`
 behind an error — is chosen for its meaning, not its depth.
 
-**Do / don't.** A `Default` card on a `bgSubtle` page. Not a `Default` card on a `bgDefault` page,
-and not a `bgElevatedHigh` card straight on the page.
+**Example.** A card with today's sales, on a screen.
+
+Compose.
+
+```kotlin
+Column(
+    modifier = Modifier
+        .fillMaxSize()
+        .background(LemonadeTheme.colors.background.bgSubtle)
+        .padding(LemonadeTheme.spaces.spacing400),
+) {
+    LemonadeUi.Card(contentPadding = LemonadeCardPadding.Medium) {
+        LemonadeUi.Text(text = "Sales today: £1,240.50")
+    }
+}
+```
+
+SwiftUI.
+
+```swift
+ScrollView {
+    LemonadeUi.Card(contentPadding: .medium) {
+        LemonadeUi.Text("Sales today: £1,240.50")
+    }
+    .padding(LemonadeTheme.spaces.spacing400)
+}
+.background(LemonadeTheme.colors.background.bgSubtle)
+```
+
+HTML kit. `lmnd-kit-screen` is `bgSubtle` and `lmnd-kit-card` is `bgDefault`.
+
+```html
+<div class="lmnd-kit-screen">
+  <main class="lmnd-kit-content">
+    <div class="lmnd-kit-card lmnd-kit-card--pad-medium">
+      <div class="lmnd-kit-card__body"><p class="lmnd-text-body-medium-regular">Sales today: £1,240.50</p></div>
+    </div>
+  </main>
+</div>
+```
+
+**Don't.** A `Default` card on a `bgDefault` page, such as an `lmnd-kit-card` on an
+`lmnd-kit-screen--default`, or a `bgElevatedHigh` card straight on the page.
 
 ## `LDS-COLOR-ON-SURFACE` · Content on a filled surface uses that surface's pair
 
@@ -68,8 +142,59 @@ can pass in one theme and fail in the other.
 
 **Exceptions.** None.
 
-**Do / don't.** `contentCriticalOnColor` on `bgCritical`. Not `contentPrimary`, and not
-`contentAlwaysLight` because it happens to look right in light mode.
+**Example.** A promotion filled with `bgBrand`: a title and a line under it.
+
+Compose.
+
+```kotlin
+Column(
+    modifier = Modifier
+        .background(LemonadeTheme.colors.background.bgBrand)
+        .padding(LemonadeTheme.spaces.spacing400),
+) {
+    LemonadeUi.Text(
+        text = "Get paid the same day",
+        textStyle = LemonadeTheme.typography.headingXSmall,
+        color = LemonadeTheme.colors.content.contentOnBrandHigh,
+    )
+    LemonadeUi.Text(
+        text = "Instant payouts are free this month.",
+        textStyle = LemonadeTheme.typography.bodySmallRegular,
+        color = LemonadeTheme.colors.content.contentOnBrandLow,
+    )
+}
+```
+
+SwiftUI.
+
+```swift
+VStack(alignment: .leading) {
+    LemonadeUi.Text(
+        "Get paid the same day",
+        textStyle: LemonadeTypography.shared.headingXSmall,
+        color: LemonadeTheme.colors.content.contentOnBrandHigh
+    )
+    LemonadeUi.Text(
+        "Instant payouts are free this month.",
+        textStyle: LemonadeTypography.shared.bodySmallRegular,
+        color: LemonadeTheme.colors.content.contentOnBrandLow
+    )
+}
+.padding(LemonadeTheme.spaces.spacing400)
+.background(LemonadeTheme.colors.background.bgBrand)
+```
+
+HTML kit.
+
+```html
+<div style="padding: var(--lmnd-spacing-400); background: var(--lmnd-color-bg-brand)">
+  <h3 class="lmnd-text-heading-xsmall" style="color: var(--lmnd-color-content-on-brand-high)">Get paid the same day</h3>
+  <p class="lmnd-text-body-small-regular" style="color: var(--lmnd-color-content-on-brand-low)">Instant payouts are free this month.</p>
+</div>
+```
+
+**Don't.** `contentPrimary` or `contentSecondary` on `bgBrand`, `contentPrimary` on `bgCritical` where
+`contentCriticalOnColor` belongs, or `contentAlwaysLight` because it happens to look right in light mode.
 
 ## `LDS-COLOR-INVERSE` · Inverse is an opposite surface, `Always` is a fixed one, neither is dark mode
 
@@ -86,14 +211,70 @@ inverse token used to build dark mode flips back the moment the theme does.
 
 **Exceptions.** None.
 
-**Do / don't.** `bgDefaultInverse` with `contentPrimaryInverse` for a tooltip. `contentAlwaysLight`
-over a photo. Not `bgAlwaysDark` for a tooltip, and not `contentPrimaryInverse` to make a screen dark.
+**Example.** A floating bar counting the selected rows, and a product's name over its photo.
+
+Compose.
+
+```kotlin
+Box(
+    modifier = Modifier
+        .background(LemonadeTheme.colors.background.bgDefaultInverse)
+        .padding(LemonadeTheme.spaces.spacing400),
+) {
+    LemonadeUi.Text(
+        text = "3 selected",
+        color = LemonadeTheme.colors.content.contentPrimaryInverse,
+    )
+}
+
+Box(contentAlignment = Alignment.BottomStart) {
+    ProductPhoto()
+    LemonadeUi.Text(
+        text = "Flat white",
+        color = LemonadeTheme.colors.content.contentAlwaysLight,
+    )
+}
+```
+
+SwiftUI.
+
+```swift
+LemonadeUi.Text(
+    "3 selected",
+    color: LemonadeTheme.colors.content.contentPrimaryInverse
+)
+.padding(LemonadeTheme.spaces.spacing400)
+.background(LemonadeTheme.colors.background.bgDefaultInverse)
+
+ProductPhoto()
+    .overlay(alignment: .bottomLeading) {
+        LemonadeUi.Text(
+            "Flat white",
+            color: LemonadeTheme.colors.content.contentAlwaysLight
+        )
+    }
+```
+
+HTML kit.
+
+```html
+<div style="padding: var(--lmnd-spacing-400); background: var(--lmnd-color-bg-default-inverse); color: var(--lmnd-color-content-primary-inverse)">
+  <span class="lmnd-text-body-medium-regular">3 selected</span>
+</div>
+<figure style="position: relative">
+  <img src="flat-white.jpg" alt="">
+  <figcaption class="lmnd-text-body-medium-regular" style="position: absolute; bottom: 0; color: var(--lmnd-color-content-always-light)">Flat white</figcaption>
+</figure>
+```
+
+**Don't.** `bgAlwaysDark` for a tooltip or a bar like this one, `contentPrimaryInverse` over a photo, or
+`contentPrimaryInverse` to make a screen dark.
 
 ## `LDS-COLOR-STATE` · Pressed and disabled come from tokens
 
 **Rule.** A pressed element takes an interaction token of the surface it is drawn on — the
 `Interactive` or `Pressed` variant of that background — never a colour picked by hand. A disabled
-element is drawn whole at `opacities.state.opacityDisabled`, in its usual colours.
+element is drawn whole at `opacityDisabled`, in its usual colours.
 
 The Lemonade controls show both variants. A solid `Button` presses its fill to the fill's own
 `Interactive` token (`bgBrand` to `bgBrandInteractive`); a `Subtle` or `Ghost` one, which has no fill
@@ -104,7 +285,59 @@ of its own, shows `bgSubtlePressed`. `Switch` presses its track to `bgBrandHighP
 themes. A darker or greyer colour picked by hand is tuned for neither.
 
 **Exceptions.** A component that animates its press as opacity, as `BoxSelection` and `Tabs` do with
-`opacities.state.opacityPressed`.
+`opacityPressed`.
 
-**Do / don't.** `bgSubtlePressed` under a finger on a transparent row in a `bgSubtle` card. Not
-`bgElevated` borrowed as a pressed colour, and not `contentTertiary` text for a disabled label.
+**Example.** A day's bar in a custom sales chart, on a `bgSubtle` card, that a person presses to see that
+day, and the same bar disabled. A Lemonade component already does both, so this is only for an element
+built in the product.
+
+Compose.
+
+```kotlin
+val interactionSource = remember { MutableInteractionSource() }
+val pressed by interactionSource.collectIsPressedAsState()
+
+Box(
+    modifier = Modifier
+        .alpha(if (enabled) 1f else LemonadeTheme.opacities.state.opacityDisabled)
+        .background(if (pressed) LemonadeTheme.colors.interaction.bgSubtlePressed else Color.Transparent)
+        .clickable(
+            interactionSource = interactionSource,
+            indication = null,
+            enabled = enabled,
+            onClick = onSelectDay,
+        ),
+) {
+    SalesBar(day = "Mon")
+}
+```
+
+SwiftUI.
+
+```swift
+struct DayBarStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(configuration.isPressed ? LemonadeTheme.colors.interaction.bgSubtlePressed : .clear)
+    }
+}
+
+Button(action: onSelectDay) {
+    SalesBar(day: "Mon")
+}
+.buttonStyle(DayBarStyle())
+.disabled(!enabled)
+.opacity(enabled ? 1 : LemonadeTheme.opacity.state.opacityDisabled)
+```
+
+HTML kit.
+
+```html
+<style>
+  .day-bar:active { background: var(--lmnd-color-bg-subtle-pressed); }
+  .day-bar:disabled { opacity: var(--lmnd-opacity-disabled); }
+</style>
+<button type="button" class="day-bar lmnd-text-body-small-regular">Mon</button>
+```
+
+**Don't.** `bgElevated` borrowed as a pressed colour, or `contentTertiary` text for a disabled label.
