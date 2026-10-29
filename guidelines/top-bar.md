@@ -10,6 +10,7 @@ or Done, and their type says what each action is:
 - **A text action** takes the same two treatments: Primary · Solid for a primary action such as Save,
   Neutral · Subtle for any other, such as Reset.
 - **Back and Close** are secondary actions, so they are Neutral · Subtle too.
+- **A destructive action** is Critical · Subtle instead (`LDS-TOP-BAR-CRITICAL`).
 
 **Why.** A filled button reads as something to press. A ghost icon on the top bar's background looks like
 a label rather than a control, and two treatments for the same weight of action make the reader work out
@@ -99,3 +100,103 @@ HTML kit. An icon button with no variant or type class is Neutral · Subtle.
 
 **Don't.** `IconButton(type = Ghost)` or `lmnd-kit-icon-button--ghost` in either slot, a `NavigationAction`
 left at `filled = false`, or a SwiftUI `LemonadeUi.IconButton` inside a `ToolbarItem`.
+
+## `LDS-TOP-BAR-CRITICAL` · A destructive bar action is Critical · Subtle
+
+**Rule.** A destructive action, such as remove, delete or cancel an invite, that sits in a top bar or a
+sheet bar as a button is Critical · Subtle: a `bgCriticalSubtle` fill with a `contentCritical` glyph or
+label. It keeps the bar's small circular shape (`LDS-TOP-BAR-ACTIONS`). Inside the bar's menu it is a
+critical item instead. Whether it is a bar button or a menu item is the product's call.
+
+**Why.** A destructive action has to look different from the bar's other actions before it is pressed.
+A critical glyph on a neutral fill is easy to miss next to Subtle buttons; the critical fill and glyph
+together mark it the same way everywhere.
+
+**Exceptions.** In SwiftUI the system bar draws its own buttons, so a destructive action is the bar's own
+button with a `contentCritical` glyph.
+
+**Example.** A screen for removing the members picked on it.
+
+Compose.
+
+```kotlin
+LemonadeUi.IconButton(
+    icon = LemonadeIcons.Trash,
+    contentDescription = "Remove selected members",
+    onClick = onRemove,
+    variant = LemonadeButtonVariant.Critical,
+    type = LemonadeButtonType.Subtle,
+    size = LemonadeButtonSize.Small,
+    shape = LemonadeIconButtonShape.Circular,
+)
+```
+
+SwiftUI. `.critical` keeps the bar's own button and draws its glyph in `contentCritical`.
+
+```swift
+ToolbarItem(placement: .navigationBarTrailing) {
+    LemonadeUi.ToolbarIconButton(
+        icon: .trash,
+        contentDescription: "Remove selected members",
+        prominence: .critical,
+        action: onRemove
+    )
+}
+```
+
+HTML kit.
+
+```html
+<div class="lmnd-kit-top-bar__trailing">
+  <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--critical lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Remove selected members"><span class="lmnd-icon" data-icon="trash"></span></button>
+</div>
+```
+
+**Don't.** A Neutral · Subtle button with a critical glyph outside SwiftUI, a SwiftUI `.plain` button for
+a destructive action, or Critical · Solid, which is for the confirming button in a dialog.
+
+## `LDS-TOP-BAR-DESCRIPTION` · A large title's description sits right under it
+
+**Rule.** A screen with a large title puts its description in the title block, directly under the title,
+with no gap. It is never a paragraph of its own in the content. It follows `LDS-TEXT-INTRO`: at most two
+lines of `bodySmallRegular` in `contentSecondary`.
+
+**Why.** The title and its description are one unit, and the top bar draws them as one. A description
+written as its own paragraph takes the content's gap above it, drifts away from the title it explains
+and reads as the start of the content.
+
+**Exceptions.** A screen with an inline title has no title block to hold it. Its intro is the content's
+first paragraph.
+
+**Example.** A role screen titled "What can Dan do?", described as "Tick what this role can do".
+
+Compose. The top bar's `subtitle` is the description.
+
+```kotlin
+LemonadeUi.TopBar(
+    label = "What can Dan do?",
+    subtitle = "Tick what this role can do",
+)
+```
+
+SwiftUI. The top bar's `subheading` is the description. Before iOS 26 a top bar with a subheading is
+always inline, with the two stacked in the bar.
+
+```swift
+RolePermissions()
+    .lemonadeTopBar(
+        label: "What can Dan do?",
+        subheading: "Tick what this role can do"
+    )
+```
+
+HTML kit.
+
+```html
+<div class="lmnd-kit-large-title">
+  <h1 class="lmnd-text-heading-large">What can Dan do?</h1>
+  <p class="lmnd-kit-large-title__description lmnd-text-body-small-regular">Tick what this role can do</p>
+</div>
+```
+
+**Don't.** The description as a paragraph of its own after the title, with the content's gap above it.
