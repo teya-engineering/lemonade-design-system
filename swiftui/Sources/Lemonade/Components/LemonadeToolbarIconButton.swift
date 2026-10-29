@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - Toolbar Icon Prominence
 
-/// Fill treatment for a navigation bar's icon button.
+/// Fill and glyph colour treatment for a navigation bar's icon button.
 public enum LemonadeToolbarIconProminence {
     /// The bar draws its own chrome. Correct for almost every action.
     case plain
@@ -45,7 +45,7 @@ public extension LemonadeUi {
     /// - Parameters:
     ///   - icon: what the button shows
     ///   - contentDescription: describes the action, and becomes the accessibility label
-    ///   - prominence: fill treatment, `.plain` by default
+    ///   - prominence: fill and glyph colour treatment, `.plain` by default
     ///   - action: run on tap
     @ViewBuilder
     static func ToolbarIconButton(
