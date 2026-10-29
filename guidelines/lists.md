@@ -12,8 +12,57 @@ screen at the wrong height.
 **Exceptions.** A row whose layout no list item models — two values side by side under one label, a
 row built around a chart. State the reason at the site.
 
-**Do / don't.** `ActionListItem(leading = …, label = …, onClick = …)`. Not a `Row` of an icon, a
-`Text` and a `Spacer`.
+**Example.** A Notifications row in Settings that opens its own screen.
+
+Compose.
+
+```kotlin
+LemonadeUi.ActionListItem(
+    label = "Notifications",
+    leadingSlot = {
+        LemonadeUi.Icon(
+            icon = LemonadeIcons.Bell,
+            contentDescription = null,
+            tint = LemonadeTheme.colors.content.contentSecondary,
+        )
+    },
+    showNavigationIndicator = true,
+    onItemClicked = onOpenNotifications,
+)
+```
+
+SwiftUI.
+
+```swift
+LemonadeUi.ActionListItem(
+    label: "Notifications",
+    showNavigationIndicator: true,
+    onItemClicked: onOpenNotifications,
+    leadingSlot: {
+        LemonadeUi.Icon(
+            icon: .bell,
+            contentDescription: nil,
+            tint: LemonadeTheme.colors.content.contentSecondary
+        )
+    }
+)
+```
+
+HTML kit. An `lmnd-kit-list-item` on an `<a>` or a `<button>` is tappable; a label-and-value row is an
+`lmnd-kit-content-item`.
+
+```html
+<a href="#notifications" class="lmnd-kit-list-item">
+  <span class="lmnd-kit-list-item__row">
+    <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="bell" aria-hidden="true"></span></span>
+    <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Notifications</span></span>
+    <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+  </span>
+</a>
+```
+
+**Don't.** A `Row` or `HStack` of an icon, a `Text` and a `Spacer`, or a flex `<div>` of an icon and a
+label in place of `lmnd-kit-list-item`.
 
 ## `LDS-LIST-LEADING-SLOT` · What goes in the leading slot
 
@@ -45,19 +94,159 @@ settings list reads better with plain icons, an explainer with symbol containers
 settled once per kind rather than argued screen by screen. That table belongs in the product's own
 rules.
 
+**Example.** A Settings card whose Language row only needs a glyph to scan by, and a Stores card whose
+rows could carry a store's logo.
+
+Compose.
+
+```kotlin
+LemonadeUi.Card {
+    LemonadeUi.ActionListItem(
+        label = "Language",
+        leadingSlot = {
+            LemonadeUi.Icon(
+                icon = LemonadeIcons.Globe,
+                contentDescription = null,
+                tint = LemonadeTheme.colors.content.contentSecondary,
+            )
+        },
+        showNavigationIndicator = true,
+        onItemClicked = onOpenLanguage,
+    )
+}
+LemonadeUi.Card {
+    LemonadeUi.ActionListItem(
+        label = "Camden Market",
+        leadingSlot = {
+            LemonadeUi.SymbolContainer(
+                icon = LemonadeIcons.Store,
+                contentDescription = null,
+                shape = SymbolContainerShape.Rounded,
+            )
+        },
+        showNavigationIndicator = true,
+        onItemClicked = onOpenStore,
+    )
+}
+```
+
+SwiftUI.
+
+```swift
+LemonadeUi.Card {
+    LemonadeUi.ActionListItem(
+        label: "Language",
+        showNavigationIndicator: true,
+        onItemClicked: onOpenLanguage,
+        leadingSlot: {
+            LemonadeUi.Icon(
+                icon: .globe,
+                contentDescription: nil,
+                tint: LemonadeTheme.colors.content.contentSecondary
+            )
+        }
+    )
+}
+LemonadeUi.Card {
+    LemonadeUi.ActionListItem(
+        label: "Camden Market",
+        showNavigationIndicator: true,
+        onItemClicked: onOpenStore,
+        leadingSlot: {
+            LemonadeUi.SymbolContainer(icon: .store, contentDescription: nil, shape: .rounded)
+        }
+    )
+}
+```
+
+HTML kit. A bare `lmnd-icon` in `lmnd-kit-list-item__leading` takes `contentSecondary` on its own.
+
+```html
+<div class="lmnd-kit-card">
+  <a href="#language" class="lmnd-kit-list-item">
+    <span class="lmnd-kit-list-item__row">
+      <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="globe" aria-hidden="true"></span></span>
+      <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Language</span></span>
+      <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+    </span>
+  </a>
+</div>
+<div class="lmnd-kit-card">
+  <a href="#store" class="lmnd-kit-list-item">
+    <span class="lmnd-kit-list-item__row">
+      <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="store" aria-hidden="true"></span></span></span>
+      <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Camden Market</span></span>
+      <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+    </span>
+  </a>
+</div>
+```
+
+**Don't.** One card with some rows on a `SymbolContainer` and some on a plain icon, a bare glyph tinted
+`contentCritical` or `contentPositive` where a voiced `SymbolContainer` belongs, or a plain icon in
+any colour but `contentSecondary`.
+
 ## `LDS-LIST-SYMBOL-SHAPE` · A symbol in a row's leading slot is rounded
 
 **Rule.** When a row's leading slot holds a `SymbolContainer` (see `LDS-LIST-LEADING-SLOT`), it uses the
-rounded shape — `shape = SymbolContainerShape.Rounded` in Compose, `shape: .rounded` in SwiftUI — never the
-circle. This holds for every list row: `ActionListItem`, `ResourceListItem`, `SelectListItem` in both
-variants, and any other `ListItem`.
+rounded shape, never the circle. This holds for every list row: `ActionListItem`, `ResourceListItem`,
+`SelectListItem` in both variants, and any other `ListItem`.
 
 **Why.** One shape down a list keeps its left edge reading as one column. The rounded square is the list
-shape; the circle is the component's default on both platforms, so a row that doesn't ask for rounded
+shape; the circle is the component's default on every platform, so a row that doesn't ask for rounded
 gets the wrong one.
 
 **Exceptions.** None in a list row. A `SymbolContainer` outside one — a screen's hero, a badge host —
 keeps whichever shape its layout calls for.
 
-**Do / don't.** `leadingSlot = { SymbolContainer(icon = Store, shape = SymbolContainerShape.Rounded) }`.
-Not `SymbolContainer(icon = Store)`, which is a circle.
+**Example.** A store row leading with a store symbol.
+
+Compose.
+
+```kotlin
+LemonadeUi.ActionListItem(
+    label = "Camden Market",
+    supportText = "2 terminals",
+    leadingSlot = {
+        LemonadeUi.SymbolContainer(
+            icon = LemonadeIcons.Store,
+            contentDescription = null,
+            shape = SymbolContainerShape.Rounded,
+        )
+    },
+    showNavigationIndicator = true,
+    onItemClicked = onOpenStore,
+)
+```
+
+SwiftUI.
+
+```swift
+LemonadeUi.ActionListItem(
+    label: "Camden Market",
+    supportText: "2 terminals",
+    showNavigationIndicator: true,
+    onItemClicked: onOpenStore,
+    leadingSlot: {
+        LemonadeUi.SymbolContainer(icon: .store, contentDescription: nil, shape: .rounded)
+    }
+)
+```
+
+HTML kit.
+
+```html
+<a href="#store" class="lmnd-kit-list-item">
+  <span class="lmnd-kit-list-item__row">
+    <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="store" aria-hidden="true"></span></span></span>
+    <span class="lmnd-kit-list-item__content">
+      <span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Camden Market</span>
+      <span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">2 terminals</span>
+    </span>
+    <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+  </span>
+</a>
+```
+
+**Don't.** A `SymbolContainer` with no `shape`, which is a circle, or an `lmnd-kit-symbol` without
+`lmnd-kit-symbol--rounded`.
