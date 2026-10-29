@@ -130,7 +130,7 @@ HTML kit. `lmnd-kit-screen` is `bgSubtle` and `lmnd-kit-card` is `bgDefault`.
 | --- | --- |
 | `bgBrand`, `bgBrandHigh`, `bgBrandElevated` | `contentOnBrandHigh`, and `contentOnBrandLow` for secondary content |
 | `bgBrandSubtle` | `contentBrandHigh` |
-| `bgCritical`, `bgCaution`, `bgInfo`, `bgPositive`, `bgNeutral`, `bgFeatured` | `content<Voice>OnColor` |
+| `bgCritical`, `bgCaution`, `bgInfo`, `bgPositive`, `bgNeutral`, `bgFeatured` | `contentAlwaysLight` |
 | `bgDefaultInverse`, `bgSubtleInverse`, `bgElevatedInverse` | `contentPrimaryInverse`, `contentSecondaryInverse`, `contentTertiaryInverse` |
 
 On the neutral backgrounds and on a voice's subtle background, content is the ordinary
@@ -138,7 +138,8 @@ On the neutral backgrounds and on a voice's subtle background, content is the or
 `bgCriticalSubtle`).
 
 **Why.** A pair is checked for contrast as a pair, in both themes. `contentPrimary` on `bgCritical`
-can pass in one theme and fail in the other.
+can pass in one theme and fail in the other, and the `content<Voice>OnColor` tokens don't reach enough
+contrast on a voice's fill in either.
 
 **Exceptions.** None.
 
@@ -193,8 +194,8 @@ HTML kit.
 </div>
 ```
 
-**Don't.** `contentPrimary` or `contentSecondary` on `bgBrand`, `contentPrimary` on `bgCritical` where
-`contentCriticalOnColor` belongs, or `contentAlwaysLight` because it happens to look right in light mode.
+**Don't.** `contentPrimary` or `contentSecondary` on `bgBrand`, or `contentPrimary` or
+`contentCriticalOnColor` on `bgCritical`, where `contentAlwaysLight` belongs.
 
 ## `LDS-COLOR-INVERSE` · Inverse is an opposite surface, `Always` is a fixed one, neither is dark mode
 
@@ -209,7 +210,8 @@ Dark mode is the theme's job. A screen reaches it by using semantic tokens, neve
 **Why.** An `Always` token where an inverse one belongs stays dark on a dark screen and disappears. An
 inverse token used to build dark mode flips back the moment the theme does.
 
-**Exceptions.** None.
+**Exceptions.** The SwiftUI toast is `bgAlwaysDark` with `contentAlwaysLight` in both themes, because
+its Liquid Glass tint needs a dark surface. Compose and the HTML kit draw it on the inverse surface.
 
 **Example.** A floating bar counting the selected rows, and a product's name over its photo.
 
