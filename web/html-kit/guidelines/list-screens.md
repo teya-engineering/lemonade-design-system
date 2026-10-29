@@ -192,7 +192,9 @@ activated", a role, "Invited". A resource row carries no amount.
 card machines are both called "Front counter".
 
 **Exceptions.** A row that opens nothing, such as an invite still waiting to be accepted, drops the
-chevron and is a `<div>`.
+chevron and is a `<div>`. A team member's support line names every role they hold, a pre-defined role
+first and then custom roles by name ("Employee, Stockroom"), not their email: a team is scanned by role,
+and the email is in their details.
 
 ## `APP-RESOURCE-GROUPS` · Grouped by what needs doing
 
@@ -209,8 +211,10 @@ A control that switches what is listed — Card machines or Tap to Pay, Members 
 **Why.** A merchant mostly opens a list of things to deal with one of them. Putting what needs action
 first answers that before they scroll.
 
-**Exceptions.** Team members group by role, which is what a team is organised by, with an "Invited" card
-first: invitations still waiting to be accepted are what the merchant checks on after sending one.
+**Exceptions.** Team members don't group by role: one person can hold a pre-defined role and several
+custom roles, so a card per role would list them more than once. An "Invited" card comes first, since
+invitations still waiting to be accepted are what the merchant checks on after sending one, then everyone
+else in one card, by name, with their roles on each row (`APP-RESOURCE-ROWS`).
 
 ## `APP-RESOURCE-ADD` · Adding is the top bar's primary action
 
