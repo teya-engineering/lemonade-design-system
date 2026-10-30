@@ -216,3 +216,77 @@ HTML kit. A card with no padding class is `None`.
 
 **Don't.** `Card(contentPadding = None)` (or a bare `lmnd-kit-card`) wrapping a hand-built row — that
 combination is usually a list item being rebuilt, which `LDS-LIST-NO-HANDROLL` covers.
+
+## `LDS-CARD-RESIZE` · A card grows and shrinks, it never jumps
+
+**Rule.** When a card's content changes size, such as a row shown or hidden or a section expanded, the
+card animates to its new size over 200 ms. With the system's reduce motion setting on, it changes at
+once. The content that changes stays inside the card that holds it, and the card stays the same card
+across the change.
+
+**Why.** A jump moves everything below the card in a single frame, so the reader loses what was added
+or removed and where the rest of the screen went.
+
+**Exceptions.** None.
+
+**Example.** A payout card with a Show more action that reveals two more rows.
+
+Compose. The card animates its own size.
+
+```kotlin
+var isExpanded by remember { mutableStateOf(false) }
+LemonadeUi.Card(
+    footerAction = CardFooterActionConfig(
+        label = if (isExpanded) "Show less" else "Show more",
+        onClick = { isExpanded = !isExpanded },
+    ),
+) {
+    LemonadeUi.ContentListItem(label = "Amount", value = "£1,240.50", showDivider = isExpanded)
+    if (isExpanded) {
+        LemonadeUi.ContentListItem(label = "Fees", value = "£12.40", showDivider = true)
+        LemonadeUi.ContentListItem(label = "Paid to", value = "Barclays •• 2210")
+    }
+}
+```
+
+SwiftUI. SwiftUI animates a layout change only when the state change asks for it, so wrap the change
+in `LemonadeMotion.cardResize`.
+
+```swift
+LemonadeUi.Card(
+    footerAction: CardFooterActionConfig(
+        label: isExpanded ? "Show less" : "Show more",
+        onClick: {
+            withAnimation(LemonadeMotion.cardResize) {
+                isExpanded.toggle()
+            }
+        }
+    )
+) {
+    LemonadeUi.ContentListItem(label: "Amount", value: "£1,240.50", showDivider: isExpanded)
+    if isExpanded {
+        LemonadeUi.ContentListItem(label: "Fees", value: "£12.40", showDivider: true)
+        LemonadeUi.ContentListItem(label: "Paid to", value: "Barclays •• 2210")
+    }
+}
+```
+
+HTML kit. The kit's script plays the change whenever the card's content changes size. Here the
+page's own script shows the rows.
+
+```html
+<div class="lmnd-kit-card">
+  <div class="lmnd-kit-content-item"><span class="lmnd-kit-content-item__label lmnd-text-body-medium-regular">Amount</span><span class="lmnd-kit-content-item__value lmnd-text-body-medium-medium">£1,240.50</span></div>
+  <div id="payout-more" hidden>
+    <hr class="lmnd-kit-divider">
+    <div class="lmnd-kit-content-item"><span class="lmnd-kit-content-item__label lmnd-text-body-medium-regular">Fees</span><span class="lmnd-kit-content-item__value lmnd-text-body-medium-medium">£12.40</span></div>
+    <hr class="lmnd-kit-divider">
+    <div class="lmnd-kit-content-item"><span class="lmnd-kit-content-item__label lmnd-text-body-medium-regular">Paid to</span><span class="lmnd-kit-content-item__value lmnd-text-body-medium-medium">Barclays •• 2210</span></div>
+  </div>
+  <button type="button" class="lmnd-kit-card__footer lmnd-text-body-small-semibold" aria-controls="payout-more" aria-expanded="false" onclick="const more = document.getElementById('payout-more'); more.hidden = !more.hidden; this.setAttribute('aria-expanded', !more.hidden); this.textContent = more.hidden ? 'Show more' : 'Show less'">Show more</button>
+</div>
+```
+
+**Don't.** Swapping one card for a taller one, such as `if (isExpanded) FullPayoutCard() else
+PayoutCard()`; a size change in SwiftUI outside `withAnimation(LemonadeMotion.cardResize)`; or a fixed
+`height` on `lmnd-kit-card`.
