@@ -77,9 +77,11 @@ private fun CoreCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .then(resize)
             .clip(shape = LocalShapes.current.semantic.radiusContainerDefault)
-            .background(color = background.background),
+            .background(color = background.background)
+            // Must stay inside clip and background: anything inside this modifier snaps to the
+            // target size, so outside them the surface would jump and only a gap would animate.
+            .then(resize),
     ) {
         if (header != null) {
             CardHeader(config = header)
