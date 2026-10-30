@@ -1,6 +1,9 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -53,6 +56,8 @@ public fun LemonadeUi.Card(
     )
 }
 
+private const val CARD_RESIZE_MILLIS = 200
+
 @Composable
 private fun CoreCard(
     modifier: Modifier = Modifier,
@@ -62,9 +67,17 @@ private fun CoreCard(
     footerAction: CardFooterActionConfig? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
+    val resize = if (prefersReducedMotion()) {
+        Modifier
+    } else {
+        Modifier.animateContentSize(
+            animationSpec = tween(durationMillis = CARD_RESIZE_MILLIS, easing = FastOutSlowInEasing),
+        )
+    }
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .then(resize)
             .clip(shape = LocalShapes.current.semantic.radiusContainerDefault)
             .background(color = background.background),
     ) {
