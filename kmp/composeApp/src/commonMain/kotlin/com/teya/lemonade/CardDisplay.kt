@@ -8,6 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeAssetSize
@@ -247,7 +251,42 @@ internal fun CardDisplay() {
             }
         }
 
+        item(key = "Resize") {
+            CardSection(title = "Resize") {
+                ResizingCard()
+            }
+        }
+
         lazyGroupedCardSection()
+    }
+}
+
+@Composable
+private fun ResizingCard() {
+    var isExpanded by remember { mutableStateOf(false) }
+    LemonadeUi.Card(
+        contentPadding = LemonadeCardPadding.Medium,
+        footerAction = CardFooterActionConfig(
+            label = if (isExpanded) "Show less" else "Show more",
+            onClick = { isExpanded = !isExpanded },
+        ),
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)) {
+            LemonadeUi.Text(
+                text = "The card grows and shrinks with its content.",
+                textStyle = LemonadeTheme.typography.bodyMediumRegular,
+            )
+            if (isExpanded) {
+                LemonadeUi.Text(
+                    text = "Nothing to wrap: the card animates its own size.",
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                )
+                LemonadeUi.Text(
+                    text = "With animations removed, the change is instant.",
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                )
+            }
+        }
     }
 }
 
