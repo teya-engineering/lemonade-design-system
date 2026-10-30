@@ -1,5 +1,6 @@
 package com.teya.lemonade
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,11 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.LemonadeShadow
 
 /**
  * A dropdown menu overlay following the Lemonade Design System.
@@ -51,7 +55,8 @@ import com.teya.lemonade.core.LemonadeIcons
  *
  * - The dropdown enforces a minimum width of 248.dp.
  * - Uses [LemonadeTheme.shapes.radius500] for rounded corners.
- * - Background color is [LemonadeTheme.colors.background.bgDefault].
+ * - Background color is [LemonadeTheme.colors.background.bgDefault], with a
+ *   [LemonadeShadow.Medium] shadow.
  * - Vertical offset is [LemonadeTheme.spaces.spacing200] from the anchor.
  * - Items are inset [LemonadeTheme.spaces.spacing100] from the panel and stack flush against one
  *   another.
@@ -80,21 +85,36 @@ public fun LemonadeUi.Dropdown(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val dropdownMinWidth = 248.dp
+    val shape = LemonadeTheme.shapes.radius500
     val mirrorSystemBars = systemBarsMirror()
 
     DropdownMenu(
         expanded = expanded,
         onDismissRequest = onDismissRequest,
-        // The inset belongs on the menu: padding each item opens a gap between rows.
+        // The popup window is exactly the menu's size, so the menu is drawn inside it with room
+        // around it, or the window clips the shadow. The inner inset belongs on the menu: padding
+        // each item opens a gap between rows.
         modifier = Modifier
-            .defaultMinSize(minWidth = dropdownMinWidth)
-            .padding(horizontal = LemonadeTheme.spaces.spacing100),
+            .padding(
+                start = LemonadeTheme.spaces.spacing100,
+                end = LemonadeTheme.spaces.spacing100,
+                bottom = LemonadeTheme.spaces.spacing200,
+            ).defaultMinSize(minWidth = dropdownMinWidth)
+            .lemonadeShadow(
+                shadow = LemonadeShadow.Medium,
+                shape = shape,
+            ).background(
+                color = LemonadeTheme.colors.background.bgDefault,
+                shape = shape,
+            ).padding(horizontal = LemonadeTheme.spaces.spacing100),
         offset = DpOffset(
             y = LemonadeTheme.spaces.spacing200,
             x = LemonadeTheme.spaces.spacing0,
         ),
-        containerColor = LemonadeTheme.colors.background.bgDefault,
-        shape = LemonadeTheme.shapes.radius500,
+        containerColor = Color.Transparent,
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
+        shape = RectangleShape,
         properties = PopupProperties(
             focusable = true,
             clippingEnabled = true,
