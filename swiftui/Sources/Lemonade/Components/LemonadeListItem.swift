@@ -48,8 +48,7 @@ public enum LemonadeListItemVoice {
 
 // MARK: - ListItemTextContent
 
-/// The text stack shared by the string-based overloads and the outlined `SelectListItem`.
-/// Has no stack of its own, so its children take the spacing of the caller's stack.
+/// Emits its children directly, so the parent stack sets their spacing.
 struct ListItemTextContent<SlotContent: View>: View {
     let label: String
     let topLabel: String?

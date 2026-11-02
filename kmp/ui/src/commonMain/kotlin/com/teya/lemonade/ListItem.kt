@@ -695,7 +695,6 @@ private fun singleLineLeadingAlignment(
         Alignment.Top
     }
 
-/** The text stack shared by the string-based overloads and the outlined `SelectListItem`. */
 @Composable
 internal inline fun ColumnScope.ListItemTextContent(
     label: String,
