@@ -12,8 +12,8 @@ the theme and it survives a palette change. The kit's components and the `lmnd-k
 helpers already use them.
 
 **Themed** — `--lmnd-color-themed-<hue>-*`, theme-aware hues — for colour the design system does not
-model: chart series, categories, per-role or per-product accents. The layer is experimental in the app,
-so expect a prototype that uses it to be revisited.
+model: chart series, categories, per-role or per-product accents, a `lmnd-kit-symbol` that carries no
+voice. The layer is experimental in the app, so expect a prototype that uses it to be revisited.
 
 **Primitive** — never. A hex value, `rgb()` or a named colour is as wrong as a primitive, for the same
 reason: it cannot follow the theme.

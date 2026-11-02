@@ -48,7 +48,7 @@ this order, and only the main information is required:
 
 | Slot | Markup | Filled when |
 | --- | --- | --- |
-| Artwork | `lmnd-kit-hero__artwork` on a `lmnd-kit-symbol lmnd-kit-symbol--xx-large lmnd-kit-symbol--rounded`, holding a logo, initials or a device image | The thing has a face worth showing |
+| Artwork | `lmnd-kit-hero__artwork` on an illustration, or on a `lmnd-kit-symbol lmnd-kit-symbol--xx-large lmnd-kit-symbol--rounded` holding a logo, initials or a device image | The thing has a face worth showing |
 | Main information | `lmnd-kit-hero__main`: an amount in `lmnd-text-display-large`, or a name in `lmnd-text-heading-large`, on one line | Always |
 | Status | `lmnd-kit-hero__status` on a `lmnd-kit-tag` — Paid, In process, Declined | The thing has a status |
 | Metadata | `lmnd-kit-hero__meta` in `lmnd-text-body-small-regular`: the facts that place it, joined by ` • ` | There is more worth knowing |
@@ -60,8 +60,7 @@ The hero draws its own spacing, so a screen adds none:
 | The top bar and the hero's first slot | `spacing-800` |
 | Artwork and main information | `spacing-200` |
 | Main information and status | `spacing-200` |
-| Status and metadata | `spacing-400` |
-| Main information and metadata, when there is no status | `spacing-200` |
+| Status, or main information when there is no status, and metadata | `spacing-400` |
 | Below the hero's last slot, its bottom padding | `spacing-400`, before the content's gap to the first card |
 
 A transaction fills main information, status and metadata, with no artwork. A terminal fills artwork, its
@@ -121,7 +120,7 @@ last. Each card chooses one layout for all its rows, by its longest value:
 | The card's values | Layout |
 | --- | --- |
 | All short — a channel, a brand, four digits, a date | Label beside value, the default |
-| Any one of them long — an address, an IBAN, a reference, a full device id | `lmnd-kit-content-item--vertical` on every row: label above value |
+| Any one of them long — an address, an IBAN, a business activity, a full device id | `lmnd-kit-content-item--vertical` on every row: label above value |
 
 The rows' density is chosen once for the whole screen, by what the entity is:
 
@@ -149,8 +148,8 @@ at a time. One density per screen keeps every card on it in the same rhythm.
 
 **Exceptions.** None.
 
-**Do / don't.** A Record card with a long reference, every row vertical. Not one vertical row among
-horizontal ones, and not a reference that wraps beside its label. A card machine's Details card with
+**Do / don't.** A Record card with a long IBAN, every row vertical. Not one vertical row among
+horizontal ones, and not an IBAN that wraps beside its label. A card machine's Details card with
 comfortable rows. Not compact rows on a card machine because the transaction example has them.
 
 ## `APP-DETAILS-ACTIONS` · Actions scroll with the content, in one place
@@ -181,11 +180,11 @@ fixed to the bottom, and not Download receipt in both the actions card and the t
 
 **Kind.** Rule.
 
-**Rule.** A details screen's other states keep its top bar and hero, which come from the row the user
-tapped, and change only what's below them:
+**Rule.** A details screen's other states keep its top bar and hero, and change only what's below them.
+Where the list already knew the value and the status, the hero draws them from the row the user tapped.
 
-- **Loading:** skeletons in the real layout — the cards and rows at the sizes they'll have — never a
-  spinner.
+- **Loading:** skeletons in the real layout — the hero's value and tag, then the cards and rows at the
+  sizes they'll have — never a spinner.
 - **Error:** the error, with a retry, sits where the cards would be.
 - **Empty:** there is none. The screen was reached by tapping a thing that exists; a card with nothing in
   it is removed.

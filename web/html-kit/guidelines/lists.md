@@ -51,8 +51,11 @@ the card two left edges.
 **One kind per card.** A card whose rows mix the two is a violation whatever the rules above say about
 each row on its own.
 
-**Colour.** A `lmnd-kit-symbol` with no voice stays neutral. A voice wins wherever the row means positive,
-critical, caution or brand, and a primitive colour is never the answer. See `LDS-COLOR-SEMANTIC`.
+**Colour.** A `lmnd-kit-symbol` with no voice can take its colour from the themed layer,
+`--lmnd-color-themed-<hue>-*` — theme-aware hues, each with a saturated and a subtle palette. That is the
+layer for colour the design system does not model: a category, a per-role accent, one product against
+another. A voice wins wherever the row means positive, critical, caution or brand, and a primitive colour
+is never the answer. See `LDS-COLOR-SEMANTIC`.
 
 **Exceptions.** Where neither test above applies, the screen kind decides — a settings list reads better
 with plain icons, an explainer with symbol containers — so the weight is settled once per kind rather

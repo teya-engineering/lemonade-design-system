@@ -107,7 +107,7 @@ needs them, each is its own file (`LHK-FLOWS`): `payouts.html`, `payouts-loading
 | Background or optimistic work | Nothing |
 
 The chrome doesn't wait: the top bar keeps its real title and its Back or Close, and a footer action is
-present but disabled. An entity detail skeletons its cards under a hero it already knows (`details.md`).
+present but disabled. An entity detail skeletons its hero and its cards (`details.md`).
 
 **Why.** A skeleton in the real layout means nothing shifts when the data lands, and the user can always
 leave.
@@ -219,6 +219,26 @@ space under it:
 the user needs to do next, so the bar that holds it stays where it was.
 
 **Exceptions.** None for a list.
+
+## `APP-SHEET-OR-PAGE` · Reading is a page, a task is a sheet
+
+**Kind.** Rule.
+
+**Rule.** Opening a thing to read it, from a list, pushes a page with Back. A task the user can leave,
+such as creating, editing or inviting, opens as a `lmnd-kit-sheet` with Close, and its steps stay inside
+that sheet. A task never opens as a full-screen cover. When the task ends, the sheet closes and the user
+is where they started.
+
+**Why.** It follows both platforms: pushing moves deeper through a hierarchy, and a modal holds a
+self-contained task. A row's arrow promises a new page, and a page keeps swipe-back. A sheet keeps the
+screen it came from in view, so the task reads as something to finish or leave, where a full-screen
+cover feels like a separate app.
+
+**Exceptions.** The camera, which needs the whole screen. A flow with no screen underneath to return to,
+such as onboarding, takes the whole screen.
+
+**Do / don't.** A member's row links to their page, and Edit role on that page opens a sheet. Not a
+member's details in a sheet, and not Invite as a page of its own.
 
 ## `APP-FILTER-BAR` · Filters are chips above the list
 

@@ -77,3 +77,22 @@ the list rows still reach the edges.
 **Do / don't.** `<div class="lmnd-kit-card">` around `lmnd-kit-list-item`s. `<div class="lmnd-kit-card lmnd-kit-card--pad-medium">`
 around a timeline or a paragraph. Not an unpadded card around a hand-built row — that is usually a list
 item being rebuilt, which `LDS-LIST-NO-HANDROLL` covers.
+
+## `LDS-CARD-RESIZE` · A card grows and shrinks, it never jumps
+
+**Kind.** Rule.
+
+**Rule.** When a card's content changes size, such as a row shown or hidden or a section expanded, the card
+animates to its new size over 200 ms. With the system's reduce motion setting on, it changes at once. The
+content that changes stays inside the card that holds it, and the card stays the same card across the change.
+
+The kit's script plays the change whenever a card's content changes size, so a page only has to show or hide
+what's inside the card.
+
+**Why.** A jump moves everything below the card in a single frame, so the reader loses what was added or
+removed and where the rest of the screen went.
+
+**Exceptions.** None.
+
+**Do / don't.** A payout card whose Show more reveals two more rows held in a `hidden` element inside the
+card. Not one card swapped for a taller one, and not a fixed `height` on `lmnd-kit-card`.
