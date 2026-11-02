@@ -34,11 +34,12 @@ import com.teya.lemonade.core.SelectListItemVariant
  * ## Usage
  * ```kotlin
  * LemonadeUi.SelectListItem(
- *     label = "Label"
- *     supportText = "Support Text"
+ *     label = "Label",
+ *     topLabel = "Top Label",
+ *     supportText = "Support Text",
  *     type = SelectListItemType.Single,
  *     checked = true,
- *     onItemClicked = { /* trigger an action */ }
+ *     onItemClicked = { /* trigger an action */ },
  *     enabled = false,
  *     showDivider = true,
  *     leadingSlot = { /* slot composable for any item */ },
@@ -81,6 +82,9 @@ import com.teya.lemonade.core.SelectListItemVariant
  *  [Alignment.Top], which keeps a leading icon level with the label's first line when the support
  *  text wraps. Pass [Alignment.CenterVertically] for a leading slot that should sit centred against
  *  the whole row instead — a large icon beside two lines of text, for example
+ * @param topLabel optional text shown above [label], limited to one line
+ * @param topLabelOverflow [TextOverflow] applied to [topLabel] when it exceeds one line; defaults
+ *  to [TextOverflow.Ellipsis]
  */
 @Composable
 public fun LemonadeUi.SelectListItem(
@@ -103,6 +107,8 @@ public fun LemonadeUi.SelectListItem(
     supportTextMaxLines: Int = Int.MAX_VALUE,
     supportTextOverflow: TextOverflow = TextOverflow.Clip,
     leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
+    topLabel: String? = null,
+    topLabelOverflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
     SelectionHapticEffect(selected = checked)
 
@@ -110,6 +116,8 @@ public fun LemonadeUi.SelectListItem(
         SelectListItemVariant.Plain -> {
             PlainSelectListItem(
                 label = label,
+                topLabel = topLabel,
+                topLabelOverflow = topLabelOverflow,
                 type = type,
                 checked = checked,
                 onItemClicked = onItemClicked,
@@ -133,6 +141,8 @@ public fun LemonadeUi.SelectListItem(
         SelectListItemVariant.Outlined -> {
             OutlinedSelectListItem(
                 label = label,
+                topLabel = topLabel,
+                topLabelOverflow = topLabelOverflow,
                 type = type,
                 checked = checked,
                 onItemClicked = onItemClicked,
@@ -151,6 +161,62 @@ public fun LemonadeUi.SelectListItem(
             )
         }
     }
+}
+
+@Deprecated(
+    message = "Use the overload with topLabel.",
+    replaceWith = ReplaceWith(
+        expression = "SelectListItem(label, type, checked, onItemClicked, modifier, variant, " +
+            "isLoading, enabled, interactionSource, showDivider, supportText, leadingSlot, " +
+            "trailingSlot, slotContent, labelMaxLines, labelOverflow, supportTextMaxLines, " +
+            "supportTextOverflow, leadingVerticalAlignment, null)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.SelectListItem(
+    label: String,
+    type: SelectListItemType,
+    checked: Boolean,
+    onItemClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+    variant: SelectListItemVariant = SelectListItemVariant.Plain,
+    isLoading: Boolean = false,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showDivider: Boolean = false,
+    supportText: String? = null,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+    labelMaxLines: Int = Int.MAX_VALUE,
+    labelOverflow: TextOverflow = TextOverflow.Clip,
+    supportTextMaxLines: Int = Int.MAX_VALUE,
+    supportTextOverflow: TextOverflow = TextOverflow.Clip,
+    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
+) {
+    LemonadeUi.SelectListItem(
+        label = label,
+        type = type,
+        checked = checked,
+        onItemClicked = onItemClicked,
+        modifier = modifier,
+        variant = variant,
+        isLoading = isLoading,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        showDivider = showDivider,
+        supportText = supportText,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        slotContent = slotContent,
+        labelMaxLines = labelMaxLines,
+        labelOverflow = labelOverflow,
+        supportTextMaxLines = supportTextMaxLines,
+        supportTextOverflow = supportTextOverflow,
+        leadingVerticalAlignment = leadingVerticalAlignment,
+        topLabel = null,
+    )
 }
 
 @Deprecated(
@@ -280,6 +346,8 @@ private fun SelectionControl(
 @Composable
 private fun PlainSelectListItem(
     label: String,
+    topLabel: String?,
+    topLabelOverflow: TextOverflow,
     type: SelectListItemType,
     checked: Boolean,
     onItemClicked: () -> Unit,
@@ -301,6 +369,8 @@ private fun PlainSelectListItem(
     LemonadeUi.ListItem(
         modifier = modifier,
         label = label,
+        topLabel = topLabel,
+        topLabelOverflow = topLabelOverflow,
         supportText = supportText,
         isLoading = isLoading,
         labelMaxLines = labelMaxLines,
@@ -346,6 +416,8 @@ private fun PlainSelectListItem(
 @Composable
 private fun OutlinedSelectListItem(
     label: String,
+    topLabel: String?,
+    topLabelOverflow: TextOverflow,
     type: SelectListItemType,
     checked: Boolean,
     onItemClicked: () -> Unit,
@@ -438,7 +510,8 @@ private fun OutlinedSelectListItem(
         ) {
             ListItemTextContent(
                 label = label,
-                topLabel = null,
+                topLabel = topLabel,
+                topLabelOverflow = topLabelOverflow,
                 supportText = supportText,
                 voice = LemonadeListItemVoice.Neutral,
                 labelMaxLines = labelMaxLines,
@@ -545,4 +618,20 @@ private fun SelectListItemPreview(
             null
         },
     )
+}
+
+@LemonadePreview
+@Composable
+private fun SelectListItemTopLabelPreview() {
+    SelectListItemVariant.entries.forEach { variant ->
+        LemonadeUi.SelectListItem(
+            label = "Label",
+            topLabel = "A top label long enough to run past the end of a single line of text",
+            supportText = "Support Text",
+            type = SelectListItemType.Single,
+            variant = variant,
+            checked = true,
+            onItemClicked = { },
+        )
+    }
 }

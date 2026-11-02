@@ -221,7 +221,7 @@ public fun LemonadeUi.ResourceListItem(
  * ```
  * @param label label shown in the list item
  * @param modifier [Modifier] applied to the base container of the component
- * @param topLabel optional label shown above the [label]
+ * @param topLabel optional label shown above the [label], limited to one line
  * @param supportText text shown as support text
  * @param leadingSlot slot content placed in the leading position of the component
  * @param trailingSlot slot content placed in the trailing position of the component
@@ -253,6 +253,8 @@ public fun LemonadeUi.ResourceListItem(
  *  [supportTextMaxLines]. Defaults to [TextOverflow.Clip]
  * @param onLongClick callback invoked when the component is long-pressed. A row with no
  *  [onItemClicked] keeps its press highlight but is announced as clickable, and a tap does nothing
+ * @param topLabelOverflow [TextOverflow] strategy applied to the [topLabel] when it exceeds one
+ *  line. Defaults to [TextOverflow.Ellipsis]
  */
 @Composable
 public fun LemonadeUi.ActionListItem(
@@ -282,6 +284,7 @@ public fun LemonadeUi.ActionListItem(
     supportTextMaxLines: Int = Int.MAX_VALUE,
     supportTextOverflow: TextOverflow = TextOverflow.Clip,
     onLongClick: (() -> Unit)? = null,
+    topLabelOverflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
     if (isLoading) {
         ListItemSkeleton(
@@ -294,6 +297,7 @@ public fun LemonadeUi.ActionListItem(
                 ListItemTextContent(
                     label = label,
                     topLabel = topLabel,
+                    topLabelOverflow = topLabelOverflow,
                     supportText = supportText,
                     voice = voice,
                     labelMaxLines = labelMaxLines,
@@ -335,6 +339,74 @@ public fun LemonadeUi.ActionListItem(
             priority = LemonadeListItemPriority.Trailing,
         )
     }
+}
+
+@Deprecated(
+    message = "Use the overload with a topLabelOverflow parameter.",
+    replaceWith = ReplaceWith(
+        expression = "ActionListItem(label, modifier, topLabel, supportText, leadingSlot, " +
+            "trailingSlot, voice, isLoading, enabled, onItemClicked, role, " +
+            "interactionSource, showNavigationIndicator, showDivider, " +
+            "trailingVerticalAlignment, leadingVerticalAlignment, slotContent, " +
+            "labelMaxLines, labelOverflow, supportTextMaxLines, supportTextOverflow, " +
+            "onLongClick, TextOverflow.Ellipsis)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.ActionListItem(
+    label: String,
+    modifier: Modifier = Modifier,
+    topLabel: String? = null,
+    supportText: String? = null,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    isLoading: Boolean = false,
+    enabled: Boolean = true,
+    onItemClicked: (() -> Unit)? = null,
+    role: Role? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showNavigationIndicator: Boolean = false,
+    showDivider: Boolean = false,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    leadingVerticalAlignment: Alignment.Vertical =
+        singleLineLeadingAlignment(
+            topLabel = topLabel,
+            supportText = supportText,
+        ),
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+    labelMaxLines: Int = Int.MAX_VALUE,
+    labelOverflow: TextOverflow = TextOverflow.Clip,
+    supportTextMaxLines: Int = Int.MAX_VALUE,
+    supportTextOverflow: TextOverflow = TextOverflow.Clip,
+    onLongClick: (() -> Unit)? = null,
+) {
+    ActionListItem(
+        label = label,
+        modifier = modifier,
+        topLabel = topLabel,
+        supportText = supportText,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        voice = voice,
+        isLoading = isLoading,
+        enabled = enabled,
+        onItemClicked = onItemClicked,
+        role = role,
+        interactionSource = interactionSource,
+        showNavigationIndicator = showNavigationIndicator,
+        showDivider = showDivider,
+        trailingVerticalAlignment = trailingVerticalAlignment,
+        leadingVerticalAlignment = leadingVerticalAlignment,
+        slotContent = slotContent,
+        labelMaxLines = labelMaxLines,
+        labelOverflow = labelOverflow,
+        supportTextMaxLines = supportTextMaxLines,
+        supportTextOverflow = supportTextOverflow,
+        onLongClick = onLongClick,
+        topLabelOverflow = TextOverflow.Ellipsis,
+    )
 }
 
 @Deprecated(
@@ -406,7 +478,7 @@ public fun LemonadeUi.ActionListItem(
  * Composes label and support-text content from strings for a standard list item.
  *
  * @param label label shown in the list item
- * @param topLabel optional label shown above the [label]
+ * @param topLabel optional label shown above the [label], limited to one line
  * @param supportText optional support text shown below the [label]
  * @param leadingSlot slot placed in the leading position of the list item
  * @param trailingSlot slot placed in the trailing position of the list item
@@ -437,6 +509,8 @@ public fun LemonadeUi.ActionListItem(
  *  the label and trailing slots compete for width. Defaults to [LemonadeListItemPriority.Trailing]
  * @param onLongClick optional callback triggered on a long press of the list item. A row with no
  *  [onListItemClick] keeps its press highlight but is announced as clickable, and a tap does nothing
+ * @param topLabelOverflow [TextOverflow] strategy applied to the [topLabel] when it exceeds one
+ *  line. Defaults to [TextOverflow.Ellipsis]
  */
 @Composable
 public fun LemonadeUi.ListItem(
@@ -468,6 +542,7 @@ public fun LemonadeUi.ListItem(
     supportTextOverflow: TextOverflow = TextOverflow.Clip,
     priority: LemonadeListItemPriority = LemonadeListItemPriority.Trailing,
     onLongClick: (() -> Unit)? = null,
+    topLabelOverflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
     if (isLoading) {
         ListItemSkeleton(
@@ -480,6 +555,7 @@ public fun LemonadeUi.ListItem(
                 ListItemTextContent(
                     label = label,
                     topLabel = topLabel,
+                    topLabelOverflow = topLabelOverflow,
                     supportText = supportText,
                     voice = voice,
                     labelMaxLines = labelMaxLines,
@@ -505,6 +581,77 @@ public fun LemonadeUi.ListItem(
             priority = priority,
         )
     }
+}
+
+@Deprecated(
+    message = "Use the overload with a topLabelOverflow parameter.",
+    replaceWith = ReplaceWith(
+        expression = "ListItem(label, modifier, topLabel, supportText, onListItemClick, voice, " +
+            "navigationIndicator, isLoading, role, enabled, interactionSource, " +
+            "showDivider, leadingSlot, trailingSlot, slotContent, " +
+            "trailingVerticalAlignment, leadingVerticalAlignment, labelMaxLines, " +
+            "labelOverflow, supportTextMaxLines, supportTextOverflow, priority, " +
+            "onLongClick, TextOverflow.Ellipsis)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.ListItem(
+    label: String,
+    modifier: Modifier = Modifier,
+    topLabel: String? = null,
+    supportText: String? = null,
+    onListItemClick: (() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    navigationIndicator: Boolean = false,
+    isLoading: Boolean = false,
+    role: Role? = null,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showDivider: Boolean = false,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    leadingVerticalAlignment: Alignment.Vertical =
+        singleLineLeadingAlignment(
+            topLabel = topLabel,
+            supportText = supportText,
+            slotContent = slotContent,
+        ),
+    labelMaxLines: Int = Int.MAX_VALUE,
+    labelOverflow: TextOverflow = TextOverflow.Clip,
+    supportTextMaxLines: Int = Int.MAX_VALUE,
+    supportTextOverflow: TextOverflow = TextOverflow.Clip,
+    priority: LemonadeListItemPriority = LemonadeListItemPriority.Trailing,
+    onLongClick: (() -> Unit)? = null,
+) {
+    ListItem(
+        label = label,
+        modifier = modifier,
+        topLabel = topLabel,
+        supportText = supportText,
+        onListItemClick = onListItemClick,
+        voice = voice,
+        navigationIndicator = navigationIndicator,
+        isLoading = isLoading,
+        role = role,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        showDivider = showDivider,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        slotContent = slotContent,
+        trailingVerticalAlignment = trailingVerticalAlignment,
+        leadingVerticalAlignment = leadingVerticalAlignment,
+        labelMaxLines = labelMaxLines,
+        labelOverflow = labelOverflow,
+        supportTextMaxLines = supportTextMaxLines,
+        supportTextOverflow = supportTextOverflow,
+        priority = priority,
+        onLongClick = onLongClick,
+        topLabelOverflow = TextOverflow.Ellipsis,
+    )
 }
 
 @Deprecated(
@@ -701,6 +848,7 @@ internal inline fun ColumnScope.ListItemTextContent(
     topLabel: String?,
     supportText: String?,
     voice: LemonadeListItemVoice,
+    topLabelOverflow: TextOverflow = TextOverflow.Ellipsis,
     labelMaxLines: Int,
     labelOverflow: TextOverflow,
     supportTextMaxLines: Int,
@@ -712,6 +860,8 @@ internal inline fun ColumnScope.ListItemTextContent(
             text = topLabel,
             textStyle = LocalTypographies.current.bodySmallRegular,
             color = LocalColors.current.content.contentSecondary,
+            maxLines = 1,
+            overflow = topLabelOverflow,
         )
     }
 

@@ -9,11 +9,12 @@ public extension LemonadeUi {
     /// ```swift
     /// LemonadeUi.SelectListItem(
     ///     label: "Label",
-    ///     supportText: "Description",
     ///     type: .single,
     ///     checked: true,
     ///     onItemClicked: { /* action */ },
-    ///     showDivider: true
+    ///     showDivider: true,
+    ///     topLabel: "Top Label",
+    ///     supportText: "Description"
     /// )
     /// ```
     ///
@@ -29,6 +30,8 @@ public extension LemonadeUi {
     ///     by `.plain`.
     ///   - enabled: Flag that defines if component is enabled. Defaults to true
     ///   - showDivider: Flag to show a divider below the list item. Only honored by `.plain`.
+    ///   - topLabel: Text to be displayed above the label, limited to one line
+    ///   - topLabelOverflow: Truncation mode applied to the top label when it exceeds one line. Defaults to `.tail`.
     ///   - supportText: Text to be displayed below the label
     ///   - labelMaxLines: Maximum number of lines for the label before it truncates. Defaults to `nil` (no limit).
     ///   - labelOverflow: Truncation mode applied to the label when it exceeds `labelMaxLines`. Defaults to `.tail`.
@@ -54,7 +57,9 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        topLabel: String? = nil,
         supportText: String? = nil,
+        topLabelOverflow: Text.TruncationMode = .tail,
         labelMaxLines: Int? = nil,
         labelOverflow: Text.TruncationMode = .tail,
         supportTextMaxLines: Int? = nil,
@@ -74,7 +79,9 @@ public extension LemonadeUi {
                 isLoading: isLoading,
                 enabled: enabled,
                 showDivider: showDivider,
+                topLabel: topLabel,
                 supportText: supportText,
+                topLabelOverflow: topLabelOverflow,
                 labelMaxLines: labelMaxLines,
                 labelOverflow: labelOverflow,
                 supportTextMaxLines: supportTextMaxLines,
@@ -91,7 +98,9 @@ public extension LemonadeUi {
                 checked: checked,
                 onItemClicked: onItemClicked,
                 enabled: enabled,
+                topLabel: topLabel,
                 supportText: supportText,
+                topLabelOverflow: topLabelOverflow,
                 labelMaxLines: labelMaxLines,
                 labelOverflow: labelOverflow,
                 supportTextMaxLines: supportTextMaxLines,
@@ -115,7 +124,9 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        topLabel: String? = nil,
         supportText: String? = nil,
+        topLabelOverflow: Text.TruncationMode = .tail,
         labelMaxLines: Int? = nil,
         labelOverflow: Text.TruncationMode = .tail,
         supportTextMaxLines: Int? = nil,
@@ -133,7 +144,9 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
+            topLabel: topLabel,
             supportText: supportText,
+            topLabelOverflow: topLabelOverflow,
             labelMaxLines: labelMaxLines,
             labelOverflow: labelOverflow,
             supportTextMaxLines: supportTextMaxLines,
@@ -156,7 +169,9 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        topLabel: String? = nil,
         supportText: String? = nil,
+        topLabelOverflow: Text.TruncationMode = .tail,
         labelMaxLines: Int? = nil,
         labelOverflow: Text.TruncationMode = .tail,
         supportTextMaxLines: Int? = nil,
@@ -174,7 +189,9 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
+            topLabel: topLabel,
             supportText: supportText,
+            topLabelOverflow: topLabelOverflow,
             labelMaxLines: labelMaxLines,
             labelOverflow: labelOverflow,
             supportTextMaxLines: supportTextMaxLines,
@@ -197,7 +214,9 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        topLabel: String? = nil,
         supportText: String? = nil,
+        topLabelOverflow: Text.TruncationMode = .tail,
         labelMaxLines: Int? = nil,
         labelOverflow: Text.TruncationMode = .tail,
         supportTextMaxLines: Int? = nil,
@@ -214,7 +233,9 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
+            topLabel: topLabel,
             supportText: supportText,
+            topLabelOverflow: topLabelOverflow,
             labelMaxLines: labelMaxLines,
             labelOverflow: labelOverflow,
             supportTextMaxLines: supportTextMaxLines,
@@ -284,7 +305,9 @@ private struct PlainSelectListItem<LeadingContent: View, TrailingContent: View, 
     let isLoading: Bool
     let enabled: Bool
     let showDivider: Bool
+    let topLabel: String?
     let supportText: String?
+    let topLabelOverflow: Text.TruncationMode
     let labelMaxLines: Int?
     let labelOverflow: Text.TruncationMode
     let supportTextMaxLines: Int?
@@ -297,12 +320,14 @@ private struct PlainSelectListItem<LeadingContent: View, TrailingContent: View, 
     var body: some View {
         LemonadeUi.ListItem(
             label: label,
+            topLabel: topLabel,
             supportText: supportText,
             voice: .neutral,
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             leadingAlignment: leadingAlignment,
+            topLabelOverflow: topLabelOverflow,
             labelMaxLines: labelMaxLines,
             labelOverflow: labelOverflow,
             supportTextMaxLines: supportTextMaxLines,
@@ -339,7 +364,9 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
     let checked: Bool
     let onItemClicked: () -> Void
     let enabled: Bool
+    let topLabel: String?
     let supportText: String?
+    let topLabelOverflow: Text.TruncationMode
     let labelMaxLines: Int?
     let labelOverflow: Text.TruncationMode
     let supportTextMaxLines: Int?
@@ -372,7 +399,7 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
     }
 
     var body: some View {
-        HStack(alignment: leadingAlignment ?? .center, spacing: 0) {
+        HStack(alignment: leadingAlignment ?? (topLabel == nil ? .center : .top), spacing: 0) {
             if LeadingContent.self != EmptyView.self {
                 leadingSlot()
                     .opacity(contentOpacity)
@@ -382,9 +409,10 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
             VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
                 ListItemTextContent(
                     label: label,
-                    topLabel: nil,
+                    topLabel: topLabel,
                     supportText: supportText,
                     voice: .neutral,
+                    topLabelOverflow: topLabelOverflow,
                     labelMaxLines: labelMaxLines,
                     labelOverflow: labelOverflow,
                     supportTextMaxLines: supportTextMaxLines,
@@ -432,7 +460,7 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
             guard enabled else { return }
             handleSelectTap(type: type, checked: checked, onItemClicked: onItemClicked)
         }
-        // `children: .combine` folds the label, support text, and slotContent into one
+        // `children: .combine` folds the top label, label, support text, and slotContent into one
         // announcement; an explicit label or value here would drop slotContent's own semantics.
         // Selection rides on the `.isSelected` trait because the control is accessibilityHidden.
         .accessibilityElement(children: .combine)
@@ -460,6 +488,24 @@ struct LemonadeSelectListItem_Previews: PreviewProvider {
                 checked: true,
                 onItemClicked: {},
                 showDivider: false,
+                supportText: "Support text"
+            )
+            LemonadeUi.SelectListItem(
+                label: "Top label",
+                type: .single,
+                checked: true,
+                onItemClicked: {},
+                showDivider: true,
+                topLabel: "A top label long enough to run past the end of a single line of text",
+                supportText: "Support text"
+            )
+            LemonadeUi.SelectListItem(
+                label: "Outlined top label",
+                type: .single,
+                checked: true,
+                onItemClicked: {},
+                variant: .outlined,
+                topLabel: "A top label long enough to run past the end of a single line of text",
                 supportText: "Support text"
             )
         }
