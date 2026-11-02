@@ -119,6 +119,7 @@ private struct LemonadeTabsView: View {
                             )
                             #endif
                     }
+                    .lemonadeHiddenTopScrollEdge()
                     .background(
                         GeometryReader { geo in
                             Color.clear
@@ -416,6 +417,23 @@ private struct ScrollViewOffsetObserver: UIViewRepresentable {
     }
 }
 #endif
+
+private extension View {
+    /// Under a top bar the strip is the first scroll view below it, so it inherits the bar's
+    /// top edge effect, which then blurs the tab labels.
+    @ViewBuilder
+    func lemonadeHiddenTopScrollEdge() -> some View {
+        #if compiler(>=6.2)
+        if #available(iOS 26.0, macOS 26.0, *) {
+            self.scrollEdgeEffectHidden(true, for: .top)
+        } else {
+            self
+        }
+        #else
+        self
+        #endif
+    }
+}
 
 // MARK: - Previews
 
