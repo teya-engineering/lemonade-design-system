@@ -46,6 +46,54 @@ public enum LemonadeListItemVoice {
     }
 }
 
+// MARK: - ListItemTextContent
+
+/// The text stack shared by the string-based overloads and the outlined `SelectListItem`.
+/// Has no stack of its own, so its children take the spacing of the caller's stack.
+struct ListItemTextContent<SlotContent: View>: View {
+    let label: String
+    let topLabel: String?
+    let supportText: String?
+    let voice: LemonadeListItemVoice
+    let labelMaxLines: Int?
+    let labelOverflow: Text.TruncationMode
+    let supportTextMaxLines: Int?
+    let supportTextOverflow: Text.TruncationMode
+    let slotContent: () -> SlotContent
+
+    var body: some View {
+        if let topLabel = topLabel {
+            LemonadeUi.Text(
+                topLabel,
+                textStyle: LemonadeTypography.shared.bodySmallRegular,
+                color: LemonadeTheme.colors.content.contentSecondary
+            )
+        }
+
+        LemonadeUi.Text(
+            label,
+            textStyle: LemonadeTypography.shared.bodyMediumMedium,
+            color: voice.contentColor,
+            overflow: labelOverflow,
+            maxLines: labelMaxLines
+        )
+
+        if let supportText = supportText {
+            LemonadeUi.Text(
+                supportText,
+                textStyle: LemonadeTypography.shared.bodySmallRegular,
+                color: LemonadeTheme.colors.content.contentSecondary,
+                overflow: supportTextOverflow,
+                maxLines: supportTextMaxLines
+            )
+        }
+
+        if SlotContent.self != EmptyView.self {
+            slotContent()
+        }
+    }
+}
+
 // MARK: - LemonadeListItemPriority
 
 /// Defines which slot claims layout space first when the label and trailing
@@ -132,35 +180,17 @@ public extension LemonadeUi {
                 leadingSlot: leadingSlot,
                 trailingSlot: trailingSlot,
                 contentSlot: {
-                    if let topLabel = topLabel {
-                        LemonadeUi.Text(
-                            topLabel,
-                            textStyle: LemonadeTypography.shared.bodySmallRegular,
-                            color: LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-
-                    LemonadeUi.Text(
-                        label,
-                        textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                        color: voice.contentColor,
-                        overflow: labelOverflow,
-                        maxLines: labelMaxLines
+                    ListItemTextContent(
+                        label: label,
+                        topLabel: topLabel,
+                        supportText: supportText,
+                        voice: voice,
+                        labelMaxLines: labelMaxLines,
+                        labelOverflow: labelOverflow,
+                        supportTextMaxLines: supportTextMaxLines,
+                        supportTextOverflow: supportTextOverflow,
+                        slotContent: slotContent
                     )
-
-                    if let supportText = supportText {
-                        LemonadeUi.Text(
-                            supportText,
-                            textStyle: LemonadeTypography.shared.bodySmallRegular,
-                            color: LemonadeTheme.colors.content.contentSecondary,
-                            overflow: supportTextOverflow,
-                            maxLines: supportTextMaxLines
-                        )
-                    }
-                    
-                    if SlotContent.self != EmptyView.self {
-                        slotContent()
-                    }
                 }
             )
         }
