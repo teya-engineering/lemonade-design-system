@@ -423,7 +423,7 @@ private extension View {
     /// top edge effect, which then blurs the tab labels.
     @ViewBuilder
     func lemonadeHiddenTopScrollEdge() -> some View {
-        #if compiler(>=6.2)
+        #if compiler(>=6.4)
         if #available(iOS 26.0, macOS 26.0, *) {
             self.scrollEdgeEffectHidden(true, for: .top)
         } else {
