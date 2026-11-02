@@ -2,8 +2,6 @@ import SwiftUI
 import Lemonade
 
 struct CardDisplayView: View {
-    @State private var isExpanded = false
-
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 32) {
@@ -187,25 +185,7 @@ struct CardDisplayView: View {
 
     private var resizeSection: some View {
         sectionView(title: "Resize") {
-            LemonadeUi.Card(
-                contentPadding: .medium,
-                footerAction: CardFooterActionConfig(
-                    label: isExpanded ? "Show less" : "Show more",
-                    onClick: {
-                        withAnimation(LemonadeMotion.cardResize) {
-                            isExpanded.toggle()
-                        }
-                    }
-                )
-            ) {
-                VStack(alignment: .leading, spacing: 8) {
-                    LemonadeUi.Text("The card grows and shrinks with its content.")
-                    if isExpanded {
-                        LemonadeUi.Text("Wrap the state change in withAnimation(LemonadeMotion.cardResize).")
-                        LemonadeUi.Text("With reduce motion on, the change is instant.")
-                    }
-                }
-            }
+            ResizingCard()
         }
     }
 
@@ -216,6 +196,32 @@ struct CardDisplayView: View {
                 .foregroundStyle(.content.contentSecondary)
 
             content()
+        }
+    }
+}
+
+private struct ResizingCard: View {
+    @State private var isExpanded = false
+
+    var body: some View {
+        LemonadeUi.Card(
+            contentPadding: .medium,
+            footerAction: CardFooterActionConfig(
+                label: isExpanded ? "Show less" : "Show more",
+                onClick: {
+                    withAnimation(LemonadeMotion.cardResize) {
+                        isExpanded.toggle()
+                    }
+                }
+            )
+        ) {
+            VStack(alignment: .leading, spacing: 8) {
+                LemonadeUi.Text("The card grows and shrinks with its content.")
+                if isExpanded {
+                    LemonadeUi.Text("Wrap the state change in withAnimation(LemonadeMotion.cardResize).")
+                    LemonadeUi.Text("With reduce motion on, the change is instant.")
+                }
+            }
         }
     }
 }

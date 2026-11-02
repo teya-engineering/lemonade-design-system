@@ -24,17 +24,17 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeCardBackground
 import com.teya.lemonade.core.LemonadeCardPadding
 
-private const val CARD_ITEM_ANIMATION_DURATION_MS = 200
+internal const val CARD_ANIMATION_DURATION_MS = 200
 
 // Hoisted so every slot shares one immutable spec instead of allocating specs per item.
 private val cardItemFadeSpec: FiniteAnimationSpec<Float> =
-    tween(durationMillis = CARD_ITEM_ANIMATION_DURATION_MS)
+    tween(durationMillis = CARD_ANIMATION_DURATION_MS)
 
 private val cardItemPlacementSpec: FiniteAnimationSpec<IntOffset> =
-    tween(durationMillis = CARD_ITEM_ANIMATION_DURATION_MS)
+    tween(durationMillis = CARD_ANIMATION_DURATION_MS)
 
 private val cardItemRadiusSpec: FiniteAnimationSpec<Dp> =
-    tween(durationMillis = CARD_ITEM_ANIMATION_DURATION_MS)
+    tween(durationMillis = CARD_ANIMATION_DURATION_MS)
 
 internal enum class LemonadeCardItemPosition {
     Single,
