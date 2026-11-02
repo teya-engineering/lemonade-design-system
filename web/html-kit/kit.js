@@ -344,6 +344,25 @@
     })
   }
 
+  // ---------- A card that grows and shrinks ----------
+
+  // A card plays its height change when what it holds changes size, as the app's card does. CSS can't
+  // transition an auto height, so this animates from the last height seen. A change in width is the page
+  // reflowing, not the card's content, so it doesn't animate.
+  const RESIZE = 200
+  const resizeCards = () => {
+    const sizes = new WeakMap()
+    const observer = new ResizeObserver((entries) => entries.forEach(({ target }) => {
+      const from = sizes.get(target)
+      const to = { width: target.offsetWidth, height: target.offsetHeight }
+      if (target.getAnimations().some((animation) => animation.id === 'lmnd-kit-card-resize')) return
+      sizes.set(target, to)
+      if (!from?.height || !to.height || from.width !== to.width || from.height === to.height || reduceMotion.matches) return
+      target.animate([{ height: `${from.height}px` }, { height: `${to.height}px` }], { id: 'lmnd-kit-card-resize', duration: RESIZE, easing: 'ease-in-out' })
+    }))
+    document.querySelectorAll('.lmnd-kit-card').forEach((card) => observer.observe(card))
+  }
+
   // ---------- A strip of days that opens on the selected one ----------
 
   const centreDays = () => {
@@ -364,6 +383,7 @@
     fillBars()
     slideMarks()
     centreDays()
+    resizeCards()
     document.querySelectorAll('[data-lmnd-kit-max-length]').forEach(count)
     new Set([...document.querySelectorAll('[data-lmnd-kit-mirror]')].map((target) => document.getElementById(target.dataset.lmndKitMirror)))
       .forEach((input) => input?.matches('input, textarea') && mirror(input))
