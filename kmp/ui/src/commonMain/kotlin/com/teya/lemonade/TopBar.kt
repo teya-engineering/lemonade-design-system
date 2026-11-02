@@ -408,6 +408,8 @@ public data class NavigationAction(
  *        gradient at the top and switch to a solid theme color while the user scrolls
  * @param modifier [Modifier] applied to the top bar container
  * @param navigationAction optional [NavigationAction] in the leading slot (e.g. back or close)
+ * @param labelMaxLines maximum lines for [label] in the expanded state before it truncates
+ * @param subtitleMaxLines maximum lines for [subtitle] in the expanded state before it truncates
  * @param trailingSlot optional composable at the end of the fixed header (typically action buttons)
  * @param bottomSlot optional composable below the expanded title. It stays visible and acts as a
  *        sticky area when fully collapsed
@@ -422,6 +424,8 @@ public fun LemonadeUi.TopBar(
     collapsedLabel: String? = null,
     subtitle: String? = null,
     navigationAction: NavigationAction? = null,
+    labelMaxLines: Int = 2,
+    subtitleMaxLines: Int = 1,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
@@ -472,7 +476,7 @@ public fun LemonadeUi.TopBar(
                     text = label,
                     textStyle = LocalTypographies.current.headingLarge,
                     overflow = TextOverflow.Ellipsis,
-                    maxLines = 2,
+                    maxLines = labelMaxLines,
                 )
                 if (subtitle != null) {
                     LemonadeUi.Text(
@@ -480,11 +484,44 @@ public fun LemonadeUi.TopBar(
                         textStyle = LocalTypographies.current.bodySmallRegular,
                         color = LocalColors.current.content.contentSecondary,
                         overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
+                        maxLines = subtitleMaxLines,
                     )
                 }
             }
         },
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with labelMaxLines and subtitleMaxLines.",
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.TopBar(
+    label: String,
+    modifier: Modifier = Modifier,
+    state: TopBarState = rememberTopBarState(),
+    backgroundColor: Color = LocalColors.current.background.bgDefault,
+    scrolledBackgroundColor: Color = backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0),
+    collapsedLabel: String? = null,
+    subtitle: String? = null,
+    navigationAction: NavigationAction? = null,
+    trailingSlot: @Composable (RowScope.() -> Unit)? = null,
+    bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
+) {
+    LemonadeUi.TopBar(
+        label = label,
+        modifier = modifier,
+        state = state,
+        backgroundColor = backgroundColor,
+        scrolledBackgroundColor = scrolledBackgroundColor,
+        collapsedLabel = collapsedLabel,
+        subtitle = subtitle,
+        navigationAction = navigationAction,
+        labelMaxLines = 2,
+        subtitleMaxLines = 1,
+        trailingSlot = trailingSlot,
+        bottomSlot = bottomSlot,
     )
 }
 
