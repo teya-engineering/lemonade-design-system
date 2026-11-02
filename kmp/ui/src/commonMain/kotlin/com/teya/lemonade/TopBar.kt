@@ -56,6 +56,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalWindowInfo
@@ -410,7 +411,8 @@ public data class NavigationAction(
  * @param modifier [Modifier] applied to the top bar container
  * @param navigationAction optional [NavigationAction] in the leading slot (e.g. back or close)
  * @param labelMaxLines maximum lines for [label] in the expanded state before it truncates. Must be
- *        positive. The expanded title and subtitle never take more than half the window height
+ *        positive. The expanded title and subtitle take at most half the height available to them,
+ *        and never more than half the window height
  * @param subtitleMaxLines maximum lines for [subtitle] in the expanded state before it truncates.
  *        Must be positive
  * @param trailingSlot optional composable at the end of the fixed header (typically action buttons)
@@ -432,6 +434,8 @@ public fun LemonadeUi.TopBar(
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
+    require(labelMaxLines > 0) { "labelMaxLines must be positive, was $labelMaxLines" }
+    require(subtitleMaxLines > 0) { "subtitleMaxLines must be positive, was $subtitleMaxLines" }
     val effectiveBackgroundColor by animateColorAsState(
         targetValue = if (state.isScrolled) scrolledBackgroundColor else backgroundColor,
         animationSpec = TopBarBackgroundAnimationSpec,
@@ -576,7 +580,8 @@ public fun LemonadeUi.TopBar(
  * @param searchPlaceholder optional placeholder shown in the search field while it is empty
  * @param navigationAction optional [NavigationAction] in the leading slot (e.g. back or close)
  * @param expandedLabelMaxLines maximum lines for [expandedLabel] before it truncates. Must be
- *        positive. The expanded title and subtitle never take more than half the window height
+ *        positive. The expanded title and subtitle take at most half the height available to them,
+ *        and never more than half the window height
  * @param subtitleMaxLines maximum lines for [subtitle] below [expandedLabel] before it truncates.
  *        Must be positive. Has no effect without [expandedLabel]
  * @param trailingSlot optional composable at the end of the fixed header
@@ -602,6 +607,8 @@ public fun LemonadeUi.TopBar(
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
+    require(expandedLabelMaxLines > 0) { "expandedLabelMaxLines must be positive, was $expandedLabelMaxLines" }
+    require(subtitleMaxLines > 0) { "subtitleMaxLines must be positive, was $subtitleMaxLines" }
     val keyboardController = LocalSoftwareKeyboardController.current
     val searchDismissRequester = remember { FocusRequester() }
     var isSearchFocused by remember {
@@ -1029,13 +1036,28 @@ private fun ExpandedTopBarTitle(
     labelMaxLines: Int,
     subtitleMaxLines: Int,
 ) {
-    require(labelMaxLines > 0) { "Title maxLines must be positive, was $labelMaxLines" }
-    require(subtitleMaxLines > 0) { "subtitleMaxLines must be positive, was $subtitleMaxLines" }
-    // Content below the top bar needs height left to scroll, or nothing can collapse the bar.
+    val windowHeight = LocalWindowInfo.current.containerSize.height
+    // Limits how much height a long title takes from the content that scrolls to collapse the bar.
     Column(
-        modifier = Modifier.heightIn(
-            max = LocalWindowInfo.current.containerDpSize.height * EXPANDED_TITLE_MAX_WINDOW_FRACTION,
-        ),
+        modifier = Modifier.layout { measurable, constraints ->
+            val maxHeight = (minOf(constraints.maxHeight, windowHeight) * EXPANDED_TITLE_MAX_HEIGHT_FRACTION)
+                .roundToInt()
+            val placeable = measurable.measure(
+                constraints.copy(
+                    minHeight = minOf(constraints.minHeight, maxHeight),
+                    maxHeight = maxHeight,
+                ),
+            )
+            layout(
+                width = placeable.width,
+                height = placeable.height,
+            ) {
+                placeable.place(
+                    x = 0,
+                    y = 0,
+                )
+            }
+        },
     ) {
         LemonadeUi.Text(
             text = label,
@@ -1144,7 +1166,7 @@ private fun CoreTopBar(
     )
 }
 
-private const val EXPANDED_TITLE_MAX_WINDOW_FRACTION = 0.5f
+private const val EXPANDED_TITLE_MAX_HEIGHT_FRACTION = 0.5f
 private const val LAYOUT_ID_FIXED_HEADER = "fixed_header"
 private const val LAYOUT_ID_DIVIDER = "divider"
 private const val LAYOUT_ID_COLLAPSABLE_SLOT = "collapsable_slot"
