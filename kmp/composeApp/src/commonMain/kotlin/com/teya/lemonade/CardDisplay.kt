@@ -21,8 +21,14 @@ import com.teya.lemonade.core.LemonadeCardPadding
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TagVoice
 
+private const val COLLAPSED_TRANSACTION_COUNT = 5
+private const val TRANSACTION_COUNT = 20
+
 @Composable
 internal fun CardDisplay() {
+    val toasts = LocalLemonadeToastState.current
+    var isShowingAllTransactions by remember { mutableStateOf(false) }
+
     SampleScreenDisplayLazyColumn(title = "Card") {
         item(key = "Backgrounds") {
             CardSection(title = "Backgrounds") {
@@ -239,7 +245,7 @@ internal fun CardDisplay() {
                         header = CardHeaderConfig(title = "Card with Footer"),
                         footerAction = CardFooterActionConfig(
                             label = "Action",
-                            onClick = {},
+                            onClick = { toasts.show(label = "Action tapped") },
                         ),
                     ) {
                         LemonadeUi.Text(
@@ -257,7 +263,10 @@ internal fun CardDisplay() {
             }
         }
 
-        lazyGroupedCardSection()
+        lazyGroupedCardSection(
+            isShowingAll = isShowingAllTransactions,
+            onToggleShowAll = { isShowingAllTransactions = !isShowingAllTransactions },
+        )
     }
 }
 
@@ -290,7 +299,10 @@ private fun ResizingCard() {
     }
 }
 
-private fun LazyListScope.lazyGroupedCardSection() {
+private fun LazyListScope.lazyGroupedCardSection(
+    isShowingAll: Boolean,
+    onToggleShowAll: () -> Unit,
+) {
     item(key = "Lazy Grouped List title") {
         CardSectionTitle(
             title = "Lazy Grouped List",
@@ -305,12 +317,12 @@ private fun LazyListScope.lazyGroupedCardSection() {
             subtitle = "Rows compose lazily as they scroll into view",
         ),
         footerAction = CardFooterActionConfig(
-            label = "See all",
-            onClick = {},
+            label = if (isShowingAll) "See less" else "See all",
+            onClick = onToggleShowAll,
         ),
     ) {
         items(
-            count = 20,
+            count = if (isShowingAll) TRANSACTION_COUNT else COLLAPSED_TRANSACTION_COUNT,
             key = { index -> "transaction-$index" },
         ) { index ->
             LazyGroupedCardRow(index = index)
