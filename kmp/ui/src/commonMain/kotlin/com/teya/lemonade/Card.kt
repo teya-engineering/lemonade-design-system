@@ -1,6 +1,8 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -53,6 +55,10 @@ public fun LemonadeUi.Card(
     )
 }
 
+private val cardResizeModifier = Modifier.animateContentSize(
+    animationSpec = tween(durationMillis = CARD_ANIMATION_DURATION_MS),
+)
+
 @Composable
 private fun CoreCard(
     modifier: Modifier = Modifier,
@@ -66,7 +72,10 @@ private fun CoreCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(shape = LocalShapes.current.semantic.radiusContainerDefault)
-            .background(color = background.background),
+            .background(color = background.background)
+            // Must stay inside clip and background: anything inside this modifier snaps to the
+            // target size, so outside them the surface would jump and only a gap would animate.
+            .then(if (prefersReducedMotion()) Modifier else cardResizeModifier),
     ) {
         if (header != null) {
             CardHeader(config = header)
