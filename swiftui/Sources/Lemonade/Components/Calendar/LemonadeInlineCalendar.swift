@@ -401,6 +401,7 @@ private struct LemonadeInlineCalendarView<TrailingContent: View>: View {
                 }
                 .scrollTargetLayout()
             }
+            .lemonadeHiddenTopScrollEdge()
             .scrollTargetBehavior(.viewAligned)
             .scrollPosition(id: $observedScrollPositionIndex, anchor: .center)
             .task {
