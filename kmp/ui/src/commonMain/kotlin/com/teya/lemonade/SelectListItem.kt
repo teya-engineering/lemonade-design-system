@@ -623,15 +623,17 @@ private fun SelectListItemPreview(
 @LemonadePreview
 @Composable
 private fun SelectListItemTopLabelPreview() {
-    SelectListItemVariant.entries.forEach { variant ->
-        LemonadeUi.SelectListItem(
-            label = "Label",
-            topLabel = "A top label long enough to run past the end of a single line of text",
-            supportText = "Support Text",
-            type = SelectListItemType.Single,
-            variant = variant,
-            checked = true,
-            onItemClicked = { },
-        )
+    Column {
+        SelectListItemVariant.entries.forEach { variant ->
+            LemonadeUi.SelectListItem(
+                label = "Label",
+                topLabel = "A top label long enough to run past the end of a single line of text",
+                supportText = "Support Text",
+                type = SelectListItemType.Single,
+                variant = variant,
+                checked = true,
+                onItemClicked = { },
+            )
+        }
     }
 }

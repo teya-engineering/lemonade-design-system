@@ -406,38 +406,40 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
                     .padding(.trailing, LemonadeTheme.spaces.spacing300)
             }
 
-            VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
-                ListItemTextContent(
-                    label: label,
-                    topLabel: topLabel,
-                    supportText: supportText,
-                    voice: .neutral,
-                    topLabelOverflow: topLabelOverflow,
-                    labelMaxLines: labelMaxLines,
-                    labelOverflow: labelOverflow,
-                    supportTextMaxLines: supportTextMaxLines,
-                    supportTextOverflow: supportTextOverflow,
-                    slotContent: slotContent
+            HStack(alignment: .center, spacing: 0) {
+                VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
+                    ListItemTextContent(
+                        label: label,
+                        topLabel: topLabel,
+                        supportText: supportText,
+                        voice: .neutral,
+                        topLabelOverflow: topLabelOverflow,
+                        labelMaxLines: labelMaxLines,
+                        labelOverflow: labelOverflow,
+                        supportTextMaxLines: supportTextMaxLines,
+                        supportTextOverflow: supportTextOverflow,
+                        slotContent: slotContent
+                    )
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.trailing, LemonadeTheme.spaces.spacing300)
+                .opacity(contentOpacity)
+
+                if TrailingContent.self != EmptyView.self {
+                    trailingSlot()
+                        .opacity(contentOpacity)
+                }
+
+                SelectionControlView(
+                    type: type,
+                    checked: checked,
+                    onItemClicked: onItemClicked,
+                    enabled: enabled
                 )
+                .allowsHitTesting(false)
+                .accessibilityHidden(true)
+                .padding(.leading, LemonadeTheme.spaces.spacing200)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.trailing, LemonadeTheme.spaces.spacing300)
-            .opacity(contentOpacity)
-
-            if TrailingContent.self != EmptyView.self {
-                trailingSlot()
-                    .opacity(contentOpacity)
-            }
-
-            SelectionControlView(
-                type: type,
-                checked: checked,
-                onItemClicked: onItemClicked,
-                enabled: enabled
-            )
-            .allowsHitTesting(false)
-            .accessibilityHidden(true)
-            .padding(.leading, LemonadeTheme.spaces.spacing200)
         }
         .padding(
             EdgeInsets(
