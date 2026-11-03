@@ -695,9 +695,8 @@ private fun singleLineLeadingAlignment(
         Alignment.Top
     }
 
-/** The text stack shared by the string-based overloads. */
 @Composable
-private inline fun ColumnScope.ListItemTextContent(
+internal inline fun ColumnScope.ListItemTextContent(
     label: String,
     topLabel: String?,
     supportText: String?,
@@ -1027,7 +1026,7 @@ private fun Modifier.listItemDivider(): Modifier {
         }.padding(bottom = thickness)
 }
 
-private val LemonadeListItemVoice.contentColor: Color
+internal val LemonadeListItemVoice.contentColor: Color
     @Composable get() {
         return when (this) {
             LemonadeListItemVoice.Neutral -> LocalColors.current.content.contentPrimary

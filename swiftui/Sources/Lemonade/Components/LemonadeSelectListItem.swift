@@ -380,27 +380,17 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
             }
 
             VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
-                LemonadeUi.Text(
-                    label,
-                    textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                    color: LemonadeTheme.colors.content.contentPrimary,
-                    overflow: labelOverflow,
-                    maxLines: labelMaxLines
+                ListItemTextContent(
+                    label: label,
+                    topLabel: nil,
+                    supportText: supportText,
+                    voice: .neutral,
+                    labelMaxLines: labelMaxLines,
+                    labelOverflow: labelOverflow,
+                    supportTextMaxLines: supportTextMaxLines,
+                    supportTextOverflow: supportTextOverflow,
+                    slotContent: slotContent
                 )
-
-                if let supportText = supportText {
-                    LemonadeUi.Text(
-                        supportText,
-                        textStyle: LemonadeTypography.shared.bodySmallRegular,
-                        color: LemonadeTheme.colors.content.contentSecondary,
-                        overflow: supportTextOverflow,
-                        maxLines: supportTextMaxLines
-                    )
-                }
-
-                if SlotContent.self != EmptyView.self {
-                    slotContent()
-                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.trailing, LemonadeTheme.spaces.spacing300)

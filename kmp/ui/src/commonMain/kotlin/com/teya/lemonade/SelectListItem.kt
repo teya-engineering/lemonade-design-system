@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.teya.lemonade.core.CheckboxStatus
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.LemonadeListItemVoice
 import com.teya.lemonade.core.SelectListItemType
 import com.teya.lemonade.core.SelectListItemVariant
 
@@ -365,7 +366,6 @@ private fun OutlinedSelectListItem(
     val spaces = LocalSpaces.current
     val shapes = LocalShapes.current
     val borderWidths = LocalBorderWidths.current
-    val typographies = LocalTypographies.current
     val opacities = LocalOpacities.current
 
     val animatedBackgroundColor by animateColorAsState(
@@ -436,27 +436,17 @@ private fun OutlinedSelectListItem(
                     alpha(alpha = opacities.state.opacityDisabled)
                 },
         ) {
-            LemonadeUi.Text(
-                text = label,
-                textStyle = typographies.bodyMediumMedium,
-                color = colors.content.contentPrimary,
-                maxLines = labelMaxLines,
-                overflow = labelOverflow,
+            ListItemTextContent(
+                label = label,
+                topLabel = null,
+                supportText = supportText,
+                voice = LemonadeListItemVoice.Neutral,
+                labelMaxLines = labelMaxLines,
+                labelOverflow = labelOverflow,
+                supportTextMaxLines = supportTextMaxLines,
+                supportTextOverflow = supportTextOverflow,
+                slotContent = slotContent,
             )
-
-            if (supportText != null) {
-                LemonadeUi.Text(
-                    text = supportText,
-                    textStyle = typographies.bodySmallRegular,
-                    color = colors.content.contentSecondary,
-                    maxLines = supportTextMaxLines,
-                    overflow = supportTextOverflow,
-                )
-            }
-
-            if (slotContent != null) {
-                slotContent()
-            }
         }
 
         if (trailingSlot != null) {
