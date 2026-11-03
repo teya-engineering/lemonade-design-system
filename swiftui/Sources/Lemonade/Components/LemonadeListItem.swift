@@ -54,6 +54,7 @@ struct ListItemTextContent<SlotContent: View>: View {
     let topLabel: String?
     let supportText: String?
     let voice: LemonadeListItemVoice
+    let topLabelOverflow: Text.TruncationMode
     let labelMaxLines: Int?
     let labelOverflow: Text.TruncationMode
     let supportTextMaxLines: Int?
@@ -65,7 +66,9 @@ struct ListItemTextContent<SlotContent: View>: View {
             LemonadeUi.Text(
                 topLabel,
                 textStyle: LemonadeTypography.shared.bodySmallRegular,
-                color: LemonadeTheme.colors.content.contentSecondary
+                color: LemonadeTheme.colors.content.contentSecondary,
+                overflow: topLabelOverflow,
+                maxLines: 1
             )
         }
 
@@ -117,7 +120,8 @@ public extension LemonadeUi {
     ///
     /// - Parameters:
     ///   - label: Label String to be displayed
-    ///   - topLabel: Optional label displayed above the main label
+    ///   - topLabel: Optional label displayed above the main label, limited to one line
+    ///   - topLabelOverflow: Truncation mode applied to the top label when it exceeds one line. Defaults to `.tail`.
     ///   - supportText: Optional support text displayed below the label
     ///   - voice: LemonadeListItemVoice to define tone of voice
     ///   - navigationIndicator: Shows a chevron-right navigation indicator
@@ -151,6 +155,7 @@ public extension LemonadeUi {
         leadingAlignment: VerticalAlignment? = nil,
         trailingAlignment: VerticalAlignment = .center,
         priority: LemonadeListItemPriority = .trailing,
+        topLabelOverflow: Text.TruncationMode = .tail,
         labelMaxLines: Int? = nil,
         labelOverflow: Text.TruncationMode = .tail,
         supportTextMaxLines: Int? = nil,
@@ -184,6 +189,7 @@ public extension LemonadeUi {
                         topLabel: topLabel,
                         supportText: supportText,
                         voice: voice,
+                        topLabelOverflow: topLabelOverflow,
                         labelMaxLines: labelMaxLines,
                         labelOverflow: labelOverflow,
                         supportTextMaxLines: supportTextMaxLines,
