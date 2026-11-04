@@ -131,3 +131,38 @@ describe.each(Object.keys(pages))('%s', (path) => {
     expect(standalone).toContain(await kitScript())
   })
 })
+
+describe('the guidelines', () => {
+  const raw = (files: Record<string, string>) =>
+    new Map(Object.entries(files).map(([path, text]) => [path.split('/').pop() as string, text]))
+  const kit = raw(import.meta.glob('../html-kit/guidelines/*.md', { query: '?raw', import: 'default', eager: true }))
+  const lemonade = raw(import.meta.glob('../../guidelines/*.md', { query: '?raw', import: 'default', eager: true }))
+  const screens = raw(import.meta.glob('../html-kit/screens/*.md', { query: '?raw', import: 'default', eager: true }))
+  const skill = Object.values(import.meta.glob('../html-kit/SKILL.md', { query: '?raw', import: 'default', eager: true }))
+  const index = kit.get('index.md') as string
+  kit.delete('index.md')
+  lemonade.delete('index.md')
+  const defined = (text: string) => [...text.matchAll(/^#+ `((?:LDS|APP|LHK)-[A-Z0-9-]+)`/gm)].map((m) => m[1])
+  const rules = new Map([...lemonade, ...kit])
+
+  it('leaves every LDS- rule to Lemonade', () => {
+    expect([...kit.values()].flatMap(defined).filter((id) => id.startsWith('LDS-'))).toEqual([])
+    expect([...kit.keys()].filter((name) => lemonade.has(name))).toEqual([])
+  })
+
+  it('lists every rule file in the index, with the rules it holds', () => {
+    const rows = new Map([...index.matchAll(/^\| \[([\w-]+\.md)\]\(\1\) \| (.*) \|$/gm)].map((m) => [m[1], m[2]]))
+    for (const [name, text] of rules) {
+      expect(rows.get(name), name).toBe(defined(text).map((id) => `\`${id}\``).join(', '))
+    }
+    expect([...rows.keys()].sort()).toEqual([...rules.keys()].sort())
+  })
+
+  it('names only rules that exist', () => {
+    const leftToTheApp = ['APP-TOPBAR-COMPONENT', 'APP-SHEET-OVER-SHEET']
+    const ids = new Set([...leftToTheApp, ...[...rules.values()].flatMap(defined)])
+    const sources = [...Object.values(pages), index, ...kit.values(), ...screens.values(), ...skill] as string[]
+    const named = sources.flatMap((text) => [...text.matchAll(/\b(?:LDS|APP|LHK)-[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*(?![\w-])/g)].map((m) => m[0]))
+    expect([...new Set(named)].filter((id) => !ids.has(id))).toEqual([])
+  })
+})

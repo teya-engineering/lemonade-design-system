@@ -11,7 +11,7 @@ comes from this kit. Paths below are relative to the kit folder, the one holding
 ## Before you build
 
 Read `guidelines/index.md` and every file it lists. The `LDS-` rules say how components are used and
-combined; the `APP-` rules cover the Teya app's own components and screen kinds, such as dashboard widgets and
+combined, with an example for Compose, SwiftUI and the kit, and a prototype follows the kit's; the `APP-` rules cover the Teya app's own components and screen kinds, such as dashboard widgets and
 details screens; the `LHK-`
 rules say how a prototype is put together. All of them apply, and their exception
 lists are complete.

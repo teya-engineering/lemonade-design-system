@@ -5,7 +5,7 @@
 //   lemonade-kit.js    kit.js, minified: the optional behaviour pages link after the stylesheet
 //   gallery.html       every component with its markup
 //   examples/          screens to start from
-//   guidelines/        the rules a prototype follows
+//   guidelines/        the rules a prototype follows: the kit's own, and Lemonade's from the repository's guidelines/
 //   screens/           the app's own screens as they are today, and their descriptions
 //   llms.txt           every token and what it is for: the token sections of web/llms.txt
 //   assets.txt         every icon, flag, logo and badge name
@@ -29,6 +29,7 @@ import { artworkConfig, iconConfig } from '../svgo.config.mjs'
 const KIT = dirname(fileURLToPath(import.meta.url))
 const WEB = join(KIT, '..')
 const FONTS = join(WEB, '../swiftui/Sources/Lemonade/Resources/Fonts')
+const LEMONADE_GUIDELINES = join(WEB, '../guidelines')
 const NAME = 'lemonade-html-kit'
 
 const STYLESHEETS = [
@@ -340,8 +341,19 @@ export async function classList() {
   ].join('\n')
 }
 
+// The Lemonade rule files from the repository's guidelines/. The kit carries them beside its own, under its
+// own index, which lists both.
+async function lemonadeGuidelines() {
+  return (await readdir(LEMONADE_GUIDELINES)).filter((name) => name.endsWith('.md') && name !== 'index.md').sort()
+}
+
 async function writeReferences(dir) {
   await cp(join(KIT, 'guidelines'), join(dir, 'guidelines'), { recursive: true })
+  const own = new Set(await readdir(join(KIT, 'guidelines')))
+  for (const name of await lemonadeGuidelines()) {
+    if (own.has(name)) throw new Error(`guidelines/${name} is in both the kit and the repository's guidelines/`)
+    await cp(join(LEMONADE_GUIDELINES, name), join(dir, 'guidelines', name))
+  }
   await mkdir(join(dir, 'screens'), { recursive: true })
   for (const name of (await readdir(join(KIT, 'screens'))).filter((n) => n.endsWith('.md'))) {
     await cp(join(KIT, 'screens', name), join(dir, 'screens', name))
