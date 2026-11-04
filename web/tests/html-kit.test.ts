@@ -30,6 +30,12 @@ describe('kit.css', () => {
     const literal = withoutComments(kitCss).match(/#[0-9a-f]{3,8}\b|\brgba?\(|\bhsla?\(/gi)
     expect(literal).toBeNull()
   })
+
+  // LDS-TOAST-DURATION: a default set by a more specific selector than the durations overrides them all.
+  it('lets a toast duration override the default', () => {
+    const setters = [...withoutComments(kitCss).matchAll(/([^{}]+)\{[^}]*--lmnd-kit-toast-time:/g)].map((m) => m[1].trim())
+    expect(setters).toEqual(['.lmnd-kit-toast', '.lmnd-kit-toast--medium', '.lmnd-kit-toast--long'])
+  })
 })
 
 describe('the packaged stylesheet', () => {
@@ -161,7 +167,7 @@ describe('the guidelines', () => {
   it('names only rules that exist', () => {
     const leftToTheApp = ['APP-TOPBAR-COMPONENT', 'APP-SHEET-OVER-SHEET']
     const ids = new Set([...leftToTheApp, ...[...rules.values()].flatMap(defined)])
-    const sources = [...Object.values(pages), index, ...kit.values(), ...screens.values(), ...skill] as string[]
+    const sources = [...Object.values(pages), index, ...rules.values(), ...screens.values(), ...skill] as string[]
     const named = sources.flatMap((text) => [...text.matchAll(/\b(?:LDS|APP|LHK)-[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*(?![\w-])/g)].map((m) => m[0]))
     expect([...new Set(named)].filter((id) => !ids.has(id))).toEqual([])
   })
