@@ -1,0 +1,1050 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lemonade HTML kit</title>
+<link rel="stylesheet" href="lemonade-kit.css">
+<script src="lemonade-kit.js" defer></script>
+<style>
+  body { background: var(--lmnd-color-bg-default); }
+  .g-shell { display: grid; grid-template-columns: 200px minmax(0, 1fr); min-height: 100dvh; }
+  .g-nav { position: sticky; top: 0; height: 100dvh; overflow-y: auto; padding: var(--lmnd-spacing-600) var(--lmnd-spacing-400); border-right: var(--lmnd-border-width-25) solid var(--lmnd-color-border-neutral-low); }
+  .g-nav a { display: block; padding: var(--lmnd-spacing-100) var(--lmnd-spacing-200); border-radius: var(--lmnd-radius-200); color: var(--lmnd-color-content-secondary); }
+  .g-nav a:hover { background: var(--lmnd-color-bg-subtle-interactive); color: var(--lmnd-color-content-primary); }
+  .g-nav h2 { margin: var(--lmnd-spacing-400) 0 var(--lmnd-spacing-100); padding: 0 var(--lmnd-spacing-200); color: var(--lmnd-color-content-tertiary); }
+  .g-main { display: flex; flex-direction: column; gap: var(--lmnd-spacing-1200); max-width: 1100px; padding: var(--lmnd-spacing-800) var(--lmnd-spacing-800) var(--lmnd-spacing-2000); }
+  .g-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--lmnd-spacing-400); }
+  .g-head p { max-width: 60ch; color: var(--lmnd-color-content-secondary); }
+  .g-section { display: flex; flex-direction: column; gap: var(--lmnd-spacing-400); scroll-margin-top: var(--lmnd-spacing-600); }
+  .g-section > p { max-width: 70ch; color: var(--lmnd-color-content-secondary); }
+  .g-example { display: grid; grid-template-columns: 393px minmax(0, 1fr); border-radius: var(--lmnd-radius-500); background: var(--lmnd-color-bg-elevated); overflow: hidden; }
+  .g-demo { display: flex; flex-direction: column; gap: var(--lmnd-spacing-300); padding: var(--lmnd-spacing-400); background: var(--lmnd-color-bg-subtle); }
+  .g-demo--default { background: var(--lmnd-color-bg-default); }
+  .g-demo--frame { position: relative; min-height: 420px; padding: 0; overflow: hidden; }
+  .g-code { margin: 0; padding: var(--lmnd-spacing-400); overflow: auto; max-height: 520px; font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--lmnd-color-content-secondary); white-space: pre; }
+  .g-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--lmnd-spacing-200); }
+  .g-swatch { display: flex; flex-direction: column; gap: var(--lmnd-spacing-100); }
+  .g-swatch span:first-child { height: var(--lmnd-size-1200); border-radius: var(--lmnd-radius-300); box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-border-neutral-low); }
+  .g-swatch code { font: 11px/1.4 ui-monospace, Menlo, monospace; color: var(--lmnd-color-content-secondary); }
+  .g-icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: var(--lmnd-spacing-100); }
+  .g-icons > div { display: flex; flex-direction: column; align-items: center; gap: var(--lmnd-spacing-200); padding: var(--lmnd-spacing-300) var(--lmnd-spacing-100); border-radius: var(--lmnd-radius-300); text-align: center; }
+  .g-icons > div:hover { background: var(--lmnd-color-bg-subtle-interactive); }
+  .g-icons code { font: 11px/1.3 ui-monospace, Menlo, monospace; color: var(--lmnd-color-content-secondary); word-break: break-all; }
+  @media (max-width: 900px) {
+    .g-shell { grid-template-columns: 1fr; }
+    .g-nav { display: none; }
+    .g-main { padding: var(--lmnd-spacing-400); }
+    .g-example { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body data-kit-all-assets>
+<p class="lmnd-kit-source-notice" style="margin:0;padding:16px;background:Mark;color:MarkText;font:16px/1.4 system-ui,sans-serif">This page needs <code>lemonade-kit.css</code> beside it. Open it from the packaged kit: run <code>npm run html-kit</code> in <code>web/</code>, then open <code>web/dist/lemonade-html-kit/</code>.</p>
+<div class="g-shell">
+<nav class="g-nav lmnd-text-body-small-medium">
+  <p class="lmnd-text-heading-xxsmall" style="padding: 0 var(--lmnd-spacing-200)">Lemonade kit</p>
+  <h2 class="lmnd-text-body-xsmall-overline">Foundations</h2>
+  <a href="#text">Text</a><a href="#colour">Colour</a><a href="#icons">Icons</a>
+  <h2 class="lmnd-text-body-xsmall-overline">Actions</h2>
+  <a href="#button">Button</a><a href="#icon-button">Icon button</a><a href="#link">Link</a><a href="#chip">Chip</a><a href="#tile">Tile</a>
+  <h2 class="lmnd-text-body-xsmall-overline">Display</h2>
+  <a href="#symbol">Symbol container</a><a href="#tag">Tag and badge</a><a href="#notice">Notice</a><a href="#skeleton">Skeleton</a><a href="#divider">Divider</a><a href="#flags">Flags and logos</a>
+  <h2 class="lmnd-text-body-xsmall-overline">Lists</h2>
+  <a href="#card">Card</a><a href="#widget">Mini widget</a><a href="#list-item">List item</a><a href="#list-group">List group</a><a href="#content-item">Content list item</a><a href="#select-item">Select list item</a><a href="#timeline">History timeline</a><a href="#swipe">Swipe action row</a>
+  <h2 class="lmnd-text-body-xsmall-overline">Inputs</h2>
+  <a href="#text-field">Text field</a><a href="#text-area">Text area</a><a href="#select-field">Select field</a><a href="#search">Search field</a><a href="#pin">Pin code</a><a href="#controls">Switch, checkbox, radio</a><a href="#box-selection">Box selection</a><a href="#segmented">Segmented control</a><a href="#tabs">Tabs</a>
+  <h2 class="lmnd-text-body-xsmall-overline">Navigation and overlays</h2>
+  <a href="#top-bar">Top bar</a><a href="#tab-bar">Bottom tab bar</a><a href="#dropdown">Dropdown</a><a href="#sheet">Bottom sheet</a><a href="#dialog">Dialog</a><a href="#toast">Toast</a><a href="#tooltip">Tooltip</a>
+</nav>
+
+<main class="g-main">
+  <header class="g-head">
+    <div class="lmnd-kit-stack">
+      <h1 class="lmnd-text-heading-large">Lemonade HTML kit</h1>
+      <p class="lmnd-text-body-medium-regular">Every component, rendered from the same tokens the app ships, next to the markup that produces it. Copy the markup into a screen; never restyle it.</p>
+    </div>
+    <div class="lmnd-kit-segmented lmnd-kit-segmented--small" style="width: 240px" role="radiogroup" aria-label="Theme">
+      <label class="lmnd-kit-segmented__item lmnd-text-body-xsmall-medium"><input type="radio" name="g-theme" value="" checked><span>System</span></label>
+      <label class="lmnd-kit-segmented__item lmnd-text-body-xsmall-medium"><input type="radio" name="g-theme" value="light"><span>Light</span></label>
+      <label class="lmnd-kit-segmented__item lmnd-text-body-xsmall-medium"><input type="radio" name="g-theme" value="dark"><span>Dark</span></label>
+    </div>
+  </header>
+
+  <!-- ===================== Foundations ===================== -->
+
+  <section class="g-section" id="text">
+    <h2 class="lmnd-text-heading-small">Text</h2>
+    <p class="lmnd-text-body-small-regular">One <code>lmnd-text-*</code> class per style. They set type only: colour comes from a <code>lmnd-kit-secondary</code>-style helper or the component.</p>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<p class="lmnd-text-display-small">£1,240.50</p>
+<h1 class="lmnd-text-heading-large">Heading large</h1>
+<h2 class="lmnd-text-heading-small">Heading small</h2>
+<h3 class="lmnd-text-heading-xxsmall">Heading xxsmall</h3>
+<p class="lmnd-text-body-medium-medium">Body medium medium</p>
+<p class="lmnd-text-body-medium-regular">Body medium regular</p>
+<p class="lmnd-text-body-small-regular lmnd-kit-secondary">Body small regular, secondary</p>
+<p class="lmnd-text-body-xsmall-overline lmnd-kit-secondary">Overline</p>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="colour">
+    <h2 class="lmnd-text-heading-small">Colour</h2>
+    <p class="lmnd-text-body-small-regular">Semantic tokens only. They follow the theme, so the same markup is correct in dark mode. The full list, with what each colour is for, is in <code>llms.txt</code>.</p>
+    <div class="g-swatches" id="g-swatches"></div>
+  </section>
+
+  <section class="g-section" id="icons">
+    <h2 class="lmnd-text-heading-small">Icons</h2>
+    <p class="lmnd-text-body-small-regular">An icon is a mask, so it takes <code>currentColor</code>. Name it with <code>data-icon</code>, using a name from the list below; a name that doesn't exist draws nothing, and the build refuses it. Sizes: <code>lmnd-icon--x-small</code> (12) to <code>--xx-large</code> (40); the default is 20.</p>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<div class="lmnd-kit-row">
+  <span class="lmnd-icon lmnd-icon--small" data-icon="heart" aria-hidden="true"></span>
+  <span class="lmnd-icon" data-icon="heart" aria-hidden="true"></span>
+  <span class="lmnd-icon lmnd-icon--large lmnd-kit-brand" data-icon="heart" aria-hidden="true"></span>
+  <span class="lmnd-icon lmnd-icon--x-large lmnd-kit-critical" data-icon="heart" role="img" aria-label="Favourite"></span>
+</div>
+    </div></div>
+    <div class="g-icons" id="g-icons"></div>
+  </section>
+
+  <!-- ===================== Actions ===================== -->
+
+  <section class="g-section" id="button">
+    <h2 class="lmnd-text-heading-small">Button</h2>
+    <p class="lmnd-text-body-small-regular">The package's own Button. At most two per screen: the primary (Primary · Solid · Large) above a Neutral · Subtle secondary. <code>Secondary</code> is a branded treatment, never "the second button". <code>lmnd-kit-button--full-shape</code> gives the pill shape (SwiftUI's <code>.fullShape()</code>), which a text button in a top bar or sheet bar always takes. A full-width button is the plain button in a column, which stretches it with its label centred; <code>lmnd-button--expand</code> pushes the label to the start and is only for a label followed by a trailing <code>chevron-right</code>, as in a widget's action.</p>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<button type="button" class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold">
+  <span class="lmnd-button__label">Continue</span>
+</button>
+<button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--large lmnd-text-body-medium-semibold">
+  <span class="lmnd-button__label">Not now</span>
+</button>
+<button type="button" class="lmnd-button lmnd-button--critical lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold">
+  <span class="lmnd-button__label">Delete recipient</span>
+</button>
+<div class="lmnd-kit-row">
+  <button type="button" class="lmnd-button lmnd-button--primary lmnd-button--subtle lmnd-button--small lmnd-text-body-small-semibold">
+    <span class="lmnd-icon" data-icon="plus" aria-hidden="true"></span>
+    <span class="lmnd-button__label">Add</span>
+  </button>
+  <button type="button" class="lmnd-button lmnd-button--secondary lmnd-button--solid lmnd-button--small lmnd-text-body-small-semibold">
+    <span class="lmnd-button__label">Secondary</span>
+  </button>
+  <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-kit-button--full-shape lmnd-text-body-small-semibold">
+    <span class="lmnd-button__label">Pill</span>
+  </button>
+  <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--ghost lmnd-button--x-small lmnd-text-body-small-semibold">
+    <span class="lmnd-button__label">Ghost</span>
+  </button>
+  <button type="button" class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--medium lmnd-button--loading lmnd-text-body-medium-semibold" disabled aria-busy="true" aria-label="Saving">
+    <span class="lmnd-spinner lmnd-spinner--medium" aria-hidden="true"></span>
+  </button>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="icon-button">
+    <h2 class="lmnd-text-heading-small">Icon button</h2>
+    <p class="lmnd-text-body-small-regular">Defaults to Neutral · Subtle · Medium (48) · Rounded. Variant: <code>--primary</code>, <code>--secondary</code>, <code>--critical</code>, <code>--on-brand</code>, <code>--on-color</code>. Type: <code>--solid</code>, <code>--ghost</code>. Size: <code>--large</code>, <code>--small</code>, <code>--x-small</code>. Shape: <code>--circular</code>.</p>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<div class="lmnd-kit-row">
+  <button type="button" class="lmnd-kit-icon-button" aria-label="Like"><span class="lmnd-icon" data-icon="heart"></span></button>
+  <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--primary lmnd-kit-icon-button--solid" aria-label="Add"><span class="lmnd-icon" data-icon="plus"></span></button>
+  <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--critical lmnd-kit-icon-button--small" aria-label="Delete"><span class="lmnd-icon" data-icon="trash"></span></button>
+  <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--ghost lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Back"><span class="lmnd-icon" data-icon="arrow-left"></span></button>
+  <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--solid lmnd-kit-icon-button--x-small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></button>
+  <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--large" disabled aria-label="Loading"><span class="lmnd-spinner lmnd-spinner--small" aria-hidden="true"></span></button>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="link">
+    <h2 class="lmnd-text-heading-small">Link</h2>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<a href="#" class="lmnd-kit-link lmnd-text-body-medium-medium">View all transactions</a>
+<a href="#" class="lmnd-kit-link lmnd-text-body-small-medium">Terms of service <span class="lmnd-icon" data-icon="external-link" aria-hidden="true"></span></a>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="chip">
+    <h2 class="lmnd-text-heading-small">Chip</h2>
+    <p class="lmnd-text-body-small-regular">A chip that is a <code>&lt;label&gt;</code> around a hidden input selects itself as it's tapped, with no script: a radio to pick one of a group (give the group one <code>name</code>), a checkbox to pick any. <code>lmnd-kit-chip--selected</code> fixes the state for a static screen, and a chip that opens a sheet, like a filter, is a link.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<div class="lmnd-kit-chips" role="radiogroup" aria-label="Role">
+  <label class="lmnd-kit-chip lmnd-text-body-small-medium"><input type="radio" name="g-role" checked><span class="lmnd-kit-chip__label">Admin</span></label>
+  <label class="lmnd-kit-chip lmnd-text-body-small-medium"><input type="radio" name="g-role"><span class="lmnd-kit-chip__label">Manager</span></label>
+  <label class="lmnd-kit-chip lmnd-text-body-small-medium"><input type="radio" name="g-role"><span class="lmnd-kit-chip__label">Cashier</span></label>
+</div>
+<div class="lmnd-kit-chips">
+  <label class="lmnd-kit-chip lmnd-text-body-small-medium"><input type="checkbox" checked><span class="lmnd-kit-chip__label">Card</span></label>
+  <label class="lmnd-kit-chip lmnd-text-body-small-medium"><input type="checkbox"><span class="lmnd-kit-chip__label">Cash</span></label>
+  <label class="lmnd-kit-chip lmnd-text-body-small-medium"><input type="checkbox" disabled><span class="lmnd-kit-chip__label">PayPal</span></label>
+</div>
+<div class="lmnd-kit-chips">
+  <label class="lmnd-kit-chip lmnd-kit-chip--selected lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">All</span></label>
+  <label class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Card</span></label>
+  <label class="lmnd-kit-chip lmnd-text-body-small-medium">
+    <span class="lmnd-kit-chip__label">Status</span>
+    <span class="lmnd-kit-chip__counter lmnd-text-body-xsmall-semibold">2</span>
+    <span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span>
+  </label>
+</div>
+<div class="lmnd-kit-row">
+  <span class="lmnd-kit-chip lmnd-text-body-small-medium">
+    <span class="lmnd-kit-flag" data-flag="GB" aria-hidden="true"></span>
+    <span class="lmnd-kit-chip__label">GBP</span>
+    <span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span>
+  </span>
+  <span class="lmnd-kit-chip lmnd-kit-chip--error lmnd-text-body-small-medium">
+    <span class="lmnd-icon lmnd-kit-chip__leading" data-icon="triangle-alert" aria-hidden="true"></span>
+    <span class="lmnd-kit-chip__label">Failed</span>
+  </span>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="tile">
+    <h2 class="lmnd-text-heading-small">Tile</h2>
+    <div class="g-example"><div class="g-demo" data-demo>
+<div class="lmnd-kit-grid">
+  <button type="button" class="lmnd-kit-tile">
+    <span class="lmnd-kit-tile__top"><span class="lmnd-icon" data-icon="arrow-up-right" aria-hidden="true"></span></span>
+    <span class="lmnd-kit-tile__text"><span class="lmnd-kit-tile__label lmnd-text-body-small-medium">Send</span><span class="lmnd-kit-tile__support lmnd-text-body-small-regular">To a recipient</span></span>
+  </button>
+  <button type="button" class="lmnd-kit-tile lmnd-kit-tile--selected">
+    <span class="lmnd-kit-tile__top"><span class="lmnd-icon" data-icon="calendar" aria-hidden="true"></span><span class="lmnd-icon lmnd-icon--small lmnd-kit-secondary" data-icon="circle-info" aria-hidden="true"></span></span>
+    <span class="lmnd-kit-tile__text"><span class="lmnd-kit-tile__label lmnd-text-body-small-medium">Schedule</span><span class="lmnd-kit-tile__support lmnd-text-body-small-regular">Selected</span></span>
+  </button>
+</div>
+<button type="button" class="lmnd-kit-tile lmnd-kit-tile--outlined lmnd-kit-tile--horizontal">
+  <span class="lmnd-icon" data-icon="card" aria-hidden="true"></span>
+  <span class="lmnd-kit-tile__text"><span class="lmnd-kit-tile__label lmnd-text-body-small-medium">Order a card</span><span class="lmnd-kit-tile__support lmnd-text-body-small-regular">Arrives in 3–5 days</span></span>
+</button>
+    </div></div>
+  </section>
+
+  <!-- ===================== Display ===================== -->
+
+  <section class="g-section" id="symbol">
+    <h2 class="lmnd-text-heading-small">Symbol container</h2>
+    <p class="lmnd-text-body-small-regular">The leading slot for anything that isn't a plain icon: initials, logos, flags, or an icon with a voice. Sizes <code>--x-small</code> (24) to <code>--xx-large</code> (72), default 40. The icon inside takes the same size name as the container (<code>lmnd-kit-symbol--large</code> holds <code>lmnd-icon--large</code>, <code>--xx-large</code> holds <code>--xx-large</code>); initials take <code>body-xsmall-semibold</code> at x-small, <code>body-small-semibold</code> at small and the default, then <code>body-large-semibold</code>, <code>body-xlarge-semibold</code> and <code>heading-small</code>. For a colour the design system doesn't model, such as a category, <code>lmnd-kit-symbol--themed</code> takes a hue from <code>data-hue</code> (the names are in <code>assets.txt</code>), and <code>lmnd-kit-symbol--subtle</code> its subtle palette.</p>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<div class="lmnd-kit-row">
+  <span class="lmnd-kit-symbol lmnd-kit-symbol--small"><span class="lmnd-icon lmnd-icon--small" data-icon="store" aria-hidden="true"></span></span>
+  <span class="lmnd-kit-symbol"><span class="lmnd-icon" data-icon="store" aria-hidden="true"></span></span>
+  <span class="lmnd-kit-symbol lmnd-kit-symbol--info"><span class="lmnd-icon" data-icon="money" aria-hidden="true"></span></span>
+  <span class="lmnd-kit-symbol lmnd-kit-symbol--positive lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="circle-check" aria-hidden="true"></span></span>
+  <span class="lmnd-kit-symbol lmnd-kit-symbol--brand"><span class="lmnd-icon" data-icon="brand-teya-symbol" aria-hidden="true"></span></span>
+  <span class="lmnd-kit-symbol lmnd-text-body-small-semibold">JB</span>
+  <span class="lmnd-kit-symbol"><span class="lmnd-kit-logo" data-logo="visa" role="img" aria-label="Visa"></span></span>
+  <span class="lmnd-kit-symbol lmnd-kit-symbol--large lmnd-kit-symbol--critical lmnd-kit-symbol--rounded"><span class="lmnd-icon lmnd-icon--large" data-icon="triangle-alert" aria-hidden="true"></span></span>
+  <span class="lmnd-kit-symbol"><span class="lmnd-icon" data-icon="bell" aria-hidden="true"></span><span class="lmnd-kit-badge lmnd-kit-badge--x-small"><span class="lmnd-kit-badge__label lmnd-text-body-xsmall-semibold">3</span></span></span>
+</div>
+<div class="lmnd-kit-row">
+  <span class="lmnd-kit-symbol lmnd-kit-symbol--themed lmnd-kit-symbol--rounded" data-hue="teal"><span class="lmnd-icon" data-icon="store" aria-hidden="true"></span></span>
+  <span class="lmnd-kit-symbol lmnd-kit-symbol--themed lmnd-kit-symbol--subtle lmnd-kit-symbol--rounded" data-hue="teal"><span class="lmnd-icon" data-icon="store" aria-hidden="true"></span></span>
+  <span class="lmnd-kit-symbol lmnd-kit-symbol--themed" data-hue="violet"><span class="lmnd-icon" data-icon="users" aria-hidden="true"></span></span>
+  <span class="lmnd-kit-symbol lmnd-kit-symbol--themed lmnd-kit-symbol--subtle" data-hue="violet"><span class="lmnd-icon" data-icon="users" aria-hidden="true"></span></span>
+  <span class="lmnd-kit-symbol lmnd-kit-symbol--themed lmnd-kit-symbol--subtle lmnd-text-body-small-semibold" data-hue="amber">MS</span>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="tag">
+    <h2 class="lmnd-text-heading-small">Tag and badge</h2>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<div class="lmnd-kit-row">
+  <span class="lmnd-kit-tag"><span class="lmnd-kit-tag__label lmnd-text-body-xsmall-semibold">Pending</span></span>
+  <span class="lmnd-kit-tag lmnd-kit-tag--positive"><span class="lmnd-icon" data-icon="circle-check" aria-hidden="true"></span><span class="lmnd-kit-tag__label lmnd-text-body-xsmall-semibold">Paid</span></span>
+  <span class="lmnd-kit-tag lmnd-kit-tag--critical"><span class="lmnd-kit-tag__label lmnd-text-body-xsmall-semibold">Declined</span></span>
+  <span class="lmnd-kit-tag lmnd-kit-tag--warning"><span class="lmnd-kit-tag__label lmnd-text-body-xsmall-semibold">Expiring</span></span>
+  <span class="lmnd-kit-tag lmnd-kit-tag--info"><span class="lmnd-kit-tag__label lmnd-text-body-xsmall-semibold">New</span></span>
+  <span class="lmnd-kit-tag lmnd-kit-tag--featured"><span class="lmnd-kit-tag__label lmnd-text-body-xsmall-semibold">Pro</span></span>
+</div>
+<div class="lmnd-kit-row">
+  <span class="lmnd-kit-badge"><span class="lmnd-kit-badge__label lmnd-text-body-xsmall-semibold">12</span></span>
+  <span class="lmnd-kit-badge lmnd-kit-badge--x-small"><span class="lmnd-kit-badge__label lmnd-text-body-xsmall-semibold">New</span></span>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="notice">
+    <h2 class="lmnd-text-heading-small">Notice</h2>
+    <p class="lmnd-text-body-small-regular">Voices: info (default), <code>--positive</code>, <code>--warning</code>, <code>--critical</code>, <code>--neutral</code>. Each has its own icon: circle-info, circle-check, triangle-alert, triangle-alert, heart.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<div class="lmnd-kit-notice">
+  <span class="lmnd-icon" data-icon="circle-info" aria-hidden="true"></span>
+  <div class="lmnd-kit-notice__text">
+    <p class="lmnd-kit-notice__title lmnd-text-body-medium-semibold">Payouts are moving</p>
+    <p class="lmnd-text-body-small-regular">From 1 December your payouts arrive the next working day.</p>
+    <button type="button" class="lmnd-kit-notice__action lmnd-text-body-small-semibold">Learn more</button>
+  </div>
+</div>
+<div class="lmnd-kit-notice lmnd-kit-notice--warning">
+  <span class="lmnd-icon" data-icon="triangle-alert" aria-hidden="true"></span>
+  <div class="lmnd-kit-notice__text"><p class="lmnd-text-body-small-regular">Your card expires in 12 days.</p></div>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="skeleton">
+    <h2 class="lmnd-text-heading-small">Skeleton</h2>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<div class="lmnd-kit-row" style="flex-wrap: nowrap">
+  <span class="lmnd-kit-skeleton lmnd-kit-skeleton--circle lmnd-kit-skeleton--xx-large"></span>
+  <div class="lmnd-kit-stack" style="flex: 1; gap: 0">
+    <span class="lmnd-kit-skeleton lmnd-kit-skeleton--line"></span>
+    <span class="lmnd-kit-skeleton lmnd-kit-skeleton--line lmnd-kit-skeleton--small" style="width: 60%"></span>
+  </div>
+</div>
+<span class="lmnd-kit-skeleton lmnd-kit-skeleton--block"></span>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="divider">
+    <h2 class="lmnd-text-heading-small">Divider</h2>
+    <p class="lmnd-text-body-small-regular">Solid or <code>--dashed</code>, with or without a label, horizontal or <code>--vertical</code>. A labelled divider is a <code>lmnd-kit-divider-label</code>; add <code>lmnd-kit-divider-label--dashed</code> for the dashed one.</p>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<hr class="lmnd-kit-divider">
+<hr class="lmnd-kit-divider lmnd-kit-divider--dashed">
+<p class="lmnd-kit-divider-label lmnd-text-body-small-regular"><span>or</span></p>
+<p class="lmnd-kit-divider-label lmnd-kit-divider-label--dashed lmnd-text-body-small-regular"><span>or</span></p>
+<div style="display: flex; gap: var(--lmnd-spacing-400); height: var(--lmnd-size-1200)"><hr class="lmnd-kit-divider lmnd-kit-divider--vertical"><hr class="lmnd-kit-divider lmnd-kit-divider--vertical lmnd-kit-divider--dashed"></div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="flags">
+    <h2 class="lmnd-text-heading-small">Flags and logos</h2>
+    <p class="lmnd-text-body-small-regular">Flags by ISO code (<code>data-flag="PT"</code>), logos by name (<code>data-logo="mastercard"</code>). Both are full-colour artwork from the stylesheet; size them with <code>lmnd-kit-flag--large</code> and the like. Logos switch to their dark artwork in dark mode.</p>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<div class="lmnd-kit-row">
+  <span class="lmnd-kit-flag" data-flag="GB" role="img" aria-label="United Kingdom"></span>
+  <span class="lmnd-kit-flag lmnd-kit-flag--large" data-flag="PT" role="img" aria-label="Portugal"></span>
+  <span class="lmnd-kit-flag lmnd-kit-flag--x-large lmnd-kit-flag--rounded" data-flag="IS" role="img" aria-label="Iceland"></span>
+  <span class="lmnd-kit-logo lmnd-kit-logo--x-large" data-logo="mastercard" role="img" aria-label="Mastercard"></span>
+  <span class="lmnd-kit-logo lmnd-kit-logo--x-large" data-logo="apple-pay" role="img" aria-label="Apple Pay"></span>
+</div>
+    </div></div>
+  </section>
+
+  <!-- ===================== Lists ===================== -->
+
+  <section class="g-section" id="card">
+    <h2 class="lmnd-text-heading-small">Card</h2>
+    <p class="lmnd-text-body-small-regular">Rows that belong together go in one card. A card of list items has no padding, so the rows' dividers reach its edges; a card of free content takes <code>lmnd-kit-card--pad-medium</code>. Cards are white on the subtle page (<code>LDS-CARD-SURFACE</code>), 16px apart on a screen (<code>APP-SPACING-RHYTHM</code>); <code>--subtle</code> and <code>--elevated</code> are for a card inside a card or a coloured area.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<div class="lmnd-kit-card">
+  <div class="lmnd-kit-card__header">
+    <div class="lmnd-kit-card__heading"><h3 class="lmnd-kit-card__title lmnd-text-heading-xxsmall">Today</h3></div>
+    <span class="lmnd-icon lmnd-kit-card__chevron" data-icon="chevron-right" aria-hidden="true"></span>
+  </div>
+  <div class="lmnd-kit-card__body">
+    <div class="lmnd-kit-content-item"><span class="lmnd-kit-content-item__label lmnd-text-body-medium-regular">Sales</span><span class="lmnd-kit-content-item__value lmnd-text-body-medium-medium">£1,240.50</span></div>
+    <div class="lmnd-kit-content-item"><span class="lmnd-kit-content-item__label lmnd-text-body-medium-regular">Transactions</span><span class="lmnd-kit-content-item__value lmnd-text-body-medium-medium">48</span></div>
+  </div>
+  <button type="button" class="lmnd-kit-card__footer lmnd-text-body-small-semibold">See all sales</button>
+</div>
+<div class="lmnd-kit-card lmnd-kit-card--pad-medium">
+  <div class="lmnd-kit-card__header">
+    <div class="lmnd-kit-card__heading"><h3 class="lmnd-kit-card__title lmnd-text-body-xsmall-overline">Overline title</h3></div>
+  </div>
+  <div class="lmnd-kit-card__body"><p class="lmnd-text-body-small-regular lmnd-kit-secondary">Free content gets the medium padding.</p></div>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="widget">
+    <h2 class="lmnd-text-heading-small">Mini widget</h2>
+    <p class="lmnd-text-body-small-regular">The Teya app's dashboard tiles, two to a row in <code>lmnd-kit-widgets</code>, keeping their 173 × 172 shape. Generic carries one value; Box carries one free slot. The whole widget is the link.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<div class="lmnd-kit-widgets">
+  <a href="#" class="lmnd-kit-widget">
+    <div class="lmnd-kit-widget__heading"><h3 class="lmnd-text-body-xsmall-overline">Refunds</h3></div>
+    <div class="lmnd-kit-widget__content">
+      <div class="lmnd-kit-widget__figure">
+        <div class="lmnd-kit-widget__value-group"><span class="lmnd-kit-widget__value lmnd-text-display-xsmall">-£18.50</span></div>
+      </div>
+      <div class="lmnd-kit-widget__bottom"><span class="lmnd-kit-widget__bottom-label lmnd-text-body-small-regular">8 refunds</span></div>
+    </div>
+  </a>
+  <a href="#" class="lmnd-kit-widget lmnd-kit-widget--positive">
+    <div class="lmnd-kit-widget__content">
+      <div class="lmnd-kit-widget__figure">
+        <h3 class="lmnd-kit-widget__label lmnd-text-body-small-regular">Today’s settlements</h3>
+        <div class="lmnd-kit-widget__value-group"><span class="lmnd-kit-widget__value lmnd-text-display-xsmall">£1,240.21</span><span class="lmnd-kit-widget__support lmnd-text-body-xsmall-medium">Paid today</span></div>
+      </div>
+      <div class="lmnd-kit-widget__bottom"><span class="lmnd-kit-widget__bottom-label lmnd-text-body-xsmall-regular">Sales from</span><span class="lmnd-text-body-small-medium">14 – 15 Apr</span></div>
+    </div>
+  </a>
+  <a href="#" class="lmnd-kit-widget lmnd-kit-widget--caution">
+    <div class="lmnd-kit-widget__content">
+      <div class="lmnd-kit-widget__figure">
+        <h3 class="lmnd-kit-widget__label lmnd-text-body-small-regular">Today’s settlements</h3>
+        <div class="lmnd-kit-widget__value-group"><span class="lmnd-kit-widget__value lmnd-text-display-xsmall">£1,240.21</span><span class="lmnd-kit-widget__support lmnd-text-body-xsmall-medium">Postponed</span></div>
+      </div>
+      <div class="lmnd-kit-widget__bottom">
+        <span class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--x-small lmnd-button--expand lmnd-text-body-small-semibold"><span class="lmnd-button__label">More details</span><span class="lmnd-icon lmnd-icon--small" data-icon="chevron-right" aria-hidden="true"></span></span>
+      </div>
+    </div>
+  </a>
+  <a href="#" class="lmnd-kit-widget">
+    <div class="lmnd-kit-widget__heading"><h3 class="lmnd-text-body-xsmall-overline">Upcoming</h3></div>
+    <div class="lmnd-kit-widget__content">
+      <div class="lmnd-kit-widget__figure">
+        <div class="lmnd-kit-widget__value-group"><span class="lmnd-kit-widget__value lmnd-text-display-xsmall">-£40.98</span><span class="lmnd-kit-widget__support lmnd-text-body-xsmall-regular">3 due this week</span></div>
+      </div>
+      <div class="lmnd-kit-widget__bottom">
+        <span class="lmnd-kit-avatars"><span class="lmnd-kit-symbol lmnd-text-body-small-semibold">GC</span><span class="lmnd-kit-symbol lmnd-text-body-small-semibold">VW</span></span>
+      </div>
+    </div>
+  </a>
+  <a href="#" class="lmnd-kit-widget">
+    <div class="lmnd-kit-widget__heading"><h3 class="lmnd-text-body-xsmall-overline">No cards</h3></div>
+    <div class="lmnd-kit-widget__slot">
+      <span class="lmnd-kit-symbol lmnd-kit-symbol--xx-large lmnd-kit-symbol--rounded lmnd-kit-symbol--brand" style="align-self: center"><span class="lmnd-icon lmnd-icon--xx-large" data-icon="card" aria-hidden="true"></span></span>
+      <span class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-text-body-small-semibold"><span class="lmnd-button__label">Create</span></span>
+    </div>
+  </a>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="list-item">
+    <h2 class="lmnd-text-heading-small">List item</h2>
+    <p class="lmnd-text-body-small-regular">An <code>&lt;a&gt;</code> or <code>&lt;button&gt;</code> list item is tappable and gets the press highlight; a <code>&lt;div&gt;</code> one is static. Leading slot: a plain icon (tinted secondary) or a rounded symbol container (<code>LDS-LIST-SYMBOL-SHAPE</code>) — one kind per card. Add <code>lmnd-kit-list-item--divider</code> to every row but the last.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<div class="lmnd-kit-card">
+  <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+    <span class="lmnd-kit-list-item__row">
+      <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="store" aria-hidden="true"></span></span></span>
+      <span class="lmnd-kit-list-item__content">
+        <span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Camden Market</span>
+        <span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">2 terminals</span>
+      </span>
+      <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+    </span>
+  </a>
+  <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+    <span class="lmnd-kit-list-item__row">
+      <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-text-body-small-semibold">JB</span></span>
+      <span class="lmnd-kit-list-item__content">
+        <span class="lmnd-kit-list-item__overline lmnd-text-body-small-regular">Today, 14:32</span>
+        <span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Jo Baker</span>
+        <span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Visa •• 4821</span>
+      </span>
+      <span class="lmnd-kit-list-item__value">
+        <span class="lmnd-text-body-medium-medium">£24.00</span>
+        <span class="lmnd-kit-tag lmnd-kit-tag--positive"><span class="lmnd-kit-tag__label lmnd-text-body-xsmall-semibold">Paid</span></span>
+      </span>
+    </span>
+  </a>
+  <button type="button" class="lmnd-kit-list-item lmnd-kit-list-item--critical">
+    <span class="lmnd-kit-list-item__row">
+      <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-kit-symbol--critical"><span class="lmnd-icon" data-icon="trash" aria-hidden="true"></span></span></span>
+      <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Remove terminal</span></span>
+    </span>
+  </button>
+</div>
+<div class="lmnd-kit-card">
+  <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+    <span class="lmnd-kit-list-item__row">
+      <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="user" aria-hidden="true"></span></span>
+      <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Profile</span></span>
+      <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+    </span>
+  </a>
+  <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--disabled" aria-disabled="true">
+    <span class="lmnd-kit-list-item__row">
+      <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="bell" aria-hidden="true"></span></span>
+      <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Notifications</span></span>
+      <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+    </span>
+  </a>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="list-group">
+    <h2 class="lmnd-text-heading-small">List group</h2>
+    <p class="lmnd-text-body-small-regular">A feed's group: a header placing it over one card of rows (<code>APP-FEED-GROUPS</code>). A money feed's header names the day and carries its total. A record's status is the app's badge on its symbol, <code>lmnd-kit-symbol__status</code> with a <code>data-badge</code> from <code>assets.txt</code>, and its amount takes a value style: <code>--dimmed</code> while pending, <code>--strikethrough</code> once declined or voided, <code>--positive</code> for money in (<code>APP-FEED-ROWS</code>). The next page loads under a spinner, <code>lmnd-kit-load-more</code>.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<section class="lmnd-kit-list-group">
+  <h3 class="lmnd-kit-list-group__header"><span class="lmnd-kit-list-group__heading"><span class="lmnd-text-body-small-semibold">Yesterday,</span><span class="lmnd-text-body-small-regular">22 Oct 2026</span></span><span class="lmnd-kit-list-group__total lmnd-text-body-small-medium">£1,284.50</span></h3>
+  <div class="lmnd-kit-card">
+    <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+      <span class="lmnd-kit-list-item__row">
+        <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-logo" data-logo="visa" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="sale-transaction-approved" aria-hidden="true"></span></span></span>
+        <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Visa •••• 4242</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">14:32 • Camden</span></span>
+        <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£24.00</span></span>
+      </span>
+    </a>
+    <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+      <span class="lmnd-kit-list-item__row">
+        <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-logo" data-logo="mastercard" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="sale-transaction-pending" aria-hidden="true"></span></span></span>
+        <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Mastercard •••• 8817</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">13:58 • Camden</span></span>
+        <span class="lmnd-kit-list-item__value lmnd-kit-list-item__value--dimmed"><span class="lmnd-text-body-medium-medium">£8.40</span></span>
+      </span>
+    </a>
+    <a href="#" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+      <span class="lmnd-kit-list-item__row">
+        <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-logo" data-logo="visa" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="sale-transaction-declined" aria-hidden="true"></span></span></span>
+        <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Visa •••• 1290</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">13:11 • Soho</span></span>
+        <span class="lmnd-kit-list-item__value lmnd-kit-list-item__value--strikethrough"><span class="lmnd-text-body-medium-medium">£56.20</span></span>
+      </span>
+    </a>
+    <a href="#" class="lmnd-kit-list-item">
+      <span class="lmnd-kit-list-item__row">
+        <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-text-body-small-semibold">NB<span class="lmnd-kit-symbol__status" data-badge="money-in" aria-hidden="true"></span></span></span>
+        <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Northside Bakery</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">09:05 • Invoice 2231</span></span>
+        <span class="lmnd-kit-list-item__value lmnd-kit-list-item__value--positive"><span class="lmnd-text-body-medium-medium">+£310.00</span></span>
+      </span>
+    </a>
+  </div>
+</section>
+<div class="lmnd-kit-load-more" role="status" aria-label="Loading more transactions"><span class="lmnd-spinner lmnd-spinner--medium" aria-hidden="true"></span></div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="content-item">
+    <h2 class="lmnd-text-heading-small">Content list item</h2>
+    <p class="lmnd-text-body-small-regular">Static label and value rows. Horizontal by default, <code>--vertical</code> stacks them, <code>--compact</code> halves the vertical padding. A copy or edit action in a value is an <code>lmnd-kit-inline-action</code>: the icon alone, no bigger than the row. Dividers are separate <code>lmnd-kit-divider</code>s between rows.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<div class="lmnd-kit-card">
+  <div class="lmnd-kit-content-item"><span class="lmnd-kit-content-item__label lmnd-text-body-medium-regular">Amount</span><span class="lmnd-kit-content-item__value lmnd-text-body-medium-medium">£24.00</span></div>
+  <hr class="lmnd-kit-divider">
+  <div class="lmnd-kit-content-item"><span class="lmnd-kit-content-item__label lmnd-text-body-medium-regular">Status</span><span class="lmnd-kit-content-item__value lmnd-text-body-medium-medium"><span class="lmnd-kit-tag lmnd-kit-tag--positive"><span class="lmnd-kit-tag__label lmnd-text-body-xsmall-semibold">Paid</span></span></span></div>
+  <hr class="lmnd-kit-divider">
+  <div class="lmnd-kit-content-item"><span class="lmnd-kit-content-item__label lmnd-text-body-medium-regular">Serial number</span><span class="lmnd-kit-content-item__value lmnd-text-body-medium-medium">TRM-00291-P3<button type="button" class="lmnd-kit-inline-action" aria-label="Copy serial number"><span class="lmnd-icon" data-icon="copy" aria-hidden="true"></span></button></span></div>
+  <hr class="lmnd-kit-divider">
+  <div class="lmnd-kit-content-item lmnd-kit-content-item--vertical">
+    <div class="lmnd-kit-content-item__column">
+      <span class="lmnd-text-body-small-regular lmnd-kit-secondary">Reference</span>
+      <span class="lmnd-kit-content-item__value lmnd-text-body-medium-medium">TXN-2024-118734<button type="button" class="lmnd-kit-inline-action" aria-label="Copy reference"><span class="lmnd-icon" data-icon="copy" aria-hidden="true"></span></button></span>
+    </div>
+  </div>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="select-item">
+    <h2 class="lmnd-text-heading-small">Select list item</h2>
+    <p class="lmnd-text-body-small-regular">Plain: a <code>&lt;label class="lmnd-kit-list-item"&gt;</code> with the control in the trailing slot, inside a card. Outlined: <code>lmnd-kit-select-item</code>, which stands alone, stacked 8px apart.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<div class="lmnd-kit-card">
+  <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+    <span class="lmnd-kit-list-item__row">
+      <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Instant payouts</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">1% fee per payout</span></span>
+      <span class="lmnd-kit-list-item__trailing"><input type="checkbox" class="lmnd-kit-switch" role="switch" checked></span>
+    </span>
+  </label>
+  <label class="lmnd-kit-list-item">
+    <span class="lmnd-kit-list-item__row">
+      <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Email receipts</span></span>
+      <span class="lmnd-kit-list-item__trailing"><input type="checkbox" class="lmnd-kit-checkbox"></span>
+    </span>
+  </label>
+</div>
+<div class="lmnd-kit-stack">
+  <label class="lmnd-kit-select-item">
+    <span class="lmnd-kit-select-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-flag" data-flag="GB" aria-hidden="true"></span></span></span>
+    <span class="lmnd-kit-select-item__content"><span class="lmnd-text-body-medium-medium">GBP account</span><span class="lmnd-kit-select-item__support lmnd-text-body-small-regular">•• 4821</span></span>
+    <input type="radio" class="lmnd-kit-radio" name="g-account" checked>
+  </label>
+  <label class="lmnd-kit-select-item">
+    <span class="lmnd-kit-select-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-flag" data-flag="EU" aria-hidden="true"></span></span></span>
+    <span class="lmnd-kit-select-item__content"><span class="lmnd-text-body-medium-medium">EUR account</span><span class="lmnd-kit-select-item__support lmnd-text-body-small-regular">•• 9930</span></span>
+    <input type="radio" class="lmnd-kit-radio" name="g-account">
+  </label>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="timeline">
+    <h2 class="lmnd-text-heading-small">History timeline</h2>
+    <p class="lmnd-text-body-small-regular">Events is a history of things that have happened, newest first; Steps is a process with known stages, some still to come. Events: <code>lmnd-kit-timeline__item--current</code> plus a voice colours the dot. Steps (<code>lmnd-kit-timeline--steps</code>): each item is <code>--completed</code>, <code>--error</code>, <code>--active</code> or <code>--next</code>; completed and error carry an icon.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<div class="lmnd-kit-card lmnd-kit-card--pad-medium">
+  <div class="lmnd-kit-card__body">
+    <ol class="lmnd-kit-timeline">
+      <li class="lmnd-kit-timeline__item lmnd-kit-timeline__item--current lmnd-kit-timeline__item--positive">
+        <span class="lmnd-kit-timeline__indicator"></span>
+        <div class="lmnd-kit-timeline__body"><div class="lmnd-kit-timeline__head"><span class="lmnd-kit-timeline__label lmnd-text-body-medium-medium">Payout sent</span><span class="lmnd-kit-timeline__subheading lmnd-text-body-small-regular">Today, 09:12</span></div></div>
+      </li>
+      <li class="lmnd-kit-timeline__item">
+        <span class="lmnd-kit-timeline__indicator"></span>
+        <div class="lmnd-kit-timeline__body"><div class="lmnd-kit-timeline__head"><span class="lmnd-kit-timeline__label lmnd-text-body-medium-medium">Payout scheduled</span><span class="lmnd-kit-timeline__subheading lmnd-text-body-small-regular">Yesterday, 18:00</span></div><p class="lmnd-kit-timeline__description lmnd-text-body-small-regular">48 transactions settled.</p></div>
+      </li>
+    </ol>
+  </div>
+</div>
+<div class="lmnd-kit-card lmnd-kit-card--pad-medium">
+  <div class="lmnd-kit-card__body">
+    <ol class="lmnd-kit-timeline lmnd-kit-timeline--steps">
+      <li class="lmnd-kit-timeline__item lmnd-kit-timeline__item--completed">
+        <span class="lmnd-kit-timeline__indicator"><span class="lmnd-icon" data-icon="circle-check-solid" aria-hidden="true"></span></span>
+        <div class="lmnd-kit-timeline__body"><span class="lmnd-kit-timeline__label lmnd-text-body-medium-medium">Order placed</span></div>
+      </li>
+      <li class="lmnd-kit-timeline__item lmnd-kit-timeline__item--active">
+        <span class="lmnd-kit-timeline__indicator"></span>
+        <div class="lmnd-kit-timeline__body"><span class="lmnd-kit-timeline__label lmnd-text-body-medium-medium">Card on its way</span></div>
+      </li>
+      <li class="lmnd-kit-timeline__item lmnd-kit-timeline__item--next">
+        <span class="lmnd-kit-timeline__indicator"></span>
+        <div class="lmnd-kit-timeline__body"><span class="lmnd-kit-timeline__label lmnd-text-body-medium-medium">Activate card</span></div>
+      </li>
+    </ol>
+  </div>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="swipe">
+    <h2 class="lmnd-text-heading-small">Swipe action row</h2>
+    <p class="lmnd-text-body-small-regular">The revealed state only. Add <code>lmnd-kit-swipe-row--two</code> when there are two actions.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<div class="lmnd-kit-card">
+  <div class="lmnd-kit-swipe-row">
+    <div class="lmnd-kit-swipe-row__actions">
+      <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--critical lmnd-kit-icon-button--solid lmnd-kit-icon-button--circular" aria-label="Delete"><span class="lmnd-icon lmnd-icon--large" data-icon="trash"></span></button>
+    </div>
+    <div class="lmnd-kit-swipe-row__content lmnd-kit-list-item">
+      <span class="lmnd-kit-list-item__row">
+        <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-text-body-small-semibold">AM</span></span>
+        <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Alex Morgan</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Barclays •• 2210</span></span>
+      </span>
+    </div>
+  </div>
+</div>
+    </div></div>
+  </section>
+
+  <!-- ===================== Inputs ===================== -->
+
+  <section class="g-section" id="text-field">
+    <h2 class="lmnd-text-heading-small">Text field</h2>
+    <p class="lmnd-text-body-small-regular">A real <code>&lt;input&gt;</code>, so typing and focus work. States: <code>lmnd-kit-field--error</code>, <code>lmnd-kit-field--disabled</code>, <code>lmnd-kit-field--focused</code> (to show focus on a static screen). Text elsewhere that repeats what's typed, such as a new role's name in the footer, carries <code>data-lmnd-kit-mirror="the-input-id"</code> and, for while the field is empty, <code>data-lmnd-kit-mirror-empty</code>; with the kit's script it follows the field.</p>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<label class="lmnd-kit-field">
+  <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Business name</span><span class="lmnd-kit-field__optional lmnd-text-body-small-regular">Optional</span></span>
+  <span class="lmnd-kit-field__box"><input class="lmnd-kit-field__input" placeholder="As it appears on receipts"></span>
+  <span class="lmnd-kit-field__helper lmnd-text-body-xsmall-regular">Up to 22 characters</span>
+</label>
+<label class="lmnd-kit-field lmnd-kit-field--error">
+  <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Email</span></span>
+  <span class="lmnd-kit-field__box"><span class="lmnd-icon" data-icon="envelope" aria-hidden="true"></span><input class="lmnd-kit-field__input" type="email" value="jo@cafe"></span>
+  <span class="lmnd-kit-field__helper lmnd-text-body-xsmall-regular">Enter a full email address</span>
+</label>
+<label class="lmnd-kit-field">
+  <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Phone</span></span>
+  <span class="lmnd-kit-field__box">
+    <button type="button" class="lmnd-kit-field__selector lmnd-text-body-medium-medium"><span class="lmnd-kit-flag" data-flag="GB" aria-hidden="true"></span>+44<span class="lmnd-icon lmnd-icon--small" data-icon="chevron-down" aria-hidden="true"></span></button>
+    <input class="lmnd-kit-field__input" type="tel" placeholder="7700 900123">
+  </span>
+</label>
+<label class="lmnd-kit-field lmnd-kit-field--disabled">
+  <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Password</span></span>
+  <span class="lmnd-kit-field__box"><span class="lmnd-icon" data-icon="padlock" aria-hidden="true"></span><input class="lmnd-kit-field__input" type="password" value="secret" disabled><span class="lmnd-icon" data-icon="eye-closed" aria-hidden="true"></span></span>
+</label>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="text-area">
+    <h2 class="lmnd-text-heading-small">Text area</h2>
+    <p class="lmnd-text-body-small-regular">Lemonade's TextArea, for free text such as "Tell us what happened": the text field with a <code>&lt;textarea&gt;</code> in a box 180px tall (<code>--lmnd-kit-field-height</code> changes it), padded 16px, the text from the top. A limit goes on the textarea as <code>data-lmnd-kit-max-length</code> with a <code>lmnd-kit-field__counter</code> in the footer; it never blocks typing. Past the limit the counter takes <code>lmnd-kit-field__counter--over</code>, and the screen shows an error and holds back submission. With the kit's script the counter follows what's typed.</p>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<label class="lmnd-kit-field lmnd-kit-field--textarea">
+  <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">What happened</span><span class="lmnd-kit-field__optional lmnd-text-body-small-regular">Optional</span></span>
+  <span class="lmnd-kit-field__box"><textarea class="lmnd-kit-field__input" placeholder="For example: I didn't make this payment" data-lmnd-kit-max-length="1000"></textarea></span>
+  <span class="lmnd-kit-field__footer"><span class="lmnd-kit-field__helper lmnd-text-body-xsmall-regular">Anything you add helps us look into it.</span><span class="lmnd-kit-field__counter lmnd-text-body-xsmall-regular">0/1000</span></span>
+</label>
+<label class="lmnd-kit-field lmnd-kit-field--textarea lmnd-kit-field--error">
+  <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">What happened</span></span>
+  <span class="lmnd-kit-field__box"><textarea class="lmnd-kit-field__input" data-lmnd-kit-max-length="1000">I didn't make this payment.</textarea></span>
+  <span class="lmnd-kit-field__footer"><span class="lmnd-kit-field__helper lmnd-text-body-xsmall-regular">Tell us a bit more</span><span class="lmnd-kit-field__counter lmnd-text-body-xsmall-regular">27/1000</span></span>
+</label>
+<label class="lmnd-kit-field lmnd-kit-field--textarea lmnd-kit-field--disabled">
+  <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Notes</span></span>
+  <span class="lmnd-kit-field__box"><textarea class="lmnd-kit-field__input" disabled>Delivered to the back door.</textarea></span>
+</label>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="select-field">
+    <h2 class="lmnd-text-heading-small">Select field</h2>
+    <p class="lmnd-text-body-small-regular">Looks like a text field and opens a picker (<code>LHK-SELECT-OPENS</code>). To open a kit sheet or dropdown, the box is a link to its id; an empty value shows <code>data-placeholder</code>. To open the phone's own picker, the box holds a <code>lmnd-kit-field__select</code>, a native <code>&lt;select&gt;</code> whose empty first option is the placeholder.</p>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<div class="lmnd-kit-field lmnd-kit-select">
+  <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Business type</span></span>
+  <a href="#" class="lmnd-kit-field__box">
+    <span class="lmnd-kit-field__value lmnd-text-body-medium-regular" data-placeholder="Select a type"></span>
+    <span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span>
+  </a>
+</div>
+<div class="lmnd-kit-field lmnd-kit-select">
+  <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Country</span></span>
+  <a href="#" class="lmnd-kit-field__box">
+    <span class="lmnd-kit-flag" data-flag="PT" aria-hidden="true"></span>
+    <span class="lmnd-kit-field__value lmnd-text-body-medium-regular">Portugal</span>
+    <span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span>
+  </a>
+</div>
+<label class="lmnd-kit-field lmnd-kit-select">
+  <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Industry</span></span>
+  <span class="lmnd-kit-field__box">
+    <select class="lmnd-kit-field__select lmnd-text-body-medium-regular">
+      <option value="" disabled selected hidden>Select an industry</option>
+      <option>Café or bakery</option>
+      <option>Restaurant</option>
+      <option>Bar or pub</option>
+      <option>Retail shop</option>
+      <option>Hair and beauty</option>
+    </select>
+    <span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span>
+  </span>
+</label>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="search">
+    <h2 class="lmnd-text-heading-small">Search field</h2>
+    <div class="g-example"><div class="g-demo" data-demo>
+<label class="lmnd-kit-search">
+  <span class="lmnd-kit-search__box">
+    <span class="lmnd-icon" data-icon="search" aria-hidden="true"></span>
+    <input class="lmnd-kit-search__input" type="search" placeholder="Search transactions">
+    <span class="lmnd-icon lmnd-kit-search__clear" data-icon="circle-x-solid" aria-hidden="true"></span>
+  </span>
+</label>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="pin">
+    <h2 class="lmnd-text-heading-small">Pin code</h2>
+    <p class="lmnd-text-body-small-regular">Static boxes: mark the next one to fill with <code>lmnd-kit-pin__box--active</code>. <code>lmnd-kit-pin--error</code> and <code>lmnd-kit-pin--disabled</code> on the row.</p>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<div class="lmnd-kit-pin lmnd-text-body-medium-medium">
+  <span class="lmnd-kit-pin__box">4</span><span class="lmnd-kit-pin__box">8</span><span class="lmnd-kit-pin__box lmnd-kit-pin__box--active"></span><span class="lmnd-kit-pin__box"></span><span class="lmnd-kit-pin__box"></span><span class="lmnd-kit-pin__box"></span>
+</div>
+<div class="lmnd-kit-pin lmnd-kit-pin--error lmnd-text-body-medium-medium">
+  <span class="lmnd-kit-pin__box">1</span><span class="lmnd-kit-pin__box">2</span><span class="lmnd-kit-pin__box">3</span><span class="lmnd-kit-pin__box">4</span>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="controls">
+    <h2 class="lmnd-text-heading-small">Switch, checkbox, radio</h2>
+    <p class="lmnd-text-body-small-regular">Native inputs with <code>lmnd-kit-switch</code> (add <code>role="switch"</code>), <code>lmnd-kit-checkbox</code>, <code>lmnd-kit-radio</code>. Wrap one in <code>lmnd-kit-control</code> for a label and support text.</p>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<div class="lmnd-kit-row">
+  <input type="checkbox" class="lmnd-kit-switch" role="switch" aria-label="On" checked>
+  <input type="checkbox" class="lmnd-kit-switch" role="switch" aria-label="Off">
+  <input type="checkbox" class="lmnd-kit-switch" role="switch" aria-label="Disabled" disabled>
+  <input type="checkbox" class="lmnd-kit-checkbox" aria-label="Checked" checked>
+  <input type="checkbox" class="lmnd-kit-checkbox" aria-label="Unchecked">
+  <input type="checkbox" class="lmnd-kit-checkbox" aria-label="Disabled" checked disabled>
+  <input type="radio" class="lmnd-kit-radio" name="g-r" aria-label="Checked" checked>
+  <input type="radio" class="lmnd-kit-radio" name="g-r" aria-label="Unchecked">
+</div>
+<label class="lmnd-kit-control">
+  <input type="checkbox" class="lmnd-kit-switch" role="switch" checked>
+  <span class="lmnd-kit-control__text"><span class="lmnd-text-body-medium-medium">Tips</span><span class="lmnd-kit-control__support lmnd-text-body-small-regular">Ask customers for a tip at checkout</span></span>
+</label>
+<label class="lmnd-kit-control">
+  <input type="checkbox" class="lmnd-kit-checkbox">
+  <span class="lmnd-kit-control__text"><span class="lmnd-text-body-medium-medium">I accept the terms</span></span>
+</label>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="box-selection">
+    <h2 class="lmnd-text-heading-small">Box selection</h2>
+    <p class="lmnd-text-body-small-regular">A selectable container around free content. A hidden radio as the first child drives it; <code>lmnd-kit-box-selection--selected</code> fixes it.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<div class="lmnd-kit-row" style="flex-wrap: nowrap">
+  <label class="lmnd-kit-box-selection lmnd-kit-box-selection--outlined" style="flex: 1; align-items: center"><input type="radio" name="g-freq" checked><span class="lmnd-text-body-small-medium">Weekly</span></label>
+  <label class="lmnd-kit-box-selection lmnd-kit-box-selection--outlined" style="flex: 1; align-items: center"><input type="radio" name="g-freq"><span class="lmnd-text-body-small-medium">Monthly</span></label>
+  <label class="lmnd-kit-box-selection lmnd-kit-box-selection--outlined" style="flex: 1; align-items: center"><input type="radio" name="g-freq"><span class="lmnd-text-body-small-medium">Yearly</span></label>
+</div>
+<label class="lmnd-kit-box-selection" style="padding: var(--lmnd-spacing-400); border-radius: var(--lmnd-radius-600); gap: var(--lmnd-spacing-300)">
+  <input type="radio" name="g-plan" checked>
+  <span class="lmnd-kit-row" style="flex-wrap: nowrap; gap: var(--lmnd-spacing-300)">
+    <span class="lmnd-kit-symbol lmnd-kit-symbol--large lmnd-kit-symbol--rounded"><span class="lmnd-icon lmnd-icon--large" data-icon="sparkles" aria-hidden="true"></span></span>
+    <span class="lmnd-kit-stack" style="flex: 1; gap: 0"><span class="lmnd-text-heading-xsmall">Teya Pro</span><span class="lmnd-text-body-small-regular lmnd-kit-secondary">£19 a month</span></span>
+    <span class="lmnd-kit-radio" style="background: var(--lmnd-color-bg-brand-high); box-shadow: none; display: grid; place-items: center"><span style="width: var(--lmnd-size-250); height: var(--lmnd-size-250); border-radius: var(--lmnd-radius-full); background: var(--lmnd-color-bg-default)"></span></span>
+  </span>
+</label>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="segmented">
+    <h2 class="lmnd-text-heading-small">Segmented control</h2>
+    <p class="lmnd-text-body-small-regular">Large (48) by default, and always Large when it switches what a whole screen shows (<code>APP-SEGMENTED-SIZE</code>); <code>--medium</code> (40) and <code>--small</code> (32, with <code>body-xsmall-medium</code>) inside a card, widget, sheet or form. Radios drive it.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<div class="lmnd-kit-segmented" role="radiogroup">
+  <label class="lmnd-kit-segmented__item lmnd-text-body-small-medium"><input type="radio" name="g-period" checked><span>Day</span></label>
+  <label class="lmnd-kit-segmented__item lmnd-text-body-small-medium"><input type="radio" name="g-period"><span>Week</span></label>
+  <label class="lmnd-kit-segmented__item lmnd-text-body-small-medium"><input type="radio" name="g-period"><span>Month</span></label>
+</div>
+<div class="lmnd-kit-segmented lmnd-kit-segmented--small" role="radiogroup">
+  <label class="lmnd-kit-segmented__item lmnd-text-body-xsmall-medium"><input type="radio" name="g-view" checked><span class="lmnd-icon" data-icon="list" aria-hidden="true"></span><span>List</span></label>
+  <label class="lmnd-kit-segmented__item lmnd-text-body-xsmall-medium"><input type="radio" name="g-view"><span class="lmnd-icon" data-icon="chart-stats" aria-hidden="true"></span><span>Chart</span></label>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="tabs">
+    <h2 class="lmnd-text-heading-small">Tabs</h2>
+    <p class="lmnd-text-body-small-regular">Hug by default; <code>lmnd-kit-tabs--stretch</code> for two or three equal tabs. Repeat the label in <code>data-label</code> so it doesn't shift when it turns semibold.</p>
+    <div class="g-example"><div class="g-demo g-demo--default" data-demo>
+<div class="lmnd-kit-tabs" role="tablist">
+  <label class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="g-tabs" checked><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Overview">Overview</span></span></label>
+  <label class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="g-tabs"><span class="lmnd-kit-tabs__pill"><span class="lmnd-icon" data-icon="receipt" aria-hidden="true"></span><span class="lmnd-kit-tabs__label" data-label="Payouts">Payouts</span></span></label>
+  <label class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="g-tabs"><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Disputes">Disputes</span></span></label>
+</div>
+<div class="lmnd-kit-tabs lmnd-kit-tabs--stretch" role="tablist">
+  <label class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="g-tabs2" checked><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Card">Card</span></span></label>
+  <label class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="g-tabs2"><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Bank">Bank</span></span></label>
+</div>
+    </div></div>
+  </section>
+
+  <!-- ===================== Navigation and overlays ===================== -->
+
+  <section class="g-section" id="top-bar">
+    <h2 class="lmnd-text-heading-small">Top bar</h2>
+    <p class="lmnd-text-body-small-regular">Navigation: a back or close button, a centred title that shows when <code>lmnd-kit-top-bar--collapsed</code>, and the large title below. On a screen, the large title goes first in the content as a <code>lmnd-kit-large-title</code>, so it scrolls under the bar, and the kit's script collapses the bar as it does. Small (<code>lmnd-kit-top-bar--small</code>): only the centred title, naming the kind of thing, for a details screen; on <code>lmnd-kit-screen--details</code> it starts transparent and fills on scroll. Compact: a top-level screen's large title with actions beside it, no back button. Buttons are Subtle, Primary · Solid for the screen's primary action (<code>LDS-TOP-BAR-ACTIONS</code>), or Critical · Subtle, <code>lmnd-kit-icon-button--critical</code>, for a destructive one that stays in the bar (<code>LDS-TOP-BAR-CRITICAL</code>). Past two actions, the rest go in a <code>lmnd-kit-dropdown</code> behind an <code>ellipsis-horizontal</code> button, a destructive one as a <code>lmnd-kit-dropdown__item--critical</code>, and a destructive action stays out of the menu only on a screen whose job is removing something (<code>APP-TOPBAR-TRAILING</code>).</p>
+    <div class="g-example"><div class="g-demo g-demo--default" style="padding: 0" data-demo>
+<header class="lmnd-kit-top-bar">
+  <div class="lmnd-kit-top-bar__bar">
+    <div class="lmnd-kit-top-bar__leading"><button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Back"><span class="lmnd-icon" data-icon="arrow-left"></span></button></div>
+    <div class="lmnd-kit-top-bar__center"><span class="lmnd-kit-top-bar__title lmnd-text-heading-xxsmall">Payouts</span></div>
+    <div class="lmnd-kit-top-bar__trailing"><button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Filter"><span class="lmnd-icon" data-icon="filter" aria-hidden="true"></span></button></div>
+  </div>
+  <div class="lmnd-kit-top-bar__large">
+    <h1 class="lmnd-kit-top-bar__large-title lmnd-text-heading-large">Payouts</h1>
+    <p class="lmnd-kit-top-bar__large-subtitle lmnd-text-body-small-regular">Next payout tomorrow</p>
+  </div>
+</header>
+<header class="lmnd-kit-top-bar lmnd-kit-top-bar--collapsed">
+  <div class="lmnd-kit-top-bar__bar">
+    <div class="lmnd-kit-top-bar__leading"><button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></button></div>
+    <div class="lmnd-kit-top-bar__center"><span class="lmnd-kit-top-bar__title lmnd-text-heading-xxsmall">Transaction</span><span class="lmnd-kit-top-bar__subtitle lmnd-text-body-xsmall-regular">12 Oct, 14:32</span></div>
+    <div class="lmnd-kit-top-bar__trailing"></div>
+  </div>
+</header>
+<div style="position: relative; height: 200px">
+<header class="lmnd-kit-top-bar lmnd-kit-top-bar--small">
+  <div class="lmnd-kit-top-bar__bar">
+    <div class="lmnd-kit-top-bar__leading"><button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Back"><span class="lmnd-icon" data-icon="arrow-left"></span></button></div>
+    <div class="lmnd-kit-top-bar__center"><span class="lmnd-kit-top-bar__title lmnd-text-heading-xxsmall">Team member</span></div>
+    <div class="lmnd-kit-top-bar__trailing">
+      <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Edit member"><span class="lmnd-icon" data-icon="pencil-line"></span></button>
+      <a href="#" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="More options"><span class="lmnd-icon" data-icon="ellipsis-horizontal"></span></a>
+    </div>
+  </div>
+</header>
+<div class="lmnd-kit-dropdown" role="menu">
+  <a href="#" class="lmnd-kit-dropdown__item" role="menuitem"><span class="lmnd-icon" data-icon="user-key" aria-hidden="true"></span><span class="lmnd-kit-dropdown__label lmnd-text-body-medium-regular">Change role</span></a>
+  <hr class="lmnd-kit-divider">
+  <a href="#" class="lmnd-kit-dropdown__item lmnd-kit-dropdown__item--critical" role="menuitem"><span class="lmnd-icon" data-icon="trash" aria-hidden="true"></span><span class="lmnd-kit-dropdown__label lmnd-text-body-medium-regular">Remove member</span></a>
+</div>
+</div>
+<header class="lmnd-kit-top-bar lmnd-kit-top-bar--small">
+  <div class="lmnd-kit-top-bar__bar">
+    <div class="lmnd-kit-top-bar__leading"><button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Back"><span class="lmnd-icon" data-icon="arrow-left"></span></button></div>
+    <div class="lmnd-kit-top-bar__center"><span class="lmnd-kit-top-bar__title lmnd-text-heading-xxsmall">Sale transaction</span></div>
+    <div class="lmnd-kit-top-bar__trailing"><button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Download"><span class="lmnd-icon" data-icon="download"></span></button></div>
+  </div>
+</header>
+<header class="lmnd-kit-top-bar">
+  <div class="lmnd-kit-top-bar__compact">
+    <div class="lmnd-kit-top-bar__large">
+      <h1 class="lmnd-kit-top-bar__large-title lmnd-text-heading-large">Home</h1>
+      <p class="lmnd-kit-top-bar__large-subtitle lmnd-text-body-small-regular">Camden Market</p>
+    </div>
+    <div class="lmnd-kit-top-bar__trailing"><button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Notifications"><span class="lmnd-icon" data-icon="bell"></span></button></div>
+  </div>
+</header>
+    </div></div>
+    <p class="lmnd-text-body-small-regular">A large title with a description, on a screen: the description goes inside the <code>lmnd-kit-large-title</code>, right under the title, never as its own paragraph in the content (<code>LDS-TOP-BAR-DESCRIPTION</code>).</p>
+    <div class="g-example"><div class="g-demo" style="padding: 0" data-demo>
+<header class="lmnd-kit-top-bar">
+  <div class="lmnd-kit-top-bar__bar">
+    <div class="lmnd-kit-top-bar__leading"><button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Back"><span class="lmnd-icon" data-icon="arrow-left"></span></button></div>
+    <div class="lmnd-kit-top-bar__center"><span class="lmnd-kit-top-bar__title lmnd-text-heading-xxsmall">What can Dan do?</span></div>
+    <div class="lmnd-kit-top-bar__trailing"></div>
+  </div>
+</header>
+<main class="lmnd-kit-content">
+  <div class="lmnd-kit-large-title">
+    <h1 class="lmnd-text-heading-large">What can Dan do?</h1>
+    <p class="lmnd-kit-large-title__description lmnd-text-body-small-regular">Tick what this role can do</p>
+  </div>
+  <div class="lmnd-kit-card">
+    <label class="lmnd-kit-list-item">
+      <span class="lmnd-kit-list-item__row">
+        <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Take payments</span></span>
+        <span class="lmnd-kit-list-item__trailing"><input type="checkbox" class="lmnd-kit-checkbox" checked></span>
+      </span>
+    </label>
+  </div>
+</main>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="tab-bar">
+    <h2 class="lmnd-text-heading-small">Bottom tab bar</h2>
+    <p class="lmnd-text-body-small-regular">Floating pill, 3–5 items. The selected item takes <code>aria-current="page"</code> and, where one exists, the solid icon.</p>
+    <div class="g-example"><div class="g-demo" style="padding: 0" data-demo>
+<nav class="lmnd-kit-tab-bar">
+  <div class="lmnd-kit-tab-bar__bar">
+    <a href="#" class="lmnd-kit-tab-bar__item" aria-current="page"><span class="lmnd-icon" data-icon="brand-teya-symbol" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Home</span></a>
+    <a href="#" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="chart-stats" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Sales</span></a>
+    <a href="#" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="wallet" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Money</span></a>
+    <a href="#" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="sparkles-soft" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Teya AI</span></a>
+  </div>
+</nav>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="dropdown">
+    <h2 class="lmnd-text-heading-small">Dropdown</h2>
+    <p class="lmnd-text-body-small-regular">A menu under the button that opens it, such as a top bar's "+" or a view-mode switch. On a screen it is a <code>lmnd-kit-dropdown-layer</code> with an id, after the <code>lmnd-kit-screen</code>, opened by a link to <code>#its-id</code> like a sheet; the layer's dismiss link closes it. It sits under the top bar's trailing button, or under the leading edge with <code>lmnd-kit-dropdown-layer--start</code>. Sections get an upper-case title and a divider between them; the current choice is ticked with <code>check-small</code>; a destructive item takes <code>lmnd-kit-dropdown__item--critical</code>.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<div class="lmnd-kit-dropdown" role="menu" style="position: static">
+  <p class="lmnd-kit-dropdown__title lmnd-text-body-xsmall-semibold">View mode</p>
+  <a href="#" class="lmnd-kit-dropdown__item" role="menuitemradio" aria-checked="true"><span class="lmnd-icon" data-icon="calendar-day-timeline" aria-hidden="true"></span><span class="lmnd-kit-dropdown__label lmnd-text-body-medium-regular">Daily report</span><span class="lmnd-icon" data-icon="check-small" aria-hidden="true"></span></a>
+  <a href="#" class="lmnd-kit-dropdown__item" role="menuitemradio" aria-checked="false"><span class="lmnd-icon" data-icon="list" aria-hidden="true"></span><span class="lmnd-kit-dropdown__label lmnd-text-body-medium-regular">List</span></a>
+  <hr class="lmnd-kit-divider">
+  <a href="#" class="lmnd-kit-dropdown__item lmnd-kit-dropdown__item--critical" role="menuitem"><span class="lmnd-icon" data-icon="trash" aria-hidden="true"></span><span class="lmnd-kit-dropdown__label lmnd-text-body-medium-regular">Remove</span></a>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="sheet">
+    <h2 class="lmnd-text-heading-small">Bottom sheet</h2>
+    <p class="lmnd-text-body-small-regular">The scaffold: handle, close on the left, an optional text action, a large title. On a screen, the scrim goes in the <code>lmnd-kit-device</code>, after the <code>lmnd-kit-screen</code>, with an <code>id</code>: a link to <code>#that-id</code> opens it and a link to <code>#</code> closes it, with no script. A sheet closes with Close, never Back. A confirming button that picks an option is a <code>&lt;label for="the-option-id"&gt;</code> with <code>data-lmnd-kit-close</code>, so one tap picks and closes; add <code>data-lmnd-kit-reset=&quot;element-id&quot;</code> to put the fields in that element back as the markup wrote them first, as when starting again from a role.</p>
+    <div class="g-example"><div class="g-demo g-demo--frame" data-demo>
+<div class="lmnd-kit-scrim" style="position: absolute">
+  <div class="lmnd-kit-sheet lmnd-kit-sheet--subtle" role="dialog" aria-labelledby="g-sheet-title">
+    <span class="lmnd-kit-sheet__handle"></span>
+    <div class="lmnd-kit-sheet__bar">
+      <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></button>
+      <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-kit-button--full-shape lmnd-text-body-small-semibold"><span class="lmnd-button__label">Reset</span></button>
+    </div>
+    <h2 class="lmnd-kit-sheet__title lmnd-text-heading-large" id="g-sheet-title">Filter by payment method</h2>
+    <div class="lmnd-kit-sheet__body">
+      <div class="lmnd-kit-card">
+        <label class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+          <span class="lmnd-kit-list-item__row">
+            <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="card" aria-hidden="true"></span></span></span>
+            <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Card</span></span>
+            <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="g-method" checked></span>
+          </span>
+        </label>
+        <label class="lmnd-kit-list-item">
+          <span class="lmnd-kit-list-item__row">
+            <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="money" aria-hidden="true"></span></span></span>
+            <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Cash</span></span>
+            <span class="lmnd-kit-list-item__trailing"><input type="radio" class="lmnd-kit-radio" name="g-method"></span>
+          </span>
+        </label>
+      </div>
+    </div>
+    <div class="lmnd-kit-sheet__actions">
+      <button type="button" class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold"><span class="lmnd-button__label">Confirm</span></button>
+    </div>
+  </div>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="dialog">
+    <h2 class="lmnd-text-heading-small">Dialog</h2>
+    <div class="g-example"><div class="g-demo g-demo--frame" data-demo>
+<div class="lmnd-kit-scrim lmnd-kit-scrim--center" style="position: absolute">
+  <div class="lmnd-kit-dialog" role="alertdialog" aria-labelledby="g-dialog-title">
+    <h2 class="lmnd-text-heading-small" id="g-dialog-title">Remove terminal?</h2>
+    <p class="lmnd-kit-dialog__body lmnd-text-body-medium-regular">It stops taking payments straight away.</p>
+    <div class="lmnd-kit-dialog__actions">
+      <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-text-body-small-semibold"><span class="lmnd-button__label">Cancel</span></button>
+      <button type="button" class="lmnd-button lmnd-button--critical lmnd-button--solid lmnd-button--small lmnd-text-body-small-semibold"><span class="lmnd-button__label">Remove</span></button>
+    </div>
+  </div>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="toast">
+    <h2 class="lmnd-text-heading-small">Toast</h2>
+    <p class="lmnd-text-body-small-regular">On the inverse surface, as in Compose: dark in light mode, light in dark mode. On a screen, put it in an <code>lmnd-kit-toast-host</code> in the <code>lmnd-kit-device</code>, which pins it 24px above the bottom; give the host an <code>id</code> and link to it to show it. In a host it dismisses itself after 3 seconds, <code>lmnd-kit-toast--medium</code> 6 and <code>lmnd-kit-toast--long</code> 9; a loading toast stays (<code>LDS-TOAST-DURATION</code>).</p>
+    <div class="g-example"><div class="g-demo g-demo--default" style="align-items: center" data-demo>
+<div class="lmnd-kit-toast lmnd-kit-toast--success" role="status"><span class="lmnd-icon" data-icon="circle-check" aria-hidden="true"></span><span class="lmnd-kit-toast__label lmnd-text-body-small-medium">Recipient added</span></div>
+<div class="lmnd-kit-toast" role="status"><span class="lmnd-kit-toast__label lmnd-text-body-small-medium">Terminal removed</span><button type="button" class="lmnd-kit-toast__action lmnd-text-body-small-medium">Undo</button></div>
+<div class="lmnd-kit-toast" role="status"><span class="lmnd-spinner" aria-hidden="true"></span><span class="lmnd-kit-toast__label lmnd-text-body-small-medium">Exporting…</span></div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="tooltip">
+    <h2 class="lmnd-text-heading-small">Tooltip</h2>
+    <p class="lmnd-text-body-small-regular"><code>lmnd-kit-tooltip--top</code> or <code>--bottom</code> places the pointer on that edge.</p>
+    <div class="g-example"><div class="g-demo g-demo--default" style="padding-top: var(--lmnd-spacing-600)" data-demo>
+<div class="lmnd-kit-tooltip lmnd-kit-tooltip--top" role="tooltip">
+  <div class="lmnd-kit-tooltip__body">
+    <div class="lmnd-kit-tooltip__text">
+      <p class="lmnd-text-body-small-semibold">Daily takings</p>
+      <p class="lmnd-kit-tooltip__content lmnd-text-body-small-regular">Tap here to see everything you sold today.</p>
+    </div>
+    <div class="lmnd-kit-tooltip__footer">
+      <span class="lmnd-kit-tooltip__steps lmnd-text-body-xsmall-medium">1 of 3</span>
+      <button type="button" class="lmnd-kit-tooltip__action lmnd-kit-tooltip__action--secondary lmnd-text-body-small-medium">Skip</button>
+      <button type="button" class="lmnd-kit-tooltip__action lmnd-text-body-small-semibold">Next</button>
+    </div>
+  </div>
+  <button type="button" class="lmnd-kit-tooltip__close" aria-label="Close"><span class="lmnd-icon lmnd-icon--small" data-icon="times"></span></button>
+</div>
+    </div></div>
+  </section>
+</main>
+</div>
+
+<script>
+  // Show each demo's own markup beside it, so the snippet can't drift from what renders.
+  for (const demo of document.querySelectorAll('[data-demo]')) {
+    const code = document.createElement('pre')
+    code.className = 'g-code'
+    code.textContent = demo.innerHTML
+      .replace(/^\n+|\s+$/g, '')
+    demo.after(code)
+  }
+
+  for (const input of document.querySelectorAll('input[name="g-theme"]')) {
+    input.addEventListener('change', () => {
+      if (input.value) document.documentElement.dataset.lmndTheme = input.value
+      else delete document.documentElement.dataset.lmndTheme
+    })
+  }
+
+  const swatches = [
+    'bg-default', 'bg-subtle', 'bg-elevated', 'bg-elevated-high', 'bg-brand', 'bg-brand-subtle', 'bg-brand-high',
+    'bg-neutral-subtle', 'bg-positive', 'bg-positive-subtle', 'bg-critical', 'bg-critical-subtle',
+    'bg-caution', 'bg-caution-subtle', 'bg-info', 'bg-info-subtle', 'bg-featured-subtle', 'bg-default-inverse',
+    'content-primary', 'content-secondary', 'content-tertiary', 'content-brand', 'content-brand-high',
+    'content-positive', 'content-critical', 'content-caution', 'content-info',
+    'border-neutral-low', 'border-neutral-medium', 'border-neutral-high', 'border-selected',
+  ]
+  document.getElementById('g-swatches').innerHTML = swatches
+    .map((name) => `<div class="g-swatch"><span style="background: var(--lmnd-color-${name})"></span><code>--lmnd-color-${name}</code></div>`)
+    .join('')
+</script>
+<script id="g-icon-list" type="application/json">/*ICONS*/</script>
+<script>
+  let names = []
+  try { names = JSON.parse(document.getElementById('g-icon-list').textContent) } catch {}
+  document.getElementById('g-icons').innerHTML = names
+    .map((name) => `<div><span class="lmnd-icon lmnd-icon--large" data-icon="${name}" aria-hidden="true"></span><code>${name}</code></div>`)
+    .join('')
+</script>
+</body>
+</html>
