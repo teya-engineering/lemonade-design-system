@@ -10,12 +10,13 @@ text, dimension and shadow — say which token to reach for and when.
 
 | File | Rules |
 | --- | --- |
-| [cards.md](cards.md) | `LDS-CARD-GROUPED-ITEMS`, `LDS-CARD-NO-HANDROLL`, `LDS-CARD-SURFACE`, `LDS-CARD-PADDING` |
+| [cards.md](cards.md) | `LDS-CARD-GROUPED-ITEMS`, `LDS-CARD-NO-HANDROLL`, `LDS-CARD-SURFACE`, `LDS-CARD-PADDING`, `LDS-CARD-RESIZE` |
 | [lists.md](lists.md) | `LDS-LIST-NO-HANDROLL`, `LDS-LIST-LEADING-SLOT`, `LDS-LIST-SYMBOL-SHAPE` |
 | [buttons.md](buttons.md) | `LDS-BUTTON-PAIR`, `LDS-BUTTON-EXPLICIT-TYPE` |
 | [sheets.md](sheets.md) | `LDS-SHEET-CHROME`, `LDS-SHEET-BAR-ACTIONS` |
 | [top-bar.md](top-bar.md) | `LDS-TOP-BAR-ACTIONS` |
 | [controls.md](controls.md) | `LDS-CONTROL-CHOICE` |
+| [timeline.md](timeline.md) | `LDS-TIMELINE-END` |
 | [colour.md](colour.md) | `LDS-COLOR-SEMANTIC`, `LDS-COLOR-SURFACE`, `LDS-COLOR-ON-SURFACE`, `LDS-COLOR-INVERSE`, `LDS-COLOR-STATE` |
 | [text.md](text.md) | `LDS-TEXT-INTRO`, `LDS-TEXT-STYLE`, `LDS-TEXT-HEADING-DISPLAY` |
 | [dimension.md](dimension.md) | `LDS-DIMENSION-SCALE`, `LDS-DIMENSION-EDGE`, `LDS-DIMENSION-GAPS`, `LDS-DIMENSION-RADIUS` |
