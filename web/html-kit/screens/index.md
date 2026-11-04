@@ -85,4 +85,4 @@ side menu.
 - **No company yet:** Home shows registration, and Sales, Money and Teya AI show upsells.
 - **Side menu:** Bank accounts, Team & Permissions, Integrations, Statements and Billing and Pricing each
   need their own permission.
-- **Roles:** a Manager, Accountant or Cashier sees a banner on Home saying what they can't do.
+- **Roles:** a Manager, Accountant or Cashier sees a banner on Home saying some features aren't available for their role.

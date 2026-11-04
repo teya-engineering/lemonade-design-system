@@ -32,7 +32,8 @@ A full widget, `lmnd-kit-widget--full`, is the app's full-row span: it takes bot
 content. Use it for the one figure a screen leads with, such as Gross sales on Sales, at the top of the
 grid.
 
-**Exceptions.** A row with an odd widget out leaves the second column empty.
+**Exceptions.** A half widget alone on its row may be promoted to a full widget, where the widget supports
+that span.
 
 **Do / don't.** `<div class="lmnd-kit-widgets">` around `<a class="lmnd-kit-widget">`s. Not widgets in a `lmnd-kit-grid` or
 a `lmnd-kit-row`, and not `height: 172px`.
@@ -126,8 +127,7 @@ or squeeze each other, and the row stops reading as a row.
 **Kind.** Rule.
 
 **Rule.** A widget whose content isn't a figure — an empty state, card art, an illustration — is a Box:
-`lmnd-kit-widget__heading` over one `lmnd-kit-widget__slot`. An empty state is an illustration over exactly one button,
-Neutral · Subtle · Small, full width, at the bottom of the slot.
+`lmnd-kit-widget__heading` over one `lmnd-kit-widget__slot`. An empty state there follows `APP-WIDGET-EMPTY`.
 
 **Why.** Forcing card art or an empty state into the Generic layout leaves an empty value and a label with
 nothing to label. The Box keeps the heading in the same place as every other widget, so the row still
@@ -135,7 +135,7 @@ lines up.
 
 **Exceptions.** None.
 
-**Do / don't.** "No cards": a Box with a card illustration and a Create button. Not a Generic widget with
+**Do / don't.** "No cards": a Box with an illustration, a title and a subtitle. Not a Generic widget with
 the value "0" and a button in its bottom slot.
 
 ## `APP-WIDGET-LIST-TITLE` · A widget of rows has a header title and a footer action

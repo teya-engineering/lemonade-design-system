@@ -5,6 +5,9 @@ menus, and the sheets that pick from a list. They follow the app's `ResourceLazy
 template, so they carry the app's prefix, `APP-`. A list's filters are `APP-FILTER-BAR`, its empty state
 `APP-SCREEN-EMPTY`, its first load `APP-LOADING`, and the gaps between its cards `APP-SPACING-RHYTHM`.
 
+A resource is something the merchant has and manages, not any record in the system. A record of something
+that happened is a feed entry, even when it has its own detail screen.
+
 | Example | Kind | Shows |
 | --- | --- | --- |
 | `examples/transactions.html` | Feed | Search, filter bar, day groups with totals, the next page loading under a spinner, and a multi-select picker sheet behind the Store chip |
@@ -290,7 +293,7 @@ shares a device or runs more than one business.
 **Kind.** Rule.
 
 **Rule.** Log out is the last card: one row with the `log-out` icon and the label "Log out", in the
-default colours rather than critical, and with no chevron. Tapping it asks first, as a confirmation sheet.
+default colours rather than critical, and with no chevron. Tapping it asks first, as a `lmnd-kit-dialog`.
 
 **Why.** On its own at the end it can't be hit while reaching for a neighbour. It ends a session, which
 the merchant can start again, so it is not drawn as destructive.
@@ -348,5 +351,18 @@ or an icon for anything that has one. An option with no image takes its label's 
 all goes without leading slots.
 
 **Why.** Half a list with leading slots starts its labels at two indents down one card.
+
+**Exceptions.** None.
+
+## `APP-PICKER-EMPTY` · An empty picker keeps its size and its Confirm
+
+**Kind.** Rule.
+
+**Rule.** Empty states are `APP-SCREEN-EMPTY`: nothing to pick, and a search that matched nothing. In a
+picker, the sheet keeps its normal height rather than shrinking, and the confirming action keeps its place
+in `lmnd-kit-sheet__actions` and stays enabled.
+
+**Why.** A picker is the same size however it opens, and it closes the same way it always does, so
+anything selected before the search is kept.
 
 **Exceptions.** None.
