@@ -22,6 +22,9 @@ import com.teya.lemonade.core.LemonadeBottomSheetVariant
  * click inside the sheet, say — the sheet animates out before leaving the composition.
  * Drag-to-dismiss and scrim taps animate the same way.
  *
+ * A sheet's title and close button belong to the host's scaffold rather than to its content, and a
+ * sheet closes rather than going back: `LDS-SHEET-CHROME` in `guidelines/`.
+ *
  * ## Usage
  *
  * ```kotlin

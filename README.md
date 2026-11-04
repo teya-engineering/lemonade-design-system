@@ -12,6 +12,7 @@ A multi-platform design system providing production-ready UI components, theming
 - [Design Tokens](#design-tokens)
 - [Assets](#assets)
 - [Philosophy](#philosophy)
+- [Guidelines](#guidelines)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -113,6 +114,21 @@ Every public API is documented with:
 - Code examples showing common use cases
 - Parameter documentation with types and defaults
 - Preconditions and constraints stated explicitly
+
+---
+
+## Guidelines
+
+[`guidelines/`](./guidelines/index.md) holds the rules for using and combining components: when rows
+need a card, what belongs in a leading slot, which of two buttons is the secondary, which colour
+layer to reach for. A component's own documentation says what it does; the guidelines say what to do
+with it next to another one.
+
+Each rule carries a stable `LDS-` slug, so a review finding or an exemption comment in a consuming
+repository points at something written down.
+
+A product following them keeps a synced copy in its own repository, because an agent follows what it
+can read and Lemonade is a dependency rather than a checkout.
 
 ---
 
