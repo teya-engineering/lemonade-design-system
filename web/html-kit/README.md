@@ -32,7 +32,7 @@ instead.
 | `gallery.html` | Every component with its markup | `gallery.html` |
 | `examples/` | Settings, Sales (with a filter sheet), Transactions (with a store picker), Card machines, Recipients, Transaction details, Add recipient | `examples/` |
 | `screens/` | The app's own screens as they are in production, faults included, and how they work: Home with its side menu, Sales (Overview, Transactions, Payment links, Transaction details), Money › Settlements (Daily report and List) and Settlement details, plus the app's site map. Baselines for a change to an existing screen | `screens/` |
-| `guidelines/` | The rules a prototype follows: Lemonade's `LDS-` rules in kit markup, and the kit's own `LHK-` rules | `guidelines/` |
+| `guidelines/` | The kit's own rules: the `LHK-` rules and its copy of the app's `APP-` rules. The build adds Lemonade's `LDS-` rule files from the repository's `guidelines/` | `guidelines/`, with both |
 | `SKILL.md` | Instructions for an AI session | `SKILL.md` |
 | `share/README.md` | Instructions for the person who receives the kit | `README.md` |
 | `share/build.mjs` | Makes a self-contained copy of one page; the tests use it to check pages | — |
@@ -46,7 +46,9 @@ logo with one asset per line. The kit's components carry a `lmnd-kit-` prefix so
 the package ships.
 
 `tests/html-kit.test.ts` checks that `kit.css` names only tokens that exist and carries no colour of its
-own, that every class a page uses has a rule, and that every page names only assets that exist.
+own, that every class a page uses has a rule, and that every page names only assets that exist. It also checks
+that the kit writes no `LDS-` rule of its own, that `guidelines/index.md` lists every rule file with the rules
+it holds, and that the kit names only rules that exist.
 
 ## Changing the kit
 
@@ -54,5 +56,5 @@ own, that every class a page uses has a rule, and that every page names only ass
   `guidelines/`.
 - Measurements come from the Compose source in `kmp/`; where SwiftUI differs visibly, say which one the
   kit follows in a comment.
-- Guideline files with an `LDS-` ID mirror the Lemonade guidelines and keep their IDs and meaning; only
-  the examples are written in kit markup.
+- An `LDS-` rule is written in the repository's `guidelines/`, with its HTML example in kit markup, and
+  listed in `guidelines/index.md` here too. The kit never keeps its own copy.

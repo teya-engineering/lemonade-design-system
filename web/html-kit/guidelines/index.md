@@ -8,7 +8,7 @@ Three books of rules live here:
 
 | Prefix | Owner | What it covers |
 | --- | --- | --- |
-| `LDS-` | Lemonade | How components are used and combined. The same rules, under the same IDs, as the Lemonade guidelines for KMP and SwiftUI, with the examples written in kit markup. |
+| `LDS-` | Lemonade | How components and foundations are used and combined. These are the Lemonade guidelines themselves, copied in when the kit is built: each rule shows its example in Compose, SwiftUI and kit HTML, and a prototype follows the HTML one. |
 | `LHK-` | This kit | How a prototype is built: tokens, markup, screens, assets, copy and flows. |
 | `APP-` | The Teya app | How the app's own components and screen kinds are used, such as its dashboard widgets and details screens. The same book as the app's `docs/design/` rules, under the same prefix. The details, list and form rules follow its entity detail, feed, resource list, menu, picker sheet and form archetypes. |
 
@@ -17,12 +17,15 @@ Three books of rules live here:
 | [cards.md](cards.md) | `LDS-CARD-GROUPED-ITEMS`, `LDS-CARD-NO-HANDROLL`, `LDS-CARD-SURFACE`, `LDS-CARD-PADDING`, `LDS-CARD-RESIZE` |
 | [lists.md](lists.md) | `LDS-LIST-NO-HANDROLL`, `LDS-LIST-LEADING-SLOT`, `LDS-LIST-SYMBOL-SHAPE` |
 | [buttons.md](buttons.md) | `LDS-BUTTON-PAIR`, `LDS-BUTTON-EXPLICIT-TYPE` |
-| [colour.md](colour.md) | `LDS-COLOR-SEMANTIC` |
 | [sheets.md](sheets.md) | `LDS-SHEET-CHROME`, `LDS-SHEET-BAR-ACTIONS` |
 | [top-bar.md](top-bar.md) | `LDS-TOP-BAR-ACTIONS`, `LDS-TOP-BAR-CRITICAL`, `LDS-TOP-BAR-DESCRIPTION` |
-| [text.md](text.md) | `LDS-TEXT-INTRO` |
 | [toasts.md](toasts.md) | `LDS-TOAST-DURATION` |
+| [controls.md](controls.md) | `LDS-CONTROL-CHOICE` |
 | [timeline.md](timeline.md) | `LDS-TIMELINE-END` |
+| [colour.md](colour.md) | `LDS-COLOR-SEMANTIC`, `LDS-COLOR-SURFACE`, `LDS-COLOR-ON-SURFACE`, `LDS-COLOR-INVERSE`, `LDS-COLOR-STATE` |
+| [text.md](text.md) | `LDS-TEXT-INTRO`, `LDS-TEXT-STYLE`, `LDS-TEXT-HEADING-DISPLAY` |
+| [dimension.md](dimension.md) | `LDS-DIMENSION-SCALE`, `LDS-DIMENSION-EDGE`, `LDS-DIMENSION-GAPS`, `LDS-DIMENSION-RADIUS` |
+| [shadow.md](shadow.md) | `LDS-SHADOW-LEVEL`, `LDS-SHADOW-NOT-A-BORDER` |
 | [app-principles.md](app-principles.md) | `APP-SCREEN-ARCHETYPE`, `APP-TOPBAR-TITLE`, `APP-TOPBAR-ACTION`, `APP-TOPBAR-TRAILING`, `APP-TOPBAR-ACTION-STYLE`, `APP-SCREEN-STATES`, `APP-LOADING`, `APP-ROLE-STRIP`, `APP-ROLE-ABSENT`, `APP-ROLE-LOCKED`, `APP-WIDGET-EMPTY`, `APP-SCREEN-EMPTY`, `APP-SHEET-OR-PAGE`, `APP-FILTER-BAR`, `APP-SEGMENTED-SIZE`, `APP-FOOTER-PLACEMENT`, `APP-SPACING-RHYTHM` |
 | [widgets.md](widgets.md) | `APP-WIDGET-GRID`, `APP-WIDGET-ONE-NAME`, `APP-WIDGET-ONE-VALUE`, `APP-WIDGET-SUPPORT`, `APP-WIDGET-STATUS-TINT`, `APP-WIDGET-BOTTOM`, `APP-WIDGET-BOX`, `APP-WIDGET-LIST-TITLE`, `APP-WIDGET-TAP` |
 | [list-screens.md](list-screens.md) | `APP-LIST-KIND`, `APP-FEED-CARD-APPEARANCE`, `APP-FEED-GROUPS`, `APP-FEED-ROWS`, `APP-FEED-PAGING`, `APP-LIST-SEARCH`, `APP-RESOURCE-ROWS`, `APP-RESOURCE-GROUPS`, `APP-RESOURCE-ADD`, `APP-MENU-SECTIONS`, `APP-MENU-ROWS`, `APP-MENU-PROFILE`, `APP-MENU-LOG-OUT`, `APP-MENU-FOOTER`, `APP-PICKER-OPTIONS`, `APP-PICKER-LEADING`, `APP-PICKER-EMPTY` |
