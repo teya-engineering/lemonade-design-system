@@ -25,6 +25,7 @@ private enum TopBarDemo: String, CaseIterable, Identifiable {
     case basicInline
     case basicClose
     case basicTrailingSlot
+    case basicCriticalAction
     case basicBottomSlot
     case basicSubheading
     case search
@@ -43,6 +44,7 @@ private enum TopBarDemo: String, CaseIterable, Identifiable {
         case .basicInline: return "Basic (inline title)"
         case .basicClose: return "Basic (close button)"
         case .basicTrailingSlot: return "Basic with Trailing Slot"
+        case .basicCriticalAction: return "Basic with Critical Action"
         case .basicBottomSlot: return "Basic with Bottom Slot"
         case .basicSubheading: return "Basic with Subheading"
         case .search: return "Search"
@@ -62,6 +64,7 @@ private enum TopBarDemo: String, CaseIterable, Identifiable {
         case .basicInline: BasicInlineDemo()
         case .basicClose: BasicCloseDemo()
         case .basicTrailingSlot: BasicTrailingSlotDemo()
+        case .basicCriticalAction: BasicCriticalActionDemo()
         case .basicBottomSlot: BasicBottomSlotDemo()
         case .basicSubheading: BasicSubheadingDemo()
         case .search: SearchTopBarDemo()
@@ -184,6 +187,28 @@ private struct BasicTrailingSlotDemo: View {
                 LemonadeUi.ToolbarIconButton(
                     icon: .ellipsisHorizontal,
                     contentDescription: "More",
+                    action: {}
+                )
+            }
+        }
+    }
+}
+
+private struct BasicCriticalActionDemo: View {
+    var body: some View {
+        ScrollView {
+            SampleListContent()
+        }
+        .lemonadeTopBar(
+            label: "Team member",
+            titleDisplayMode: .inline,
+            navigationAction: NavigationAction(action: .back, onAction: {})
+        ) {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                LemonadeUi.ToolbarIconButton(
+                    icon: .trash,
+                    contentDescription: "Remove member",
+                    prominence: .critical,
                     action: {}
                 )
             }
