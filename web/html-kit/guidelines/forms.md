@@ -15,8 +15,8 @@ cursor at the end.
 
 Going back with Back leaves the field unfocused and the keyboard down, including on a single-field step.
 
-Mark the field with `autofocus`. The kit's script focuses it as its screen is pushed in, and leaves it alone
-on Back.
+Mark the field with `autofocus`. The kit's script focuses it as its screen is pushed in or its sheet opens,
+and leaves it alone on Back, or on the way back to the sheet from a picker.
 
 **Why.** On arrival, typing is what comes next, and a tap on the field first is a step that does nothing. On
 Back, the user may be leaving the flow, or looking at the screen, and a keyboard opening only to close again

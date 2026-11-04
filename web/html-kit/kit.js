@@ -9,6 +9,7 @@
   // Opened by a link to their id, as without script; this adds Esc, a tap on the scrim, and focus that
   // moves into the overlay and back to what opened it.
   let opener = null
+  let fromOverlay = false
 
   const openOverlay = () => {
     const id = decodeURIComponent(location.hash.slice(1))
@@ -34,6 +35,7 @@
     // or a screen, such as a sheet's Continue, so Back from that screen doesn't reopen the overlay.
     if (overlay && next && next !== overlay && overlay.contains(link) && !link.hasAttribute('data-lmnd-kit-back')) {
       event.preventDefault()
+      fromOverlay = true
       location.replace(link.getAttribute('href'))
       return
     }
@@ -65,9 +67,14 @@
     if (overlay && opener) history.replaceState({ ...history.state, lmndKitOverlay: true }, '')
     if (shown && shown !== overlay) animateClose(shown)
     shown = overlay
+    const arriving = !fromOverlay
+    fromOverlay = false
     if (overlay) {
+      // A sheet's autofocus field takes focus when the sheet is opened from the screen, as a pushed screen's
+      // does, and not when the user comes back to it from another overlay, such as a picker.
+      const field = arriving && overlay.querySelector('[autofocus]')
       const first = [...overlay.querySelectorAll(FOCUSABLE)].find((el) => !el.matches('[class$="__dismiss"]'))
-      first?.focus({ preventScroll: true })
+      ;(field || first)?.focus({ preventScroll: true })
     } else if (opener) {
       opener.focus({ preventScroll: true })
       opener = null

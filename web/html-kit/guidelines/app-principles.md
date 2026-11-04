@@ -11,7 +11,7 @@ doesn't carry them. `APP-FEED-CARD-APPEARANCE` is with the other list rules, in 
 
 **Rule.** Every screen names its archetype and follows that anatomy: explainer sheet, picker sheet,
 confirmation, intro screen, form, review, entity detail, feed, resource list or menu. The kit's examples
-cover six of them — `add-recipient.html` is a form, `transaction-details.html` an entity detail
+cover six of them — the Add recipient sheet in `recipients.html` is a form, `transaction-details.html` an entity detail
 (`details.md`), `transactions.html` a feed with a picker sheet, `card-machines.html` and `recipients.html`
 resource lists, and `settings.html` a menu (`list-screens.md`) — and a dashboard of widgets needs none. A screen that fits
 none of them stops and asks rather than inventing one.
