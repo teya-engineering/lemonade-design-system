@@ -3254,6 +3254,711 @@ body:has(> .lmnd-kit-device) {
   }
 }
 
+/* ---------- The Teya app's own components, used by its screens in screens/ ---------- */
+
+/* A segmented control in a card header keeps its width; the heading gives way. */
+.lmnd-kit-card__header > .lmnd-kit-segmented {
+  flex-shrink: 0;
+  width: auto;
+}
+
+.lmnd-kit-card__header > .lmnd-kit-segmented > .lmnd-kit-segmented__item {
+  flex: none;
+}
+
+/* A card header's trailing text, such as a "3 of 8" counter. */
+.lmnd-kit-card__trailing {
+  flex-shrink: 0;
+  color: var(--lmnd-color-content-secondary);
+}
+
+/* VoiceGradientCard: a card whose top fades from a status's subtle colour into the card, inset by
+   spacing-100 with a radius-500 corner. */
+.lmnd-kit-gradient-card {
+  position: relative;
+  isolation: isolate;
+}
+
+.lmnd-kit-gradient-card::before {
+  content: "";
+  position: absolute;
+  inset: var(--lmnd-spacing-100);
+  z-index: -1;
+  border-radius: var(--lmnd-radius-500);
+  background: linear-gradient(to bottom, var(--lmnd-kit-gradient-top, transparent), var(--lmnd-color-bg-default));
+}
+
+.lmnd-kit-gradient-card--positive { --lmnd-kit-gradient-top: var(--lmnd-color-bg-positive-subtle); }
+.lmnd-kit-gradient-card--warning { --lmnd-kit-gradient-top: var(--lmnd-color-bg-caution-subtle); }
+.lmnd-kit-gradient-card--info { --lmnd-kit-gradient-top: var(--lmnd-color-bg-info-subtle); }
+.lmnd-kit-gradient-card--critical { --lmnd-kit-gradient-top: var(--lmnd-color-bg-critical-subtle); }
+.lmnd-kit-gradient-card--neutral { --lmnd-kit-gradient-top: var(--lmnd-color-bg-neutral-subtle); }
+
+.lmnd-kit-gradient-card__body {
+  display: flex;
+  flex-direction: column;
+  padding: var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-gradient-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-300);
+  margin-bottom: var(--lmnd-spacing-200);
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-gradient-card__header > :first-child {
+  flex: 1;
+}
+
+/* RowData in a StackContainer: label-and-value rows with no dividers, spacing-400 apart inside
+   spacing-400 of padding. A group's sub-rows sit spacing-200 under it, a size smaller. */
+.lmnd-kit-row-data {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-400);
+  padding: var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-row-data__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-row-data__row {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-row-data__row > :first-child {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  min-width: 0;
+}
+
+/* The settlement frequency on a store's symbol: a 16px disc in the frequency's colour, ringed in the
+   card's colour, at the bottom-right corner. */
+.lmnd-kit-symbol__frequency {
+  position: absolute;
+  right: calc(-1 * var(--lmnd-spacing-100));
+  bottom: calc(-1 * var(--lmnd-spacing-100));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--lmnd-size-500);
+  height: var(--lmnd-size-500);
+  border: var(--lmnd-border-width-50) solid var(--lmnd-color-bg-default);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-kit-frequency-bg);
+  color: var(--lmnd-kit-frequency-content);
+}
+
+.lmnd-kit-symbol__frequency > .lmnd-icon {
+  width: var(--lmnd-size-300);
+  height: var(--lmnd-size-300);
+}
+
+.lmnd-kit-symbol__frequency--instant { --lmnd-kit-frequency-bg: var(--lmnd-color-bg-settlement-instant); --lmnd-kit-frequency-content: var(--lmnd-color-content-on-settlement-instant); }
+.lmnd-kit-symbol__frequency--business-days { --lmnd-kit-frequency-bg: var(--lmnd-color-bg-settlement-business-days); --lmnd-kit-frequency-content: var(--lmnd-color-content-on-settlement-business-days); }
+.lmnd-kit-symbol__frequency--everyday { --lmnd-kit-frequency-bg: var(--lmnd-color-bg-settlement-everyday); --lmnd-kit-frequency-content: var(--lmnd-color-content-on-settlement-everyday); }
+.lmnd-kit-symbol__frequency--scheduled { --lmnd-kit-frequency-bg: var(--lmnd-color-bg-settlement-scheduled); --lmnd-kit-frequency-content: var(--lmnd-color-content-on-settlement-scheduled); }
+
+/* The Daily report's month: Ghost chevrons either side of the month's name. */
+.lmnd-kit-month-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-300);
+  padding: var(--lmnd-spacing-100) var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-month-nav > span {
+  flex: 1;
+  text-align: center;
+}
+
+/* The Daily report's days: 64px chips, spacing-100 apart, scrolling sideways under the screen's edges. */
+.lmnd-kit-day-strip {
+  display: flex;
+  gap: var(--lmnd-spacing-100);
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-400);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.lmnd-kit-day-chip {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: center;
+  width: var(--lmnd-size-1600);
+  padding: var(--lmnd-spacing-200);
+  border-radius: var(--lmnd-radius-400);
+  color: var(--lmnd-color-content-secondary);
+  --lmnd-kit-day-bg: var(--lmnd-color-bg-subtle);
+}
+
+.lmnd-kit-day-chip__date {
+  color: var(--lmnd-color-content-primary);
+}
+
+/* The selected day: inverse, raised, with a glow from below in its status's colour. */
+.lmnd-kit-day-chip--selected {
+  background:
+    radial-gradient(150% 150% at 50% 125%, color-mix(in srgb, var(--lmnd-kit-day-glow, transparent) 55%, transparent), color-mix(in srgb, var(--lmnd-kit-day-glow, transparent) 18%, transparent) 50%, transparent 100%), /* literal: the app's glow stops */
+    var(--lmnd-color-bg-default-inverse);
+  box-shadow: var(--lmnd-shadow-lg);
+  color: var(--lmnd-color-content-primary-inverse);
+  --lmnd-kit-day-bg: var(--lmnd-color-bg-default-inverse);
+}
+
+.lmnd-kit-day-chip--selected .lmnd-kit-day-chip__date {
+  color: var(--lmnd-color-content-primary-inverse);
+}
+
+.lmnd-kit-day-chip__dots {
+  display: flex;
+  margin-top: var(--lmnd-spacing-50);
+}
+
+.lmnd-kit-day-chip__dot {
+  width: var(--lmnd-size-200);
+  height: var(--lmnd-size-200);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-kit-dot);
+}
+
+/* Each further dot overlaps the one before by 2px, cut out by a ring in the chip's colour. */
+.lmnd-kit-day-chip__dot + .lmnd-kit-day-chip__dot {
+  margin-left: calc(-1 * var(--lmnd-size-50));
+  box-shadow: 0 0 0 var(--lmnd-border-width-25) var(--lmnd-kit-day-bg);
+}
+
+.lmnd-kit-day-chip__dot--none {
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-content-tertiary);
+}
+
+.lmnd-kit-day-chip--selected .lmnd-kit-day-chip__dot--none {
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-content-tertiary-inverse);
+}
+
+.lmnd-kit-day-chip__dot--positive { --lmnd-kit-dot: var(--lmnd-color-content-positive); }
+.lmnd-kit-day-chip__dot--warning { --lmnd-kit-dot: var(--lmnd-color-content-caution); }
+.lmnd-kit-day-chip__dot--info { --lmnd-kit-dot: var(--lmnd-color-content-info); }
+.lmnd-kit-day-chip__dot--critical { --lmnd-kit-dot: var(--lmnd-color-content-critical); }
+.lmnd-kit-day-chip--selected .lmnd-kit-day-chip__dot--positive { --lmnd-kit-dot: var(--lmnd-color-content-positive-on-color); }
+.lmnd-kit-day-chip--selected .lmnd-kit-day-chip__dot--warning { --lmnd-kit-dot: var(--lmnd-color-bg-caution); }
+.lmnd-kit-day-chip--selected .lmnd-kit-day-chip__dot--info { --lmnd-kit-dot: var(--lmnd-color-bg-info); }
+.lmnd-kit-day-chip--selected .lmnd-kit-day-chip__dot--critical { --lmnd-kit-dot: var(--lmnd-color-bg-critical); }
+
+.lmnd-kit-day-chip--glow-positive { --lmnd-kit-day-glow: var(--lmnd-color-bg-positive); }
+.lmnd-kit-day-chip--glow-warning { --lmnd-kit-day-glow: var(--lmnd-color-bg-caution); }
+.lmnd-kit-day-chip--glow-info { --lmnd-kit-day-glow: var(--lmnd-color-bg-info); }
+.lmnd-kit-day-chip--glow-critical { --lmnd-kit-day-glow: var(--lmnd-color-bg-critical); }
+
+/* Home: a brand fade behind the top bar and the balance (top_bg_fade), scrolling with the content. The bar
+   is clear over it and fills with the page's colour once the screen scrolls. */
+.lmnd-kit-screen--home {
+  background:
+    linear-gradient(to bottom, var(--lmnd-color-bg-brand), var(--lmnd-color-bg-subtle) 440px) local, /* literal: the fade reaches size-2500 past the balance */
+    var(--lmnd-color-bg-subtle);
+}
+
+.lmnd-kit-screen--home .lmnd-kit-top-bar {
+  background: transparent;
+}
+
+@supports (animation-timeline: scroll()) {
+  .lmnd-kit-screen--home .lmnd-kit-top-bar {
+    animation: lmnd-kit-top-bar-fill-subtle linear both;
+    animation-timeline: scroll(nearest);
+    animation-range: 0 var(--lmnd-spacing-200);
+  }
+}
+
+@keyframes lmnd-kit-top-bar-fill-subtle {
+  to { background-color: var(--lmnd-color-bg-subtle); }
+}
+
+.lmnd-kit-screen--home .lmnd-kit-top-bar--scrolled {
+  background: var(--lmnd-color-bg-subtle);
+}
+
+.lmnd-kit-top-bar__home {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-top-bar__home > :first-child {
+  margin-right: auto;
+  min-width: 0;
+}
+
+/* IdentifierButton: the app's own button on the brand header, for the company chip, Pay and "+". */
+.lmnd-kit-identifier-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--lmnd-spacing-200);
+  min-height: var(--lmnd-size-1200);
+  padding: var(--lmnd-spacing-100) var(--lmnd-spacing-200) var(--lmnd-spacing-100) var(--lmnd-spacing-100);
+  border: 0;
+  border-radius: var(--lmnd-radius-350);
+  background: var(--lmnd-color-bg-brand-elevated);
+  box-shadow: inset 0 0 0 var(--lmnd-border-width-25) var(--lmnd-color-border-on-brand-medium);
+  color: var(--lmnd-color-content-on-brand-high);
+  cursor: pointer;
+}
+
+.lmnd-kit-identifier-button__name {
+  overflow: hidden;
+  color: var(--lmnd-color-content-primary);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lmnd-kit-identifier-button > .lmnd-icon:last-child:not(:first-child) {
+  color: var(--lmnd-color-content-secondary);
+}
+
+/* A text action, such as Pay, at least 96px wide; an icon action, such as "+", 48px square. */
+.lmnd-kit-identifier-button--text {
+  min-width: var(--lmnd-size-2400);
+  padding: 0 var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-identifier-button--icon {
+  min-width: var(--lmnd-size-1200);
+  padding: 0;
+}
+
+/* The balance's eye: a 40px brand circle, with the chip's hairline. */
+.lmnd-kit-identifier-button--circle {
+  width: var(--lmnd-size-1000);
+  min-height: var(--lmnd-size-1000);
+  height: var(--lmnd-size-1000);
+  padding: 0;
+  border-radius: var(--lmnd-radius-full);
+  color: var(--lmnd-color-content-primary);
+}
+
+/* The balance header: spacing-600 under the top bar (the content already pads spacing-400). */
+.lmnd-kit-balance {
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--lmnd-spacing-200);
+}
+
+.lmnd-kit-balance__label {
+  color: var(--lmnd-color-content-on-brand-low);
+}
+
+.lmnd-kit-balance__amount {
+  color: var(--lmnd-color-content-on-brand-high);
+}
+
+.lmnd-kit-balance__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--lmnd-spacing-200);
+  margin-top: var(--lmnd-spacing-300);
+}
+
+.lmnd-kit-balance__actions > .lmnd-button {
+  min-width: var(--lmnd-size-2400);
+}
+
+/* A widget's trend (Mini Widget's Chart, 140 x 76): a brand line over an area that fades out at its foot,
+   at 20%. It sits at the top of the widget's bottom slot, 4px under the figure, and is cut by the widget. */
+.lmnd-kit-widget__bottom:has(> .lmnd-kit-sparkline) {
+  justify-content: flex-start;
+  padding-bottom: 0;
+}
+
+.lmnd-kit-sparkline {
+  position: relative;
+  flex-shrink: 0;
+  width: 140px; /* literal: the chart's size in the widget */
+  height: 76px; /* literal */
+}
+
+.lmnd-kit-sparkline::before,
+.lmnd-kit-sparkline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.lmnd-kit-sparkline::before {
+  background: linear-gradient(to bottom, var(--lmnd-color-bg-brand) 59px, transparent 76px); /* literal: the chart's gradient stops */
+  opacity: 0.2; /* literal */
+  clip-path: path("M137.234 11.5351L140 8.86676V76.0001H0V70.8964L3.73768 68.7646C4.69205 68.2202 5.75006 67.8823 6.84326 67.7726C9.08564 67.5477 11.1232 66.3698 12.4372 64.5389L14.3489 61.875C15.1403 60.7722 16.1993 59.8889 17.4262 59.3083L19.7629 58.2024C20.4118 57.8953 21.0165 57.5022 21.5605 57.0338L25.9259 53.2751L30.0599 48.8836C30.7544 48.1459 31.5827 47.5468 32.5007 47.1182L35.5798 45.6807C36.0563 45.4583 36.5097 45.1894 36.9334 44.878L40.5779 42.1994C41.1773 41.7588 41.8353 41.404 42.5328 41.1452L46.6667 39.6114L50.8002 38.1377C51.4979 37.8889 52.2268 37.7382 52.966 37.69L57.037 37.4244L61.1969 37.2344C61.8777 37.2033 62.5516 37.0853 63.2025 36.8834L66.6656 35.8089C67.159 35.6558 67.666 35.5509 68.1796 35.4956L70.4186 35.2544C71.8418 35.1012 73.1978 34.5688 74.3452 33.713L76.1109 32.3959C77.2028 31.5815 78.4903 31.0697 79.8433 30.9122C81.8438 30.6794 83.6748 29.6758 84.9472 28.1146L85.8578 26.9975C87.3134 25.2115 89.4685 24.1399 91.771 24.057L91.9288 24.0513C92.858 24.0178 93.7743 23.8227 94.6365 23.4745L97.3992 22.3588C98.1397 22.0598 98.9269 21.8932 99.7249 21.8665L101.241 21.8158C102.763 21.7649 104.194 22.5375 104.986 23.8377C106.699 26.6471 110.825 26.5042 112.339 23.5831L113.206 21.9106C113.767 20.8279 114.686 19.9728 115.806 19.4903L118.365 18.3879C118.959 18.1319 119.52 17.8048 120.035 17.4138L123.811 14.5488C124.232 14.2291 124.684 13.952 125.16 13.7216L127.545 12.5669C128.867 11.9268 130.404 11.9024 131.745 12.5002C133.6 13.3269 135.772 12.9451 137.234 11.5351Z");
+}
+
+.lmnd-kit-sparkline::after {
+  background: var(--lmnd-color-border-brand);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 76'%3E%3Cpath d='M140 8.86676L137.233 11.5372C135.772 12.9476 133.6 13.3295 131.745 12.5024C130.404 11.9043 128.867 11.9287 127.545 12.5691L125.16 13.7244C124.684 13.9551 124.232 14.2324 123.811 14.5522L120.035 17.4188C119.52 17.8101 118.959 18.1374 118.365 18.3936L115.806 19.4967C114.686 19.9794 113.768 20.8348 113.207 21.9176L112.339 23.5917C110.825 26.5138 106.698 26.6566 104.986 23.8462C104.194 22.5456 102.762 21.7727 101.24 21.8236L99.7251 21.8743C98.9269 21.901 98.1396 22.0677 97.3991 22.3669L94.6371 23.483C93.7745 23.8315 92.8578 24.0269 91.9281 24.0604L91.7723 24.066C89.469 24.149 87.3134 25.2214 85.8578 27.0083L84.9465 28.1271C83.6745 29.6885 81.8438 30.6924 79.8434 30.9254C78.4903 31.0829 77.2029 31.595 76.1112 32.4098L74.3456 33.7275C73.198 34.5841 71.8415 35.1168 70.4177 35.2703L68.1801 35.5114C67.6662 35.5668 67.1588 35.6718 66.6652 35.8251L63.203 36.9C62.5518 37.1021 61.8775 37.2202 61.1963 37.2513L57.037 37.4415L52.9666 37.7072C52.227 37.7555 51.4977 37.9063 50.7997 38.1553L46.6667 39.6298L42.5331 41.1643C41.8354 41.4234 41.1773 41.7785 40.5778 42.2194L36.9335 44.8994C36.5097 45.2111 36.0563 45.4802 35.5797 45.7028L32.5009 47.141C31.5827 47.5699 30.7544 48.1693 30.06 48.9074L25.9259 53.3016L21.5605 57.0625C21.0165 57.5312 20.4118 57.9245 19.7628 58.2319L17.4262 59.3384C16.1993 59.9194 15.1404 60.803 14.3493 61.9061L12.4362 64.5734C11.1229 66.4046 9.08566 67.5827 6.84347 67.8078C5.75014 67.9175 4.69205 68.2557 3.7377 68.8003L0 70.9334' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+/* A widget's footer action, such as "More details ›": a full-width bar at the foot of the bottom slot,
+   spacing-200 from the widget's edges. */
+.lmnd-kit-widget__bottom:has(> .lmnd-kit-widget__footer) {
+  padding: 0;
+}
+
+.lmnd-kit-widget__footer {
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-200) var(--lmnd-spacing-200) var(--lmnd-spacing-300);
+  border-radius: var(--lmnd-radius-400);
+  background: var(--lmnd-color-bg-subtle);
+  color: var(--lmnd-color-content-primary);
+}
+
+.lmnd-kit-widget__footer > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.lmnd-kit-widget__footer > .lmnd-icon {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+  color: var(--lmnd-color-content-secondary);
+}
+
+/* ContentCardCarousel's card: artwork, a title, a line and a call to action, with a dismiss. */
+.lmnd-kit-content-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-300);
+  padding: var(--lmnd-spacing-300);
+}
+
+.lmnd-kit-content-card__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  padding-right: var(--lmnd-spacing-600);
+}
+
+.lmnd-kit-content-card__text > :nth-child(2) {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-content-card__cta {
+  color: var(--lmnd-color-content-brand);
+}
+
+.lmnd-kit-content-card__dismiss {
+  position: absolute;
+  top: var(--lmnd-spacing-100);
+  right: var(--lmnd-spacing-100);
+  opacity: 0.6; /* literal: the app's 60% */
+}
+
+/* A carousel's page dots. */
+.lmnd-kit-page-indicator {
+  display: flex;
+  justify-content: center;
+  gap: var(--lmnd-spacing-100);
+  margin-top: calc(var(--lmnd-spacing-200) - var(--lmnd-spacing-400));
+}
+
+.lmnd-kit-page-indicator > span {
+  width: var(--lmnd-size-150);
+  height: var(--lmnd-size-150);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-content-tertiary);
+}
+
+.lmnd-kit-page-indicator > [aria-current] {
+  background: var(--lmnd-color-content-primary);
+}
+
+.lmnd-kit-card--brand {
+  background: var(--lmnd-color-bg-brand);
+}
+
+/* The side menu: a drawer from the left, at most 360px and 90% of the screen, over a scrim. It opens like a
+   sheet, by a link to its id. */
+.lmnd-kit-drawer-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: color-mix(in srgb, var(--lmnd-color-bg-always-dark) 32%, transparent); /* literal: M3 scrim alpha */
+}
+
+.lmnd-kit-drawer-layer[id]:not(:target) {
+  display: none;
+}
+
+.lmnd-kit-drawer-layer__dismiss {
+  position: absolute;
+  inset: 0;
+}
+
+.lmnd-kit-drawer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-400);
+  width: min(90%, 360px); /* literal: DrawerContainer's cap */
+  padding: calc(var(--lmnd-kit-safe-top) + var(--lmnd-spacing-200)) var(--lmnd-spacing-400) calc(var(--lmnd-spacing-800) + var(--lmnd-kit-safe-bottom));
+  overflow-y: auto;
+  scrollbar-width: none;
+  border-radius: 0 var(--lmnd-radius-800) var(--lmnd-radius-800) 0;
+  background: var(--lmnd-color-bg-subtle);
+  box-shadow: var(--lmnd-shadow-lg);
+}
+
+.lmnd-kit-drawer > * {
+  flex-shrink: 0;
+}
+
+.lmnd-kit-drawer__identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--lmnd-spacing-200);
+  margin-bottom: var(--lmnd-spacing-400);
+  text-align: center;
+}
+
+.lmnd-kit-drawer__identity > :last-child {
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-drawer__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lmnd-spacing-800);
+  padding: var(--lmnd-spacing-400);
+}
+
+/* ---------- Sales Overview's widgets ---------- */
+
+/* A change against the previous period, such as "£120.00 vs Last Thursday": up in brand, down in critical. */
+.lmnd-kit-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-50);
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-delta > .lmnd-icon {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+  color: var(--lmnd-color-content-brand);
+}
+
+.lmnd-kit-delta--down > .lmnd-icon {
+  color: var(--lmnd-color-content-critical);
+}
+
+/* Stat cells side by side, such as Card / Cash / Meal cards: a label over a value. */
+.lmnd-kit-stats {
+  display: flex;
+  gap: var(--lmnd-spacing-400);
+}
+
+.lmnd-kit-stats > * {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.lmnd-kit-stats__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-50);
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-stats__label > .lmnd-icon {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+/* A bar chart: one bar, or a previous and a current bar, per group. Each bar's height is its --lmnd-kit-value,
+   a percentage of the tallest. */
+.lmnd-kit-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--lmnd-spacing-200);
+  height: var(--lmnd-size-2400);
+}
+
+.lmnd-kit-bars__group {
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  gap: var(--lmnd-spacing-50);
+  height: 100%;
+}
+
+.lmnd-kit-bars__bar {
+  flex: 1;
+  height: var(--lmnd-kit-value, 0%);
+  min-height: var(--lmnd-size-50);
+  border-radius: var(--lmnd-radius-100) var(--lmnd-radius-100) 0 0;
+  background: var(--lmnd-color-bg-brand);
+}
+
+.lmnd-kit-bars__bar--previous {
+  background: var(--lmnd-color-bg-neutral-subtle);
+}
+
+.lmnd-kit-bars__axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--lmnd-spacing-100);
+  color: var(--lmnd-color-content-tertiary);
+}
+
+/* A chart's key: a swatch before each series' name. */
+.lmnd-kit-legend {
+  display: flex;
+  justify-content: center;
+  gap: var(--lmnd-spacing-400);
+  color: var(--lmnd-color-content-secondary);
+}
+
+.lmnd-kit-legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lmnd-spacing-100);
+}
+
+.lmnd-kit-legend > span::before {
+  content: "";
+  width: var(--lmnd-size-200);
+  height: var(--lmnd-size-200);
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-brand);
+}
+
+.lmnd-kit-legend > .lmnd-kit-legend__previous::before {
+  background: var(--lmnd-color-bg-neutral-subtle);
+}
+
+/* A small table on the subtle colour, such as the VAT summary's rates. */
+.lmnd-kit-table {
+  width: 100%;
+  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-300);
+  border-collapse: separate;
+  border-radius: var(--lmnd-radius-400);
+  background: var(--lmnd-color-bg-subtle);
+  text-align: end;
+}
+
+.lmnd-kit-table th {
+  padding: var(--lmnd-spacing-100) 0;
+  color: var(--lmnd-color-content-secondary);
+  font-weight: inherit;
+}
+
+.lmnd-kit-table td {
+  padding: var(--lmnd-spacing-100) 0;
+}
+
+.lmnd-kit-table :is(th, td):first-child {
+  text-align: start;
+}
+
+/* A share of a whole: a brand bar on the subtle colour. */
+.lmnd-kit-progress {
+  height: var(--lmnd-size-200);
+  overflow: hidden;
+  border-radius: var(--lmnd-radius-full);
+  background: var(--lmnd-color-bg-subtle);
+}
+
+.lmnd-kit-progress::before {
+  content: "";
+  display: block;
+  width: var(--lmnd-kit-value, 0%);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--lmnd-color-bg-brand);
+}
+
+/* Home for a role with restricted access (RoleRestrictedHomeSurface): a dark strip under a dark status bar
+   stays at the top, and the screen scrolls inside a panel with radius-900 top corners beneath it. */
+.lmnd-kit-device > .lmnd-kit-screen--restricted,
+.lmnd-kit-screen--restricted {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--lmnd-color-bg-always-dark);
+}
+
+.lmnd-kit-role-strip {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: var(--lmnd-spacing-200);
+  padding: calc(var(--lmnd-kit-safe-top) + var(--lmnd-spacing-400)) var(--lmnd-spacing-400) var(--lmnd-spacing-400);
+  color: var(--lmnd-color-content-always-light);
+  text-align: center;
+}
+
+.lmnd-kit-role-strip > .lmnd-icon {
+  flex-shrink: 0;
+  opacity: 0.8; /* literal: the app's 80% */
+}
+
+/* The panel is the screen that scrolls; the strip already holds the status bar's space. */
+.lmnd-kit-screen--restricted > .lmnd-kit-screen {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  border-radius: var(--lmnd-radius-900) var(--lmnd-radius-900) 0 0;
+  --lmnd-kit-safe-top: 0px;
+}
+
+/* Under the strip, the top bar sits spacing-400 below the panel's edge rather than spacing-200. */
+.lmnd-kit-screen--restricted .lmnd-kit-top-bar__home {
+  padding-top: var(--lmnd-spacing-400);
+}
+
+/* The status bar's time and icons turn light over the strip; the home indicator stays dark. */
+.lmnd-kit-device:has(> .lmnd-kit-screen--restricted)::before {
+  color: var(--lmnd-color-content-always-light);
+}
+
+.lmnd-kit-device:has(> .lmnd-kit-screen--restricted)::after {
+  background: linear-gradient(to bottom, var(--lmnd-color-content-always-light) var(--lmnd-kit-safe-top), var(--lmnd-color-content-primary) var(--lmnd-kit-safe-top));
+}
+
+/* The balance hidden from this role: the symbol and dots, with a lock at the far end. */
+.lmnd-kit-balance__locked {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--lmnd-spacing-200);
+}
+
+/* A card that stands above the page, such as Home's registration card. */
+.lmnd-kit-card--raised {
+  box-shadow: var(--lmnd-shadow-lg);
+}
+
 /* ---------- Several screens in one file ---------- */
 
 /* A device may hold several screens, each with an id (LHK-SCREENS). Without the kit's script, the screen a

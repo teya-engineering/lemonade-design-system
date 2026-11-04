@@ -1,6 +1,6 @@
 ---
 name: generate-html-kit
-description: Generate the Lemonade HTML kit — the shareable zip of HTML/CSS prototyping files built from web/html-kit/ and the Lemonade tokens. Use when asked to "generate", "build", "rebuild", "package" or "zip" the HTML kit, when someone needs the kit to share, or after tokens, icons, web/llms.txt, kit.css or the gallery change. Not for building a prototype screen with the kit, or for the npm package's components (`web-review`).
+description: Generate the Lemonade HTML kit — the shareable zip of HTML/CSS prototyping files built from web/html-kit/ and the Lemonade tokens. Use when asked to "generate", "build", "rebuild", "package" or "zip" the HTML kit, when someone needs the kit to share, or after tokens, icons, web/llms.txt, kit.css, the guidelines or the examples change. Not for building a prototype screen with the kit (the kit's own SKILL.md does that) or for the npm package's components (`web-review`).
 ---
 
 # Generate the Lemonade HTML kit
@@ -39,7 +39,8 @@ Then give the user the absolute path of the zip. `web/dist/` itself stays on thi
 | In the zip | Comes from |
 | --- | --- |
 | `lemonade-kit.css` | Generated: `web/styles/` tokens, type scale and components, `web/html-kit/kit.css`, Figtree from `swiftui/`, every asset in `web/assets/` |
-| `gallery.html` | `web/html-kit/`, with the icon list filled in |
+| `gallery.html`, `examples/` | `web/html-kit/`, as they are; the gallery gets the icon list filled in |
+| `guidelines/`, `SKILL.md` | `web/html-kit/` |
 | `README.md` | `web/html-kit/share/README.md` |
 | `llms.txt` | Generated: the token sections of `web/llms.txt` |
 | `assets.txt` | Generated: every icon, flag, logo and badge name in the kit's markup |

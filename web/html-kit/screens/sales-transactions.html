@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sales · Transactions</title>
+<link rel="stylesheet" href="../lemonade-kit.css">
+<script src="../lemonade-kit.js" defer></script>
+<!-- Baseline: the Teya app's Sales tab on Transactions, for a merchant with two stores, as it is in production. Described in screens/sales.md. Exemptions marked
+     "as in production" are faults the app has today. -->
+</head>
+<body>
+<p class="lmnd-kit-source-notice" style="margin:0;padding:16px;background:Mark;color:MarkText;font:16px/1.4 system-ui,sans-serif">This page needs <code>lemonade-kit.css</code> beside it. Open it from the packaged kit: run <code>npm run html-kit</code> in <code>web/</code>, then open <code>web/dist/lemonade-html-kit/</code>.</p>
+<div class="lmnd-kit-device">
+  <div class="lmnd-kit-screen">
+    <header class="lmnd-kit-top-bar">
+      <div class="lmnd-kit-top-bar__compact">
+        <div class="lmnd-kit-top-bar__large"><h1 class="lmnd-kit-top-bar__large-title lmnd-text-heading-large">Sales</h1></div>
+        <div class="lmnd-kit-top-bar__trailing">
+          <button type="button" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Download"><span class="lmnd-icon" data-icon="download"></span></button>
+          <a href="#sales-actions" class="lmnd-kit-icon-button lmnd-kit-icon-button--primary lmnd-kit-icon-button--solid lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Sales actions"><span class="lmnd-icon" data-icon="plus"></span></a>
+        </div>
+      </div>
+      <div class="lmnd-kit-tabs" role="tablist">
+        <a href="sales-overview.html" class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab" tabindex="-1"><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Overview">Overview</span></span></a>
+        <a href="sales-transactions.html" class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab" checked tabindex="-1"><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Transactions">Transactions</span></span></a>
+        <a href="sales-payment-links.html" class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab" tabindex="-1"><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Payment links">Payment links</span></span></a>
+      </div>
+    </header>
+
+    <main class="lmnd-kit-content">
+      <label class="lmnd-kit-search">
+        <span class="lmnd-kit-search__box">
+          <span class="lmnd-icon" data-icon="search" aria-hidden="true"></span>
+          <input class="lmnd-kit-search__input" type="search" placeholder="Search by last 4 digits or reference">
+          <span class="lmnd-icon lmnd-kit-search__clear" data-icon="circle-x-solid" aria-hidden="true"></span>
+        </span>
+      </label>
+      <div class="lmnd-kit-filter-bar">
+        <a href="#" class="lmnd-kit-chip lmnd-kit-chip--selected lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">This year</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+        <a href="#" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Store</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+        <a href="#" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Channel</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+        <a href="#" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Device</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+        <a href="#" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Card brand</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+        <a href="#" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Status</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+        <a href="#" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Payment method</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+        <a href="#" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Currency</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+        <a href="#" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Amount</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+      </div>
+      <!-- APP-FEED-GROUPS exempt: as in production, a day is "Today" or "2 days ago" with its date, and carries no total -->
+      <section class="lmnd-kit-list-group">
+        <h2 class="lmnd-kit-list-group__header"><span class="lmnd-kit-list-group__heading"><span class="lmnd-text-body-small-semibold">Today</span><span class="lmnd-text-body-small-regular">23 Oct 2026</span></span></h2>
+        <div class="lmnd-kit-card">
+          <a href="transaction-details.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-logo" data-logo="visa" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="sale-transaction-approved" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Debit •••• 4242</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">14:32 • Camden Market</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">ORD-20431</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£24.00</span></span>
+            </span>
+          </a>
+          <a href="transaction-details.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-logo" data-logo="mastercard" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="sale-transaction-pending" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Credit •••• 8817</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">13:58 • Camden Market</span></span>
+              <span class="lmnd-kit-list-item__value lmnd-kit-list-item__value--dimmed"><span class="lmnd-text-body-medium-medium">£8.40</span></span>
+            </span>
+          </a>
+          <a href="transaction-details.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-logo" data-logo="visa" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="sale-transaction-declined" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Debit •••• 1290</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">13:11 • Soho</span></span>
+              <span class="lmnd-kit-list-item__value lmnd-kit-list-item__value--strikethrough"><span class="lmnd-text-body-medium-medium">£56.20</span></span>
+            </span>
+          </a>
+          <a href="transaction-details.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="money" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="sale-transaction-approved" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Cash</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">12:40 • Soho</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£12.50</span></span>
+            </span>
+          </a>
+          <a href="transaction-details.html" class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-logo" data-logo="visa" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="sale-transaction-refund" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Debit •••• 4242</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">11:20 • Camden Market</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">ORD-20388</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">-£12.00</span></span>
+            </span>
+          </a>
+        </div>
+      </section>
+      <section class="lmnd-kit-list-group">
+        <h2 class="lmnd-kit-list-group__header"><span class="lmnd-kit-list-group__heading"><span class="lmnd-text-body-small-semibold">Yesterday</span><span class="lmnd-text-body-small-regular">22 Oct 2026</span></span></h2>
+        <div class="lmnd-kit-card">
+          <a href="transaction-details.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-logo" data-logo="mastercard" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="sale-transaction-approved" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Debit •••• 3021</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">18:05 • Soho</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£42.00</span></span>
+            </span>
+          </a>
+          <a href="transaction-details.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="link" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Payment link</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">16:20 • Camden Market</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">INV-2041</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£120.00</span></span>
+            </span>
+          </a>
+          <a href="transaction-details.html" class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-logo" data-logo="amex" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="sale-transaction-void" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Credit •••• 1009</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">09:12 • Camden Market</span></span>
+              <span class="lmnd-kit-list-item__value lmnd-kit-list-item__value--strikethrough"><span class="lmnd-text-body-medium-medium">£5.80</span></span>
+            </span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <nav class="lmnd-kit-tab-bar">
+      <div class="lmnd-kit-tab-bar__bar">
+        <a href="home.html" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="brand-teya-symbol" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Home</span></a>
+        <a href="sales-overview.html" class="lmnd-kit-tab-bar__item" aria-current="page"><span class="lmnd-icon" data-icon="chart-stats-solid" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Sales</span></a>
+        <a href="money-settlements.html" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="wallet" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Money</span></a>
+        <a href="#" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="sparkles-soft" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Teya AI</span></a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="lmnd-kit-dropdown-layer" id="sales-actions">
+    <a href="#" class="lmnd-kit-dropdown-layer__dismiss" aria-label="Close menu"></a>
+    <div class="lmnd-kit-dropdown" role="menu">
+      <a href="#" class="lmnd-kit-dropdown__item" role="menuitem"><span class="lmnd-icon" data-icon="card-machine" aria-hidden="true"></span><span class="lmnd-kit-dropdown__label lmnd-text-body-medium-regular">New Sale</span></a>
+      <a href="#" class="lmnd-kit-dropdown__item" role="menuitem"><span class="lmnd-icon" data-icon="link" aria-hidden="true"></span><span class="lmnd-kit-dropdown__label lmnd-text-body-medium-regular">New payment link</span></a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

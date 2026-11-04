@@ -62,7 +62,7 @@
   <header class="g-head">
     <div class="lmnd-kit-stack">
       <h1 class="lmnd-text-heading-large">Lemonade HTML kit</h1>
-      <p class="lmnd-text-body-medium-regular">Every component, rendered from the same tokens the app ships, next to the markup that produces it. Copy the markup into a screen; never restyle it.</p>
+      <p class="lmnd-text-body-medium-regular">Every component, rendered from the same tokens the app ships, next to the markup that produces it. Copy the markup into a screen; never restyle it. The rules are in <code>guidelines/</code>.</p>
     </div>
     <div class="lmnd-kit-segmented lmnd-kit-segmented--small" style="width: 240px" role="radiogroup" aria-label="Theme">
       <label class="lmnd-kit-segmented__item lmnd-text-body-xsmall-medium"><input type="radio" name="g-theme" value="" checked><span>System</span></label>
@@ -356,7 +356,7 @@
 
   <section class="g-section" id="widget">
     <h2 class="lmnd-text-heading-small">Mini widget</h2>
-    <p class="lmnd-text-body-small-regular">The Teya app's dashboard tiles, two to a row in <code>lmnd-kit-widgets</code>, keeping their 173 × 172 shape. Generic carries one value; Box carries one free slot. The whole widget is the link.</p>
+    <p class="lmnd-text-body-small-regular">The Teya app's dashboard tiles, two to a row in <code>lmnd-kit-widgets</code>, keeping their 173 × 172 shape. Generic carries one value; Box carries one free slot. The whole widget is the link. Rules: <code>guidelines/widgets.md</code>.</p>
     <div class="g-example"><div class="g-demo" data-demo>
 <div class="lmnd-kit-widgets">
   <a href="#" class="lmnd-kit-widget">
@@ -813,7 +813,7 @@
 
   <section class="g-section" id="top-bar">
     <h2 class="lmnd-text-heading-small">Top bar</h2>
-    <p class="lmnd-text-body-small-regular">Navigation: a back or close button, a centred title that shows when <code>lmnd-kit-top-bar--collapsed</code>, and the large title below. On a screen, the large title goes first in the content as a <code>lmnd-kit-large-title</code>, so it scrolls under the bar, and the kit's script collapses the bar as it does. Small (<code>lmnd-kit-top-bar--small</code>): only the centred title, naming the kind of thing, for a details screen; on <code>lmnd-kit-screen--details</code> it starts transparent and fills on scroll. Compact: a top-level screen's large title with actions beside it, no back button. Buttons are Subtle, Primary · Solid for the screen's primary action (<code>LDS-TOP-BAR-ACTIONS</code>), or Critical · Subtle, <code>lmnd-kit-icon-button--critical</code>, for a destructive one that stays in the bar (<code>LDS-TOP-BAR-CRITICAL</code>). Past two actions, the rest go in a <code>lmnd-kit-dropdown</code> behind an <code>ellipsis-horizontal</code> button, a destructive one as a <code>lmnd-kit-dropdown__item--critical</code>, and a destructive action stays out of the menu only on a screen whose job is removing something (<code>APP-TOPBAR-TRAILING</code>).</p>
+    <p class="lmnd-text-body-small-regular">Navigation: a back or close button, a centred title that shows when <code>lmnd-kit-top-bar--collapsed</code>, and the large title below. On a screen, the large title goes first in the content as a <code>lmnd-kit-large-title</code>, so it scrolls under the bar, and the kit's script collapses the bar as it does (<code>examples/settings.html</code>). Small (<code>lmnd-kit-top-bar--small</code>): only the centred title, naming the kind of thing, for a details screen; on <code>lmnd-kit-screen--details</code> it starts transparent and fills on scroll. Compact: a top-level screen's large title with actions beside it, no back button. Buttons are Subtle, Primary · Solid for the screen's primary action (<code>LDS-TOP-BAR-ACTIONS</code>), or Critical · Subtle, <code>lmnd-kit-icon-button--critical</code>, for a destructive one that stays in the bar (<code>LDS-TOP-BAR-CRITICAL</code>). Past two actions, the rest go in a <code>lmnd-kit-dropdown</code> behind an <code>ellipsis-horizontal</code> button, a destructive one as a <code>lmnd-kit-dropdown__item--critical</code>, and a destructive action stays out of the menu only on a screen whose job is removing something (<code>APP-TOPBAR-TRAILING</code>).</p>
     <div class="g-example"><div class="g-demo g-demo--default" style="padding: 0" data-demo>
 <header class="lmnd-kit-top-bar">
   <div class="lmnd-kit-top-bar__bar">

@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sales · Overview</title>
+<link rel="stylesheet" href="../lemonade-kit.css">
+<script src="../lemonade-kit.js" defer></script>
+<!-- Baseline: the Teya app's Sales tab on Overview, for a merchant with two stores and two currencies, as it is in production. Described in screens/sales.md. Exemptions marked
+     "as in production" are faults the app has today. -->
+<style>
+  .currencies { display: flex; gap: var(--lmnd-spacing-200); margin: 0 calc(-1 * var(--lmnd-spacing-400)); padding: 0 var(--lmnd-spacing-400); overflow-x: auto; scrollbar-width: none; }
+  .currencies > * { flex: none; width: auto; min-width: 132px; } /* literal: the tile's minimum width in the app */
+  .widget-body { display: flex; flex-direction: column; gap: var(--lmnd-spacing-200); }
+  .customise { display: flex; justify-content: center; }
+</style>
+</head>
+<body>
+<p class="lmnd-kit-source-notice" style="margin:0;padding:16px;background:Mark;color:MarkText;font:16px/1.4 system-ui,sans-serif">This page needs <code>lemonade-kit.css</code> beside it. Open it from the packaged kit: run <code>npm run html-kit</code> in <code>web/</code>, then open <code>web/dist/lemonade-html-kit/</code>.</p>
+<div class="lmnd-kit-device">
+  <div class="lmnd-kit-screen">
+    <header class="lmnd-kit-top-bar">
+      <div class="lmnd-kit-top-bar__compact">
+        <div class="lmnd-kit-top-bar__large"><h1 class="lmnd-kit-top-bar__large-title lmnd-text-heading-large">Sales</h1></div>
+        <div class="lmnd-kit-top-bar__trailing">
+          <a href="#sales-actions" class="lmnd-kit-icon-button lmnd-kit-icon-button--primary lmnd-kit-icon-button--solid lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Sales actions"><span class="lmnd-icon" data-icon="plus"></span></a>
+        </div>
+      </div>
+      <div class="lmnd-kit-tabs" role="tablist">
+        <a href="sales-overview.html" class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab" checked tabindex="-1"><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Overview">Overview</span></span></a>
+        <a href="sales-transactions.html" class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab" tabindex="-1"><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Transactions">Transactions</span></span></a>
+        <a href="sales-payment-links.html" class="lmnd-kit-tabs__item lmnd-text-body-small-medium"><input type="radio" name="tab" tabindex="-1"><span class="lmnd-kit-tabs__pill"><span class="lmnd-kit-tabs__label" data-label="Payment links">Payment links</span></span></a>
+      </div>
+    </header>
+
+    <main class="lmnd-kit-content">
+      <!-- APP-FILTER-BAR exempt: as in production, Period shows as selected at its default, Today -->
+      <div class="lmnd-kit-filter-bar">
+        <a href="#" class="lmnd-kit-chip lmnd-kit-chip--selected lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Today</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+        <a href="#" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Store</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+        <a href="#" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Device</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+        <a href="#" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Payment method</span><span class="lmnd-icon" data-icon="chevron-down" aria-hidden="true"></span></a>
+      </div>
+      <div class="currencies" role="radiogroup" aria-label="Currency">
+        <label class="lmnd-kit-tile lmnd-kit-tile--horizontal lmnd-kit-tile--selected"><input type="radio" name="currency" checked hidden><span class="lmnd-kit-flag lmnd-kit-flag--x-large" data-flag="GB" aria-hidden="true"></span><span class="lmnd-kit-tile__text"><span class="lmnd-kit-tile__label lmnd-text-body-small-medium">GBP • £</span><span class="lmnd-kit-tile__support lmnd-text-body-small-regular">11,645 transactions</span></span></label>
+        <label class="lmnd-kit-tile lmnd-kit-tile--horizontal"><input type="radio" name="currency" hidden><span class="lmnd-kit-flag lmnd-kit-flag--x-large" data-flag="EU" aria-hidden="true"></span><span class="lmnd-kit-tile__text"><span class="lmnd-kit-tile__label lmnd-text-body-small-medium">EUR • €</span><span class="lmnd-kit-tile__support lmnd-text-body-small-regular">521 transactions</span></span></label>
+      </div>
+
+      <div class="lmnd-kit-widgets">
+        <div class="lmnd-kit-card lmnd-kit-card--pad-medium">
+          <div class="lmnd-kit-card__header">
+            <div class="lmnd-kit-card__heading"><h2 class="lmnd-kit-card__title lmnd-text-body-xsmall-overline">Gross Sales</h2></div><span class="lmnd-kit-card__trailing lmnd-kit-delta lmnd-text-body-small-regular"><span class="lmnd-icon" data-icon="arrow-up" aria-hidden="true"></span>£120.00 vs Last Thursday</span>
+          </div>
+          <div class="lmnd-kit-card__body">
+            <div class="widget-body">
+              <div><p class="lmnd-text-heading-medium">£1,284.50</p><p class="lmnd-text-body-small-regular lmnd-kit-secondary">48 transactions • From 23 Oct, 00:00 to now</p></div>
+              <div class="lmnd-kit-stats">
+                <a href="#"><span class="lmnd-kit-stats__label lmnd-text-body-small-regular">Card<span class="lmnd-icon" data-icon="chevron-right" aria-hidden="true"></span></span><span class="lmnd-text-body-medium-medium">£1,198.30</span></a>
+                <a href="#"><span class="lmnd-kit-stats__label lmnd-text-body-small-regular">Cash<span class="lmnd-icon" data-icon="chevron-right" aria-hidden="true"></span></span><span class="lmnd-text-body-medium-medium">£86.20</span></a>
+              </div>
+              <div class="lmnd-kit-bars" aria-hidden="true">
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar lmnd-kit-bars__bar--previous" style="--lmnd-kit-value: 38%"></span><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 52%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar lmnd-kit-bars__bar--previous" style="--lmnd-kit-value: 55%"></span><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 61%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar lmnd-kit-bars__bar--previous" style="--lmnd-kit-value: 42%"></span><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 48%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar lmnd-kit-bars__bar--previous" style="--lmnd-kit-value: 60%"></span><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 72%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar lmnd-kit-bars__bar--previous" style="--lmnd-kit-value: 47%"></span><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 90%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar lmnd-kit-bars__bar--previous" style="--lmnd-kit-value: 33%"></span><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 40%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar lmnd-kit-bars__bar--previous" style="--lmnd-kit-value: 50%"></span><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 58%"></span></span>
+              </div>
+              <div class="lmnd-kit-legend lmnd-text-body-xsmall-regular"><span class="lmnd-kit-legend__previous">Previous period</span><span>Current period</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lmnd-kit-card">
+          <div class="lmnd-kit-card__header">
+            <div class="lmnd-kit-card__heading"><h2 class="lmnd-kit-card__title lmnd-text-body-xsmall-overline">Top products</h2></div>
+          </div>
+          <div class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-text-body-small-semibold">FW</span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Flat white</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">42 sold</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£147.00</span><span class="lmnd-kit-delta lmnd-text-body-small-regular"><span class="lmnd-icon" data-icon="arrow-up" aria-hidden="true"></span>12%</span></span>
+            </span>
+          </div>
+          <div class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-text-body-small-semibold">CR</span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Croissant</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">31 sold</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£96.10</span><span class="lmnd-kit-delta lmnd-text-body-small-regular"><span class="lmnd-icon" data-icon="arrow-up" aria-hidden="true"></span>4%</span></span>
+            </span>
+          </div>
+          <div class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded lmnd-text-body-small-semibold">BB</span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Banana bread</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">18 sold</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£63.00</span><span class="lmnd-kit-delta lmnd-kit-delta--down lmnd-text-body-small-regular"><span class="lmnd-icon" data-icon="arrow-down" aria-hidden="true"></span>8%</span></span>
+            </span>
+          </div>
+          <a href="#" class="lmnd-kit-card__footer lmnd-text-body-small-semibold">See all products</a>
+        </div>
+
+        <!-- APP-WIDGET-ONE-NAME exempt: as in production, the VAT summary's title is inline, not an overline heading, once it has data -->
+        <div class="lmnd-kit-card lmnd-kit-card--pad-medium">
+          <div class="lmnd-kit-card__body">
+            <div class="widget-body">
+              <div><p class="lmnd-text-body-small-regular lmnd-kit-secondary">VAT summary</p><p class="lmnd-text-display-small">£198.42</p><p class="lmnd-text-body-small-regular lmnd-kit-secondary">VAT collected • Today</p></div>
+              <table class="lmnd-kit-table">
+                <thead><tr class="lmnd-text-body-xsmall-overline"><th>Rate</th><th>Net</th><th>VAT</th><th>Gross</th></tr></thead>
+                <tbody class="lmnd-text-body-small-regular">
+                  <tr><td>20%</td><td>£962.40</td><td>£192.48</td><td>£1,154.88</td></tr>
+                  <tr><td>5%</td><td>£118.80</td><td>£5.94</td><td>£124.74</td></tr>
+                  <tr><td>0%</td><td>£4.88</td><td>£0.00</td><td>£4.88</td></tr>
+                </tbody>
+              </table>
+              <button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-text-body-small-semibold"><span class="lmnd-icon" data-icon="download" aria-hidden="true"></span><span class="lmnd-button__label">Export for accountant</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lmnd-kit-card">
+          <div class="lmnd-kit-card__header">
+            <div class="lmnd-kit-card__heading"><h2 class="lmnd-kit-card__title lmnd-text-body-xsmall-overline">Last transactions</h2></div>
+          </div>
+          <a href="transaction-details.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-logo" data-logo="visa" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="sale-transaction-approved" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Debit •••• 4242</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">23 Oct 2026, 14:32</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£24.00</span></span>
+            </span>
+          </a>
+          <a href="transaction-details.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-kit-logo" data-logo="mastercard" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="sale-transaction-approved" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Credit •••• 8817</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">23 Oct 2026, 13:58</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£8.40</span></span>
+            </span>
+          </a>
+          <a href="transaction-details.html" class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="money" aria-hidden="true"></span><span class="lmnd-kit-symbol__status" data-badge="sale-transaction-approved" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Cash</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">23 Oct 2026, 12:40</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£12.50</span></span>
+            </span>
+          </a>
+          <a href="sales-transactions.html" class="lmnd-kit-card__footer lmnd-text-body-small-semibold">Go to Sales Transactions</a>
+        </div>
+
+        <div class="lmnd-kit-card">
+          <div class="lmnd-kit-card__header">
+            <div class="lmnd-kit-card__heading"><h2 class="lmnd-kit-card__title lmnd-text-body-xsmall-overline">Sales per store</h2></div>
+          </div>
+          <a href="sales-transactions.html" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-text-body-small-semibold">CM</span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Camden Market</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">31 sales</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£842.10</span></span>
+            </span>
+          </a>
+          <a href="sales-transactions.html" class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-text-body-small-semibold">SO</span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Soho</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">17 sales</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£442.40</span></span>
+            </span>
+          </a>
+        </div>
+
+        <a href="sales-transactions.html" class="lmnd-kit-widget">
+          <div class="lmnd-kit-widget__heading"><h2 class="lmnd-text-body-xsmall-overline">Refunds</h2></div>
+          <div class="lmnd-kit-widget__content">
+            <div class="lmnd-kit-widget__figure"><div class="lmnd-kit-widget__value-group"><span class="lmnd-kit-widget__value lmnd-text-display-xsmall">-£18.50</span></div></div>
+            <div class="lmnd-kit-widget__bottom"><span class="lmnd-kit-widget__bottom-label lmnd-text-body-small-regular">3 transactions</span></div>
+          </div>
+        </a>
+        <div class="lmnd-kit-widget">
+          <div class="lmnd-kit-widget__heading"><h2 class="lmnd-text-body-xsmall-overline">Chargebacks</h2></div>
+          <div class="lmnd-kit-widget__content">
+            <div class="lmnd-kit-widget__figure"><div class="lmnd-kit-widget__value-group"><span class="lmnd-kit-widget__value lmnd-text-display-xsmall">-£24.00</span></div></div>
+            <div class="lmnd-kit-widget__bottom"><span class="lmnd-kit-widget__bottom-label lmnd-text-body-small-regular">1 chargeback</span></div>
+          </div>
+        </div>
+
+        <div class="lmnd-kit-card lmnd-kit-card--pad-medium">
+          <div class="lmnd-kit-card__header">
+            <div class="lmnd-kit-card__heading"><h2 class="lmnd-kit-card__title lmnd-text-body-xsmall-overline">Tips</h2></div>
+          </div>
+          <div class="lmnd-kit-card__body">
+            <div class="widget-body">
+              <div><p class="lmnd-text-heading-large">£96.40</p><p class="lmnd-text-body-small-regular lmnd-kit-secondary">Avg tip is £2.10 • 8% of each sale</p></div>
+              <hr class="lmnd-kit-divider">
+              <div class="lmnd-kit-stats"><div><span class="lmnd-text-body-small-regular lmnd-kit-secondary">Transactions with tips</span><span class="lmnd-text-body-medium-medium">46 transactions • 96%</span></div></div>
+              <div class="lmnd-kit-progress" style="--lmnd-kit-value: 96%" role="presentation"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lmnd-kit-card lmnd-kit-card--pad-medium">
+          <div class="lmnd-kit-card__header">
+            <div class="lmnd-kit-card__heading"><h2 class="lmnd-kit-card__title lmnd-text-body-xsmall-overline">Sales Breakdown</h2></div>
+          </div>
+          <div class="lmnd-kit-card__body">
+            <div class="lmnd-kit-chips">
+              <a href="#" class="lmnd-kit-chip lmnd-kit-chip--selected lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Sales Channel</span></a>
+              <a href="#" class="lmnd-kit-chip lmnd-text-body-small-medium"><span class="lmnd-kit-chip__label">Card brands</span></a>
+            </div>
+          </div>
+          <div class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="card-machine" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Card machine</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">93.29%</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£1,198.30</span></span>
+            </span>
+          </div>
+          <div class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="link" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Pay by Link</span></span>
+              <span class="lmnd-kit-list-item__trailing"><span class="lmnd-kit-widget__footer lmnd-text-body-xsmall-semibold"><span>Create your first</span><span class="lmnd-icon" data-icon="chevron-right" aria-hidden="true"></span></span></span>
+            </span>
+          </div>
+          <div class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="globe" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">E-commerce</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">6.71%</span></span>
+              <span class="lmnd-kit-list-item__value"><span class="lmnd-text-body-medium-medium">£86.20</span></span>
+            </span>
+          </div>
+          <div class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-icon" data-icon="nfc" aria-hidden="true"></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Tap</span></span>
+              <span class="lmnd-kit-list-item__trailing"><span class="lmnd-kit-widget__footer lmnd-text-body-xsmall-semibold"><span>Get started</span><span class="lmnd-icon" data-icon="chevron-right" aria-hidden="true"></span></span></span>
+            </span>
+          </div>
+        </div>
+
+        <div class="lmnd-kit-card lmnd-kit-card--pad-medium">
+          <div class="lmnd-kit-card__header">
+            <div class="lmnd-kit-card__heading"><h2 class="lmnd-kit-card__title lmnd-text-body-xsmall-overline">Busy times</h2></div>
+            <div class="lmnd-kit-segmented lmnd-kit-segmented--small" role="radiogroup" aria-label="Busy times">
+              <label class="lmnd-kit-segmented__item lmnd-text-body-xsmall-medium"><input type="radio" name="busy" checked aria-controls="busy-hourly"><span>Hourly</span></label>
+              <label class="lmnd-kit-segmented__item lmnd-text-body-xsmall-medium"><input type="radio" name="busy" aria-controls="busy-daily"><span>Daily</span></label>
+              <label class="lmnd-kit-segmented__item lmnd-text-body-xsmall-medium"><input type="radio" name="busy" aria-controls="busy-monthly"><span>Monthly</span></label>
+            </div>
+          </div>
+          <div class="lmnd-kit-card__body">
+            <div class="widget-body" id="busy-hourly">
+              <div><p class="lmnd-text-heading-medium">13:00</p><p class="lmnd-text-body-small-regular lmnd-kit-secondary">Average sales per hour • vs Last week</p></div>
+              <div>
+                <div class="lmnd-kit-bars" aria-hidden="true">
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 10%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 18%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 35%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 62%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 80%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 100%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 74%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 52%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 40%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 58%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 66%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 30%"></span></span>
+                </div>
+                <div class="lmnd-kit-bars__axis lmnd-text-body-xsmall-regular"><span>08:00</span><span>14:00</span><span>19:00</span></div>
+              </div>
+            </div>
+            <div class="widget-body" id="busy-daily" hidden>
+              <div><p class="lmnd-text-heading-medium">Saturday</p><p class="lmnd-text-body-small-regular lmnd-kit-secondary">Average sales per day • vs Last week</p></div>
+              <div>
+                <div class="lmnd-kit-bars" aria-hidden="true">
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 52%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 48%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 55%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 61%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 78%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 100%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 64%"></span></span>
+                </div>
+                <div class="lmnd-kit-bars__axis lmnd-text-body-xsmall-regular"><span>Mon</span><span>Thu</span><span>Sun</span></div>
+              </div>
+            </div>
+            <div class="widget-body" id="busy-monthly" hidden>
+              <div><p class="lmnd-text-heading-medium">October</p><p class="lmnd-text-body-small-regular lmnd-kit-secondary">Sales per month • vs Last year</p></div>
+              <div>
+                <div class="lmnd-kit-bars" aria-hidden="true">
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 40%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 44%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 52%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 58%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 62%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 70%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 74%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 72%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 66%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 100%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 0%"></span></span>
+                <span class="lmnd-kit-bars__group"><span class="lmnd-kit-bars__bar" style="--lmnd-kit-value: 0%"></span></span>
+                </div>
+                <div class="lmnd-kit-bars__axis lmnd-text-body-xsmall-regular"><span>Jan</span><span>Jun</span><span>Dec</span></div>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="customise"><button type="button" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--small lmnd-kit-button--full-shape lmnd-text-body-small-semibold"><span class="lmnd-button__label">Customise page</span></button></div>
+    </main>
+
+    <nav class="lmnd-kit-tab-bar">
+      <div class="lmnd-kit-tab-bar__bar">
+        <a href="home.html" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="brand-teya-symbol" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Home</span></a>
+        <a href="sales-overview.html" class="lmnd-kit-tab-bar__item" aria-current="page"><span class="lmnd-icon" data-icon="chart-stats-solid" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Sales</span></a>
+        <a href="money-settlements.html" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="wallet" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Money</span></a>
+        <a href="#" class="lmnd-kit-tab-bar__item"><span class="lmnd-icon" data-icon="sparkles-soft" aria-hidden="true"></span><span class="lmnd-text-body-xsmall-medium">Teya AI</span></a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="lmnd-kit-dropdown-layer" id="sales-actions">
+    <a href="#" class="lmnd-kit-dropdown-layer__dismiss" aria-label="Close menu"></a>
+    <div class="lmnd-kit-dropdown" role="menu">
+      <a href="#" class="lmnd-kit-dropdown__item" role="menuitem"><span class="lmnd-icon" data-icon="card-machine" aria-hidden="true"></span><span class="lmnd-kit-dropdown__label lmnd-text-body-medium-regular">New Sale</span></a>
+      <a href="#" class="lmnd-kit-dropdown__item" role="menuitem"><span class="lmnd-icon" data-icon="link" aria-hidden="true"></span><span class="lmnd-kit-dropdown__label lmnd-text-body-medium-regular">New payment link</span></a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
