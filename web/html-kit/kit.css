@@ -1799,6 +1799,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
 
 /* The inverse surface, as Compose draws it: dark in light mode, light in dark mode. iOS keeps it dark for its glass. */
 .lmnd-kit-toast {
+  --lmnd-kit-toast-time: 3s;
   display: inline-flex;
   align-items: center;
   gap: var(--lmnd-spacing-200);
@@ -1855,7 +1856,6 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
 /* A toast in a host dismisses itself, as Lemonade's does: Short (3s) by default, --medium 6s, --long 9s. A
    loading toast stays until something replaces it. */
 .lmnd-kit-toast-host > .lmnd-kit-toast {
-  --lmnd-kit-toast-time: 3s;
   animation: lmnd-kit-toast-in 0.2s cubic-bezier(0.2, 0, 0, 1) both, lmnd-kit-toast-out 0.2s cubic-bezier(0.4, 0, 1, 1) var(--lmnd-kit-toast-time) forwards;
 }
 
