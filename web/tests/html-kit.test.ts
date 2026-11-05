@@ -8,7 +8,7 @@ import { kitLlmsTxt, kitScript, kitStylesheet, themedHues } from '../html-kit/bu
 import { inlinePage } from '../html-kit/share/build.mjs'
 import { describe, expect, it } from 'vitest'
 
-const pages = import.meta.glob(['../html-kit/gallery.html', '../html-kit/examples/*.html', '../html-kit/screens/*.html'], {
+const pages = import.meta.glob(['../html-kit/gallery.html', '../html-kit/examples/*.html'], {
   query: '?raw',
   import: 'default',
   eager: true,
@@ -105,11 +105,6 @@ describe.each(Object.keys(pages))('%s', (path) => {
     expect(targets.filter((id) => !ids.has(id))).toEqual([])
   })
 
-  // APP-SEGMENTED-SIZE: the segmented control that switches a whole screen is Large.
-  it('keeps the segmented control that switches a screen Large', () => {
-    expect(html).not.toMatch(/<main class="lmnd-kit-content">\s*<div class="lmnd-kit-segmented lmnd-kit-segmented--/)
-  })
-
   // LDS-TOP-BAR-CRITICAL: a destructive icon button takes the critical variant, not a tinted glyph.
   it('marks a destructive icon button with its critical variant', () => {
     expect(html).not.toMatch(/class="lmnd-kit-icon-button\b[^"]*"[^>]*>\s*<span class="[^"]*lmnd-kit-critical/)
@@ -143,7 +138,6 @@ describe('the guidelines', () => {
     new Map(Object.entries(files).map(([path, text]) => [path.split('/').pop() as string, text]))
   const kit = raw(import.meta.glob('../html-kit/guidelines/*.md', { query: '?raw', import: 'default', eager: true }))
   const lemonade = raw(import.meta.glob('../../guidelines/*.md', { query: '?raw', import: 'default', eager: true }))
-  const screens = raw(import.meta.glob('../html-kit/screens/*.md', { query: '?raw', import: 'default', eager: true }))
   const skill = Object.values(import.meta.glob('../html-kit/SKILL.md', { query: '?raw', import: 'default', eager: true }))
   const index = kit.get('index.md') as string
   kit.delete('index.md')
@@ -165,9 +159,8 @@ describe('the guidelines', () => {
   })
 
   it('names only rules that exist', () => {
-    const leftToTheApp = ['APP-TOPBAR-COMPONENT', 'APP-SHEET-OVER-SHEET']
-    const ids = new Set([...leftToTheApp, ...[...rules.values()].flatMap(defined)])
-    const sources = [...Object.values(pages), index, ...rules.values(), ...screens.values(), ...skill] as string[]
+    const ids = new Set([...rules.values()].flatMap(defined))
+    const sources = [...Object.values(pages), index, ...rules.values(), ...skill] as string[]
     const named = sources.flatMap((text) => [...text.matchAll(/\b(?:LDS|APP|LHK)-[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*(?![\w-])/g)].map((m) => m[0]))
     expect([...new Set(named)].filter((id) => !ids.has(id))).toEqual([])
   })

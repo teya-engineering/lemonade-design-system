@@ -332,7 +332,7 @@
 
   <section class="g-section" id="card">
     <h2 class="lmnd-text-heading-small">Card</h2>
-    <p class="lmnd-text-body-small-regular">Rows that belong together go in one card. A card of list items has no padding, so the rows' dividers reach its edges; a card of free content takes <code>lmnd-kit-card--pad-medium</code>. Cards are white on the subtle page (<code>LDS-CARD-SURFACE</code>), 16px apart on a screen (<code>APP-SPACING-RHYTHM</code>); <code>--subtle</code> and <code>--elevated</code> are for a card inside a card or a coloured area.</p>
+    <p class="lmnd-text-body-small-regular">Rows that belong together go in one card. A card of list items has no padding, so the rows' dividers reach its edges; a card of free content takes <code>lmnd-kit-card--pad-medium</code>. Cards are white on the subtle page (<code>LDS-CARD-SURFACE</code>), 16px apart on a screen; <code>--subtle</code> and <code>--elevated</code> are for a card inside a card or a coloured area.</p>
     <div class="g-example"><div class="g-demo" data-demo>
 <div class="lmnd-kit-card">
   <div class="lmnd-kit-card__header">
@@ -467,7 +467,7 @@
 
   <section class="g-section" id="list-group">
     <h2 class="lmnd-text-heading-small">List group</h2>
-    <p class="lmnd-text-body-small-regular">A feed's group: a header placing it over one card of rows (<code>APP-FEED-GROUPS</code>). A money feed's header names the day and carries its total. A record's status is the app's badge on its symbol, <code>lmnd-kit-symbol__status</code> with a <code>data-badge</code> from <code>assets.txt</code>, and its amount takes a value style: <code>--dimmed</code> while pending, <code>--strikethrough</code> once declined or voided, <code>--positive</code> for money in (<code>APP-FEED-ROWS</code>). The next page loads under a spinner, <code>lmnd-kit-load-more</code>.</p>
+    <p class="lmnd-text-body-small-regular">A feed's group: a header placing it over one card of rows. A money feed's header names the day and carries its total. A record's status is the app's badge on its symbol, <code>lmnd-kit-symbol__status</code> with a <code>data-badge</code> from <code>assets.txt</code>, and its amount takes a value style: <code>--dimmed</code> while pending, <code>--strikethrough</code> once declined or voided, <code>--positive</code> for money in. The next page loads under a spinner, <code>lmnd-kit-load-more</code>.</p>
     <div class="g-example"><div class="g-demo" data-demo>
 <section class="lmnd-kit-list-group">
   <h3 class="lmnd-kit-list-group__header"><span class="lmnd-kit-list-group__heading"><span class="lmnd-text-body-small-semibold">Yesterday,</span><span class="lmnd-text-body-small-regular">22 Oct 2026</span></span><span class="lmnd-kit-list-group__total lmnd-text-body-small-medium">£1,284.50</span></h3>
@@ -779,7 +779,7 @@
 
   <section class="g-section" id="segmented">
     <h2 class="lmnd-text-heading-small">Segmented control</h2>
-    <p class="lmnd-text-body-small-regular">Large (48) by default, and always Large when it switches what a whole screen shows (<code>APP-SEGMENTED-SIZE</code>); <code>--medium</code> (40) and <code>--small</code> (32, with <code>body-xsmall-medium</code>) inside a card, widget, sheet or form. Radios drive it.</p>
+    <p class="lmnd-text-body-small-regular">Large (48) by default, and always Large when it switches what a whole screen shows; <code>--medium</code> (40) and <code>--small</code> (32, with <code>body-xsmall-medium</code>) inside a card, widget, sheet or form. Radios drive it.</p>
     <div class="g-example"><div class="g-demo" data-demo>
 <div class="lmnd-kit-segmented" role="radiogroup">
   <label class="lmnd-kit-segmented__item lmnd-text-body-small-medium"><input type="radio" name="g-period" checked><span>Day</span></label>
@@ -813,7 +813,7 @@
 
   <section class="g-section" id="top-bar">
     <h2 class="lmnd-text-heading-small">Top bar</h2>
-    <p class="lmnd-text-body-small-regular">Navigation: a back or close button, a centred title that shows when <code>lmnd-kit-top-bar--collapsed</code>, and the large title below. On a screen, the large title goes first in the content as a <code>lmnd-kit-large-title</code>, so it scrolls under the bar, and the kit's script collapses the bar as it does (<code>examples/settings.html</code>). Small (<code>lmnd-kit-top-bar--small</code>): only the centred title, naming the kind of thing, for a details screen; on <code>lmnd-kit-screen--details</code> it starts transparent and fills on scroll. Compact: a top-level screen's large title with actions beside it, no back button. Buttons are Subtle, Primary · Solid for the screen's primary action (<code>LDS-TOP-BAR-ACTIONS</code>), or Critical · Subtle, <code>lmnd-kit-icon-button--critical</code>, for a destructive one that stays in the bar (<code>LDS-TOP-BAR-CRITICAL</code>). Past two actions, the rest go in a <code>lmnd-kit-dropdown</code> behind an <code>ellipsis-horizontal</code> button, a destructive one as a <code>lmnd-kit-dropdown__item--critical</code>, and a destructive action stays out of the menu only on a screen whose job is removing something (<code>APP-TOPBAR-TRAILING</code>).</p>
+    <p class="lmnd-text-body-small-regular">Navigation: a back or close button, a centred title that shows when <code>lmnd-kit-top-bar--collapsed</code>, and the large title below. On a screen, the large title goes first in the content as a <code>lmnd-kit-large-title</code>, so it scrolls under the bar, and the kit's script collapses the bar as it does (<code>examples/settings.html</code>). Small (<code>lmnd-kit-top-bar--small</code>): only the centred title, naming the kind of thing, for a details screen; on <code>lmnd-kit-screen--details</code> it starts transparent and fills on scroll. Compact: a top-level screen's large title with actions beside it, no back button. Buttons are Subtle, Primary · Solid for the screen's primary action (<code>LDS-TOP-BAR-ACTIONS</code>), or Critical · Subtle, <code>lmnd-kit-icon-button--critical</code>, for a destructive one that stays in the bar (<code>LDS-TOP-BAR-CRITICAL</code>). Past two actions, the rest go in a <code>lmnd-kit-dropdown</code> behind an <code>ellipsis-horizontal</code> button, a destructive one as a <code>lmnd-kit-dropdown__item--critical</code>, and a destructive action stays out of the menu only on a screen whose job is removing something.</p>
     <div class="g-example"><div class="g-demo g-demo--default" style="padding: 0" data-demo>
 <header class="lmnd-kit-top-bar">
   <div class="lmnd-kit-top-bar__bar">
