@@ -47,6 +47,23 @@ describe('the packaged stylesheet', () => {
   })
 })
 
+describe('a standalone page', () => {
+  const page = (body: string) => `<link rel="stylesheet" href="lemonade-kit.css">${body}`
+
+  it("keeps the assets a page's own script sets, when the page declares them", async () => {
+    const css = await kitStylesheet()
+    const icon = css.match(/\[data-icon="([a-zA-Z0-9-]+)"\]/)![1]
+    expect(inlinePage(page('<body></body>'), css)).not.toContain(`[data-icon="${icon}"]`)
+    expect(inlinePage(page(`<body data-kit-assets="icon:${icon}"></body>`), css)).toContain(`[data-icon="${icon}"]`)
+  })
+
+  it('rejects a declared asset that is malformed or does not exist', async () => {
+    const css = await kitStylesheet()
+    expect(() => inlinePage(page('<body data-kit-assets="check-circle"></body>'), css)).toThrow(/kind:name/)
+    expect(() => inlinePage(page('<body data-kit-assets="icon:no-such-icon"></body>'), css)).toThrow(/unknown icon "no-such-icon"/)
+  })
+})
+
 describe('themed hues', () => {
   it('gives every hue a rule that reads only declared tokens', async () => {
     const hues = await themedHues()

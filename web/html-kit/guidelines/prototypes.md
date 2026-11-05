@@ -235,7 +235,10 @@ another. A page's own script:
 - works on the kit markup already in the page: it reads fields and sets `hidden`, attributes, classes and
   text. It never builds a component or styles one, so the markup still follows `LHK-KIT-MARKUP` and
   `LHK-TOKENS-ONLY`;
-- loads nothing: no library, no other file, so the page still travels as one file.
+- loads nothing: no library, no other file, so the page still travels as one file;
+- sets an icon, flag, logo or badge only to a name the page lists on its `<body>`, as `kind:name` pairs:
+  `<body data-kit-assets="icon:check-circle flag:gb">`. A standalone copy keeps only the assets the page
+  names, and a name that is only in the script would come out blank.
 
 **Why.** The kit's script makes a demo feel like the app without making the page code. Some states, though,
 take CSS one rule per combination, and a flow with a few of them grows to megabytes of rules no one can
