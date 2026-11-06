@@ -182,6 +182,8 @@ where the flow starts. Overlays follow the screens, as in `LHK-FLOWS`.
 - Back is a link to the screen it returns to, marked `data-lmnd-kit-back`: `<a href="#transactions"
   data-lmnd-kit-back …>`.
 - A tab bar's links point at its tabs' screens.
+- A task with several steps keeps them in the device as `lmnd-kit-screen--task` screens, which open as a
+  sheet over the screen the task starts from. A form or long list in a sheet uses `lmnd-kit-sheet--full`.
 
 ```html
 <div class="lmnd-kit-device">
