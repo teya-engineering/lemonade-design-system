@@ -86,7 +86,7 @@ public fun LemonadeUi.TextArea(
         cursorBrush = SolidColor(contentColor),
         textStyle = textAreaTextStyle(color = contentColor),
         singleLine = false,
-        modifier = modifier,
+        modifier = modifier.clearFocusOnKeyboardDismiss(),
         decorationBox = { innerTextField ->
             TextAreaDecorator(
                 text = input,
@@ -166,7 +166,7 @@ public fun LemonadeUi.TextArea(
         lineLimits = TextFieldLineLimits.MultiLine(),
         cursorBrush = SolidColor(contentColor),
         textStyle = textAreaTextStyle(color = contentColor),
-        modifier = modifier,
+        modifier = modifier.clearFocusOnKeyboardDismiss(),
         decorator = { innerTextField ->
             TextAreaDecorator(
                 text = state.text,
