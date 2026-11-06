@@ -1689,6 +1689,17 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   --lmnd-kit-sheet-bg: var(--lmnd-color-bg-subtle);
 }
 
+/* A full-height sheet reaches up to just under the status bar, for a form or a long list. Its bar sits a
+   little lower, as it has no handle above it. */
+.lmnd-kit-sheet--full {
+  height: calc(100% - var(--lmnd-kit-safe-top) - var(--lmnd-spacing-400));
+  max-height: none;
+}
+
+.lmnd-kit-sheet--full > .lmnd-kit-sheet__bar:first-child {
+  padding-top: calc(var(--lmnd-spacing-300) + var(--lmnd-spacing-50));
+}
+
 /* The footer action keeps the safe area itself, so it can stay fixed over the scrolling content. */
 .lmnd-kit-sheet:has(> .lmnd-kit-sheet__actions:last-child) {
   padding-bottom: 0;
@@ -4013,6 +4024,20 @@ body:has(> .lmnd-kit-device) {
   border-radius: var(--lmnd-kit-task-radius) var(--lmnd-kit-task-radius) 0 0;
   corner-shape: var(--lmnd-kit-corner-shape, round);
   clip-path: inset(0);
+  transform-origin: 50% 0;
+  transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* A full-height sheet over a step pushes the step back, as iOS stacks sheets: it shrinks and rises, so its
+   top shows above the new one. */
+.lmnd-kit-device:has(> .lmnd-kit-scrim[id]:target > .lmnd-kit-sheet--full) > .lmnd-kit-screen--task.lmnd-kit-screen--current {
+  transform: translateY(calc(-1 * var(--lmnd-spacing-200))) scale(0.93); /* literal: iOS's stacked sheet */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lmnd-kit-device > .lmnd-kit-screen--task {
+    transition: none;
+  }
 }
 
 .lmnd-kit-device[data-lmnd-kit-screens] > .lmnd-kit-screen--behind[id] {
