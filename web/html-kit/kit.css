@@ -1604,7 +1604,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   display: flex;
   flex-direction: column;
   min-width: 248px; /* literal: Dropdown's minimum width */
-  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-100);
+  padding: var(--lmnd-spacing-100);
   border-radius: var(--lmnd-radius-500);
   background: var(--lmnd-color-bg-default);
   box-shadow: var(--lmnd-shadow-md);
@@ -1616,7 +1616,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
 }
 
 .lmnd-kit-dropdown__title {
-  padding: var(--lmnd-spacing-300) var(--lmnd-spacing-300) var(--lmnd-spacing-100);
+  padding: var(--lmnd-spacing-100) var(--lmnd-spacing-300);
   color: var(--lmnd-color-content-secondary);
   text-transform: uppercase;
 }
@@ -1630,7 +1630,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   align-items: center;
   gap: var(--lmnd-spacing-300);
   min-height: var(--lmnd-size-1200);
-  padding: var(--lmnd-spacing-200) var(--lmnd-spacing-300);
+  padding: var(--lmnd-spacing-100) var(--lmnd-spacing-300);
   border-radius: var(--lmnd-radius-400);
   color: var(--lmnd-color-content-primary);
   cursor: pointer;
