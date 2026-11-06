@@ -115,16 +115,40 @@
     <main class="lmnd-kit-content">
       <div class="lmnd-kit-large-title"><h1 class="lmnd-text-heading-large">Get a replacement</h1><p class="lmnd-kit-large-title__description lmnd-text-body-small-regular">We'll send a new one for Front counter</p></div>
       <div class="lmnd-kit-card">
-        <div class="lmnd-kit-list-item">
+        <a href="#address-sheet" class="lmnd-kit-list-item" aria-label="Change delivery address">
           <span class="lmnd-kit-list-item__row">
             <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="map-pin" aria-hidden="true"></span></span></span>
             <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Camden Coffee</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">12 Parkway, London NW1 7AA</span></span>
+            <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon" data-icon="pencil-line" aria-hidden="true"></span></span>
           </span>
-        </div>
+        </a>
       </div>
     </main>
     <div class="lmnd-kit-actions">
       <a href="#machines" data-lmnd-kit-close class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold"><span class="lmnd-button__label">Send request</span></a>
+    </div>
+  </div>
+
+  <!-- A full-height sheet over the step: the step shrinks behind it. -->
+  <div class="lmnd-kit-scrim" id="address-sheet">
+    <div class="lmnd-kit-sheet lmnd-kit-sheet--subtle lmnd-kit-sheet--full" role="dialog" aria-labelledby="address-title">
+      <div class="lmnd-kit-sheet__bar">
+        <a href="#" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></a>
+      </div>
+      <h2 class="lmnd-kit-sheet__title lmnd-text-heading-large" id="address-title">Delivery address</h2>
+      <div class="lmnd-kit-sheet__body">
+        <label class="lmnd-kit-field">
+          <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Address</span></span>
+          <span class="lmnd-kit-field__box"><input class="lmnd-kit-field__input" autocomplete="street-address" value="12 Parkway"></span>
+        </label>
+        <label class="lmnd-kit-field">
+          <span class="lmnd-kit-field__label-row"><span class="lmnd-kit-field__label lmnd-text-body-small-medium">Postcode</span></span>
+          <span class="lmnd-kit-field__box"><input class="lmnd-kit-field__input" autocomplete="postal-code" value="NW1 7AA"></span>
+        </label>
+      </div>
+      <div class="lmnd-kit-sheet__actions">
+        <a href="#" data-lmnd-kit-close class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold"><span class="lmnd-button__label">Save</span></a>
+      </div>
     </div>
   </div>
 </div>
