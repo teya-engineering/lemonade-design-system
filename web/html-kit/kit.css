@@ -34,10 +34,10 @@ body {
   --lmnd-kit-safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Corners follow iOS's continuous curve, as Figma's 60% corner smoothing draws it, where the browser can
-   draw one. A superellipse looks smaller than a round corner of the same radius, so the radius grows with
-   it. Where corner-shape isn't supported, corners stay round at the token's radius. A full radius stays
-   round everywhere: a circle or a pill isn't smoothed. */
+/* Corners follow a continuous curve, like iOS's, where the browser can draw one. A superellipse looks
+   smaller than a round corner of the same radius, so the radius grows with it. Where corner-shape isn't
+   supported, corners stay round at the token's radius. A full radius stays round everywhere: a circle or a
+   pill isn't smoothed. */
 :root {
   --lmnd-kit-corner-scale: 1;
   --lmnd-kit-corner-shape: round;
@@ -45,8 +45,8 @@ body {
 
 @supports (corner-shape: superellipse(1)) {
   :root {
-    --lmnd-kit-corner-scale: 1.5; /* literal: fitted to Figma's 60% corner smoothing */
-    --lmnd-kit-corner-shape: superellipse(1.4); /* literal: fitted to Figma's 60% corner smoothing */
+    --lmnd-kit-corner-scale: 1.5; /* literal: keeps a smoothed corner about the size of a round one */
+    --lmnd-kit-corner-shape: superellipse(1.8); /* literal: the kit's corner curve */
   }
 }
 
