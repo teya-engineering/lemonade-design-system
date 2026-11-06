@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Card machine help</title>
+<link rel="stylesheet" href="../lemonade-kit.css">
+<script src="../lemonade-kit.js" defer></script>
+<!-- A task in a sheet (APP-SHEET-OR-PAGE): a machine's row opens the steps over Card machines. Steps push
+     inside the sheet, Back pops them, and Close or finishing lowers it back onto Card machines. -->
+</head>
+<body>
+<p class="lmnd-kit-source-notice" style="margin:0;padding:16px;background:Mark;color:MarkText;font:16px/1.4 system-ui,sans-serif">This page needs <code>lemonade-kit.css</code> beside it. Open it from the packaged kit: run <code>npm run html-kit</code> in <code>web/</code>, then open <code>web/dist/lemonade-html-kit/</code>.</p>
+<div class="lmnd-kit-device">
+  <div class="lmnd-kit-screen" id="machines">
+    <header class="lmnd-kit-top-bar lmnd-kit-top-bar--small">
+      <div class="lmnd-kit-top-bar__bar">
+        <div class="lmnd-kit-top-bar__leading"><a href="settings.html" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Back"><span class="lmnd-icon" data-icon="arrow-left"></span></a></div>
+        <div class="lmnd-kit-top-bar__center"><span class="lmnd-kit-top-bar__title lmnd-text-heading-xxsmall">Card machines</span></div>
+        <div class="lmnd-kit-top-bar__trailing"></div>
+      </div>
+    </header>
+
+    <main class="lmnd-kit-content">
+      <div class="lmnd-kit-card">
+        <div class="lmnd-kit-card__header">
+          <div class="lmnd-kit-card__heading"><h2 class="lmnd-kit-card__title lmnd-text-body-xsmall-overline">Active</h2></div>
+        </div>
+          <a href="#fix" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="card-machine" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Front counter</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Teya A920 Pro</span></span>
+              <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+            </span>
+          </a>
+          <a href="#fix" class="lmnd-kit-list-item">
+            <span class="lmnd-kit-list-item__row">
+              <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="card-machine" aria-hidden="true"></span></span></span>
+              <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Bar</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Teya S1F2</span></span>
+              <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+            </span>
+          </a>
+      </div>
+    </main>
+  </div>
+
+  <div class="lmnd-kit-screen lmnd-kit-screen--task" id="fix">
+    <header class="lmnd-kit-top-bar">
+      <div class="lmnd-kit-top-bar__bar">
+        <div class="lmnd-kit-top-bar__leading"><a href="#machines" data-lmnd-kit-close class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></a></div>
+        <div class="lmnd-kit-top-bar__center"><span class="lmnd-kit-top-bar__title lmnd-text-heading-xxsmall">Let's try a quick fix</span></div>
+        <div class="lmnd-kit-top-bar__trailing"></div>
+      </div>
+    </header>
+    <main class="lmnd-kit-content">
+      <div class="lmnd-kit-large-title"><h1 class="lmnd-text-heading-large">Let's try a quick fix</h1><p class="lmnd-kit-large-title__description lmnd-text-body-small-regular">Try these in order. After each one, try a payment</p></div>
+      <div class="lmnd-kit-card">
+        <div class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+          <span class="lmnd-kit-list-item__row">
+            <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="arrow-rotate-cw" aria-hidden="true"></span></span></span>
+            <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Restart it</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Hold the power button for 3 seconds</span></span>
+          </span>
+        </div>
+        <div class="lmnd-kit-list-item">
+          <span class="lmnd-kit-list-item__row">
+            <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="wifi" aria-hidden="true"></span></span></span>
+            <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Check the connection</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Open Settings on the machine and pick your Wi-Fi</span></span>
+          </span>
+        </div>
+      </div>
+    </main>
+    <div class="lmnd-kit-actions">
+      <a href="#machines" data-lmnd-kit-close class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold"><span class="lmnd-button__label">It's working now</span></a>
+      <a href="#reason" class="lmnd-button lmnd-button--neutral lmnd-button--subtle lmnd-button--large lmnd-text-body-medium-semibold"><span class="lmnd-button__label">Get a replacement</span></a>
+    </div>
+  </div>
+
+  <div class="lmnd-kit-screen lmnd-kit-screen--task" id="reason">
+    <header class="lmnd-kit-top-bar">
+      <div class="lmnd-kit-top-bar__bar">
+        <div class="lmnd-kit-top-bar__leading"><a href="#fix" data-lmnd-kit-back class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Back"><span class="lmnd-icon" data-icon="arrow-left"></span></a></div>
+        <div class="lmnd-kit-top-bar__center"><span class="lmnd-kit-top-bar__title lmnd-text-heading-xxsmall">What's wrong?</span></div>
+        <div class="lmnd-kit-top-bar__trailing"><a href="#machines" data-lmnd-kit-close class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></a></div>
+      </div>
+    </header>
+    <main class="lmnd-kit-content">
+      <div class="lmnd-kit-large-title"><h1 class="lmnd-text-heading-large">What's wrong?</h1><p class="lmnd-kit-large-title__description lmnd-text-body-small-regular">Pick the closest match</p></div>
+      <div class="lmnd-kit-card">
+        <a href="#replacement" class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+          <span class="lmnd-kit-list-item__row">
+            <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="card" aria-hidden="true"></span></span></span>
+            <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">It won't take cards</span></span>
+            <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+          </span>
+        </a>
+        <a href="#replacement" class="lmnd-kit-list-item">
+          <span class="lmnd-kit-list-item__row">
+            <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="arrow-rotate-cw" aria-hidden="true"></span></span></span>
+            <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">It won't turn on</span></span>
+            <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+          </span>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <div class="lmnd-kit-screen lmnd-kit-screen--task" id="replacement">
+    <header class="lmnd-kit-top-bar">
+      <div class="lmnd-kit-top-bar__bar">
+        <div class="lmnd-kit-top-bar__leading"><a href="#reason" data-lmnd-kit-back class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Back"><span class="lmnd-icon" data-icon="arrow-left"></span></a></div>
+        <div class="lmnd-kit-top-bar__center"><span class="lmnd-kit-top-bar__title lmnd-text-heading-xxsmall">Get a replacement</span></div>
+        <div class="lmnd-kit-top-bar__trailing"><a href="#machines" data-lmnd-kit-close class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></a></div>
+      </div>
+    </header>
+    <main class="lmnd-kit-content">
+      <div class="lmnd-kit-large-title"><h1 class="lmnd-text-heading-large">Get a replacement</h1><p class="lmnd-kit-large-title__description lmnd-text-body-small-regular">We'll send a new one for Front counter</p></div>
+      <div class="lmnd-kit-card">
+        <div class="lmnd-kit-list-item">
+          <span class="lmnd-kit-list-item__row">
+            <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="map-pin" aria-hidden="true"></span></span></span>
+            <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Camden Coffee</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">12 Parkway, London NW1 7AA</span></span>
+          </span>
+        </div>
+      </div>
+    </main>
+    <div class="lmnd-kit-actions">
+      <a href="#machines" data-lmnd-kit-close class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold"><span class="lmnd-button__label">Send request</span></a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

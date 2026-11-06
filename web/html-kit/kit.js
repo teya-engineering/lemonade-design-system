@@ -86,9 +86,28 @@
   const stack = []
   let current = null
   let lastLink = null
+  let behind = null
+  let after = null
+  let leaving = null
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)')
 
   const screenFor = (id) => screens.find((screen) => screen.id === id)
+
+  // A task's steps are screens with --task, shown in a sheet over the screen the task started from, which
+  // stays in view behind them and takes no taps (APP-SHEET-OR-PAGE).
+  const isStep = (screen) => !!screen?.classList.contains('lmnd-kit-screen--task')
+
+  const setBehind = (screen) => {
+    if (behind) {
+      behind.classList.remove('lmnd-kit-screen--behind')
+      behind.inert = false
+    }
+    behind = screen
+    if (behind) {
+      behind.classList.add('lmnd-kit-screen--behind')
+      behind.inert = true
+    }
+  }
 
   // An animation that never reports its end (a background tab, a headless render) still ends.
   const SLIDE = 400
@@ -139,9 +158,29 @@
     if (how === 'back') stack.length = index + 1
     else if (how === 'switch') stack.splice(0, stack.length, next.id)
     else stack.push(next.id)
+    const move = isStep(next) ? (isStep(current) ? 'step' : 'open') : (isStep(current) ? 'close' : '')
+    if (move) device.setAttribute('data-lmnd-kit-task', move)
+    else device.removeAttribute('data-lmnd-kit-task')
+    if (move === 'open') setBehind(current)
+    else if (move === 'close') setBehind(null)
     show(next, how)
     history.replaceState({ lmndKitScreen: next.id }, '')
     lastLink = null
+    if (move === 'close' && after) {
+      const then = after
+      after = null
+      setTimeout(() => { location.hash = then }, SLIDE)
+    }
+  }
+
+  // Leaving a task goes back through history to the screen it started from, past every step and any sheet
+  // opened over one, so Back there doesn't reopen them. A link to another screen then opens that one from
+  // there. A page opened on a step has nothing to go back through, so it replaces the step instead.
+  const leaveTask = (then) => {
+    after = then && then !== behind ? then.id : null
+    if (!stack.includes(behind.id)) return location.replace(here(`#${behind.id}`))
+    leaving = behind.id
+    history.back()
   }
 
   // Set up once the page is parsed: a standalone file inlines this script in its head.
@@ -152,6 +191,10 @@
     device.setAttribute('data-lmnd-kit-screens', '')
     const first = screenFor(decodeURIComponent(location.hash.slice(1))) || screens[0]
     stack.push(first.id)
+    if (isStep(first)) {
+      device.setAttribute('data-lmnd-kit-task', 'step')
+      setBehind(screens.find((screen) => !isStep(screen)))
+    }
     show(first, 'switch')
     history.replaceState({ lmndKitScreen: first.id }, '')
 
@@ -163,17 +206,30 @@
       if (link.hasAttribute('data-lmnd-kit-back') && stack.length > 1) {
         event.preventDefault()
         history.back()
+        return
+      }
+      // In a task, Close (data-lmnd-kit-close) and a link to a screen outside it leave the task.
+      if (!isStep(current) || !current.contains(link) || !link.getAttribute('href').startsWith('#')) return
+      const target = screenFor(decodeURIComponent(link.getAttribute('href').slice(1)))
+      const outside = target && !isStep(target) ? target : null
+      if (outside || link.hasAttribute('data-lmnd-kit-close')) {
+        event.preventDefault()
+        leaveTask(outside)
       }
     }, true)
 
     window.addEventListener('popstate', (event) => {
-      const next = screenFor(event.state?.lmndKitScreen)
+      const id = event.state?.lmndKitScreen
+      if (leaving && id && id !== leaving) return history.back()
+      leaving = null
+      const next = screenFor(id)
       if (next) go(next)
     })
 
     // Every entry remembers the screen it showed, so going back through a sheet's opening and closing
     // lands on the right screen.
     window.addEventListener('hashchange', () => {
+      if (leaving) return
       const next = screenFor(decodeURIComponent(location.hash.slice(1)))
       if (next && next !== current) go(next)
       else if (!history.state?.lmndKitScreen) history.replaceState({ ...history.state, lmndKitScreen: current.id }, '')
