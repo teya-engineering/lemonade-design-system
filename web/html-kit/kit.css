@@ -4008,9 +4008,11 @@ body:has(> .lmnd-kit-device) {
 
 .lmnd-kit-device > .lmnd-kit-screen--task {
   --lmnd-kit-safe-top: var(--lmnd-spacing-300);
-  --lmnd-kit-task-radius: var(--lmnd-radius-900);
+  --lmnd-kit-task-radius: calc(var(--lmnd-radius-900) * var(--lmnd-kit-corner-scale, 1));
   margin-top: var(--lmnd-kit-task-top);
-  clip-path: inset(0 round var(--lmnd-kit-task-radius) var(--lmnd-kit-task-radius) 0 0);
+  border-radius: var(--lmnd-kit-task-radius) var(--lmnd-kit-task-radius) 0 0;
+  corner-shape: var(--lmnd-kit-corner-shape, round);
+  clip-path: inset(0);
 }
 
 .lmnd-kit-device[data-lmnd-kit-screens] > .lmnd-kit-screen--behind[id] {
