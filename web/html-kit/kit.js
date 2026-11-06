@@ -38,15 +38,18 @@
       return
     }
     if (link && link.getAttribute('href').length > 1) opener = link
-    // A tap on the scrim itself, outside the sheet or dialog, closes it.
-    if (overlay && event.target === overlay) close()
+    // A tap on the scrim itself, outside the sheet or dialog, closes it, unless the scrim has
+    // data-lmnd-kit-modal: an acknowledgement sheet closes only through its own action (LDS-SHEET-CHROME).
+    if (overlay && event.target === overlay) {
+      if (!overlay.hasAttribute('data-lmnd-kit-modal')) close()
+    }
     // A label or button with data-lmnd-kit-close does its own job first — a label picks its option — and
     // then closes the overlay it sits in. Without script the option is still picked and the overlay stays.
     else if (overlay && event.target.closest('[data-lmnd-kit-close]')?.closest(OVERLAYS) === overlay) setTimeout(close)
   })
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') close()
+    if (event.key === 'Escape' && !openOverlay()?.hasAttribute('data-lmnd-kit-modal')) close()
   })
 
   // Opening animates in CSS. Closing, whichever way it happens — Esc, the scrim, a link, the browser's back

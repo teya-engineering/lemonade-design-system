@@ -9,8 +9,26 @@
 position slightly wrong, and every sheet gets them wrong differently. `Back` on a sheet promises a
 screen underneath that the gesture does not go to.
 
-**Exceptions.** A sheet that is genuinely a step inside a sheet-hosted flow may carry `Back` to reach
-the previous step, as long as the flow's root still closes with `Close`.
+**Exceptions.**
+
+- A sheet that is genuinely a step inside a sheet-hosted flow may carry `Back` to reach the previous
+  step, as long as the flow's root still closes with `Close`.
+- **Acknowledgement sheets.** A sheet may have no `Close` when it tells the user something that makes the
+  next step fail if they miss it, and it needs them to confirm they understood it. Example: the courier
+  won't hand over a replacement unless the old card machine is boxed up. Such a sheet:
+  - opens by itself straight after the action it explains, never from a link;
+  - has one checkbox that states what the user understood, in their own words ("I understand I need
+    to…"), not a generic "I've read and understood";
+  - has one action, Primary · Solid, which stays disabled until the box is ticked and is the only way
+    out;
+  - has no handle, and doesn't close on a scrim tap, Escape, a swipe down or system back. On Compose,
+    block the hide in `confirmValueChange`. On SwiftUI, use `.interactiveDismissDisabled()`. In the HTML kit, give its scrim
+    `data-lmnd-kit-modal`;
+  - never asks for a decision. If the user could reasonably say no, it's a dialog with two actions, not
+    an acknowledgement.
+
+  Dismissing the sheet without reading it fails silently and costs the merchant later. Making them tick
+  the box is how the screen knows the message reached them.
 
 **Example.** A sheet titled "Filter by payment method" that closes with Close.
 

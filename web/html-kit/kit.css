@@ -1743,6 +1743,11 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   padding: var(--lmnd-spacing-50) var(--lmnd-spacing-400) var(--lmnd-spacing-200);
 }
 
+/* A sheet with no handle or bar, such as an acknowledgement sheet, starts with its title. */
+.lmnd-kit-sheet > .lmnd-kit-sheet__title:first-child {
+  padding-top: var(--lmnd-spacing-600);
+}
+
 .lmnd-kit-sheet__intro {
   padding: 0 var(--lmnd-spacing-400) var(--lmnd-spacing-200);
   color: var(--lmnd-color-content-secondary);
