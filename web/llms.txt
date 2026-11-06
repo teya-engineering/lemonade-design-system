@@ -413,6 +413,23 @@ Always prefer a semantic token over a literal value.
 - `var(--lmnd-border-width-selected)` = 2px
 - `var(--lmnd-border-width-focus-ring)` = 2px
 
+## Opacity
+
+- `var(--lmnd-opacity-0)` = 0
+- `var(--lmnd-opacity-5)` = 0.05
+- `var(--lmnd-opacity-10)` = 0.1
+- `var(--lmnd-opacity-20)` = 0.2
+- `var(--lmnd-opacity-30)` = 0.3
+- `var(--lmnd-opacity-40)` = 0.4
+- `var(--lmnd-opacity-50)` = 0.5
+- `var(--lmnd-opacity-60)` = 0.6
+- `var(--lmnd-opacity-70)` = 0.7
+- `var(--lmnd-opacity-80)` = 0.8
+- `var(--lmnd-opacity-90)` = 0.9
+- `var(--lmnd-opacity-100)` = 1
+- `var(--lmnd-opacity-disabled)` = 0.5
+- `var(--lmnd-opacity-pressed)` = 0.8
+
 ## Text styles
 
 Apply as a class, e.g. `<p class="lmnd-text-body-medium-regular">`.
