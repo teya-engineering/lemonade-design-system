@@ -41,7 +41,7 @@ describe('kit.css', () => {
       const full = /radius-full|^50%$/.test(radius)
       const ok = radius === 'inherit' ? shape === 'inherit'
         : full ? shape === 'round'
-        : shape === 'var(--lmnd-kit-corner-shape)' && !/var\(--lmnd-(?:kit-symbol-)?radius[\w-]*\)(?! \* var\(--lmnd-kit-corner-scale\))/.test(radius)
+        : /^var\(--lmnd-kit-corner-shape(?:, round)?\)$/.test(shape ?? '') && !/var\(--lmnd-(?:kit-symbol-)?radius[\w-]*\)(?! \* var\(--lmnd-kit-corner-scale\))/.test(radius)
       return ok ? [] : [selector.trim()]
     })
     expect(unsmoothed).toEqual([])
