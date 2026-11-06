@@ -22,6 +22,7 @@
   .g-demo { display: flex; flex-direction: column; gap: var(--lmnd-spacing-300); padding: var(--lmnd-spacing-400); background: var(--lmnd-color-bg-subtle); }
   .g-demo--default { background: var(--lmnd-color-bg-default); }
   .g-demo--frame { position: relative; min-height: 420px; padding: 0; overflow: hidden; }
+  .g-demo--phone > .lmnd-kit-device { zoom: 0.8; margin: var(--lmnd-spacing-800) auto; }
   .g-code { margin: 0; padding: var(--lmnd-spacing-400); overflow: auto; max-height: 520px; font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--lmnd-color-content-secondary); white-space: pre; }
   .g-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--lmnd-spacing-200); }
   .g-swatch { display: flex; flex-direction: column; gap: var(--lmnd-spacing-100); }
@@ -55,7 +56,7 @@
   <h2 class="lmnd-text-body-xsmall-overline">Inputs</h2>
   <a href="#text-field">Text field</a><a href="#text-area">Text area</a><a href="#select-field">Select field</a><a href="#search">Search field</a><a href="#pin">Pin code</a><a href="#controls">Switch, checkbox, radio</a><a href="#box-selection">Box selection</a><a href="#segmented">Segmented control</a><a href="#tabs">Tabs</a>
   <h2 class="lmnd-text-body-xsmall-overline">Navigation and overlays</h2>
-  <a href="#top-bar">Top bar</a><a href="#tab-bar">Bottom tab bar</a><a href="#dropdown">Dropdown</a><a href="#sheet">Bottom sheet</a><a href="#dialog">Dialog</a><a href="#toast">Toast</a><a href="#tooltip">Tooltip</a>
+  <a href="#top-bar">Top bar</a><a href="#tab-bar">Bottom tab bar</a><a href="#dropdown">Dropdown</a><a href="#sheet">Bottom sheet</a><a href="#task">Task sheet</a><a href="#dialog">Dialog</a><a href="#toast">Toast</a><a href="#tooltip">Tooltip</a>
 </nav>
 
 <main class="g-main">
@@ -955,6 +956,45 @@
     <div class="lmnd-kit-sheet__actions">
       <button type="button" class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold"><span class="lmnd-button__label">Confirm</span></button>
     </div>
+  </div>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="task">
+    <h2 class="lmnd-text-heading-small">Task sheet</h2>
+    <p class="lmnd-text-body-small-regular">A task with several steps runs in a sheet over the screen it starts from (APP-SHEET-OR-PAGE). Each step is a <code>lmnd-kit-screen lmnd-kit-screen--task</code> with an <code>id</code>, in the <code>lmnd-kit-device</code> beside the other screens, with its own top bar, content and <code>lmnd-kit-actions</code>. The first step has Close; later ones have Back and Close. A link to a step's id from a screen opens the sheet, and a link from one step to another pushes inside it. Close, a button that finishes the task, and a link to a screen outside it all lower the sheet and go back to where the task started, with no step left in history: give them <code>data-lmnd-kit-close</code> and the start screen's <code>href</code>. While a step shows, kit.js keeps that screen behind it as <code>lmnd-kit-screen--behind</code>, dimmed and inert. <code>examples/task.html</code> runs a whole task.</p>
+    <div class="g-example"><div class="g-demo g-demo--frame g-demo--phone" data-demo>
+<div class="lmnd-kit-device">
+  <div class="lmnd-kit-screen lmnd-kit-screen--behind">
+    <header class="lmnd-kit-top-bar lmnd-kit-top-bar--small">
+      <div class="lmnd-kit-top-bar__bar">
+        <div class="lmnd-kit-top-bar__leading"><a href="#" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Back"><span class="lmnd-icon" data-icon="arrow-left"></span></a></div>
+        <div class="lmnd-kit-top-bar__center"><span class="lmnd-kit-top-bar__title lmnd-text-heading-xxsmall">Card machines</span></div>
+        <div class="lmnd-kit-top-bar__trailing"></div>
+      </div>
+    </header>
+  </div>
+  <div class="lmnd-kit-screen lmnd-kit-screen--task">
+    <header class="lmnd-kit-top-bar">
+      <div class="lmnd-kit-top-bar__bar">
+        <div class="lmnd-kit-top-bar__leading"><a href="#" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Back"><span class="lmnd-icon" data-icon="arrow-left"></span></a></div>
+        <div class="lmnd-kit-top-bar__center"><span class="lmnd-kit-top-bar__title lmnd-text-heading-xxsmall">What's wrong?</span></div>
+        <div class="lmnd-kit-top-bar__trailing"><a href="#" data-lmnd-kit-close class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></a></div>
+      </div>
+    </header>
+    <main class="lmnd-kit-content">
+      <div class="lmnd-kit-large-title"><h1 class="lmnd-text-heading-large">What's wrong?</h1><p class="lmnd-kit-large-title__description lmnd-text-body-small-regular">Pick the closest match</p></div>
+      <div class="lmnd-kit-card">
+        <a href="#" class="lmnd-kit-list-item">
+          <span class="lmnd-kit-list-item__row">
+            <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="card" aria-hidden="true"></span></span></span>
+            <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">It won't take cards</span></span>
+            <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+          </span>
+        </a>
+      </div>
+    </main>
   </div>
 </div>
     </div></div>
