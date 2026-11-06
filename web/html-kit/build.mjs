@@ -163,7 +163,7 @@ export async function kitPages() {
 // The token sections of web/llms.txt. The rest of that file is about the npm package — installing it,
 // JavaScript, React, and component markup that serves icons as files — and the kit does each of those
 // differently.
-const LLMS_SECTIONS = ['Colours', 'Spacing', 'Radius', 'Size', 'Border width', 'Text styles', 'Shadows']
+const LLMS_SECTIONS = ['Colours', 'Spacing', 'Radius', 'Size', 'Border width', 'Opacity', 'Text styles', 'Shadows']
 
 export async function kitLlmsTxt() {
   const source = await readFile(join(WEB, 'llms.txt'), 'utf8')
