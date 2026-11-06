@@ -10,6 +10,8 @@
   // moves into the overlay and back to what opened it.
   let opener = null
 
+  const here = (href) => location.href.split('#')[0] + href
+
   const openOverlay = () => {
     const id = decodeURIComponent(location.hash.slice(1))
     const overlay = id && document.getElementById(id)
@@ -34,7 +36,7 @@
     // or a screen, such as a sheet's Continue, so Back from that screen doesn't reopen the overlay.
     if (overlay && next && next !== overlay && overlay.contains(link) && !link.hasAttribute('data-lmnd-kit-back')) {
       event.preventDefault()
-      location.replace(link.getAttribute('href'))
+      location.replace(here(link.getAttribute('href')))
       return
     }
     if (link && link.getAttribute('href').length > 1) opener = link
@@ -375,6 +377,19 @@
       strip.scrollLeft = Math.max(0, left - (parseFloat(style.paddingLeft) || 0) - 3 * step)
     })
   }
+
+  // ---------- Links to an id, wherever the page is shown ----------
+
+  // A page shown from srcdoc, as a chat previews one, resolves "#id" against the host's address, so the link
+  // would load the host in its place. There it moves within the page instead.
+  const leavesPage = () => document.baseURI.split('#')[0] !== location.href.split('#')[0]
+
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest('a[href^="#"]')
+    if (!link || event.defaultPrevented || !leavesPage()) return
+    event.preventDefault()
+    location.assign(here(link.getAttribute('href')))
+  })
 
   const start = () => {
     route()
