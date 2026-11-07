@@ -19,7 +19,7 @@ export default {
   example: figma.swift`LemonadeUi.Link(
     text: "${quote(text)}",
     onClick: { }${iconCode ? figma.swift`,
-    icon: ${iconCode}` : ''}
+    leadingIcon: ${iconCode}` : ''}
 )`,
   id: 'link',
   metadata: { nestable: true },

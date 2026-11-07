@@ -28,6 +28,14 @@ struct LinkDisplayView: View {
                     }
                 }
 
+                sectionView(title: "With Leading Icon") {
+                    LemonadeUi.Link(
+                        text: "Agreement",
+                        onClick: { },
+                        leadingIcon: .file
+                    )
+                }
+
                 sectionView(title: "Sizes") {
                     VStack(alignment: .leading, spacing: 16) {
                         LemonadeUi.Link(
@@ -82,6 +90,13 @@ struct LinkDisplayView: View {
                             onClick: { },
                             enabled: false,
                             icon: .externalLink
+                        )
+
+                        LemonadeUi.Link(
+                            text: "Agreement",
+                            onClick: { },
+                            enabled: false,
+                            leadingIcon: .file
                         )
                     }
                 }
