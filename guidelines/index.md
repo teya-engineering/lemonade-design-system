@@ -19,7 +19,7 @@ text, dimension and shadow — say which token to reach for and when.
 | [controls.md](controls.md) | `LDS-CONTROL-CHOICE` |
 | [timeline.md](timeline.md) | `LDS-TIMELINE-END` |
 | [colour.md](colour.md) | `LDS-COLOR-SEMANTIC`, `LDS-COLOR-SURFACE`, `LDS-COLOR-ON-SURFACE`, `LDS-COLOR-INVERSE`, `LDS-COLOR-STATE` |
-| [text.md](text.md) | `LDS-TEXT-INTRO`, `LDS-TEXT-STYLE`, `LDS-TEXT-HEADING-DISPLAY` |
+| [text.md](text.md) | `LDS-TEXT-INTRO`, `LDS-TEXT-STYLE`, `LDS-TEXT-TYPEFACE`, `LDS-TEXT-HEADING-DISPLAY` |
 | [dimension.md](dimension.md) | `LDS-DIMENSION-SCALE`, `LDS-DIMENSION-EDGE`, `LDS-DIMENSION-GAPS`, `LDS-DIMENSION-RADIUS` |
 | [shadow.md](shadow.md) | `LDS-SHADOW-LEVEL`, `LDS-SHADOW-NOT-A-BORDER` |
 
