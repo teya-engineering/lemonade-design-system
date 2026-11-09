@@ -4024,6 +4024,7 @@ body:has(> .lmnd-kit-device) {
   border-radius: var(--lmnd-kit-task-radius) var(--lmnd-kit-task-radius) 0 0;
   corner-shape: var(--lmnd-kit-corner-shape, round);
   clip-path: inset(0);
+  overflow-x: hidden;
   transform-origin: 50% 0;
   transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1);
 }
@@ -4052,17 +4053,25 @@ body:has(> .lmnd-kit-device) {
 .lmnd-kit-device[data-lmnd-kit-task="open"] > .lmnd-kit-screen--behind.lmnd-kit-screen--push-out { animation: lmnd-kit-task-recede 0.4s cubic-bezier(0.2, 0, 0, 1) both; }
 .lmnd-kit-device[data-lmnd-kit-task="close"] > .lmnd-kit-screen--task:is(.lmnd-kit-screen--pop-out, .lmnd-kit-screen--push-out) { z-index: 3; animation: lmnd-kit-sheet-out 0.32s cubic-bezier(0.3, 0, 1, 1) both; }
 .lmnd-kit-device[data-lmnd-kit-task="close"] > .lmnd-kit-screen:not(.lmnd-kit-screen--task):is(.lmnd-kit-screen--pop-in, .lmnd-kit-screen--push-in) { animation: lmnd-kit-task-return 0.36s cubic-bezier(0.2, 0, 0, 1) both; }
-.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--push-in { animation-name: lmnd-kit-task-push-in; }
-.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--push-out { animation-name: lmnd-kit-task-push-out; }
-.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--pop-in { animation-name: lmnd-kit-task-pop-in; }
-.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--pop-out { animation-name: lmnd-kit-task-pop-out; }
+/* Between steps the sheet stays put, so its corners do too: only a step's content slides. The step coming in
+   is revealed from its leading edge as its content slides with it, and one going back is hidden the same
+   way. */
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--push-in { animation-name: lmnd-kit-task-reveal; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--pop-out { animation-name: lmnd-kit-task-hide; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > :is(.lmnd-kit-screen--push-out, .lmnd-kit-screen--pop-in) { animation-name: none; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--push-in > * { animation: lmnd-kit-task-content-in 0.3s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--push-out > * { animation: lmnd-kit-task-content-under 0.3s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--pop-in > * { animation: lmnd-kit-task-content-over 0.3s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--pop-out > * { animation: lmnd-kit-task-content-out 0.3s cubic-bezier(0.2, 0, 0, 1) both; }
 
 @keyframes lmnd-kit-task-recede { from { filter: none; } }
 @keyframes lmnd-kit-task-return { from { filter: brightness(0.68); } }
-@keyframes lmnd-kit-task-push-in { from { transform: translateX(100%); clip-path: inset(0 100% 0 0 round 0 var(--lmnd-kit-task-radius) 0 0); } }
-@keyframes lmnd-kit-task-push-out { to { transform: translateX(-30%); clip-path: inset(0 0 0 30% round var(--lmnd-kit-task-radius) var(--lmnd-kit-task-radius) 0 0); } }
-@keyframes lmnd-kit-task-pop-in { from { transform: translateX(-30%); clip-path: inset(0 0 0 30% round var(--lmnd-kit-task-radius) var(--lmnd-kit-task-radius) 0 0); } }
-@keyframes lmnd-kit-task-pop-out { to { transform: translateX(100%); clip-path: inset(0 100% 0 0 round 0 var(--lmnd-kit-task-radius) 0 0); } }
+@keyframes lmnd-kit-task-reveal { from { clip-path: inset(0 0 0 100%); } }
+@keyframes lmnd-kit-task-hide { to { clip-path: inset(0 0 0 100%); } }
+@keyframes lmnd-kit-task-content-in { from { transform: translateX(100%); } }
+@keyframes lmnd-kit-task-content-under { to { transform: translateX(-30%); } }
+@keyframes lmnd-kit-task-content-over { from { transform: translateX(-30%); } }
+@keyframes lmnd-kit-task-content-out { to { transform: translateX(100%); } }
 
 /* ---------- Overlays opening and closing ---------- */
 
