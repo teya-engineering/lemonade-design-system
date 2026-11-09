@@ -28,6 +28,7 @@
   }
 
   document.addEventListener('click', (event) => {
+    if (event.defaultPrevented) return
     const link = event.target.closest('a[href^="#"]')
     const overlay = openOverlay()
     const next = link && link.getAttribute('href').length > 1 && document.getElementById(decodeURIComponent(link.getAttribute('href').slice(1)))
@@ -175,10 +176,9 @@
 
   // Leaving a task goes back through history to the screen it started from, past every step and any sheet
   // opened over one, so Back there doesn't reopen them. A link to another screen then opens that one from
-  // there. A page opened on a step has nothing to go back through, so it replaces the step instead.
+  // there.
   const leaveTask = (then) => {
     after = then && then !== behind ? then.id : null
-    if (!stack.includes(behind.id)) return location.replace(here(`#${behind.id}`))
     leaving = behind.id
     history.back()
   }
@@ -196,7 +196,13 @@
       setBehind(screens.find((screen) => !isStep(screen)))
     }
     show(first, 'switch')
-    history.replaceState({ lmndKitScreen: first.id }, '')
+    // A page opened on a step gets an entry for the screen behind it, so leaving the task goes back to it
+    // as it would had the task started there.
+    if (behind) {
+      stack.unshift(behind.id)
+      history.replaceState({ lmndKitScreen: behind.id }, '', here(`#${behind.id}`))
+      history.pushState({ lmndKitScreen: first.id }, '', here(`#${first.id}`))
+    } else history.replaceState({ lmndKitScreen: first.id }, '')
 
     document.addEventListener('click', (event) => {
       const link = event.target.closest('a[href]')
@@ -208,11 +214,13 @@
         history.back()
         return
       }
-      // In a task, Close (data-lmnd-kit-close) and a link to a screen outside it leave the task.
-      if (!isStep(current) || !current.contains(link) || !link.getAttribute('href').startsWith('#')) return
+      // In a task, Close (data-lmnd-kit-close) and a link to a screen outside it leave the task, from the step
+      // or from an overlay over it. In an overlay, data-lmnd-kit-close closes only the overlay.
+      const inOverlay = !!openOverlay()?.contains(link)
+      if (!isStep(current) || !(current.contains(link) || inOverlay) || !link.getAttribute('href').startsWith('#')) return
       const target = screenFor(decodeURIComponent(link.getAttribute('href').slice(1)))
       const outside = target && !isStep(target) ? target : null
-      if (outside || link.hasAttribute('data-lmnd-kit-close')) {
+      if (outside || (!inOverlay && link.hasAttribute('data-lmnd-kit-close'))) {
         event.preventDefault()
         leaveTask(outside)
       }
