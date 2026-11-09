@@ -9,6 +9,7 @@
   // Opened by a link to their id, as without script; this adds Esc, a tap on the scrim, and focus that
   // moves into the overlay and back to what opened it.
   let opener = null
+  let leavingModal = false
 
   const openOverlay = () => {
     const id = decodeURIComponent(location.hash.slice(1))
@@ -29,6 +30,8 @@
     const link = event.target.closest('a[href^="#"]')
     const overlay = openOverlay()
     const next = link && link.getAttribute('href').length > 1 && document.getElementById(decodeURIComponent(link.getAttribute('href').slice(1)))
+    // A modal overlay goes only through its own links and close controls; see the hashchange guard.
+    if (overlay?.contains(event.target) && event.target.closest('a[href^="#"], [data-lmnd-kit-close]')) leavingModal = true
     // Whatever a link in an overlay opens takes the overlay's place in history: another overlay, such as a
     // menu item opening a sheet, so closing it returns to the screen, and focus to what opened the first;
     // or a screen, such as a sheet's Continue, so Back from that screen doesn't reopen the overlay.
@@ -38,15 +41,18 @@
       return
     }
     if (link && link.getAttribute('href').length > 1) opener = link
-    // A tap on the scrim itself, outside the sheet or dialog, closes it.
-    if (overlay && event.target === overlay) close()
+    // A tap on the scrim itself, outside the sheet or dialog, closes it, unless the scrim has
+    // data-lmnd-kit-modal: an acknowledgement sheet closes only through its own action (LDS-SHEET-CHROME).
+    if (overlay && event.target === overlay) {
+      if (!overlay.hasAttribute('data-lmnd-kit-modal')) close()
+    }
     // A label or button with data-lmnd-kit-close does its own job first — a label picks its option — and
     // then closes the overlay it sits in. Without script the option is still picked and the overlay stays.
     else if (overlay && event.target.closest('[data-lmnd-kit-close]')?.closest(OVERLAYS) === overlay) setTimeout(close)
   })
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') close()
+    if (event.key === 'Escape' && !openOverlay()?.hasAttribute('data-lmnd-kit-modal')) close()
   })
 
   // Opening animates in CSS. Closing, whichever way it happens — Esc, the scrim, a link, the browser's back
@@ -62,6 +68,9 @@
 
   window.addEventListener('hashchange', () => {
     const overlay = openOverlay()
+    // Only its own action takes a modal overlay away: Back, or a hash typed over it, goes forward to it again.
+    if (shown?.hasAttribute('data-lmnd-kit-modal') && overlay !== shown && !leavingModal) return history.forward()
+    leavingModal = false
     if (overlay && opener) history.replaceState({ ...history.state, lmndKitOverlay: true }, '')
     if (shown && shown !== overlay) animateClose(shown)
     shown = overlay

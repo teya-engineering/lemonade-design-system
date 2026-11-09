@@ -958,6 +958,43 @@
   </div>
 </div>
     </div></div>
+
+    <p class="lmnd-text-body-small-regular">An acknowledgement sheet has no handle and no Close (LDS-SHEET-CHROME): it opens by itself straight after the action it explains, and its one Primary · Solid action stays disabled until the user ticks the box that says what they understood, which the page's own script does. <code>data-lmnd-kit-modal</code> on the scrim keeps a tap on it, Esc and the browser's Back from closing the sheet, so the action is the only way out. Make that action a link or give it <code>data-lmnd-kit-close</code>.</p>
+    <div class="g-example"><div class="g-demo g-demo--frame" data-demo>
+<div class="lmnd-kit-scrim" style="position: absolute" data-lmnd-kit-modal>
+  <div class="lmnd-kit-sheet lmnd-kit-sheet--subtle" role="dialog" aria-modal="true" aria-labelledby="g-ack-title">
+    <h2 class="lmnd-kit-sheet__title lmnd-text-heading-large" id="g-ack-title">Box up your old card machine</h2>
+    <p class="lmnd-kit-sheet__intro lmnd-text-body-small-regular">The courier takes it when they bring the new one</p>
+    <div class="lmnd-kit-sheet__body">
+      <div class="lmnd-kit-card">
+        <div class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+          <span class="lmnd-kit-list-item__row">
+            <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="package" aria-hidden="true"></span></span></span>
+            <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Pack the card machine</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">In the box the new one comes in</span></span>
+          </span>
+        </div>
+        <div class="lmnd-kit-list-item">
+          <span class="lmnd-kit-list-item__row">
+            <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="battery-half" aria-hidden="true"></span></span></span>
+            <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Keep the base and cable</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">The new one uses them</span></span>
+          </span>
+        </div>
+      </div>
+      <div class="lmnd-kit-card lmnd-kit-card--pad-medium">
+        <div class="lmnd-kit-card__body">
+          <label class="lmnd-kit-control">
+            <input type="checkbox" class="lmnd-kit-checkbox">
+            <span class="lmnd-kit-control__text"><span class="lmnd-text-body-medium-medium">I understand I need to box it up and keep the charging base and cable</span></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="lmnd-kit-sheet__actions">
+      <button type="button" class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold" disabled><span class="lmnd-button__label">Got it</span></button>
+    </div>
+  </div>
+</div>
+    </div></div>
   </section>
 
   <section class="g-section" id="dialog">
