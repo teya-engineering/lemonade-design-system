@@ -31,6 +31,24 @@ describe('kit.css', () => {
     expect(literal).toBeNull()
   })
 
+  // A radius without the corner scale, or without a corner-shape, draws a round corner beside smoothed ones.
+  // A kit radius variable (--lmnd-kit-*-radius) is scaled where it's declared.
+  it('smooths every corner but a full one', () => {
+    const blocks = [...withoutComments(kitCss).matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+    const unsmoothed = blocks.flatMap(([, selector, body]) => {
+      const radius = body.match(/border-radius:\s*([^;]+);/)?.[1].trim()
+      if (!radius || radius === '0') return []
+      const shape = body.match(/corner-shape:\s*([^;]+);/)?.[1].trim()
+      const full = /radius-full|^50%$/.test(radius)
+      const ok = radius === 'inherit' ? shape === 'inherit'
+        : full ? shape === 'round'
+        : /^var\(--lmnd-kit-corner-shape(?:, round)?\)$/.test(shape ?? '')
+          && /^(?:0\s*)*$/.test(radius.replace(/calc\((?:var\(--lmnd-[\w-]+\)|\d+(?:\.\d+)?px) \* var\(--lmnd-kit-corner-scale\)\)|var\(--lmnd-kit-[\w-]+-radius\)/g, '').trim())
+      return ok ? [] : [selector.trim()]
+    })
+    expect(unsmoothed).toEqual([])
+  })
+
   // LDS-TOAST-DURATION: a default set by a more specific selector than the durations overrides them all.
   it('lets a toast duration override the default', () => {
     const setters = [...withoutComments(kitCss).matchAll(/([^{}]+)\{[^}]*--lmnd-kit-toast-time:/g)].map((m) => m[1].trim())
