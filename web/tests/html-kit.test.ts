@@ -59,7 +59,7 @@ describe('a standalone page', () => {
 
   it('rejects a declared asset that is malformed or does not exist', async () => {
     const css = await kitStylesheet()
-    expect(() => inlinePage(page('<body data-kit-assets="check-circle"></body>'), css)).toThrow(/kind:name/)
+    expect(() => inlinePage(page('<body data-kit-assets="circle-check"></body>'), css)).toThrow(/kind:name/)
     expect(() => inlinePage(page('<body data-kit-assets="icon:no-such-icon"></body>'), css)).toThrow(/unknown icon "no-such-icon"/)
   })
 })

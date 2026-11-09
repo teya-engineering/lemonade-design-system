@@ -237,7 +237,7 @@ another. A page's own script:
   `LHK-TOKENS-ONLY`;
 - loads nothing: no library, no other file, so the page still travels as one file;
 - sets an icon, flag, logo or badge only to a name the page lists on its `<body>`, as `kind:name` pairs:
-  `<body data-kit-assets="icon:check-circle flag:gb">`. A standalone copy keeps only the assets the page
+  `<body data-kit-assets="icon:circle-check flag:GB">`. A standalone copy keeps only the assets the page
   names, and a name that is only in the script would come out blank.
 
 **Why.** The kit's script makes a demo feel like the app without making the page code. Some states, though,
