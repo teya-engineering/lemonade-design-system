@@ -92,6 +92,45 @@ HTML kit.
 `.font(.system(size: 15, weight: .bold))` in SwiftUI, or a `font-size` or `font-weight` on top of an
 `lmnd-text-*` class.
 
+## `LDS-TEXT-TYPEFACE` · Text is Figtree
+
+**Rule.** Every piece of text is set in Figtree, through the Lemonade typography styles (`lmnd-text-*` in
+the HTML kit); the app has no other typeface.
+
+**Why.** The type is half of what makes a screen read as Teya's. Another family, even for one heading,
+makes the screen look like another app.
+
+**Exceptions.** None.
+
+**Example.** A promotional heading that should stand out.
+
+Compose.
+
+```kotlin
+LemonadeUi.Text(
+    text = "Make Home yours",
+    textStyle = LemonadeTheme.typography.headingMedium,
+)
+```
+
+SwiftUI.
+
+```swift
+LemonadeUi.Text(
+    "Make Home yours",
+    textStyle: LemonadeTypography.shared.headingMedium
+)
+```
+
+HTML kit.
+
+```html
+<h2 class="lmnd-text-heading-medium">Make Home yours</h2>
+```
+
+**Don't.** A `fontFamily` in Compose, `.font(.custom(…))` in SwiftUI, or a `font-family` in a page's CSS,
+for any text.
+
 ## `LDS-TEXT-HEADING-DISPLAY` · Headings structure, display makes a statement
 
 **Rule of thumb.** A `heading` style titles a screen, a section or a component — it says where you
