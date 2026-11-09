@@ -22,8 +22,9 @@ screen underneath that the gesture does not go to.
   - has one action, Primary · Solid, which stays disabled until the box is ticked and is the only way
     out;
   - has no handle, and doesn't close on a scrim tap, Escape, a swipe down or system back. On Compose,
-    block the hide in `confirmValueChange`. On SwiftUI, use `.interactiveDismissDisabled()`. In the HTML kit, give its scrim
-    `data-lmnd-kit-modal`;
+    pass `gesturesEnabled = false` and `properties = LemonadeBottomSheetProperties(dismissOnBackPress =
+    false, dismissOnClickOutside = false)`. On SwiftUI, use `.interactiveDismissDisabled()` and
+    `.presentationDragIndicator(.hidden)`. In the HTML kit, give its scrim `data-lmnd-kit-modal`;
   - never asks for a decision. If the user could reasonably say no, it's a dialog with two actions, not
     an acknowledgement.
 
