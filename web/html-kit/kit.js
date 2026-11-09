@@ -9,7 +9,7 @@
   // Opened by a link to their id, as without script; this adds Esc, a tap on the scrim, and focus that
   // moves into the overlay and back to what opened it.
   let opener = null
-  let leaving = false
+  let leavingModal = false
 
   const openOverlay = () => {
     const id = decodeURIComponent(location.hash.slice(1))
@@ -31,7 +31,7 @@
     const overlay = openOverlay()
     const next = link && link.getAttribute('href').length > 1 && document.getElementById(decodeURIComponent(link.getAttribute('href').slice(1)))
     // A modal overlay goes only through its own links and close controls; see the hashchange guard.
-    if (overlay?.contains(event.target) && event.target.closest('a[href^="#"], [data-lmnd-kit-close]')) leaving = true
+    if (overlay?.contains(event.target) && event.target.closest('a[href^="#"], [data-lmnd-kit-close]')) leavingModal = true
     // Whatever a link in an overlay opens takes the overlay's place in history: another overlay, such as a
     // menu item opening a sheet, so closing it returns to the screen, and focus to what opened the first;
     // or a screen, such as a sheet's Continue, so Back from that screen doesn't reopen the overlay.
@@ -69,8 +69,8 @@
   window.addEventListener('hashchange', () => {
     const overlay = openOverlay()
     // Only its own action takes a modal overlay away: Back, or a hash typed over it, goes forward to it again.
-    if (shown?.hasAttribute('data-lmnd-kit-modal') && overlay !== shown && !leaving) return history.forward()
-    leaving = false
+    if (shown?.hasAttribute('data-lmnd-kit-modal') && overlay !== shown && !leavingModal) return history.forward()
+    leavingModal = false
     if (overlay && opener) history.replaceState({ ...history.state, lmndKitOverlay: true }, '')
     if (shown && shown !== overlay) animateClose(shown)
     shown = overlay
