@@ -959,7 +959,7 @@
 </div>
     </div></div>
 
-    <p class="lmnd-text-body-small-regular">An acknowledgement sheet has no handle and no Close (LDS-SHEET-CHROME): it opens by itself straight after the action it explains, and its one Primary · Solid action stays disabled until the user ticks the box that says what they understood, which the page's own script does. <code>data-lmnd-kit-modal</code> on the scrim keeps a tap on it and Esc from closing the sheet, so the action is the only way out.</p>
+    <p class="lmnd-text-body-small-regular">An acknowledgement sheet has no handle and no Close (LDS-SHEET-CHROME): it opens by itself straight after the action it explains, and its one Primary · Solid action stays disabled until the user ticks the box that says what they understood, which the page's own script does. <code>data-lmnd-kit-modal</code> on the scrim keeps a tap on it, Esc and the browser's Back from closing the sheet, so the action is the only way out. Make that action a link or give it <code>data-lmnd-kit-close</code>.</p>
     <div class="g-example"><div class="g-demo g-demo--frame" data-demo>
 <div class="lmnd-kit-scrim" style="position: absolute" data-lmnd-kit-modal>
   <div class="lmnd-kit-sheet lmnd-kit-sheet--subtle" role="dialog" aria-modal="true" aria-labelledby="g-ack-title">
