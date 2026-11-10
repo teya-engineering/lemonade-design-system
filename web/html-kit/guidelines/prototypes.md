@@ -184,6 +184,7 @@ where the flow starts. Overlays follow the screens, as in `LHK-FLOWS`.
 - A tab bar's links point at its tabs' screens.
 - A task with several steps keeps them in the device as `lmnd-kit-screen--task` screens, which open as a
   sheet over the screen the task starts from.
+- A form or long list in a sheet uses `lmnd-kit-sheet--full`, which reaches up to just under the status bar.
 
 ```html
 <div class="lmnd-kit-device">
