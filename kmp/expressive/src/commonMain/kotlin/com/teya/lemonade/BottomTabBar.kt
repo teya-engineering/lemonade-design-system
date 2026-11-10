@@ -3,7 +3,12 @@
 
 package com.teya.lemonade
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -29,10 +34,13 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingToolbarDefaults
 import androidx.compose.material3.HorizontalFloatingToolbar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,6 +58,9 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeShadow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 /**
@@ -78,6 +89,10 @@ public data class BottomTabBarItem(
  * The component already applies [androidx.compose.foundation.layout.navigationBarsPadding], so
  * callers do not have to pad around the system navigation bar themselves.
  *
+ * Pass a [floatingActionButton] — usually a circular [LemonadeUi.IconButton] — to place an action
+ * beside the bar. When a slot is narrower than the width a label needs, only the selected
+ * item keeps its label; the others show just their icon.
+ *
  * ## Usage
  * ```kotlin
  * var selectedIndex by remember { mutableStateOf(value = 0) }
@@ -90,6 +105,15 @@ public data class BottomTabBarItem(
  *     ),
  *     selectedIndex = selectedIndex,
  *     onItemSelected = { index -> selectedIndex = index },
+ *     floatingActionButton = {
+ *         LemonadeUi.IconButton(
+ *             icon = LemonadeIcons.Plus,
+ *             contentDescription = "Add",
+ *             onClick = { },
+ *             size = LemonadeButtonSize.Large,
+ *             shape = LemonadeIconButtonShape.Circular,
+ *         )
+ *     },
  * )
  * ```
  *
@@ -98,6 +122,7 @@ public data class BottomTabBarItem(
  *   The pill animates to this slot when it changes
  * @param onItemSelected called with the index of the item the user selected
  * @param modifier [Modifier] applied to the root container
+ * @param floatingActionButton optional action shown at the trailing end of the bar
  */
 @Composable
 public fun LemonadeUi.BottomTabBar(
@@ -105,6 +130,7 @@ public fun LemonadeUi.BottomTabBar(
     selectedIndex: Int,
     onItemSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    floatingActionButton: (@Composable () -> Unit)? = null,
 ) {
     require(
         value = selectedIndex in items.indices,
@@ -120,8 +146,34 @@ public fun LemonadeUi.BottomTabBar(
     CoreBottomTabBar(
         items = items,
         selectionPosition = selectionPosition,
+        selectedIndex = selectedIndex,
         onItemSelected = onItemSelected,
         modifier = modifier,
+        floatingActionButton = floatingActionButton,
+    )
+}
+
+/**
+ * Binary compatibility for callers compiled before [floatingActionButton] existed. Keeps the symbol
+ * that shipped, delegating to the overload above.
+ */
+@Deprecated(
+    message = "Use the overload with floatingActionButton.",
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.BottomTabBar(
+    items: List<BottomTabBarItem>,
+    selectedIndex: Int,
+    onItemSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    BottomTabBar(
+        items = items,
+        selectedIndex = selectedIndex,
+        onItemSelected = onItemSelected,
+        modifier = modifier,
+        floatingActionButton = null,
     )
 }
 
@@ -131,13 +183,14 @@ public fun LemonadeUi.BottomTabBar(
  * Drive [selectionPosition] from a gesture or transition — Android predictive back, say — to slide
  * the pill in lock-step with the finger.
  *
- * At rest, pass the selected index as a float. Rounding [selectionPosition] gives the discrete
- * selection used for the icon variant and accessibility.
+ * At rest, pass the selected index as a float. A tab is drawn as selected once the pill comes to
+ * rest on it, so a tab the pill slides past on its way to another stays unselected.
  *
  * @param items non-empty list of [BottomTabBarItem] to show
  * @param selectionPosition fractional slot index of the pill, the selected index at rest
  * @param onItemSelected called with the index of the item the user selected
  * @param modifier [Modifier] applied to the root container
+ * @param floatingActionButton optional action shown at the trailing end of the bar
  */
 @Composable
 public fun LemonadeUi.BottomTabBar(
@@ -145,12 +198,40 @@ public fun LemonadeUi.BottomTabBar(
     selectionPosition: Float,
     onItemSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    floatingActionButton: (@Composable () -> Unit)? = null,
 ) {
+    val restingIndex = rememberRestingIndex(selectionPosition = selectionPosition)
     CoreBottomTabBar(
+        items = items,
+        selectionPosition = selectionPosition,
+        selectedIndex = restingIndex.coerceIn(range = items.indices),
+        onItemSelected = onItemSelected,
+        modifier = modifier,
+        floatingActionButton = floatingActionButton,
+    )
+}
+
+/**
+ * Binary compatibility for callers compiled before [floatingActionButton] existed. Keeps the symbol
+ * that shipped, delegating to the overload above.
+ */
+@Deprecated(
+    message = "Use the overload with floatingActionButton.",
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.BottomTabBar(
+    items: List<BottomTabBarItem>,
+    selectionPosition: Float,
+    onItemSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    BottomTabBar(
         items = items,
         selectionPosition = selectionPosition,
         onItemSelected = onItemSelected,
         modifier = modifier,
+        floatingActionButton = null,
     )
 }
 
@@ -158,25 +239,39 @@ private val MaxBarWidth: Dp = 500.dp
 private val ItemHeight: Dp = 54.dp
 private const val SELECTED_ICON_SCALE = 1.12f
 private const val ICON_CROSSFADE_MS = 200
+private const val RESTING_SETTLE_MS = 32L
+private const val RESTING_POSITION_TOLERANCE = 0.001f
+
+@Composable
+private fun rememberRestingIndex(selectionPosition: Float): Int {
+    var restingIndex by remember { mutableIntStateOf(value = selectionPosition.roundToInt()) }
+    val currentPosition by rememberUpdatedState(newValue = selectionPosition)
+    LaunchedEffect(Unit) {
+        snapshotFlow { currentPosition }.collectLatest { position ->
+            val nearestIndex = position.roundToInt()
+            if (abs(x = position - nearestIndex) < RESTING_POSITION_TOLERANCE) {
+                delay(timeMillis = RESTING_SETTLE_MS)
+                restingIndex = nearestIndex
+            }
+        }
+    }
+    return restingIndex
+}
 
 @Composable
 internal fun CoreBottomTabBar(
     items: List<BottomTabBarItem>,
     selectionPosition: Float,
+    selectedIndex: Int,
     onItemSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    floatingActionButton: (@Composable () -> Unit)? = null,
 ) {
     require(
         value = items.isNotEmpty(),
         lazyMessage = { "BottomTabBar items list should not be empty." },
     )
 
-    val selectedIndex = selectionPosition
-        .roundToInt()
-        .coerceIn(
-            minimumValue = 0,
-            maximumValue = items.size - 1,
-        )
     val edgeColor = LemonadeTheme.colors.background.bgSubtle
 
     Row(
@@ -221,9 +316,11 @@ internal fun CoreBottomTabBar(
                     .height(height = ItemHeight)
                     .onSizeChanged { size -> rowWidthPx = size.width },
             ) {
+                val slotWidthPx = rowWidthPx.toFloat() / items.size
+                val slotWidthDp = with(LocalDensity.current) { slotWidthPx.toDp() }
+                val isMeasured = rowWidthPx > 0
+                val labelsOnlyWhenSelected = slotWidthDp < LemonadeTheme.sizes.size1600
                 if (rowWidthPx > 0) {
-                    val slotWidthPx = rowWidthPx.toFloat() / items.size
-                    val slotWidthDp = with(LocalDensity.current) { slotWidthPx.toDp() }
                     val clampedPosition = selectionPosition.coerceIn(
                         minimumValue = 0f,
                         maximumValue = (items.size - 1).toFloat(),
@@ -248,12 +345,17 @@ internal fun CoreBottomTabBar(
                         BottomTabBarItemContent(
                             item = item,
                             isSelected = index == selectedIndex,
+                            showLabel = isMeasured && (!labelsOnlyWhenSelected || index == selectedIndex),
                             onClick = { onItemSelected(index) },
                             modifier = Modifier.weight(weight = 1f),
                         )
                     }
                 }
             }
+        }
+        if (floatingActionButton != null) {
+            Spacer(modifier = Modifier.width(width = LemonadeTheme.spaces.spacing200))
+            floatingActionButton()
         }
     }
 }
@@ -262,6 +364,7 @@ internal fun CoreBottomTabBar(
 private fun BottomTabBarItemContent(
     item: BottomTabBarItem,
     isSelected: Boolean,
+    showLabel: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -316,14 +419,23 @@ private fun BottomTabBarItemContent(
             }
         }
 
-        Spacer(modifier = Modifier.height(height = LemonadeTheme.spaces.spacing50))
+        AnimatedVisibility(
+            visible = showLabel,
+            enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
+            exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Top),
+            label = "tabLabel",
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Spacer(modifier = Modifier.height(height = LemonadeTheme.spaces.spacing50))
 
-        LemonadeUi.Text(
-            text = item.label,
-            textStyle = LemonadeTheme.typography.bodyXSmallMedium,
-            color = LemonadeTheme.colors.content.contentPrimary,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
+                LemonadeUi.Text(
+                    text = item.label,
+                    textStyle = LemonadeTheme.typography.bodyXSmallMedium,
+                    color = LemonadeTheme.colors.content.contentPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
     }
 }

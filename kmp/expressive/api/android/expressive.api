@@ -24,8 +24,10 @@ public final class com/teya/lemonade/BottomTabBarItem {
 }
 
 public final class com/teya/lemonade/BottomTabBarKt {
-	public static final fun BottomTabBar (Lcom/teya/lemonade/LemonadeUi;Ljava/util/List;FLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
-	public static final fun BottomTabBar (Lcom/teya/lemonade/LemonadeUi;Ljava/util/List;ILkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final synthetic fun BottomTabBar (Lcom/teya/lemonade/LemonadeUi;Ljava/util/List;FLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun BottomTabBar (Lcom/teya/lemonade/LemonadeUi;Ljava/util/List;FLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final synthetic fun BottomTabBar (Lcom/teya/lemonade/LemonadeUi;Ljava/util/List;ILkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun BottomTabBar (Lcom/teya/lemonade/LemonadeUi;Ljava/util/List;ILkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/teya/lemonade/ComposableSingletons$BottomSheetKt {
@@ -37,7 +39,7 @@ public final class com/teya/lemonade/ComposableSingletons$BottomSheetKt {
 public final class com/teya/lemonade/ComposableSingletons$BottomTabBarKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$BottomTabBarKt;
 	public fun <init> ()V
-	public final fun getLambda$-692955140$Lemonade_expressive_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1737069344$Lemonade_expressive_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$OverlaySystemBarsKt {
