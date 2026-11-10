@@ -3997,6 +3997,62 @@ body:has(> .lmnd-kit-device) {
   }
 }
 
+/* ---------- A task in a sheet ---------- */
+
+/* A task runs in a sheet over the screen it started from, with its steps inside (APP-SHEET-OR-PAGE). Each
+   step is a screen with --task: a sheet just under the status bar, with the sheet's corners, which stay put
+   while its content slides. kit.js keeps the screen it started from in view behind it, dimmed and inert. */
+.lmnd-kit-device {
+  --lmnd-kit-task-top: calc(var(--lmnd-kit-safe-top) + var(--lmnd-spacing-200));
+}
+
+.lmnd-kit-device > .lmnd-kit-screen--task {
+  --lmnd-kit-safe-top: var(--lmnd-spacing-300);
+  --lmnd-kit-task-radius: calc(var(--lmnd-radius-900) * var(--lmnd-kit-corner-scale, 1));
+  margin-top: var(--lmnd-kit-task-top);
+  border-radius: var(--lmnd-kit-task-radius) var(--lmnd-kit-task-radius) 0 0;
+  corner-shape: var(--lmnd-kit-corner-shape, round);
+  clip-path: inset(0);
+  overflow-x: hidden;
+}
+
+.lmnd-kit-device[data-lmnd-kit-screens] > .lmnd-kit-screen--behind[id] {
+  display: flex !important;
+}
+
+.lmnd-kit-screen--behind {
+  filter: brightness(0.68); /* literal: the scrim's 32% */
+}
+
+.lmnd-kit-device[data-lmnd-kit-task="open"] > .lmnd-kit-screen--task.lmnd-kit-screen--push-in { animation: lmnd-kit-sheet-in 0.4s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-device[data-lmnd-kit-task="open"] > .lmnd-kit-screen--behind.lmnd-kit-screen--push-out { animation: lmnd-kit-task-recede 0.4s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-device[data-lmnd-kit-task="close"] > .lmnd-kit-screen--task:is(.lmnd-kit-screen--pop-out, .lmnd-kit-screen--push-out) { z-index: 3; animation: lmnd-kit-sheet-out 0.32s cubic-bezier(0.3, 0, 1, 1) both; }
+.lmnd-kit-device[data-lmnd-kit-task="close"] > .lmnd-kit-screen:not(.lmnd-kit-screen--task):is(.lmnd-kit-screen--pop-in, .lmnd-kit-screen--push-in) { animation: lmnd-kit-task-return 0.36s cubic-bezier(0.2, 0, 0, 1) both; }
+/* Between steps the sheet stays put, so its corners do too: only a step's content slides. The step coming in
+   is revealed from its leading edge as its content slides with it, and one going back is hidden the same
+   way. */
+/* The screen behind a task has a layer of its own (its filter), so between steps the step leaving keeps one
+   above it, under the step coming in, wherever the screens sit in the page. */
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--push-out { z-index: 1; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--current { z-index: 2; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--pop-out { z-index: 3; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--push-in { animation-name: lmnd-kit-task-reveal; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--pop-out { animation-name: lmnd-kit-task-hide; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > :is(.lmnd-kit-screen--push-out, .lmnd-kit-screen--pop-in) { animation-name: none; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--push-in > * { animation: lmnd-kit-task-content-in 0.3s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--push-out > * { animation: lmnd-kit-task-content-under 0.3s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--pop-in > * { animation: lmnd-kit-task-content-over 0.3s cubic-bezier(0.2, 0, 0, 1) both; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--pop-out > * { animation: lmnd-kit-task-content-out 0.3s cubic-bezier(0.2, 0, 0, 1) both; }
+
+@keyframes lmnd-kit-task-recede { from { filter: none; } }
+@keyframes lmnd-kit-task-return { from { filter: brightness(0.68); } }
+@keyframes lmnd-kit-task-reveal { from { clip-path: inset(0 0 0 100%); } }
+@keyframes lmnd-kit-task-hide { to { clip-path: inset(0 0 0 100%); } }
+@keyframes lmnd-kit-task-content-in { from { transform: translateX(100%); } }
+@keyframes lmnd-kit-task-content-under { to { transform: translateX(-30%); } }
+@keyframes lmnd-kit-task-content-over { from { transform: translateX(-30%); } }
+@keyframes lmnd-kit-task-content-out { to { transform: translateX(100%); } }
+
 /* ---------- Overlays opening and closing ---------- */
 
 /* Opening needs no script: an overlay animates in as its link targets it. Closing does: kit.js keeps the
