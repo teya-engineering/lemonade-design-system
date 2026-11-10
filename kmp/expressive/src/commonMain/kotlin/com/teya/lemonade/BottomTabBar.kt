@@ -195,6 +195,10 @@ public fun LemonadeUi.BottomTabBar(
     modifier: Modifier = Modifier,
     floatingActionButton: (@Composable () -> Unit)? = null,
 ) {
+    require(
+        value = items.isNotEmpty(),
+        lazyMessage = { "BottomTabBar items list should not be empty." },
+    )
     val restingIndex = rememberRestingIndex(selectionPosition = selectionPosition)
     val currentPosition by rememberUpdatedState(newValue = selectionPosition)
     CoreBottomTabBar(
