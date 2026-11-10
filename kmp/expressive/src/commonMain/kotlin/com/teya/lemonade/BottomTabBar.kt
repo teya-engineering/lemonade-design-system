@@ -308,7 +308,8 @@ internal fun CoreBottomTabBar(
         ) {
             // Plain Box (not BoxWithConstraints): HorizontalFloatingToolbar queries the intrinsic widths
             // of its content, and a SubcomposeLayout throws on intrinsic queries. The row width is
-            // captured via onSizeChanged so the pill can be positioned in pixels.
+            // captured via onSizeChanged so the pill can be positioned in pixels. The items compose only
+            // once it is known, so each label's AnimatedVisibility starts at its final state.
             var rowWidthPx by remember { mutableIntStateOf(0) }
             Box(
                 modifier = Modifier
@@ -340,15 +341,17 @@ internal fun CoreBottomTabBar(
                     )
                 }
 
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    items.forEachIndexed { index, item ->
-                        BottomTabBarItemContent(
-                            item = item,
-                            isSelected = index == selectedIndex,
-                            showLabel = isMeasured && (!labelsOnlyWhenSelected || index == selectedIndex),
-                            onClick = { onItemSelected(index) },
-                            modifier = Modifier.weight(weight = 1f),
-                        )
+                if (isMeasured) {
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        items.forEachIndexed { index, item ->
+                            BottomTabBarItemContent(
+                                item = item,
+                                isSelected = index == selectedIndex,
+                                showLabel = !labelsOnlyWhenSelected || index == selectedIndex,
+                                onClick = { onItemSelected(index) },
+                                modifier = Modifier.weight(weight = 1f),
+                            )
+                        }
                     }
                 }
             }
