@@ -15,6 +15,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonType
 import com.teya.lemonade.core.LemonadeIconButtonShape
@@ -69,6 +70,7 @@ private val twoTabItems: List<BottomTabBarItem> = listOf(
 internal fun BottomTabBarDisplay() {
     SampleScreenDisplayLazyColumn(
         title = "BottomTabBar",
+        contentHorizontalPadding = 0.dp,
     ) {
         bottomTabBarSection(
             key = "default",
@@ -121,6 +123,8 @@ private fun LazyListScope.bottomTabBarSection(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
             modifier = Modifier.padding(
+                start = LemonadeTheme.spaces.spacing400,
+                end = LemonadeTheme.spaces.spacing400,
                 top = if (isFirst) {
                     LemonadeTheme.spaces.spacing400
                 } else {
