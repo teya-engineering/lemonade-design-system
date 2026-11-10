@@ -4056,6 +4056,11 @@ body:has(> .lmnd-kit-device) {
 /* Between steps the sheet stays put, so its corners do too: only a step's content slides. The step coming in
    is revealed from its leading edge as its content slides with it, and one going back is hidden the same
    way. */
+/* The screen behind a task has a layer of its own (its filter), so between steps the step leaving keeps one
+   above it, under the step coming in, wherever the screens sit in the page. */
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--push-out { z-index: 1; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--current { z-index: 2; }
+.lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--pop-out { z-index: 3; }
 .lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--push-in { animation-name: lmnd-kit-task-reveal; }
 .lmnd-kit-device[data-lmnd-kit-task="step"] > .lmnd-kit-screen--pop-out { animation-name: lmnd-kit-task-hide; }
 .lmnd-kit-device[data-lmnd-kit-task="step"] > :is(.lmnd-kit-screen--push-out, .lmnd-kit-screen--pop-in) { animation-name: none; }
