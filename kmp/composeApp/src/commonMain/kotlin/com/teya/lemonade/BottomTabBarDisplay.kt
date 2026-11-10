@@ -102,7 +102,7 @@ internal fun BottomTabBarDisplay() {
             title = "Five items with an action",
             items = fiveTabItems,
             initialIndex = 1,
-            withAction = true,
+            floatingActionButton = { SampleActionButton() },
         )
         item(key = "bottom-spacer") {
             Spacer(modifier = Modifier.height(height = LemonadeTheme.spaces.spacing500))
@@ -116,7 +116,7 @@ private fun LazyListScope.bottomTabBarSection(
     items: List<BottomTabBarItem>,
     initialIndex: Int,
     isFirst: Boolean = false,
-    withAction: Boolean = false,
+    floatingActionButton: (@Composable () -> Unit)? = null,
 ) {
     item(key = "$key-title") {
         LemonadeUi.Text(
@@ -137,31 +137,30 @@ private fun LazyListScope.bottomTabBarSection(
     item(key = key) {
         var selectedIndex by rememberSaveable { mutableIntStateOf(value = initialIndex) }
 
-        var actionOpen by rememberSaveable { mutableStateOf(value = false) }
-        val actionRotation by animateFloatAsState(targetValue = if (actionOpen) 45f else 0f)
-
         LemonadeUi.BottomTabBar(
             items = items,
             selectedIndex = selectedIndex,
             onItemSelected = { index -> selectedIndex = index },
-            floatingActionButton = if (withAction) {
-                {
-                    LemonadeUi.IconButton(
-                        icon = LemonadeIcons.Plus,
-                        contentDescription = "Add",
-                        onClick = { actionOpen = !actionOpen },
-                        type = LemonadeButtonType.Ghost,
-                        size = LemonadeButtonSize.Large,
-                        shape = LemonadeIconButtonShape.Circular,
-                        modifier = Modifier
-                            .lemonadeShadow(shadow = LemonadeShadow.Xlarge, shape = CircleShape)
-                            .background(color = LemonadeTheme.colors.background.bgDefault, shape = CircleShape)
-                            .rotate(degrees = actionRotation),
-                    )
-                }
-            } else {
-                null
-            },
+            floatingActionButton = floatingActionButton,
         )
     }
+}
+
+@Composable
+private fun SampleActionButton() {
+    var actionOpen by rememberSaveable { mutableStateOf(value = false) }
+    val actionRotation by animateFloatAsState(targetValue = if (actionOpen) 45f else 0f)
+
+    LemonadeUi.IconButton(
+        icon = LemonadeIcons.Plus,
+        contentDescription = "Add",
+        onClick = { actionOpen = !actionOpen },
+        type = LemonadeButtonType.Ghost,
+        size = LemonadeButtonSize.Large,
+        shape = LemonadeIconButtonShape.Circular,
+        modifier = Modifier
+            .lemonadeShadow(shadow = LemonadeShadow.Xlarge, shape = CircleShape)
+            .background(color = LemonadeTheme.colors.background.bgDefault, shape = CircleShape)
+            .rotate(degrees = actionRotation),
+    )
 }

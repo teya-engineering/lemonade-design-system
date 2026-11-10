@@ -138,14 +138,14 @@ public fun LemonadeUi.BottomTabBar(
             "Selected index ($selectedIndex) is out of bounds for items list of size ${items.size}."
         },
     )
-    val selectionPosition by animateFloatAsState(
+    val selectionPosition = animateFloatAsState(
         targetValue = selectedIndex.toFloat(),
         animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
         label = "bottomTabBarSelection",
     )
     CoreBottomTabBar(
         items = items,
-        selectionPosition = selectionPosition,
+        selectionPosition = { selectionPosition.value },
         selectedIndex = selectedIndex,
         onItemSelected = onItemSelected,
         modifier = modifier,
@@ -153,10 +153,6 @@ public fun LemonadeUi.BottomTabBar(
     )
 }
 
-/**
- * Binary compatibility for callers compiled before [floatingActionButton] existed. Keeps the symbol
- * that shipped, delegating to the overload above.
- */
 @Deprecated(
     message = "Use the overload with floatingActionButton.",
     level = DeprecationLevel.HIDDEN,
@@ -173,7 +169,6 @@ public fun LemonadeUi.BottomTabBar(
         selectedIndex = selectedIndex,
         onItemSelected = onItemSelected,
         modifier = modifier,
-        floatingActionButton = null,
     )
 }
 
@@ -201,9 +196,10 @@ public fun LemonadeUi.BottomTabBar(
     floatingActionButton: (@Composable () -> Unit)? = null,
 ) {
     val restingIndex = rememberRestingIndex(selectionPosition = selectionPosition)
+    val currentPosition by rememberUpdatedState(newValue = selectionPosition)
     CoreBottomTabBar(
         items = items,
-        selectionPosition = selectionPosition,
+        selectionPosition = { currentPosition },
         selectedIndex = restingIndex.coerceIn(range = items.indices),
         onItemSelected = onItemSelected,
         modifier = modifier,
@@ -211,10 +207,6 @@ public fun LemonadeUi.BottomTabBar(
     )
 }
 
-/**
- * Binary compatibility for callers compiled before [floatingActionButton] existed. Keeps the symbol
- * that shipped, delegating to the overload above.
- */
 @Deprecated(
     message = "Use the overload with floatingActionButton.",
     level = DeprecationLevel.HIDDEN,
@@ -231,7 +223,6 @@ public fun LemonadeUi.BottomTabBar(
         selectionPosition = selectionPosition,
         onItemSelected = onItemSelected,
         modifier = modifier,
-        floatingActionButton = null,
     )
 }
 
@@ -261,7 +252,7 @@ private fun rememberRestingIndex(selectionPosition: Float): Int {
 @Composable
 internal fun CoreBottomTabBar(
     items: List<BottomTabBarItem>,
-    selectionPosition: Float,
+    selectionPosition: () -> Float,
     selectedIndex: Int,
     onItemSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -317,26 +308,26 @@ internal fun CoreBottomTabBar(
                     .height(height = ItemHeight)
                     .onSizeChanged { size -> rowWidthPx = size.width },
             ) {
-                val density = LocalDensity.current
-                val isMeasured = rowWidthPx > 0
-                val rowWidth = rowWidthPx.toFloat()
-                val overlapPx = with(density) { LemonadeTheme.spaces.spacing200.toPx() }
-                // The pill is wider than a slot, so the content centres are pulled in until a pill
-                // centred on the first or last item still fits inside the row.
-                val pillWidthPx = (rowWidth / items.size + 2 * overlapPx).coerceAtMost(maximumValue = rowWidth)
-                val stepPx = if (items.size > 1) (rowWidth - pillWidthPx) / (items.size - 1) else 0f
-                val labelsOnlyWhenSelected = items.size > 1 &&
-                    with(density) { stepPx.toDp() } < LemonadeTheme.sizes.size1600
-                val clampedPosition = selectionPosition.coerceIn(
-                    minimumValue = 0f,
-                    maximumValue = (items.size - 1).toFloat(),
-                )
+                if (rowWidthPx > 0) {
+                    val density = LocalDensity.current
+                    val rowWidth = rowWidthPx.toFloat()
+                    val overlapPx = with(density) { LemonadeTheme.spaces.spacing200.toPx() }
+                    // The pill is wider than a slot, so the content centres are pulled in until a pill
+                    // centred on the first or last item still fits inside the row.
+                    val pillWidthPx = (rowWidth / items.size + 2 * overlapPx).coerceAtMost(maximumValue = rowWidth)
+                    val stepPx = if (items.size > 1) (rowWidth - pillWidthPx) / (items.size - 1) else 0f
+                    val labelsOnlyWhenSelected = with(density) { stepPx.toDp() } < LemonadeTheme.sizes.size1600
+                    val lastIndex = (items.size - 1).toFloat()
 
-                if (isMeasured) {
                     Box(
                         modifier = Modifier
-                            .offset { IntOffset(x = (stepPx * clampedPosition).roundToInt(), y = 0) }
-                            .width(width = with(density) { pillWidthPx.toDp() })
+                            .offset {
+                                val position = selectionPosition().coerceIn(
+                                    minimumValue = 0f,
+                                    maximumValue = lastIndex,
+                                )
+                                IntOffset(x = (stepPx * position).roundToInt(), y = 0)
+                            }.width(width = with(density) { pillWidthPx.toDp() })
                             .height(height = ItemHeight)
                             .clip(shape = LemonadeTheme.shapes.radiusFull)
                             .background(color = LemonadeTheme.colors.background.bgElevated),
@@ -437,17 +428,14 @@ private fun BottomTabBarItemContent(
                 exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Top),
                 label = "tabLabel",
             ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Spacer(modifier = Modifier.height(height = LemonadeTheme.spaces.spacing50))
-
-                    LemonadeUi.Text(
-                        text = item.label,
-                        textStyle = LemonadeTheme.typography.bodyXSmallMedium,
-                        color = LemonadeTheme.colors.content.contentPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
+                LemonadeUi.Text(
+                    text = item.label,
+                    textStyle = LemonadeTheme.typography.bodyXSmallMedium,
+                    color = LemonadeTheme.colors.content.contentPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(top = LemonadeTheme.spaces.spacing50),
+                )
             }
         }
     }
