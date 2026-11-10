@@ -317,41 +317,45 @@ internal fun CoreBottomTabBar(
                     .height(height = ItemHeight)
                     .onSizeChanged { size -> rowWidthPx = size.width },
             ) {
-                val slotWidthPx = rowWidthPx.toFloat() / items.size
-                val slotWidthDp = with(LocalDensity.current) { slotWidthPx.toDp() }
+                val density = LocalDensity.current
                 val isMeasured = rowWidthPx > 0
-                val labelsOnlyWhenSelected = slotWidthDp < LemonadeTheme.sizes.size1600
-                if (rowWidthPx > 0) {
-                    val clampedPosition = selectionPosition.coerceIn(
-                        minimumValue = 0f,
-                        maximumValue = (items.size - 1).toFloat(),
-                    )
+                val rowWidth = rowWidthPx.toFloat()
+                val overlapPx = with(density) { LemonadeTheme.spaces.spacing200.toPx() }
+                // The pill is wider than a slot, so the content centres are pulled in until a pill
+                // centred on the first or last item still fits inside the row.
+                val pillWidthPx = (rowWidth / items.size + 2 * overlapPx).coerceAtMost(maximumValue = rowWidth)
+                val stepPx = if (items.size > 1) (rowWidth - pillWidthPx) / (items.size - 1) else 0f
+                val labelsOnlyWhenSelected = items.size > 1 &&
+                    with(density) { stepPx.toDp() } < LemonadeTheme.sizes.size1600
+                val clampedPosition = selectionPosition.coerceIn(
+                    minimumValue = 0f,
+                    maximumValue = (items.size - 1).toFloat(),
+                )
 
+                if (isMeasured) {
                     Box(
                         modifier = Modifier
-                            .offset {
-                                IntOffset(
-                                    x = (slotWidthPx * clampedPosition).roundToInt(),
-                                    y = 0,
-                                )
-                            }.width(width = slotWidthDp)
+                            .offset { IntOffset(x = (stepPx * clampedPosition).roundToInt(), y = 0) }
+                            .width(width = with(density) { pillWidthPx.toDp() })
                             .height(height = ItemHeight)
                             .clip(shape = LemonadeTheme.shapes.radiusFull)
                             .background(color = LemonadeTheme.colors.background.bgElevated),
                     )
-                }
 
-                if (isMeasured) {
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        items.forEachIndexed { index, item ->
-                            BottomTabBarItemContent(
-                                item = item,
-                                isSelected = index == selectedIndex,
-                                showLabel = !labelsOnlyWhenSelected || index == selectedIndex,
-                                onClick = { onItemSelected(index) },
-                                modifier = Modifier.weight(weight = 1f),
-                            )
-                        }
+                    items.forEachIndexed { index, item ->
+                        val centerPx = pillWidthPx / 2f + stepPx * index
+                        val startPx = if (index == 0) 0f else centerPx - stepPx / 2f
+                        val endPx = if (index == items.lastIndex) rowWidth else centerPx + stepPx / 2f
+                        BottomTabBarItemContent(
+                            item = item,
+                            isSelected = index == selectedIndex,
+                            showLabel = !labelsOnlyWhenSelected || index == selectedIndex,
+                            contentOffsetPx = centerPx - (startPx + endPx) / 2f,
+                            onClick = { onItemSelected(index) },
+                            modifier = Modifier
+                                .offset { IntOffset(x = startPx.roundToInt(), y = 0) }
+                                .width(width = with(density) { (endPx - startPx).toDp() }),
+                        )
                     }
                 }
             }
@@ -368,6 +372,7 @@ private fun BottomTabBarItemContent(
     item: BottomTabBarItem,
     isSelected: Boolean,
     showLabel: Boolean,
+    contentOffsetPx: Float,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -387,57 +392,62 @@ private fun BottomTabBarItemContent(
             ).semantics { selected = isSelected }
             .padding(vertical = LemonadeTheme.spaces.spacing200),
     ) {
-        val displayedIcon = if (isSelected) {
-            item.selectedIcon
-                ?: item.icon
-        } else {
-            item.icon
-        }
-        val iconScale by animateFloatAsState(
-            targetValue = if (isSelected) SELECTED_ICON_SCALE else 1f,
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioMediumBouncy,
-                stiffness = Spring.StiffnessMediumLow,
-            ),
-            label = "tabIconScale",
-        )
-
-        Box(
-            modifier = Modifier.graphicsLayer {
-                scaleX = iconScale
-                scaleY = iconScale
-            },
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.offset { IntOffset(x = contentOffsetPx.roundToInt(), y = 0) },
         ) {
-            Crossfade(
-                targetState = displayedIcon,
-                animationSpec = tween(durationMillis = ICON_CROSSFADE_MS),
-                label = "tabIcon",
-            ) { icon ->
-                LemonadeUi.Icon(
-                    icon = icon,
-                    contentDescription = null,
-                    size = LemonadeAssetSize.Medium,
-                    tint = LemonadeTheme.colors.content.contentPrimary,
-                )
+            val displayedIcon = if (isSelected) {
+                item.selectedIcon
+                    ?: item.icon
+            } else {
+                item.icon
             }
-        }
+            val iconScale by animateFloatAsState(
+                targetValue = if (isSelected) SELECTED_ICON_SCALE else 1f,
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessMediumLow,
+                ),
+                label = "tabIconScale",
+            )
 
-        AnimatedVisibility(
-            visible = showLabel,
-            enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
-            exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Top),
-            label = "tabLabel",
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Spacer(modifier = Modifier.height(height = LemonadeTheme.spaces.spacing50))
+            Box(
+                modifier = Modifier.graphicsLayer {
+                    scaleX = iconScale
+                    scaleY = iconScale
+                },
+            ) {
+                Crossfade(
+                    targetState = displayedIcon,
+                    animationSpec = tween(durationMillis = ICON_CROSSFADE_MS),
+                    label = "tabIcon",
+                ) { icon ->
+                    LemonadeUi.Icon(
+                        icon = icon,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                        tint = LemonadeTheme.colors.content.contentPrimary,
+                    )
+                }
+            }
 
-                LemonadeUi.Text(
-                    text = item.label,
-                    textStyle = LemonadeTheme.typography.bodyXSmallMedium,
-                    color = LemonadeTheme.colors.content.contentPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+            AnimatedVisibility(
+                visible = showLabel,
+                enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
+                exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Top),
+                label = "tabLabel",
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Spacer(modifier = Modifier.height(height = LemonadeTheme.spaces.spacing50))
+
+                    LemonadeUi.Text(
+                        text = item.label,
+                        textStyle = LemonadeTheme.typography.bodyXSmallMedium,
+                        color = LemonadeTheme.colors.content.contentPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
             }
         }
     }
