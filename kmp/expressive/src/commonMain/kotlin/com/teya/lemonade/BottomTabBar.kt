@@ -15,6 +15,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,11 +24,13 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -49,8 +52,9 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -122,7 +126,8 @@ public data class BottomTabBarItem(
  *   The pill animates to this slot when it changes
  * @param onItemSelected called with the index of the item the user selected
  * @param modifier [Modifier] applied to the root container
- * @param floatingActionButton optional action shown at the trailing end of the bar
+ * @param floatingActionButton optional action placed right after the bar's trailing edge. On wide
+ *   screens the bar and the action are centred together
  */
 @Composable
 public fun LemonadeUi.BottomTabBar(
@@ -185,7 +190,8 @@ public fun LemonadeUi.BottomTabBar(
  * @param selectionPosition fractional slot index of the pill, the selected index at rest
  * @param onItemSelected called with the index of the item the user selected
  * @param modifier [Modifier] applied to the root container
- * @param floatingActionButton optional action shown at the trailing end of the bar
+ * @param floatingActionButton optional action placed right after the bar's trailing edge. On wide
+ *   screens the bar and the action are centred together
  */
 @Composable
 public fun LemonadeUi.BottomTabBar(
@@ -200,10 +206,9 @@ public fun LemonadeUi.BottomTabBar(
         lazyMessage = { "BottomTabBar items list should not be empty." },
     )
     val restingIndex = rememberRestingIndex(selectionPosition = selectionPosition)
-    val currentPosition by rememberUpdatedState(newValue = selectionPosition)
     CoreBottomTabBar(
         items = items,
-        selectionPosition = { currentPosition },
+        selectionPosition = { selectionPosition },
         selectedIndex = restingIndex.coerceIn(range = items.indices),
         onItemSelected = onItemSelected,
         modifier = modifier,
@@ -322,6 +327,8 @@ internal fun CoreBottomTabBar(
                     val stepPx = if (items.size > 1) (rowWidth - pillWidthPx) / (items.size - 1) else 0f
                     val labelsOnlyWhenSelected = with(density) { stepPx.toDp() } < LemonadeTheme.sizes.size1600
                     val lastIndex = (items.size - 1).toFloat()
+                    val pillWidth = with(density) { pillWidthPx.toDp() }
+                    val stepWidth = with(density) { stepPx.toDp() }
 
                     Box(
                         modifier = Modifier
@@ -331,7 +338,7 @@ internal fun CoreBottomTabBar(
                                     maximumValue = lastIndex,
                                 )
                                 IntOffset(x = (stepPx * position).roundToInt(), y = 0)
-                            }.width(width = with(density) { pillWidthPx.toDp() })
+                            }.width(width = pillWidth)
                             .height(height = ItemHeight)
                             .clip(shape = LemonadeTheme.shapes.radiusFull)
                             .background(color = LemonadeTheme.colors.background.bgElevated),
@@ -346,6 +353,12 @@ internal fun CoreBottomTabBar(
                             isSelected = index == selectedIndex,
                             showLabel = !labelsOnlyWhenSelected || index == selectedIndex,
                             contentOffsetPx = centerPx - (startPx + endPx) / 2f,
+                            contentWidth = pillWidth,
+                            labelMaxWidth = if (index == selectedIndex) {
+                                pillWidth - LemonadeTheme.spaces.spacing200 * 2
+                            } else {
+                                stepWidth
+                            },
                             onClick = { onItemSelected(index) },
                             modifier = Modifier
                                 .offset { IntOffset(x = startPx.roundToInt(), y = 0) }
@@ -368,28 +381,41 @@ private fun BottomTabBarItemContent(
     isSelected: Boolean,
     showLabel: Boolean,
     contentOffsetPx: Float,
+    contentWidth: Dp,
+    labelMaxWidth: Dp,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+    // The tap area is the slot, but the ripple and the content sit on a pill-sized box centred on the
+    // item, so they line up with the selection pill even in the asymmetric first and last slots.
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = modifier
             .height(height = ItemHeight)
-            .clip(shape = LemonadeTheme.shapes.radiusFull)
             .clickable(
                 onClick = onClick,
                 role = Role.Tab,
                 interactionSource = interactionSource,
-                indication = LocalEffects.current.interactionIndication,
-            ).semantics { selected = isSelected }
-            .padding(vertical = LemonadeTheme.spaces.spacing200),
+                indication = null,
+            ).clearAndSetSemantics {
+                selected = isSelected
+                contentDescription = item.label
+            },
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.offset { IntOffset(x = contentOffsetPx.roundToInt(), y = 0) },
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .offset { IntOffset(x = contentOffsetPx.roundToInt(), y = 0) }
+                .requiredWidth(width = contentWidth)
+                .fillMaxHeight()
+                .clip(shape = LemonadeTheme.shapes.radiusFull)
+                .indication(
+                    interactionSource = interactionSource,
+                    indication = LocalEffects.current.interactionIndication,
+                ).padding(vertical = LemonadeTheme.spaces.spacing200),
         ) {
             val displayedIcon = if (isSelected) {
                 item.selectedIcon
@@ -438,7 +464,9 @@ private fun BottomTabBarItemContent(
                     color = LemonadeTheme.colors.content.contentPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(top = LemonadeTheme.spaces.spacing50),
+                    modifier = Modifier
+                        .padding(top = LemonadeTheme.spaces.spacing50)
+                        .widthIn(max = labelMaxWidth),
                 )
             }
         }

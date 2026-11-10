@@ -149,7 +149,10 @@ private fun LazyListScope.bottomTabBarSection(
 @Composable
 private fun SampleActionButton() {
     var actionOpen by rememberSaveable { mutableStateOf(value = false) }
-    val actionRotation by animateFloatAsState(targetValue = if (actionOpen) 45f else 0f)
+    val actionRotation by animateFloatAsState(
+        targetValue = if (actionOpen) 45f else 0f,
+        label = "sampleActionRotation",
+    )
 
     LemonadeUi.IconButton(
         icon = LemonadeIcons.Plus,
