@@ -393,7 +393,10 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
 
         // One `.opacity` on the whole SwiftUI.Button dims fill and content as a group; dimming
         // them separately would stack and darken the content twice.
-        let pressedOpacity = isPressed ? LemonadeTheme.opacity.state.opacityPressed : LemonadeTheme.opacity.base.opacity100
+        let usesGlass = lemonadeButtonUsesGlass(type: type)
+        let pressedOpacity = isPressed && !usesGlass
+            ? LemonadeTheme.opacity.state.opacityPressed
+            : LemonadeTheme.opacity.base.opacity100
         let dimmed = !enabled || loading
         let dimmedOpacity = dimmed ? LemonadeTheme.opacity.state.opacityDisabled : 1.0
         // Secondary Solid's opaque inverse fill dims to `opacity40` when dimmed, not
@@ -436,7 +439,14 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
             }
             .frame(height: size.contentData.requiredHeight)
             .frame(minWidth: size.contentData.minWidth)
-            .background(buttonShape.fill(colors.backgroundColor.opacity(disabledFillScale)))
+            .modifier(
+                LemonadeButtonBackgroundModifier(
+                    shape: buttonShape,
+                    fill: colors.backgroundColor.opacity(disabledFillScale),
+                    usesGlass: usesGlass,
+                    interactive: !dimmed
+                )
+            )
             .contentShape(buttonShape)
         }
         .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
@@ -444,6 +454,36 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
         .animation(.easeInOut(duration: 0.1), value: isPressed)
         .disabled(!enabled || loading)
         .fixedSize(horizontal: false, vertical: true)
+    }
+}
+
+// MARK: - Background
+
+/// Subtle buttons keep their flat fill; ghost buttons have no fill for glass to tint.
+private func lemonadeButtonUsesGlass(type: LemonadeButtonType) -> Bool {
+    guard type == .solid else { return false }
+    #if compiler(>=6.2)
+    if #available(iOS 26.0, macOS 26.0, *) { return true }
+    #endif
+    return false
+}
+
+private struct LemonadeButtonBackgroundModifier: ViewModifier {
+    let shape: RoundedRectangle
+    let fill: Color
+    let usesGlass: Bool
+    let interactive: Bool
+
+    func body(content: Content) -> some View {
+        #if compiler(>=6.2)
+        if #available(iOS 26.0, macOS 26.0, *), usesGlass {
+            content.glassEffect(.regular.tint(fill).interactive(interactive), in: shape)
+        } else {
+            content.background(shape.fill(fill))
+        }
+        #else
+        content.background(shape.fill(fill))
+        #endif
     }
 }
 
