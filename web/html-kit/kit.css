@@ -97,8 +97,13 @@ h6 {
   padding-bottom: calc(var(--lmnd-spacing-400) + var(--lmnd-kit-safe-bottom));
 }
 
-.lmnd-kit-content > .lmnd-kit-section + *,
-.lmnd-kit-content > * + .lmnd-kit-section {
+/* Only what shows counts: a section a page hides with `hidden` neither takes nor gives the extra gap. The
+   block after a section looks past up to three hidden siblings for it. */
+.lmnd-kit-content > .lmnd-kit-section:not([hidden]) + :not([hidden]),
+.lmnd-kit-content > .lmnd-kit-section:not([hidden]) + [hidden] + :not([hidden]),
+.lmnd-kit-content > .lmnd-kit-section:not([hidden]) + [hidden] + [hidden] + :not([hidden]),
+.lmnd-kit-content > .lmnd-kit-section:not([hidden]) + [hidden] + [hidden] + [hidden] + :not([hidden]),
+.lmnd-kit-content > :not([hidden]) ~ .lmnd-kit-section {
   margin-top: var(--lmnd-spacing-400);
 }
 
