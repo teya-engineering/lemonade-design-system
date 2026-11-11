@@ -171,7 +171,7 @@ auto-complete lists the whole catalogue.
 | `lemonade-ui` | Actions | Button, IconButton, Link, Chip |
 | `lemonade-ui` | Form Controls | TextField, TextFieldWithSelector, TextArea, SearchField, SelectField, PinCode, Switch, Checkbox, RadioButton, SegmentedControl, BoxSelection |
 | `lemonade-ui` | Display | Text, Icon, Asset, Badge, Tag, Card, Tile, SymbolContainer, HorizontalDivider, VerticalDivider, BrandLogo, CountryFlag |
-| `lemonade-ui` | Lists & Navigation | ListItem, ContentListItem, ActionListItem, ResourceListItem, SelectListItem, SwipeActionRow, SwipeActionGroup, Tabs, TopBar (Android/iOS only), HistoryTimeline |
+| `lemonade-ui` | Lists & Navigation | ListItem, ContentListItem, ActionListItem, ResourceListItem, SelectListItem, SwipeActionRow, SwipeActionGroup, Tabs, TopBar (Android/iOS only), HistoryTimeline, ProgressStepper |
 | `lemonade-ui` | Feedback | Toast, Tooltip, Notice, Spinner, LineSkeleton, BlockSkeleton, CircleSkeleton |
 | `lemonade-expressive` | Overlays & Navigation | BottomSheet, Dialog, Dropdown, DropdownItem, BottomTabBar, TimePicker, TimeInput, TimePickerDialog |
 | `lemonade-calendar` | Date | DatePicker, DateRangePicker, InlineCalendar |
