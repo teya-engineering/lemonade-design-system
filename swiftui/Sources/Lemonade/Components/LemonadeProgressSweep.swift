@@ -36,7 +36,7 @@ struct LemonadeProgressSweep<Content: View>: View {
         return max(0, 1 - (time - fadeStart) / (fillDuration - fadeStart))
     }
 
-    /// `cubic-bezier(0.42, 0, 0.58, 1)`, the curve SwiftUI's `.easeInOut` and Compose's `EaseInOut` use.
+    /// `cubic-bezier(0.42, 0, 0.58, 1)`, solved for `x` by bisection.
     private static func easeInOut(_ x: Double) -> CGFloat {
         var low = 0.0
         var high = 1.0
