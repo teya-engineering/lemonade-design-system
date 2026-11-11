@@ -50,7 +50,7 @@ internal fun rememberProgressSweep(
     cycleMillis: Int,
     label: String,
 ): ProgressSweepState {
-    if (prefersReducedMotion()) {
+    if (rememberPrefersReducedMotion()) {
         return remember(cycleMillis) {
             ProgressSweepState(
                 cycleMillis = cycleMillis,
