@@ -393,7 +393,7 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
 
         // One `.opacity` on the whole SwiftUI.Button dims fill and content as a group; dimming
         // them separately would stack and darken the content twice.
-        let usesGlass = lemonadeButtonUsesGlass(type: type)
+        let usesGlass = lemonadeButtonUsesGlass(variant: variant, type: type)
         let pressedOpacity = isPressed && !usesGlass
             ? LemonadeTheme.opacity.state.opacityPressed
             : LemonadeTheme.opacity.base.opacity100
@@ -459,9 +459,9 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
 
 // MARK: - Background
 
-/// Subtle buttons keep their flat fill; ghost buttons have no fill for glass to tint.
-private func lemonadeButtonUsesGlass(type: LemonadeButtonType) -> Bool {
-    guard type == .solid else { return false }
+/// Neutral's near-transparent fill reads as untinted glass, so it stays flat with subtle and ghost.
+private func lemonadeButtonUsesGlass(variant: LemonadeButtonVariant, type: LemonadeButtonType) -> Bool {
+    guard type == .solid, variant != .neutral else { return false }
     #if compiler(>=6.2)
     if #available(iOS 26.0, macOS 26.0, *) { return true }
     #endif
