@@ -559,6 +559,19 @@ public final class com/teya/lemonade/PinCodeKt {
 	public static final fun PinCode (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lcom/teya/lemonade/core/LemonadePinCodeVariant;IZZZLjava/lang/String;ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;III)V
 }
 
+public final class com/teya/lemonade/ProgressStepperItem {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getLabel ()Ljava/lang/String;
+	public final fun getSubheading ()Ljava/lang/String;
+}
+
+public final class com/teya/lemonade/ProgressStepperKt {
+	public static final fun ProgressStepper (Lcom/teya/lemonade/LemonadeUi;Ljava/util/List;ILandroidx/compose/ui/Modifier;ZLandroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/teya/lemonade/RadioButtonKt {
 	public static final fun RadioButton (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/interaction/MutableInteractionSource;ZLandroidx/compose/runtime/Composer;II)V
 	public static final fun RadioButton (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/interaction/MutableInteractionSource;Ljava/lang/String;ZLandroidx/compose/runtime/Composer;II)V

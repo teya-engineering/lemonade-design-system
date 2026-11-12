@@ -75,7 +75,7 @@ private fun CoreCard(
             .background(color = background.background)
             // Must stay inside clip and background: anything inside this modifier snaps to the
             // target size, so outside them the surface would jump and only a gap would animate.
-            .then(if (prefersReducedMotion()) Modifier else cardResizeModifier),
+            .then(if (rememberPrefersReducedMotion()) Modifier else cardResizeModifier),
     ) {
         if (header != null) {
             CardHeader(config = header)
