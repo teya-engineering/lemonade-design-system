@@ -160,7 +160,7 @@ acted on.
 
 Thirty-nine components on both platforms, seven Compose-only ones (`Dropdown`,
 `DropdownItem`, `BottomTabBar`, `BottomSheet`, `TimePicker`, `TimeInput`,
-`TimePickerDialog`), and nine internal parts they nest, all hand-written. A few
+`TimePickerDialog`), and ten internal parts they nest, all hand-written. A few
 needed more than a property lookup:
 
 - `SegmentedControl` numbers the selected segment from 1 in Figma while
@@ -257,8 +257,14 @@ needed more than a property lookup:
 - `SwipeActionRow` maps its placement onto `leadingActions` or
   `trailingActions`, and renders its row content from the `Sliding Item` slot.
   The actions list stays empty with a TODO: the actions are `SwipeAction` data
-  objects, and the design draws them with internal `.Icon Button Circular`
-  parts that have no template.
+  objects, which the `.Icon Button Circular` buttons the design draws them with
+  cannot carry.
+
+- `.Icon Button Circular` is `IconButton` with `shape = Circular`. It shares its
+  mapping with `Icon Button` through `shared/icon-button.ts`. `BottomTabBar`
+  renders its `Action Slot` into `floatingActionButton` when `◉ Show Action` is
+  on; a ghost action gets a NOTE, because the design draws it on `bgDefault`
+  with the Xlarge shadow and `IconButton` has no parameter for either.
 
 - `Divider` is one Figma component over two composables: `Orientation` picks
   between `HorizontalDivider` and `VerticalDivider` rather than being a
