@@ -12,6 +12,9 @@ import { fileURLToPath } from 'node:url'
 const LINK = /<link\b[^>]*\bhref="([^"]*lemonade-kit\.css)"[^>]*>/
 const SCRIPT = /<script\b[^>]*\bsrc="([^"]*lemonade-kit\.js)"[^>]*><\/script>/
 const ASSET = /data-(icon|flag|logo|badge)="([a-zA-Z0-9-]+)"/g
+// Assets the page's own script sets, which its markup never names: data-kit-assets="icon:circle-check flag:GB".
+const DECLARED = /data-kit-assets="([^"]*)"/g
+const DECLARED_ASSET = /^(icon|flag|logo|badge):([a-zA-Z0-9-]+)$/
 
 // lemonade-kit.css carries one asset per line, so a page keeps exactly the lines it names.
 const assetOf = (line) => line.match(/\[data-(icon|flag|logo|badge)="([a-zA-Z0-9-]+)"\]/)
@@ -23,6 +26,10 @@ export function inlinePage(html, css, js) {
   // The gallery lists every icon from script, so it keeps them all.
   const keepAll = html.includes('data-kit-all-assets')
   const used = new Set([...html.matchAll(ASSET)].map(([, kind, name]) => `${kind}:${name}`))
+  for (const token of [...html.matchAll(DECLARED)].flatMap(([, list]) => list.split(/\s+/).filter(Boolean))) {
+    if (!DECLARED_ASSET.test(token)) throw new Error(`data-kit-assets: write "${token}" as kind:name, such as icon:circle-check`)
+    used.add(token)
+  }
   const known = new Set()
   const kept = css.split('\n').filter((line) => {
     const asset = assetOf(line)
