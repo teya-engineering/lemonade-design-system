@@ -51,7 +51,7 @@
   <h2 class="lmnd-text-body-xsmall-overline">Display</h2>
   <a href="#symbol">Symbol container</a><a href="#tag">Tag and badge</a><a href="#notice">Notice</a><a href="#skeleton">Skeleton</a><a href="#divider">Divider</a><a href="#flags">Flags and logos</a>
   <h2 class="lmnd-text-body-xsmall-overline">Lists</h2>
-  <a href="#card">Card</a><a href="#widget">Mini widget</a><a href="#list-item">List item</a><a href="#list-group">List group</a><a href="#content-item">Content list item</a><a href="#select-item">Select list item</a><a href="#timeline">History timeline</a><a href="#swipe">Swipe action row</a>
+  <a href="#section">Section</a><a href="#card">Card</a><a href="#widget">Mini widget</a><a href="#list-item">List item</a><a href="#list-group">List group</a><a href="#content-item">Content list item</a><a href="#select-item">Select list item</a><a href="#timeline">History timeline</a><a href="#swipe">Swipe action row</a>
   <h2 class="lmnd-text-body-xsmall-overline">Inputs</h2>
   <a href="#text-field">Text field</a><a href="#text-area">Text area</a><a href="#select-field">Select field</a><a href="#search">Search field</a><a href="#pin">Pin code</a><a href="#controls">Switch, checkbox, radio</a><a href="#box-selection">Box selection</a><a href="#segmented">Segmented control</a><a href="#tabs">Tabs</a>
   <h2 class="lmnd-text-body-xsmall-overline">Navigation and overlays</h2>
@@ -329,6 +329,28 @@
   </section>
 
   <!-- ===================== Lists ===================== -->
+
+  <section class="g-section" id="section">
+    <h2 class="lmnd-text-heading-small">Section</h2>
+    <p class="lmnd-text-body-small-regular">A section is a heading and its card: <code>lmnd-kit-section</code> with a <code>lmnd-kit-section__title</code>. A <code>lmnd-kit-section__footer</code> under the card, in <code>lmnd-text-body-small-regular</code>, says in a sentence or two what the card means; it lines up with the rows' text. It is not a notice, and it doesn't repeat a row's support text.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<section class="lmnd-kit-section">
+  <h2 class="lmnd-kit-section__title lmnd-text-heading-xsmall">1 problem found</h2>
+  <div class="lmnd-kit-card">
+    <div class="lmnd-kit-list-item">
+      <span class="lmnd-kit-list-item__row">
+        <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="printer" aria-hidden="true"></span></span></span>
+        <span class="lmnd-kit-list-item__content">
+          <span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Printer and paper</span>
+          <span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Out of paper</span>
+        </span>
+      </span>
+    </div>
+  </div>
+  <p class="lmnd-kit-section__footer lmnd-text-body-small-regular">Card payments still work. Receipts won't print until you load paper.</p>
+</section>
+    </div></div>
+  </section>
 
   <section class="g-section" id="card">
     <h2 class="lmnd-text-heading-small">Card</h2>

@@ -118,6 +118,12 @@ h6 {
   color: var(--lmnd-color-content-primary);
 }
 
+.lmnd-kit-section__footer {
+  margin: 0;
+  padding: 0 var(--lmnd-spacing-400);
+  color: var(--lmnd-color-content-secondary);
+}
+
 /* A menu's footer (APP-MENU-FOOTER): the app version and the legal entity, centred under the last card. */
 .lmnd-kit-menu-footer {
   display: flex;
