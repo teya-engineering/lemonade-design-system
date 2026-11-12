@@ -59,7 +59,7 @@ the one Swift Package Manager consumers resolve.
 | **Actions** | Button, IconButton, Link, Chip |
 | **Form Controls** | TextField, TextArea, SearchField, SelectField, PinCode, Switch, Checkbox, RadioButton, SegmentedControl, BoxSelection |
 | **Display** | Text, Icon, Badge, Tag, Card, Tile, SymbolContainer, HorizontalDivider, VerticalDivider, BrandLogo, CountryFlag |
-| **Lists & Navigation** | ListItem, ContentListItem, ActionListItem, ResourceListItem, SelectListItem, SwipeActionRow, Tabs, TopBar, BottomTabBar, HistoryTimeline |
+| **Lists & Navigation** | ListItem, ContentListItem, ActionListItem, ResourceListItem, SelectListItem, SwipeActionRow, Tabs, TopBar, BottomTabBar, HistoryTimeline, ProgressStepper |
 | **Feedback & Overlays** | Toast, Tooltip, Notice, Spinner, Skeleton, Dialog, BottomSheet, Dropdown |
 | **Date & Time** | DatePicker, DateRangePicker, InlineCalendar, TimePicker, TimeInput |
 
