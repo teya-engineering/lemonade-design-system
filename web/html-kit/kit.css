@@ -127,8 +127,8 @@ h6 {
   text-align: center;
 }
 
-/* A list group (the Teya app's SectionGroup under a SubHeader): a header placing the group, such as a day
-   and its total, over the group's card. Groups sit spacing-400 apart like any card. */
+/* A list group: a header placing the group, such as a day and its total, over the group's card. Groups sit
+   spacing-400 apart like any card. */
 .lmnd-kit-list-group {
   display: flex;
   flex-direction: column;
@@ -2878,7 +2878,7 @@ textarea.lmnd-kit-field__input {
 
 /* ---------- Details screen ---------- */
 
-/* An entity detail screen (the Teya app's DetailsListContainer): a top bar that starts transparent and
+/* An entity detail screen: a top bar that starts transparent and
    fills on scroll, a hero of up to four slots, and an optional wash in the status's colour. */
 .lmnd-kit-screen--details .lmnd-kit-top-bar {
   background: transparent;
@@ -2958,9 +2958,9 @@ textarea.lmnd-kit-field__input {
   color: var(--lmnd-color-content-secondary);
 }
 
-/* ---------- Mini widget ---------- */
+/* ---------- Avatars ---------- */
 
-/* Overlapping circular avatars, each cut out of the one before it by a ring of the widget's background. */
+/* Overlapping circular avatars, each cut out of the one before it by a ring of the background. */
 .lmnd-kit-avatars {
   display: flex;
 }
@@ -3084,7 +3084,7 @@ body:has(> .lmnd-kit-device) {
   }
 }
 
-/* ---------- The Teya app's own components, used by its screens in screens/ ---------- */
+/* ---------- Cards and rows for product screens ---------- */
 
 /* A segmented control in a card header keeps its width; the heading gives way. */
 .lmnd-kit-card__header > .lmnd-kit-segmented {
@@ -3102,7 +3102,7 @@ body:has(> .lmnd-kit-device) {
   color: var(--lmnd-color-content-secondary);
 }
 
-/* VoiceGradientCard: a card whose top fades from a status's subtle colour into the card, inset by
+/* A gradient card: a card whose top fades from a status's subtle colour into the card, inset by
    spacing-100 with a radius-500 corner. */
 .lmnd-kit-gradient-card {
   position: relative;
@@ -3142,7 +3142,7 @@ body:has(> .lmnd-kit-device) {
   flex: 1;
 }
 
-/* RowData in a StackContainer: label-and-value rows with no dividers, spacing-400 apart inside
+/* Row data: label-and-value rows with no dividers, spacing-400 apart inside
    spacing-400 of padding. A group's sub-rows sit spacing-200 under it, a size smaller. */
 .lmnd-kit-row-data {
   display: flex;
@@ -3210,7 +3210,7 @@ body:has(> .lmnd-kit-device) {
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 76'%3E%3Cpath d='M140 8.86676L137.233 11.5372C135.772 12.9476 133.6 13.3295 131.745 12.5024C130.404 11.9043 128.867 11.9287 127.545 12.5691L125.16 13.7244C124.684 13.9551 124.232 14.2324 123.811 14.5522L120.035 17.4188C119.52 17.8101 118.959 18.1374 118.365 18.3936L115.806 19.4967C114.686 19.9794 113.768 20.8348 113.207 21.9176L112.339 23.5917C110.825 26.5138 106.698 26.6566 104.986 23.8462C104.194 22.5456 102.762 21.7727 101.24 21.8236L99.7251 21.8743C98.9269 21.901 98.1396 22.0677 97.3991 22.3669L94.6371 23.483C93.7745 23.8315 92.8578 24.0269 91.9281 24.0604L91.7723 24.066C89.469 24.149 87.3134 25.2214 85.8578 27.0083L84.9465 28.1271C83.6745 29.6885 81.8438 30.6924 79.8434 30.9254C78.4903 31.0829 77.2029 31.595 76.1112 32.4098L74.3456 33.7275C73.198 34.5841 71.8415 35.1168 70.4177 35.2703L68.1801 35.5114C67.6662 35.5668 67.1588 35.6718 66.6652 35.8251L63.203 36.9C62.5518 37.1021 61.8775 37.2202 61.1963 37.2513L57.037 37.4415L52.9666 37.7072C52.227 37.7555 51.4977 37.9063 50.7997 38.1553L46.6667 39.6298L42.5331 41.1643C41.8354 41.4234 41.1773 41.7785 40.5778 42.2194L36.9335 44.8994C36.5097 45.2111 36.0563 45.4802 35.5797 45.7028L32.5009 47.141C31.5827 47.5699 30.7544 48.1693 30.06 48.9074L25.9259 53.3016L21.5605 57.0625C21.0165 57.5312 20.4118 57.9245 19.7628 58.2319L17.4262 59.3384C16.1993 59.9194 15.1404 60.803 14.3493 61.9061L12.4362 64.5734C11.1229 66.4046 9.08566 67.5827 6.84347 67.8078C5.75014 67.9175 4.69205 68.2557 3.7377 68.8003L0 70.9334' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
 
-/* ContentCardCarousel's card: artwork, a title, a line and a call to action, with a dismiss. */
+/* A content card: artwork, a title, a line and a call to action, with a dismiss. */
 .lmnd-kit-content-card {
   position: relative;
   display: flex;
@@ -3324,7 +3324,7 @@ body:has(> .lmnd-kit-device) {
   padding: var(--lmnd-spacing-400);
 }
 
-/* ---------- Sales Overview's widgets ---------- */
+/* ---------- Figures and charts ---------- */
 
 /* A change against the previous period, such as "£120.00 vs Last Thursday": up in brand, down in critical. */
 .lmnd-kit-delta {
@@ -3472,7 +3472,7 @@ body:has(> .lmnd-kit-device) {
   background: var(--lmnd-color-bg-brand);
 }
 
-/* A card that stands above the page, such as Home's registration card. */
+/* A card that stands above the page, such as a promo or sign-up card. */
 .lmnd-kit-card--raised {
   box-shadow: var(--lmnd-shadow-lg);
 }
