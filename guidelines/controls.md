@@ -1,6 +1,6 @@
 # Controls
 
-## `LDS-CONTROL-CHOICE` · Pick the control by what the choice means
+## `LDS-CONTROL-MEANING` · Pick the control by what the choice means
 
 **Rule of thumb.** Each control states its job in its own documentation. Reach for the one whose job
 matches:
