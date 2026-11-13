@@ -1,5 +1,11 @@
 # Lemonade Design System
 
+## Public repository
+
+Lemonade is public. It describes the design system, not a product built on it: no product screens,
+no product rule IDs (`APP-`), and no product component names, file paths or app text. Write examples
+in product-neutral terms. A product's own layer lives in that product's repository.
+
 ## Binary compatibility (KMP) — read before changing public API
 
 The published modules — `core`, `tokens`, `ui`, `expressive`, `calendar` — ship to
