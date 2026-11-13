@@ -40,9 +40,9 @@ LemonadeUi.ContentListItem(label: "Label", value: "Value")
 
 ```kotlin
 // Android
-Text(
+LemonadeUi.Text(
     text = "Section Title",
-    style = LemonadeTheme.typography.headingXSmall,
+    textStyle = LemonadeTheme.typography.headingXSmall,
     color = LemonadeTheme.colors.content.contentPrimary,
     modifier = Modifier.padding(
         horizontal = LemonadeTheme.spaces.spacing400,
@@ -53,9 +53,11 @@ Text(
 
 ```swift
 // iOS
-Text("Section Title")
-    .font(LemonadeTypography.shared.headingXSmall.font)
-    .foregroundColor(LemonadeTheme.colors.content.contentPrimary)
+LemonadeUi.Text(
+    "Section Title",
+    textStyle: LemonadeTypography.shared.headingXSmall,
+    color: LemonadeTheme.colors.content.contentPrimary
+)
     .padding(.horizontal, LemonadeSpacing.spacing400.value)
     .padding(.vertical, LemonadeSpacing.spacing200.value)
 ```

@@ -24,8 +24,8 @@ LemonadeUi.Tag(
 ```swift
 // iOS
 LemonadeUi.Tag(
-    icon: .check,
     label: "Success",
+    icon: .check,
     voice: .positive
 )
 ```
@@ -37,6 +37,8 @@ LemonadeUi.Tag(
 - `.warning` - Orange (warning)
 - `.info` - Blue (info)
 - `.neutral` - Gray (default)
+- `.neutralOnColor` - On a coloured surface
+- `.featured` - Featured content
 
 ## Icon
 
@@ -85,8 +87,9 @@ LemonadeUi.SymbolContainer(
 )
 ```
 
-**Sizes:** `.small`, `.medium`, `.large`
-**Voices:** `.positive`, `.critical`, `.warning`, `.info`, `.neutral`
+**Sizes:** `.xSmall`, `.small`, `.medium` (default), `.large`, `.xLarge`, `.xxLarge`
+**Voices:** `.neutral` (default), `.positive`, `.critical`, `.warning`, `.info`, `.brand`, `.brandSubtle`
+**Shapes:** `.circle` (default), `.rounded`
 
 ## Button
 
@@ -202,7 +205,7 @@ LemonadeUi.Tile(
     modifier = Modifier.weight(1f),
     label = "Add money",
     icon = LemonadeIcons.MoneyArrowDown,
-    variant = LemonadeTileVariant.Neutral,
+    variant = LemonadeTileVariant.Filled,
     onClick = { /* action */ }
 )
 ```
@@ -213,11 +216,11 @@ LemonadeUi.Tile(
     label: "Add money",
     icon: .moneyArrowDown,
     onClick: { /* action */ },
-    variant: .neutral
+    variant: .filled
 )
 ```
 
-**Variants:** `.neutral` (gray background), `.onColor` (for use on coloured backgrounds)
+**Variants:** `.filled` (default), `.outlined`
 
 ## Chip
 
@@ -229,7 +232,7 @@ LemonadeUi.Chip(
     label = "Filter",
     selected = isSelected,
     trailingIcon = LemonadeIcons.ChevronDown,
-    onClick = { /* action */ }
+    onChipClicked = { /* action */ }
 )
 ```
 
@@ -239,7 +242,7 @@ LemonadeUi.Chip(
     label: "Filter",
     selected: isSelected,
     trailingIcon: .chevronDown,
-    onClick: { /* action */ }
+    onChipClicked: { /* action */ }
 )
 ```
 

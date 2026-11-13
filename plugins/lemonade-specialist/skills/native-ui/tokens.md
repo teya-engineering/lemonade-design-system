@@ -29,18 +29,20 @@ Complete token reference for typography, colours, spacing, and radius.
 
 ```kotlin
 // Android
-Text(
+LemonadeUi.Text(
     text = "Hello",
-    style = LemonadeTheme.typography.bodyMediumRegular,
-    color = LemonadeTheme.colors.content.contentPrimary
+    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+    color = LemonadeTheme.colors.content.contentPrimary,
 )
 ```
 
 ```swift
 // iOS
-Text("Hello")
-    .font(LemonadeTypography.shared.bodyMediumRegular.font)
-    .foregroundColor(LemonadeTheme.colors.content.contentPrimary)
+LemonadeUi.Text(
+    "Hello",
+    textStyle: LemonadeTypography.shared.bodyMediumRegular,
+    color: LemonadeTheme.colors.content.contentPrimary
+)
 ```
 
 ## Colours
