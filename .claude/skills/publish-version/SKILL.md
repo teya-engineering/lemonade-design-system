@@ -2,17 +2,17 @@
 name: publish-version
 description: >
   Publish a new version of the Lemonade SDK — KMP and/or SwiftUI — and of the
-  lemonade-specialist Claude Code plugin. Use when the user wants to cut a release,
+  lemonade-specialist Claude Code plugin and the HTML kit. Use when the user wants to cut a release,
   ship a new version, tag a release, or "publish the SDK". Syncs to latest
   origin/main, analyzes what changed per platform since the last release, suggests
   a version bump (confirmed with the user), then cuts and pushes the tags, creates
-  the KMP GitHub release, and bumps or tags the plugin.
+  the KMP GitHub release, bumps or tags the plugin, and tags the HTML kit.
 ---
 
 # Publish a Lemonade SDK version
 
-Cuts a new release for the two published SDKs and the `lemonade-specialist` plugin.
-All three version **independently**. The SDK versions are **purely tag-driven** — there
+Cuts a new release for the two published SDKs, the `lemonade-specialist` plugin and the
+HTML kit. All four version **independently**. The SDK and kit versions are **purely tag-driven** — there
 are no version files to bump on either side. The plugin's version lives in
 `plugins/lemonade-specialist/.claude-plugin/plugin.json`: Claude Code updates an
 installed plugin only when that number changes.
@@ -20,6 +20,7 @@ installed plugin only when that number changes.
 | SDK | Release tag | What the tag does | GitHub Release |
 |-----|-------------|-------------------|----------------|
 | **KMP** | `lemonade-kmp-X.Y.Z` | `kmp_release.yml` publishes to Maven Central | **You create it** (KMP CI does *not*) — holds the **Latest** badge |
+| **HTML kit** | `lemonade-html-kit-X.Y.Z` | `html_kit_release.yml` builds the kit with a `VERSION` file, checks it holds only Lemonade, and attaches `lemonade-html-kit.zip` to the release | **CI creates it**, not marked Latest — do *not* create it yourself |
 | **Plugin** | `lemonade-specialist--vX.Y.Z` | Marks the released version; nothing runs on it. The `version` in `plugin.json` is what reaches users | None |
 | **SwiftUI** | `lemonade-swiftui-X.Y.Z` **and** plain `X.Y.Z` | `swiftui_release.yml` (on the prefixed tag) builds the XCFramework + creates the GH release. The plain `X.Y.Z` tag is the **SPM resolution tag** consumers actually pin to (root `Package.swift` builds from source). | **CI creates it** — do *not* create it yourself |
 
@@ -69,6 +70,13 @@ plugin it prints `PLUGIN_ACTION`:
   bump PR; the next release tags it.
 - `none` — nothing to do.
 
+For the kit it prints `KIT_ACTION`:
+
+- `first` — no kit has been released. Ask for the first version.
+- `release` — something the kit build reads (`web/html-kit/`, `web/styles/`,
+  `web/assets/`, `web/llms.txt`, `guidelines/`, the fonts) changed since its tag.
+- `none` — nothing to do.
+
 The script's path filters (`kmp/` minus the `composeApp` sample; `swiftui/Sources/`)
 decide whether each side *has* changes. They are a first pass — the next step makes
 the real call.
@@ -95,7 +103,7 @@ Prompt template (fill in the range from the script):
 
 The plugin needs no subagent: everything under `plugins/lemonade-specialist/` is what
 agents read, including the copy of `guidelines/`, so any change there is worth a
-version.
+version. The kit needs none either: everything under the kit's paths ships in the bundle.
 
 Use both verdicts to settle which SDKs to release. A reliable signal of a real KMP
 release is a changed `kmp/<module>/api/*.api` or `*.klib.api` baseline.
@@ -104,7 +112,8 @@ release is a changed `kmp/<module>/api/*.api` or `*.klib.api` baseline.
 
 Apply the bump rule to form the suggestion, then confirm with `AskUserQuestion`.
 **Never tag without this confirmation.** Ask one question per SDK that has changes,
-plus one for the plugin when `PLUGIN_ACTION` is not `none` (at most three questions). Put the rule-suggested version first, marked
+plus one for the plugin when `PLUGIN_ACTION` is not `none` and one for the kit when
+`KIT_ACTION` is not `none` (at most four questions). Put the rule-suggested version first, marked
 "(Recommended)", and always include a "Don't release this SDK" option.
 
 Example, when KMP has changes and SwiftUI doesn't (KMP-only → patch):
@@ -116,7 +125,8 @@ Example, when KMP has changes and SwiftUI doesn't (KMP-only → patch):
 
 For the plugin, `bump` suggests a **patch** (`PLUGIN_NEXT_PATCH`); offer
 `PLUGIN_NEXT_MINOR` for a new skill or a new guideline file. `tag` asks only whether
-to tag `PLUGIN_TAG` now.
+to tag `PLUGIN_TAG` now. The kit's `release` suggests `KIT_NEXT_PATCH`; `first` asks for
+the starting version.
 
 When **both** sides changed, suggest **minor** for both (e.g. KMP `0.20.0 → 0.21.0`,
 SwiftUI `0.16.2 → 0.17.0`) and ask one question each. Respect the user's choice
@@ -207,6 +217,27 @@ gh pr create --head "$BRANCH" --base main --title "chore(plugins): release lemon
   --body "Bumps lemonade-specialist to ${NEW}, so installed copies pick up the changes since the last release."
 ```
 
+**HTML kit** — the release is a public download, so first check that the bundle at
+`RELEASE_SHA` holds only Lemonade. Build it in a throwaway worktree and run the guard;
+if it fails, don't tag, and report what it found:
+
+```bash
+SHA=<RELEASE_SHA>
+DIR="$(mktemp -d)/kit"
+git worktree add --detach "$DIR" "$SHA"
+(cd "$DIR/web" && npm ci && node html-kit/build.mjs) && "$DIR/scripts/check-html-kit-bundle.sh" "$DIR/web/dist/lemonade-html-kit"
+git worktree remove --force "$DIR"
+```
+
+Then push the tag. `html_kit_release.yml` builds, checks and releases; don't create the
+release yourself:
+
+```bash
+NEW=1.0.1                        # confirmed version
+git tag "lemonade-html-kit-${NEW}" "$SHA"
+git push origin "lemonade-html-kit-${NEW}"
+```
+
 ### 6. Report back
 
 Summarize what shipped, with links:
@@ -216,6 +247,8 @@ Summarize what shipped, with links:
   (`gh run list --workflow swiftui_release.yml --limit 1`), and remind the user the
   SPM consumer version is the plain `${NEW}` tag.
 - Both post to the Slack release channel from CI.
+- HTML kit: the release run (`gh run list --workflow html_kit_release.yml --limit 1`)
+  and, once it finishes, the release URL.
 - Plugin: the pushed `lemonade-specialist--v…` tag, or the bump PR URL with a
   reminder that the next release tags it once it merges.
 
@@ -230,6 +263,9 @@ Summarize what shipped, with links:
 - Pushing a tag is effectively irreversible (it triggers a public Maven/CI publish).
   Only push the tags for the SDKs the user explicitly confirmed.
 - Never push a plugin version bump straight to `main`; it goes through a PR.
+- Never tag the HTML kit while `scripts/check-html-kit-bundle.sh` fails on the bundle at
+  `RELEASE_SHA`, and don't create its GitHub release — `html_kit_release.yml` does, without
+  the Latest badge, which stays on KMP.
 - Don't create the SwiftUI GitHub release — `swiftui_release.yml` already does, and
   doubling it up fights the CI-managed release.
 - These are public, outward-facing actions. Do the analysis and version

@@ -1,0 +1,68 @@
+name: Publish Lemonade HTML kit
+
+on:
+  push:
+    tags:
+      - 'lemonade-html-kit-[0-9]*'
+  # A dry run: builds and checks the kit and uploads it as a workflow artifact, with no release.
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with: { fetch-depth: 0, fetch-tags: true }
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: web/.nvmrc
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+        working-directory: web
+      - run: npm test
+        working-directory: web
+
+      - name: Version from tag
+        run: |
+          if [ "$GITHUB_REF_TYPE" = tag ]; then
+            echo "KIT_VERSION=${GITHUB_REF_NAME#lemonade-html-kit-}" >> "$GITHUB_ENV"
+          else
+            echo "KIT_VERSION=0.0.0" >> "$GITHUB_ENV"
+          fi
+
+      - name: Build the kit
+        run: node html-kit/build.mjs --version "$KIT_VERSION"
+        working-directory: web
+
+      - name: Fail if the kit holds product content
+        run: scripts/check-html-kit-bundle.sh
+
+      - name: Upload the dry run
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: lemonade-html-kit
+          path: web/dist/lemonade-html-kit.zip
+
+      # Not --latest: the KMP release holds the repository's Latest badge, so consumers find kit
+      # releases by the lemonade-html-kit- tag prefix.
+      - name: Create the release
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PREV=$(git tag -l 'lemonade-html-kit-*' --sort=-version:refname | grep -vx "$GITHUB_REF_NAME" | head -n1 || true)
+          if [ -n "$PREV" ]; then
+            .claude/skills/publish-version/scripts/release-notes.sh "$PREV" "$GITHUB_REF_NAME" "$GITHUB_SHA" \
+              web/html-kit/ ':(exclude)web/html-kit/mapping.md' ':(exclude)web/html-kit/README.md' \
+              web/styles/ web/assets/ web/llms.txt guidelines/ swiftui/Sources/Lemonade/Resources/Fonts/ > notes.md
+          else
+            echo "The first release of the Lemonade HTML kit." > notes.md
+          fi
+          gh release create "$GITHUB_REF_NAME" web/dist/lemonade-html-kit.zip \
+            --title "Lemonade HTML kit ${KIT_VERSION}" --notes-file notes.md --latest=false

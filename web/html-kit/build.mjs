@@ -12,8 +12,9 @@
 //   classes.txt        every lmnd-kit- class the kit defines
 //   SKILL.md           instructions for an AI session
 //   README.md          instructions for a person
+//   VERSION            the release's X.Y.Z, when built with --version
 //
-//   node html-kit/build.mjs [--out <dir>]
+//   node html-kit/build.mjs [--out <dir>] [--version <X.Y.Z>]
 //
 // Output goes to web/dist/: lemonade-html-kit/ and its zip, because web/dist is the only place a build may
 // write inside the repository.
@@ -364,10 +365,11 @@ async function writeReferences(dir) {
 }
 
 // The kit as a folder anyone can open: pages, stylesheet and rules.
-async function packageKit(dist, css) {
+async function packageKit(dist, css, version) {
   const out = join(dist, NAME)
   await rm(out, { recursive: true, force: true })
   await writePages(out)
+  if (version) await writeFile(join(out, 'VERSION'), `${version}\n`)
   await writeFile(join(out, 'lemonade-kit.css'), css)
   await writeFile(join(out, 'lemonade-kit.js'), await kitScript())
   await writeReferences(out)
@@ -379,7 +381,10 @@ async function packageKit(dist, css) {
 async function main(argv) {
   const outFlag = argv.indexOf('--out')
   const dist = outFlag >= 0 ? resolve(argv[outFlag + 1]) : join(WEB, 'dist')
-  await packageKit(dist, await kitStylesheet())
+  const versionFlag = argv.indexOf('--version')
+  const version = versionFlag >= 0 ? argv[versionFlag + 1] : undefined
+  if (version !== undefined && !/^\d+\.\d+\.\d+$/.test(version)) throw new Error(`--version takes X.Y.Z, not ${version}`)
+  await packageKit(dist, await kitStylesheet(), version)
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) await main(process.argv.slice(2))

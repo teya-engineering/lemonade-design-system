@@ -21,6 +21,14 @@ Open `web/dist/lemonade-html-kit/gallery.html` to see every component. The pages
 `lemonade-kit.css`, which exists only in the packaged kit, so opened from here they show a notice
 instead.
 
+## Release the kit
+
+A `lemonade-html-kit-X.Y.Z` tag releases the kit: `.github/workflows/html_kit_release.yml` builds it with
+`--version X.Y.Z`, which adds a `VERSION` file, and attaches `lemonade-html-kit.zip` to a GitHub release.
+The release is a public download, so the workflow first runs `scripts/check-html-kit-bundle.sh`, which
+fails on product screens, `APP-` rules or text about a product's app. The `publish-version` skill cuts the
+tag; run the workflow by hand for a dry run that builds and checks the kit without releasing it.
+
 ## What's here
 
 | Path | What it is | In the zip as |
