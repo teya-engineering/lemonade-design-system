@@ -3472,7 +3472,7 @@ body:has(> .lmnd-kit-device) {
   background: var(--lmnd-color-bg-brand);
 }
 
-/* A card that stands above the page, such as Home's registration card. */
+/* A card that stands above the page, such as a promo or sign-up card. */
 .lmnd-kit-card--raised {
   box-shadow: var(--lmnd-shadow-lg);
 }

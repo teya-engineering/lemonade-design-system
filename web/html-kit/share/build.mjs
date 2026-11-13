@@ -1,6 +1,6 @@
 // Turns a kit page into one self-contained HTML file: the linked lemonade-kit.css goes inline, keeping
-// only the icons, flags, logos and badges the page names. The result opens anywhere — an email attachment, a
-// chat, a phone — with nothing beside it.
+// only the icons, flags and logos the page names. The result opens anywhere — an email attachment, a chat,
+// a phone — with nothing beside it.
 //
 //   node build.mjs <page.html> [more.html ...]
 //
@@ -11,10 +11,10 @@ import { fileURLToPath } from 'node:url'
 
 const LINK = /<link\b[^>]*\bhref="([^"]*lemonade-kit\.css)"[^>]*>/
 const SCRIPT = /<script\b[^>]*\bsrc="([^"]*lemonade-kit\.js)"[^>]*><\/script>/
-const ASSET = /data-(icon|flag|logo|badge)="([a-zA-Z0-9-]+)"/g
+const ASSET = /data-(icon|flag|logo)="([a-zA-Z0-9-]+)"/g
 
 // lemonade-kit.css carries one asset per line, so a page keeps exactly the lines it names.
-const assetOf = (line) => line.match(/\[data-(icon|flag|logo|badge)="([a-zA-Z0-9-]+)"\]/)
+const assetOf = (line) => line.match(/\[data-(icon|flag|logo)="([a-zA-Z0-9-]+)"\]/)
 
 // The kit's script, when the page links it and it's given, goes inline too. Without it the link stays.
 export function inlinePage(html, css, js) {
