@@ -142,8 +142,12 @@ print_sdk SWIFT "$SWIFT_PREV_TAG" "$SWIFT_PREV_VER" "$SWIFT_COUNT" "$SWIFT_HAS" 
 PLUGIN_DIR=plugins/lemonade-specialist
 PLUGIN_PREV_TAG=$(latest_tag 'lemonade-specialist--v*')
 PLUGIN_PREV_VER=${PLUGIN_PREV_TAG#lemonade-specialist--v}
-PLUGIN_FILE_VER=$(git show "${RELEASE_SHA}:${PLUGIN_DIR}/.claude-plugin/plugin.json" 2>/dev/null \
-  | sed -n 's/^ *"version": *"\([^"]*\)".*/\1/p' | head -n1 || true)
+PLUGIN_MANIFEST="$PLUGIN_DIR/.claude-plugin/plugin.json"
+version_at() { # $1=commit -> the plugin version in that commit's plugin.json, or nothing
+  git show "$1:$PLUGIN_MANIFEST" 2>/dev/null \
+    | sed -n 's/^ *"version": *"\([^"]*\)".*/\1/p' | head -n1 || true
+}
+PLUGIN_FILE_VER=$(version_at "$RELEASE_SHA")
 
 PLUGIN_COUNT=0
 PLUGIN_AFTER_COUNT=0
@@ -153,7 +157,12 @@ elif [ "$PLUGIN_FILE_VER" != "$PLUGIN_PREV_VER" ]; then
   PLUGIN_ACTION=tag
   # A tag at RELEASE_SHA would claim plugin changes that landed after the bump, and users
   # who installed the bumped version would never receive them.
-  PLUGIN_TAG_SHA=$(git log -1 --format=%H "$RELEASE_SHA" -G'"version"' -- "$PLUGIN_DIR/.claude-plugin/plugin.json")
+  for commit in $(git rev-list "$RELEASE_SHA" -- "$PLUGIN_MANIFEST"); do
+    if [ "$(version_at "${commit}^")" != "$PLUGIN_FILE_VER" ]; then
+      PLUGIN_TAG_SHA=$commit
+      break
+    fi
+  done
   PLUGIN_AFTER_COUNT=$(git rev-list --count --no-merges "${PLUGIN_TAG_SHA}..${RELEASE_SHA}" -- "$PLUGIN_DIR/")
 else
   PLUGIN_COUNT=$(shipped_count "$PLUGIN_PREV_TAG" "$PLUGIN_DIR/")

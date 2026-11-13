@@ -182,8 +182,14 @@ next patch after `PLUGIN_TAG`'s version.
 **Plugin, `PLUGIN_ACTION=bump`** — open a PR that bumps `version` in `plugin.json`,
 branched from `RELEASE_SHA` in a throwaway worktree, so the user's checkout is not
 touched. Don't tag; the next release finds the merged bump and tags it. First check
-that no bump PR is already open (`gh pr list --search "lemonade-specialist in:title"
---state open`); if one is, report it instead of opening another:
+that no bump PR is already open; if one is, report it instead of opening another:
+
+```bash
+gh pr list --state open --json number,headRefName \
+  --jq '.[] | select(.headRefName | startswith("chore/lemonade-specialist-")) | .number'
+```
+
+Otherwise:
 
 ```bash
 NEW=1.1.1                        # confirmed version
