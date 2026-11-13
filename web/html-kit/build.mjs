@@ -4,9 +4,8 @@
 //   lemonade-kit.css   tokens, type scale, package components, kit.css, Figtree and every asset
 //   lemonade-kit.js    kit.js, minified: the optional behaviour pages link after the stylesheet
 //   gallery.html       every component with its markup
-//   examples/          screens to start from
+//   examples/          a flow of screens to start from
 //   guidelines/        the rules a prototype follows: the kit's own, and Lemonade's from the repository's guidelines/
-//   screens/           the app's own screens as they are today, and their descriptions
 //   llms.txt           every token and what it is for: the token sections of web/llms.txt
 //   assets.txt         every icon, flag, logo and badge name
 //   classes.txt        every lmnd-kit- class the kit defines
@@ -157,7 +156,7 @@ async function buildStylesheet() {
 
 export async function kitPages() {
   const html = async (dir) => (await readdir(join(KIT, dir))).filter((n) => n.endsWith('.html')).sort().map((n) => `${dir}/${n}`)
-  return ['gallery.html', ...(await html('examples')), ...(await html('screens'))]
+  return ['gallery.html', ...(await html('examples'))]
 }
 
 // The token sections of web/llms.txt. The rest of that file is about the npm package — installing it,
@@ -225,7 +224,7 @@ async function assetList() {
     ),
     section(
       'Transaction status badges',
-      "The Teya app's, for a money row's symbol (APP-FEED-ROWS). `sale-transaction-*` for sales and refunds; `money-in`, `money-out` and `transaction-*` for an account's activity. `<span class=\"lmnd-kit-symbol__status\" data-badge=\"NAME\" aria-hidden=\"true\"></span>`",
+      "For a money row's symbol. `sale-transaction-*` for sales and refunds; `money-in`, `money-out` and `transaction-*` for an account's activity. `<span class=\"lmnd-kit-symbol__status\" data-badge=\"NAME\" aria-hidden=\"true\"></span>`",
       badges,
     ),
   ].join('\n')
@@ -317,7 +316,6 @@ async function zipFolder(dir, name, target) {
 
 async function writePages(dir) {
   await mkdir(join(dir, 'examples'), { recursive: true })
-  await mkdir(join(dir, 'screens'), { recursive: true })
   for (const page of await kitPages()) await writeFile(join(dir, page), await pageForKit(page))
 }
 
@@ -353,10 +351,6 @@ async function writeReferences(dir) {
   for (const name of await lemonadeGuidelines()) {
     if (own.has(name)) throw new Error(`guidelines/${name} is in both the kit and the repository's guidelines/`)
     await cp(join(LEMONADE_GUIDELINES, name), join(dir, 'guidelines', name))
-  }
-  await mkdir(join(dir, 'screens'), { recursive: true })
-  for (const name of (await readdir(join(KIT, 'screens'))).filter((n) => n.endsWith('.md'))) {
-    await cp(join(KIT, 'screens', name), join(dir, 'screens', name))
   }
   await writeFile(join(dir, 'llms.txt'), await kitLlmsTxt())
   await writeFile(join(dir, 'assets.txt'), await assetList())
