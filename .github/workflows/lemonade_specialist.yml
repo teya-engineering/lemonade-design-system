@@ -1,0 +1,40 @@
+name: lemonade-specialist
+
+on:
+  pull_request:
+    paths:
+      - 'guidelines/**'
+      - 'plugins/lemonade-specialist/**'
+      - 'scripts/sync-lemonade-specialist.sh'
+      - '.github/workflows/lemonade_specialist.yml'
+
+concurrency:
+  group: lemonade-specialist-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Guidelines copy and plugin validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Fail if the guidelines copy drifted
+        run: |
+          scripts/sync-lemonade-specialist.sh
+          if [ -n "$(git status --porcelain -- plugins/lemonade-specialist/)" ]; then
+            echo "::error::The lemonade-specialist guidelines do not match guidelines/. Run:"
+            echo "  scripts/sync-lemonade-specialist.sh"
+            git status --porcelain -- plugins/lemonade-specialist/
+            git --no-pager diff -- plugins/lemonade-specialist/ | head -100
+            exit 1
+          fi
+
+      - name: Fail on symlinks in the plugin
+        run: |
+          links="$(find plugins/lemonade-specialist -type l)"
+          if [ -n "$links" ]; then echo "::error::A plugin install drops symlinks: $links"; exit 1; fi
+
+      - name: Validate the plugin
+        run: npx -y @anthropic-ai/claude-code@2.1.323 plugin validate plugins/lemonade-specialist

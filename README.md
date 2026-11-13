@@ -127,8 +127,11 @@ documentation says what it does; the guidelines say what to do with it next to a
 Each rule carries a stable `LDS-` slug, so a review finding or an exemption comment in a consuming
 repository points at something written down.
 
-A product following them keeps a synced copy in its own repository, because an agent follows what it
-can read and Lemonade is a dependency rather than a checkout.
+Products read them through the `lemonade-specialist` Claude Code plugin in
+[`plugins/lemonade-specialist/`](./plugins/lemonade-specialist). Its `native-ui` skill carries the
+guidelines with the token and component references for Compose and SwiftUI. A plugin install copies only
+the plugin's folder, so the skill holds a copy of `guidelines/`. After you edit a guideline, run
+`scripts/sync-lemonade-specialist.sh`. CI fails when the copy differs.
 
 ---
 
