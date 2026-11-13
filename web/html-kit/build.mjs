@@ -7,7 +7,7 @@
 //   examples/          a flow of screens to start from
 //   guidelines/        the rules a prototype follows: the kit's own, and Lemonade's from the repository's guidelines/
 //   llms.txt           every token and what it is for: the token sections of web/llms.txt
-//   assets.txt         every icon, flag, logo and badge name
+//   assets.txt         every icon, flag and logo name
 //   classes.txt        every lmnd-kit- class the kit defines
 //   SKILL.md           instructions for an AI session
 //   README.md          instructions for a person
@@ -58,10 +58,6 @@ const flagCode = (fileName) => {
   const [country, region] = fileName.split('-')
   return /^[A-Z0-9]{1,3}$/.test(region ?? '') ? `${country}-${region}` : country
 }
-
-// The Teya app's transaction status badges, copied from its shared-assets/source/vectors: the kit's own
-// assets, since they aren't Lemonade's.
-const BADGES = join(KIT, 'badges')
 
 // Optimised with the package's own svgo settings: aggressive for icons, conservative for artwork.
 async function readSvgs(dir, config) {
@@ -118,11 +114,10 @@ const hueRule = (hue) =>
   `[data-hue="${hue}"]{${HUE_ROLES.map((role) => `--lmnd-kit-hue-${role}:var(--lmnd-color-themed-${hue}-${role})`).join(';')}}`
 
 async function buildStylesheet() {
-  const [icons, flagFiles, logos, badges] = await Promise.all([
+  const [icons, flagFiles, logos] = await Promise.all([
     readSvgs(join(WEB, 'assets', 'icons'), iconConfig),
     readSvgs(join(WEB, 'assets', 'flags'), artworkConfig),
     readSvgs(join(WEB, 'assets', 'brand-logos'), artworkConfig),
-    readSvgs(BADGES, artworkConfig),
   ])
   // Flag files are named `GB-united-kingdom` or, for a region, `GB-SCT-scotland`; pages name a country by
   // its ISO code and a region by country and region code, `GB` and `GB-SCT`.
@@ -149,7 +144,6 @@ async function buildStylesheet() {
     ...[...icons].map(([name, uri]) => `[data-icon="${name}"]{--lmnd-icon:url("${uri}")}`),
     ...[...flags].map(([name, uri]) => `[data-flag="${name}"]{--lmnd-kit-asset:url("${uri}")}`),
     ...themedRules('logo', logos),
-    ...themedRules('badge', badges),
     '',
   ].join('\n')
 }
@@ -181,7 +175,7 @@ export async function kitLlmsTxt() {
     'Light theme is the default; dark applies from the OS, or with `data-lmnd-theme="dark"` on `<html>`.',
     'Always prefer a semantic token over a literal value.',
     '',
-    'Component markup is in gallery.html. Icon, flag, logo and badge names are in assets.txt.',
+    'Component markup is in gallery.html. Icon, flag and logo names are in assets.txt.',
     '',
     ...LLMS_SECTIONS.map((title) => `${sections.get(title)}\n`),
   ].join('\n')
@@ -203,7 +197,6 @@ async function assetList() {
       return `${code}  (${name.slice(code.length + 1).replaceAll('-', ' ')})`
     })
   const logos = (await svgNames(join(WEB, 'assets', 'brand-logos'))).filter((name) => !name.endsWith('-dark'))
-  const badges = (await svgNames(BADGES)).filter((name) => !name.endsWith('-dark'))
   const section = (title, usage, names) => `## ${title}\n\n${usage}\n\n${names.map((n) => `- ${n}`).join('\n')}\n`
   return [
     '# Lemonade HTML kit — assets',
@@ -221,11 +214,6 @@ async function assetList() {
       'Themed hues',
       'For colour the design system does not model, such as a category (LDS-COLOR-SEMANTIC). `<span class="lmnd-kit-symbol lmnd-kit-symbol--themed" data-hue="NAME">…</span>`; add `lmnd-kit-symbol--subtle` for the subtle palette.',
       await themedHues(),
-    ),
-    section(
-      'Transaction status badges',
-      "For a money row's symbol. `sale-transaction-*` for sales and refunds; `money-in`, `money-out` and `transaction-*` for an account's activity. `<span class=\"lmnd-kit-symbol__status\" data-badge=\"NAME\" aria-hidden=\"true\"></span>`",
-      badges,
     ),
   ].join('\n')
 }
