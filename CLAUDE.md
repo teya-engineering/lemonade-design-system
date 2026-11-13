@@ -52,8 +52,7 @@ exempt — fix the generator, not the file. Full rules and cleanup procedure:
 ## lemonade-specialist plugin
 
 `plugins/lemonade-specialist/skills/native-ui/guidelines/` is a generated copy of `guidelines/`. After
-any change to `guidelines/`, run `scripts/sync-lemonade-specialist.sh` and commit the result. The
-plugin is public like the rest of the repo: it holds no Teya app code, types or paths.
+any change to `guidelines/`, run `scripts/sync-lemonade-specialist.sh` and commit the result.
 
 ## Web
 
