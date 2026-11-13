@@ -1,6 +1,7 @@
 // @vitest-environment node
 /// <reference types="vite/client" />
 import kitCss from '../html-kit/kit.css?raw'
+import mapping from '../html-kit/mapping.md?raw'
 import tokensCss from '../styles/tokens.css?raw'
 import typographyCss from '../styles/typography.css?raw'
 import componentsCss from '../styles/components.css?raw'
@@ -170,5 +171,42 @@ describe('the guidelines', () => {
     const sources = [...Object.values(pages), index, ...rules.values(), ...screens.values(), ...skill] as string[]
     const named = sources.flatMap((text) => [...text.matchAll(/\b(?:LDS|APP|LHK)-[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*(?![\w-])/g)].map((m) => m[0]))
     expect([...new Set(named)].filter((id) => !ids.has(id))).toEqual([])
+  })
+})
+
+describe('mapping.md', () => {
+  const kitClasses = new Set([...withoutComments(kitCss).matchAll(/\.(lmnd-kit-[a-z0-9-]+)(?![\w-])/g)].map((m) => m[1]))
+  const blockOf = (name: string) => name.split('--')[0]
+  const blocks = new Set([...kitClasses].map(blockOf))
+  const rows = mapping
+    .split('\n')
+    .filter((line) => line.startsWith('| `lmnd-kit-'))
+    .map((line) => ({
+      line,
+      blocks: [...line.split('|')[1].matchAll(/`(lmnd-kit-[a-z0-9-]+)`/g)].map((m) => m[1]),
+      modifiers: [...line.matchAll(/`(--[a-z0-9-]+)`/g)].map((m) => m[1]),
+    }))
+
+  it('reads the classes and the rows it checks', () => {
+    expect(kitClasses.size).toBeGreaterThan(100)
+    expect(rows.length).toBeGreaterThan(50)
+  })
+
+  // A prototype port reads this table; a block or modifier missing from it gets guessed.
+  it('maps every block, with each of its modifiers in its row', () => {
+    const missing = [...kitClasses].filter((name) => {
+      const row = rows.find((r) => r.blocks.includes(blockOf(name)))
+      if (!row) return true
+      return name.includes('--') && !row.modifiers.includes(name.slice(blockOf(name).length))
+    })
+    expect(missing).toEqual([])
+  })
+
+  it('names only blocks and modifiers kit.css still has', () => {
+    const stale = rows.flatMap((row) => [
+      ...row.blocks.filter((block) => !blocks.has(block)),
+      ...row.modifiers.filter((modifier) => !row.blocks.some((block) => kitClasses.has(block + modifier))).map((m) => `${row.blocks[0]}${m}`),
+    ])
+    expect(stale).toEqual([])
   })
 })

@@ -51,8 +51,11 @@ exempt — fix the generator, not the file. Full rules and cleanup procedure:
 
 ## lemonade-specialist plugin
 
-`plugins/lemonade-specialist/skills/native-ui/guidelines/` is a generated copy of `guidelines/`. After
-any change to `guidelines/`, run `scripts/sync-lemonade-specialist.sh` and commit the result.
+`plugins/lemonade-specialist/skills/native-ui/guidelines/` and `mapping.md` are generated copies of
+`guidelines/` and `web/html-kit/mapping.md`. After changing either, run
+`scripts/sync-lemonade-specialist.sh` and commit the result. A change to `kit.css` that adds or removes
+an `lmnd-kit-` class or modifier needs its row in `web/html-kit/mapping.md`; `web/tests/html-kit.test.ts`
+fails without it.
 
 ## Web
 

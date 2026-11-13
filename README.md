@@ -129,9 +129,10 @@ repository points at something written down.
 
 Products read them through the `lemonade-specialist` Claude Code plugin in
 [`plugins/lemonade-specialist/`](./plugins/lemonade-specialist). Its `native-ui` skill carries the
-guidelines with the token and component references for Compose and SwiftUI. A plugin install copies only
-the plugin's folder, so the skill holds a copy of `guidelines/`. After you edit a guideline, run
-`scripts/sync-lemonade-specialist.sh`. CI fails when the copy differs.
+guidelines with the token and component references for Compose and SwiftUI, and the HTML kit's
+`mapping.md` for porting a prototype. A plugin install copies only the plugin's folder, so the skill
+holds copies of `guidelines/` and `web/html-kit/mapping.md`. After you edit either, run
+`scripts/sync-lemonade-specialist.sh`. CI fails when a copy differs.
 
 ---
 

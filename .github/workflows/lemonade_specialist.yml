@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'guidelines/**'
+      - 'web/html-kit/mapping.md'
       - 'plugins/lemonade-specialist/**'
       - 'scripts/sync-lemonade-specialist.sh'
       - '.github/workflows/lemonade_specialist.yml'
@@ -20,11 +21,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Fail if the guidelines copy drifted
+      - name: Fail if the copies drifted
         run: |
           scripts/sync-lemonade-specialist.sh
           if [ -n "$(git status --porcelain -- plugins/lemonade-specialist/)" ]; then
-            echo "::error::The lemonade-specialist guidelines do not match guidelines/. Run:"
+            echo "::error::The lemonade-specialist copies do not match guidelines/ and web/html-kit/mapping.md. Run:"
             echo "  scripts/sync-lemonade-specialist.sh"
             git status --porcelain -- plugins/lemonade-specialist/
             git --no-pager diff -- plugins/lemonade-specialist/ | head -100
