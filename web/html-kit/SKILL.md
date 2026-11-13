@@ -1,11 +1,11 @@
 ---
 name: lemonade-html-prototype
-description: Build Teya app prototypes as HTML with the Lemonade HTML kit — real tokens, Figtree, icons and component markup, in light and dark. Use when asked to prototype, mock up or sketch a Teya app screen or flow in HTML, or to make a page that looks like the Teya app.
+description: Build app prototypes as HTML with the Lemonade HTML kit — real tokens, Figtree, icons and component markup, in light and dark. Use when asked to prototype, mock up or sketch a Lemonade app screen or flow in HTML, or to make a page that looks like an app built with Lemonade.
 ---
 
 # Lemonade HTML prototype
 
-You build phone screens of the Teya app as plain HTML that look like the shipping app. Everything visual
+You build phone screens as plain HTML that look like an app built with Lemonade. Everything visual
 comes from this kit. Paths below are relative to the kit folder, the one holding `lemonade-kit.css`.
 
 ## Before you build

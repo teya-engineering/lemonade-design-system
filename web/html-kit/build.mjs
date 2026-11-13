@@ -224,7 +224,7 @@ async function assetList() {
     ),
     section(
       'Transaction status badges',
-      "The Teya app's, for a money row's symbol. `sale-transaction-*` for sales and refunds; `money-in`, `money-out` and `transaction-*` for an account's activity. `<span class=\"lmnd-kit-symbol__status\" data-badge=\"NAME\" aria-hidden=\"true\"></span>`",
+      "For a money row's symbol. `sale-transaction-*` for sales and refunds; `money-in`, `money-out` and `transaction-*` for an account's activity. `<span class=\"lmnd-kit-symbol__status\" data-badge=\"NAME\" aria-hidden=\"true\"></span>`",
       badges,
     ),
   ].join('\n')

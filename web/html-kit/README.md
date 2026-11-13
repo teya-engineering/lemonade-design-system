@@ -1,7 +1,7 @@
 # Lemonade HTML kit — source
 
-The source of the Lemonade HTML kit: plain HTML and CSS for prototyping Teya app screens, packaged as a
-zip anyone can open and hand to an AI session. The screens look like the app because they use the same
+The source of the Lemonade HTML kit: plain HTML and CSS for prototyping app screens, packaged as a
+zip anyone can open and hand to an AI session. The screens look like a shipping app because they use the same
 tokens: colours, spacing, radii, type scale, Figtree and icons come from `web/styles/` and
 `web/assets/`, which are generated from the same Figma exports as the KMP and SwiftUI code. Component
 measurements follow the Compose components in `kmp/`, with SwiftUI as the tie-breaker.

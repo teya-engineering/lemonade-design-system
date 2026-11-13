@@ -1,7 +1,7 @@
 # Lemonade HTML kit
 
-Plain HTML and CSS for prototyping Teya app screens. The screens look like the app because they use the
-app's own design system, Lemonade: its colours, spacing, radii, type scale, Figtree, icons, flags and
+Plain HTML and CSS for prototyping app screens. The screens look like a shipping app because they use its
+design system, Lemonade: its colours, spacing, radii, type scale, Figtree, icons, flags and
 logos, and components measured from the native ones. Every page works in light and dark mode.
 
 Nothing to install. Open a page in a browser and it works.
