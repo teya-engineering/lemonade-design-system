@@ -120,7 +120,7 @@ An asset from elsewhere gets none of that and won't be in the app.
 — which stands in as an `<img>` inside a `lmnd-kit-symbol`, with a note in the hand-over that it is a
 placeholder.
 
-## `LHK-COPY` · Realistic copy in Teya's voice
+## `LHK-COPY` · Realistic copy
 
 **Kind.** Rule of thumb.
 
