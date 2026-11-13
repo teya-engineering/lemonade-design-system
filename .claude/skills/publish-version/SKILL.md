@@ -1,22 +1,26 @@
 ---
 name: publish-version
 description: >
-  Publish a new version of the Lemonade SDK — KMP and/or SwiftUI. Use when the
-  user wants to cut a release, ship a new version, tag a release, or "publish the
-  SDK". Syncs to latest origin/main, analyzes what changed per platform since the
-  last release, suggests a version bump (confirmed with the user), then cuts and
-  pushes the tags and creates the KMP GitHub release.
+  Publish a new version of the Lemonade SDK — KMP and/or SwiftUI — and of the
+  lemonade-specialist Claude Code plugin. Use when the user wants to cut a release,
+  ship a new version, tag a release, or "publish the SDK". Syncs to latest
+  origin/main, analyzes what changed per platform since the last release, suggests
+  a version bump (confirmed with the user), then cuts and pushes the tags, creates
+  the KMP GitHub release, and bumps or tags the plugin.
 ---
 
 # Publish a Lemonade SDK version
 
-Cuts a new release for the two published SDKs. They version **independently** and
-their versions are **purely tag-driven** — there are no version files to bump on
-either side.
+Cuts a new release for the two published SDKs and the `lemonade-specialist` plugin.
+All three version **independently**. The SDK versions are **purely tag-driven** — there
+are no version files to bump on either side. The plugin's version lives in
+`plugins/lemonade-specialist/.claude-plugin/plugin.json`: Claude Code updates an
+installed plugin only when that number changes.
 
 | SDK | Release tag | What the tag does | GitHub Release |
 |-----|-------------|-------------------|----------------|
 | **KMP** | `lemonade-kmp-X.Y.Z` | `kmp_release.yml` publishes to Maven Central | **You create it** (KMP CI does *not*) — holds the **Latest** badge |
+| **Plugin** | `lemonade-specialist--vX.Y.Z` | Marks the released version; nothing runs on it. The `version` in `plugin.json` is what reaches users | None |
 | **SwiftUI** | `lemonade-swiftui-X.Y.Z` **and** plain `X.Y.Z` | `swiftui_release.yml` (on the prefixed tag) builds the XCFramework + creates the GH release. The plain `X.Y.Z` tag is the **SPM resolution tag** consumers actually pin to (root `Package.swift` builds from source). | **CI creates it** — do *not* create it yourself |
 
 Both SwiftUI tags point at the same commit. The prefixed tag drives the GitHub
@@ -54,7 +58,16 @@ HEAD all tags will point at — the worktree-safe equivalent of "checkout
 origin/main"), finds the latest released KMP and SwiftUI versions, lists what
 changed in each SDK's *shipped* source since its last release, and prints
 patch/minor candidates plus a suggested bump. **Capture `RELEASE_SHA` and each
-`*_PREV_TAG` / `*_PREV_VERSION` from this output — you need them below.**
+`*_PREV_TAG` / `*_PREV_VERSION` from this output — you need them below.** For the
+plugin it prints `PLUGIN_ACTION`:
+
+- `tag` — `plugin.json` is ahead of the latest plugin tag (a bump PR merged, or the
+  first release). Tag `PLUGIN_TAG_SHA`, the commit that set the version, with
+  `PLUGIN_TAG`. When `PLUGIN_CHANGED_AFTER_TAG` is above 0, the plugin changed after
+  that commit, so also open a bump PR in the same run.
+- `bump` — the plugin folder changed since its tag but the version did not. Open a
+  bump PR; the next release tags it.
+- `none` — nothing to do.
 
 The script's path filters (`kmp/` minus the `composeApp` sample; `swiftui/Sources/`)
 decide whether each side *has* changes. They are a first pass — the next step makes
@@ -80,14 +93,18 @@ Prompt template (fill in the range from the script):
 > (call out new icons/tokens, new components, and any public API additions — an
 > `api/*.api` diff means the public surface changed). Read only; do not edit.
 
+The plugin needs no subagent: everything under `plugins/lemonade-specialist/` is what
+agents read, including the copy of `guidelines/`, so any change there is worth a
+version.
+
 Use both verdicts to settle which SDKs to release. A reliable signal of a real KMP
 release is a changed `kmp/<module>/api/*.api` or `*.klib.api` baseline.
 
 ### 4. Confirm versions with the user — **always** via AskUserQuestion
 
 Apply the bump rule to form the suggestion, then confirm with `AskUserQuestion`.
-**Never tag without this confirmation.** Ask one question per SDK that has changes
-(at most two questions). Put the rule-suggested version first, marked
+**Never tag without this confirmation.** Ask one question per SDK that has changes,
+plus one for the plugin when `PLUGIN_ACTION` is not `none` (at most three questions). Put the rule-suggested version first, marked
 "(Recommended)", and always include a "Don't release this SDK" option.
 
 Example, when KMP has changes and SwiftUI doesn't (KMP-only → patch):
@@ -96,6 +113,10 @@ Example, when KMP has changes and SwiftUI doesn't (KMP-only → patch):
   - `0.20.1 — patch (Recommended)` — KMP-only change
   - `0.21.0 — minor` — if these are significant/breaking-ish additions
   - `Don't release KMP`
+
+For the plugin, `bump` suggests a **patch** (`PLUGIN_NEXT_PATCH`); offer
+`PLUGIN_NEXT_MINOR` for a new skill or a new guideline file. `tag` asks only whether
+to tag `PLUGIN_TAG` now.
 
 When **both** sides changed, suggest **minor** for both (e.g. KMP `0.20.0 → 0.21.0`,
 SwiftUI `0.16.2 → 0.17.0`) and ask one question each. Respect the user's choice
@@ -143,6 +164,43 @@ git tag "lemonade-swiftui-${NEW}" "$SHA"     # triggers CI (XCFramework + GH rel
 git push origin "${NEW}" "lemonade-swiftui-${NEW}"
 ```
 
+**Plugin, `PLUGIN_ACTION=tag`** — tag the commit that set the version, not
+`RELEASE_SHA`: users who installed that version have exactly that commit, and later
+plugin changes belong to the next version. Nothing is published:
+
+```bash
+TAG=lemonade-specialist--v1.1.1  # PLUGIN_TAG from the script
+SHA=<PLUGIN_TAG_SHA>
+
+git tag "$TAG" "$SHA"
+git push origin "$TAG"
+```
+
+If `PLUGIN_CHANGED_AFTER_TAG` is above 0, continue with the bump PR below, using the
+next patch after `PLUGIN_TAG`'s version.
+
+**Plugin, `PLUGIN_ACTION=bump`** — open a PR that bumps `version` in `plugin.json`,
+branched from `RELEASE_SHA` in a throwaway worktree, so the user's checkout is not
+touched. Don't tag; the next release finds the merged bump and tags it. First check
+that no bump PR is already open (`gh pr list --search "lemonade-specialist in:title"
+--state open`); if one is, report it instead of opening another:
+
+```bash
+NEW=1.1.1                        # confirmed version
+SHA=<RELEASE_SHA>
+BRANCH="chore/lemonade-specialist-${NEW}"
+DIR="$(mktemp -d)/lemonade-specialist-${NEW}"
+FILE=plugins/lemonade-specialist/.claude-plugin/plugin.json
+
+git worktree add -b "$BRANCH" "$DIR" "$SHA"
+sed -i.bak "s/\"version\": \"[^\"]*\"/\"version\": \"${NEW}\"/" "$DIR/$FILE" && rm "$DIR/$FILE.bak"
+git -C "$DIR" commit -am "chore(plugins): release lemonade-specialist ${NEW}"
+git -C "$DIR" push -u origin "$BRANCH"
+git worktree remove "$DIR"
+gh pr create --head "$BRANCH" --base main --title "chore(plugins): release lemonade-specialist ${NEW}" \
+  --body "Bumps lemonade-specialist to ${NEW}, so installed copies pick up the changes since the last release."
+```
+
 ### 6. Report back
 
 Summarize what shipped, with links:
@@ -152,6 +210,8 @@ Summarize what shipped, with links:
   (`gh run list --workflow swiftui_release.yml --limit 1`), and remind the user the
   SPM consumer version is the plain `${NEW}` tag.
 - Both post to the Slack release channel from CI.
+- Plugin: the pushed `lemonade-specialist--v…` tag, or the bump PR URL with a
+  reminder that the next release tags it once it merges.
 
 ---
 
@@ -159,9 +219,11 @@ Summarize what shipped, with links:
 
 - **Never tag without the AskUserQuestion confirmation** of versions (step 4).
 - Tag the resolved `RELEASE_SHA` (origin/main HEAD), never the local worktree HEAD —
-  this skill releases what is on origin/main, not local work in progress.
+  this skill releases what is on origin/main, not local work in progress. The plugin
+  tag is the one exception: it goes on `PLUGIN_TAG_SHA`, which is on origin/main too.
 - Pushing a tag is effectively irreversible (it triggers a public Maven/CI publish).
   Only push the tags for the SDKs the user explicitly confirmed.
+- Never push a plugin version bump straight to `main`; it goes through a PR.
 - Don't create the SwiftUI GitHub release — `swiftui_release.yml` already does, and
   doubling it up fights the CI-managed release.
 - These are public, outward-facing actions. Do the analysis and version

@@ -14,6 +14,12 @@
 #         SwiftUI -> tag  lemonade-swiftui-X.Y.Z  (CI) + plain X.Y.Z (SPM resolution)
 #   4. Lists what changed in each SDK's *shipped* source since its last release and
 #      prints patch/minor candidates plus a suggested bump per the project rule.
+#   5. Reports the lemonade-specialist plugin's state. Its version lives in
+#      plugin.json, and tag lemonade-specialist--vX.Y.Z marks each released version:
+#         PLUGIN_ACTION=tag   plugin.json is ahead of the latest tag -> tag the commit that
+#                             set the version (PLUGIN_TAG_SHA), not RELEASE_SHA
+#         PLUGIN_ACTION=bump  the plugin changed since its tag -> open a version bump PR
+#         PLUGIN_ACTION=none  nothing to release
 #
 # Version bump rule (suggestion only — always confirmed with the user):
 #   - changes on ONE side only -> PATCH bump for that SDK
@@ -133,6 +139,58 @@ echo
 print_sdk KMP   "$KMP_PREV_TAG"   "$KMP_PREV_VER"   "$KMP_COUNT"   "$KMP_HAS"   "$KMP_SUGGEST"   "${KMP_PATHS[@]}"
 print_sdk SWIFT "$SWIFT_PREV_TAG" "$SWIFT_PREV_VER" "$SWIFT_COUNT" "$SWIFT_HAS" "$SWIFT_SUGGEST" "${SWIFT_PATHS[@]}"
 
+PLUGIN_DIR=plugins/lemonade-specialist
+PLUGIN_PREV_TAG=$(latest_tag 'lemonade-specialist--v*')
+PLUGIN_PREV_VER=${PLUGIN_PREV_TAG#lemonade-specialist--v}
+PLUGIN_FILE_VER=$(git show "${RELEASE_SHA}:${PLUGIN_DIR}/.claude-plugin/plugin.json" 2>/dev/null \
+  | sed -n 's/^ *"version": *"\([^"]*\)".*/\1/p' | head -n1 || true)
+
+PLUGIN_COUNT=0
+PLUGIN_AFTER_COUNT=0
+if [ -z "$PLUGIN_FILE_VER" ]; then
+  PLUGIN_ACTION=none
+elif [ "$PLUGIN_FILE_VER" != "$PLUGIN_PREV_VER" ]; then
+  PLUGIN_ACTION=tag
+  # A tag at RELEASE_SHA would claim plugin changes that landed after the bump, and users
+  # who installed the bumped version would never receive them.
+  PLUGIN_TAG_SHA=$(git log -1 --format=%H "$RELEASE_SHA" -G'"version"' -- "$PLUGIN_DIR/.claude-plugin/plugin.json")
+  PLUGIN_AFTER_COUNT=$(git rev-list --count --no-merges "${PLUGIN_TAG_SHA}..${RELEASE_SHA}" -- "$PLUGIN_DIR/")
+else
+  PLUGIN_COUNT=$(shipped_count "$PLUGIN_PREV_TAG" "$PLUGIN_DIR/")
+  [ "$PLUGIN_COUNT" -gt 0 ] && PLUGIN_ACTION=bump || PLUGIN_ACTION=none
+fi
+
+echo "## PLUGIN (lemonade-specialist)"
+echo "PLUGIN_PREV_TAG=${PLUGIN_PREV_TAG:-<none>}"
+echo "PLUGIN_FILE_VERSION=${PLUGIN_FILE_VER:-<none>}"
+echo "PLUGIN_ACTION=${PLUGIN_ACTION}"
+case "$PLUGIN_ACTION" in
+  tag)
+    echo "PLUGIN_TAG=lemonade-specialist--v${PLUGIN_FILE_VER}"
+    echo "PLUGIN_TAG_SHA=${PLUGIN_TAG_SHA}"
+    echo "PLUGIN_CHANGED_AFTER_TAG=${PLUGIN_AFTER_COUNT}"
+    echo
+    echo "plugin.json is at ${PLUGIN_FILE_VER}, the latest tag is ${PLUGIN_PREV_TAG:-<none>}: tag ${PLUGIN_TAG_SHA:0:8}, the commit that set it."
+    if [ "$PLUGIN_AFTER_COUNT" -gt 0 ]; then
+      echo "The plugin changed after that commit, so the next release needs a bump PR:"
+      git log --no-merges --format='  %h %s' "${PLUGIN_TAG_SHA}..${RELEASE_SHA}" -- "$PLUGIN_DIR/"
+    fi
+    ;;
+  bump)
+    echo "PLUGIN_CHANGED_COMMITS=${PLUGIN_COUNT}"
+    echo "PLUGIN_NEXT_PATCH=$(bump "$PLUGIN_FILE_VER" patch)"
+    echo "PLUGIN_NEXT_MINOR=$(bump "$PLUGIN_FILE_VER" minor)"
+    echo
+    echo "Commits touching ${PLUGIN_DIR}/ (${PLUGIN_PREV_TAG}..origin/main):"
+    git log --no-merges --format='  %h %s' "${PLUGIN_PREV_TAG}..${RELEASE_SHA}" -- "$PLUGIN_DIR/"
+    ;;
+  none)
+    echo
+    echo "No plugin changes since ${PLUGIN_PREV_TAG:-<none>}."
+    ;;
+esac
+echo
+
 echo "## SUGGESTION (rule: one side -> patch, both sides -> minor)"
 if [ "$KMP_SUGGEST" != none ]; then
   echo "  KMP     ${KMP_PREV_VER} -> $(bump "$KMP_PREV_VER" "$KMP_SUGGEST")   (${KMP_SUGGEST})   tag: lemonade-kmp-$(bump "$KMP_PREV_VER" "$KMP_SUGGEST")"
@@ -145,5 +203,10 @@ if [ "$SWIFT_SUGGEST" != none ]; then
 else
   echo "  SwiftUI no shipped changes -> skip"
 fi
+case "$PLUGIN_ACTION" in
+  tag)  echo "  Plugin  tag lemonade-specialist--v${PLUGIN_FILE_VER} at ${PLUGIN_TAG_SHA:0:8}$([ "$PLUGIN_AFTER_COUNT" -gt 0 ] && echo ", then open a bump PR for the ${PLUGIN_AFTER_COUNT} later commit(s)")" ;;
+  bump) echo "  Plugin  ${PLUGIN_FILE_VER} -> $(bump "$PLUGIN_FILE_VER" patch)   (patch)   via a version bump PR" ;;
+  none) echo "  Plugin  no changes -> skip" ;;
+esac
 echo
 echo "Note: suggestion only. Confirm exact versions with the user before tagging."
