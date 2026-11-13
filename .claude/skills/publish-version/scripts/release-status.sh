@@ -20,6 +20,8 @@
 #                             set the version (PLUGIN_TAG_SHA), not RELEASE_SHA
 #         PLUGIN_ACTION=bump  the plugin changed since its tag -> open a version bump PR
 #         PLUGIN_ACTION=none  nothing to release
+#   6. Reports the HTML kit's state. Its version is tag-driven, like the SDKs:
+#         HTML kit -> tag lemonade-html-kit-X.Y.Z  (html_kit_release.yml builds and releases it)
 #
 # Version bump rule (suggestion only — always confirmed with the user):
 #   - changes on ONE side only -> PATCH bump for that SDK
@@ -200,6 +202,43 @@ case "$PLUGIN_ACTION" in
 esac
 echo
 
+# Everything the kit build reads (web/html-kit/build.mjs). html_kit_release.yml lists the same paths for
+# its release notes.
+KIT_PATHS=(web/html-kit/ ':(exclude)web/html-kit/mapping.md' ':(exclude)web/html-kit/README.md'
+  web/styles/ web/assets/ web/llms.txt guidelines/ swiftui/Sources/Lemonade/Resources/Fonts/)
+KIT_PREV_TAG=$(latest_tag 'lemonade-html-kit-*')
+KIT_PREV_VER=${KIT_PREV_TAG#lemonade-html-kit-}
+if [ -z "$KIT_PREV_TAG" ]; then
+  KIT_ACTION=first
+  KIT_COUNT=0
+else
+  KIT_COUNT=$(shipped_count "$KIT_PREV_TAG" "${KIT_PATHS[@]}")
+  [ "$KIT_COUNT" -gt 0 ] && KIT_ACTION=release || KIT_ACTION=none
+fi
+
+echo "## KIT (HTML kit)"
+echo "KIT_PREV_TAG=${KIT_PREV_TAG:-<none>}"
+echo "KIT_ACTION=${KIT_ACTION}"
+case "$KIT_ACTION" in
+  first)
+    echo
+    echo "No kit has been released. Ask for the first version; the release waits for scripts/check-html-kit-bundle.sh to pass."
+    ;;
+  release)
+    echo "KIT_SHIPPED_COMMITS=${KIT_COUNT}"
+    echo "KIT_NEXT_PATCH=$(bump "$KIT_PREV_VER" patch)"
+    echo "KIT_NEXT_MINOR=$(bump "$KIT_PREV_VER" minor)"
+    echo
+    echo "Commits touching the kit (${KIT_PREV_TAG}..origin/main):"
+    git log --no-merges --format='  %h %s' "${KIT_PREV_TAG}..${RELEASE_SHA}" -- "${KIT_PATHS[@]}"
+    ;;
+  none)
+    echo
+    echo "No kit changes since ${KIT_PREV_TAG}."
+    ;;
+esac
+echo
+
 echo "## SUGGESTION (rule: one side -> patch, both sides -> minor)"
 if [ "$KMP_SUGGEST" != none ]; then
   echo "  KMP     ${KMP_PREV_VER} -> $(bump "$KMP_PREV_VER" "$KMP_SUGGEST")   (${KMP_SUGGEST})   tag: lemonade-kmp-$(bump "$KMP_PREV_VER" "$KMP_SUGGEST")"
@@ -216,6 +255,11 @@ case "$PLUGIN_ACTION" in
   tag)  echo "  Plugin  tag lemonade-specialist--v${PLUGIN_FILE_VER} at ${PLUGIN_TAG_SHA:0:8}$([ "$PLUGIN_AFTER_COUNT" -gt 0 ] && echo ", then open a bump PR for the ${PLUGIN_AFTER_COUNT} later commit(s)")" ;;
   bump) echo "  Plugin  ${PLUGIN_FILE_VER} -> $(bump "$PLUGIN_FILE_VER" patch)   (patch)   via a version bump PR" ;;
   none) echo "  Plugin  no changes -> skip" ;;
+esac
+case "$KIT_ACTION" in
+  first)   echo "  Kit     first release -> ask for the version   tag: lemonade-html-kit-X.Y.Z" ;;
+  release) echo "  Kit     ${KIT_PREV_VER} -> $(bump "$KIT_PREV_VER" patch)   (patch)   tag: lemonade-html-kit-$(bump "$KIT_PREV_VER" patch)" ;;
+  none)    echo "  Kit     no changes -> skip" ;;
 esac
 echo
 echo "Note: suggestion only. Confirm exact versions with the user before tagging."
