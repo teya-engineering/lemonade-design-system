@@ -329,6 +329,25 @@
     })
   }
 
+  // ---------- A filter bar and group headers that stay under the top bar ----------
+
+  // A screen's filter bar sticks under its top bar, and a group's header under both. Their heights change
+  // with tabs, a large title folding in, or a chip row wrapping, so they are measured, not assumed.
+  const measureBars = () => {
+    document.querySelectorAll('.lmnd-kit-screen').forEach((screen) => {
+      const bar = screen.querySelector(':scope > .lmnd-kit-top-bar')
+      const filters = screen.querySelector(':scope > .lmnd-kit-content > .lmnd-kit-filter-bar')
+      if (!filters && !screen.querySelector(':scope > .lmnd-kit-content > .lmnd-kit-list-group')) return
+      const update = () => {
+        if (!screen.offsetWidth) return
+        screen.style.setProperty('--lmnd-kit-top-bar-height', `${bar ? bar.offsetHeight : 0}px`)
+        screen.style.setProperty('--lmnd-kit-filter-bar-height', `${filters ? filters.offsetHeight : 0}px`)
+      }
+      const observer = new ResizeObserver(update)
+      ;[screen, bar, filters].forEach((element) => element && observer.observe(element))
+    })
+  }
+
   // ---------- A top bar that fills once its screen scrolls ----------
 
   // Details and Home bars start clear over their colour and fill once the screen scrolls. CSS does it from
@@ -381,6 +400,7 @@
     document.querySelectorAll('.lmnd-kit-tabs input[aria-controls]:checked, .lmnd-kit-segmented input[aria-controls]:checked').forEach(showPanel)
     foldTitles()
     fillBars()
+    measureBars()
     slideMarks()
     centreDays()
     resizeCards()
