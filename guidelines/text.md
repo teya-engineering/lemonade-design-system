@@ -95,9 +95,9 @@ HTML kit.
 ## `LDS-TEXT-TYPEFACE` · Text is Figtree
 
 **Rule.** Every piece of text is set in Figtree, through the Lemonade typography styles (`lmnd-text-*` in
-the HTML kit); the app has no other typeface.
+the HTML kit); the product has no other typeface.
 
-**Why.** The type is half of what makes a screen read as Teya's. Another family, even for one heading,
+**Why.** The type is half of what makes a screen look like part of the product. Another family, even for one heading,
 makes the screen look like another app.
 
 **Exceptions.** None.
