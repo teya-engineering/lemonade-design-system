@@ -279,7 +279,7 @@ Box(
 ) {
     Image(
         painter = terminalPhoto,
-        contentDescription = "Teya terminal",
+        contentDescription = "Card terminal",
         modifier = Modifier.clip(LemonadeTheme.shapes.radius200),
     )
 }
@@ -301,7 +301,7 @@ HTML kit. The token is `--lmnd-radius-container-default`.
 
 ```html
 <div style="padding: var(--lmnd-spacing-400); border-radius: var(--lmnd-radius-container-default); background: var(--lmnd-color-bg-default)">
-  <img src="terminal.png" alt="Teya terminal" style="display: block; width: 100%; border-radius: var(--lmnd-radius-200)">
+  <img src="terminal.png" alt="Card terminal" style="display: block; width: 100%; border-radius: var(--lmnd-radius-200)">
 </div>
 ```
 

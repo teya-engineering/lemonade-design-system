@@ -158,7 +158,7 @@ acted on.
 
 ## Components
 
-Thirty-nine components on both platforms, seven Compose-only ones (`Dropdown`,
+Forty components on both platforms, seven Compose-only ones (`Dropdown`,
 `DropdownItem`, `BottomTabBar`, `BottomSheet`, `TimePicker`, `TimeInput`,
 `TimePickerDialog`), and nine internal parts they nest, all hand-written. A few
 needed more than a property lookup:
@@ -192,6 +192,11 @@ needed more than a property lookup:
   number after the slash as `maxLength`, and emits a `// TODO:` when the text has
   no number. The leading and trailing slots it inherited from `TextField` have no
   code equivalent and are not read.
+- `ProgressStepper`'s `value` ("2/3") becomes `completedSteps`, the number before
+  the slash. With `hasStepTitle?` on, the template reads each `.Stepper Item`'s
+  title and subheading; with it off, it emits three empty items. The library
+  only has three-step variants, so a stepper of any other length can't come
+  from Figma.
 
 - `SearchField`'s query and placeholder are text layers rather than properties,
   read with `findText('Value')` / `findText('Placeholder')`. In the filled

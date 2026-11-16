@@ -16,7 +16,7 @@ text, dimension and shadow — say which token to reach for and when.
 | [sheets.md](sheets.md) | `LDS-SHEET-CHROME`, `LDS-SHEET-BAR-ACTIONS` |
 | [top-bar.md](top-bar.md) | `LDS-TOP-BAR-ACTIONS`, `LDS-TOP-BAR-CRITICAL`, `LDS-TOP-BAR-DESCRIPTION` |
 | [toasts.md](toasts.md) | `LDS-TOAST-DURATION` |
-| [controls.md](controls.md) | `LDS-CONTROL-CHOICE` |
+| [controls.md](controls.md) | `LDS-CONTROL-MEANING` |
 | [timeline.md](timeline.md) | `LDS-TIMELINE-END` |
 | [colour.md](colour.md) | `LDS-COLOR-SEMANTIC`, `LDS-COLOR-SURFACE`, `LDS-COLOR-ON-SURFACE`, `LDS-COLOR-INVERSE`, `LDS-COLOR-STATE` |
 | [text.md](text.md) | `LDS-TEXT-INTRO`, `LDS-TEXT-STYLE`, `LDS-TEXT-HEADING-DISPLAY` |
