@@ -433,60 +433,19 @@ private struct HistoryStepsIndicator: View {
 private struct HistoryActiveLineFill: View {
     let style: StrokeStyle
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var startDate = Date()
-
-    private static let fadeStart: TimeInterval = 1.8
-    private static let fillDuration: TimeInterval = 2.4
-    private static let cycleDuration: TimeInterval = 3.0
-
     var body: some View {
-        if reduceMotion {
-            fill(progress: 1, opacity: 1)
-        } else {
-            TimelineView(.animation) { context in
-                let time = context.date.timeIntervalSince(startDate)
-                    .truncatingRemainder(dividingBy: Self.cycleDuration)
-                fill(progress: Self.progress(at: time), opacity: Self.opacity(at: time))
+        LemonadeProgressSweep(cycleDuration: 3) { progress, opacity in
+            GeometryReader { proxy in
+                let color = LemonadeTheme.colors.border.borderPositive
+                HistoryStepsLine()
+                    .stroke(
+                        LinearGradient(colors: [color, color.opacity(0)], startPoint: .top, endPoint: .bottom),
+                        style: style
+                    )
+                    .frame(height: proxy.size.height * progress)
+                    .opacity(opacity)
             }
         }
-    }
-
-    private func fill(progress: CGFloat, opacity: Double) -> some View {
-        GeometryReader { proxy in
-            let color = LemonadeTheme.colors.border.borderPositive
-            HistoryStepsLine()
-                .stroke(
-                    LinearGradient(colors: [color, color.opacity(0)], startPoint: .top, endPoint: .bottom),
-                    style: style
-                )
-                .frame(height: proxy.size.height * progress)
-                .opacity(progress > 0 ? opacity : 0)
-        }
-    }
-
-    private static func progress(at time: TimeInterval) -> CGFloat {
-        guard time < fillDuration else { return 1 }
-        return easeInOut(time / fillDuration)
-    }
-
-    private static func opacity(at time: TimeInterval) -> Double {
-        guard time > fadeStart else { return 1 }
-        return max(0, 1 - (time - fadeStart) / (fillDuration - fadeStart))
-    }
-
-    /// `cubic-bezier(0.42, 0, 0.58, 1)`, the curve SwiftUI's `.easeInOut` and Compose's `EaseInOut` use.
-    private static func easeInOut(_ x: Double) -> CGFloat {
-        var low = 0.0
-        var high = 1.0
-        var t = x
-        for _ in 0..<20 {
-            let inverse = 1 - t
-            let curveX = 3 * inverse * inverse * t * 0.42 + 3 * inverse * t * t * 0.58 + t * t * t
-            if curveX < x { low = t } else { high = t }
-            t = (low + high) / 2
-        }
-        return CGFloat(3 * t * t - 2 * t * t * t)
     }
 }
 

@@ -204,6 +204,7 @@ internal object DisplayRegistry {
                 Displays.Toast,
                 Displays.Tooltip,
                 Displays.HistoryTimeline,
+                Displays.ProgressStepper,
             ),
         ),
         DisplayData(
