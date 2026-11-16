@@ -126,7 +126,8 @@ placeholder.
 
 **Rule.** Copy is British English, plain and short. Sample data is realistic: real-looking names,
 `£` amounts with pence, dates as `12 Oct 2026`, times as `14:32`. Use `•` (U+2022) as an inline
-separator and `-` for a negative amount (`-£12.00`).
+separator and `-` for a negative amount (`-£12.00`). An amount, a date or a status that appears twice on a
+page is the same in both places.
 
 **Why.** A prototype is read as the screen it will become. Lorem ipsum hides how long real copy runs, and
 placeholder numbers hide how amounts and dates line up in a row.
@@ -181,6 +182,9 @@ where the flow starts. Overlays follow the screens, as in `LHK-FLOWS`.
 - Back is a link to the screen it returns to, marked `data-lmnd-kit-back`: `<a href="#transactions"
   data-lmnd-kit-back …>`.
 - A tab bar's links point at its tabs' screens.
+- A task with several steps keeps them in the device as `lmnd-kit-screen--task` screens, which open as a
+  sheet over the screen the task starts from.
+- A form or long list in a sheet uses `lmnd-kit-sheet--full`, which reaches up to just under the status bar.
 
 ```html
 <div class="lmnd-kit-device">

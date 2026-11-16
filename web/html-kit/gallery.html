@@ -22,6 +22,7 @@
   .g-demo { display: flex; flex-direction: column; gap: var(--lmnd-spacing-300); padding: var(--lmnd-spacing-400); background: var(--lmnd-color-bg-subtle); }
   .g-demo--default { background: var(--lmnd-color-bg-default); }
   .g-demo--frame { position: relative; min-height: 420px; padding: 0; overflow: hidden; }
+  .g-demo--phone > .lmnd-kit-device { zoom: 0.8; margin: var(--lmnd-spacing-800) auto; }
   .g-code { margin: 0; padding: var(--lmnd-spacing-400); overflow: auto; max-height: 520px; font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--lmnd-color-content-secondary); white-space: pre; }
   .g-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--lmnd-spacing-200); }
   .g-swatch { display: flex; flex-direction: column; gap: var(--lmnd-spacing-100); }
@@ -51,11 +52,11 @@
   <h2 class="lmnd-text-body-xsmall-overline">Display</h2>
   <a href="#symbol">Symbol container</a><a href="#tag">Tag and badge</a><a href="#notice">Notice</a><a href="#skeleton">Skeleton</a><a href="#divider">Divider</a><a href="#flags">Flags and logos</a>
   <h2 class="lmnd-text-body-xsmall-overline">Lists</h2>
-  <a href="#card">Card</a><a href="#avatars">Avatars</a><a href="#list-item">List item</a><a href="#list-group">List group</a><a href="#content-item">Content list item</a><a href="#select-item">Select list item</a><a href="#timeline">History timeline</a><a href="#swipe">Swipe action row</a>
+  <a href="#section">Section</a><a href="#card">Card</a><a href="#avatars">Avatars</a><a href="#list-item">List item</a><a href="#list-group">List group</a><a href="#content-item">Content list item</a><a href="#select-item">Select list item</a><a href="#timeline">History timeline</a><a href="#swipe">Swipe action row</a>
   <h2 class="lmnd-text-body-xsmall-overline">Inputs</h2>
   <a href="#text-field">Text field</a><a href="#text-area">Text area</a><a href="#select-field">Select field</a><a href="#search">Search field</a><a href="#pin">Pin code</a><a href="#controls">Switch, checkbox, radio</a><a href="#box-selection">Box selection</a><a href="#segmented">Segmented control</a><a href="#tabs">Tabs</a>
   <h2 class="lmnd-text-body-xsmall-overline">Navigation and overlays</h2>
-  <a href="#top-bar">Top bar</a><a href="#tab-bar">Bottom tab bar</a><a href="#dropdown">Dropdown</a><a href="#sheet">Bottom sheet</a><a href="#dialog">Dialog</a><a href="#toast">Toast</a><a href="#tooltip">Tooltip</a>
+  <a href="#top-bar">Top bar</a><a href="#tab-bar">Bottom tab bar</a><a href="#dropdown">Dropdown</a><a href="#sheet">Bottom sheet</a><a href="#task">Task sheet</a><a href="#dialog">Dialog</a><a href="#toast">Toast</a><a href="#tooltip">Tooltip</a>
 </nav>
 
 <main class="g-main">
@@ -329,6 +330,28 @@
   </section>
 
   <!-- ===================== Lists ===================== -->
+
+  <section class="g-section" id="section">
+    <h2 class="lmnd-text-heading-small">Section</h2>
+    <p class="lmnd-text-body-small-regular">A section is a heading and its card: <code>lmnd-kit-section</code> with a <code>lmnd-kit-section__title</code>. A <code>lmnd-kit-section__footer</code> under the card, in <code>lmnd-text-body-small-regular</code>, says in a sentence or two what the card means; it lines up with the rows' text. It is not a notice, and it doesn't repeat a row's support text.</p>
+    <div class="g-example"><div class="g-demo" data-demo>
+<section class="lmnd-kit-section">
+  <h2 class="lmnd-kit-section__title lmnd-text-heading-xsmall">1 problem found</h2>
+  <div class="lmnd-kit-card">
+    <div class="lmnd-kit-list-item">
+      <span class="lmnd-kit-list-item__row">
+        <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="printer" aria-hidden="true"></span></span></span>
+        <span class="lmnd-kit-list-item__content">
+          <span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Printer and paper</span>
+          <span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">Out of paper</span>
+        </span>
+      </span>
+    </div>
+  </div>
+  <p class="lmnd-kit-section__footer lmnd-text-body-small-regular">Card payments still work. Receipts won't print until you load paper.</p>
+</section>
+    </div></div>
+  </section>
 
   <section class="g-section" id="card">
     <h2 class="lmnd-text-heading-small">Card</h2>
@@ -876,7 +899,7 @@
 
   <section class="g-section" id="sheet">
     <h2 class="lmnd-text-heading-small">Bottom sheet</h2>
-    <p class="lmnd-text-body-small-regular">The scaffold: handle, close on the left, an optional text action, a large title. On a screen, the scrim goes in the <code>lmnd-kit-device</code>, after the <code>lmnd-kit-screen</code>, with an <code>id</code>: a link to <code>#that-id</code> opens it and a link to <code>#</code> closes it, with no script. A sheet closes with Close, never Back. A confirming button that picks an option is a <code>&lt;label for="the-option-id"&gt;</code> with <code>data-lmnd-kit-close</code>, so one tap picks and closes; add <code>data-lmnd-kit-reset=&quot;element-id&quot;</code> to put the fields in that element back as the markup wrote them first, as when starting again from a role.</p>
+    <p class="lmnd-text-body-small-regular">The scaffold: handle, close on the left, an optional text action, a large title. On a screen, the scrim goes in the <code>lmnd-kit-device</code>, after the <code>lmnd-kit-screen</code>, with an <code>id</code>: a link to <code>#that-id</code> opens it and a link to <code>#</code> closes it, with no script. A sheet closes with Close, never Back. Add <code>lmnd-kit-sheet--full</code> for a form or a long list: it reaches up to just under the status bar, starts with its bar, with no handle, and one opened over a task's step shrinks the step behind it. A confirming button that picks an option is a <code>&lt;label for="the-option-id"&gt;</code> with <code>data-lmnd-kit-close</code>, so one tap picks and closes; add <code>data-lmnd-kit-reset=&quot;element-id&quot;</code> to put the fields in that element back as the markup wrote them first, as when starting again from a role.</p>
     <div class="g-example"><div class="g-demo g-demo--frame" data-demo>
 <div class="lmnd-kit-scrim" style="position: absolute">
   <div class="lmnd-kit-sheet lmnd-kit-sheet--subtle" role="dialog" aria-labelledby="g-sheet-title">
@@ -907,6 +930,82 @@
     <div class="lmnd-kit-sheet__actions">
       <button type="button" class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold"><span class="lmnd-button__label">Confirm</span></button>
     </div>
+  </div>
+</div>
+    </div></div>
+
+    <p class="lmnd-text-body-small-regular">An acknowledgement sheet has no handle and no Close (LDS-SHEET-CHROME): it opens by itself straight after the action it explains, and its one Primary · Solid action stays disabled until the user ticks the box that says what they understood, which the page's own script does. <code>data-lmnd-kit-modal</code> on the scrim keeps a tap on it, Esc and the browser's Back from closing the sheet, so the action is the only way out. Make that action a link or give it <code>data-lmnd-kit-close</code>.</p>
+    <div class="g-example"><div class="g-demo g-demo--frame" data-demo>
+<div class="lmnd-kit-scrim" style="position: absolute" data-lmnd-kit-modal>
+  <div class="lmnd-kit-sheet lmnd-kit-sheet--subtle" role="dialog" aria-modal="true" aria-labelledby="g-ack-title">
+    <h2 class="lmnd-kit-sheet__title lmnd-text-heading-large" id="g-ack-title">Box up your old device</h2>
+    <p class="lmnd-kit-sheet__intro lmnd-text-body-small-regular">The courier takes it when they bring the new one</p>
+    <div class="lmnd-kit-sheet__body">
+      <div class="lmnd-kit-card">
+        <div class="lmnd-kit-list-item lmnd-kit-list-item--divider">
+          <span class="lmnd-kit-list-item__row">
+            <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="package" aria-hidden="true"></span></span></span>
+            <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Pack the old device</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">In the box the new one comes in</span></span>
+          </span>
+        </div>
+        <div class="lmnd-kit-list-item">
+          <span class="lmnd-kit-list-item__row">
+            <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="battery-half" aria-hidden="true"></span></span></span>
+            <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">Keep the base and cable</span><span class="lmnd-kit-list-item__support lmnd-text-body-small-regular">The new one uses them</span></span>
+          </span>
+        </div>
+      </div>
+      <div class="lmnd-kit-card lmnd-kit-card--pad-medium">
+        <div class="lmnd-kit-card__body">
+          <label class="lmnd-kit-control">
+            <input type="checkbox" class="lmnd-kit-checkbox">
+            <span class="lmnd-kit-control__text"><span class="lmnd-text-body-medium-medium">I understand I need to box it up and keep the charging base and cable</span></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="lmnd-kit-sheet__actions">
+      <button type="button" class="lmnd-button lmnd-button--primary lmnd-button--solid lmnd-button--large lmnd-text-body-medium-semibold" disabled><span class="lmnd-button__label">Got it</span></button>
+    </div>
+  </div>
+</div>
+    </div></div>
+  </section>
+
+  <section class="g-section" id="task">
+    <h2 class="lmnd-text-heading-small">Task sheet</h2>
+    <p class="lmnd-text-body-small-regular">A task with several steps runs in a sheet over the screen it starts from. Each step is a <code>lmnd-kit-screen lmnd-kit-screen--task</code> with an <code>id</code>, in the <code>lmnd-kit-device</code> beside the other screens, with its own top bar, content and <code>lmnd-kit-actions</code>. The first step has Close; later ones have Back and Close. A link to a step's id from a screen opens the sheet, and a link from one step to another pushes inside it. Close, a button that finishes the task, and a link to a screen outside it all lower the sheet and go back to where the task started, with no step left in history: give them <code>data-lmnd-kit-close</code>. Their <code>href</code> is where they go without the script: the start screen's <code>#id</code>, or <code>#</code> when the task starts from more than one screen, as in this demo. While a step shows, kit.js keeps the start screen behind it as <code>lmnd-kit-screen--behind</code>, dimmed and inert.</p>
+    <div class="g-example"><div class="g-demo g-demo--frame g-demo--phone" data-demo>
+<div class="lmnd-kit-device">
+  <div class="lmnd-kit-screen lmnd-kit-screen--behind">
+    <header class="lmnd-kit-top-bar lmnd-kit-top-bar--small">
+      <div class="lmnd-kit-top-bar__bar">
+        <div class="lmnd-kit-top-bar__leading"><a href="#" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Back"><span class="lmnd-icon" data-icon="arrow-left"></span></a></div>
+        <div class="lmnd-kit-top-bar__center"><span class="lmnd-kit-top-bar__title lmnd-text-heading-xxsmall">Printers</span></div>
+        <div class="lmnd-kit-top-bar__trailing"></div>
+      </div>
+    </header>
+  </div>
+  <div class="lmnd-kit-screen lmnd-kit-screen--task">
+    <header class="lmnd-kit-top-bar">
+      <div class="lmnd-kit-top-bar__bar">
+        <div class="lmnd-kit-top-bar__leading"><a href="#" class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Back"><span class="lmnd-icon" data-icon="arrow-left"></span></a></div>
+        <div class="lmnd-kit-top-bar__center"><span class="lmnd-kit-top-bar__title lmnd-text-heading-xxsmall">What's wrong?</span></div>
+        <div class="lmnd-kit-top-bar__trailing"><a href="#" data-lmnd-kit-close class="lmnd-kit-icon-button lmnd-kit-icon-button--small lmnd-kit-icon-button--circular" aria-label="Close"><span class="lmnd-icon" data-icon="times"></span></a></div>
+      </div>
+    </header>
+    <main class="lmnd-kit-content">
+      <div class="lmnd-kit-large-title"><h1 class="lmnd-text-heading-large">What's wrong?</h1><p class="lmnd-kit-large-title__description lmnd-text-body-small-regular">Pick the closest match</p></div>
+      <div class="lmnd-kit-card">
+        <a href="#" class="lmnd-kit-list-item">
+          <span class="lmnd-kit-list-item__row">
+            <span class="lmnd-kit-list-item__leading"><span class="lmnd-kit-symbol lmnd-kit-symbol--rounded"><span class="lmnd-icon" data-icon="printer" aria-hidden="true"></span></span></span>
+            <span class="lmnd-kit-list-item__content"><span class="lmnd-kit-list-item__label lmnd-text-body-medium-medium">It won't print</span></span>
+            <span class="lmnd-kit-list-item__trailing"><span class="lmnd-icon lmnd-kit-list-item__chevron" data-icon="chevron-right" aria-hidden="true"></span></span>
+          </span>
+        </a>
+      </div>
+    </main>
   </div>
 </div>
     </div></div>

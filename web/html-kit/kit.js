@@ -9,6 +9,9 @@
   // Opened by a link to their id, as without script; this adds Esc, a tap on the scrim, and focus that
   // moves into the overlay and back to what opened it.
   let opener = null
+  let leavingModal = false
+
+  const here = (href) => location.href.split('#')[0] + href
 
   const openOverlay = () => {
     const id = decodeURIComponent(location.hash.slice(1))
@@ -26,27 +29,33 @@
   }
 
   document.addEventListener('click', (event) => {
+    if (event.defaultPrevented) return
     const link = event.target.closest('a[href^="#"]')
     const overlay = openOverlay()
     const next = link && link.getAttribute('href').length > 1 && document.getElementById(decodeURIComponent(link.getAttribute('href').slice(1)))
+    // A modal overlay goes only through its own links and close controls; see the hashchange guard.
+    if (overlay?.contains(event.target) && event.target.closest('a[href^="#"], [data-lmnd-kit-close]')) leavingModal = true
     // Whatever a link in an overlay opens takes the overlay's place in history: another overlay, such as a
     // menu item opening a sheet, so closing it returns to the screen, and focus to what opened the first;
     // or a screen, such as a sheet's Continue, so Back from that screen doesn't reopen the overlay.
     if (overlay && next && next !== overlay && overlay.contains(link) && !link.hasAttribute('data-lmnd-kit-back')) {
       event.preventDefault()
-      location.replace(link.getAttribute('href'))
+      location.replace(here(link.getAttribute('href')))
       return
     }
     if (link && link.getAttribute('href').length > 1) opener = link
-    // A tap on the scrim itself, outside the sheet or dialog, closes it.
-    if (overlay && event.target === overlay) close()
+    // A tap on the scrim itself, outside the sheet or dialog, closes it, unless the scrim has
+    // data-lmnd-kit-modal: an acknowledgement sheet closes only through its own action (LDS-SHEET-CHROME).
+    if (overlay && event.target === overlay) {
+      if (!overlay.hasAttribute('data-lmnd-kit-modal')) close()
+    }
     // A label or button with data-lmnd-kit-close does its own job first — a label picks its option — and
     // then closes the overlay it sits in. Without script the option is still picked and the overlay stays.
     else if (overlay && event.target.closest('[data-lmnd-kit-close]')?.closest(OVERLAYS) === overlay) setTimeout(close)
   })
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') close()
+    if (event.key === 'Escape' && !openOverlay()?.hasAttribute('data-lmnd-kit-modal')) close()
   })
 
   // Opening animates in CSS. Closing, whichever way it happens — Esc, the scrim, a link, the browser's back
@@ -62,6 +71,9 @@
 
   window.addEventListener('hashchange', () => {
     const overlay = openOverlay()
+    // Only its own action takes a modal overlay away: Back, or a hash typed over it, goes forward to it again.
+    if (shown?.hasAttribute('data-lmnd-kit-modal') && overlay !== shown && !leavingModal) return history.forward()
+    leavingModal = false
     if (overlay && opener) history.replaceState({ ...history.state, lmndKitOverlay: true }, '')
     if (shown && shown !== overlay) animateClose(shown)
     shown = overlay
@@ -84,9 +96,28 @@
   const stack = []
   let current = null
   let lastLink = null
+  let behind = null
+  let after = null
+  let leaving = null
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)')
 
   const screenFor = (id) => screens.find((screen) => screen.id === id)
+
+  // A task's steps are screens with --task, shown in a sheet over the screen the task started from, which
+  // stays in view behind them and takes no taps.
+  const isStep = (screen) => !!screen?.classList.contains('lmnd-kit-screen--task')
+
+  const setBehind = (screen) => {
+    if (behind) {
+      behind.classList.remove('lmnd-kit-screen--behind')
+      behind.inert = false
+    }
+    behind = screen
+    if (behind) {
+      behind.classList.add('lmnd-kit-screen--behind')
+      behind.inert = true
+    }
+  }
 
   // An animation that never reports its end (a background tab, a headless render) still ends.
   const SLIDE = 400
@@ -137,9 +168,28 @@
     if (how === 'back') stack.length = index + 1
     else if (how === 'switch') stack.splice(0, stack.length, next.id)
     else stack.push(next.id)
+    const move = isStep(next) ? (isStep(current) ? 'step' : 'open') : (isStep(current) ? 'close' : '')
+    if (move) device.setAttribute('data-lmnd-kit-task', move)
+    else device.removeAttribute('data-lmnd-kit-task')
+    if (move === 'open') setBehind(current)
+    else if (move === 'close') setBehind(null)
     show(next, how)
     history.replaceState({ lmndKitScreen: next.id }, '')
     lastLink = null
+    if (move === 'close' && after) {
+      const then = after
+      after = null
+      setTimeout(() => { location.hash = then }, SLIDE)
+    }
+  }
+
+  // Leaving a task goes back through history to the screen it started from, past every step and any sheet
+  // opened over one, so Back there doesn't reopen them. A link to another screen then opens that one from
+  // there.
+  const leaveTask = (then) => {
+    after = then && then !== behind ? then.id : null
+    leaving = behind.id
+    history.back()
   }
 
   // Set up once the page is parsed: a standalone file inlines this script in its head.
@@ -150,8 +200,18 @@
     device.setAttribute('data-lmnd-kit-screens', '')
     const first = screenFor(decodeURIComponent(location.hash.slice(1))) || screens[0]
     stack.push(first.id)
+    if (isStep(first)) {
+      device.setAttribute('data-lmnd-kit-task', 'step')
+      setBehind(screens.find((screen) => !isStep(screen)))
+    }
     show(first, 'switch')
-    history.replaceState({ lmndKitScreen: first.id }, '')
+    // A page opened on a step gets an entry for the screen behind it, so leaving the task goes back to it
+    // as it would had the task started there.
+    if (behind) {
+      stack.unshift(behind.id)
+      history.replaceState({ lmndKitScreen: behind.id }, '', here(`#${behind.id}`))
+      history.pushState({ lmndKitScreen: first.id }, '', here(`#${first.id}`))
+    } else history.replaceState({ lmndKitScreen: first.id }, '')
 
     document.addEventListener('click', (event) => {
       const link = event.target.closest('a[href]')
@@ -161,17 +221,32 @@
       if (link.hasAttribute('data-lmnd-kit-back') && stack.length > 1) {
         event.preventDefault()
         history.back()
+        return
+      }
+      // In a task, Close (data-lmnd-kit-close) and a link to a screen outside it leave the task, from the step
+      // or from an overlay over it. In an overlay, data-lmnd-kit-close closes only the overlay.
+      const inOverlay = !!openOverlay()?.contains(link)
+      if (!isStep(current) || !(current.contains(link) || inOverlay) || !link.getAttribute('href').startsWith('#')) return
+      const target = screenFor(decodeURIComponent(link.getAttribute('href').slice(1)))
+      const outside = target && !isStep(target) ? target : null
+      if (outside || (!inOverlay && link.hasAttribute('data-lmnd-kit-close'))) {
+        event.preventDefault()
+        leaveTask(outside)
       }
     }, true)
 
     window.addEventListener('popstate', (event) => {
-      const next = screenFor(event.state?.lmndKitScreen)
+      const id = event.state?.lmndKitScreen
+      if (leaving && id && id !== leaving) return history.back()
+      leaving = null
+      const next = screenFor(id)
       if (next) go(next)
     })
 
     // Every entry remembers the screen it showed, so going back through a sheet's opening and closing
     // lands on the right screen.
     window.addEventListener('hashchange', () => {
+      if (leaving) return
       const next = screenFor(decodeURIComponent(location.hash.slice(1)))
       if (next && next !== current) go(next)
       else if (!history.state?.lmndKitScreen) history.replaceState({ ...history.state, lmndKitScreen: current.id }, '')
@@ -329,6 +404,25 @@
     })
   }
 
+  // ---------- A filter bar and group headers that stay under the top bar ----------
+
+  // A screen's filter bar sticks under its top bar, and a group's header under both. Their heights change
+  // with tabs, a large title folding in, or a chip row wrapping, so they are measured, not assumed.
+  const measureBars = () => {
+    document.querySelectorAll('.lmnd-kit-screen').forEach((screen) => {
+      const bar = screen.querySelector(':scope > .lmnd-kit-top-bar')
+      const filters = screen.querySelector(':scope > .lmnd-kit-content > .lmnd-kit-filter-bar')
+      if (!filters && !screen.querySelector(':scope > .lmnd-kit-content > .lmnd-kit-list-group')) return
+      const update = () => {
+        if (!screen.offsetWidth) return
+        screen.style.setProperty('--lmnd-kit-top-bar-height', `${bar ? bar.offsetHeight : 0}px`)
+        screen.style.setProperty('--lmnd-kit-filter-bar-height', `${filters ? filters.offsetHeight : 0}px`)
+      }
+      const observer = new ResizeObserver(update)
+      ;[screen, bar, filters].forEach((element) => element && observer.observe(element))
+    })
+  }
+
   // ---------- A top bar that fills once its screen scrolls ----------
 
   // Details bars start clear over their colour and fill once the screen scrolls. CSS does it from
@@ -363,11 +457,25 @@
     document.querySelectorAll('.lmnd-kit-card').forEach((card) => observer.observe(card))
   }
 
+  // ---------- Links to an id, wherever the page is shown ----------
+
+  // A page shown from srcdoc, as a chat previews one, resolves "#id" against the host's address, so the link
+  // would load the host in its place. There it moves within the page instead.
+  const leavesPage = () => document.baseURI.split('#')[0] !== location.href.split('#')[0]
+
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest('a[href^="#"]')
+    if (!link || event.defaultPrevented || !leavesPage()) return
+    event.preventDefault()
+    location.assign(here(link.getAttribute('href')))
+  })
+
   const start = () => {
     route()
     document.querySelectorAll('.lmnd-kit-tabs input[aria-controls]:checked, .lmnd-kit-segmented input[aria-controls]:checked').forEach(showPanel)
     foldTitles()
     fillBars()
+    measureBars()
     slideMarks()
     resizeCards()
     document.querySelectorAll('[data-lmnd-kit-max-length]').forEach(count)
