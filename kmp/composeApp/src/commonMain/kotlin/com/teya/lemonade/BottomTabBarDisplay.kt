@@ -1,16 +1,26 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.unit.dp
+import com.teya.lemonade.core.LemonadeButtonSize
+import com.teya.lemonade.core.LemonadeButtonType
+import com.teya.lemonade.core.LemonadeIconButtonShape
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.LemonadeShadow
 
 // Hoisted so the lists keep the same identity across recompositions. `List<T>` is an unstable
 // parameter type, so an inline `listOf(...)` would make BottomTabBar re-compose on every tap.
@@ -36,6 +46,12 @@ private val fourTabItems: List<BottomTabBarItem> = listOf(
     ),
 )
 
+private val fiveTabItems: List<BottomTabBarItem> = fourTabItems + BottomTabBarItem(
+    label = "Settings",
+    icon = LemonadeIcons.Gear,
+    selectedIcon = LemonadeIcons.GearSolid,
+)
+
 private val threeTabItems: List<BottomTabBarItem> = fourTabItems.take(n = 3)
 
 private val twoTabItems: List<BottomTabBarItem> = listOf(
@@ -54,6 +70,7 @@ private val twoTabItems: List<BottomTabBarItem> = listOf(
 internal fun BottomTabBarDisplay() {
     SampleScreenDisplayLazyColumn(
         title = "BottomTabBar",
+        contentHorizontalPadding = 0.dp,
     ) {
         bottomTabBarSection(
             key = "default",
@@ -80,6 +97,13 @@ internal fun BottomTabBarDisplay() {
             items = twoTabItems,
             initialIndex = 0,
         )
+        bottomTabBarSection(
+            key = "five-items-fab",
+            title = "Five items with an action",
+            items = fiveTabItems,
+            initialIndex = 1,
+            floatingActionButton = { SampleActionButton() },
+        )
         item(key = "bottom-spacer") {
             Spacer(modifier = Modifier.height(height = LemonadeTheme.spaces.spacing500))
         }
@@ -92,12 +116,15 @@ private fun LazyListScope.bottomTabBarSection(
     items: List<BottomTabBarItem>,
     initialIndex: Int,
     isFirst: Boolean = false,
+    floatingActionButton: (@Composable () -> Unit)? = null,
 ) {
     item(key = "$key-title") {
         LemonadeUi.Text(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
             modifier = Modifier.padding(
+                start = LemonadeTheme.spaces.spacing400,
+                end = LemonadeTheme.spaces.spacing400,
                 top = if (isFirst) {
                     LemonadeTheme.spaces.spacing400
                 } else {
@@ -114,6 +141,29 @@ private fun LazyListScope.bottomTabBarSection(
             items = items,
             selectedIndex = selectedIndex,
             onItemSelected = { index -> selectedIndex = index },
+            floatingActionButton = floatingActionButton,
         )
     }
+}
+
+@Composable
+private fun SampleActionButton() {
+    var actionOpen by rememberSaveable { mutableStateOf(value = false) }
+    val actionRotation by animateFloatAsState(
+        targetValue = if (actionOpen) 45f else 0f,
+        label = "sampleActionRotation",
+    )
+
+    LemonadeUi.IconButton(
+        icon = LemonadeIcons.Plus,
+        contentDescription = "Add",
+        onClick = { actionOpen = !actionOpen },
+        type = LemonadeButtonType.Ghost,
+        size = LemonadeButtonSize.Large,
+        shape = LemonadeIconButtonShape.Circular,
+        modifier = Modifier
+            .lemonadeShadow(shadow = LemonadeShadow.Xlarge, shape = CircleShape)
+            .background(color = LemonadeTheme.colors.background.bgDefault, shape = CircleShape)
+            .rotate(degrees = actionRotation),
+    )
 }
