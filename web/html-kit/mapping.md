@@ -70,7 +70,7 @@ Nothing to build: these exist so a prototype runs in a browser.
 | `lmnd-kit-link` | `LemonadeUi.Link` | `LemonadeUi.Link` | |
 | `lmnd-kit-inline-action` | A `LemonadeUi.IconButton` in the row's trailing slot | The same | |
 | `lmnd-kit-chip` | `LemonadeUi.Chip` | `LemonadeUi.Chip` | `--selected`: `selected = true`. `--disabled`: `enabled = false`. `--error`: `error = true`. Parts: `__label`: `label`. `__leading`: `leadingPainter` / `leadingIcon`. `__counter`: `counter`. |
-| `lmnd-kit-tile` | `LemonadeUi.Tile` | `LemonadeUi.Tile` | `--horizontal`: `orientation = LemonadeTileOrientation.Horizontal` / `.horizontal`. `--outlined`: `variant = LemonadeTileVariant.Outlined` / `.outlined`. `--selected`: `isSelected = true`. Parts: `__label`: `label`. `__support`: `supportText`. `__top`: `topAccessory` on Compose; SwiftUI has none. |
+| `lmnd-kit-tile` | `LemonadeUi.Tile` | `LemonadeUi.Tile` | `--horizontal`: `orientation = LemonadeTileOrientation.Horizontal` / `.horizontal`. `--outlined`: `variant = LemonadeTileVariant.Outlined` / `.outlined`. `--selected`: `isSelected = true`. Parts: `__label`: `label`. `__support`: `supportText`. `__top`: the icon row; its first child is `icon` (or `leadingSlot`), and an optional second child is `topAccessory`, which both platforms show only in a vertical tile. |
 | `lmnd-kit-box-selection` | `LemonadeUi.BoxSelection` | `LemonadeUi.BoxSelection` | `--outlined`: `variant = LemonadeBoxSelectionVariant.Outlined` / `.outlined`. `--elevated`: `background = LemonadeBoxSelectionBackground.Elevated` / `.elevated`. `--selected`: `isSelected = true`. |
 
 ## Text and display
