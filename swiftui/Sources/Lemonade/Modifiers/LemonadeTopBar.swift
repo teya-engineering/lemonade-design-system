@@ -1236,3 +1236,34 @@ public extension View {
 }
 
 #endif
+
+public extension View {
+    /// Keeps a horizontal scroller directly under `lemonadeTopBar` sharp.
+    ///
+    /// The bar's top scroll edge reaches every scroll view below it, and the system draws it on
+    /// the first one, so a horizontal strip blurs its own content. Vertical scroll views below
+    /// the strip keep the edge. Only needed when built with Xcode 27, the only builds that pin
+    /// the soft edge; on anything else this has no effect.
+    ///
+    /// ## Usage
+    /// ```swift
+    /// VStack(spacing: 0) {
+    ///     ScrollView(.horizontal) { chips }
+    ///         .lemonadeHiddenTopScrollEdge()
+    ///     ScrollView { content }
+    /// }
+    /// .lemonadeTopBar(label: "Activity")
+    /// ```
+    @ViewBuilder
+    func lemonadeHiddenTopScrollEdge() -> some View {
+        #if os(iOS) && compiler(>=6.4)
+        if #available(iOS 26, *) {
+            self.scrollEdgeEffectHidden(for: .top)
+        } else {
+            self
+        }
+        #else
+        self
+        #endif
+    }
+}

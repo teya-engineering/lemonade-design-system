@@ -1,12 +1,5 @@
 package com.teya.lemonade
 
-import androidx.compose.animation.core.EaseInOut
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -51,8 +43,6 @@ private val HistoryStepsActiveDotSize: Dp = 8.dp
 private val HistoryStepsLineInset: Dp = 2.dp
 private val HistoryStepsDashPeriod: Dp = 10.dp
 private const val HISTORY_STEPS_DASH_FRACTION: Float = 0.4f
-private const val HISTORY_ACTIVE_LINE_FADE_START_MILLIS: Int = 1800
-private const val HISTORY_ACTIVE_LINE_FILL_MILLIS: Int = 2400
 private const val HISTORY_ACTIVE_LINE_CYCLE_MILLIS: Int = 3000
 
 /**
@@ -234,8 +224,11 @@ private fun CoreHistoryTimelineItem(
     val typographies = LocalTypographies.current
     val colors = LocalColors.current
     val contentColors = colors.content
-    val activeLineElapsedMillis: State<Float>? = if (state == HistoryItemState.Active && !isLast) {
-        rememberActiveLineElapsedMillis()
+    val activeLineSweep = if (state == HistoryItemState.Active && !isLast) {
+        rememberProgressSweep(
+            cycleMillis = HISTORY_ACTIVE_LINE_CYCLE_MILLIS,
+            label = "HistoryActiveLine",
+        )
     } else {
         null
     }
@@ -267,7 +260,7 @@ private fun CoreHistoryTimelineItem(
                     isLast = isLast,
                     colors = colors,
                     borderWidths = borderWidths,
-                    activeLineElapsedMillis = activeLineElapsedMillis?.value,
+                    activeLineSweep = activeLineSweep,
                 )
             }
         },
@@ -393,7 +386,7 @@ private fun DrawScope.drawStepsIndicator(
     isLast: Boolean,
     colors: LemonadeSemanticColors,
     borderWidths: LemonadeBorderWidth,
-    activeLineElapsedMillis: Float?,
+    activeLineSweep: ProgressSweepState?,
 ) {
     val centerX = indicatorCenterX()
     val ringCenter = Offset(
@@ -428,7 +421,7 @@ private fun DrawScope.drawStepsIndicator(
             x = centerX,
             colors = colors,
             lineWidth = borderWidths.base.border50.toPx(),
-            activeLineElapsedMillis = activeLineElapsedMillis,
+            activeLineSweep = activeLineSweep,
         )
     }
 }
@@ -438,7 +431,7 @@ private fun DrawScope.drawStepsLine(
     x: Float,
     colors: LemonadeSemanticColors,
     lineWidth: Float,
-    activeLineElapsedMillis: Float?,
+    activeLineSweep: ProgressSweepState?,
 ) {
     val lineTop = HistoryStepsDotAreaHeight.toPx() + HistoryStepsLineInset.toPx()
     val lineBottom = size.height - HistoryStepsLineInset.toPx()
@@ -459,46 +452,28 @@ private fun DrawScope.drawStepsLine(
             strokeWidth = lineWidth,
             cap = StrokeCap.Round,
         )
-        if (activeLineElapsedMillis != null) {
+        if (activeLineSweep != null) {
             drawActiveStepsLine(
                 color = colors.border.borderPositive,
                 start = Offset(x = x, y = lineTop),
                 bottom = lineBottom,
                 strokeWidth = lineWidth,
-                elapsedMillis = activeLineElapsedMillis,
+                sweep = activeLineSweep,
             )
         }
     }
 }
-
-@Composable
-private fun rememberActiveLineElapsedMillis(): State<Float> =
-    rememberInfiniteTransition(label = "HistoryActiveLine").animateFloat(
-        initialValue = 0f,
-        targetValue = HISTORY_ACTIVE_LINE_CYCLE_MILLIS.toFloat(),
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = HISTORY_ACTIVE_LINE_CYCLE_MILLIS,
-                easing = LinearEasing,
-            ),
-            repeatMode = RepeatMode.Restart,
-        ),
-        label = "HistoryActiveLineElapsed",
-    )
 
 private fun DrawScope.drawActiveStepsLine(
     color: Color,
     start: Offset,
     bottom: Float,
     strokeWidth: Float,
-    elapsedMillis: Float,
+    sweep: ProgressSweepState,
 ) {
     val top = start.y
-    val fillFraction = min(elapsedMillis / HISTORY_ACTIVE_LINE_FILL_MILLIS, 1f)
-    val end = top + (bottom - top) * EaseInOut.transform(fillFraction)
-    val fadeFraction = (elapsedMillis - HISTORY_ACTIVE_LINE_FADE_START_MILLIS) /
-        (HISTORY_ACTIVE_LINE_FILL_MILLIS - HISTORY_ACTIVE_LINE_FADE_START_MILLIS)
-    val alpha = 1f - fadeFraction.coerceIn(minimumValue = 0f, maximumValue = 1f)
+    val end = top + (bottom - top) * sweep.fill
+    val alpha = sweep.alpha
     if (end <= top || alpha <= 0f) return
     drawLine(
         brush = Brush.verticalGradient(

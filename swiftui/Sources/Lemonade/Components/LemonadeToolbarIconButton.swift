@@ -2,12 +2,14 @@ import SwiftUI
 
 // MARK: - Toolbar Icon Prominence
 
-/// Fill treatment for a navigation bar's icon button.
+/// Fill and glyph colour treatment for a navigation bar's icon button.
 public enum LemonadeToolbarIconProminence {
     /// The bar draws its own chrome. Correct for almost every action.
     case plain
     /// Filled with `tint` — for the single primary action in a bar, if any.
     case filled(tint: Color)
+    /// The bar's own chrome with a `contentCritical` glyph — for a destructive action.
+    case critical
 }
 
 // MARK: - Toolbar Icon Button
@@ -43,7 +45,7 @@ public extension LemonadeUi {
     /// - Parameters:
     ///   - icon: what the button shows
     ///   - contentDescription: describes the action, and becomes the accessibility label
-    ///   - prominence: fill treatment, `.plain` by default
+    ///   - prominence: fill and glyph colour treatment, `.plain` by default
     ///   - action: run on tap
     @ViewBuilder
     static func ToolbarIconButton(
@@ -88,7 +90,7 @@ private struct LemonadeToolbarIconButtonView: View {
 
     var body: some View {
         Button(action: action) {
-            LemonadeToolbarIconLabel(icon: icon, title: contentDescription)
+            LemonadeToolbarIconLabel(icon: icon, title: contentDescription, tint: prominence.glyphTint)
         }
         .lemonadeToolbarProminence(prominence)
     }
@@ -126,7 +128,7 @@ private struct LemonadeToolbarIconMenuView<Content: View>: View {
             content()
                 .tint(LemonadeTheme.colors.content.contentPrimary)
         } label: {
-            LemonadeToolbarIconLabel(icon: icon, title: contentDescription)
+            LemonadeToolbarIconLabel(icon: icon, title: contentDescription, tint: prominence.glyphTint)
         }
     }
 }
@@ -136,12 +138,13 @@ private struct LemonadeToolbarIconMenuView<Content: View>: View {
 private struct LemonadeToolbarIconLabel: View {
     let icon: LemonadeIcon
     let title: String
+    let tint: Color
 
     var body: some View {
         Label {
             Text(title)
         } icon: {
-            LemonadeUi.Icon(icon: icon, contentDescription: nil, size: .medium)
+            LemonadeUi.Icon(icon: icon, contentDescription: nil, size: .medium, tint: tint)
         }
         .labelStyle(.iconOnly)
     }
@@ -157,6 +160,21 @@ private extension View {
             // `.borderedProminent`, not `.glassProminent`: a `Menu` loses the glass-prominent style
             // across the bar-item bridge, and its tint then colours the glyph rather than the fill.
             self.buttonStyle(.borderedProminent).tint(tint)
+        case .critical:
+            // On iOS 26 the bar item redraws the glyph in the button's tint, ignoring the icon's own
+            // colour, so the glyph tint alone is not enough.
+            self.tint(LemonadeTheme.colors.content.contentCritical)
+        }
+    }
+}
+
+private extension LemonadeToolbarIconProminence {
+    var glyphTint: Color {
+        switch self {
+        case .plain, .filled:
+            LemonadeTheme.colors.content.contentPrimary
+        case .critical:
+            LemonadeTheme.colors.content.contentCritical
         }
     }
 }

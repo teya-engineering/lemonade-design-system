@@ -21,7 +21,8 @@
  *
  *     Exception B: a `-` line for a member carrying Kotlin's internal
  *     name-mangling suffix `$<module>` (Android variants append `_<variant>`, e.g.
- *     `$expressive_release`) is NOT a break. Kotlin mangles `internal` members
+ *     `$expressive_release`; Kotlin 2.4+ prefixes the root project, e.g.
+ *     `$Lemonade_expressive_release`) is NOT a break. Kotlin mangles `internal` members
  *     that must stay public in bytecode with the module name so no other module
  *     can resolve them. They leak into the JVM `.api` dump as that artifact — the
  *     Kotlin-visibility-aware `.klib.api` dump omits them — and only the module's
@@ -54,12 +55,18 @@
  */
 public object ApiStabilityClassifier {
 
-    public fun classify(diff: String): Verdict {
+    public fun classify(
+        diff: String,
+        rootProjectName: String,
+    ): Verdict {
         if (diff.isBlank()) return Verdict.NoChanges
 
         val reasons = mutableListOf<String>()
 
-        val removed = collectRemovedDeclarations(diff)
+        val removed = collectRemovedDeclarations(
+            diff = diff,
+            rootProjectName = rootProjectName,
+        )
         if (removed.isNotEmpty()) {
             reasons += "removed/changed declaration(s): ${removed.summarize()}"
         }
@@ -79,7 +86,10 @@ public object ApiStabilityClassifier {
      * `git diff` and plain `diff -u` formats) so a genuine removal on one target
      * can never be cancelled out by a synthetic addition on a different target.
      */
-    private fun collectRemovedDeclarations(diff: String): List<String> {
+    private fun collectRemovedDeclarations(
+        diff: String,
+        rootProjectName: String,
+    ): List<String> {
         val realRemovals = mutableListOf<String>()
         var added = mutableListOf<String>()
         var removed = mutableListOf<String>()
@@ -93,7 +103,7 @@ public object ApiStabilityClassifier {
                 if (!header.isWidenedBy(addedTargetsHeader)) realRemovals += header
             }
             for (removedLine in removed) {
-                if (removedLine.isInvisibleToConsumers(module)) continue
+                if (removedLine.isInvisibleToConsumers(module = module, rootProjectName = rootProjectName)) continue
                 val removedSignature = removedLine.stripSyntheticModifier()
                 val syntheticOnly = added.any { addedLine ->
                     addedLine != removedLine && addedLine.stripSyntheticModifier() == removedSignature
@@ -143,8 +153,13 @@ public object ApiStabilityClassifier {
             .map { target -> target.trim() }
             .toSet()
 
-    private fun String.isInvisibleToConsumers(module: String): Boolean =
-        this == "}" || isInternalMangled(module) || isComposableSingletonsHolder()
+    private fun String.isInvisibleToConsumers(
+        module: String,
+        rootProjectName: String,
+    ): Boolean =
+        this == "}" ||
+            isInternalMangled(module = module, rootProjectName = rootProjectName) ||
+            isComposableSingletonsHolder()
 
     private fun String.isComposableSingletonsHolder(): Boolean =
         composableSingletonsHolderRegex.matches(input = trim())
@@ -163,7 +178,8 @@ public object ApiStabilityClassifier {
     /**
      * True when this `.api` line declares a member carrying Kotlin's internal
      * name-mangling suffix `$<module>` (Android variants append `_<variant>`, e.g.
-     * `$expressive_release`). Such a member is `internal`: bytecode-public only so
+     * `$expressive_release`; Kotlin 2.4+ prefixes the root project name, e.g.
+     * `$Lemonade_expressive_release`). Such a member is `internal`: bytecode-public only so
      * the same module's own call sites can link, name-mangled so no other module
      * can resolve it, and absent from the `.klib.api` dump. Renaming or removing
      * one — e.g. a Compose `getLambda$<hash>$<module>` singleton re-hashing when a
@@ -174,14 +190,18 @@ public object ApiStabilityClassifier {
      * default-argument symbols (`copy$default`, `show$default`, …) are left
      * flagged: their suffix is `default`, never the module name.
      */
-    private fun String.isInternalMangled(module: String): Boolean {
+    private fun String.isInternalMangled(
+        module: String,
+        rootProjectName: String,
+    ): Boolean {
         if (module.isEmpty()) return false
         val name = jvmMemberNameRegex.find(trim())?.groupValues?.get(1)
             ?: return false
-        val mangleSuffix = name.substringAfterLast(
-            delimiter = '$',
-            missingDelimiterValue = "",
-        )
+        val mangleSuffix = name
+            .substringAfterLast(
+                delimiter = '$',
+                missingDelimiterValue = "",
+            ).removePrefix(prefix = "${rootProjectName}_")
         return mangleSuffix == module || mangleSuffix.startsWith("${module}_")
     }
 

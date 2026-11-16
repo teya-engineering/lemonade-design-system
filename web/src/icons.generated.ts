@@ -252,6 +252,7 @@ export const iconNames = [
   "receipt",
   "rescue-ring",
   "rotate-money",
+  "scan-barcode",
   "scan-face",
   "script-sparkle",
   "search-ai",

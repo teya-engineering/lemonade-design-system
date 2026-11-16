@@ -257,6 +257,7 @@ public enum LemonadeIcon: String, CaseIterable {
     case receiptTax = "receipt-tax"
     case rescueRing = "rescue-ring"
     case rotateMoney = "rotate-money"
+    case scanBarcode = "scan-barcode"
     case scanFace = "scan-face"
     case scriptSparkle = "script-sparkle"
     case search = "search"

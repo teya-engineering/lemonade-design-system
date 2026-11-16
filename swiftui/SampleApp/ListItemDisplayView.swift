@@ -714,6 +714,7 @@ struct ActionListItemPreview: View {
 struct SelectListItemPreview: View {
     @State private var singleSelection = 0
     @State private var multipleSelections: Set<Int> = [0]
+    @State private var topLabelSelections: Set<Int> = [0]
     @State private var toggleStates: [Bool] = [true, false, true]
     @State private var leadingSelection = 0
     @State private var emailDigest = true
@@ -725,6 +726,7 @@ struct SelectListItemPreview: View {
 
             singleSection
             multipleSection
+            topLabelSection
             toggleSection
             withLeadingSection
             slotContentSection
@@ -773,6 +775,26 @@ struct SelectListItemPreview: View {
                         }
                     },
                     showDivider: index < 2
+                )
+            }
+        }
+    }
+
+    private var topLabelSection: some View {
+        LemonadeUi.Card(
+            contentPadding: .none,
+            header: CardHeaderConfig(
+                title: "SelectListItem - Top Label"
+            )
+        ) {
+            ForEach(0..<3, id: \.self) { index in
+                LemonadeUi.SelectListItem(
+                    label: "Item \(index + 1)",
+                    type: .multiple,
+                    checked: topLabelSelections.contains(index),
+                    onItemClicked: { topLabelSelections.formSymmetricDifference([index]) },
+                    showDivider: index < 2,
+                    topLabel: "Category"
                 )
             }
         }
@@ -895,6 +917,7 @@ struct OutlinedSelectListItemPreview: View {
     @State private var outlinedWithSupport = 0
     @State private var outlinedMultiple: Set<Int> = [0]
     @State private var outlinedSlotContent = 0
+    @State private var outlinedTopLabel = 0
 
     private let outlinedOptions: [OutlinedOption] = [
         OutlinedOption(label: "Option A", icon: .heart),
@@ -911,6 +934,7 @@ struct OutlinedSelectListItemPreview: View {
             leadingAndTrailingTagSection
             labelOnlySection
             withSupportTextSection
+            topLabelSection
             multipleSection
             slotContentSection
             disabledStatesSection
@@ -1007,6 +1031,31 @@ struct OutlinedSelectListItemPreview: View {
                         checked: outlinedLabelOnly == index,
                         onItemClicked: { outlinedLabelOnly = index },
                         variant: .outlined
+                    )
+                }
+            }
+        }
+    }
+
+    private var topLabelSection: some View {
+        LemonadeUi.Card(
+            contentPadding: .xSmall,
+            header: CardHeaderConfig(
+                title: "Outlined — With top label"
+            )
+        ) {
+            VStack(spacing: LemonadeTheme.spaces.spacing100) {
+                ForEach(
+                    Array(outlinedOptions.prefix(3).enumerated()),
+                    id: \.element.id
+                ) { index, option in
+                    LemonadeUi.SelectListItem(
+                        label: option.label,
+                        type: .single,
+                        checked: outlinedTopLabel == index,
+                        onItemClicked: { outlinedTopLabel = index },
+                        variant: .outlined,
+                        topLabel: "Category"
                     )
                 }
             }

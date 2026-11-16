@@ -34,6 +34,7 @@ private enum Demo: String, CaseIterable, Identifiable, Hashable {
     case inlineCalendar = "InlineCalendar"
 
     case textField = "TextField"
+    case textArea = "TextArea"
     case searchField = "SearchField"
     case selectField = "SelectField"
     case pinCode = "PinCode"
@@ -46,6 +47,7 @@ private enum Demo: String, CaseIterable, Identifiable, Hashable {
     case notice = "Notice"
     case tooltip = "Tooltip"
     case historyTimeline = "HistoryTimeline"
+    case progressStepper = "ProgressStepper"
 
     case chip = "Chip"
     case listItem = "ListItem"
@@ -95,11 +97,11 @@ private let demoSections: [DemoSection] = [
     ),
     DemoSection(
         title: "Input Fields",
-        items: [.textField, .searchField, .selectField, .pinCode]
+        items: [.textField, .textArea, .searchField, .selectField, .pinCode]
     ),
     DemoSection(
         title: "Display Components",
-        items: [.tag, .badge, .symbolContainer, .card, .divider, .notice, .tooltip, .historyTimeline]
+        items: [.tag, .badge, .symbolContainer, .card, .divider, .notice, .tooltip, .historyTimeline, .progressStepper]
     ),
     DemoSection(
         title: "Selection & Lists",
@@ -199,6 +201,7 @@ struct HomeView: View {
         case .datePicker: DatePickerDisplayView()
         case .inlineCalendar: InlineCalendarDisplayView()
         case .textField: TextFieldDisplayView()
+        case .textArea: TextAreaDisplayView()
         case .searchField: SearchFieldDisplayView()
         case .selectField: SelectFieldDisplayView()
         case .pinCode: PinCodeDisplayView()
@@ -210,6 +213,7 @@ struct HomeView: View {
         case .notice: NoticeDisplayView()
         case .tooltip: TooltipDisplayView()
         case .historyTimeline: HistoryTimelineDisplayView()
+        case .progressStepper: ProgressStepperDisplayView()
         case .chip: ChipDisplayView()
         case .listItem: ListItemDisplayView()
         case .contentListItem: ContentListItemDisplayView()

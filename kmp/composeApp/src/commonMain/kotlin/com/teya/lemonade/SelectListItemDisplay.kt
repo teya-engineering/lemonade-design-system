@@ -81,6 +81,7 @@ internal fun SelectListItemDisplay() {
     // Set-typed selections stay on `remember`: they are not covered by the default saveable savers.
     var plainMultiple by remember { mutableStateOf(value = setOf(0)) }
     var plainToggles by remember { mutableStateOf(value = setOf(0)) }
+    var plainTopLabel by remember { mutableStateOf(value = setOf(0)) }
     var plainLeadingIcon by rememberSaveable { mutableStateOf(value = true) }
     var emailDigest by rememberSaveable { mutableStateOf(value = true) }
     var marketingEmails by rememberSaveable { mutableStateOf(value = false) }
@@ -90,6 +91,7 @@ internal fun SelectListItemDisplay() {
     var outlinedWithSupport by rememberSaveable { mutableIntStateOf(value = 0) }
     var outlinedMultiple by remember { mutableStateOf(value = setOf(0)) }
     var outlinedSlotContent by rememberSaveable { mutableIntStateOf(value = 0) }
+    var outlinedTopLabel by rememberSaveable { mutableIntStateOf(value = 0) }
 
     SampleScreenDisplayLazyColumn(title = "SelectListItem") {
         item(key = "plain-single") {
@@ -115,6 +117,21 @@ internal fun SelectListItemDisplay() {
                         type = SelectListItemType.Multiple,
                         checked = plainMultiple.contains(index),
                         onItemClicked = { plainMultiple = plainMultiple.toggle(index = index) },
+                    )
+                }
+            }
+        }
+
+        item(key = "plain-top-label") {
+            SelectListItemCard(title = "Plain — With top label") {
+                for (index in 0..2) {
+                    LemonadeUi.SelectListItem(
+                        label = "Item ${index + 1}",
+                        topLabel = "Category",
+                        type = SelectListItemType.Multiple,
+                        checked = plainTopLabel.contains(index),
+                        onItemClicked = { plainTopLabel = plainTopLabel.toggle(index = index) },
+                        showDivider = index != 2,
                     )
                 }
             }
@@ -292,6 +309,23 @@ internal fun SelectListItemDisplay() {
                                     isChecked = false,
                                 )
                             },
+                        )
+                    }
+                }
+            }
+        }
+
+        item(key = "outlined-top-label") {
+            SelectListItemCard(title = "Outlined — With top label") {
+                OutlinedGroup {
+                    outlinedOptionsFirstThree.forEachIndexed { index, option ->
+                        LemonadeUi.SelectListItem(
+                            label = option.label,
+                            topLabel = "Category",
+                            type = SelectListItemType.Single,
+                            variant = SelectListItemVariant.Outlined,
+                            checked = outlinedTopLabel == index,
+                            onItemClicked = { outlinedTopLabel = index },
                         )
                     }
                 }

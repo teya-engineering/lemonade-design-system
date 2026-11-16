@@ -51,7 +51,7 @@ fi
 
 step "Every converter regenerates identical output"
 .claude/skills/generate-tokens/scripts/run-converters.sh --all >/dev/null
-for s in web-text-style-converter web-css-bundle; do
+for s in web-text-style-converter web-css-bundle web-svg-converter; do
   [ -f "scripts/$s.main.kts" ] && "$KOTLIN" "scripts/$s.main.kts" >/dev/null
 done
 drift=$(git status --porcelain -- kmp/ swiftui/ web/ text-styles.json)

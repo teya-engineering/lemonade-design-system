@@ -8,6 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeAssetSize
@@ -17,8 +21,14 @@ import com.teya.lemonade.core.LemonadeCardPadding
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TagVoice
 
+private const val COLLAPSED_TRANSACTION_COUNT = 5
+private const val TRANSACTION_COUNT = 20
+
 @Composable
 internal fun CardDisplay() {
+    val toasts = LocalLemonadeToastState.current
+    var isShowingAllTransactions by remember { mutableStateOf(false) }
+
     SampleScreenDisplayLazyColumn(title = "Card") {
         item(key = "Backgrounds") {
             CardSection(title = "Backgrounds") {
@@ -235,7 +245,7 @@ internal fun CardDisplay() {
                         header = CardHeaderConfig(title = "Card with Footer"),
                         footerAction = CardFooterActionConfig(
                             label = "Action",
-                            onClick = {},
+                            onClick = { toasts.show(label = "Action tapped") },
                         ),
                     ) {
                         LemonadeUi.Text(
@@ -247,11 +257,52 @@ internal fun CardDisplay() {
             }
         }
 
-        lazyGroupedCardSection()
+        item(key = "Resize") {
+            CardSection(title = "Resize") {
+                ResizingCard()
+            }
+        }
+
+        lazyGroupedCardSection(
+            isShowingAll = isShowingAllTransactions,
+            onToggleShowAll = { isShowingAllTransactions = !isShowingAllTransactions },
+        )
     }
 }
 
-private fun LazyListScope.lazyGroupedCardSection() {
+@Composable
+private fun ResizingCard() {
+    var isExpanded by remember { mutableStateOf(false) }
+    LemonadeUi.Card(
+        contentPadding = LemonadeCardPadding.Medium,
+        footerAction = CardFooterActionConfig(
+            label = if (isExpanded) "Show less" else "Show more",
+            onClick = { isExpanded = !isExpanded },
+        ),
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)) {
+            LemonadeUi.Text(
+                text = "The card grows and shrinks with its content.",
+                textStyle = LemonadeTheme.typography.bodyMediumRegular,
+            )
+            if (isExpanded) {
+                LemonadeUi.Text(
+                    text = "Nothing to wrap: the card animates its own size.",
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                )
+                LemonadeUi.Text(
+                    text = "With animations removed, the change is instant.",
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                )
+            }
+        }
+    }
+}
+
+private fun LazyListScope.lazyGroupedCardSection(
+    isShowingAll: Boolean,
+    onToggleShowAll: () -> Unit,
+) {
     item(key = "Lazy Grouped List title") {
         CardSectionTitle(
             title = "Lazy Grouped List",
@@ -266,12 +317,12 @@ private fun LazyListScope.lazyGroupedCardSection() {
             subtitle = "Rows compose lazily as they scroll into view",
         ),
         footerAction = CardFooterActionConfig(
-            label = "See all",
-            onClick = {},
+            label = if (isShowingAll) "See less" else "See all",
+            onClick = onToggleShowAll,
         ),
     ) {
         items(
-            count = 20,
+            count = if (isShowingAll) TRANSACTION_COUNT else COLLAPSED_TRANSACTION_COUNT,
             key = { index -> "transaction-$index" },
         ) { index ->
             LazyGroupedCardRow(index = index)
