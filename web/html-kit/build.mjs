@@ -383,7 +383,9 @@ async function main(argv) {
   const dist = outFlag >= 0 ? resolve(argv[outFlag + 1]) : join(WEB, 'dist')
   const versionFlag = argv.indexOf('--version')
   const version = versionFlag >= 0 ? argv[versionFlag + 1] : undefined
-  if (version !== undefined && !/^\d+\.\d+\.\d+$/.test(version)) throw new Error(`--version takes X.Y.Z, not ${version}`)
+  if (versionFlag >= 0 && !/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(version ?? '')) {
+    throw new Error(`--version takes X.Y.Z, not ${version}`)
+  }
   await packageKit(dist, await kitStylesheet(), version)
 }
 

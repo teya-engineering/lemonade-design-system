@@ -205,7 +205,8 @@ echo
 # Everything the kit build reads (web/html-kit/build.mjs). html_kit_release.yml lists the same paths for
 # its release notes.
 KIT_PATHS=(web/html-kit/ ':(exclude)web/html-kit/mapping.md' ':(exclude)web/html-kit/README.md'
-  web/styles/ web/assets/ web/llms.txt guidelines/ swiftui/Sources/Lemonade/Resources/Fonts/)
+  web/styles/ web/assets/ web/llms.txt web/svgo.config.mjs web/package-lock.json guidelines/
+  swiftui/Sources/Lemonade/Resources/Fonts/)
 KIT_PREV_TAG=$(latest_tag 'lemonade-html-kit-*')
 KIT_PREV_VER=${KIT_PREV_TAG#lemonade-html-kit-}
 if [ -z "$KIT_PREV_TAG" ]; then

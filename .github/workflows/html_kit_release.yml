@@ -60,7 +60,8 @@ jobs:
           if [ -n "$PREV" ]; then
             .claude/skills/publish-version/scripts/release-notes.sh "$PREV" "$GITHUB_REF_NAME" "$GITHUB_SHA" \
               web/html-kit/ ':(exclude)web/html-kit/mapping.md' ':(exclude)web/html-kit/README.md' \
-              web/styles/ web/assets/ web/llms.txt guidelines/ swiftui/Sources/Lemonade/Resources/Fonts/ > notes.md
+              web/styles/ web/assets/ web/llms.txt web/svgo.config.mjs web/package-lock.json guidelines/ \
+              swiftui/Sources/Lemonade/Resources/Fonts/ > notes.md
           else
             echo "The first release of the Lemonade HTML kit." > notes.md
           fi
