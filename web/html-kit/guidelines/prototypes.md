@@ -46,7 +46,7 @@ belongs to the page and goes in a page class of its own, using tokens (`LHK-TOKE
 
 **Rule.** Every screen:
 
-- starts from the closest file in `examples/`;
+- starts from the closest file in `examples/`, or from a screen the gallery shows;
 - sits in a phone frame, `<div class="lmnd-kit-device">`, as the only thing in `<body>`. The frame is a 393 × 852
   phone with a status bar and home indicator on a wide window, and drops away on a phone;
 - is one `lmnd-kit-screen` (`bg-subtle`), or `lmnd-kit-screen lmnd-kit-screen--default` (`bg-default`)
@@ -57,7 +57,7 @@ belongs to the page and goes in a page class of its own, using tokens (`LHK-TOKE
 
 A top-level screen uses the compact top bar with no back button; a pushed screen uses the navigation top
 bar with Back; a details screen uses the small one (`lmnd-kit-top-bar--small`, the centred title only) on an
-`lmnd-kit-screen--details` (`APP-DETAILS-TOP-BAR`); a screen presented over another uses Close.
+`lmnd-kit-screen--details`; a screen presented over another uses Close.
 
 **Why.** The examples carry the app's page background, top bar and spacing. A screen that starts blank
 gets those slightly wrong. A screen outside the frame stretches to the window and stops looking like a
@@ -103,25 +103,24 @@ bar fills draws a seam the app never shows.
 **Do / don't.** A screen whose last card ends above the home indicator, and whose status bar turns white
 with its top bar. Not a `padding-bottom: 34px` on a page's own wrapper, and not a screen with no top bar.
 
-## `LHK-ASSETS` · Icons, flags, logos and badges come from the kit
+## `LHK-ASSETS` · Icons, flags and logos come from the kit
 
 **Kind.** Rule.
 
 **Rule.** Icons are `<span class="lmnd-icon" data-icon="…">`, flags `<span class="lmnd-kit-flag" data-flag="…">`,
-brand logos `<span class="lmnd-kit-logo" data-logo="…">`, and a transaction's status badge
-`<span class="lmnd-kit-symbol__status" data-badge="…">` (`APP-FEED-ROWS`), using names from `assets.txt`. No
+and brand logos `<span class="lmnd-kit-logo" data-logo="…">`, using names from `assets.txt`. No
 inline SVG, icon font, emoji or image from elsewhere stands in for one.
 
-**Why.** These are the app's assets: the icons, flags and logos generated from Lemonade's Figma file, the
-badges copied from the app's own. `lemonade-kit.css` carries them, the build refuses a name that doesn't
-exist, and logos and badges swap to their dark artwork in dark mode.
+**Why.** These are the app's assets: the icons, flags and logos generated from Lemonade's Figma file.
+`lemonade-kit.css` carries them, the build refuses a name that doesn't exist, and logos swap to their dark
+artwork in dark mode.
 An asset from elsewhere gets none of that and won't be in the app.
 
 **Exceptions.** Content imagery the app loads at runtime — a product photo, a merchant's logo, an avatar
 — which stands in as an `<img>` inside a `lmnd-kit-symbol`, with a note in the hand-over that it is a
 placeholder.
 
-## `LHK-COPY` · Realistic copy in Teya's voice
+## `LHK-COPY` · Realistic copy
 
 **Kind.** Rule of thumb.
 
@@ -161,7 +160,7 @@ screen, or driven by the page's own script (`LHK-SCRIPT`).
 | The phone's own picker | The box holds a native `<select class="lmnd-kit-field__select">` and the chevron, in a `<label class="lmnd-kit-field lmnd-kit-select">`. An empty first option, `value="" disabled selected hidden`, is the placeholder |
 
 Use a sheet where the app's screen uses one: options with a flag, logo, icon or support line, more than a
-handful to search, or a confirming action (`APP-PICKER-OPTIONS`). Use the native select for a short list of
+handful to search, or a confirming action. Use the native select for a short list of
 plain words that the app shows in the system picker. A field that opens nothing yet is still a link, to
 `#`.
 
@@ -222,8 +221,7 @@ one the same markup as a screen on its own.
 | A `lmnd-kit-segmented` or `lmnd-kit-tabs` | Slides one pill, or one underline, to the option picked, rather than each option lighting up |
 | A tab or segmented option with `aria-controls="panel-id"` | Shows its panel and hides the others. The panels it doesn't show carry `hidden` in the markup, so without script the first stays |
 | A navigation top bar, with the large title first in the content as a `lmnd-kit-large-title` | Collapses the bar once the title is halfway under it: the small title rises in and the divider fades in. The title itself scrolls with the page |
-| The top bar of a details screen or of Home | Fills it once the screen scrolls, in browsers that can't do it in CSS |
-| A `lmnd-kit-day-strip` with an `aria-current` day | Opens scrolled to that day |
+| The top bar of a details screen | Fills it once the screen scrolls, in browsers that can't do it in CSS |
 | An element with `data-lmnd-kit-mirror="field-id"`, and an optional `data-lmnd-kit-mirror-empty` | Shows what's typed in that field, or the empty text while it's empty. Without the script it keeps the text in its markup. A field that carries it takes the other field's value, so one entry on two screens stays one |
 | A `<label>` or `<button>` in an overlay with `data-lmnd-kit-close` | Closes the overlay once it has done its own job, such as a label picking its option, so one tap can pick and close. Without the script the option is still picked and the overlay stays open until its Close |
 | A control with `data-lmnd-kit-reset="element-id"` | Puts every field inside that element back as its markup wrote it before the control acts, so picking a starting point shows that starting point rather than earlier edits. An option already picked resets nothing. Without the script the fields keep what was entered |
@@ -236,7 +234,7 @@ another. A page's own script:
   text. It never builds a component or styles one, so the markup still follows `LHK-KIT-MARKUP` and
   `LHK-TOKENS-ONLY`;
 - loads nothing: no library, no other file, so the page still travels as one file;
-- sets an icon, flag, logo or badge only to a name the page lists on its `<body>`, as `kind:name` pairs:
+- sets an icon, flag or logo only to a name the page lists on its `<body>`, as `kind:name` pairs:
   `<body data-kit-assets="icon:circle-check flag:GB">`. A standalone copy keeps only the assets the page
   names, and a name that is only in the script would come out blank.
 
