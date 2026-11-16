@@ -4,8 +4,10 @@ import SwiftUI
 
 public extension LemonadeUi {
     /// Text Area component for multi-line text input, with optional label, support text,
-    /// character counter, and error state. The box keeps a fixed height and scrolls its
-    /// content once the text outgrows it.
+    /// character counter, and error state. By default the box keeps a fixed height and scrolls
+    /// its content once the text outgrows it. Pass `lineLimits` instead to size the box to the
+    /// text: it never gets shorter than the range's first line count or taller than its last,
+    /// and scrolls its content beyond that.
     ///
     /// The return key inserts a new line, so on iOS a "Done" bar above the keyboard closes it.
     /// Hide the bar with `.lemonadeKeyboardDoneButton(false)`.
@@ -18,6 +20,11 @@ public extension LemonadeUi {
     ///     optionalIndicator: "Optional",
     ///     placeholderText: "For example: I didn't make this payment",
     ///     maxLength: 1000
+    /// )
+    ///
+    /// LemonadeUi.TextArea(
+    ///     input: $text,
+    ///     lineLimits: 1...5
     /// )
     /// ```
     ///
@@ -33,9 +40,13 @@ public extension LemonadeUi {
     ///     units (an emoji can count as 2). Input is never blocked: past the limit the counter
     ///     turns critical, and the caller should show an `errorMessage` and hold back submission
     ///     until the text is shortened
-    ///   - height: Height of the input box, excluding the label and the text below it
+    ///   - height: Height of the input box, excluding the label and the text below it. Defaults
+    ///     to 180 when `lineLimits` is `nil`. Can't be set together with `lineLimits`
     ///   - error: Whether the text area has an error
     ///   - enabled: Whether the text area is enabled
+    ///   - lineLimits: The fewest and most lines of text the box shows, for example `1...5`. The
+    ///     box grows with the text between them and scrolls beyond the last. `nil` keeps the
+    ///     fixed `height`
     /// - Returns: A styled TextArea view
     static func TextArea(
         input: Binding<String>,
@@ -46,11 +57,16 @@ public extension LemonadeUi {
         placeholderText: String? = nil,
         errorMessage: String? = nil,
         maxLength: Int? = nil,
-        height: CGFloat = 180,
+        height: CGFloat? = nil,
         error: Bool = false,
-        enabled: Bool = true
+        enabled: Bool = true,
+        lineLimits: ClosedRange<Int>? = nil
     ) -> some View {
-        LemonadeTextAreaView(
+        precondition(height == nil || lineLimits == nil, "Pass either height or lineLimits to TextArea, not both")
+        if let lineLimits {
+            precondition(lineLimits.lowerBound >= 1, "TextArea lineLimits must start at 1 or more, was \(lineLimits)")
+        }
+        return LemonadeTextAreaView(
             input: input,
             onInputChanged: onInputChanged,
             label: label,
@@ -59,7 +75,8 @@ public extension LemonadeUi {
             placeholderText: placeholderText,
             errorMessage: errorMessage,
             maxLength: maxLength,
-            height: height,
+            height: lineLimits == nil ? height ?? 180 : nil,
+            lineLimits: lineLimits,
             error: error,
             enabled: enabled
         )
@@ -77,7 +94,8 @@ private struct LemonadeTextAreaView: View {
     let placeholderText: String?
     let errorMessage: String?
     let maxLength: Int?
-    let height: CGFloat
+    let height: CGFloat?
+    let lineLimits: ClosedRange<Int>?
     let error: Bool
     let enabled: Bool
 
@@ -112,7 +130,27 @@ private struct LemonadeTextAreaView: View {
         .animation(.easeInOut(duration: 0.15), value: error)
     }
 
+    @ViewBuilder
     private var fieldContainer: some View {
+        if let lineLimits {
+            TextAreaLineLimitsSizer(
+                text: textAreaSizingText(input: input, placeholder: placeholderText),
+                lineLimits: lineLimits
+            )
+                .frame(maxWidth: .infinity, alignment: .topLeading)
+                .overlay(alignment: .topLeading) { fieldContent }
+                .padding(LemonadeTheme.spaces.spacing400)
+                .modifier(containerModifier(minHeight: 0))
+        } else {
+            let height = height ?? 180
+            fieldContent
+                .padding(LemonadeTheme.spaces.spacing400)
+                .frame(maxWidth: .infinity, minHeight: height, maxHeight: height, alignment: .topLeading)
+                .modifier(containerModifier(minHeight: height))
+        }
+    }
+
+    private var fieldContent: some View {
         ZStack(alignment: .topLeading) {
             if input.isEmpty, let placeholderText = placeholderText {
                 LemonadeUi.Text(
@@ -130,17 +168,52 @@ private struct LemonadeTextAreaView: View {
                 onInputChanged: onInputChanged
             )
         }
-        .padding(LemonadeTheme.spaces.spacing400)
-        .frame(maxWidth: .infinity, minHeight: height, maxHeight: height, alignment: .topLeading)
-        .modifier(TextFieldContainerModifier(
+    }
+
+    private func containerModifier(minHeight: CGFloat) -> TextFieldContainerModifier {
+        TextFieldContainerModifier(
             backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
             borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
             enabled: enabled,
             isFocused: isFocused,
             cornerRadius: TextFieldConstants.cornerRadius,
-            minHeight: height,
+            minHeight: minHeight,
             isHovered: $isHovered
-        ))
+        )
+    }
+}
+
+// MARK: - Line Limits Sizer
+
+/// The text the box is measured with: the placeholder while the input is empty, and an extra
+/// line after a trailing newline, which the input keeps and `Text` drops.
+func textAreaSizingText(input: String, placeholder: String?) -> String {
+    let text = input.isEmpty ? placeholder ?? "" : input
+    return text.isEmpty || text.hasSuffix("\n") ? text + " " : text
+}
+
+/// Invisible text in the input's style that gives the box its height in the same layout pass,
+/// so a field opened with text already in it starts at the right height.
+private struct TextAreaLineLimitsSizer: View {
+    let text: String
+    let lineLimits: ClosedRange<Int>
+
+    var body: some View {
+        ZStack(alignment: .topLeading) {
+            sizingText(Array(repeating: " ", count: lineLimits.lowerBound).joined(separator: "\n"), maxLines: nil)
+            sizingText(text, maxLines: lineLimits.upperBound)
+        }
+        .hidden()
+        .accessibilityHidden(true)
+    }
+
+    private func sizingText(_ value: String, maxLines: Int?) -> some View {
+        LemonadeUi.Text(
+            value,
+            textStyle: LemonadeTypography.shared.bodyMediumRegular,
+            color: LemonadeTheme.colors.content.contentPrimary,
+            maxLines: maxLines
+        )
     }
 }
 
@@ -224,6 +297,13 @@ struct LemonadeTextArea_Previews: PreviewProvider {
                 errorMessage: "Tell us a bit more",
                 maxLength: 1000,
                 error: true
+            )
+
+            LemonadeUi.TextArea(
+                input: .constant(""),
+                label: "Message",
+                placeholderText: "Starts at one line and grows up to five",
+                lineLimits: 1...5
             )
         }
         .padding()
