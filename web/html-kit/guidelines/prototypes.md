@@ -103,18 +103,17 @@ bar fills draws a seam the app never shows.
 **Do / don't.** A screen whose last card ends above the home indicator, and whose status bar turns white
 with its top bar. Not a `padding-bottom: 34px` on a page's own wrapper, and not a screen with no top bar.
 
-## `LHK-ASSETS` · Icons, flags, logos and badges come from the kit
+## `LHK-ASSETS` · Icons, flags and logos come from the kit
 
 **Kind.** Rule.
 
 **Rule.** Icons are `<span class="lmnd-icon" data-icon="…">`, flags `<span class="lmnd-kit-flag" data-flag="…">`,
-brand logos `<span class="lmnd-kit-logo" data-logo="…">`, and a transaction's status badge
-`<span class="lmnd-kit-symbol__status" data-badge="…">`, using names from `assets.txt`. No
+and brand logos `<span class="lmnd-kit-logo" data-logo="…">`, using names from `assets.txt`. No
 inline SVG, icon font, emoji or image from elsewhere stands in for one.
 
-**Why.** These are the app's assets: the icons, flags and logos generated from Lemonade's Figma file, the
-badges copied from the app's own. `lemonade-kit.css` carries them, the build refuses a name that doesn't
-exist, and logos and badges swap to their dark artwork in dark mode.
+**Why.** These are the app's assets: the icons, flags and logos generated from Lemonade's Figma file.
+`lemonade-kit.css` carries them, the build refuses a name that doesn't exist, and logos swap to their dark
+artwork in dark mode.
 An asset from elsewhere gets none of that and won't be in the app.
 
 **Exceptions.** Content imagery the app loads at runtime — a product photo, a merchant's logo, an avatar
@@ -222,8 +221,7 @@ one the same markup as a screen on its own.
 | A `lmnd-kit-segmented` or `lmnd-kit-tabs` | Slides one pill, or one underline, to the option picked, rather than each option lighting up |
 | A tab or segmented option with `aria-controls="panel-id"` | Shows its panel and hides the others. The panels it doesn't show carry `hidden` in the markup, so without script the first stays |
 | A navigation top bar, with the large title first in the content as a `lmnd-kit-large-title` | Collapses the bar once the title is halfway under it: the small title rises in and the divider fades in. The title itself scrolls with the page |
-| The top bar of a details screen or of Home | Fills it once the screen scrolls, in browsers that can't do it in CSS |
-| A `lmnd-kit-day-strip` with an `aria-current` day | Opens scrolled to that day |
+| The top bar of a details screen | Fills it once the screen scrolls, in browsers that can't do it in CSS |
 | An element with `data-lmnd-kit-mirror="field-id"`, and an optional `data-lmnd-kit-mirror-empty` | Shows what's typed in that field, or the empty text while it's empty. Without the script it keeps the text in its markup. A field that carries it takes the other field's value, so one entry on two screens stays one |
 | A `<label>` or `<button>` in an overlay with `data-lmnd-kit-close` | Closes the overlay once it has done its own job, such as a label picking its option, so one tap can pick and close. Without the script the option is still picked and the overlay stays open until its Close |
 | A control with `data-lmnd-kit-reset="element-id"` | Puts every field inside that element back as its markup wrote it before the control acts, so picking a starting point shows that starting point rather than earlier edits. An option already picked resets nothing. Without the script the fields keep what was entered |

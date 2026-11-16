@@ -36,7 +36,6 @@ tag; run the workflow by hand for a dry run that builds and checks the kit witho
 | `kit.js` | The kit's optional behaviour: overlays, switching panels, folding titles, the day strip, cards that grow and shrink. Pages work without it (`LHK-SCRIPT`) | `lemonade-kit.js`, minified |
 | `kit.css` | The components, as `lmnd-kit-*` classes, written against the `--lmnd-*` tokens | part of `lemonade-kit.css` |
 | `build.mjs` | Generates `lemonade-kit.css` and packages the kit | — |
-| `badges/` | The Teya app's transaction status badges, light and `-dark`, copied from its `shared-assets/source/vectors/` with `_badge` dropped and `_` as `-`. Copy them again when the app's change | part of `lemonade-kit.css` |
 | `gallery.html` | Every component with its markup | `gallery.html` |
 | `examples/` | `flow.html`, a flow of screens in one page | `examples/` |
 | `guidelines/` | The kit's own rules, `LHK-`. The build adds Lemonade's `LDS-` rule files from the repository's `guidelines/` | `guidelines/`, with both |
