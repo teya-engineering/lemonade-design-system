@@ -32,9 +32,11 @@ internal fun TopBarSampleDisplay() {
             .navigationBarsPadding(),
     ) {
         LemonadeUi.TopBar(
-            label = "Top Bar",
+            label = "A longer top bar title that wraps past the two lines shown by default",
             collapsedLabel = "Collapsed Top Bar",
-            subtitle = "Subheading preview",
+            subtitle = "A longer subheading that wraps onto a second line when the title is expanded",
+            labelMaxLines = 4,
+            subtitleMaxLines = 2,
             state = topBarState,
             navigationAction = NavigationAction(
                 navigationAction = TopBarAction.Close,

@@ -1,14 +1,15 @@
 // @vitest-environment node
 /// <reference types="vite/client" />
 import kitCss from '../html-kit/kit.css?raw'
+import mapping from '../html-kit/mapping.md?raw'
 import tokensCss from '../styles/tokens.css?raw'
 import typographyCss from '../styles/typography.css?raw'
 import componentsCss from '../styles/components.css?raw'
-import { kitLlmsTxt, kitScript, kitStylesheet, themedHues } from '../html-kit/build.mjs'
+import { kitLlmsTxt, kitScript, kitStylesheet, releaseVersion, themedHues } from '../html-kit/build.mjs'
 import { inlinePage } from '../html-kit/share/build.mjs'
 import { describe, expect, it } from 'vitest'
 
-const pages = import.meta.glob(['../html-kit/gallery.html', '../html-kit/examples/*.html', '../html-kit/screens/*.html'], {
+const pages = import.meta.glob(['../html-kit/gallery.html', '../html-kit/examples/*.html'], {
   query: '?raw',
   import: 'default',
   eager: true,
@@ -105,11 +106,6 @@ describe.each(Object.keys(pages))('%s', (path) => {
     expect(targets.filter((id) => !ids.has(id))).toEqual([])
   })
 
-  // APP-SEGMENTED-SIZE: the segmented control that switches a whole screen is Large.
-  it('keeps the segmented control that switches a screen Large', () => {
-    expect(html).not.toMatch(/<main class="lmnd-kit-content">\s*<div class="lmnd-kit-segmented lmnd-kit-segmented--/)
-  })
-
   // LDS-TOP-BAR-CRITICAL: a destructive icon button takes the critical variant, not a tinted glyph.
   it('marks a destructive icon button with its critical variant', () => {
     expect(html).not.toMatch(/class="lmnd-kit-icon-button\b[^"]*"[^>]*>\s*<span class="[^"]*lmnd-kit-critical/)
@@ -143,7 +139,6 @@ describe('the guidelines', () => {
     new Map(Object.entries(files).map(([path, text]) => [path.split('/').pop() as string, text]))
   const kit = raw(import.meta.glob('../html-kit/guidelines/*.md', { query: '?raw', import: 'default', eager: true }))
   const lemonade = raw(import.meta.glob('../../guidelines/*.md', { query: '?raw', import: 'default', eager: true }))
-  const screens = raw(import.meta.glob('../html-kit/screens/*.md', { query: '?raw', import: 'default', eager: true }))
   const skill = Object.values(import.meta.glob('../html-kit/SKILL.md', { query: '?raw', import: 'default', eager: true }))
   const index = kit.get('index.md') as string
   kit.delete('index.md')
@@ -165,10 +160,89 @@ describe('the guidelines', () => {
   })
 
   it('names only rules that exist', () => {
-    const leftToTheApp = ['APP-TOPBAR-COMPONENT', 'APP-SHEET-OVER-SHEET']
-    const ids = new Set([...leftToTheApp, ...[...rules.values()].flatMap(defined)])
-    const sources = [...Object.values(pages), index, ...rules.values(), ...screens.values(), ...skill] as string[]
+    const ids = new Set([...rules.values()].flatMap(defined))
+    const sources = [...Object.values(pages), index, ...rules.values(), ...skill] as string[]
     const named = sources.flatMap((text) => [...text.matchAll(/\b(?:LDS|APP|LHK)-[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*(?![\w-])/g)].map((m) => m[0]))
     expect([...new Set(named)].filter((id) => !ids.has(id))).toEqual([])
+  })
+})
+
+describe('mapping.md', () => {
+  const kitClasses = new Set([...withoutComments(kitCss).matchAll(/\.(lmnd-kit-[a-z0-9-]+)(?![\w-])/g)].map((m) => m[1]))
+  const blockOf = (name: string) => name.split('--')[0]
+  const blocks = new Set([...kitClasses].map(blockOf))
+  const rows = mapping
+    .split('\n')
+    .filter((line) => line.startsWith('| `lmnd-kit-'))
+    .map((line) => ({
+      line,
+      blocks: [...line.split('|')[1].matchAll(/`(lmnd-kit-[a-z0-9-]+)`/g)].map((m) => m[1]),
+      modifiers: [...line.matchAll(/`(--[a-z0-9-]+)`/g)].map((m) => m[1]),
+      parts: [...line.matchAll(/`(__[a-z0-9-]+)`/g)].map((m) => m[1]),
+      noComponent: line.split('|')[2].trim().startsWith('**No Lemonade component**'),
+    }))
+  const kitParts = new Set([...withoutComments(kitCss).matchAll(/\.(lmnd-kit-[a-z0-9-]+?__[a-z0-9-]+)(?![\w-])/g)].map((m) => m[1]))
+  const layoutOnly = new Set(
+    [...mapping.slice(mapping.indexOf('## Layout-only parts')).matchAll(/^- `(lmnd-kit-[a-z0-9_-]+)`/gm)].map((m) => m[1]),
+  )
+
+  it('reads the classes and the rows it checks', () => {
+    expect(kitClasses.size).toBeGreaterThan(100)
+    expect(rows.length).toBeGreaterThan(50)
+    expect(kitParts.size).toBeGreaterThan(100)
+  })
+
+  // A part a component takes as a parameter or slot is named in its row; a part that only lays the
+  // block out is listed once at the end; a block with no Lemonade component has nothing to map.
+  it('places every part of a mapped block', () => {
+    const unplaced = [...kitParts].filter((name) => {
+      const [block, part] = name.split('__')
+      const row = rows.find((r) => r.blocks.includes(block))
+      return !row?.noComponent && !row?.parts.includes(`__${part}`) && !layoutOnly.has(name)
+    })
+    expect(unplaced).toEqual([])
+  })
+
+  it('names only parts kit.css still has', () => {
+    const stale = [
+      ...rows.flatMap((row) =>
+        row.parts.filter((part) => !row.blocks.some((block) => kitParts.has(block + part))).map((part) => `${row.blocks[0]}${part}`),
+      ),
+      ...[...layoutOnly].filter((name) => !kitParts.has(name)),
+    ]
+    expect(stale).toEqual([])
+  })
+
+  // A prototype port reads this table; a block or modifier missing from it gets guessed.
+  it('maps every block, with each of its modifiers in its row', () => {
+    const missing = [...kitClasses].filter((name) => {
+      const row = rows.find((r) => r.blocks.includes(blockOf(name)))
+      if (!row) return true
+      return name.includes('--') && !row.modifiers.includes(name.slice(blockOf(name).length))
+    })
+    expect(missing).toEqual([])
+  })
+
+  it('names only blocks and modifiers kit.css still has', () => {
+    const stale = rows.flatMap((row) => [
+      ...row.blocks.filter((block) => !blocks.has(block)),
+      ...row.modifiers.filter((modifier) => !row.blocks.some((block) => kitClasses.has(block + modifier))).map((m) => `${row.blocks[0]}${m}`),
+    ])
+    expect(stale).toEqual([])
+  })
+})
+
+describe('releaseVersion', () => {
+  it('takes an X.Y.Z version', () => {
+    expect(releaseVersion(['--version', '1.2.3'])).toBe('1.2.3')
+    expect(releaseVersion(['--version', '0.10.0'])).toBe('0.10.0')
+  })
+
+  it('builds without a version when the flag is absent', () => {
+    expect(releaseVersion(['--out', 'dist'])).toBeUndefined()
+  })
+
+  it.each([[[]], [['1.0.08']], [['1.2']], [['v1.2.3']], [['01.2.3']]])('rejects --version %j', (rest) => {
+    expect(() => releaseVersion(['--version', ...rest])).toThrow('--version takes X.Y.Z')
   })
 })
