@@ -95,7 +95,7 @@
   const screenFor = (id) => screens.find((screen) => screen.id === id)
 
   // A task's steps are screens with --task, shown in a sheet over the screen the task started from, which
-  // stays in view behind them and takes no taps (APP-SHEET-OR-PAGE).
+  // stays in view behind them and takes no taps.
   const isStep = (screen) => !!screen?.classList.contains('lmnd-kit-screen--task')
 
   const setBehind = (screen) => {

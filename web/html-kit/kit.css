@@ -3522,7 +3522,7 @@ body:has(> .lmnd-kit-device) {
 
 /* ---------- A task in a sheet ---------- */
 
-/* A task runs in a sheet over the screen it started from, with its steps inside (APP-SHEET-OR-PAGE). Each
+/* A task runs in a sheet over the screen it started from, with its steps inside. Each
    step is a screen with --task: a sheet just under the status bar, with the sheet's corners, which stay put
    while its content slides. kit.js keeps the screen it started from in view behind it, dimmed and inert. */
 .lmnd-kit-device {
