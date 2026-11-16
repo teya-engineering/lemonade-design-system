@@ -83,7 +83,7 @@ h6 {
   background: var(--lmnd-color-bg-default);
 }
 
-/* The app's spacing rhythm (APP-SPACING-RHYTHM): spacing-400 at the sides and between cards and blocks,
+/* The app's spacing rhythm: spacing-400 at the sides and between cards and blocks,
    spacing-800 around a section, spacing-200 from a section's heading to its card. */
 .lmnd-kit-content {
   display: flex;
@@ -118,7 +118,7 @@ h6 {
   color: var(--lmnd-color-content-primary);
 }
 
-/* A menu's footer (APP-MENU-FOOTER): the app version and the legal entity, centred under the last card. */
+/* A menu's footer: the app version and the legal entity, centred under the last card. */
 .lmnd-kit-menu-footer {
   display: flex;
   flex-direction: column;
@@ -155,7 +155,7 @@ h6 {
   text-overflow: ellipsis;
 }
 
-/* The next page of a list loading (APP-FEED-PAGING): a spinner centred under the last group. */
+/* The next page of a list loading: a spinner centred under the last group. */
 .lmnd-kit-load-more {
   display: flex;
   justify-content: center;
@@ -507,7 +507,7 @@ h6 {
   scroll-padding-inline: var(--lmnd-spacing-400);
 }
 
-/* The filter bar (APP-FILTER-BAR): chips spacing-200 apart, spacing-400 around, ending in a Clear or Reset
+/* The filter bar: chips spacing-200 apart, spacing-400 around, ending in a Clear or Reset
    filters button. It goes first in the content, under the search field, and scrolls with the list. */
 .lmnd-kit-filter-bar {
   display: flex;
@@ -1169,7 +1169,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
 }
 
 /* An action inside a row's value — copy, edit. Only the icon is drawn, so it is never taller than the row
-   and adds no space around itself (APP-DETAILS-ROWS). */
+   and adds no space around itself. */
 .lmnd-kit-inline-action {
   display: inline-flex;
   flex-shrink: 0;
@@ -1756,7 +1756,7 @@ label.lmnd-kit-list-item:active .lmnd-kit-list-item__row {
   padding: var(--lmnd-spacing-400);
 }
 
-/* Fixed while the content scrolls, fading it where they meet (APP-FOOTER-PLACEMENT). */
+/* Fixed while the content scrolls, fading it where they meet. */
 .lmnd-kit-sheet__actions {
   position: sticky;
   bottom: 0;
@@ -2861,7 +2861,7 @@ textarea.lmnd-kit-field__input {
 
 /* ---------- Empty state ---------- */
 
-/* A list's empty state (APP-SCREEN-EMPTY): it fills the space under the screen's chrome, centred a little
+/* A list's empty state: it fills the space under the screen's chrome, centred a little
    above the true middle. */
 .lmnd-kit-empty {
   display: flex;
@@ -2939,7 +2939,7 @@ textarea.lmnd-kit-field__input {
 .lmnd-kit-screen--wash-featured { --lmnd-kit-wash: var(--lmnd-color-bg-featured); }
 .lmnd-kit-screen--wash-neutral { --lmnd-kit-wash: var(--lmnd-color-bg-neutral); }
 
-/* The hero: artwork, main information, status, metadata, centred, in that order (APP-DETAILS-HERO). */
+/* The hero: artwork, main information, status, metadata, centred, in that order. */
 .lmnd-kit-hero {
   display: flex;
   flex-direction: column;

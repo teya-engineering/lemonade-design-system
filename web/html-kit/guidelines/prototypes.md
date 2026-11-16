@@ -46,7 +46,7 @@ belongs to the page and goes in a page class of its own, using tokens (`LHK-TOKE
 
 **Rule.** Every screen:
 
-- starts from the closest file in `examples/`;
+- starts from the closest file in `examples/`, or from a screen the gallery shows;
 - sits in a phone frame, `<div class="lmnd-kit-device">`, as the only thing in `<body>`. The frame is a 393 × 852
   phone with a status bar and home indicator on a wide window, and drops away on a phone;
 - is one `lmnd-kit-screen` (`bg-subtle`), or `lmnd-kit-screen lmnd-kit-screen--default` (`bg-default`)
@@ -57,7 +57,7 @@ belongs to the page and goes in a page class of its own, using tokens (`LHK-TOKE
 
 A top-level screen uses the compact top bar with no back button; a pushed screen uses the navigation top
 bar with Back; a details screen uses the small one (`lmnd-kit-top-bar--small`, the centred title only) on an
-`lmnd-kit-screen--details` (`APP-DETAILS-TOP-BAR`); a screen presented over another uses Close.
+`lmnd-kit-screen--details`; a screen presented over another uses Close.
 
 **Why.** The examples carry the app's page background, top bar and spacing. A screen that starts blank
 gets those slightly wrong. A screen outside the frame stretches to the window and stops looking like a
@@ -109,7 +109,7 @@ with its top bar. Not a `padding-bottom: 34px` on a page's own wrapper, and not 
 
 **Rule.** Icons are `<span class="lmnd-icon" data-icon="…">`, flags `<span class="lmnd-kit-flag" data-flag="…">`,
 brand logos `<span class="lmnd-kit-logo" data-logo="…">`, and a transaction's status badge
-`<span class="lmnd-kit-symbol__status" data-badge="…">` (`APP-FEED-ROWS`), using names from `assets.txt`. No
+`<span class="lmnd-kit-symbol__status" data-badge="…">`, using names from `assets.txt`. No
 inline SVG, icon font, emoji or image from elsewhere stands in for one.
 
 **Why.** These are the app's assets: the icons, flags and logos generated from Lemonade's Figma file, the
@@ -161,7 +161,7 @@ screen, or driven by the page's own script (`LHK-SCRIPT`).
 | The phone's own picker | The box holds a native `<select class="lmnd-kit-field__select">` and the chevron, in a `<label class="lmnd-kit-field lmnd-kit-select">`. An empty first option, `value="" disabled selected hidden`, is the placeholder |
 
 Use a sheet where the app's screen uses one: options with a flag, logo, icon or support line, more than a
-handful to search, or a confirming action (`APP-PICKER-OPTIONS`). Use the native select for a short list of
+handful to search, or a confirming action. Use the native select for a short list of
 plain words that the app shows in the system picker. A field that opens nothing yet is still a link, to
 `#`.
 
