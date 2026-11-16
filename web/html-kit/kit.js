@@ -397,10 +397,10 @@
 
   // ---------- A top bar that fills once its screen scrolls ----------
 
-  // Details and Home bars start clear over their colour and fill once the screen scrolls. CSS does it from
+  // Details bars start clear over their colour and fill once the screen scrolls. CSS does it from
   // the scroll position where the browser can; this marks the bar everywhere else.
   const fillBars = () => {
-    document.querySelectorAll('.lmnd-kit-screen--details > .lmnd-kit-top-bar, .lmnd-kit-screen--home > .lmnd-kit-top-bar').forEach((bar) => {
+    document.querySelectorAll('.lmnd-kit-screen--details > .lmnd-kit-top-bar').forEach((bar) => {
       const screen = bar.parentElement
       const update = () => {
         if (!screen.offsetWidth) return
@@ -429,19 +429,6 @@
     document.querySelectorAll('.lmnd-kit-card').forEach((card) => observer.observe(card))
   }
 
-  // ---------- A strip of days that opens on the selected one ----------
-
-  const centreDays = () => {
-    document.querySelectorAll('.lmnd-kit-day-strip').forEach((strip) => {
-      const day = strip.querySelector('[aria-current]')
-      if (!day) return
-      const style = getComputedStyle(strip)
-      const step = day.offsetWidth + (parseFloat(style.columnGap) || 0)
-      const left = day.getBoundingClientRect().left - strip.getBoundingClientRect().left + strip.scrollLeft
-      strip.scrollLeft = Math.max(0, left - (parseFloat(style.paddingLeft) || 0) - 3 * step)
-    })
-  }
-
   // ---------- Links to an id, wherever the page is shown ----------
 
   // A page shown from srcdoc, as a chat previews one, resolves "#id" against the host's address, so the link
@@ -461,7 +448,6 @@
     foldTitles()
     fillBars()
     slideMarks()
-    centreDays()
     resizeCards()
     document.querySelectorAll('[data-lmnd-kit-max-length]').forEach(count)
     new Set([...document.querySelectorAll('[data-lmnd-kit-mirror]')].map((target) => document.getElementById(target.dataset.lmndKitMirror)))

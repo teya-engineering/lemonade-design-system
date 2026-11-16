@@ -56,8 +56,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -408,6 +410,11 @@ public data class NavigationAction(
  *        gradient at the top and switch to a solid theme color while the user scrolls
  * @param modifier [Modifier] applied to the top bar container
  * @param navigationAction optional [NavigationAction] in the leading slot (e.g. back or close)
+ * @param labelMaxLines maximum lines for [label] in the expanded state before it truncates. Must be
+ *        positive. The expanded title and subtitle take at most half the height available to them,
+ *        and never more than half the window height
+ * @param subtitleMaxLines maximum lines for [subtitle] in the expanded state before it truncates.
+ *        Must be positive
  * @param trailingSlot optional composable at the end of the fixed header (typically action buttons)
  * @param bottomSlot optional composable below the expanded title. It stays visible and acts as a
  *        sticky area when fully collapsed
@@ -422,9 +429,13 @@ public fun LemonadeUi.TopBar(
     collapsedLabel: String? = null,
     subtitle: String? = null,
     navigationAction: NavigationAction? = null,
+    labelMaxLines: Int = 2,
+    subtitleMaxLines: Int = 1,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
+    require(labelMaxLines > 0) { "labelMaxLines must be positive, was $labelMaxLines" }
+    require(subtitleMaxLines > 0) { "subtitleMaxLines must be positive, was $subtitleMaxLines" }
     val effectiveBackgroundColor by animateColorAsState(
         targetValue = if (state.isScrolled) scrolledBackgroundColor else backgroundColor,
         animationSpec = TopBarBackgroundAnimationSpec,
@@ -468,23 +479,51 @@ public fun LemonadeUi.TopBar(
                         bottom = LocalSpaces.current.spacing200,
                     ),
             ) {
-                LemonadeUi.Text(
-                    text = label,
-                    textStyle = LocalTypographies.current.headingLarge,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 2,
+                ExpandedTopBarTitle(
+                    label = label,
+                    subtitle = subtitle,
+                    labelMaxLines = labelMaxLines,
+                    subtitleMaxLines = subtitleMaxLines,
                 )
-                if (subtitle != null) {
-                    LemonadeUi.Text(
-                        text = subtitle,
-                        textStyle = LocalTypographies.current.bodySmallRegular,
-                        color = LocalColors.current.content.contentSecondary,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                    )
-                }
             }
         },
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with labelMaxLines and subtitleMaxLines.",
+    replaceWith = ReplaceWith(
+        expression = "TopBar(label, modifier, state, backgroundColor, scrolledBackgroundColor, collapsedLabel, " +
+            "subtitle, navigationAction, 2, 1, trailingSlot, bottomSlot)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.TopBar(
+    label: String,
+    modifier: Modifier = Modifier,
+    state: TopBarState = rememberTopBarState(),
+    backgroundColor: Color = LocalColors.current.background.bgDefault,
+    scrolledBackgroundColor: Color = backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0),
+    collapsedLabel: String? = null,
+    subtitle: String? = null,
+    navigationAction: NavigationAction? = null,
+    trailingSlot: @Composable (RowScope.() -> Unit)? = null,
+    bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
+) {
+    LemonadeUi.TopBar(
+        label = label,
+        modifier = modifier,
+        state = state,
+        backgroundColor = backgroundColor,
+        scrolledBackgroundColor = scrolledBackgroundColor,
+        collapsedLabel = collapsedLabel,
+        subtitle = subtitle,
+        navigationAction = navigationAction,
+        labelMaxLines = 2,
+        subtitleMaxLines = 1,
+        trailingSlot = trailingSlot,
+        bottomSlot = bottomSlot,
     )
 }
 
@@ -540,6 +579,11 @@ public fun LemonadeUi.TopBar(
  *        when expanded, below [label] and centered when collapsed
  * @param searchPlaceholder optional placeholder shown in the search field while it is empty
  * @param navigationAction optional [NavigationAction] in the leading slot (e.g. back or close)
+ * @param expandedLabelMaxLines maximum lines for [expandedLabel] before it truncates. Must be
+ *        positive. The expanded title and subtitle take at most half the height available to them,
+ *        and never more than half the window height
+ * @param subtitleMaxLines maximum lines for [subtitle] below [expandedLabel] before it truncates.
+ *        Must be positive. Has no effect without [expandedLabel]
  * @param trailingSlot optional composable at the end of the fixed header
  * @param bottomSlot optional composable shown below the search field when focused
  *        (e.g. search suggestions or filters)
@@ -558,9 +602,13 @@ public fun LemonadeUi.TopBar(
     subtitle: String? = null,
     searchPlaceholder: String? = null,
     navigationAction: NavigationAction? = null,
+    expandedLabelMaxLines: Int = 2,
+    subtitleMaxLines: Int = 1,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
+    require(expandedLabelMaxLines > 0) { "expandedLabelMaxLines must be positive, was $expandedLabelMaxLines" }
+    require(subtitleMaxLines > 0) { "subtitleMaxLines must be positive, was $subtitleMaxLines" }
     val keyboardController = LocalSoftwareKeyboardController.current
     val searchDismissRequester = remember { FocusRequester() }
     var isSearchFocused by remember {
@@ -629,21 +677,12 @@ public fun LemonadeUi.TopBar(
                             Column(
                                 modifier = Modifier.padding(bottom = LocalSpaces.current.spacing100),
                             ) {
-                                LemonadeUi.Text(
-                                    text = expandedLabel.orEmpty(),
-                                    textStyle = LocalTypographies.current.headingLarge,
-                                    overflow = TextOverflow.Ellipsis,
-                                    maxLines = 2,
+                                ExpandedTopBarTitle(
+                                    label = expandedLabel.orEmpty(),
+                                    subtitle = subtitle,
+                                    labelMaxLines = expandedLabelMaxLines,
+                                    subtitleMaxLines = subtitleMaxLines,
                                 )
-                                if (subtitle != null) {
-                                    LemonadeUi.Text(
-                                        text = subtitle,
-                                        textStyle = LocalTypographies.current.bodySmallRegular,
-                                        color = LocalColors.current.content.contentSecondary,
-                                        overflow = TextOverflow.Ellipsis,
-                                        maxLines = 1,
-                                    )
-                                }
                             }
                         } else {
                             Spacer(modifier = Modifier.fillMaxWidth())
@@ -696,6 +735,50 @@ public fun LemonadeUi.TopBar(
             }
         },
         modifier = modifier,
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with expandedLabelMaxLines and subtitleMaxLines.",
+    replaceWith = ReplaceWith(
+        expression = "TopBar(label, searchInput, onSearchChanged, modifier, state, backgroundColor, " +
+            "scrolledBackgroundColor, expandedLabel, subtitle, searchPlaceholder, navigationAction, 2, 1, " +
+            "trailingSlot, bottomSlot)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.TopBar(
+    label: String,
+    searchInput: String,
+    onSearchChanged: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    state: TopBarState = rememberTopBarState(),
+    backgroundColor: Color = LocalColors.current.background.bgDefault,
+    scrolledBackgroundColor: Color = backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0),
+    expandedLabel: String? = null,
+    subtitle: String? = null,
+    searchPlaceholder: String? = null,
+    navigationAction: NavigationAction? = null,
+    trailingSlot: @Composable (RowScope.() -> Unit)? = null,
+    bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
+) {
+    LemonadeUi.TopBar(
+        label = label,
+        searchInput = searchInput,
+        onSearchChanged = onSearchChanged,
+        modifier = modifier,
+        state = state,
+        backgroundColor = backgroundColor,
+        scrolledBackgroundColor = scrolledBackgroundColor,
+        expandedLabel = expandedLabel,
+        subtitle = subtitle,
+        searchPlaceholder = searchPlaceholder,
+        navigationAction = navigationAction,
+        expandedLabelMaxLines = 2,
+        subtitleMaxLines = 1,
+        trailingSlot = trailingSlot,
+        bottomSlot = bottomSlot,
     )
 }
 
@@ -947,6 +1030,54 @@ public fun LemonadeUi.TopBar(
 }
 
 @Composable
+private fun ExpandedTopBarTitle(
+    label: String,
+    subtitle: String?,
+    labelMaxLines: Int,
+    subtitleMaxLines: Int,
+) {
+    val windowHeight = LocalWindowInfo.current.containerSize.height
+    // Limits how much height a long title takes from the content that scrolls to collapse the bar.
+    Column(
+        modifier = Modifier.layout { measurable, constraints ->
+            val maxHeight = (minOf(constraints.maxHeight, windowHeight) * EXPANDED_TITLE_MAX_HEIGHT_FRACTION)
+                .roundToInt()
+            val placeable = measurable.measure(
+                constraints.copy(
+                    minHeight = minOf(constraints.minHeight, maxHeight),
+                    maxHeight = maxHeight,
+                ),
+            )
+            layout(
+                width = placeable.width,
+                height = placeable.height,
+            ) {
+                placeable.place(
+                    x = 0,
+                    y = 0,
+                )
+            }
+        },
+    ) {
+        LemonadeUi.Text(
+            text = label,
+            textStyle = LocalTypographies.current.headingLarge,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = labelMaxLines,
+        )
+        if (subtitle != null) {
+            LemonadeUi.Text(
+                text = subtitle,
+                textStyle = LocalTypographies.current.bodySmallRegular,
+                color = LocalColors.current.content.contentSecondary,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = subtitleMaxLines,
+            )
+        }
+    }
+}
+
+@Composable
 private fun CoreTopBarActionContent(
     navigationAction: NavigationAction,
     modifier: Modifier = Modifier,
@@ -1035,6 +1166,7 @@ private fun CoreTopBar(
     )
 }
 
+private const val EXPANDED_TITLE_MAX_HEIGHT_FRACTION = 0.5f
 private const val LAYOUT_ID_FIXED_HEADER = "fixed_header"
 private const val LAYOUT_ID_DIVIDER = "divider"
 private const val LAYOUT_ID_COLLAPSABLE_SLOT = "collapsable_slot"

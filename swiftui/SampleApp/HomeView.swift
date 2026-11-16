@@ -47,6 +47,7 @@ private enum Demo: String, CaseIterable, Identifiable, Hashable {
     case notice = "Notice"
     case tooltip = "Tooltip"
     case historyTimeline = "HistoryTimeline"
+    case progressStepper = "ProgressStepper"
 
     case chip = "Chip"
     case listItem = "ListItem"
@@ -100,7 +101,7 @@ private let demoSections: [DemoSection] = [
     ),
     DemoSection(
         title: "Display Components",
-        items: [.tag, .badge, .symbolContainer, .card, .divider, .notice, .tooltip, .historyTimeline]
+        items: [.tag, .badge, .symbolContainer, .card, .divider, .notice, .tooltip, .historyTimeline, .progressStepper]
     ),
     DemoSection(
         title: "Selection & Lists",
@@ -212,6 +213,7 @@ struct HomeView: View {
         case .notice: NoticeDisplayView()
         case .tooltip: TooltipDisplayView()
         case .historyTimeline: HistoryTimelineDisplayView()
+        case .progressStepper: ProgressStepperDisplayView()
         case .chip: ChipDisplayView()
         case .listItem: ListItemDisplayView()
         case .contentListItem: ContentListItemDisplayView()
