@@ -49,6 +49,11 @@ description. Generated files (the `DO NOT MODIFY THIS FILE MANUALLY` banner) are
 exempt — fix the generator, not the file. Full rules and cleanup procedure:
 `.claude/skills/comment-review/`.
 
+## lemonade-specialist plugin
+
+`plugins/lemonade-specialist/skills/native-ui/guidelines/` is a generated copy of `guidelines/`. After
+any change to `guidelines/`, run `scripts/sync-lemonade-specialist.sh` and commit the result.
+
 ## Web
 
 Everything under `web/styles/`, `web/src/*.generated.ts`, `web/assets/`, `web/llms.txt` and
