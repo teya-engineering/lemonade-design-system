@@ -39,13 +39,17 @@ Lemonade ships the same design language to three platforms:
 
 ### Version Tags
 
-Each platform versions independently, and the version lives only in the tag.
+Each platform versions independently. For the SDKs, the web package and the HTML kit the version lives
+only in the tag. The `lemonade-specialist` plugin also keeps it in its `plugin.json`, because Claude Code
+reads it from there.
 
 | Platform | Tag Pattern | Example |
 |----------|-------------|---------|
 | KMP | `lemonade-kmp-X.Y.Z` | `lemonade-kmp-0.9.0` |
 | SwiftUI | `lemonade-swiftui-X.Y.Z` | `lemonade-swiftui-0.9.1` |
 | Web | `lemonade-mobile-web-X.Y.Z` | `lemonade-mobile-web-0.1.0` |
+| HTML kit | `lemonade-html-kit-X.Y.Z` | `lemonade-html-kit-1.0.0` |
+| Claude Code plugin | `lemonade-specialist--vX.Y.Z` | `lemonade-specialist--v1.1.0` |
 
 Each SwiftUI release also carries a plain `X.Y.Z` tag at the same commit — that is
 the one Swift Package Manager consumers resolve.
@@ -59,7 +63,7 @@ the one Swift Package Manager consumers resolve.
 | **Actions** | Button, IconButton, Link, Chip |
 | **Form Controls** | TextField, TextArea, SearchField, SelectField, PinCode, Switch, Checkbox, RadioButton, SegmentedControl, BoxSelection |
 | **Display** | Text, Icon, Badge, Tag, Card, Tile, SymbolContainer, HorizontalDivider, VerticalDivider, BrandLogo, CountryFlag |
-| **Lists & Navigation** | ListItem, ContentListItem, ActionListItem, ResourceListItem, SelectListItem, SwipeActionRow, Tabs, TopBar, BottomTabBar, HistoryTimeline |
+| **Lists & Navigation** | ListItem, ContentListItem, ActionListItem, ResourceListItem, SelectListItem, SwipeActionRow, Tabs, TopBar, BottomTabBar, HistoryTimeline, ProgressStepper |
 | **Feedback & Overlays** | Toast, Tooltip, Notice, Spinner, Skeleton, Dialog, BottomSheet, Dropdown |
 | **Date & Time** | DatePicker, DateRangePicker, InlineCalendar, TimePicker, TimeInput |
 
@@ -127,8 +131,12 @@ documentation says what it does; the guidelines say what to do with it next to a
 Each rule carries a stable `LDS-` slug, so a review finding or an exemption comment in a consuming
 repository points at something written down.
 
-A product following them keeps a synced copy in its own repository, because an agent follows what it
-can read and Lemonade is a dependency rather than a checkout.
+Products read them through the `lemonade-specialist` Claude Code plugin in
+[`plugins/lemonade-specialist/`](./plugins/lemonade-specialist). Its `native-ui` skill carries the
+guidelines with the token and component references for Compose and SwiftUI, and the HTML kit's
+`mapping.md` for porting a prototype. A plugin install copies only the plugin's folder, so the skill
+holds copies of `guidelines/` and `web/html-kit/mapping.md`. After you edit either, run
+`scripts/sync-lemonade-specialist.sh`. CI fails when a copy differs.
 
 ---
 
