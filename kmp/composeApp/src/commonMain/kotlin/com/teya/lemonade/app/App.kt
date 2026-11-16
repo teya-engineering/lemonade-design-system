@@ -27,6 +27,7 @@ import com.teya.lemonade.MarkdownDisplay
 import com.teya.lemonade.NoticeDisplay
 import com.teya.lemonade.OpacityDisplay
 import com.teya.lemonade.PinCodeDisplay
+import com.teya.lemonade.ProgressStepperDisplay
 import com.teya.lemonade.RadioButtonDisplay
 import com.teya.lemonade.RadiusDisplay
 import com.teya.lemonade.ResourceListItemDisplay
@@ -110,5 +111,6 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.Toast to { _ -> ToastDisplay() },
     Displays.Tooltip to { _ -> TooltipDisplay() },
     Displays.HistoryTimeline to { _ -> HistoryTimelineDisplay() },
+    Displays.ProgressStepper to { _ -> ProgressStepperDisplay() },
     Displays.Markdown to { _ -> MarkdownDisplay() },
 )
