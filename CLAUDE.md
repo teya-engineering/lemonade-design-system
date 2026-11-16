@@ -55,7 +55,8 @@ exempt — fix the generator, not the file. Full rules and cleanup procedure:
 `guidelines/` and `web/html-kit/mapping.md`. After changing either, run
 `scripts/sync-lemonade-specialist.sh` and commit the result. A change to `kit.css` that adds or removes
 an `lmnd-kit-` block, modifier or `__part` needs its entry in `web/html-kit/mapping.md`;
-`web/tests/html-kit.test.ts` fails without it.
+`web/tests/html-kit.test.ts` fails without it. Don't bump the plugin's `version` in a feature PR; the
+`publish-version` skill bumps and tags it at release time.
 
 ## Web
 
