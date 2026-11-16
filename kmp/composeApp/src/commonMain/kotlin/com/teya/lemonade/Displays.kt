@@ -253,6 +253,11 @@ internal interface Displays {
     }
 
     @Serializable
+    data object ProgressStepper : Displays {
+        override val label: String = "ProgressStepper"
+    }
+
+    @Serializable
     data object Markdown : Displays {
         override val label: String = "Markdown"
     }

@@ -9,3 +9,5 @@ export function kitLlmsTxt(): Promise<string>
 export function themedHues(): Promise<string[]>
 
 export function classList(): Promise<string>
+
+export function releaseVersion(argv: string[]): string | undefined
