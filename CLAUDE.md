@@ -1,5 +1,11 @@
 # Lemonade Design System
 
+## Public repository
+
+Lemonade is public. It describes the design system, not a product built on it: no product screens,
+no product rule IDs (`APP-`), and no product component names, file paths or app text. Write examples
+in product-neutral terms. A product's own layer lives in that product's repository.
+
 ## Binary compatibility (KMP) — read before changing public API
 
 The published modules — `core`, `tokens`, `ui`, `expressive`, `calendar` — ship to
@@ -48,6 +54,15 @@ narrate a change in a comment; rationale goes in the commit message and PR
 description. Generated files (the `DO NOT MODIFY THIS FILE MANUALLY` banner) are
 exempt — fix the generator, not the file. Full rules and cleanup procedure:
 `.claude/skills/comment-review/`.
+
+## lemonade-specialist plugin
+
+`plugins/lemonade-specialist/skills/native-ui/guidelines/` and `mapping.md` are generated copies of
+`guidelines/` and `web/html-kit/mapping.md`. After changing either, run
+`scripts/sync-lemonade-specialist.sh` and commit the result. A change to `kit.css` that adds or removes
+an `lmnd-kit-` block, modifier or `__part` needs its entry in `web/html-kit/mapping.md`;
+`web/tests/html-kit.test.ts` fails without it. Don't bump the plugin's `version` in a feature PR; the
+`publish-version` skill bumps and tags it at release time.
 
 ## Web
 

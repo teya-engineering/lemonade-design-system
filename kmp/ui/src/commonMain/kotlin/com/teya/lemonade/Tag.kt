@@ -48,7 +48,42 @@ public fun LemonadeUi.Tag(
     CoreTag(
         label = label,
         icon = icon,
-        voice = voice,
+        colors = voice.tagColors,
+        modifier = modifier,
+    )
+}
+
+/**
+ * Shows a compact label styled by a themed hue, for colour that carries application meaning the
+ * voices do not model - categories, per-role accents.
+ *
+ * ## Usage
+ * ```kotlin
+ * LemonadeUi.Tag(
+ *     icon = LemonadeIcons.Heart,
+ *     label = "Marketing",
+ *     theme = ThemedHue.Violet.subtle,
+ * )
+ * ```
+ *
+ * @param label text shown in the tag
+ * @param theme [ThemedStyle] driving the background, border, and the label and icon tints: a
+ *  [ThemedHue] for its solid palette, or [ThemedHue.subtle] for its subtle one
+ * @param modifier [Modifier] applied to the root container of the tag
+ * @param icon [LemonadeIcons] shown before the label
+ */
+@ExperimentalLemonadeApi
+@Composable
+public fun LemonadeUi.Tag(
+    label: String,
+    theme: ThemedStyle,
+    modifier: Modifier = Modifier,
+    icon: LemonadeIcons? = null,
+) {
+    CoreTag(
+        label = label,
+        icon = icon,
+        colors = LocalThemedColors.current.tagColors(theme = theme),
         modifier = modifier,
     )
 }
@@ -57,7 +92,7 @@ public fun LemonadeUi.Tag(
 private fun CoreTag(
     label: String,
     icon: LemonadeIcons?,
-    voice: TagVoice,
+    colors: TagColors,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -65,11 +100,11 @@ private fun CoreTag(
         horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing50),
         modifier = modifier
             .background(
-                color = voice.containerColor,
+                color = colors.background,
                 shape = LocalShapes.current.radius150,
             ).border(
                 width = LocalBorderWidths.current.base.border25,
-                color = voice.borderColor,
+                color = colors.border,
                 shape = LocalShapes.current.radius150,
             ).padding(
                 vertical = LocalSpaces.current.spacing50,
@@ -80,14 +115,14 @@ private fun CoreTag(
             LemonadeUi.Icon(
                 icon = icon,
                 contentDescription = null,
-                tint = voice.tintColor,
+                tint = colors.content,
                 size = LemonadeAssetSize.Small,
             )
         }
 
         LemonadeUi.Text(
             text = label,
-            color = voice.tintColor,
+            color = colors.content,
             overflow = TextOverflow.Ellipsis,
             textStyle = LocalTypographies.current.bodyXSmallSemiBold,
             maxLines = 1,
@@ -95,6 +130,28 @@ private fun CoreTag(
         )
     }
 }
+
+internal data class TagColors(
+    val background: Color,
+    val border: Color,
+    val content: Color,
+)
+
+internal fun LemonadeThemedColors.tagColors(theme: ThemedStyle): TagColors {
+    val palette = this[theme]
+    return TagColors(
+        background = palette.background,
+        border = palette.border,
+        content = palette.onBackground,
+    )
+}
+
+private val TagVoice.tagColors: TagColors
+    @Composable get() = TagColors(
+        background = containerColor,
+        border = borderColor,
+        content = tintColor,
+    )
 
 private val TagVoice.tintColor: Color
     @Composable get() {
@@ -178,6 +235,25 @@ private fun LemonadeTagPreview(
             icon = LemonadeIcons.Heart.takeIf { previewData.withIcon },
             voice = previewData.voice,
             modifier = Modifier.requiredWidth(width = 100.dp),
+        )
+    }
+}
+
+@LemonadePreview
+@Composable
+private fun LemonadeTagThemedPreview(
+    @PreviewParameter(ThemedHuePreviewProvider::class)
+    theme: ThemedHue,
+) {
+    Row(horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200)) {
+        LemonadeUi.Tag(
+            label = theme.name,
+            theme = theme,
+        )
+        LemonadeUi.Tag(
+            label = theme.name,
+            icon = LemonadeIcons.Heart,
+            theme = theme.subtle,
         )
     }
 }

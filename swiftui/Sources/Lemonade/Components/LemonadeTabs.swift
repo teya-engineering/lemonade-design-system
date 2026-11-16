@@ -119,6 +119,7 @@ private struct LemonadeTabsView: View {
                             )
                             #endif
                     }
+                    .lemonadeHiddenTopScrollEdge()
                     .background(
                         GeometryReader { geo in
                             Color.clear

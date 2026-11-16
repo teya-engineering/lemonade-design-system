@@ -836,6 +836,7 @@ final enum class com.teya.lemonade.core/LemonadeIcons : com.teya.lemonade.core/L
     enum entry ReceiptTax // com.teya.lemonade.core/LemonadeIcons.ReceiptTax|null[0]
     enum entry RescueRing // com.teya.lemonade.core/LemonadeIcons.RescueRing|null[0]
     enum entry RotateMoney // com.teya.lemonade.core/LemonadeIcons.RotateMoney|null[0]
+    enum entry ScanBarcode // com.teya.lemonade.core/LemonadeIcons.ScanBarcode|null[0]
     enum entry ScanFace // com.teya.lemonade.core/LemonadeIcons.ScanFace|null[0]
     enum entry ScriptSparkle // com.teya.lemonade.core/LemonadeIcons.ScriptSparkle|null[0]
     enum entry Search // com.teya.lemonade.core/LemonadeIcons.Search|null[0]

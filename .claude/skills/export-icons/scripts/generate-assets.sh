@@ -6,9 +6,9 @@
 #
 #   --skip-api   stop after the converters; don't run apiDump or the ABI classifier
 #
-# Runs the SVG converter, then the country-flags post-generator, then the Code
-# Connect templates, then refreshes the API baselines that the new enum entries
-# move.
+# Runs the SVG converter, then the country-flags post-generator, then the web
+# assets and llms.txt, then the Code Connect templates, then refreshes the API
+# baselines that the new enum entries move.
 set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
@@ -57,6 +57,11 @@ echo "==> svg-asset-converter"
 # without it, even when only icons changed.
 echo "==> kmp-country-flags-alpha2-generator"
 "$KOTLIN_BIN" scripts/kmp-country-flags-alpha2-generator.main.kts
+
+# web/llms.txt lists every icon name for AI tools, so it goes stale with the web assets.
+echo "==> web-svg-converter, web-llms-txt-converter"
+"$KOTLIN_BIN" scripts/web-svg-converter.main.kts
+"$KOTLIN_BIN" scripts/web-llms-txt-converter.main.kts
 
 # The converter's skip-list lives in .cache/, which is gitignored. In a fresh
 # clone or worktree the cache starts empty, so every SVG counts as changed and

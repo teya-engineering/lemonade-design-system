@@ -24,10 +24,12 @@ public class LemonadeApiStabilityPlugin : Plugin<Project> {
                     .map { verdictLocation -> verdictLocation.asFile.absolutePath },
             )
         val rootDir = target.layout.projectDirectory
+        val rootName = target.rootProject.name
 
         target.tasks.register<ClassifyApiDiffTask>("classifyApiDiff") {
             diffFile.set(diffPath.map { path -> rootDir.file(path) })
             verdictFile.set(verdictPath.map { path -> rootDir.file(path) })
+            rootProjectName.set(rootName)
         }
     }
 }

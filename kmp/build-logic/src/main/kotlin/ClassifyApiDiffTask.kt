@@ -1,5 +1,7 @@
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
@@ -26,6 +28,9 @@ public abstract class ClassifyApiDiffTask : DefaultTask() {
     @get:OutputFile
     public abstract val verdictFile: RegularFileProperty
 
+    @get:Input
+    public abstract val rootProjectName: Property<String>
+
     init {
         group = "verification"
         description = "Classifies a BCV .api/.klib.api diff as NoChanges/AdditionsOnly/Breaking."
@@ -34,7 +39,10 @@ public abstract class ClassifyApiDiffTask : DefaultTask() {
     @TaskAction
     public fun run() {
         val diffText = diffFile.get().asFile.readText()
-        val verdict = ApiStabilityClassifier.classify(diffText)
+        val verdict = ApiStabilityClassifier.classify(
+            diff = diffText,
+            rootProjectName = rootProjectName.get(),
+        )
 
         val token = when (verdict) {
             Verdict.NoChanges -> "NO_CHANGES"

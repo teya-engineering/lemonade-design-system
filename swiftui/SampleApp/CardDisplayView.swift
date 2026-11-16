@@ -10,6 +10,7 @@ struct CardDisplayView: View {
                 headingStylesSection
                 headerSlotsSection
                 footerActionSection
+                resizeSection
             }
             .padding()
         }
@@ -182,6 +183,12 @@ struct CardDisplayView: View {
         }
     }
 
+    private var resizeSection: some View {
+        sectionView(title: "Resize") {
+            ResizingCard()
+        }
+    }
+
     private func sectionView<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
@@ -189,6 +196,32 @@ struct CardDisplayView: View {
                 .foregroundStyle(.content.contentSecondary)
 
             content()
+        }
+    }
+}
+
+private struct ResizingCard: View {
+    @State private var isExpanded = false
+
+    var body: some View {
+        LemonadeUi.Card(
+            contentPadding: .medium,
+            footerAction: CardFooterActionConfig(
+                label: isExpanded ? "Show less" : "Show more",
+                onClick: {
+                    withAnimation(LemonadeMotion.cardResize) {
+                        isExpanded.toggle()
+                    }
+                }
+            )
+        ) {
+            VStack(alignment: .leading, spacing: 8) {
+                LemonadeUi.Text("The card grows and shrinks with its content.")
+                if isExpanded {
+                    LemonadeUi.Text("Wrap the state change in withAnimation(LemonadeMotion.cardResize).")
+                    LemonadeUi.Text("With reduce motion on, the change is instant.")
+                }
+            }
         }
     }
 }

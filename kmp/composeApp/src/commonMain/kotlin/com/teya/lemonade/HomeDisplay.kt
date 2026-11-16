@@ -184,6 +184,7 @@ internal object DisplayRegistry {
             title = "Input Fields",
             items = listOf(
                 Displays.TextField,
+                Displays.TextArea,
                 Displays.SearchField,
                 Displays.SelectField,
                 Displays.PinCode,
@@ -203,6 +204,7 @@ internal object DisplayRegistry {
                 Displays.Toast,
                 Displays.Tooltip,
                 Displays.HistoryTimeline,
+                Displays.ProgressStepper,
             ),
         ),
         DisplayData(

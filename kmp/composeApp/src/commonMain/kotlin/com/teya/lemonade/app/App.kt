@@ -27,6 +27,7 @@ import com.teya.lemonade.MarkdownDisplay
 import com.teya.lemonade.NoticeDisplay
 import com.teya.lemonade.OpacityDisplay
 import com.teya.lemonade.PinCodeDisplay
+import com.teya.lemonade.ProgressStepperDisplay
 import com.teya.lemonade.RadioButtonDisplay
 import com.teya.lemonade.RadiusDisplay
 import com.teya.lemonade.ResourceListItemDisplay
@@ -45,6 +46,7 @@ import com.teya.lemonade.SwitchDisplay
 import com.teya.lemonade.SymbolContainerDisplay
 import com.teya.lemonade.TabsDisplay
 import com.teya.lemonade.TagDisplay
+import com.teya.lemonade.TextAreaDisplay
 import com.teya.lemonade.TextDisplay
 import com.teya.lemonade.TextFieldDisplay
 import com.teya.lemonade.ThemedColorsDisplay
@@ -83,6 +85,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.SymbolContainer to { _ -> SymbolContainerDisplay() },
     Displays.Tag to { _ -> TagDisplay() },
     Displays.TextField to { _ -> TextFieldDisplay() },
+    Displays.TextArea to { _ -> TextAreaDisplay() },
     Displays.SearchField to { _ -> SearchFieldDisplay() },
     Displays.SelectField to { _ -> SelectFieldDisplay() },
     Displays.Card to { _ -> CardDisplay() },
@@ -108,5 +111,6 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.Toast to { _ -> ToastDisplay() },
     Displays.Tooltip to { _ -> TooltipDisplay() },
     Displays.HistoryTimeline to { _ -> HistoryTimelineDisplay() },
+    Displays.ProgressStepper to { _ -> ProgressStepperDisplay() },
     Displays.Markdown to { _ -> MarkdownDisplay() },
 )
