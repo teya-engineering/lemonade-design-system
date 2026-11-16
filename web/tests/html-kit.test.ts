@@ -185,11 +185,39 @@ describe('mapping.md', () => {
       line,
       blocks: [...line.split('|')[1].matchAll(/`(lmnd-kit-[a-z0-9-]+)`/g)].map((m) => m[1]),
       modifiers: [...line.matchAll(/`(--[a-z0-9-]+)`/g)].map((m) => m[1]),
+      parts: [...line.matchAll(/`(__[a-z0-9-]+)`/g)].map((m) => m[1]),
+      noComponent: line.split('|')[2].trim().startsWith('**No Lemonade component**'),
     }))
+  const kitParts = new Set([...withoutComments(kitCss).matchAll(/\.(lmnd-kit-[a-z0-9-]+?__[a-z0-9-]+)(?![\w-])/g)].map((m) => m[1]))
+  const layoutOnly = new Set(
+    [...mapping.slice(mapping.indexOf('## Layout-only parts')).matchAll(/^- `(lmnd-kit-[a-z0-9_-]+)`/gm)].map((m) => m[1]),
+  )
 
   it('reads the classes and the rows it checks', () => {
     expect(kitClasses.size).toBeGreaterThan(100)
     expect(rows.length).toBeGreaterThan(50)
+    expect(kitParts.size).toBeGreaterThan(100)
+  })
+
+  // A part a component takes as a parameter or slot is named in its row; a part that only lays the
+  // block out is listed once at the end; a block with no Lemonade component has nothing to map.
+  it('places every part of a mapped block', () => {
+    const unplaced = [...kitParts].filter((name) => {
+      const [block, part] = name.split('__')
+      const row = rows.find((r) => r.blocks.includes(block))
+      return !row?.noComponent && !row?.parts.includes(`__${part}`) && !layoutOnly.has(name)
+    })
+    expect(unplaced).toEqual([])
+  })
+
+  it('names only parts kit.css still has', () => {
+    const stale = [
+      ...rows.flatMap((row) =>
+        row.parts.filter((part) => !row.blocks.some((block) => kitParts.has(block + part))).map((part) => `${row.blocks[0]}${part}`),
+      ),
+      ...[...layoutOnly].filter((name) => !kitParts.has(name)),
+    ]
+    expect(stale).toEqual([])
   })
 
   // A prototype port reads this table; a block or modifier missing from it gets guessed.
