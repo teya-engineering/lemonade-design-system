@@ -41,6 +41,7 @@ For detailed information, read the appropriate file:
 - **tokens.md** - All design tokens (typography, colours, spacing, radius)
 - **components.md** - Component catalog (Tag, Button, Icon, etc.)
 - **layout-patterns.md** - Layout patterns and status mapping
+- **mapping.md** - What each HTML kit (`lmnd-kit-`) block and modifier becomes in Compose and SwiftUI, copied from the design system
 
 ## Common Tasks
 
@@ -55,6 +56,7 @@ For detailed information, read the appropriate file:
 | Choose a button variant    | guidelines/buttons.md  |
 | Pick a colour layer        | guidelines/colour.md   |
 | Map status to colours/icons | layout-patterns.md     |
+| Port an HTML kit prototype | mapping.md             |
 
 ## Checking the DS source
 
