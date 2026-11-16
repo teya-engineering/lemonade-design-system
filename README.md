@@ -39,13 +39,16 @@ Lemonade ships the same design language to three platforms:
 
 ### Version Tags
 
-Each platform versions independently, and the version lives only in the tag.
+Each platform versions independently. For the SDKs and the web package the version lives only in the
+tag. The `lemonade-specialist` plugin also keeps it in its `plugin.json`, because Claude Code reads it
+from there.
 
 | Platform | Tag Pattern | Example |
 |----------|-------------|---------|
 | KMP | `lemonade-kmp-X.Y.Z` | `lemonade-kmp-0.9.0` |
 | SwiftUI | `lemonade-swiftui-X.Y.Z` | `lemonade-swiftui-0.9.1` |
 | Web | `lemonade-mobile-web-X.Y.Z` | `lemonade-mobile-web-0.1.0` |
+| Claude Code plugin | `lemonade-specialist--vX.Y.Z` | `lemonade-specialist--v1.1.0` |
 
 Each SwiftUI release also carries a plain `X.Y.Z` tag at the same commit — that is
 the one Swift Package Manager consumers resolve.
