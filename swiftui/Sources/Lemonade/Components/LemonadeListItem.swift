@@ -46,6 +46,56 @@ public enum LemonadeListItemVoice {
     }
 }
 
+// MARK: - ListItemTextContent
+
+/// Emits its children directly, so the parent stack sets their spacing.
+struct ListItemTextContent<SlotContent: View>: View {
+    let label: String
+    let topLabel: String?
+    let supportText: String?
+    let voice: LemonadeListItemVoice
+    let topLabelOverflow: Text.TruncationMode
+    let labelMaxLines: Int?
+    let labelOverflow: Text.TruncationMode
+    let supportTextMaxLines: Int?
+    let supportTextOverflow: Text.TruncationMode
+    let slotContent: () -> SlotContent
+
+    var body: some View {
+        if let topLabel = topLabel {
+            LemonadeUi.Text(
+                topLabel,
+                textStyle: LemonadeTypography.shared.bodySmallRegular,
+                color: LemonadeTheme.colors.content.contentSecondary,
+                overflow: topLabelOverflow,
+                maxLines: 1
+            )
+        }
+
+        LemonadeUi.Text(
+            label,
+            textStyle: LemonadeTypography.shared.bodyMediumMedium,
+            color: voice.contentColor,
+            overflow: labelOverflow,
+            maxLines: labelMaxLines
+        )
+
+        if let supportText = supportText {
+            LemonadeUi.Text(
+                supportText,
+                textStyle: LemonadeTypography.shared.bodySmallRegular,
+                color: LemonadeTheme.colors.content.contentSecondary,
+                overflow: supportTextOverflow,
+                maxLines: supportTextMaxLines
+            )
+        }
+
+        if SlotContent.self != EmptyView.self {
+            slotContent()
+        }
+    }
+}
+
 // MARK: - LemonadeListItemPriority
 
 /// Defines which slot claims layout space first when the label and trailing
@@ -70,7 +120,8 @@ public extension LemonadeUi {
     ///
     /// - Parameters:
     ///   - label: Label String to be displayed
-    ///   - topLabel: Optional label displayed above the main label
+    ///   - topLabel: Optional label displayed above the main label, limited to one line
+    ///   - topLabelOverflow: Truncation mode applied to the top label when it exceeds one line. Defaults to `.tail`.
     ///   - supportText: Optional support text displayed below the label
     ///   - voice: LemonadeListItemVoice to define tone of voice
     ///   - navigationIndicator: Shows a chevron-right navigation indicator
@@ -104,6 +155,7 @@ public extension LemonadeUi {
         leadingAlignment: VerticalAlignment? = nil,
         trailingAlignment: VerticalAlignment = .center,
         priority: LemonadeListItemPriority = .trailing,
+        topLabelOverflow: Text.TruncationMode = .tail,
         labelMaxLines: Int? = nil,
         labelOverflow: Text.TruncationMode = .tail,
         supportTextMaxLines: Int? = nil,
@@ -132,35 +184,18 @@ public extension LemonadeUi {
                 leadingSlot: leadingSlot,
                 trailingSlot: trailingSlot,
                 contentSlot: {
-                    if let topLabel = topLabel {
-                        LemonadeUi.Text(
-                            topLabel,
-                            textStyle: LemonadeTypography.shared.bodySmallRegular,
-                            color: LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-
-                    LemonadeUi.Text(
-                        label,
-                        textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                        color: voice.contentColor,
-                        overflow: labelOverflow,
-                        maxLines: labelMaxLines
+                    ListItemTextContent(
+                        label: label,
+                        topLabel: topLabel,
+                        supportText: supportText,
+                        voice: voice,
+                        topLabelOverflow: topLabelOverflow,
+                        labelMaxLines: labelMaxLines,
+                        labelOverflow: labelOverflow,
+                        supportTextMaxLines: supportTextMaxLines,
+                        supportTextOverflow: supportTextOverflow,
+                        slotContent: slotContent
                     )
-
-                    if let supportText = supportText {
-                        LemonadeUi.Text(
-                            supportText,
-                            textStyle: LemonadeTypography.shared.bodySmallRegular,
-                            color: LemonadeTheme.colors.content.contentSecondary,
-                            overflow: supportTextOverflow,
-                            maxLines: supportTextMaxLines
-                        )
-                    }
-                    
-                    if SlotContent.self != EmptyView.self {
-                        slotContent()
-                    }
                 }
             )
         }

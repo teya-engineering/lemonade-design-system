@@ -758,6 +758,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field ReceiptTax Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field RescueRing Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field RotateMoney Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field ScanBarcode Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ScanFace Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ScriptSparkle Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Search Lcom/teya/lemonade/core/LemonadeIcons;

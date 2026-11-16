@@ -48,6 +48,29 @@ public enum TagVoice {
         case .featured: return LemonadeTheme.colors.border.borderFeaturedSubtle
         }
     }
+
+    var colors: TagColors {
+        TagColors(background: containerColor, border: borderColor, content: tintColor)
+    }
+}
+
+// MARK: - Tag Colors
+
+struct TagColors: Equatable {
+    let background: Color
+    let border: Color
+    let content: Color
+}
+
+extension LemonadeThemedColors {
+    func tagColors(theme: ThemedStyle) -> TagColors {
+        let palette = self[style: theme]
+        return TagColors(
+            background: palette.background,
+            border: palette.border,
+            content: palette.onBackground
+        )
+    }
 }
 
 // MARK: - Tag Component
@@ -79,7 +102,40 @@ public extension LemonadeUi {
         LemonadeTagView(
             label: label,
             icon: icon,
-            voice: voice
+            colors: voice.colors
+        )
+    }
+
+    /// A compact label styled by a themed hue, for colour that carries application meaning the
+    /// voices do not model - categories, per-role accents.
+    ///
+    /// > Experimental: builds on `LemonadeTheme.themed`, whose shape is still settling.
+    ///
+    /// ## Usage
+    /// ```swift
+    /// LemonadeUi.Tag(
+    ///     label: "Marketing",
+    ///     icon: .heart,
+    ///     theme: .violet.subtle
+    /// )
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - label: String to be displayed in the tag
+    ///   - icon: Optional LemonadeIcon to show as leading icon
+    ///   - theme: ThemedStyle driving the background, border, and the label and icon tints: `.blue`
+    ///     for the hue's solid palette, `.blue.subtle` for its subtle one
+    /// - Returns: A styled Tag view
+    @ViewBuilder
+    static func Tag(
+        label: String,
+        icon: LemonadeIcon? = nil,
+        theme: ThemedStyle
+    ) -> some View {
+        LemonadeTagView(
+            label: label,
+            icon: icon,
+            colors: LemonadeTheme.themed.tagColors(theme: theme)
         )
     }
 }
@@ -89,7 +145,7 @@ public extension LemonadeUi {
 private struct LemonadeTagView: View {
     let label: String
     let icon: LemonadeIcon?
-    let voice: TagVoice
+    let colors: TagColors
 
     var body: some View {
         HStack(spacing: LemonadeTheme.spaces.spacing50) {
@@ -98,14 +154,14 @@ private struct LemonadeTagView: View {
                     icon: icon,
                     contentDescription: nil,
                     size: .small,
-                    tint: voice.tintColor
+                    tint: colors.content
                 )
             }
 
             LemonadeUi.Text(
                 label,
                 textStyle: LemonadeTypography.shared.bodyXSmallSemiBold,
-                color: voice.tintColor,
+                color: colors.content,
                 overflow: .tail,
                 maxLines: 1
             )
@@ -117,12 +173,12 @@ private struct LemonadeTagView: View {
         // reaches the corners, so masking only adds an offscreen render pass (one per tag, and
         // tags render once per row in lists).
         .background(
-            voice.containerColor,
+            colors.background,
             in: RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius150)
         )
         .overlay(
             RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius150)
-                .stroke(voice.borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
+                .stroke(colors.border, lineWidth: LemonadeTheme.borderWidth.base.border25)
         )
     }
 }
@@ -135,6 +191,7 @@ struct LemonadeTag_Previews: PreviewProvider {
         VStack(alignment: .leading, spacing: 16) {
             voicesWithoutIcon
             voicesWithIcon
+            themes
         }
         .padding()
         .previewLayout(.sizeThatFits)
@@ -165,6 +222,14 @@ struct LemonadeTag_Previews: PreviewProvider {
             LemonadeUi.Tag(label: "Neutral On Color", icon: .heart, voice: .neutralOnColor)
                 .padding(.all)
                 .background(LemonadeTheme.colors.background.bgAlwaysDark)
+        }
+    }
+
+    private static var themes: some View {
+        HStack(spacing: 8) {
+            LemonadeUi.Tag(label: "Violet", theme: .violet)
+            LemonadeUi.Tag(label: "Violet", icon: .heart, theme: .violet.subtle)
+            LemonadeUi.Tag(label: "Teal", theme: .teal.subtle)
         }
     }
 }

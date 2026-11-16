@@ -254,6 +254,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.ReceiptTax -> LemonadeRes.drawable.gen_receipt_tax
         LemonadeIcons.RescueRing -> LemonadeRes.drawable.gen_rescue_ring
         LemonadeIcons.RotateMoney -> LemonadeRes.drawable.gen_rotate_money
+        LemonadeIcons.ScanBarcode -> LemonadeRes.drawable.gen_scan_barcode
         LemonadeIcons.ScanFace -> LemonadeRes.drawable.gen_scan_face
         LemonadeIcons.ScriptSparkle -> LemonadeRes.drawable.gen_script_sparkle
         LemonadeIcons.Search -> LemonadeRes.drawable.gen_search

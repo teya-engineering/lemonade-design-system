@@ -2,8 +2,12 @@ const HUES = ['Yellow', 'Amber', 'Orange', 'Red', 'Rose', 'Pink', 'Fuchsia', 'Pu
   'Indigo', 'Blue', 'Cyan', 'Teal', 'Green', 'Green Lime', 'Yellow Lime']
 
 // `◇ Theme` value -> code, given how a platform spells a hue's solid palette.
-export const themeMap = (solid) =>
+const themeMap = (solid) =>
   Object.fromEntries(HUES.flatMap((hue) => {
     const entry = solid(hue.split(' '))
     return [[hue, entry], [`${hue} Subtle`, `${entry}.subtle`]]
   }))
+
+export const kotlinThemes = themeMap((words) => `ThemedHue.${words.join('')}`)
+
+export const swiftThemes = themeMap(([first, ...rest]) => `.${first.toLowerCase()}${rest.join('')}`)

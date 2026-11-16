@@ -105,6 +105,7 @@ internal fun ToastDisplay() {
                         toastState.show(
                             label = "Changes saved",
                             voice = ToastVoice.Success,
+                            duration = ToastDuration.Medium,
                             actionLabel = "Undo",
                             onAction = {
                                 toastState.show(
@@ -121,6 +122,7 @@ internal fun ToastDisplay() {
                         toastState.show(
                             label = "Something went wrong",
                             voice = ToastVoice.Error,
+                            duration = ToastDuration.Long,
                             actionLabel = "Retry",
                             onAction = {
                                 toastState.show(
@@ -138,6 +140,7 @@ internal fun ToastDisplay() {
                             label = "Added to favorites",
                             voice = ToastVoice.Neutral,
                             icon = LemonadeIcons.Heart,
+                            duration = ToastDuration.Medium,
                             actionLabel = "View",
                             onAction = {
                                 toastState.show(

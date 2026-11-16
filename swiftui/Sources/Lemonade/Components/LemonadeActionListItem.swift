@@ -20,7 +20,8 @@ public extension LemonadeUi {
     ///
     /// - Parameters:
     ///   - label: Label String to be displayed
-    ///   - topLabel: Optional label displayed above the main label
+    ///   - topLabel: Optional label displayed above the main label, limited to one line
+    ///   - topLabelOverflow: Truncation mode applied to the top label when it exceeds one line. Defaults to `.tail`.
     ///   - supportText: Text to be displayed as supportText below the label
     ///   - voice: LemonadeListItemVoice to define tone of voice. Defaults to .neutral
     ///   - showNavigationIndicator: Indicates navigation visually
@@ -54,6 +55,7 @@ public extension LemonadeUi {
         showDivider: Bool = false,
         leadingAlignment: VerticalAlignment? = nil,
         trailingAlignment: VerticalAlignment = .center,
+        topLabelOverflow: Text.TruncationMode = .tail,
         labelMaxLines: Int? = nil,
         labelOverflow: Text.TruncationMode = .tail,
         supportTextMaxLines: Int? = nil,
@@ -74,6 +76,7 @@ public extension LemonadeUi {
             showDivider: showDivider,
             leadingAlignment: leadingAlignment,
             trailingAlignment: trailingAlignment,
+            topLabelOverflow: topLabelOverflow,
             labelMaxLines: labelMaxLines,
             labelOverflow: labelOverflow,
             supportTextMaxLines: supportTextMaxLines,
@@ -101,6 +104,7 @@ public extension LemonadeUi {
         showDivider: Bool = false,
         leadingAlignment: VerticalAlignment? = nil,
         trailingAlignment: VerticalAlignment = .center,
+        topLabelOverflow: Text.TruncationMode = .tail,
         labelMaxLines: Int? = nil,
         labelOverflow: Text.TruncationMode = .tail,
         supportTextMaxLines: Int? = nil,
@@ -120,6 +124,7 @@ public extension LemonadeUi {
             showDivider: showDivider,
             leadingAlignment: leadingAlignment,
             trailingAlignment: trailingAlignment,
+            topLabelOverflow: topLabelOverflow,
             labelMaxLines: labelMaxLines,
             labelOverflow: labelOverflow,
             supportTextMaxLines: supportTextMaxLines,
@@ -144,6 +149,7 @@ public extension LemonadeUi {
         showDivider: Bool = false,
         leadingAlignment: VerticalAlignment? = nil,
         trailingAlignment: VerticalAlignment = .center,
+        topLabelOverflow: Text.TruncationMode = .tail,
         labelMaxLines: Int? = nil,
         labelOverflow: Text.TruncationMode = .tail,
         supportTextMaxLines: Int? = nil,
@@ -163,6 +169,7 @@ public extension LemonadeUi {
             showDivider: showDivider,
             leadingAlignment: leadingAlignment,
             trailingAlignment: trailingAlignment,
+            topLabelOverflow: topLabelOverflow,
             labelMaxLines: labelMaxLines,
             labelOverflow: labelOverflow,
             supportTextMaxLines: supportTextMaxLines,
@@ -187,6 +194,7 @@ public extension LemonadeUi {
         showDivider: Bool = false,
         leadingAlignment: VerticalAlignment? = nil,
         trailingAlignment: VerticalAlignment = .center,
+        topLabelOverflow: Text.TruncationMode = .tail,
         labelMaxLines: Int? = nil,
         labelOverflow: Text.TruncationMode = .tail,
         supportTextMaxLines: Int? = nil,
@@ -205,6 +213,7 @@ public extension LemonadeUi {
             showDivider: showDivider,
             leadingAlignment: leadingAlignment,
             trailingAlignment: trailingAlignment,
+            topLabelOverflow: topLabelOverflow,
             labelMaxLines: labelMaxLines,
             labelOverflow: labelOverflow,
             supportTextMaxLines: supportTextMaxLines,

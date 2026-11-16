@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'web/**'
+      - 'guidelines/**'
       - '.github/workflows/web_ci.yml'
 
 concurrency:

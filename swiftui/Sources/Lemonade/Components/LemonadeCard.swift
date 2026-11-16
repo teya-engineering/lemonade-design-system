@@ -164,6 +164,9 @@ public struct CardFooterActionConfig {
 public extension LemonadeUi {
     /// A card container component with optional header and configurable padding and background.
     ///
+    /// To grow or shrink the card when its content changes, wrap the state change in
+    /// `withAnimation(LemonadeMotion.cardResize)`.
+    ///
     /// - Parameters:
     ///   - contentPadding: LemonadeCardPadding for the content area. Defaults to .none
     ///   - background: LemonadeCardBackground style. Defaults to .default
@@ -188,6 +191,9 @@ public extension LemonadeUi {
     }
 
     /// A card container component without header.
+    ///
+    /// To grow or shrink the card when its content changes, wrap the state change in
+    /// `withAnimation(LemonadeMotion.cardResize)`.
     ///
     /// - Parameters:
     ///   - contentPadding: LemonadeCardPadding for the content area. Defaults to .none

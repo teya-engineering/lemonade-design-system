@@ -158,7 +158,7 @@ acted on.
 
 ## Components
 
-Thirty-eight components on both platforms, seven Compose-only ones (`Dropdown`,
+Forty components on both platforms, seven Compose-only ones (`Dropdown`,
 `DropdownItem`, `BottomTabBar`, `BottomSheet`, `TimePicker`, `TimeInput`,
 `TimePickerDialog`), and nine internal parts they nest, all hand-written. A few
 needed more than a property lookup:
@@ -187,7 +187,16 @@ needed more than a property lookup:
   compose optional arguments with a **leading** comma. Kotlin permits either.
 - `TextField.input` is a `Binding` on SwiftUI, so the snippet emits
   `.constant("…")` — it keeps the designed text visible and compiles as written;
-  swap it for real `@State` when wiring the screen up.
+  swap it for real `@State` when wiring the screen up. `TextArea` does the same.
+- `TextArea`'s counter is a text property ("0/1000"), so the template reads the
+  number after the slash as `maxLength`, and emits a `// TODO:` when the text has
+  no number. The leading and trailing slots it inherited from `TextField` have no
+  code equivalent and are not read.
+- `ProgressStepper`'s `value` ("2/3") becomes `completedSteps`, the number before
+  the slash. With `hasStepTitle?` on, the template reads each `.Stepper Item`'s
+  title and subheading; with it off, it emits three empty items. The library
+  only has three-step variants, so a stepper of any other length can't come
+  from Figma.
 
 - `SearchField`'s query and placeholder are text layers rather than properties,
   read with `findText('Value')` / `findText('Placeholder')`. In the filled
@@ -211,6 +220,7 @@ needed more than a property lookup:
   overloads, Icon and Text only. `◇ Theme` value `Violet Subtle` becomes
   `ThemedHue.Violet.subtle` / `.violet.subtle`. The Compose overloads are
   `@ExperimentalLemonadeApi`, so its snippet carries a NOTE about opting in.
+  `Tag (Themed)` works the same way and maps to Tag's `theme:` overload.
 
 - `Tabs` resolves its tab children the way SegmentedControl does, through a
   `TabItem` template on the internal `_Tab Item` component. Its `◇ Items` variant

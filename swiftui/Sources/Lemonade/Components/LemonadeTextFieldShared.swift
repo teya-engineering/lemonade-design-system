@@ -149,29 +149,82 @@ struct TextFieldSelectorDivider: View {
     }
 }
 
+// MARK: - Accessibility Name
+
+private struct LemonadeFieldAccessibilityLabelKey: EnvironmentKey {
+    static let defaultValue: String? = nil
+}
+
+extension EnvironmentValues {
+    /// Read by the platform input inside a text field or text area, which is the only element
+    /// VoiceOver focuses there: the visible label row and placeholder are hidden from it.
+    var lemonadeFieldAccessibilityLabel: String? {
+        get { self[LemonadeFieldAccessibilityLabelKey.self] }
+        set { self[LemonadeFieldAccessibilityLabelKey.self] = newValue }
+    }
+}
+
+/// Names a SwiftUI-backed input (the macOS fallbacks) from ``EnvironmentValues/lemonadeFieldAccessibilityLabel``.
+struct FieldAccessibilityLabel: ViewModifier {
+    @Environment(\.lemonadeFieldAccessibilityLabel) private var name
+
+    func body(content: Content) -> some View {
+        if let name {
+            content.accessibilityLabel(Text(name))
+        } else {
+            content
+        }
+    }
+}
+
+/// The visible label, or the placeholder when there is no label, followed by the optional indicator.
+func textFieldAccessibilityLabel(label: String?, optionalIndicator: String?, placeholder: String?) -> String? {
+    let parts = [label ?? placeholder, optionalIndicator].compactMap { $0 }
+    return parts.isEmpty ? nil : parts.joined(separator: ", ")
+}
+
 // MARK: - Support / Error Text
 
-/// Displays the support text or error message below a text/select field.
+/// Displays the support text or error message, and an optional counter, below a text/select field.
 struct TextFieldSupportText: View {
     let supportText: String?
     let errorMessage: String?
     let error: Bool
     let enabled: Bool
+    var counter: String? = nil
+    var counterOverLimit = false
+
+    private var showError: Bool { enabled && error && errorMessage != nil }
+    private var message: String? { showError ? errorMessage : supportText }
+    private var messageColor: Color {
+        showError ? LemonadeTheme.colors.content.contentCritical : LemonadeTheme.colors.content.contentSecondary
+    }
 
     var body: some View {
-        if enabled && error, let errorMessage = errorMessage {
-            LemonadeUi.Text(
-                errorMessage,
-                textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                color: LemonadeTheme.colors.content.contentCritical
-            )
-            .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-        } else if let supportText = supportText {
-            LemonadeUi.Text(
-                supportText,
-                textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                color: LemonadeTheme.colors.content.contentSecondary
-            )
+        if message != nil || counter != nil {
+            HStack(alignment: .top, spacing: LemonadeTheme.spaces.spacing200) {
+                if let message = message {
+                    LemonadeUi.Text(
+                        message,
+                        textStyle: LemonadeTypography.shared.bodyXSmallRegular,
+                        color: messageColor
+                    )
+                    .frame(maxWidth: counter == nil ? nil : .infinity, alignment: .leading)
+                }
+
+                if let counter = counter {
+                    if message == nil {
+                        Spacer()
+                    }
+                    LemonadeUi.Text(
+                        counter,
+                        textStyle: LemonadeTypography.shared.bodyXSmallRegular,
+                        color: enabled && counterOverLimit
+                            ? LemonadeTheme.colors.content.contentCritical
+                            : LemonadeTheme.colors.content.contentSecondary
+                    )
+                }
+            }
             .padding(.horizontal, LemonadeTheme.spaces.spacing50)
         }
     }
@@ -188,11 +241,12 @@ struct TextFieldContainerModifier: ViewModifier {
     let isFocused: Bool
     let cornerRadius: CGFloat
     var applyOpacity: Bool = true
+    var minHeight: CGFloat = TextFieldConstants.minHeight
     @Binding var isHovered: Bool
 
     func body(content: Content) -> some View {
         content
-            .frame(minHeight: TextFieldConstants.minHeight)
+            .frame(minHeight: minHeight)
             .background(RoundedRectangle(cornerRadius: cornerRadius).fill(backgroundColor))
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
@@ -234,3 +288,56 @@ struct SelectFieldContainerModifier: ViewModifier {
             }
     }
 }
+
+// MARK: - UIKit Focus and Dynamic Type
+
+#if canImport(UIKit)
+import UIKit
+
+extension LemonadeTextStyle {
+    /// Scales the face the way `Font.custom(_:size:relativeTo: .body)` scales ``LemonadeUi/Text``,
+    /// so typed text grows with the label and placeholder around it.
+    func scaledUIFont(for dynamicTypeSize: DynamicTypeSize) -> UIFont {
+        UIFontMetrics(forTextStyle: .body).scaledFont(
+            for: uiFont,
+            compatibleWith: UITraitCollection(preferredContentSizeCategory: dynamicTypeSize.contentSizeCategory)
+        )
+    }
+}
+
+private extension DynamicTypeSize {
+    var contentSizeCategory: UIContentSizeCategory {
+        switch self {
+        case .xSmall: return .extraSmall
+        case .small: return .small
+        case .medium: return .medium
+        case .large: return .large
+        case .xLarge: return .extraLarge
+        case .xxLarge: return .extraExtraLarge
+        case .xxxLarge: return .extraExtraExtraLarge
+        case .accessibility1: return .accessibilityMedium
+        case .accessibility2: return .accessibilityLarge
+        case .accessibility3: return .accessibilityExtraLarge
+        case .accessibility4: return .accessibilityExtraExtraLarge
+        case .accessibility5: return .accessibilityExtraExtraExtraLarge
+        @unknown default: return .large
+        }
+    }
+}
+
+extension UIView {
+    /// Runs on the next main-queue turn: a responder change inside a SwiftUI update can hand focus
+    /// back to a view that is redrawing in the same pass.
+    func scheduleFirstResponderUpdate(wantsFocus: Bool) {
+        guard wantsFocus != isFirstResponder else { return }
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if wantsFocus, !self.isFirstResponder, self.window != nil {
+                self.becomeFirstResponder()
+            } else if !wantsFocus, self.isFirstResponder {
+                self.resignFirstResponder()
+            }
+        }
+    }
+}
+#endif
