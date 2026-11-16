@@ -5,7 +5,7 @@ import mapping from '../html-kit/mapping.md?raw'
 import tokensCss from '../styles/tokens.css?raw'
 import typographyCss from '../styles/typography.css?raw'
 import componentsCss from '../styles/components.css?raw'
-import { kitLlmsTxt, kitScript, kitStylesheet, themedHues } from '../html-kit/build.mjs'
+import { kitLlmsTxt, kitScript, kitStylesheet, releaseVersion, themedHues } from '../html-kit/build.mjs'
 import { inlinePage } from '../html-kit/share/build.mjs'
 import { describe, expect, it } from 'vitest'
 
@@ -208,5 +208,20 @@ describe('mapping.md', () => {
       ...row.modifiers.filter((modifier) => !row.blocks.some((block) => kitClasses.has(block + modifier))).map((m) => `${row.blocks[0]}${m}`),
     ])
     expect(stale).toEqual([])
+  })
+})
+
+describe('releaseVersion', () => {
+  it('takes an X.Y.Z version', () => {
+    expect(releaseVersion(['--version', '1.2.3'])).toBe('1.2.3')
+    expect(releaseVersion(['--version', '0.10.0'])).toBe('0.10.0')
+  })
+
+  it('builds without a version when the flag is absent', () => {
+    expect(releaseVersion(['--out', 'dist'])).toBeUndefined()
+  })
+
+  it.each([[[]], [['1.0.08']], [['1.2']], [['v1.2.3']], [['01.2.3']]])('rejects --version %j', (rest) => {
+    expect(() => releaseVersion(['--version', ...rest])).toThrow('--version takes X.Y.Z')
   })
 })
