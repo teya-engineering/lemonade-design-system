@@ -12,6 +12,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 
 private const val MAX_LENGTH = 1000
+private const val LONG_TEXT = "This text is longer than five lines, so the box opens at its tallest and " +
+    "scrolls the rest. Type or delete a few lines to see it grow and shrink between one line and " +
+    "five. Every line past the fifth stays inside the box, which keeps the same height while the " +
+    "content scrolls under it."
 
 @Suppress("LongMethod")
 @Composable
@@ -20,6 +24,9 @@ internal fun TextAreaDisplay() {
     var counterText by remember { mutableStateOf("") }
     var errorText by remember { mutableStateOf("Not enough detail") }
     val stateText = rememberTextFieldState()
+    var growingText by remember { mutableStateOf("") }
+    var longText by remember { mutableStateOf(LONG_TEXT) }
+    val growingState = rememberTextFieldState()
 
     SampleScreenDisplayLazyColumn(title = "TextArea") {
         item(key = "basic") {
@@ -69,6 +76,40 @@ internal fun TextAreaDisplay() {
                     label = "Notes",
                     placeholderText = "Enter notes...",
                     maxLength = MAX_LENGTH,
+                )
+            }
+        }
+
+        item(key = "line-limits") {
+            TextAreaSection(title = "Grows From 1 to 5 Lines") {
+                LemonadeUi.TextArea(
+                    input = growingText,
+                    onInputChanged = { value -> growingText = value },
+                    label = "Message",
+                    placeholderText = "Type a few lines...",
+                    lineLimits = 1..5,
+                )
+            }
+        }
+
+        item(key = "line-limits-long-text") {
+            TextAreaSection(title = "Grows From 1 to 5 Lines, Opened With Long Text") {
+                LemonadeUi.TextArea(
+                    input = longText,
+                    onInputChanged = { value -> longText = value },
+                    label = "Message",
+                    lineLimits = 1..5,
+                )
+            }
+        }
+
+        item(key = "line-limits-text-field-state") {
+            TextAreaSection(title = "Grows From 2 to 4 Lines, TextFieldState") {
+                LemonadeUi.TextArea(
+                    state = growingState,
+                    label = "Message",
+                    placeholderText = "Type a few lines...",
+                    lineLimits = 2..4,
                 )
             }
         }
