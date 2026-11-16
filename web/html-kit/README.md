@@ -37,7 +37,7 @@ tag; run the workflow by hand for a dry run that builds and checks the kit witho
 | `kit.css` | The components, as `lmnd-kit-*` classes, written against the `--lmnd-*` tokens | part of `lemonade-kit.css` |
 | `build.mjs` | Generates `lemonade-kit.css` and packages the kit | — |
 | `gallery.html` | Every component with its markup | `gallery.html` |
-| `examples/` | `flow.html`, a flow of screens in one page | `examples/` |
+| `examples/` | `flow.html`, a flow of screens in one page, and `task.html`, a task's steps in a sheet | `examples/` |
 | `guidelines/` | The kit's own rules, `LHK-`. The build adds Lemonade's `LDS-` rule files from the repository's `guidelines/` | `guidelines/`, with both |
 | `SKILL.md` | Instructions for an AI session | `SKILL.md` |
 | `mapping.md` | What each `lmnd-kit-` block, modifier and part becomes in Compose and SwiftUI, for porting a prototype to an app. The `lemonade-specialist` plugin carries a copy | — |
