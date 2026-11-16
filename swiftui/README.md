@@ -135,7 +135,7 @@ doc comment with a runnable snippet; source lives in `Sources/Lemonade/Component
 | **Actions** | Button, IconButton, Link, Chip |
 | **Form Controls** | TextField, TextFieldWithSelector, TextArea, SearchField, SelectField, PinCode, Switch, Checkbox, RadioButton, SegmentedControl, BoxSelection |
 | **Display** | Text, Icon, Badge, Tag, Card, Tile, SymbolContainer, HorizontalDivider, VerticalDivider, BrandLogo, CountryFlag |
-| **Lists & Navigation** | ListItem, ContentListItem, ActionListItem, ResourceListItem, SelectListItem, SwipeActionRow, SwipeActionGroup, Tabs, HistoryTimeline |
+| **Lists & Navigation** | ListItem, ContentListItem, ActionListItem, ResourceListItem, SelectListItem, SwipeActionRow, SwipeActionGroup, Tabs, HistoryTimeline, ProgressStepper |
 | **Feedback** | Toast, Tooltip, Notice, Spinner, LineSkeleton, BlockSkeleton, CircleSkeleton |
 | **Date** | DatePicker, DateRangePicker, InlineCalendar |
 
