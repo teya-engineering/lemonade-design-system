@@ -36,8 +36,8 @@ manual steps for them are below.
 
 The steps the `export-icons` skill follows, for doing it by hand:
 
-1. **Draw it in Figma.** A 24×24 component on the Icons page, named in kebab-case (`scan-barcode`).
-   Outline strokes and flatten shapes to paths: the Android converter reads `<path>` elements
+1. **Draw it in Figma,** following the icon guidelines in the Icons file. A 24×24 component on
+   the Icons page, named in kebab-case (`scan-barcode`). Outline strokes and flatten shapes to paths: the Android converter reads `<path>` elements
    only and fails on `<rect>`, `<circle>`, `<text>` or gradients. Fix this in Figma, never by
    editing the SVG.
 2. **Export it.** From the repo root:
