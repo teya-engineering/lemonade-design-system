@@ -12,6 +12,16 @@ into every platform's native format. Nothing outside `svg/` is edited by hand.
 Each SVG becomes an Android vector drawable, a SwiftUI imageset (PDF), an enum entry on both
 platforms, a web asset, a `web/llms.txt` line and a Figma Code Connect template.
 
+## Let Claude Code do it
+
+Ask Claude Code to "add the new icons from Figma" or "export the icons". The `export-icons` skill
+(`.claude/skills/export-icons/`) runs the whole icon flow below: the Figma export, the asset
+generation, the search aliases and the API check. The `publish-figma-connect` skill publishes the
+Code Connect templates after the PR merges.
+
+Flags and brand logos have no export script, so the skill covers only their generation step. The
+manual steps for them are below.
+
 ## Before you start
 
 - `rsvg-convert` (`brew install librsvg`), Node, and a JDK for Gradle.
@@ -23,6 +33,8 @@ platforms, a web asset, a `web/llms.txt` line and a Figma Code Connect template.
   crashes the `.main.kts` converters.
 
 ## Add an icon
+
+The steps the `export-icons` skill follows, for doing it by hand:
 
 1. **Draw it in Figma.** A 24×24 component on the Icons page, named in kebab-case (`scan-barcode`).
    Outline strokes and flatten shapes to paths: the Android converter reads `<path>` elements
