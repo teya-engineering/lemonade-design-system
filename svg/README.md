@@ -12,15 +12,6 @@ into every platform's native format. Nothing outside `svg/` is edited by hand.
 Each SVG becomes an Android vector drawable, a SwiftUI imageset (PDF), an enum entry on both
 platforms, a web asset, a `web/llms.txt` line and a Figma Code Connect template.
 
-## Let Claude Code do it
-
-For icons, run `/export-icons` in Claude Code, or ask it to "add the new icons from Figma". The
-`export-icons` skill (`.claude/skills/export-icons/`) runs the whole icon flow below. After the PR
-merges, the `publish-figma-connect` skill publishes the Code Connect templates.
-
-Flags and brand logos have no export script and no skill of their own, so follow the manual steps
-for them.
-
 ## Before you start
 
 - `rsvg-convert` (`brew install librsvg`), Node, and a JDK for Gradle.
