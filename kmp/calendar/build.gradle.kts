@@ -25,5 +25,9 @@ kotlin {
             api(libs.kotlinx.datetime)
             api(projects.ui)
         }
+
+        androidMain.dependencies {
+            implementation(libs.androidx.core)
+        }
     }
 }

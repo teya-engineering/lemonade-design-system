@@ -244,12 +244,13 @@ public fun rememberDateRangePickerState(
  * ```
  *
  * @param monthFormatter returns the month name for a month number (1-12); the caller localizes it
- * @param weekdayAbbreviations exactly 7 items, Sunday through Saturday; the caller localizes them
+ * @param weekdayAbbreviations exactly 7 items, Sunday through Saturday; the caller localizes them.
+ *   The header reorders them to start on [firstDayOfWeek]
  * @param modifier [Modifier] for layout adjustments
  * @param state configuration state created via [rememberDatePickerState]; observe
  *   [DatePickerState.selectedDate] to react to user selections
- * @param firstDayOfWeek first day of the week shown in the grid; callers should pass the value for
- *   their locale (e.g. [DayOfWeek.MONDAY] for ISO / European locales)
+ * @param firstDayOfWeek first day of the week shown in the grid and header; defaults to the system's,
+ *   which follows the device region and the user's first-day-of-week preference
  * @param today date drawn as today; defaults to the device's current date
  * @param onMonthDisplayed called when the displayed month changes
  */
@@ -259,7 +260,7 @@ public fun LemonadeUi.DatePicker(
     weekdayAbbreviations: List<String>,
     modifier: Modifier = Modifier,
     state: DatePickerState = rememberDatePickerState(),
-    firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
+    firstDayOfWeek: DayOfWeek = rememberSystemFirstDayOfWeek(),
     today: LocalDate = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) },
     onMonthDisplayed: ((YearMonth) -> Unit)? = null,
 ) {
@@ -296,13 +297,14 @@ public fun LemonadeUi.DatePicker(
  * ```
  *
  * @param monthFormatter returns the month name for a month number (1-12); the caller localizes it
- * @param weekdayAbbreviations exactly 7 items, Sunday through Saturday; the caller localizes them
+ * @param weekdayAbbreviations exactly 7 items, Sunday through Saturday; the caller localizes them.
+ *   The header reorders them to start on [firstDayOfWeek]
  * @param modifier [Modifier] for layout adjustments
  * @param state configuration state created via [rememberDateRangePickerState]; observe
  *   [DateRangePickerState.selectedStartDate] and [DateRangePickerState.selectedEndDate] to react
  *   to user selections
- * @param firstDayOfWeek first day of the week shown in the grid; callers should pass the value for
- *   their locale (e.g. [DayOfWeek.MONDAY] for ISO / European locales)
+ * @param firstDayOfWeek first day of the week shown in the grid and header; defaults to the system's,
+ *   which follows the device region and the user's first-day-of-week preference
  * @param today date drawn as today; defaults to the device's current date
  * @param onMonthDisplayed called when the displayed month changes
  */
@@ -312,7 +314,7 @@ public fun LemonadeUi.DateRangePicker(
     weekdayAbbreviations: List<String>,
     modifier: Modifier = Modifier,
     state: DateRangePickerState = rememberDateRangePickerState(),
-    firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
+    firstDayOfWeek: DayOfWeek = rememberSystemFirstDayOfWeek(),
     today: LocalDate = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) },
     onMonthDisplayed: ((YearMonth) -> Unit)? = null,
 ) {
@@ -398,7 +400,7 @@ public fun LemonadeUi.DatePicker(
     weekdayAbbreviations: List<String>,
     modifier: Modifier = Modifier,
     state: DatePickerState = rememberDatePickerState(),
-    firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
+    firstDayOfWeek: DayOfWeek = rememberSystemFirstDayOfWeek(),
     onMonthDisplayed: ((YearMonth) -> Unit)? = null,
 ) {
     DatePicker(
@@ -418,7 +420,7 @@ public fun LemonadeUi.DateRangePicker(
     weekdayAbbreviations: List<String>,
     modifier: Modifier = Modifier,
     state: DateRangePickerState = rememberDateRangePickerState(),
-    firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
+    firstDayOfWeek: DayOfWeek = rememberSystemFirstDayOfWeek(),
     onMonthDisplayed: ((YearMonth) -> Unit)? = null,
 ) {
     DateRangePicker(
@@ -447,6 +449,13 @@ private fun CoreDatePicker(
     today: LocalDate,
     onMonthDisplayed: ((YearMonth) -> Unit)?,
 ) {
+    val orderedWeekdayAbbreviations = remember(weekdayAbbreviations, firstDayOfWeek) {
+        sundayFirstLabelsStartingOn(
+            weekdayLabels = weekdayAbbreviations,
+            firstDayOfWeek = firstDayOfWeek,
+        )
+    }
+
     val startMonth = remember(today) {
         YearMonth(
             year = today.year,
@@ -537,20 +546,18 @@ private fun CoreDatePicker(
                 .fillMaxWidth()
                 .padding(horizontal = horizontalPadding),
         ) {
-            weekdayAbbreviations
-                .take(DayOfWeek.entries.size)
-                .forEach { day ->
-                    Box(
-                        modifier = Modifier.weight(1f),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        LemonadeUi.Text(
-                            text = day,
-                            textStyle = LocalTypographies.current.bodyXSmallOverline,
-                            color = LocalColors.current.content.contentPrimary,
-                        )
-                    }
+            orderedWeekdayAbbreviations.forEach { day ->
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    LemonadeUi.Text(
+                        text = day,
+                        textStyle = LocalTypographies.current.bodyXSmallOverline,
+                        color = LocalColors.current.content.contentPrimary,
+                    )
                 }
+            }
         }
 
         Spacer(modifier = Modifier.height(LocalSpaces.current.spacing100))

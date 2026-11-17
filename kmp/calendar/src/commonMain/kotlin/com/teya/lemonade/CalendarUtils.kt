@@ -3,6 +3,7 @@ package com.teya.lemonade
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.YearMonth
+import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.minusMonth
 import kotlinx.datetime.onDay
 import kotlinx.datetime.plusMonth
@@ -108,3 +109,16 @@ internal fun weekdayOrder(firstDayOfWeek: DayOfWeek = DayOfWeek.MONDAY): List<Da
 
 /** Number of cells in a 6-week calendar grid. */
 private const val CALENDAR_GRID_CELLS = 42
+
+/**
+ * Reorders Sunday-first [weekdayLabels] so the header starts on [firstDayOfWeek], lining it up with
+ * the grid from [daysForMonth]. Returns the labels unchanged unless there are exactly seven.
+ */
+internal fun sundayFirstLabelsStartingOn(
+    weekdayLabels: List<String>,
+    firstDayOfWeek: DayOfWeek,
+): List<String> {
+    if (weekdayLabels.size != DayOfWeek.entries.size) return weekdayLabels
+    val labelsBeforeFirstDay = firstDayOfWeek.isoDayNumber % DayOfWeek.entries.size
+    return weekdayLabels.drop(labelsBeforeFirstDay) + weekdayLabels.take(labelsBeforeFirstDay)
+}
