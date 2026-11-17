@@ -112,13 +112,15 @@ private const val CALENDAR_GRID_CELLS = 42
 
 /**
  * Reorders Sunday-first [weekdayLabels] so the header starts on [firstDayOfWeek], lining it up with
- * the grid from [daysForMonth]. Returns the labels unchanged unless there are exactly seven.
+ * the grid from [daysForMonth]. Keeps at most seven labels, and rotates them only when there are
+ * exactly seven.
  */
 internal fun sundayFirstLabelsStartingOn(
     weekdayLabels: List<String>,
     firstDayOfWeek: DayOfWeek,
 ): List<String> {
-    if (weekdayLabels.size != DayOfWeek.entries.size) return weekdayLabels
+    val weekLabels = weekdayLabels.take(DayOfWeek.entries.size)
+    if (weekLabels.size != DayOfWeek.entries.size) return weekLabels
     val labelsBeforeFirstDay = firstDayOfWeek.isoDayNumber % DayOfWeek.entries.size
-    return weekdayLabels.drop(labelsBeforeFirstDay) + weekdayLabels.take(labelsBeforeFirstDay)
+    return weekLabels.drop(labelsBeforeFirstDay) + weekLabels.take(labelsBeforeFirstDay)
 }

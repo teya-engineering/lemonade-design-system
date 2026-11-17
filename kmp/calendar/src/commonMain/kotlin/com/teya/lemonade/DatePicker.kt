@@ -245,7 +245,8 @@ public fun rememberDateRangePickerState(
  *
  * @param monthFormatter returns the month name for a month number (1-12); the caller localizes it
  * @param weekdayAbbreviations exactly 7 items, Sunday through Saturday; the caller localizes them.
- *   The header reorders them to start on [firstDayOfWeek]
+ *   The header reorders them to start on [firstDayOfWeek], so pass them Sunday-first even when the
+ *   week starts on another day.
  * @param modifier [Modifier] for layout adjustments
  * @param state configuration state created via [rememberDatePickerState]; observe
  *   [DatePickerState.selectedDate] to react to user selections
@@ -298,7 +299,8 @@ public fun LemonadeUi.DatePicker(
  *
  * @param monthFormatter returns the month name for a month number (1-12); the caller localizes it
  * @param weekdayAbbreviations exactly 7 items, Sunday through Saturday; the caller localizes them.
- *   The header reorders them to start on [firstDayOfWeek]
+ *   The header reorders them to start on [firstDayOfWeek], so pass them Sunday-first even when the
+ *   week starts on another day.
  * @param modifier [Modifier] for layout adjustments
  * @param state configuration state created via [rememberDateRangePickerState]; observe
  *   [DateRangePickerState.selectedStartDate] and [DateRangePickerState.selectedEndDate] to react

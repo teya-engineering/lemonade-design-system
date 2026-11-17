@@ -7,8 +7,8 @@ import kotlinx.datetime.DayOfWeek
  * The first day of the week the device's user expects, read from the system region and, where the
  * platform has one, the user's first-day-of-week preference.
  *
- * Reads the system locale rather than the app's, so an app that sets its own language does not
- * lose the user's region.
+ * Keeps the device's region and first-day-of-week preference even when the app uses its own
+ * language: Android reads the system locale, and iOS keeps the device region in the app's locale.
  */
 @Composable
 internal expect fun rememberSystemFirstDayOfWeek(): DayOfWeek
