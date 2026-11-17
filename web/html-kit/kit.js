@@ -43,6 +43,13 @@
       location.replace(here(link.getAttribute('href')))
       return
     }
+    // A link in an overlay to no id, such as its close button, closes it as Esc does, so Back from the screen
+    // afterwards doesn't reopen it.
+    if (overlay && !next && overlay.contains(link)) {
+      event.preventDefault()
+      close()
+      return
+    }
     if (link && link.getAttribute('href').length > 1) opener = link
     // A tap on the scrim itself, outside the sheet or dialog, closes it, unless the scrim has
     // data-lmnd-kit-modal: an acknowledgement sheet closes only through its own action (LDS-SHEET-CHROME).
