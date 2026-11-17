@@ -85,9 +85,10 @@ internal fun TextAreaDisplay() {
                 LemonadeUi.TextArea(
                     input = growingText,
                     onInputChanged = { value -> growingText = value },
-                    label = "Message",
-                    placeholderText = "Type a few lines...",
                     lineLimits = 1..5,
+                    label = "Message",
+                    placeholderText = "Type a few lines. A placeholder longer than the first line is cut to fit " +
+                        "the empty box.",
                 )
             }
         }
