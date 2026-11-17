@@ -94,7 +94,9 @@ Icons, country flags and brand logos start as SVG in `svg/` and everything else 
 the `Lemonade{Icons,CountryFlags,BrandLogos}` enums on both platforms, the `gen_*.xml` drawables,
 the SwiftUI imagesets, the web assets, `web/llms.txt` and the Code Connect templates. Never
 hand-edit those. To add or change an asset, run the `export-icons` skill (`/export-icons`) for
-icons and follow `svg/README.md` for flags and brand logos.
+icons and follow `svg/README.md` for flags and brand logos. Every new asset must also be connected
+to Figma Code Connect: its node id goes in the matching `figma/*.manifest.json` in the PR, and the
+mappings are published with the `publish-figma-connect` skill after the PR merges.
 
 ## Opening a pull request
 

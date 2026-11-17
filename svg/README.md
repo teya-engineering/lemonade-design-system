@@ -12,6 +12,19 @@ into every platform's native format. Nothing outside `svg/` is edited by hand.
 Each SVG becomes an Android vector drawable, a SwiftUI imageset (PDF), an enum entry on both
 platforms, a web asset, a `web/llms.txt` line and a Figma Code Connect template.
 
+## Connect it to Figma
+
+An asset is not finished until it is connected to Figma Code Connect. Without it, Dev Mode shows
+no code for the asset. It takes two parts:
+
+1. **In the PR:** the asset's Figma node id in `figma/icons.manifest.json`,
+   `figma/flags.manifest.json` or `figma/brand-logos.manifest.json`, and the generated templates
+   in `figma/connect/` and `figma/connect-swiftui/`. CI fails when an enum entry has no mapping.
+2. **After the PR merges:** publish the mappings with the `publish-figma-connect` skill, from an
+   up-to-date `main`.
+
+The steps below include both.
+
 ## Before you start
 
 - `rsvg-convert` (`brew install librsvg`), Node, and a JDK for Gradle.
@@ -39,8 +52,8 @@ platforms, a web asset, a `web/llms.txt` line and a Figma Code Connect template.
    number of icons you added.
 4. **Commit and open the PR** with the API check's verdict in the **API Dump** section. New enum
    entries are additive, so the expected verdict is `ADDITIONS_ONLY`.
-5. **After it merges,** run the `publish-figma-connect` skill from an up-to-date `main`. Until
-   then Dev Mode shows no snippet for the new icon.
+5. **After it merges, publish Code Connect.** Run the `publish-figma-connect` skill from an
+   up-to-date `main`. Until then Dev Mode shows no snippet for the new icon.
 
 A typical single-icon PR touches about seventeen files: the SVG, the drawable, the imageset, both
 enums, the KMP extension, three API baselines, the manifest entry, two Code Connect templates, the
@@ -81,7 +94,9 @@ The Figma export script covers icons only, so the SVG and its manifest entry are
    no enum entry, so a missing step shows up here.
 6. **Update the web test.** Run `npm test` in `web/` and set the `flagNames` or `brandLogoNames`
    length in `web/tests/exports.test.ts` to what it reports.
-7. **Run the API check and open the PR,** as for icons, then publish Code Connect after it merges.
+7. **Run the API check and open the PR,** as for icons.
+8. **After it merges, publish Code Connect** with the `publish-figma-connect` skill, as for icons.
+   Until then Dev Mode shows no snippet for the new asset.
 
 ## If something looks wrong
 
