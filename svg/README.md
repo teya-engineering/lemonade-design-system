@@ -28,6 +28,9 @@ The steps below include both.
 ## Before you start
 
 - `rsvg-convert` (`brew install librsvg`), Node, and a JDK for Gradle.
+- Dependencies installed in `web/` (`npm ci`): the Code Connect check type-checks its React
+  snippets with the web package's TypeScript and React types. `generate-assets.sh` installs `figma/`
+  only.
 - `ANDROID_HOME` pointing at an Android SDK. `generate-assets.sh` defaults it to
   `~/Library/Android/sdk`.
 - Kotlin 2.3.20. `generate-assets.sh` installs it under `~/.local` on first run. Newer Kotlin
@@ -77,10 +80,11 @@ The Figma export script covers icons only, so the SVG and its manifest entry are
 4. **Generate the platform assets:**
 
    ```bash
-   .claude/skills/export-icons/scripts/generate-assets.sh --skip-api
+   .claude/skills/export-icons/scripts/generate-assets.sh
    ```
 
-   The script generates all three asset types, but its Code Connect step only covers icons.
+   The script generates all three asset types and refreshes the API baselines, but its Code
+   Connect step only covers icons.
 5. **Generate the flag and logo Code Connect templates:**
 
    ```bash
@@ -94,7 +98,8 @@ The Figma export script covers icons only, so the SVG and its manifest entry are
    no enum entry, so a missing step shows up here.
 6. **Update the web test.** Run `npm test` in `web/` and set the `flagNames` or `brandLogoNames`
    length in `web/tests/exports.test.ts` to what it reports.
-7. **Run the API check and open the PR,** as for icons.
+7. **Commit, run the API check and open the PR,** as for icons. The classifier reads the committed
+   baseline, so commit the regenerated `kmp/core/api/` files first.
 8. **After it merges, publish Code Connect** with the `publish-figma-connect` skill, as for icons.
    Until then Dev Mode shows no snippet for the new asset.
 
