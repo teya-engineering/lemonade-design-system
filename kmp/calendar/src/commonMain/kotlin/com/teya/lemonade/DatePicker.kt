@@ -449,12 +449,10 @@ private fun CoreDatePicker(
     today: LocalDate,
     onMonthDisplayed: ((YearMonth) -> Unit)?,
 ) {
-    val orderedWeekdayAbbreviations = remember(weekdayAbbreviations, firstDayOfWeek) {
-        sundayFirstLabelsStartingOn(
-            weekdayLabels = weekdayAbbreviations,
-            firstDayOfWeek = firstDayOfWeek,
-        )
-    }
+    val orderedWeekdayAbbreviations = sundayFirstLabelsStartingOn(
+        weekdayLabels = weekdayAbbreviations,
+        firstDayOfWeek = firstDayOfWeek,
+    )
 
     val startMonth = remember(today) {
         YearMonth(
