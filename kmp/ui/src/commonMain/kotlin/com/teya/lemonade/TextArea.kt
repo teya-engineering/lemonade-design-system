@@ -23,6 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -100,7 +102,8 @@ public fun LemonadeUi.TextArea(
  * Shows a multi-line text input that grows with its text.
  *
  * The box is never shorter than the first value of [lineLimits] or taller than the last. Past the
- * last line its content scrolls.
+ * last line its content scrolls. While the field is empty the box keeps the first value, and a
+ * longer [placeholderText] is cut to fit it.
  *
  * ## Usage
  * ```kotlin
@@ -242,7 +245,8 @@ public fun LemonadeUi.TextArea(
  * session.
  *
  * The box is never shorter than the first value of [lineLimits] or taller than the last. Past the
- * last line its content scrolls.
+ * last line its content scrolls. While the field is empty the box keeps the first value, and a
+ * longer [placeholderText] is cut to fit it.
  *
  * ## Usage
  * ```kotlin
@@ -346,7 +350,7 @@ private fun InputTextArea(
         enabled = enabled,
         keyboardOptions = keyboardOptions,
         cursorBrush = SolidColor(contentColor),
-        textStyle = textAreaTextStyle(color = contentColor),
+        textStyle = textAreaTextStyle(color = contentColor, sizing = sizing),
         singleLine = false,
         minLines = lineLimits?.first ?: 1,
         maxLines = lineLimits?.last ?: Int.MAX_VALUE,
@@ -403,7 +407,7 @@ private fun StateTextArea(
             )
         },
         cursorBrush = SolidColor(contentColor),
-        textStyle = textAreaTextStyle(color = contentColor),
+        textStyle = textAreaTextStyle(color = contentColor, sizing = sizing),
         modifier = modifier,
         decorator = { innerTextField ->
             TextAreaDecorator(
@@ -428,10 +432,24 @@ private val TextAreaDefaultHeight = 180.dp
 
 private val TextAreaKeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
 
+/** With line limits a typed line matches a placeholder line, so the first keystroke doesn't resize the box. */
 @Composable
-private fun textAreaTextStyle(color: Color): TextStyle =
-    LocalTypographies.current.bodyMediumRegular.textStyle
+private fun textAreaTextStyle(
+    color: Color,
+    sizing: TextAreaSizing,
+): TextStyle {
+    val style = LocalTypographies.current.bodyMediumRegular.textStyle
         .copy(color = color)
+    return when (sizing) {
+        is TextAreaSizing.Fixed -> style
+        is TextAreaSizing.Lines -> style.copy(
+            lineHeightStyle = LineHeightStyle(
+                alignment = LineHeightStyle.Alignment.Center,
+                trim = LineHeightStyle.Trim.None,
+            ),
+        )
+    }
+}
 
 @Suppress("LongParameterList")
 @Composable
@@ -485,6 +503,8 @@ private fun TextAreaDecorator(
                     text = placeholderText,
                     textStyle = LocalTypographies.current.bodyMediumRegular,
                     color = LocalColors.current.content.contentSecondary,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = (sizing as? TextAreaSizing.Lines)?.lineLimits?.first ?: Int.MAX_VALUE,
                 )
             }
             innerTextField()
