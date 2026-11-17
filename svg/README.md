@@ -12,68 +12,35 @@ into every platform's native format. Nothing outside `svg/` is edited by hand.
 Each SVG becomes an Android vector drawable, a SwiftUI imageset (PDF), an enum entry on both
 platforms, a web asset, a `web/llms.txt` line and a Figma Code Connect template.
 
-## Let Claude Code do it
-
-Ask Claude Code to "add the new icons from Figma" or "export the icons". The `export-icons` skill
-(`.claude/skills/export-icons/`) runs the whole icon flow below: the Figma export, the asset
-generation, the search aliases and the API check. The `publish-figma-connect` skill publishes the
-Code Connect templates after the PR merges.
-
-Flags and brand logos have no export script, so the skill covers only their generation step. The
-manual steps for them are below.
-
 ## Before you start
 
 - `rsvg-convert` (`brew install librsvg`), Node, and a JDK for Gradle.
-- `ANDROID_HOME` pointing at an Android SDK. The generate script defaults it to
+- `ANDROID_HOME` pointing at an Android SDK. `generate-assets.sh` defaults it to
   `~/Library/Android/sdk`.
-- A Figma personal access token with the `file_content:read` scope in `FIGMA_TOKEN`. It is only
-  needed for the icon export script.
-- Kotlin 2.3.20. The generate script installs it under `~/.local` on first run. Newer Kotlin
+- Kotlin 2.3.20. `generate-assets.sh` installs it under `~/.local` on first run. Newer Kotlin
   crashes the `.main.kts` converters.
 
 ## Add an icon
 
-The steps the `export-icons` skill follows, for doing it by hand:
-
 1. **Draw it in Figma,** following the icon guidelines in the Icons file. A 24×24 component on
-   the Icons page, named in kebab-case (`scan-barcode`). Outline strokes and flatten shapes to paths: the Android converter reads `<path>` elements
-   only and fails on `<rect>`, `<circle>`, `<text>` or gradients. Fix this in Figma, never by
-   editing the SVG.
-2. **Export it.** From the repo root:
+   the Icons page, named in kebab-case (`scan-barcode`). Outline strokes and flatten shapes to
+   paths: the Android converter reads `<path>` elements only and fails on `<rect>`, `<circle>`,
+   `<text>` or gradients. Fix this in Figma, never by editing the SVG.
+2. **Run `/export-icons` in Claude Code.** The `export-icons` skill
+   (`.claude/skills/export-icons/`) does the rest of the work:
+   - exports the new icons from Figma into `svg/icons/`, exactly as Figma renders them;
+   - generates the Android drawables, SwiftUI imagesets, enum entries, web assets,
+     `web/llms.txt` and Code Connect templates, and refreshes the API baselines;
+   - sets the icon's search aliases in Figma;
+   - runs the API check.
 
-   ```bash
-   .claude/skills/export-icons/scripts/figma-icons.py diff     # what Figma has that the repo lacks
-   .claude/skills/export-icons/scripts/figma-icons.py export   # writes svg/icons/*.svg and figma/icons.manifest.json
-   ```
-
-   The SVG is committed exactly as Figma renders it. Don't reformat it.
-3. **Generate the platform assets:**
-
-   ```bash
-   .claude/skills/export-icons/scripts/generate-assets.sh
-   ```
-
-   Use this script rather than running the converters one by one. It runs them in the right order,
-   restores the `LemonadeCountryFlags.getOrNull` companion the converter deletes, reverts the
-   hundreds of PDFs a fresh worktree re-encodes without any artwork change, regenerates the web
-   assets and the Code Connect templates, and finishes with `apiDump` and the API classifier.
-4. **Add the new count to the web test.** Raise the `iconNames` length in
-   `web/tests/exports.test.ts` by the number of icons you added.
-5. **Add search aliases in Figma.** Set the new component's description to three to eight
-   lowercase, comma-separated search terms (`gear` is `settings, preferences, cog`). The
-   `export-icons` skill has the snippet and the rules.
-6. **Commit, then run the API check.** The classifier reads the committed baseline, so it reports
-   `NO_CHANGES` until the regenerated `kmp/core/api/` files are committed:
-
-   ```bash
-   .claude/skills/binary-compatibility/scripts/bcv-check.sh --ci
-   ```
-
-   New enum entries are additive; the expected verdict is `ADDITIONS_ONLY`.
-7. **Open the PR** with the verdict in the **API Dump** section.
-8. **After it merges,** publish Code Connect from an up-to-date `main` with the
-   `publish-figma-connect` skill. Until then Dev Mode shows no snippet for the new icon.
+   It needs a Figma personal access token with the `file_content:read` scope in `FIGMA_TOKEN`.
+3. **Update the web test.** Raise the `iconNames` length in `web/tests/exports.test.ts` by the
+   number of icons you added.
+4. **Commit and open the PR** with the API check's verdict in the **API Dump** section. New enum
+   entries are additive, so the expected verdict is `ADDITIONS_ONLY`.
+5. **After it merges,** run the `publish-figma-connect` skill from an up-to-date `main`. Until
+   then Dev Mode shows no snippet for the new icon.
 
 A typical single-icon PR touches about seventeen files: the SVG, the drawable, the imageset, both
 enums, the KMP extension, three API baselines, the manifest entry, two Code Connect templates, the
