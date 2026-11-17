@@ -46,17 +46,17 @@ struct TextAreaDisplayView: View {
                 sectionView(title: "Grows From 1 to 5 Lines") {
                     LemonadeUi.TextArea(
                         input: $growingText,
+                        lineLimits: 1...5,
                         label: "Message",
-                        placeholderText: "Type a few lines...",
-                        lineLimits: 1...5
+                        placeholderText: "Type a few lines. A placeholder longer than the first line is cut to fit the empty box."
                     )
                 }
 
                 sectionView(title: "Grows From 1 to 5 Lines, Opened With Long Text") {
                     LemonadeUi.TextArea(
                         input: $longText,
-                        label: "Message",
-                        lineLimits: 1...5
+                        lineLimits: 1...5,
+                        label: "Message"
                     )
                 }
 
