@@ -158,7 +158,7 @@ internal fun CoreTextField(
         textStyle = size.data.contentStyle.textStyle.copy(
             color = contentColor,
         ),
-        modifier = modifier,
+        modifier = modifier.clearFocusOnKeyboardDismiss(),
         decorator = { innerTextField ->
             CoreTextFieldDecorator(
                 label = label,
