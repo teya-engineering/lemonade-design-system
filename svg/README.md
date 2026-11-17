@@ -103,6 +103,9 @@ The Figma export script covers icons only, so the SVG and its manifest entry are
 - **`apiCheck` or the classifier reports `BREAKING`.** Stop. Adding an asset only appends enum
   entries. A removal or rename means an SVG was deleted or renamed, which breaks consumers. See the
   `binary-compatibility` skill.
+- **CI fails on "Every SVG has its generated assets".** An SVG in `svg/` has no drawable, imageset,
+  enum entry or web asset. Run `/export-icons`, or the generate steps above for flags and brand logos.
+  `node scripts/check-asset-parity.mjs` reproduces the check locally.
 - **Hundreds of changed PDFs.** The converter's hash cache is gitignored, so a fresh worktree
   re-encodes everything. `generate-assets.sh` reverts these; if you ran the converter directly,
   `git checkout --` the imagesets whose SVG you did not change.
