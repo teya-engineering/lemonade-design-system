@@ -22,7 +22,7 @@ public enum LemonadeLinkSize {
 
 public extension LemonadeUi {
     /// A clickable text component styled as a hyperlink.
-    /// Displays underlined text in brand color with optional trailing icon,
+    /// Displays underlined text in brand color with optional leading and trailing icons,
     /// and provides animated color feedback for pressed states.
     ///
     /// ## Usage
@@ -43,6 +43,12 @@ public extension LemonadeUi {
     ///     onClick: { },
     ///     size: .small
     /// )
+    ///
+    /// LemonadeUi.Link(
+    ///     text: "Agreement",
+    ///     onClick: { },
+    ///     leadingIcon: .file
+    /// )
     /// ```
     ///
     /// - Parameters:
@@ -50,6 +56,7 @@ public extension LemonadeUi {
     ///   - onClick: Callback to be invoked when the link is tapped
     ///   - enabled: Boolean flag to enable or disable the link
     ///   - icon: Optional trailing LemonadeIcon shown after the text
+    ///   - leadingIcon: Optional LemonadeIcon shown before the text. Can be set together with `icon`
     ///   - size: LemonadeLinkSize matching the body text around the link, defaults to `.medium`
     /// - Returns: A styled link view
     @ViewBuilder
@@ -58,6 +65,7 @@ public extension LemonadeUi {
         onClick: @escaping () -> Void,
         enabled: Bool = true,
         icon: LemonadeIcon? = nil,
+        leadingIcon: LemonadeIcon? = nil,
         size: LemonadeLinkSize = .medium
     ) -> some View {
         LemonadeLinkView(
@@ -65,6 +73,7 @@ public extension LemonadeUi {
             onClick: onClick,
             enabled: enabled,
             icon: icon,
+            leadingIcon: leadingIcon,
             size: size
         )
     }
@@ -77,6 +86,7 @@ private struct LemonadeLinkView: View {
     let onClick: () -> Void
     let enabled: Bool
     let icon: LemonadeIcon?
+    let leadingIcon: LemonadeIcon?
     let size: LemonadeLinkSize
 
     @State private var isPressed = false
@@ -91,6 +101,15 @@ private struct LemonadeLinkView: View {
     var body: some View {
         SwiftUI.Button(action: onClick) {
             HStack(spacing: LemonadeTheme.spaces.spacing100) {
+                if let leadingIcon {
+                    LemonadeUi.Icon(
+                        icon: leadingIcon,
+                        contentDescription: nil,
+                        size: .small,
+                        tint: currentColor
+                    )
+                }
+
                 SwiftUI.Text(text)
                     .font(size.textStyle.font)
                     .foregroundColor(currentColor)
@@ -135,6 +154,12 @@ struct LemonadeLink_Previews: PreviewProvider {
                 onClick: { },
                 icon: .externalLink,
                 size: .small
+            )
+
+            LemonadeUi.Link(
+                text: "Agreement",
+                onClick: { },
+                leadingIcon: .file
             )
 
             LemonadeUi.Link(
