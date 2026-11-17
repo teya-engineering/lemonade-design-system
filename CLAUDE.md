@@ -88,6 +88,14 @@ each component's tests assert against its stylesheet.
 Run `scripts/web-check.sh` before opening a web PR, and review the diff with the **web-review**
 skill (`.claude/skills/web-review/SKILL.md`).
 
+## Assets
+
+Icons, country flags and brand logos start as SVG in `svg/` and everything else is generated:
+the `Lemonade{Icons,CountryFlags,BrandLogos}` enums on both platforms, the `gen_*.xml` drawables,
+the SwiftUI imagesets, the web assets, `web/llms.txt` and the Code Connect templates. Never
+hand-edit those. To add or change an asset, run the `export-icons` skill (`/export-icons`) for
+icons and follow `svg/README.md` for flags and brand logos.
+
 ## Opening a pull request
 
 CI runs `.github/workflows/kmp_ci.yml`. The **API Stability Review** job diffs the
