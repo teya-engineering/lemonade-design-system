@@ -116,20 +116,20 @@ fun main() {
         out.appendLine()
     }
 
-    listOf(
-        Triple("Spacing", "spacing.tokens.json", Triple("spacing", "spacing", true)),
-        Triple("Radius", "radius.tokens.json", Triple("radius", "radius", true)),
-        Triple("Size", "size.tokens.json", Triple("size", "size", true)),
-        Triple("Border width", "border-width.tokens.json", Triple("border-width", "border", false)),
+    listOf<Triple<String, String, Triple<String, String, (Double) -> String>>>(
+        Triple("Spacing", "spacing.tokens.json", Triple("spacing", "spacing", ::remValue)),
+        Triple("Radius", "radius.tokens.json", Triple("radius", "radius", ::remValue)),
+        Triple("Size", "size.tokens.json", Triple("size", "size", ::remValue)),
+        Triple("Border width", "border-width.tokens.json", Triple("border-width", "border", ::pxValue)),
+        Triple("Opacity", "opacity.tokens.json", Triple("opacity", "opacity", { raw -> trimNumber(raw / 100.0) })),
     ).forEach { (heading, fileName, naming) ->
-        val (category, strip, isRem) = naming
+        val (category, strip, render) = naming
         out.appendLine()
         out.appendLine("## $heading")
         out.appendLine()
         readFileResourceFileRaw(tokenFile(fileName)) { path, resolved ->
             val raw = (resolved.get("resolvedValue") as Number).toDouble()
-            val rendered = if (isRem) remValue(raw) else pxValue(raw)
-            out.appendLine("- `var(${cssVar(category, leafOf(path), strip)})` = $rendered")
+            out.appendLine("- `var(${cssVar(category, leafOf(path), strip)})` = ${render(raw)}")
         }
     }
 
