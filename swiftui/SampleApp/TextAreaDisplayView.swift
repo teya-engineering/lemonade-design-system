@@ -7,6 +7,8 @@ struct TextAreaDisplayView: View {
     @State private var basicText = ""
     @State private var counterText = ""
     @State private var errorText = "Not enough detail"
+    @State private var growingText = ""
+    @State private var longText = "This text is longer than five lines, so the box opens at its tallest and scrolls the rest. Type or delete a few lines to see it grow and shrink between one line and five. Every line past the fifth stays inside the box, which keeps the same height while the content scrolls under it."
 
     var body: some View {
         ScrollView {
@@ -38,6 +40,23 @@ struct TextAreaDisplayView: View {
                         errorMessage: "Tell us a bit more",
                         maxLength: Self.maxLength,
                         error: true
+                    )
+                }
+
+                sectionView(title: "Grows From 1 to 5 Lines") {
+                    LemonadeUi.TextArea(
+                        input: $growingText,
+                        lineLimits: 1...5,
+                        label: "Message",
+                        placeholderText: "Type a few lines. A placeholder longer than the first line is cut to fit the empty box."
+                    )
+                }
+
+                sectionView(title: "Grows From 1 to 5 Lines, Opened With Long Text") {
+                    LemonadeUi.TextArea(
+                        input: $longText,
+                        lineLimits: 1...5,
+                        label: "Message"
                     )
                 }
 
