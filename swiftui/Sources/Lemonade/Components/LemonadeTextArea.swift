@@ -183,10 +183,7 @@ private struct LemonadeTextAreaView: View {
     @ViewBuilder
     private var fieldContainer: some View {
         if let lineLimits {
-            TextAreaLineLimitsSizer(
-                text: textAreaSizingText(input: input, placeholder: placeholderText),
-                lineLimits: lineLimits
-            )
+            TextAreaLineLimitsSizer(text: textAreaSizingText(input: input), lineLimits: lineLimits)
                 .frame(maxWidth: .infinity, alignment: .topLeading)
                 .overlay(alignment: .topLeading) { fieldContent }
                 .padding(LemonadeTheme.spaces.spacing400)
@@ -206,7 +203,8 @@ private struct LemonadeTextAreaView: View {
                 LemonadeUi.Text(
                     placeholderText,
                     textStyle: LemonadeTypography.shared.bodyMediumRegular,
-                    color: LemonadeTheme.colors.content.contentSecondary
+                    color: LemonadeTheme.colors.content.contentSecondary,
+                    maxLines: lineLimits?.lowerBound
                 )
                 .accessibilityHidden(true)
             }
@@ -235,24 +233,32 @@ private struct LemonadeTextAreaView: View {
 
 // MARK: - Line Limits Sizer
 
-/// The text the box is measured with: the placeholder while the input is empty, and an extra
-/// line after a trailing newline, which the input keeps and `Text` drops.
-func textAreaSizingText(input: String, placeholder: String?) -> String {
-    let text = input.isEmpty ? placeholder ?? "" : input
-    return text.isEmpty || text.hasSuffix("\n") ? text + " " : text
+/// The text the box is measured with. `Text` drops trailing whitespace and a trailing newline
+/// that the input keeps on screen, so a zero-width space after the input keeps them in the layout.
+func textAreaSizingText(input: String) -> String {
+    input + "\u{200B}"
 }
 
 /// Invisible text in the input's style that gives the box its height in the same layout pass,
 /// so a field opened with text already in it starts at the right height.
+#if !canImport(UIKit)
+/// The macOS `TextEditor` keeps this padding on each side of every line, so its lines wrap
+/// narrower than the sizing text.
+private let macTextEditorLineFragmentPadding: CGFloat = 5
+#endif
+
 private struct TextAreaLineLimitsSizer: View {
     let text: String
     let lineLimits: ClosedRange<Int>
 
     var body: some View {
         ZStack(alignment: .topLeading) {
-            sizingText(Array(repeating: " ", count: lineLimits.lowerBound).joined(separator: "\n"), maxLines: nil)
+            sizingText(Array(repeating: "\u{200B}", count: lineLimits.lowerBound).joined(separator: "\n"), maxLines: nil)
             sizingText(text, maxLines: lineLimits.upperBound)
         }
+        #if !canImport(UIKit)
+        .padding(.horizontal, macTextEditorLineFragmentPadding)
+        #endif
         .hidden()
         .accessibilityHidden(true)
     }
