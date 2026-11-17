@@ -6,4 +6,6 @@ import kotlinx.datetime.DayOfWeek
 import java.util.Calendar
 
 @Composable
-internal actual fun rememberSystemFirstDayOfWeek(): DayOfWeek = remember { sundayBasedWeekday(Calendar.getInstance().firstDayOfWeek) }
+internal actual fun rememberSystemFirstDayOfWeek(): DayOfWeek = remember { systemFirstDayOfWeek() }
+
+private fun systemFirstDayOfWeek(): DayOfWeek = sundayBasedWeekday(Calendar.getInstance().firstDayOfWeek)

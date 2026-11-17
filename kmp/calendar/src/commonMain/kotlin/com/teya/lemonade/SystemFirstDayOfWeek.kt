@@ -14,4 +14,7 @@ import kotlinx.datetime.DayOfWeek
 internal expect fun rememberSystemFirstDayOfWeek(): DayOfWeek
 
 /** Maps a Sunday-based weekday number (1 = Sunday … 7 = Saturday) to a [DayOfWeek]. */
-internal fun sundayBasedWeekday(weekday: Int): DayOfWeek = if (weekday == 1) DayOfWeek.SUNDAY else DayOfWeek(isoDayNumber = weekday - 1)
+internal fun sundayBasedWeekday(weekday: Int): DayOfWeek {
+    if (weekday == 1) return DayOfWeek.SUNDAY
+    return DayOfWeek(isoDayNumber = weekday - 1)
+}
