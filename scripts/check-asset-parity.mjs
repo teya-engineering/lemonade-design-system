@@ -27,18 +27,32 @@ const problems = []
 
 for (const pack of packs) {
   const swiftNames = rawValues(pack.swiftEnum)
-  const names = readdirSync(at(pack.svg))
+  const all = readdirSync(at(pack.svg))
     .filter((f) => f.endsWith('.svg'))
     .map((f) => f.slice(0, -'.svg'.length))
-    .filter((n) => !(pack.dark && n.endsWith('-dark')))
     .sort()
+  const isDark = (n) => pack.dark && n.endsWith('-dark')
 
-  for (const name of names) {
+  for (const name of all.filter((n) => !isDark(n))) {
     const missing = []
     if (!existsSync(at(drawables, `gen_${name.replaceAll('-', '_')}.xml`))) missing.push('Android drawable')
-    if (!existsSync(at(imagesets, `${name}.imageset`, `${name}.pdf`))) missing.push('SwiftUI imageset')
+    if (!existsSync(at(imagesets, `${name}.imageset`, `${name}.pdf`))) missing.push('SwiftUI imageset PDF')
+    if (!existsSync(at(imagesets, `${name}.imageset`, 'Contents.json'))) missing.push('SwiftUI imageset Contents.json')
     if (!swiftNames.has(name)) missing.push('SwiftUI enum entry')
     if (!existsSync(at(pack.web, `${name}.svg`))) missing.push('web asset')
+    if (missing.length) problems.push(`${pack.name}: ${name} is missing its ${missing.join(', ')}`)
+  }
+
+  // The converter drops a dark variant that renders the same as its light asset, so the native
+  // outputs may be absent together. One without the other is a half-generated variant.
+  for (const name of all.filter(isDark)) {
+    const base = name.slice(0, -'-dark'.length)
+    const hasDrawable = existsSync(at(drawables, `gen_${base.replaceAll('-', '_')}_dark.xml`))
+    const hasPdf = existsSync(at(imagesets, `${base}.imageset`, `${name}.pdf`))
+    const missing = []
+    if (!existsSync(at(pack.web, `${name}.svg`))) missing.push('web asset')
+    if (hasDrawable && !hasPdf) missing.push('SwiftUI dark PDF')
+    if (hasPdf && !hasDrawable) missing.push('Android dark drawable')
     if (missing.length) problems.push(`${pack.name}: ${name} is missing its ${missing.join(', ')}`)
   }
 }
