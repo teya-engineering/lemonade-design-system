@@ -239,14 +239,14 @@ func textAreaSizingText(input: String) -> String {
     input + "\u{200B}"
 }
 
-/// Invisible text in the input's style that gives the box its height in the same layout pass,
-/// so a field opened with text already in it starts at the right height.
 #if !canImport(UIKit)
 /// The macOS `TextEditor` keeps this padding on each side of every line, so its lines wrap
 /// narrower than the sizing text.
 private let macTextEditorLineFragmentPadding: CGFloat = 5
 #endif
 
+/// Invisible text in the input's style that gives the box its height in the same layout pass,
+/// so a field opened with text already in it starts at the right height.
 private struct TextAreaLineLimitsSizer: View {
     let text: String
     let lineLimits: ClosedRange<Int>
