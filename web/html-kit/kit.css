@@ -3124,8 +3124,8 @@ body:has(> .lmnd-kit-device) {
   height: min(852px, calc(100dvh - 2 * var(--lmnd-spacing-1200))); /* literal: the reference phone */
   margin: var(--lmnd-spacing-1200) auto;
   overflow: hidden;
-  border-radius: calc(52px * var(--lmnd-kit-corner-scale)); /* literal: the reference phone's screen corners */
-  corner-shape: var(--lmnd-kit-corner-shape);
+  border-radius: 52px; /* literal: the reference phone's screen corners */
+  corner-shape: round; /* the phone's hardware, not a kit corner, so it isn't smoothed */
   background: var(--lmnd-color-bg-subtle);
   box-shadow:
     0 0 0 var(--lmnd-spacing-300) var(--lmnd-color-bg-always-dark),
