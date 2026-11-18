@@ -236,6 +236,7 @@ jobs:
         working-directory: ./kmp
 
       - name: Setup Dependency Submission
+        if: github.event.pull_request.head.repo.fork != true
         uses: gradle/actions/dependency-submission@v6.4.0
         with:
           build-root-directory: kmp
