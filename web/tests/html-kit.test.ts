@@ -33,14 +33,15 @@ describe('kit.css', () => {
   })
 
   // A radius without the corner scale, or without a corner-shape, draws a round corner beside smoothed ones.
-  // A kit radius variable (--lmnd-kit-*-radius) is scaled where it's declared.
+  // A kit radius variable (--lmnd-kit-*-radius) is scaled where it's declared. The phone frame's corner is the
+  // hardware's, so it stays round.
   it('smooths every corner but a full one', () => {
     const blocks = [...withoutComments(kitCss).matchAll(/([^{}]+)\{([^{}]*)\}/g)]
     const unsmoothed = blocks.flatMap(([, selector, body]) => {
       const radius = body.match(/border-radius:\s*([^;]+);/)?.[1].trim()
       if (!radius || radius === '0') return []
       const shape = body.match(/corner-shape:\s*([^;]+);/)?.[1].trim()
-      const full = /radius-full|^50%$/.test(radius)
+      const full = /radius-full|^50%$/.test(radius) || selector.trim() === '.lmnd-kit-device'
       const ok = radius === 'inherit' ? shape === 'inherit'
         : full ? shape === 'round'
         : /^var\(--lmnd-kit-corner-shape(?:, round)?\)$/.test(shape ?? '')
