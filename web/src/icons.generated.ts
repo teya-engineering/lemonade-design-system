@@ -130,6 +130,7 @@ export const iconNames = [
   "clock-arrow-up-right",
   "clock-arrow-up",
   "clock-cross",
+  "clock-rotate-ccw",
   "clock-timer",
   "clock",
   "cloud-offline",

@@ -136,6 +136,7 @@ public enum LemonadeIcon: String, CaseIterable {
     case clockArrowUp = "clock-arrow-up"
     case clockArrowUpRight = "clock-arrow-up-right"
     case clockCross = "clock-cross"
+    case clockRotateCcw = "clock-rotate-ccw"
     case clockTimer = "clock-timer"
     case cloudOffline = "cloud-offline"
     case coins = "coins"

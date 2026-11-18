@@ -595,6 +595,7 @@ Monochrome, for the Icon component below: `--lmnd-icon: url('/assets/icons/<name
 - `clock-arrow-up-right`
 - `clock-arrow-up`
 - `clock-cross`
+- `clock-rotate-ccw`
 - `clock-timer`
 - `clock`
 - `cloud-offline`

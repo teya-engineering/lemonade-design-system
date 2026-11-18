@@ -637,6 +637,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field ClockArrowUp Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ClockArrowUpRight Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ClockCross Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field ClockRotateCcw Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ClockTimer Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CloudOffline Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Coins Lcom/teya/lemonade/core/LemonadeIcons;
