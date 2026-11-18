@@ -715,6 +715,7 @@ final enum class com.teya.lemonade.core/LemonadeIcons : com.teya.lemonade.core/L
     enum entry ClockArrowUp // com.teya.lemonade.core/LemonadeIcons.ClockArrowUp|null[0]
     enum entry ClockArrowUpRight // com.teya.lemonade.core/LemonadeIcons.ClockArrowUpRight|null[0]
     enum entry ClockCross // com.teya.lemonade.core/LemonadeIcons.ClockCross|null[0]
+    enum entry ClockRotateCcw // com.teya.lemonade.core/LemonadeIcons.ClockRotateCcw|null[0]
     enum entry ClockTimer // com.teya.lemonade.core/LemonadeIcons.ClockTimer|null[0]
     enum entry CloudOffline // com.teya.lemonade.core/LemonadeIcons.CloudOffline|null[0]
     enum entry Coins // com.teya.lemonade.core/LemonadeIcons.Coins|null[0]

@@ -132,6 +132,7 @@ public enum class LemonadeIcons : LemonadeAsset {
     ClockArrowUp,
     ClockArrowUpRight,
     ClockCross,
+    ClockRotateCcw,
     ClockTimer,
     CloudOffline,
     Coins,

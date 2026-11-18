@@ -3,7 +3,7 @@ import { iconNames, flagNames, brandLogoNames } from '../src/index'
 
 describe('asset manifests', () => {
   it('lists every asset', () => {
-    expect(iconNames).toHaveLength(296)
+    expect(iconNames).toHaveLength(297)
     expect(flagNames).toHaveLength(265)
     expect(brandLogoNames).toHaveLength(39)
   })
