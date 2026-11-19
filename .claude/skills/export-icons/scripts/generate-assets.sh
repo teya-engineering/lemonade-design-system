@@ -4,11 +4,11 @@
 # Usage (from anywhere in the repo):
 #   .claude/skills/export-icons/scripts/generate-assets.sh [--skip-api]
 #
-#   --skip-api   stop after the converters; don't run apiDump or the ABI classifier
+#   --skip-api   stop after the web tests; don't run apiDump or the ABI classifier
 #
 # Runs the SVG converter, then the country-flags post-generator, then the web
-# assets and llms.txt, then the Code Connect templates, then refreshes the API
-# baselines that the new enum entries move.
+# assets and llms.txt, then the Code Connect templates and the web tests, then
+# refreshes the API baselines that the new enum entries move.
 set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
@@ -86,6 +86,10 @@ else
   echo "    none"
 fi
 
+# The template check compiles the React snippets with web/'s TypeScript, so web/
+# needs its dependencies first.
+[ -d web/node_modules ] || (cd web && npm ci --silent)
+
 # CI regenerates the templates and fails when an enum entry has no Figma node in
 # icons.manifest.json, which `figma-icons.py export` fills in.
 echo "==> Code Connect templates"
@@ -95,6 +99,11 @@ echo "==> Code Connect templates"
   node scripts/generate-asset-templates.mjs icons
   npm run --silent check
 )
+
+# web/tests/exports.test.ts pins the number of icons, so adding one fails here
+# until that count is bumped.
+echo "==> Web package tests"
+(cd web && npm test --silent)
 
 if [ "$SKIP_API" -eq 1 ]; then
   echo "==> Skipping apiDump (--skip-api)"
