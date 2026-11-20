@@ -13,7 +13,8 @@
         "hex": "#FEFCE8"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:601",
+        "com.figma.variableId": "VariableID:5729:11",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -32,7 +33,8 @@
         "hex": "#FEF9C2"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:638",
+        "com.figma.variableId": "VariableID:5729:12",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -51,7 +53,8 @@
         "hex": "#FFF085"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:551",
+        "com.figma.variableId": "VariableID:5729:13",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -70,7 +73,8 @@
         "hex": "#FFDF20"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:550",
+        "com.figma.variableId": "VariableID:5729:14",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -89,7 +93,8 @@
         "hex": "#FDC700"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:612",
+        "com.figma.variableId": "VariableID:5729:15",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -108,7 +113,8 @@
         "hex": "#F0B100"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:650",
+        "com.figma.variableId": "VariableID:5729:16",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -127,7 +133,8 @@
         "hex": "#D08700"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:549",
+        "com.figma.variableId": "VariableID:5729:17",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -146,7 +153,8 @@
         "hex": "#A65F00"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:668",
+        "com.figma.variableId": "VariableID:5729:18",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -165,7 +173,8 @@
         "hex": "#894B00"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:547",
+        "com.figma.variableId": "VariableID:5729:19",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -184,7 +193,8 @@
         "hex": "#733E0A"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:545",
+        "com.figma.variableId": "VariableID:5729:20",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -203,7 +213,8 @@
         "hex": "#432004"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:602",
+        "com.figma.variableId": "VariableID:5729:21",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -223,7 +234,8 @@
           "hex": "#F0B100"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3792",
+          "com.figma.variableId": "VariableID:5729:22",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -242,7 +254,8 @@
           "hex": "#F0B100"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3793",
+          "com.figma.variableId": "VariableID:5729:23",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -261,7 +274,8 @@
           "hex": "#F0B100"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3794",
+          "com.figma.variableId": "VariableID:5729:24",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -280,7 +294,8 @@
           "hex": "#F0B100"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3795",
+          "com.figma.variableId": "VariableID:5729:25",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -299,7 +314,8 @@
           "hex": "#F0B100"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3796",
+          "com.figma.variableId": "VariableID:5729:26",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -318,7 +334,8 @@
           "hex": "#F0B100"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3797",
+          "com.figma.variableId": "VariableID:5729:27",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -337,7 +354,8 @@
           "hex": "#F0B100"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3798",
+          "com.figma.variableId": "VariableID:5729:28",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -356,7 +374,8 @@
           "hex": "#F0B100"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3799",
+          "com.figma.variableId": "VariableID:5729:29",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -375,7 +394,8 @@
           "hex": "#F0B100"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3800",
+          "com.figma.variableId": "VariableID:5729:30",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -394,7 +414,8 @@
           "hex": "#F0B100"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3801",
+          "com.figma.variableId": "VariableID:5729:31",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -413,7 +434,8 @@
           "hex": "#F0B100"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3802",
+          "com.figma.variableId": "VariableID:5729:32",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -435,7 +457,8 @@
         "hex": "#FFFBEB"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:605",
+        "com.figma.variableId": "VariableID:5729:33",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -454,7 +477,8 @@
         "hex": "#FEF3C6"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:462",
+        "com.figma.variableId": "VariableID:5729:34",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -473,7 +497,8 @@
         "hex": "#FEE685"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:461",
+        "com.figma.variableId": "VariableID:5729:35",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -492,7 +517,8 @@
         "hex": "#FFD230"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:598",
+        "com.figma.variableId": "VariableID:5729:36",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -511,7 +537,8 @@
         "hex": "#FDC700"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:655",
+        "com.figma.variableId": "VariableID:5729:37",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -530,7 +557,8 @@
         "hex": "#FE9A00"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:605",
+        "com.figma.variableId": "VariableID:5729:38",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -549,7 +577,8 @@
         "hex": "#E17100"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:530",
+        "com.figma.variableId": "VariableID:5729:39",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -568,7 +597,8 @@
         "hex": "#BB4D00"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:460",
+        "com.figma.variableId": "VariableID:5729:40",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -587,7 +617,8 @@
         "hex": "#973C00"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:459",
+        "com.figma.variableId": "VariableID:5729:41",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -606,7 +637,8 @@
         "hex": "#7B3306"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:458",
+        "com.figma.variableId": "VariableID:5729:42",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -625,7 +657,8 @@
         "hex": "#461901"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:606",
+        "com.figma.variableId": "VariableID:5729:43",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -645,7 +678,8 @@
           "hex": "#FE9A00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3803",
+          "com.figma.variableId": "VariableID:5729:44",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -664,7 +698,8 @@
           "hex": "#FE9A00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3804",
+          "com.figma.variableId": "VariableID:5729:45",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -683,7 +718,8 @@
           "hex": "#FE9A00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3805",
+          "com.figma.variableId": "VariableID:5729:46",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -702,7 +738,8 @@
           "hex": "#FE9A00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3806",
+          "com.figma.variableId": "VariableID:5729:47",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -721,7 +758,8 @@
           "hex": "#FE9A00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3807",
+          "com.figma.variableId": "VariableID:5729:48",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -740,7 +778,8 @@
           "hex": "#FE9A00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3808",
+          "com.figma.variableId": "VariableID:5729:49",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -759,7 +798,8 @@
           "hex": "#FE9A00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3809",
+          "com.figma.variableId": "VariableID:5729:50",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -778,7 +818,8 @@
           "hex": "#FE9A00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3810",
+          "com.figma.variableId": "VariableID:5729:51",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -797,7 +838,8 @@
           "hex": "#FE9A00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3811",
+          "com.figma.variableId": "VariableID:5729:52",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -816,7 +858,8 @@
           "hex": "#FE9A00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3812",
+          "com.figma.variableId": "VariableID:5729:53",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -835,7 +878,8 @@
           "hex": "#FE9A00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3813",
+          "com.figma.variableId": "VariableID:5729:54",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -857,7 +901,8 @@
         "hex": "#FFF7ED"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:607",
+        "com.figma.variableId": "VariableID:5729:55",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -876,7 +921,8 @@
         "hex": "#FFEDD4"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:622",
+        "com.figma.variableId": "VariableID:5729:56",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -895,7 +941,8 @@
         "hex": "#FFD6A7"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:480",
+        "com.figma.variableId": "VariableID:5729:57",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -914,7 +961,8 @@
         "hex": "#FFB86A"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:503",
+        "com.figma.variableId": "VariableID:5729:58",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -933,7 +981,8 @@
         "hex": "#FF8904"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:477",
+        "com.figma.variableId": "VariableID:5729:59",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -952,7 +1001,8 @@
         "hex": "#FF6900"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:474",
+        "com.figma.variableId": "VariableID:5729:60",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -971,7 +1021,8 @@
         "hex": "#F54900"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:473",
+        "com.figma.variableId": "VariableID:5729:61",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -990,7 +1041,8 @@
         "hex": "#CA3500"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:472",
+        "com.figma.variableId": "VariableID:5729:62",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1009,7 +1061,8 @@
         "hex": "#9F2D00"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:470",
+        "com.figma.variableId": "VariableID:5729:63",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1028,7 +1081,8 @@
         "hex": "#7E2A0C"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:469",
+        "com.figma.variableId": "VariableID:5729:64",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1047,7 +1101,8 @@
         "hex": "#441306"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:608",
+        "com.figma.variableId": "VariableID:5729:65",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1067,7 +1122,8 @@
           "hex": "#FF6900"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3814",
+          "com.figma.variableId": "VariableID:5729:66",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1086,7 +1142,8 @@
           "hex": "#FF6900"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3815",
+          "com.figma.variableId": "VariableID:5729:67",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1105,7 +1162,8 @@
           "hex": "#FF6900"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3816",
+          "com.figma.variableId": "VariableID:5729:68",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1124,7 +1182,8 @@
           "hex": "#FF6900"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3817",
+          "com.figma.variableId": "VariableID:5729:69",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1143,7 +1202,8 @@
           "hex": "#FF6900"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3818",
+          "com.figma.variableId": "VariableID:5729:70",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1162,7 +1222,8 @@
           "hex": "#FF6900"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3819",
+          "com.figma.variableId": "VariableID:5729:71",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1181,7 +1242,8 @@
           "hex": "#FF6900"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3820",
+          "com.figma.variableId": "VariableID:5729:72",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1200,7 +1262,8 @@
           "hex": "#FF6900"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3821",
+          "com.figma.variableId": "VariableID:5729:73",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1219,7 +1282,8 @@
           "hex": "#FF6900"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3822",
+          "com.figma.variableId": "VariableID:5729:74",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1238,7 +1302,8 @@
           "hex": "#FF6900"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3823",
+          "com.figma.variableId": "VariableID:5729:75",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1257,7 +1322,8 @@
           "hex": "#FF6900"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3824",
+          "com.figma.variableId": "VariableID:5729:76",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1279,7 +1345,8 @@
         "hex": "#FFF1F2"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:23:19",
+        "com.figma.variableId": "VariableID:5729:77",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1298,7 +1365,8 @@
         "hex": "#FFE1E3"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:486",
+        "com.figma.variableId": "VariableID:5729:78",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1317,7 +1385,8 @@
         "hex": "#FFC8CC"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:642",
+        "com.figma.variableId": "VariableID:5729:79",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1336,7 +1405,8 @@
         "hex": "#FFC8CC"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:485",
+        "com.figma.variableId": "VariableID:5729:80",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1355,7 +1425,8 @@
         "hex": "#FE535E"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:555",
+        "com.figma.variableId": "VariableID:5729:81",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1374,7 +1445,8 @@
         "hex": "#F73C48"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:603",
+        "com.figma.variableId": "VariableID:5729:82",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1393,7 +1465,8 @@
         "hex": "#E41E2B"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:632",
+        "com.figma.variableId": "VariableID:5729:83",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1412,7 +1485,8 @@
         "hex": "#C01520"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:490",
+        "com.figma.variableId": "VariableID:5729:84",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1431,7 +1505,8 @@
         "hex": "#9F151E"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:571",
+        "com.figma.variableId": "VariableID:5729:85",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1450,7 +1525,8 @@
         "hex": "#831920"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:553",
+        "com.figma.variableId": "VariableID:5729:86",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1469,7 +1545,8 @@
         "hex": "#48070B"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:23:20",
+        "com.figma.variableId": "VariableID:5729:87",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1489,7 +1566,8 @@
           "hex": "#F73C48"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3825",
+          "com.figma.variableId": "VariableID:5729:88",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1508,7 +1586,8 @@
           "hex": "#F73C48"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3826",
+          "com.figma.variableId": "VariableID:5729:89",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1527,7 +1606,8 @@
           "hex": "#F73C48"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3827",
+          "com.figma.variableId": "VariableID:5729:90",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1546,7 +1626,8 @@
           "hex": "#F73C48"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3828",
+          "com.figma.variableId": "VariableID:5729:91",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1565,7 +1646,8 @@
           "hex": "#F73C48"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3829",
+          "com.figma.variableId": "VariableID:5729:92",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1584,7 +1666,8 @@
           "hex": "#F73C48"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3830",
+          "com.figma.variableId": "VariableID:5729:93",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1603,7 +1686,8 @@
           "hex": "#F73C48"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3831",
+          "com.figma.variableId": "VariableID:5729:94",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1622,7 +1706,8 @@
           "hex": "#F73C48"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3832",
+          "com.figma.variableId": "VariableID:5729:95",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1641,7 +1726,8 @@
           "hex": "#F73C48"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3833",
+          "com.figma.variableId": "VariableID:5729:96",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1660,7 +1746,8 @@
           "hex": "#F73C48"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3834",
+          "com.figma.variableId": "VariableID:5729:97",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1679,7 +1766,8 @@
           "hex": "#FB2C36"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3835",
+          "com.figma.variableId": "VariableID:5729:98",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1701,7 +1789,8 @@
         "hex": "#FFF1F2"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:609",
+        "com.figma.variableId": "VariableID:5729:99",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1720,7 +1809,8 @@
         "hex": "#FFE4E6"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:645",
+        "com.figma.variableId": "VariableID:5729:100",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1739,7 +1829,8 @@
         "hex": "#FFCCD3"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:509",
+        "com.figma.variableId": "VariableID:5729:101",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1758,7 +1849,8 @@
         "hex": "#FFA1AD"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:584",
+        "com.figma.variableId": "VariableID:5729:102",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1777,7 +1869,8 @@
         "hex": "#FF637E"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:508",
+        "com.figma.variableId": "VariableID:5729:103",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1796,7 +1889,8 @@
         "hex": "#FF2056"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:634",
+        "com.figma.variableId": "VariableID:5729:104",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1815,7 +1909,8 @@
         "hex": "#EC003F"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:507",
+        "com.figma.variableId": "VariableID:5729:105",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1834,7 +1929,8 @@
         "hex": "#C70036"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:505",
+        "com.figma.variableId": "VariableID:5729:106",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1853,7 +1949,8 @@
         "hex": "#A50036"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:597",
+        "com.figma.variableId": "VariableID:5729:107",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1872,7 +1969,8 @@
         "hex": "#8B0836"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:502",
+        "com.figma.variableId": "VariableID:5729:108",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1891,7 +1989,8 @@
         "hex": "#4D0218"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:610",
+        "com.figma.variableId": "VariableID:5729:109",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -1911,7 +2010,8 @@
           "hex": "#FF2056"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3836",
+          "com.figma.variableId": "VariableID:5729:110",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1930,7 +2030,8 @@
           "hex": "#FF2056"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3837",
+          "com.figma.variableId": "VariableID:5729:111",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1949,7 +2050,8 @@
           "hex": "#FF2056"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3838",
+          "com.figma.variableId": "VariableID:5729:112",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1968,7 +2070,8 @@
           "hex": "#FF2056"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3839",
+          "com.figma.variableId": "VariableID:5729:113",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -1987,7 +2090,8 @@
           "hex": "#FF2056"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3840",
+          "com.figma.variableId": "VariableID:5729:114",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2006,7 +2110,8 @@
           "hex": "#FF2056"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3841",
+          "com.figma.variableId": "VariableID:5729:115",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2025,7 +2130,8 @@
           "hex": "#FF2056"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3842",
+          "com.figma.variableId": "VariableID:5729:116",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2044,7 +2150,8 @@
           "hex": "#FF2056"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3843",
+          "com.figma.variableId": "VariableID:5729:117",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2063,7 +2170,8 @@
           "hex": "#FF2056"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3844",
+          "com.figma.variableId": "VariableID:5729:118",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2082,7 +2190,8 @@
           "hex": "#FF2056"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3845",
+          "com.figma.variableId": "VariableID:5729:119",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2101,7 +2210,8 @@
           "hex": "#FF2056"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3846",
+          "com.figma.variableId": "VariableID:5729:120",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2123,7 +2233,8 @@
         "hex": "#FDF2F8"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:611",
+        "com.figma.variableId": "VariableID:5729:121",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2142,7 +2253,8 @@
         "hex": "#FCE7F3"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:522",
+        "com.figma.variableId": "VariableID:5729:122",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2161,7 +2273,8 @@
         "hex": "#FCCEE8"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:476",
+        "com.figma.variableId": "VariableID:5729:123",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2180,7 +2293,8 @@
         "hex": "#FDA5D5"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:520",
+        "com.figma.variableId": "VariableID:5729:124",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2199,7 +2313,8 @@
         "hex": "#FB64B6"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:639",
+        "com.figma.variableId": "VariableID:5729:125",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2218,7 +2333,8 @@
         "hex": "#F6339A"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:616",
+        "com.figma.variableId": "VariableID:5729:126",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2237,7 +2353,8 @@
         "hex": "#E60076"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:567",
+        "com.figma.variableId": "VariableID:5729:127",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2256,7 +2373,8 @@
         "hex": "#C6005C"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:564",
+        "com.figma.variableId": "VariableID:5729:128",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2275,7 +2393,8 @@
         "hex": "#A3004C"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:561",
+        "com.figma.variableId": "VariableID:5729:129",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2294,7 +2413,8 @@
         "hex": "#861043"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:559",
+        "com.figma.variableId": "VariableID:5729:130",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2313,7 +2433,8 @@
         "hex": "#510424"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:612",
+        "com.figma.variableId": "VariableID:5729:131",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2333,7 +2454,8 @@
           "hex": "#F6339A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3847",
+          "com.figma.variableId": "VariableID:5729:132",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2352,7 +2474,8 @@
           "hex": "#F6339A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3848",
+          "com.figma.variableId": "VariableID:5729:133",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2371,7 +2494,8 @@
           "hex": "#F6339A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3849",
+          "com.figma.variableId": "VariableID:5729:134",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2390,7 +2514,8 @@
           "hex": "#F6339A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3850",
+          "com.figma.variableId": "VariableID:5729:135",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2409,7 +2534,8 @@
           "hex": "#F6339A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3851",
+          "com.figma.variableId": "VariableID:5729:136",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2428,7 +2554,8 @@
           "hex": "#F6339A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3852",
+          "com.figma.variableId": "VariableID:5729:137",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2447,7 +2574,8 @@
           "hex": "#F6339A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3853",
+          "com.figma.variableId": "VariableID:5729:138",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2466,7 +2594,8 @@
           "hex": "#F6339A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3854",
+          "com.figma.variableId": "VariableID:5729:139",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2485,7 +2614,8 @@
           "hex": "#F6339A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3855",
+          "com.figma.variableId": "VariableID:5729:140",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2504,7 +2634,8 @@
           "hex": "#F6339A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3856",
+          "com.figma.variableId": "VariableID:5729:141",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2523,7 +2654,8 @@
           "hex": "#F6339A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3857",
+          "com.figma.variableId": "VariableID:5729:142",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2545,7 +2677,8 @@
         "hex": "#FAF5FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:603",
+        "com.figma.variableId": "VariableID:5729:143",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2564,7 +2697,8 @@
         "hex": "#F3E8FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:672",
+        "com.figma.variableId": "VariableID:5729:144",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2583,7 +2717,8 @@
         "hex": "#E9D4FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:519",
+        "com.figma.variableId": "VariableID:5729:145",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2602,7 +2737,8 @@
         "hex": "#DAB2FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:600",
+        "com.figma.variableId": "VariableID:5729:146",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2621,7 +2757,8 @@
         "hex": "#C27AFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:516",
+        "com.figma.variableId": "VariableID:5729:147",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2640,7 +2777,8 @@
         "hex": "#AD46FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:517",
+        "com.figma.variableId": "VariableID:5729:148",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2659,7 +2797,8 @@
         "hex": "#9810FA"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:515",
+        "com.figma.variableId": "VariableID:5729:149",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2678,7 +2817,8 @@
         "hex": "#8200DB"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:494",
+        "com.figma.variableId": "VariableID:5729:150",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2697,7 +2837,8 @@
         "hex": "#6E11B0"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:511",
+        "com.figma.variableId": "VariableID:5729:151",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2716,7 +2857,8 @@
         "hex": "#59168B"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:591",
+        "com.figma.variableId": "VariableID:5729:152",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2735,7 +2877,8 @@
         "hex": "#330759"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:604",
+        "com.figma.variableId": "VariableID:5729:153",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2755,7 +2898,8 @@
           "hex": "#AD46FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3858",
+          "com.figma.variableId": "VariableID:5729:154",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2774,7 +2918,8 @@
           "hex": "#AD46FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3859",
+          "com.figma.variableId": "VariableID:5729:155",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2793,7 +2938,8 @@
           "hex": "#AD46FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3860",
+          "com.figma.variableId": "VariableID:5729:156",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2812,7 +2958,8 @@
           "hex": "#AD46FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3861",
+          "com.figma.variableId": "VariableID:5729:157",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2831,7 +2978,8 @@
           "hex": "#AD46FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3862",
+          "com.figma.variableId": "VariableID:5729:158",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2850,7 +2998,8 @@
           "hex": "#AD46FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3863",
+          "com.figma.variableId": "VariableID:5729:159",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2869,7 +3018,8 @@
           "hex": "#AD46FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3864",
+          "com.figma.variableId": "VariableID:5729:160",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2888,7 +3038,8 @@
           "hex": "#AD46FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3865",
+          "com.figma.variableId": "VariableID:5729:161",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2907,7 +3058,8 @@
           "hex": "#AD46FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3866",
+          "com.figma.variableId": "VariableID:5729:162",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2926,7 +3078,8 @@
           "hex": "#AD46FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3867",
+          "com.figma.variableId": "VariableID:5729:163",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2945,7 +3098,8 @@
           "hex": "#AD46FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3868",
+          "com.figma.variableId": "VariableID:5729:164",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -2967,7 +3121,8 @@
         "hex": "#F5F3FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:74:2836",
+        "com.figma.variableId": "VariableID:5729:165",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -2986,7 +3141,8 @@
         "hex": "#EDE9FE"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:74:2837",
+        "com.figma.variableId": "VariableID:5729:166",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3005,7 +3161,8 @@
         "hex": "#DDD6FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:74:2838",
+        "com.figma.variableId": "VariableID:5729:167",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3024,7 +3181,8 @@
         "hex": "#C4B4FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:74:2839",
+        "com.figma.variableId": "VariableID:5729:168",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3043,7 +3201,8 @@
         "hex": "#A684FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:74:2840",
+        "com.figma.variableId": "VariableID:5729:169",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3062,7 +3221,8 @@
         "hex": "#8E51FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:74:2841",
+        "com.figma.variableId": "VariableID:5729:170",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3081,7 +3241,8 @@
         "hex": "#7F22FE"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:74:2842",
+        "com.figma.variableId": "VariableID:5729:171",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3100,7 +3261,8 @@
         "hex": "#7008E7"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:74:2843",
+        "com.figma.variableId": "VariableID:5729:172",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3119,7 +3281,8 @@
         "hex": "#5D0EC0"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:74:2844",
+        "com.figma.variableId": "VariableID:5729:173",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3138,7 +3301,8 @@
         "hex": "#4D179A"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:74:2845",
+        "com.figma.variableId": "VariableID:5729:174",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3157,7 +3321,8 @@
         "hex": "#2F0D68"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:74:2846",
+        "com.figma.variableId": "VariableID:5729:175",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3177,7 +3342,8 @@
           "hex": "#8E51FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3869",
+          "com.figma.variableId": "VariableID:5729:176",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3196,7 +3362,8 @@
           "hex": "#8E51FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3870",
+          "com.figma.variableId": "VariableID:5729:177",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3215,7 +3382,8 @@
           "hex": "#8E51FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3871",
+          "com.figma.variableId": "VariableID:5729:178",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3234,7 +3402,8 @@
           "hex": "#8E51FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3872",
+          "com.figma.variableId": "VariableID:5729:179",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3253,7 +3422,8 @@
           "hex": "#8E51FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3873",
+          "com.figma.variableId": "VariableID:5729:180",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3272,7 +3442,8 @@
           "hex": "#8E51FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3874",
+          "com.figma.variableId": "VariableID:5729:181",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3291,7 +3462,8 @@
           "hex": "#8E51FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3875",
+          "com.figma.variableId": "VariableID:5729:182",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3310,7 +3482,8 @@
           "hex": "#8E51FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3876",
+          "com.figma.variableId": "VariableID:5729:183",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3329,7 +3502,8 @@
           "hex": "#8E51FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3877",
+          "com.figma.variableId": "VariableID:5729:184",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3348,7 +3522,8 @@
           "hex": "#8E51FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3878",
+          "com.figma.variableId": "VariableID:5729:185",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3367,7 +3542,8 @@
           "hex": "#8E51FF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3879",
+          "com.figma.variableId": "VariableID:5729:186",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3389,7 +3565,8 @@
         "hex": "#EEF2FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:626",
+        "com.figma.variableId": "VariableID:5729:187",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3408,7 +3585,8 @@
         "hex": "#E0E7FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:595",
+        "com.figma.variableId": "VariableID:5729:188",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3427,7 +3605,8 @@
         "hex": "#C6D2FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:609",
+        "com.figma.variableId": "VariableID:5729:189",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3446,7 +3625,8 @@
         "hex": "#A3B3FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:594",
+        "com.figma.variableId": "VariableID:5729:190",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3465,7 +3645,8 @@
         "hex": "#7C86FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:586",
+        "com.figma.variableId": "VariableID:5729:191",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3484,7 +3665,8 @@
         "hex": "#615FFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:583",
+        "com.figma.variableId": "VariableID:5729:192",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3503,7 +3685,8 @@
         "hex": "#4F39F6"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:582",
+        "com.figma.variableId": "VariableID:5729:193",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3522,7 +3705,8 @@
         "hex": "#432DD7"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:607",
+        "com.figma.variableId": "VariableID:5729:194",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3541,7 +3725,8 @@
         "hex": "#372AAC"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:581",
+        "com.figma.variableId": "VariableID:5729:195",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3560,7 +3745,8 @@
         "hex": "#312C85"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:628",
+        "com.figma.variableId": "VariableID:5729:196",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3579,7 +3765,8 @@
         "hex": "#1E1A4D"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:627",
+        "com.figma.variableId": "VariableID:5729:197",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3599,7 +3786,8 @@
           "hex": "#615FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3880",
+          "com.figma.variableId": "VariableID:5729:198",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3618,7 +3806,8 @@
           "hex": "#615FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3881",
+          "com.figma.variableId": "VariableID:5729:199",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3637,7 +3826,8 @@
           "hex": "#615FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3882",
+          "com.figma.variableId": "VariableID:5729:200",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3656,7 +3846,8 @@
           "hex": "#615FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3883",
+          "com.figma.variableId": "VariableID:5729:201",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3675,7 +3866,8 @@
           "hex": "#615FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3884",
+          "com.figma.variableId": "VariableID:5729:202",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3694,7 +3886,8 @@
           "hex": "#615FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3885",
+          "com.figma.variableId": "VariableID:5729:203",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3713,7 +3906,8 @@
           "hex": "#615FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3886",
+          "com.figma.variableId": "VariableID:5729:204",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3732,7 +3926,8 @@
           "hex": "#615FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3887",
+          "com.figma.variableId": "VariableID:5729:205",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3751,7 +3946,8 @@
           "hex": "#615FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3888",
+          "com.figma.variableId": "VariableID:5729:206",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3770,7 +3966,8 @@
           "hex": "#615FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3889",
+          "com.figma.variableId": "VariableID:5729:207",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3789,7 +3986,8 @@
           "hex": "#615FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3890",
+          "com.figma.variableId": "VariableID:5729:208",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -3811,7 +4009,8 @@
         "hex": "#EFF6FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:628",
+        "com.figma.variableId": "VariableID:5729:209",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3830,7 +4029,8 @@
         "hex": "#DBEAFE"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:528",
+        "com.figma.variableId": "VariableID:5729:210",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3849,7 +4049,8 @@
         "hex": "#BEDBFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:657",
+        "com.figma.variableId": "VariableID:5729:211",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3868,7 +4069,8 @@
         "hex": "#8EC5FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:599",
+        "com.figma.variableId": "VariableID:5729:212",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3887,7 +4089,8 @@
         "hex": "#51A2FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:588",
+        "com.figma.variableId": "VariableID:5729:213",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3906,7 +4109,8 @@
         "hex": "#2B7FFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:669",
+        "com.figma.variableId": "VariableID:5729:214",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3925,7 +4129,8 @@
         "hex": "#155DFC"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:602",
+        "com.figma.variableId": "VariableID:5729:215",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3944,7 +4149,8 @@
         "hex": "#1447E6"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:641",
+        "com.figma.variableId": "VariableID:5729:216",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3963,7 +4169,8 @@
         "hex": "#193CB8"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:601",
+        "com.figma.variableId": "VariableID:5729:217",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -3982,7 +4189,8 @@
         "hex": "#1C398E"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:596",
+        "com.figma.variableId": "VariableID:5729:218",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4001,7 +4209,8 @@
         "hex": "#162456"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:629",
+        "com.figma.variableId": "VariableID:5729:219",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4021,7 +4230,8 @@
           "hex": "#2B7FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3891",
+          "com.figma.variableId": "VariableID:5729:220",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4040,7 +4250,8 @@
           "hex": "#2B7FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3892",
+          "com.figma.variableId": "VariableID:5729:221",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4059,7 +4270,8 @@
           "hex": "#2B7FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3893",
+          "com.figma.variableId": "VariableID:5729:222",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4078,7 +4290,8 @@
           "hex": "#2B7FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3894",
+          "com.figma.variableId": "VariableID:5729:223",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4097,7 +4310,8 @@
           "hex": "#2B7FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3895",
+          "com.figma.variableId": "VariableID:5729:224",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4116,7 +4330,8 @@
           "hex": "#2B7FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3896",
+          "com.figma.variableId": "VariableID:5729:225",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4135,7 +4350,8 @@
           "hex": "#2B7FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3897",
+          "com.figma.variableId": "VariableID:5729:226",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4154,7 +4370,8 @@
           "hex": "#2B7FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3898",
+          "com.figma.variableId": "VariableID:5729:227",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4173,7 +4390,8 @@
           "hex": "#2B7FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3899",
+          "com.figma.variableId": "VariableID:5729:228",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4192,7 +4410,8 @@
           "hex": "#2B7FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3900",
+          "com.figma.variableId": "VariableID:5729:229",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4211,7 +4430,8 @@
           "hex": "#2B7FFF"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3901",
+          "com.figma.variableId": "VariableID:5729:230",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4233,7 +4453,8 @@
         "hex": "#ECFEFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:630",
+        "com.figma.variableId": "VariableID:5729:231",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4252,7 +4473,8 @@
         "hex": "#CEFAFE"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:611",
+        "com.figma.variableId": "VariableID:5729:232",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4271,7 +4493,8 @@
         "hex": "#A2F4FD"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:610",
+        "com.figma.variableId": "VariableID:5729:233",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4290,7 +4513,8 @@
         "hex": "#53EAFD"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:608",
+        "com.figma.variableId": "VariableID:5729:234",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4309,7 +4533,8 @@
         "hex": "#00D3F2"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:618",
+        "com.figma.variableId": "VariableID:5729:235",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4328,7 +4553,8 @@
         "hex": "#00B8DB"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:487",
+        "com.figma.variableId": "VariableID:5729:236",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4347,7 +4573,8 @@
         "hex": "#0092B8"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:620",
+        "com.figma.variableId": "VariableID:5729:237",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4366,7 +4593,8 @@
         "hex": "#007595"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:647",
+        "com.figma.variableId": "VariableID:5729:238",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4385,7 +4613,8 @@
         "hex": "#005F78"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:636",
+        "com.figma.variableId": "VariableID:5729:239",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4404,7 +4633,8 @@
         "hex": "#104E64"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:512",
+        "com.figma.variableId": "VariableID:5729:240",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4423,7 +4653,8 @@
         "hex": "#053345"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:631",
+        "com.figma.variableId": "VariableID:5729:241",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4443,7 +4674,8 @@
           "hex": "#00B8DB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3902",
+          "com.figma.variableId": "VariableID:5729:242",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4462,7 +4694,8 @@
           "hex": "#00B8DB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3903",
+          "com.figma.variableId": "VariableID:5729:243",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4481,7 +4714,8 @@
           "hex": "#00B8DB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3904",
+          "com.figma.variableId": "VariableID:5729:244",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4500,7 +4734,8 @@
           "hex": "#00B8DB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3905",
+          "com.figma.variableId": "VariableID:5729:245",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4519,7 +4754,8 @@
           "hex": "#00B8DB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3906",
+          "com.figma.variableId": "VariableID:5729:246",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4538,7 +4774,8 @@
           "hex": "#00B8DB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3907",
+          "com.figma.variableId": "VariableID:5729:247",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4557,7 +4794,8 @@
           "hex": "#00B8DB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3908",
+          "com.figma.variableId": "VariableID:5729:248",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4576,7 +4814,8 @@
           "hex": "#00B8DB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3909",
+          "com.figma.variableId": "VariableID:5729:249",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4595,7 +4834,8 @@
           "hex": "#00B8DB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3910",
+          "com.figma.variableId": "VariableID:5729:250",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4614,7 +4854,8 @@
           "hex": "#00B8DB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3911",
+          "com.figma.variableId": "VariableID:5729:251",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4633,7 +4874,8 @@
           "hex": "#00B8DB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3912",
+          "com.figma.variableId": "VariableID:5729:252",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4655,7 +4897,8 @@
         "hex": "#F0FDFA"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:645",
+        "com.figma.variableId": "VariableID:5729:253",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4674,7 +4917,8 @@
         "hex": "#CBFBF1"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:573",
+        "com.figma.variableId": "VariableID:5729:254",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4693,7 +4937,8 @@
         "hex": "#96F7E4"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:537",
+        "com.figma.variableId": "VariableID:5729:255",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4712,7 +4957,8 @@
         "hex": "#46ECD5"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:534",
+        "com.figma.variableId": "VariableID:5729:256",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4731,7 +4977,8 @@
         "hex": "#00D5BE"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:533",
+        "com.figma.variableId": "VariableID:5729:257",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4750,7 +4997,8 @@
         "hex": "#00BBA7"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:532",
+        "com.figma.variableId": "VariableID:5729:258",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4769,7 +5017,8 @@
         "hex": "#009689"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:527",
+        "com.figma.variableId": "VariableID:5729:259",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4788,7 +5037,8 @@
         "hex": "#00786F"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:604",
+        "com.figma.variableId": "VariableID:5729:260",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4807,7 +5057,8 @@
         "hex": "#005F5A"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:525",
+        "com.figma.variableId": "VariableID:5729:261",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4826,7 +5077,8 @@
         "hex": "#0B4F4A"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:523",
+        "com.figma.variableId": "VariableID:5729:262",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4845,7 +5097,8 @@
         "hex": "#022F2E"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:646",
+        "com.figma.variableId": "VariableID:5729:263",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -4865,7 +5118,8 @@
           "hex": "#00BBA7"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3913",
+          "com.figma.variableId": "VariableID:5729:264",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4884,7 +5138,8 @@
           "hex": "#00BBA7"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3914",
+          "com.figma.variableId": "VariableID:5729:265",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4903,7 +5158,8 @@
           "hex": "#00BBA7"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3915",
+          "com.figma.variableId": "VariableID:5729:266",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4922,7 +5178,8 @@
           "hex": "#00BBA7"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3916",
+          "com.figma.variableId": "VariableID:5729:267",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4941,7 +5198,8 @@
           "hex": "#00BBA7"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3917",
+          "com.figma.variableId": "VariableID:5729:268",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4960,7 +5218,8 @@
           "hex": "#00BBA7"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3918",
+          "com.figma.variableId": "VariableID:5729:269",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4979,7 +5238,8 @@
           "hex": "#00BBA7"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3919",
+          "com.figma.variableId": "VariableID:5729:270",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -4998,7 +5258,8 @@
           "hex": "#00BBA7"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3920",
+          "com.figma.variableId": "VariableID:5729:271",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5017,7 +5278,8 @@
           "hex": "#00BBA7"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3921",
+          "com.figma.variableId": "VariableID:5729:272",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5036,7 +5298,8 @@
           "hex": "#00BBA7"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3922",
+          "com.figma.variableId": "VariableID:5729:273",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5055,7 +5318,8 @@
           "hex": "#00BBA7"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3923",
+          "com.figma.variableId": "VariableID:5729:274",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5077,7 +5341,8 @@
         "hex": "#F0FDF4"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:632",
+        "com.figma.variableId": "VariableID:5729:275",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5096,7 +5361,8 @@
         "hex": "#DCFCE7"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:654",
+        "com.figma.variableId": "VariableID:5729:276",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5115,7 +5381,8 @@
         "hex": "#B9F8CF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:558",
+        "com.figma.variableId": "VariableID:5729:277",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5134,7 +5401,8 @@
         "hex": "#7BF1A8"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:617",
+        "com.figma.variableId": "VariableID:5729:278",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5153,7 +5421,8 @@
         "hex": "#05DF72"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:562",
+        "com.figma.variableId": "VariableID:5729:279",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5172,7 +5441,8 @@
         "hex": "#00C950"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:648",
+        "com.figma.variableId": "VariableID:5729:280",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5191,7 +5461,8 @@
         "hex": "#00A63E"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:637",
+        "com.figma.variableId": "VariableID:5729:281",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5210,7 +5481,8 @@
         "hex": "#008236"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:526",
+        "com.figma.variableId": "VariableID:5729:282",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5229,7 +5501,8 @@
         "hex": "#016630"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:506",
+        "com.figma.variableId": "VariableID:5729:283",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5248,7 +5521,8 @@
         "hex": "#0D542B"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:653",
+        "com.figma.variableId": "VariableID:5729:284",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5267,7 +5541,8 @@
         "hex": "#032E15"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:633",
+        "com.figma.variableId": "VariableID:5729:285",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5287,7 +5562,8 @@
           "hex": "#00C950"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3924",
+          "com.figma.variableId": "VariableID:5729:286",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5306,7 +5582,8 @@
           "hex": "#00C950"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3925",
+          "com.figma.variableId": "VariableID:5729:287",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5325,7 +5602,8 @@
           "hex": "#00C950"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3926",
+          "com.figma.variableId": "VariableID:5729:288",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5344,7 +5622,8 @@
           "hex": "#00C950"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3927",
+          "com.figma.variableId": "VariableID:5729:289",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5363,7 +5642,8 @@
           "hex": "#00C950"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3928",
+          "com.figma.variableId": "VariableID:5729:290",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5382,7 +5662,8 @@
           "hex": "#00C950"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3929",
+          "com.figma.variableId": "VariableID:5729:291",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5401,7 +5682,8 @@
           "hex": "#00C950"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3930",
+          "com.figma.variableId": "VariableID:5729:292",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5420,7 +5702,8 @@
           "hex": "#00C950"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3931",
+          "com.figma.variableId": "VariableID:5729:293",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5439,7 +5722,8 @@
           "hex": "#00C950"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3932",
+          "com.figma.variableId": "VariableID:5729:294",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5458,7 +5742,8 @@
           "hex": "#00C950"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3933",
+          "com.figma.variableId": "VariableID:5729:295",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5477,7 +5762,8 @@
           "hex": "#00C950"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3934",
+          "com.figma.variableId": "VariableID:5729:296",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5499,7 +5785,8 @@
         "hex": "#F7FEE7"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:634",
+        "com.figma.variableId": "VariableID:5729:297",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5518,7 +5805,8 @@
         "hex": "#ECFCCA"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:635",
+        "com.figma.variableId": "VariableID:5729:298",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5537,7 +5825,8 @@
         "hex": "#D8F999"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:636",
+        "com.figma.variableId": "VariableID:5729:299",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5556,7 +5845,8 @@
         "hex": "#BBF451"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:637",
+        "com.figma.variableId": "VariableID:5729:300",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5575,7 +5865,8 @@
         "hex": "#9AE600"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:638",
+        "com.figma.variableId": "VariableID:5729:301",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5594,7 +5885,8 @@
         "hex": "#7CCF00"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:639",
+        "com.figma.variableId": "VariableID:5729:302",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5613,7 +5905,8 @@
         "hex": "#5EA500"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:640",
+        "com.figma.variableId": "VariableID:5729:303",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5632,7 +5925,8 @@
         "hex": "#497D00"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:641",
+        "com.figma.variableId": "VariableID:5729:304",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5651,7 +5945,8 @@
         "hex": "#3C6300"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:642",
+        "com.figma.variableId": "VariableID:5729:305",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5670,7 +5965,8 @@
         "hex": "#35530E"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:643",
+        "com.figma.variableId": "VariableID:5729:306",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5689,7 +5985,8 @@
         "hex": "#192E03"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:29:644",
+        "com.figma.variableId": "VariableID:5729:307",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5709,7 +6006,8 @@
           "hex": "#7CCF00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3935",
+          "com.figma.variableId": "VariableID:5729:308",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5728,7 +6026,8 @@
           "hex": "#7CCF00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3936",
+          "com.figma.variableId": "VariableID:5729:309",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5747,7 +6046,8 @@
           "hex": "#7CCF00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3937",
+          "com.figma.variableId": "VariableID:5729:310",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5766,7 +6066,8 @@
           "hex": "#7CCF00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3938",
+          "com.figma.variableId": "VariableID:5729:311",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5785,7 +6086,8 @@
           "hex": "#7CCF00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3939",
+          "com.figma.variableId": "VariableID:5729:312",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5804,7 +6106,8 @@
           "hex": "#7CCF00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3940",
+          "com.figma.variableId": "VariableID:5729:313",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5823,7 +6126,8 @@
           "hex": "#7CCF00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3941",
+          "com.figma.variableId": "VariableID:5729:314",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5842,7 +6146,8 @@
           "hex": "#7CCF00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3942",
+          "com.figma.variableId": "VariableID:5729:315",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5861,7 +6166,8 @@
           "hex": "#7CCF00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3943",
+          "com.figma.variableId": "VariableID:5729:316",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5880,7 +6186,8 @@
           "hex": "#7CCF00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3944",
+          "com.figma.variableId": "VariableID:5729:317",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5899,7 +6206,8 @@
           "hex": "#7CCF00"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3945",
+          "com.figma.variableId": "VariableID:5729:318",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -5921,7 +6229,8 @@
         "hex": "#FCFCEA"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:74:3458",
+        "com.figma.variableId": "VariableID:5729:319",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5940,7 +6249,8 @@
         "hex": "#FAFAC7"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:580",
+        "com.figma.variableId": "VariableID:5729:320",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5959,7 +6269,8 @@
         "hex": "#F7F7A6"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:455",
+        "com.figma.variableId": "VariableID:5729:321",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5978,7 +6289,8 @@
         "hex": "#F2F288"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:454",
+        "com.figma.variableId": "VariableID:5729:322",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -5997,7 +6309,8 @@
         "hex": "#EAEA48"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:453",
+        "com.figma.variableId": "VariableID:5729:323",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6016,7 +6329,8 @@
         "hex": "#E1E51A"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:659",
+        "com.figma.variableId": "VariableID:5729:324",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6035,7 +6349,8 @@
         "hex": "#C7CA16"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:452",
+        "com.figma.variableId": "VariableID:5729:325",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6054,7 +6369,8 @@
         "hex": "#6D770D"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:614",
+        "com.figma.variableId": "VariableID:5729:326",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6073,7 +6389,8 @@
         "hex": "#46520F"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:464",
+        "com.figma.variableId": "VariableID:5729:327",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6092,7 +6409,8 @@
         "hex": "#29320C"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:451",
+        "com.figma.variableId": "VariableID:5729:328",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6111,7 +6429,8 @@
         "hex": "#1E2806"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:74:3459",
+        "com.figma.variableId": "VariableID:5729:329",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6131,7 +6450,8 @@
           "hex": "#E1E51A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3946",
+          "com.figma.variableId": "VariableID:5729:330",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6150,7 +6470,8 @@
           "hex": "#E1E51A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3947",
+          "com.figma.variableId": "VariableID:5729:331",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6169,7 +6490,8 @@
           "hex": "#E1E51A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3948",
+          "com.figma.variableId": "VariableID:5729:332",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6188,7 +6510,8 @@
           "hex": "#E1E51A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3949",
+          "com.figma.variableId": "VariableID:5729:333",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6207,7 +6530,8 @@
           "hex": "#E1E51A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3950",
+          "com.figma.variableId": "VariableID:5729:334",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6226,7 +6550,8 @@
           "hex": "#E1E51A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3951",
+          "com.figma.variableId": "VariableID:5729:335",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6245,7 +6570,8 @@
           "hex": "#E1E51A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3952",
+          "com.figma.variableId": "VariableID:5729:336",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6264,7 +6590,8 @@
           "hex": "#E1E51A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3953",
+          "com.figma.variableId": "VariableID:5729:337",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6283,7 +6610,8 @@
           "hex": "#E1E51A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3954",
+          "com.figma.variableId": "VariableID:5729:338",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6302,7 +6630,8 @@
           "hex": "#E1E51A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3955",
+          "com.figma.variableId": "VariableID:5729:339",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6321,7 +6650,8 @@
           "hex": "#E1E51A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:76:3956",
+          "com.figma.variableId": "VariableID:5729:340",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6343,7 +6673,8 @@
         "hex": "#F6F5F3"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:34:446",
+        "com.figma.variableId": "VariableID:5729:341",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6362,7 +6693,8 @@
         "hex": "#F2F0EE"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:488",
+        "com.figma.variableId": "VariableID:5729:342",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6381,7 +6713,8 @@
         "hex": "#E9E7E3"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:500",
+        "com.figma.variableId": "VariableID:5729:343",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6400,7 +6733,8 @@
         "hex": "#D7D4D0"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:499",
+        "com.figma.variableId": "VariableID:5729:344",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6419,7 +6753,8 @@
         "hex": "#A6A4A0"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:498",
+        "com.figma.variableId": "VariableID:5729:345",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6438,7 +6773,8 @@
         "hex": "#807E79"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:524",
+        "com.figma.variableId": "VariableID:5729:346",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6457,7 +6793,8 @@
         "hex": "#555450"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:478",
+        "com.figma.variableId": "VariableID:5729:347",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6476,7 +6813,8 @@
         "hex": "#42413E"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:557",
+        "com.figma.variableId": "VariableID:5729:348",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6495,7 +6833,8 @@
         "hex": "#252422"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:635",
+        "com.figma.variableId": "VariableID:5729:349",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6514,7 +6853,8 @@
         "hex": "#201F1D"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:662",
+        "com.figma.variableId": "VariableID:5729:350",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6533,7 +6873,8 @@
         "hex": "#151513"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:34:447",
+        "com.figma.variableId": "VariableID:5729:351",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6553,7 +6894,8 @@
           "hex": "#5F4F30"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:71:1501",
+          "com.figma.variableId": "VariableID:5729:352",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6572,7 +6914,8 @@
           "hex": "#756B57"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:5:649",
+          "com.figma.variableId": "VariableID:5729:353",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6591,7 +6934,8 @@
           "hex": "#8F8676"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:5:518",
+          "com.figma.variableId": "VariableID:5729:354",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6610,7 +6954,8 @@
           "hex": "#776F5F"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:5:493",
+          "com.figma.variableId": "VariableID:5729:355",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6629,7 +6974,8 @@
           "hex": "#211C12"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:5:667",
+          "com.figma.variableId": "VariableID:5729:356",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6648,7 +6994,8 @@
           "hex": "#16140E"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:5:529",
+          "com.figma.variableId": "VariableID:5729:357",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6667,7 +7014,8 @@
           "hex": "#100E0A"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:5:492",
+          "com.figma.variableId": "VariableID:5729:358",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6686,7 +7034,8 @@
           "hex": "#0D0B08"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:5:491",
+          "com.figma.variableId": "VariableID:5729:359",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6705,7 +7054,8 @@
           "hex": "#090806"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:5:539",
+          "com.figma.variableId": "VariableID:5729:360",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6724,7 +7074,8 @@
           "hex": "#090806"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:5:489",
+          "com.figma.variableId": "VariableID:5729:361",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6743,7 +7094,8 @@
           "hex": "#080807"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:71:1502",
+          "com.figma.variableId": "VariableID:5729:362",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -6765,7 +7117,8 @@
         "hex": "#FFFFFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:496",
+        "com.figma.variableId": "VariableID:5729:363",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6784,7 +7137,8 @@
         "hex": "#FFFFFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:640",
+        "com.figma.variableId": "VariableID:5729:364",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6803,7 +7157,8 @@
         "hex": "#FFFFFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:643",
+        "com.figma.variableId": "VariableID:5729:365",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6822,7 +7177,8 @@
         "hex": "#FFFFFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:593",
+        "com.figma.variableId": "VariableID:5729:366",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6841,7 +7197,8 @@
         "hex": "#FFFFFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:484",
+        "com.figma.variableId": "VariableID:5729:367",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6860,7 +7217,8 @@
         "hex": "#FFFFFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:479",
+        "com.figma.variableId": "VariableID:5729:368",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6879,7 +7237,8 @@
         "hex": "#FFFFFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:514",
+        "com.figma.variableId": "VariableID:5729:369",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6898,7 +7257,8 @@
         "hex": "#FFFFFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:471",
+        "com.figma.variableId": "VariableID:5729:370",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6917,7 +7277,8 @@
         "hex": "#FFFFFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:456",
+        "com.figma.variableId": "VariableID:5729:371",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6936,7 +7297,8 @@
         "hex": "#FFFFFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:627",
+        "com.figma.variableId": "VariableID:5729:372",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6955,7 +7317,8 @@
         "hex": "#FFFFFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:615",
+        "com.figma.variableId": "VariableID:5729:373",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6976,7 +7339,8 @@
         "hex": "#000000"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:568",
+        "com.figma.variableId": "VariableID:5729:374",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -6995,7 +7359,8 @@
         "hex": "#000000"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:585",
+        "com.figma.variableId": "VariableID:5729:375",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7014,7 +7379,8 @@
         "hex": "#000000"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:578",
+        "com.figma.variableId": "VariableID:5729:376",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7033,7 +7399,8 @@
         "hex": "#000000"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:540",
+        "com.figma.variableId": "VariableID:5729:377",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7052,7 +7419,8 @@
         "hex": "#000000"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:552",
+        "com.figma.variableId": "VariableID:5729:378",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7071,7 +7439,8 @@
         "hex": "#000000"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:570",
+        "com.figma.variableId": "VariableID:5729:379",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7090,7 +7459,8 @@
         "hex": "#000000"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:541",
+        "com.figma.variableId": "VariableID:5729:380",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7109,7 +7479,8 @@
         "hex": "#000000"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:646",
+        "com.figma.variableId": "VariableID:5729:381",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7128,7 +7499,8 @@
         "hex": "#000000"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:543",
+        "com.figma.variableId": "VariableID:5729:382",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7147,7 +7519,8 @@
         "hex": "#000000"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:504",
+        "com.figma.variableId": "VariableID:5729:383",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7166,7 +7539,8 @@
         "hex": "#000000"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:5:513",
+        "com.figma.variableId": "VariableID:5729:384",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7187,7 +7561,8 @@
         "hex": "#FDF4FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:590:10",
+        "com.figma.variableId": "VariableID:5729:385",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7206,7 +7581,8 @@
         "hex": "#FAE8FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:590:11",
+        "com.figma.variableId": "VariableID:5729:386",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7225,7 +7601,8 @@
         "hex": "#F6CFFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:590:12",
+        "com.figma.variableId": "VariableID:5729:387",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7244,7 +7621,8 @@
         "hex": "#F4A8FF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:590:13",
+        "com.figma.variableId": "VariableID:5729:388",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7263,7 +7641,8 @@
         "hex": "#ED6AFF"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:590:14",
+        "com.figma.variableId": "VariableID:5729:389",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7282,7 +7661,8 @@
         "hex": "#E12AFB"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:590:15",
+        "com.figma.variableId": "VariableID:5729:390",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7301,7 +7681,8 @@
         "hex": "#C800DE"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:590:16",
+        "com.figma.variableId": "VariableID:5729:391",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7320,7 +7701,8 @@
         "hex": "#A800B7"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:590:17",
+        "com.figma.variableId": "VariableID:5729:392",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7339,7 +7721,8 @@
         "hex": "#8A0194"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:590:18",
+        "com.figma.variableId": "VariableID:5729:393",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7358,7 +7741,8 @@
         "hex": "#721378"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:590:19",
+        "com.figma.variableId": "VariableID:5729:394",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7377,7 +7761,8 @@
         "hex": "#4B004F"
       },
       "$extensions": {
-        "com.figma.variableId": "VariableID:590:20",
+        "com.figma.variableId": "VariableID:5729:395",
+        "com.figma.hiddenFromPublishing": true,
         "com.figma.scopes": [
           "ALL_SCOPES"
         ]
@@ -7397,7 +7782,8 @@
           "hex": "#E12AFB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:590:1983",
+          "com.figma.variableId": "VariableID:5729:396",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -7416,7 +7802,8 @@
           "hex": "#E12AFB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:590:1984",
+          "com.figma.variableId": "VariableID:5729:397",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -7435,7 +7822,8 @@
           "hex": "#E12AFB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:590:1985",
+          "com.figma.variableId": "VariableID:5729:398",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -7454,7 +7842,8 @@
           "hex": "#E12AFB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:590:1986",
+          "com.figma.variableId": "VariableID:5729:399",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -7473,7 +7862,8 @@
           "hex": "#E12AFB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:590:1987",
+          "com.figma.variableId": "VariableID:5729:400",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -7492,7 +7882,8 @@
           "hex": "#E12AFB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:590:1988",
+          "com.figma.variableId": "VariableID:5729:401",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -7511,7 +7902,8 @@
           "hex": "#E12AFB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:590:1989",
+          "com.figma.variableId": "VariableID:5729:402",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -7530,7 +7922,8 @@
           "hex": "#E12AFB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:590:1990",
+          "com.figma.variableId": "VariableID:5729:403",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -7549,7 +7942,8 @@
           "hex": "#E12AFB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:590:1991",
+          "com.figma.variableId": "VariableID:5729:404",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -7568,7 +7962,8 @@
           "hex": "#E12AFB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:590:1992",
+          "com.figma.variableId": "VariableID:5729:405",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]
@@ -7587,7 +7982,8 @@
           "hex": "#E12AFB"
         },
         "$extensions": {
-          "com.figma.variableId": "VariableID:590:1993",
+          "com.figma.variableId": "VariableID:5729:406",
+          "com.figma.hiddenFromPublishing": true,
           "com.figma.scopes": [
             "ALL_SCOPES"
           ]

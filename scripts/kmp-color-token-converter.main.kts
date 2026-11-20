@@ -26,6 +26,7 @@ fun main() {
         println("Reading colors from 'tokens/primitive-colors.json' file.")
         val colors = readFileResourceFile(
             file = colorTokensFile,
+            includeHidden = true,
             resourceMap = { jsonObject ->
                 val resolvedValue = jsonObject.getJSONObject("resolvedValue")
                 Color(
