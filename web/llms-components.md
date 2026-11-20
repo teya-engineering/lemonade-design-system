@@ -139,3 +139,67 @@ the hover colour.
 - Loading: add `lmnd-icon-button--loading`, swap the glyph for
   `<span class="lmnd-spinner" aria-hidden="true"></span>`, and set `disabled` and
   `aria-busy="true"`. The button sizes and tints the ring.
+
+### Card
+
+```html
+<div class="lmnd-card lmnd-card--default lmnd-card--padding-medium">
+  <div class="lmnd-card__header">
+    <div class="lmnd-card__header-text">
+      <span class="lmnd-card__title lmnd-text-heading-xxsmall">Recent activity</span>
+      <span class="lmnd-card__subtitle lmnd-text-body-small-regular">Last 30 days</span>
+    </div>
+  </div>
+  <div class="lmnd-card__content">Three payments today</div>
+  <button type="button" class="lmnd-card__footer-action lmnd-text-body-small-semibold">See all</button>
+</div>
+```
+
+- Block: `lmnd-card`. Full width, with the semantic container radius.
+- Background: `lmnd-card--default`, `--subtle`, `--elevated`.
+- Content padding: `lmnd-card--padding-none`, `--padding-x-small`, `--padding-small`,
+  `--padding-medium`. The modifier goes on the card and the padding lands on
+  `lmnd-card__content`, so a header and a footer keep their own spacing.
+- Wrap the body in `lmnd-card__content`. It is always present, even with no padding. Its
+  children are start-aligned, as they are on the platforms, so a row meant to span the card
+  needs its own `width: 100%`.
+- Header: `lmnd-card__header`, holding anything leading, then `lmnd-card__header-text` with
+  `lmnd-card__title` and an optional `lmnd-card__subtitle`, then anything trailing. Both
+  lines are one line and ellipsised.
+- Heading style: the title takes `lmnd-text-heading-xxsmall` by default, or
+  `lmnd-text-body-xsmall-overline` with `lmnd-card__header--overline` on the header — that
+  modifier also carries the overline's colour and its taller text box.
+- Navigation indicator: a decorative chevron, last in the header. Like any icon it needs the
+  mask URL — the class only sets its colour, so without one it is a solid square.
+
+  ```html
+  <span
+    class="lmnd-icon lmnd-card__navigation-indicator"
+    style="--lmnd-icon: url('.../icons/chevron-right.svg')"
+    aria-hidden="true"
+  ></span>
+  ```
+- Footer action: a `<button class="lmnd-card__footer-action">` across the bottom. It fades to
+  half opacity while pressed rather than changing fill, as on the platforms.
+
+### Divider
+
+```html
+<hr class="lmnd-divider" />
+```
+
+- Block: `lmnd-divider`. The base class is already a solid horizontal rule, and neither of
+  those two defaults has a modifier of its own — only the changes below do.
+- Variant: `lmnd-divider--dashed`. The dash and the gap come from `size-100` and
+  `spacing-100`, drawn as a repeating gradient — `border-style: dashed` would leave the
+  lengths to the browser. Dashed is also a step up in contrast.
+- Orientation: `lmnd-divider--vertical` takes its height from the row it sits in, so give
+  that row `align-items: stretch`.
+- Labelled: `lmnd-divider--labelled` turns the divider into a row. An `<hr>` cannot hold a
+  label, so use a `<div role="separator">` with an `aria-label`, containing
+  `lmnd-divider__line`, `lmnd-divider__label` and a second `lmnd-divider__line`. With no
+  label to show, write the plain `<hr>` instead: a labelled divider with nothing in it
+  leaves a gap in the rule and an unnamed separator.
+- A vertical divider also needs `aria-orientation="vertical"`. An `<hr>` is a separator
+  already, but ARIA reads one as horizontal unless it is told otherwise, so the orientation
+  would exist only in the stylesheet.
