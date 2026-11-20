@@ -36,6 +36,10 @@ def is_junk(entry):
     return entry.startswith("__MACOSX/") or name == ".DS_Store" or name.startswith("._")
 
 
+def reject_constant(name):
+    raise ValueError(f"{name} is not a JSON value")
+
+
 def collection_of(zip_path):
     # Browsers save a second download of Theme.zip as "Theme (1).zip".
     name = re.sub(r" \(\d+\)$", "", zip_path.stem)
@@ -61,9 +65,13 @@ def read_collection(zip_path, collection):
                      "A renamed mode needs its entry in COLLECTIONS in this script.")
             data = archive.read(entry)
             try:
-                json.loads(data)
+                document = json.loads(data, parse_constant=reject_constant)
             except ValueError as error:
                 fail(f"{zip_path.name}/{entry} is not valid JSON: {error}")
+            declared = document.get("$extensions", {}).get("com.figma.modeName")
+            if declared != mode:
+                fail(f"{zip_path.name}/{entry} declares mode '{declared}', not '{mode}'. "
+                     "The converters read the declared mode; re-export the collection.")
             found[modes[mode]] = data if data.endswith(b"\n") else data + b"\n"
     missing = [m for m, target in modes.items() if target not in found]
     if missing:

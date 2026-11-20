@@ -43,7 +43,8 @@ older export ships the old colour on those platforms.
 - Reads the zips in memory and never extracts into `tokens/`. `__MACOSX/`, `.DS_Store` and `._*`
   entries are skipped. A second download named `Theme (1).zip` counts as `Theme`.
 - Validates everything before writing. An unknown collection, an unknown mode, a missing mode, a
-  collection given twice, invalid JSON, or a non-token file already in `tokens/` stops the run
+  collection given twice, invalid JSON (`NaN` and `Infinity` included), a file whose
+  `com.figma.modeName` disagrees with its name, or a non-token file already in `tokens/` stops the run
   with nothing written.
 - Writes the bytes Figma exported plus the trailing newline Figma omits. It never re-serialises, so
   key order and `com.figma.hiddenFromPublishing` on the primitives survive as exported.
