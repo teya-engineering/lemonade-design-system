@@ -47,11 +47,12 @@ fun <T> List<ResourceData<T?>>.filterNull(): List<ResourceData<T>> {
 
 fun <T> readFileResourceFile(
     file: File,
+    includeHidden: Boolean = false,
     resourceMap: (JSONObject) -> T,
 ): List<ResourceData<T>> {
     val json = JSONObject(file.readText())
     require(isDtcgDocument(json)) { "${file.path} is not a Figma native DTCG export" }
-    val resources = dtcgResources(json, resourceMap)
+    val resources = dtcgResources(json, includeHidden, resourceMap)
     println("Found ${resources.size} variables")
     return resources
 }
@@ -66,7 +67,7 @@ fun <T> readFileResourceFileByMode(
         val json = JSONObject(file.readText())
         require(isDtcgDocument(json)) { "${file.path} is not a Figma native DTCG export" }
         if (!dtcgModeName(json).equals(modeName, ignoreCase = true)) return@forEach
-        val resources = dtcgResources(json, resourceMap)
+        val resources = dtcgResources(json, includeHidden = false, resourceMap = resourceMap)
         println("Found ${resources.size} variables for mode $modeName")
         return resources
     }
@@ -316,12 +317,13 @@ fun tokenFiles(prefix: String): List<File> {
 
 private fun <T> dtcgResources(
     json: JSONObject,
+    includeHidden: Boolean,
     resourceMap: (JSONObject) -> T,
 ): List<ResourceData<T>> {
     val tokens = dtcgTokens(json)
     return tokens.keys
         .sortedWith(::canonicalTokenOrder)
-        .filterNot { isHidden(tokens.getValue(it)) }
+        .filter { includeHidden || !isHidden(tokens.getValue(it)) }
         .map { name ->
             ResourceData(
                 groups = name.sanitizedGroups(),

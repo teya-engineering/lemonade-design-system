@@ -43,6 +43,16 @@ fun main() {
     val tint = rawValues.getValue("tint/brand").getJSONObject("resolvedValue")
     check(tint.has("r") && tint.has("a"), "colour tokens expose r/g/b/a components")
 
+    val withHidden = readFileResourceFile(
+        file = fixture,
+        includeHidden = true,
+        resourceMap = { jsonObject -> jsonObject },
+    )
+    check(
+        withHidden.map { it.name } == listOf("border0", "border50", "border100", "borderSelected", "hiddenOne", "brand"),
+        "includeHidden keeps hidden tokens in canonical order, got ${withHidden.map { it.name }}",
+    )
+
     println("All web loader checks passed")
 }
 

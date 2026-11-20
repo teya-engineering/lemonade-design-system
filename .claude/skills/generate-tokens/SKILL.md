@@ -27,13 +27,14 @@ Export from Figma, copy the files into `tokens/` under the names below, then:
 
 ## Getting the tokens out of Figma
 
-Use **File → Export variables** — the native export, not a plugin. Figma only
-exports variables *local to the file you run it in*, so run it **twice**:
+Use **File → Export variables** in the Foundations file — the native export, not
+a plugin. One export carries every collection, including **Primitive Colors**,
+the ramp every theme colour aliases into.
 
-1. In the design-system file — every local collection.
-2. In the **Colors** library file — the primitives every theme colour aliases
-   into. Skip this and the theme converters will emit references to primitive
-   properties that do not exist, which fails at compile time.
+The primitives are hidden from publishing in Figma so designers bind to Theme
+colours, and the export marks each one with `com.figma.hiddenFromPublishing`.
+The primitive converters read them with `includeHidden = true`; every other
+converter drops hidden tokens.
 
 The themed colour layer lives inside the **Theme** collection under a `Themed/` group, not in a
 collection of its own — one collection carries the Light/Dark modes for the whole file. So the
@@ -59,7 +60,7 @@ identifying them**. Rename as you copy:
 | `Typography/Default.tokens.json` | `typography.tokens.json` |
 | `Theme/Light.tokens.json` | `theme-colors.light.tokens.json` |
 | `Theme/Dark.tokens.json` | `theme-colors.dark.tokens.json` |
-| `Colors/Default.tokens.json` (library file) | `primitive-colors.tokens.json` |
+| `Primitive Colors/Default.tokens.json` | `primitive-colors.tokens.json` |
 
 `tokens/` must end up holding exactly those ten names and nothing else.
 

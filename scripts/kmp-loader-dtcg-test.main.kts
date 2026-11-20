@@ -58,6 +58,16 @@ fun main() {
         "remote alias id comes from aliasData",
     )
 
+    val withHidden = readFileResourceFile(
+        file = fixture,
+        includeHidden = true,
+        resourceMap = { jsonObject -> jsonObject },
+    )
+    check(
+        withHidden.map { it.name } == listOf("border0", "border50", "border100", "borderSelected", "hiddenOne", "brand"),
+        "includeHidden keeps hidden tokens in canonical order, got ${withHidden.map { it.name }}",
+    )
+
     val modes = availableModeNames(listOf(fixture))
     check(modes == listOf("Default"), "mode name is read from the file-level extensions, got $modes")
 
