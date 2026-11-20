@@ -23,7 +23,7 @@ fun main() {
             outputDir.mkdirs()
         }
 
-        println("Reading colors from 'tokens/primitive-colors.json' file.")
+        println("Reading colors from '${colorTokensFile.path}'.")
         val colors = readFileResourceFile(
             file = colorTokensFile,
             includeHidden = true,
