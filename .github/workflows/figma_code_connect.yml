@@ -7,6 +7,8 @@ on:
   pull_request:
     paths:
       - 'figma/**'
+      - 'svg/**'
+      - 'scripts/check-asset-parity.mjs'
       - 'kmp/**/api/**'
       # The React snippets are type-checked against these, so a prop renamed here
       # has to re-run the check that proves the templates still compile.
@@ -50,6 +52,11 @@ jobs:
 
       - name: React snippets type-check against the components
         run: node figma/scripts/check-react-snippets.mjs
+
+      # An SVG with no drawable, imageset, enum entry or web asset ships to one platform
+      # only. A presence check, since regenerating in CI rewrites every PDF's timestamp.
+      - name: Every SVG has its generated assets
+        run: node scripts/check-asset-parity.mjs
 
       # The generator writes nothing when an asset fails to validate, so a clean
       # tree alone would pass a failed run — the exit code is the real signal.
