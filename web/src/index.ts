@@ -32,3 +32,17 @@ export { iconButtonClasses } from './components/icon-button/icon-button.classes'
 export type { IconButtonAppearance, LemonadeIconButtonShape } from './components/icon-button/icon-button.types'
 export { spinnerClasses } from './components/spinner/spinner.classes'
 export type { SpinnerAppearance } from './components/spinner/spinner.types'
+export {
+  symbolContainerClasses,
+  symbolContainerTextStyle,
+} from './components/symbol-container/symbol-container.classes'
+export type {
+  SymbolContainerAppearance,
+  SymbolContainerShape,
+  SymbolContainerSize,
+  SymbolContainerVoice,
+} from './components/symbol-container/symbol-container.types'
+export { tagClasses } from './components/tag/tag.classes'
+export type { TagAppearance, TagVoice } from './components/tag/tag.types'
+export { themedSurface } from './themed-hue'
+export type { ThemedHue, ThemedStyle } from './themed-hue'
