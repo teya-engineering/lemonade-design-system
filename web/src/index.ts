@@ -19,5 +19,7 @@ export type {
 export { iconClasses } from './components/icon/icon.classes'
 export type { LemonadeAssetSize } from './asset-size'
 export type { IconAppearance } from './components/icon/icon.types'
+export { iconButtonClasses } from './components/icon-button/icon-button.classes'
+export type { IconButtonAppearance, LemonadeIconButtonShape } from './components/icon-button/icon-button.types'
 export { spinnerClasses } from './components/spinner/spinner.classes'
 export type { SpinnerAppearance } from './components/spinner/spinner.types'

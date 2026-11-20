@@ -12,13 +12,30 @@ const published = `${componentsCss}\n${typographyCss}`
 
 const documented = [...new Set(docs.match(/\blmnd-[a-z0-9-]+/g) ?? [])]
 
-/** Modifiers are written relative to the block above them, which today is always Button. */
-const shorthands = [...new Set([...docs.matchAll(/`(--[a-z0-9-]+)`/g)].map((match) => match[1]))]
+/** `IconButton` documents the `lmnd-icon-button` block. */
+const blockOf = (heading: string) =>
+  `lmnd-${heading.replace(/[A-Z]/g, (char, at) => (at === 0 ? char.toLowerCase() : `-${char.toLowerCase()}`))}`
+
+/**
+ * Modifiers are written relative to the block of the section they sit in, so each one is
+ * paired with that block rather than checked against the file as a whole.
+ */
+const shorthands = docs
+  .split(/^### /m)
+  .slice(1)
+  .flatMap((section) => {
+    const block = blockOf(section.slice(0, section.indexOf('\n')).trim())
+    const found = new Set([...section.matchAll(/`(--[a-z0-9-]+)`/g)].map((match) => match[1]))
+    return [...found].map((shorthand) => [block, shorthand] as [string, string])
+  })
 
 describe('the class names the docs tell AI tools to write', () => {
   it('finds classes to check', () => {
     expect(documented.length).toBeGreaterThan(10)
     expect(shorthands.length).toBeGreaterThan(0)
+    // More than one block documents modifiers this way. A split that stopped matching the
+    // headings would collapse to one block and still find shorthands to check.
+    expect(new Set(shorthands.map(([block]) => block)).size).toBeGreaterThan(1)
   })
 
   // A class name ends where a CSS identifier can no longer continue: another class, a
@@ -30,9 +47,9 @@ describe('the class names the docs tell AI tools to write', () => {
     expect(hasRule(className)).toBe(true)
   })
 
-  // Every shorthand in the file documents Button, so it is the block they must resolve
-  // against: accepting any block would let Button's `--small` pass on Icon's rule.
-  it.each(shorthands)('%s resolves against the block that documents it', (shorthand) => {
-    expect(hasRule(`lmnd-button${shorthand}`)).toBe(true)
+  // Accepting any block would let IconButton's `--ghost` pass on Button's rule, and a
+  // shorthand documented under the wrong heading is exactly the drift this file catches.
+  it.each(shorthands)('%s%s resolves against the block that documents it', (block, shorthand) => {
+    expect(hasRule(`${block}${shorthand}`)).toBe(true)
   })
 })
