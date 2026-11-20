@@ -27,8 +27,8 @@ Export from Figma, unpack the zips into `tokens/` with the **unpack-figma-tokens
 
 ## Getting the tokens out of Figma
 
-Use Figma's native variable export in the Foundations file, not a plugin. Each collection exports
-as its own zip, including **Primitive Colors**, the ramp every theme colour aliases into. The
+In the Foundations file's variables panel, right-click a collection and choose **Export modes**,
+the native export, not a plugin. Each collection exports as its own zip, including **Primitive Colors**, the ramp every theme colour aliases into. The
 **unpack-figma-tokens** skill (`.claude/skills/unpack-figma-tokens/scripts/unpack-tokens.py`) writes
 each mode file under its `tokens/` name, adds the trailing newline Figma omits, and refuses a
 renamed or unknown collection or mode. It owns the collection-to-file table.

@@ -28,8 +28,9 @@ check the `tokens/` diff before running the converters.
 
 ## Exporting from Figma
 
-Use Figma's native variable export in the Foundations file, not a plugin, for each collection that
-changed. The mode-to-file table is `COLLECTIONS` in [`scripts/unpack-tokens.py`](scripts/unpack-tokens.py); it
+In the Foundations file's variables panel, right-click each collection that changed and choose
+**Export modes**. That native export is the only supported source; plugin exports have a different
+shape. The mode-to-file table is `COLLECTIONS` in [`scripts/unpack-tokens.py`](scripts/unpack-tokens.py); it
 is the only copy.
 
 When **Primitive Colors** changes, export **Theme** in the same sitting and unpack both together.
