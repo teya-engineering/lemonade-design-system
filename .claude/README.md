@@ -24,6 +24,7 @@ only when the task actually needs them.
 | --- | --- |
 | Export new or updated icons from Figma | `export-icons` |
 | Add a themed copy of a component set in Figma | `figma-themed-component` |
+| Unzip and rename Figma variable exports into `tokens/` | `unpack-figma-tokens` |
 | Regenerate token code from `tokens/*.tokens.json` | `generate-tokens` |
 | Cut a KMP / SwiftUI release | `publish-version` |
 | Diagnose an `apiCheck` or API Stability failure | `binary-compatibility` (run `scripts/bcv-check.sh --ci` before any PR) |
@@ -36,7 +37,7 @@ only when the task actually needs them.
 Invoke a skill rather than reconstructing its procedure. The description in each `SKILL.md`
 frontmatter decides when it triggers, so that line is the important one to get right.
 
-**Repo workflows** — `binary-compatibility`, `export-icons`, `figma-themed-component`, `generate-tokens`, `publish-version`
+**Repo workflows** — `binary-compatibility`, `export-icons`, `figma-themed-component`, `generate-tokens`, `unpack-figma-tokens`, `publish-version`
 
 **Comments and docs** — `comment-review`, `ktdoc-quality`, `writing-docs`
 

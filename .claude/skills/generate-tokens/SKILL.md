@@ -18,7 +18,7 @@ right converters for whatever token files changed.
 
 ## TL;DR
 
-Export from Figma, copy the files into `tokens/` under the names below, then:
+Export from Figma, unpack the zips into `tokens/` with the **unpack-figma-tokens** skill, then:
 
 ```bash
 # From the repo root — regenerate only what changed vs HEAD
@@ -27,9 +27,11 @@ Export from Figma, copy the files into `tokens/` under the names below, then:
 
 ## Getting the tokens out of Figma
 
-Use **File → Export variables** in the Foundations file — the native export, not
-a plugin. One export carries every collection, including **Primitive Colors**,
-the ramp every theme colour aliases into.
+Use Figma's native variable export in the Foundations file, not a plugin. Each collection exports
+as its own zip, including **Primitive Colors**, the ramp every theme colour aliases into. The
+**unpack-figma-tokens** skill (`.claude/skills/unpack-figma-tokens/scripts/unpack-tokens.py`) writes
+each mode file under its `tokens/` name, adds the trailing newline Figma omits, and refuses a
+renamed or unknown collection or mode. It owns the collection-to-file table.
 
 The primitives are hidden from publishing in Figma so designers bind to Theme
 colours, and the export marks each one with `com.figma.hiddenFromPublishing`.
@@ -40,41 +42,6 @@ The themed colour layer lives inside the **Theme** collection under a `Themed/` 
 collection of its own — one collection carries the Light/Dark modes for the whole file. So the
 themed tokens arrive in the same two `Theme` files, and the converters split them: the theme
 converters skip everything under `Themed/`, and the themed converters keep only it.
-
-## Naming the files — read this before copying
-
-The export is a **zip of per-collection folders**, and inside each one the file
-is named after the *mode*, not the collection. Most collections have a single
-`Default` mode, so after unzipping you are looking at eight or more files all
-called `Default.tokens.json`, and **the folder they came from is the only thing
-identifying them**. Rename as you copy:
-
-| From the export | To `tokens/` |
-|---|---|
-| `Border Width/Default.tokens.json` | `border-width.tokens.json` |
-| `Opacity/Default.tokens.json` | `opacity.tokens.json` |
-| `Radius/Default.tokens.json` | `radius.tokens.json` |
-| `.Shadow/Default.tokens.json` | `shadow.tokens.json` |
-| `Sizing/Default.tokens.json` | `size.tokens.json` |
-| `Spacing/Default.tokens.json` | `spacing.tokens.json` |
-| `Typography/Default.tokens.json` | `typography.tokens.json` |
-| `Theme/Light.tokens.json` | `theme-colors.light.tokens.json` |
-| `Theme/Dark.tokens.json` | `theme-colors.dark.tokens.json` |
-| `Primitive Colors/Default.tokens.json` | `primitive-colors.tokens.json` |
-
-`tokens/` must end up holding exactly those ten names and nothing else.
-
-Two mistakes to watch for, because neither announces itself:
-
-- **Swapping two collections.** `Sizing` and `Spacing` both hold plain numbers,
-  so a mix-up produces a file that parses fine and generates plausible-looking
-  values in the wrong place. Check the diff.
-- **A renamed mode.** If a Figma mode is ever renamed — `Light` becoming `Day` —
-  copying it to a new filename leaves the old one behind, and the converters
-  generate a new public theme class *alongside* the stale one, with no error.
-  Delete the superseded file yourself.
-
-Figma's files end without a trailing newline; add one so diffs stay clean.
 
 ## What happens next
 
