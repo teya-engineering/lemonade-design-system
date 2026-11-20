@@ -99,6 +99,8 @@ format.
 | **CountryFlag** | `svg/flags/` |
 | **BrandLogo** | `svg/brandLogos/` — light and dark variants collapse into one asset |
 
+To add one, follow [Adding assets](./svg/README.md).
+
 ---
 
 ## Philosophy

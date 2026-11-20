@@ -4,6 +4,9 @@
 ## Figma component
 <!-- Provide figma link (if any) to the component, it makes it easy for reviewers to find it -->
 
+## Assets
+<!-- Added or changed an icon, flag or brand logo? Follow svg/README.md, including the Figma Code Connect mapping. Otherwise delete this section. -->
+
 ## Screenshot
 <!-- Provide at least one image of your change if applicable -->
 <!-- <img src="drawing.jpg" alt="drawing" width="200"/> -->
