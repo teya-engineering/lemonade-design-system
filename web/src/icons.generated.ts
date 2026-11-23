@@ -59,6 +59,7 @@ export const iconNames = [
   "board",
   "brand-android",
   "brand-apple",
+  "brand-teya-ai",
   "brand-teya-pos",
   "brand-teya-square",
   "brand-teya-symbol",

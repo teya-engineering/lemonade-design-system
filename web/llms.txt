@@ -524,6 +524,7 @@ Monochrome, for the Icon component below: `--lmnd-icon: url('/assets/icons/<name
 - `board`
 - `brand-android`
 - `brand-apple`
+- `brand-teya-ai`
 - `brand-teya-pos`
 - `brand-teya-square`
 - `brand-teya-symbol`

@@ -60,6 +60,7 @@ public enum class LemonadeIcons : LemonadeAsset {
     Board,
     BrandAndroid,
     BrandApple,
+    BrandTeyaAi,
     BrandTeyaPos,
     BrandTeyaSquare,
     BrandTeyaSymbol,
