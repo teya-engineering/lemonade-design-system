@@ -262,6 +262,10 @@ Summarize what shipped, with links:
   tag is the one exception: it goes on `PLUGIN_TAG_SHA`, which is on origin/main too.
 - Pushing a tag is effectively irreversible (it triggers a public Maven/CI publish).
   Only push the tags for the SDKs the user explicitly confirmed.
+- Push each SDK's tags in its own `git push`, as the blocks above do. GitHub creates no
+  tag events at all for a push of more than three tags, so a combined push starts no
+  release workflow. If that happens, delete each prefixed tag on the remote and push it
+  again on its own; delete the KMP GitHub release first and recreate it afterwards.
 - Never push a plugin version bump straight to `main`; it goes through a PR.
 - Never tag the HTML kit while `scripts/check-html-kit-bundle.sh` fails on the bundle at
   `RELEASE_SHA`, and don't create its GitHub release — `html_kit_release.yml` does, without
