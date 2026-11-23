@@ -22,7 +22,6 @@ struct SemanticColorsDisplayView: View {
                 }
             }
         }
-        .background(.bg.bgDefault)
         .navigationTitle("Semantic Colors")
     }
 

@@ -26,7 +26,7 @@ public class MainActivity : ComponentActivity() {
                             mutableStateListOf<Displays>(Displays.Home)
                         }
                         NavDisplay(
-                            modifier = Modifier.background(color = LemonadeTheme.colors.background.bgDefault),
+                            modifier = Modifier.background(color = LemonadeTheme.colors.background.bgSubtle),
                             backStack = backStack,
                             onBack = {
                                 backStack.removeLastOrNull()

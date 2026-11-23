@@ -35,7 +35,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
@@ -118,7 +117,6 @@ internal fun SampleScreenDisplayLazyColumn(
     title: String,
     modifier: Modifier = Modifier,
     contentHorizontalPadding: Dp = LemonadeTheme.spaces.spacing400,
-    background: Color = LemonadeTheme.colors.background.bgSubtle,
     action: (@Composable () -> Unit)? = null,
     header: @Composable (progress: State<Float>) -> Unit = { progress ->
         SampleScreenHeader(
@@ -142,7 +140,7 @@ internal fun SampleScreenDisplayLazyColumn(
             state = listState,
             modifier = Modifier
                 .fillMaxSize()
-                .background(background)
+                .background(LemonadeTheme.colors.background.bgSubtle)
                 .padding(top = LemonadeTheme.spaces.spacing400),
             contentPadding = PaddingValues(
                 top = headerHeightDp,
@@ -170,7 +168,6 @@ internal fun SampleScreenDisplayLazyGrid(
     title: String,
     modifier: Modifier = Modifier,
     contentHorizontalPadding: Dp = LemonadeTheme.spaces.spacing400,
-    background: Color = LemonadeTheme.colors.background.bgSubtle,
     header: @Composable (progress: State<Float>) -> Unit = { progress ->
         SampleScreenHeader(
             title = title,
@@ -193,7 +190,7 @@ internal fun SampleScreenDisplayLazyGrid(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(background),
+                .background(LemonadeTheme.colors.background.bgSubtle),
         ) {
             Spacer(modifier = Modifier.height(height = headerHeightDp))
 
@@ -236,7 +233,6 @@ internal fun SampleScreenDisplayColumn(
     modifier: Modifier = Modifier,
     contentHorizontalPadding: Dp = LemonadeTheme.spaces.spacing400,
     contentBottomPadding: Dp = LemonadeTheme.spaces.spacing400,
-    background: Color = LemonadeTheme.colors.background.bgSubtle,
     itemsSpacing: Dp = LemonadeTheme.spaces.spacing300,
     header: @Composable (progress: State<Float>) -> Unit = { progress ->
         SampleScreenHeader(
@@ -258,7 +254,7 @@ internal fun SampleScreenDisplayColumn(
                 .fillMaxSize()
                 .verticalScroll(state = scrollState)
                 .navigationBarsPadding()
-                .background(background)
+                .background(LemonadeTheme.colors.background.bgSubtle)
                 .padding(
                     PaddingValues(
                         top = headerHeightDp,

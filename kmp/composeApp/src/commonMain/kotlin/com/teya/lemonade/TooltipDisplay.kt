@@ -33,7 +33,6 @@ internal fun TooltipDisplay() {
     SampleScreenDisplayColumn(
         title = "Tooltip",
         itemsSpacing = LemonadeTheme.spaces.spacing600,
-        background = LemonadeTheme.colors.background.bgDefault,
     ) {
         TooltipSection(title = "Anchored — on-demand help") {
             TooltipOnDemandHelpExample()

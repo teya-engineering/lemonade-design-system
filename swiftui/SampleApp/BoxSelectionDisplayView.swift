@@ -55,7 +55,6 @@ struct BoxSelectionDisplayView: View {
             }
             .padding(LemonadeTheme.spaces.spacing400)
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("BoxSelection")
     }
 

@@ -147,12 +147,15 @@ struct HomeView: View {
                 Section(section.title) {
                     ForEach(section.items) { item in
                         NavigationLink(item.title, value: item)
+                            .listRowBackground(LemonadeTheme.colors.background.bgDefault)
                     }
                 }
             }
         }
+        .samplePageBackground()
         .navigationDestination(for: Demo.self) { demo in
             destination(for: demo)
+                .samplePageBackground()
         }
         .navigationTitle("Lemonade DS")
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .automatic))

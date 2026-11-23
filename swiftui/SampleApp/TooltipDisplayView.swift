@@ -200,9 +200,6 @@ struct TooltipDisplayView: View {
             }
             .padding()
         }
-        // bgDefault rather than the system page background: the tooltip's surface is
-        // bgDefaultInverse, so this is the background it is designed to sit against.
-        .background(.bg.bgDefault)
         .navigationTitle("Tooltip")
     }
 

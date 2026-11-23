@@ -75,7 +75,6 @@ struct ProgressStepperDisplayView: View {
             }
             .padding(.space.spacing400)
         }
-        .background(LemonadeTheme.colors.background.bgSubtle)
         .navigationTitle("ProgressStepper")
         .navigationBarTitleDisplayMode(.inline)
     }

@@ -15,7 +15,6 @@ struct TagDisplayView: View {
             .padding()
         }
         .navigationTitle("Tag")
-        .background(.bg.bgSubtle)
     }
 
     private var voicesSection: some View {
