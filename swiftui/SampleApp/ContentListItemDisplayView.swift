@@ -20,7 +20,6 @@ struct ContentListItemDisplayView: View {
             }
             .padding(.space.spacing400)
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("ContentListItem")
     }
 

@@ -14,7 +14,6 @@ struct CardDisplayView: View {
             }
             .padding()
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("Card")
     }
 

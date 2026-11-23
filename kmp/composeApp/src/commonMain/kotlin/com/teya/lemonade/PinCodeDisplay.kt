@@ -19,7 +19,6 @@ private const val SAMPLE_PIN = "159999"
 internal fun PinCodeDisplay() {
     SampleScreenDisplayLazyColumn(
         title = "PinCode",
-        background = LemonadeTheme.colors.background.bgDefault,
     ) {
         item(key = "Numeric") {
             PinCodeSection(title = "Numeric") {

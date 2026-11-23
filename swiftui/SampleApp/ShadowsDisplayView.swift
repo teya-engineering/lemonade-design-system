@@ -23,7 +23,6 @@ struct ShadowsDisplayView: View {
             .padding(.horizontal, .space.spacing400)
             .padding(.vertical, .space.spacing800)
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("Shadows")
     }
 }

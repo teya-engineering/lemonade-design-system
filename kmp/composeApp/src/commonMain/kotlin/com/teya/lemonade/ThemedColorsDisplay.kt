@@ -15,7 +15,6 @@ internal fun ThemedColorsDisplay() {
 
     SampleScreenDisplayLazyColumn(
         title = "Themed Colors",
-        background = LemonadeTheme.colors.background.bgDefault,
     ) {
         items(
             items = hues,

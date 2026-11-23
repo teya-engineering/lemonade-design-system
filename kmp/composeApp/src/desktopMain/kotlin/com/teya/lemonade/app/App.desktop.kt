@@ -1,5 +1,6 @@
 package com.teya.lemonade.app
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -10,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.Displays
+import com.teya.lemonade.LemonadeTheme
 
 @Composable
 internal actual fun App() {
@@ -25,7 +27,7 @@ internal actual fun App() {
         }
     }
 
-    Row {
+    Row(modifier = Modifier.background(color = LemonadeTheme.colors.background.bgSubtle)) {
         Box(
             modifier = Modifier
                 .fillMaxHeight()

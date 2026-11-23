@@ -1251,7 +1251,6 @@ struct ListItemDisplayView: View {
             }
             .padding(.space.spacing400)
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("ListItem")
     }
 }

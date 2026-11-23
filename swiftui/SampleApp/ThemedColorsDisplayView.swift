@@ -10,7 +10,6 @@ struct ThemedColorsDisplayView: View {
                 }
             }
         }
-        .background(.bg.bgDefault)
         .navigationTitle("Themed Colors")
     }
 }

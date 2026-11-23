@@ -19,7 +19,6 @@ struct HistoryTimelineDisplayView: View {
             .padding(.horizontal, .space.spacing400)
             .padding(.vertical, .space.spacing400)
         }
-        .background(LemonadeTheme.colors.background.bgSubtle)
         .navigationTitle("HistoryTimeline")
         .navigationBarTitleDisplayMode(.inline)
     }

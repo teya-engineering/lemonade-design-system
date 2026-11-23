@@ -335,7 +335,6 @@ struct SwipeActionRowDisplayView: View {
                 .padding(.space.spacing400)
             }
         }
-        .background(.bg.bgSubtle)
         .navigationTitle("SwipeActionRow")
         // A destructive action fired by a gesture is the one most easily fired by accident,
         // so the swipe asks for confirmation instead of removing the row itself.

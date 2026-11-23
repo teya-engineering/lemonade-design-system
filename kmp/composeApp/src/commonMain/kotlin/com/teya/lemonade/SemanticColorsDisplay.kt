@@ -26,7 +26,6 @@ internal fun SemanticColorsDisplay() {
 
     SampleScreenDisplayLazyColumn(
         title = "Semantic Colors",
-        background = colors.background.bgDefault,
     ) {
         groups.forEach { group ->
             item(key = group.title) {
