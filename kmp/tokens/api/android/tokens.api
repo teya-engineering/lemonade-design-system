@@ -229,6 +229,25 @@ public final class com/teya/lemonade/LemonadePrimitiveColors$Alpha$Neutral : com
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/teya/lemonade/LemonadePrimitiveColors$Alpha$OliveNeutral : com/teya/lemonade/LemonadePrimitiveColors$Alpha {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/teya/lemonade/LemonadePrimitiveColors$Alpha$OliveNeutral;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAlpha100-0d7_KjU ()J
+	public final fun getAlpha200-0d7_KjU ()J
+	public final fun getAlpha300-0d7_KjU ()J
+	public final fun getAlpha400-0d7_KjU ()J
+	public final fun getAlpha50-0d7_KjU ()J
+	public final fun getAlpha500-0d7_KjU ()J
+	public final fun getAlpha600-0d7_KjU ()J
+	public final fun getAlpha700-0d7_KjU ()J
+	public final fun getAlpha800-0d7_KjU ()J
+	public final fun getAlpha900-0d7_KjU ()J
+	public final fun getAlpha950-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/teya/lemonade/LemonadePrimitiveColors$Alpha$Orange : com/teya/lemonade/LemonadePrimitiveColors$Alpha {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/teya/lemonade/LemonadePrimitiveColors$Alpha$Orange;
@@ -571,6 +590,25 @@ public final class com/teya/lemonade/LemonadePrimitiveColors$Solid$Neutral : com
 	public final fun getNeutral800-0d7_KjU ()J
 	public final fun getNeutral900-0d7_KjU ()J
 	public final fun getNeutral950-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/teya/lemonade/LemonadePrimitiveColors$Solid$OliveNeutral : com/teya/lemonade/LemonadePrimitiveColors$Solid {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/teya/lemonade/LemonadePrimitiveColors$Solid$OliveNeutral;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOliveNeutral100-0d7_KjU ()J
+	public final fun getOliveNeutral200-0d7_KjU ()J
+	public final fun getOliveNeutral300-0d7_KjU ()J
+	public final fun getOliveNeutral400-0d7_KjU ()J
+	public final fun getOliveNeutral50-0d7_KjU ()J
+	public final fun getOliveNeutral500-0d7_KjU ()J
+	public final fun getOliveNeutral600-0d7_KjU ()J
+	public final fun getOliveNeutral700-0d7_KjU ()J
+	public final fun getOliveNeutral800-0d7_KjU ()J
+	public final fun getOliveNeutral900-0d7_KjU ()J
+	public final fun getOliveNeutral950-0d7_KjU ()J
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
