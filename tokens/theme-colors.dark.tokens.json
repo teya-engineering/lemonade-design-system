@@ -71,7 +71,7 @@
           1,
           1
         ],
-        "alpha": 0.5,
+        "alpha": 0.4000000059604645,
         "hex": "#FFFFFF"
       },
       "$description": "Use for tertiary text, such as metadata, placeholders, or helper text.",
@@ -86,8 +86,8 @@
           "iOS": "LemonadeTheme.colors.content.contentTertiary"
         },
         "com.figma.aliasData": {
-          "targetVariableId": "VariableID:e77014dc92a05013df8345ef23e99d117817a300/-1:-1",
-          "targetVariableName": "white/500",
+          "targetVariableId": "VariableID:ade54894556ace7f7f38bda88d91c5038e9d717b/-1:-1",
+          "targetVariableName": "white/400",
           "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
           "targetVariableSetName": "Primitive Colors"
         }
@@ -130,9 +130,9 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.8820960521697998,
-            0.8995633125305176,
-            0.10043667256832123
+            0.8823529481887817,
+            0.8980392217636108,
+            0.10196078568696976
           ],
           "alpha": 1,
           "hex": "#E1E51A"
@@ -438,12 +438,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.03295786678791046,
+            0.03295786678791046,
+            0.009595319628715515
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 0.9399999976158142,
+          "hex": "#080802"
         },
         "$description": "Use as the primary content colour on dark backgrounds.",
         "$extensions": {
@@ -457,8 +457,8 @@
             "iOS": "LemonadeTheme.colors.content.contentPrimaryInverse"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:9a770f5f5acc633b67967b17fb29b9ebf4c90302/-1:-1",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:dad42ae87ea68319ac503abca8fecf3ffa72ccb0/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/900",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -469,12 +469,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.0625,
-            0.05625000596046448,
-            0.03750000149011612
+            0.0941728800535202,
+            0.0941728800535202,
+            0.005799503065645695
           ],
           "alpha": 0.7099999785423279,
-          "hex": "#100E0A"
+          "hex": "#181801"
         },
         "$description": "Use as the secondary content colour on dark backgrounds.",
         "$extensions": {
@@ -488,8 +488,8 @@
             "iOS": "LemonadeTheme.colors.content.contentSecondaryInverse"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:0f5ed664c25afb2b6403c4cf5d2e8ede700c93e5/-1:-1",
-            "targetVariableName": "neutral/alpha/600",
+            "targetVariableId": "VariableID:9980afb00c93154fa136ce7a129c318d3ffd8d07/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/600",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -500,12 +500,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.08540000766515732,
-            0.08026666939258575,
-            0.054600007832050323
+            0.1437908560037613,
+            0.1437908560037613,
+            0.006535947788506746
           ],
-          "alpha": 0.550000011920929,
-          "hex": "#16140E"
+          "alpha": 0.6000000238418579,
+          "hex": "#252502"
         },
         "$description": "Use as the tertiary content colour on dark backgrounds.",
         "$extensions": {
@@ -519,8 +519,8 @@
             "iOS": "LemonadeTheme.colors.content.contentTertiaryInverse"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:83b7efbef8aaf3f657d2f98c9267581456b579b4/-1:-1",
-            "targetVariableName": "neutral/alpha/500",
+            "targetVariableId": "VariableID:f3b360a95e2ff7911ea3300875007c7c55218669/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/500",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -595,12 +595,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03235294297337532,
-            0.030392156913876534,
-            0.026470588520169258
+            0.017586415633559227,
+            0.017586415633559227,
+            0.0054578534327447414
           ],
-          "alpha": 0.9599999785423279,
-          "hex": "#080807"
+          "alpha": 0.9700000286102295,
+          "hex": "#040401"
         },
         "$description": "Use for text or icons that must always appear dark, regardless of theme or mode.",
         "$extensions": {
@@ -614,8 +614,8 @@
             "iOS": "LemonadeTheme.colors.content.contentAlwaysDark"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:4e3d1e001a7e4b4c62653fbbc837f2748c388ceb/-1:-1",
-            "targetVariableName": "neutral/alpha/950",
+            "targetVariableId": "VariableID:0af116bf30139cab7c27dd0460fb077aeddbf22c/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/950",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -784,12 +784,12 @@
       "$value": {
         "colorSpace": "srgb",
         "components": [
-          0.125490203499794,
-          0.12156862765550613,
-          0.11372549086809158
+          0.12407843768596649,
+          0.12407843768596649,
+          0.09552942216396332
         ],
         "alpha": 1,
-        "hex": "#201F1D"
+        "hex": "#202018"
       },
       "$description": "Use for the primary background of screens and surfaces.",
       "$extensions": {
@@ -804,8 +804,8 @@
           "iOS": "LemonadeTheme.colors.background.bgDefault"
         },
         "com.figma.aliasData": {
-          "targetVariableId": "VariableID:1cc0c0ef3677a6bd1c255523330a7bb99c44810b/-1:-1",
-          "targetVariableName": "neutral/900",
+          "targetVariableId": "VariableID:401216f3ed23e896b63545cd48df3f27b8985413/-1:-1",
+          "targetVariableName": "olive-neutral/800",
           "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
           "targetVariableSetName": "Primitive Colors"
         }
@@ -816,12 +816,12 @@
       "$value": {
         "colorSpace": "srgb",
         "components": [
-          0.08235294371843338,
-          0.08235294371843338,
-          0.07450980693101883
+          0.09019608050584793,
+          0.09019608050584793,
+          0.05882352963089943
         ],
         "alpha": 1,
-        "hex": "#151513"
+        "hex": "#17170F"
       },
       "$description": "Use for secondary backgrounds, such as cards, containers, or inputs placed on bg-default.",
       "$extensions": {
@@ -836,8 +836,8 @@
           "iOS": "LemonadeTheme.colors.background.bgSubtle"
         },
         "com.figma.aliasData": {
-          "targetVariableId": "VariableID:98ef50ba4a90038da43fe1e452aea3fb35ea1e8e/-1:-1",
-          "targetVariableName": "neutral/950",
+          "targetVariableId": "VariableID:9bca10de1f541686c8b6f72fef1d3d450c6e0f0c/-1:-1",
+          "targetVariableName": "olive-neutral/900",
           "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
           "targetVariableSetName": "Primitive Colors"
         }
@@ -852,7 +852,7 @@
           1,
           1
         ],
-        "alpha": 0.05000000074505806,
+        "alpha": 0.10000000149011612,
         "hex": "#FFFFFF"
       },
       "$description": "Use to create a higher elevation background against bg-default or bg-subtle.",
@@ -868,8 +868,8 @@
           "iOS": "LemonadeTheme.colors.background.bgElevated"
         },
         "com.figma.aliasData": {
-          "targetVariableId": "VariableID:d4b52db2adae01d3e9fbfc8cf927ef71266cd255/-1:-1",
-          "targetVariableName": "white/50",
+          "targetVariableId": "VariableID:c029561950cef86903a94cde78e1e392b1417f9f/-1:-1",
+          "targetVariableName": "white/100",
           "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
           "targetVariableSetName": "Primitive Colors"
         }
@@ -884,7 +884,7 @@
           1,
           1
         ],
-        "alpha": 0.10000000149011612,
+        "alpha": 0.20000000298023224,
         "hex": "#FFFFFF"
       },
       "$extensions": {
@@ -899,8 +899,8 @@
           "iOS": "LemonadeTheme.colors.background.bgElevatedHigh"
         },
         "com.figma.aliasData": {
-          "targetVariableId": "VariableID:c029561950cef86903a94cde78e1e392b1417f9f/-1:-1",
-          "targetVariableName": "white/100",
+          "targetVariableId": "VariableID:d3a35e7038170b3cb169067a67e60615b7b73ebe/-1:-1",
+          "targetVariableName": "white/200",
           "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
           "targetVariableSetName": "Primitive Colors"
         }
@@ -912,9 +912,9 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.8820960521697998,
-            0.8995633125305176,
-            0.10043667256832123
+            0.8823529481887817,
+            0.8980392217636108,
+            0.10196078568696976
           ],
           "alpha": 1,
           "hex": "#E1E51A"
@@ -1316,12 +1316,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.9137254953384399,
-            0.9058823585510254,
+            0.9098039269447327,
+            0.9098039269447327,
             0.8901960849761963
           ],
           "alpha": 1,
-          "hex": "#E9E7E3"
+          "hex": "#E8E8E3"
         },
         "$description": "Use as the inverse of bg-subtle, for elevated surfaces on dark backgrounds.",
         "$extensions": {
@@ -1336,8 +1336,8 @@
             "iOS": "LemonadeTheme.colors.background.bgSubtleInverse"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:6c3c8dfc7ea34cfd2665a17cb48c859928a3656b/-1:-1",
-            "targetVariableName": "neutral/200",
+            "targetVariableId": "VariableID:1619cf0b367303915d144c71a679595ae5251833/-1:-1",
+            "targetVariableName": "olive-neutral/200",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -1348,12 +1348,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.46000000834465027,
-            0.4200000762939453,
-            0.3400000035762787
+            0.5686274766921997,
+            0.5686274766921997,
+            0.4117647111415863
           ],
           "alpha": 0.10000000149011612,
-          "hex": "#756B57"
+          "hex": "#919169"
         },
         "$description": "Use as the inverse of bg-elevated, for higher elevation on dark backgrounds.",
         "$extensions": {
@@ -1368,8 +1368,8 @@
             "iOS": "LemonadeTheme.colors.background.bgElevatedInverse"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8778ed1346a740dc649dd4393c6e7193384e298f/-1:-1",
-            "targetVariableName": "neutral/alpha/100",
+            "targetVariableId": "VariableID:bc64f1f865464816de5b8699a41fba84687708ab/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/100",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -1382,12 +1382,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.03295786678791046,
+            0.03295786678791046,
+            0.009595319628715515
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 0.9399999976158142,
+          "hex": "#080802"
         },
         "$description": "Use for surfaces that must always appear dark, regardless of theme or mode.",
         "$extensions": {
@@ -1402,8 +1402,8 @@
             "iOS": "LemonadeTheme.colors.background.bgAlwaysDark"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:9a770f5f5acc633b67967b17fb29b9ebf4c90302/-1:-1",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:dad42ae87ea68319ac503abca8fecf3ffa72ccb0/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/900",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -1414,12 +1414,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.46619999408721924,
-            0.4354000389575958,
-            0.37380000948905945
+            0.4901960790157318,
+            0.4901960790157318,
+            0.38562092185020447
           ],
           "alpha": 0.30000001192092896,
-          "hex": "#776F5F"
+          "hex": "#7D7D62"
         },
         "$description": "Use for high-emphasis surfaces that must always appear dark, regardless of theme or mode.",
         "$extensions": {
@@ -1434,8 +1434,8 @@
             "iOS": "LemonadeTheme.colors.background.bgAlwaysDarkHigh"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:65164018bea4572f5e2ba0fbf17dbd8d7595bf15/-1:-1",
-            "targetVariableName": "neutral/alpha/300",
+            "targetVariableId": "VariableID:907900a6f69b9be78a7c14e15e4f488a0f8aaf11/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/300",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -1446,12 +1446,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.5589999556541443,
-            0.5263333916664124,
-            0.4610000252723694
+            0.5490196347236633,
+            0.5490196347236633,
+            0.45098039507865906
           ],
           "alpha": 0.20000000298023224,
-          "hex": "#8F8676"
+          "hex": "#8C8C73"
         },
         "$description": "Use for medium-emphasis surfaces that must always appear dark, regardless of theme or mode.",
         "$extensions": {
@@ -1466,8 +1466,8 @@
             "iOS": "LemonadeTheme.colors.background.bgAlwaysDarkMedium"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:e0d828d4abf5d7d786c60caeb9e8f18a877010b2/-1:-1",
-            "targetVariableName": "neutral/alpha/200",
+            "targetVariableId": "VariableID:717c790f7b1ecba99d0e2c7343f314e3235ffb9b/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/200",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -1478,12 +1478,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.3724000155925751,
-            0.3107999563217163,
-            0.1876000016927719
+            0.686274528503418,
+            0.686274528503418,
+            0.529411792755127
           ],
           "alpha": 0.05000000074505806,
-          "hex": "#5F4F30"
+          "hex": "#AFAF87"
         },
         "$description": "Use for low-emphasis surfaces that must always appear dark, regardless of theme or mode.",
         "$extensions": {
@@ -1498,8 +1498,8 @@
             "iOS": "LemonadeTheme.colors.background.bgAlwaysDarkLow"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:91cc80c402c5824555a5b841d1cedbabcd1e2933/-1:-1",
-            "targetVariableName": "neutral/alpha/50",
+            "targetVariableId": "VariableID:cdd3ed457774c0402f1b0123cd14f9011aeee019/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/50",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -1768,7 +1768,7 @@
           1,
           1
         ],
-        "alpha": 0.10000000149011612,
+        "alpha": 0.05000000074505806,
         "hex": "#FFFFFF"
       },
       "$description": "Use for subtle dividers or low-emphasis element boundaries.",
@@ -1784,8 +1784,8 @@
           "iOS": "LemonadeTheme.colors.border.borderNeutralLow"
         },
         "com.figma.aliasData": {
-          "targetVariableId": "VariableID:c029561950cef86903a94cde78e1e392b1417f9f/-1:-1",
-          "targetVariableName": "white/100",
+          "targetVariableId": "VariableID:d4b52db2adae01d3e9fbfc8cf927ef71266cd255/-1:-1",
+          "targetVariableName": "white/50",
           "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
           "targetVariableSetName": "Primitive Colors"
         }
@@ -1800,7 +1800,7 @@
           1,
           1
         ],
-        "alpha": 0.20000000298023224,
+        "alpha": 0.10000000149011612,
         "hex": "#FFFFFF"
       },
       "$description": "Use for standard borders and general element outlines.",
@@ -1816,8 +1816,8 @@
           "iOS": "LemonadeTheme.colors.border.borderNeutralMedium"
         },
         "com.figma.aliasData": {
-          "targetVariableId": "VariableID:d3a35e7038170b3cb169067a67e60615b7b73ebe/-1:-1",
-          "targetVariableName": "white/200",
+          "targetVariableId": "VariableID:c029561950cef86903a94cde78e1e392b1417f9f/-1:-1",
+          "targetVariableName": "white/100",
           "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
           "targetVariableSetName": "Primitive Colors"
         }
@@ -1832,7 +1832,7 @@
           1,
           1
         ],
-        "alpha": 0.30000001192092896,
+        "alpha": 0.20000000298023224,
         "hex": "#FFFFFF"
       },
       "$description": "Use for high-contrast borders or strong dividers that require clear visual separation.",
@@ -1848,8 +1848,8 @@
           "iOS": "LemonadeTheme.colors.border.borderNeutralHigh"
         },
         "com.figma.aliasData": {
-          "targetVariableId": "VariableID:a21b0ff5ec4f43af0aec339fe0af05dbcf85ec2f/-1:-1",
-          "targetVariableName": "white/300",
+          "targetVariableId": "VariableID:d3a35e7038170b3cb169067a67e60615b7b73ebe/-1:-1",
+          "targetVariableName": "white/200",
           "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
           "targetVariableSetName": "Primitive Colors"
         }
@@ -1893,9 +1893,9 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.8820960521697998,
-            0.8995633125305176,
-            0.10043667256832123
+            0.8823529481887817,
+            0.8980392217636108,
+            0.10196078568696976
           ],
           "alpha": 1,
           "hex": "#E1E51A"
@@ -2213,12 +2213,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.46000000834465027,
-            0.4200000762939453,
-            0.3400000035762787
+            0.5686274766921997,
+            0.5686274766921997,
+            0.4117647111415863
           ],
           "alpha": 0.10000000149011612,
-          "hex": "#756B57"
+          "hex": "#919169"
         },
         "$description": "Use for subtle borders on dark or inverted backgrounds.",
         "$extensions": {
@@ -2233,8 +2233,8 @@
             "iOS": "LemonadeTheme.colors.border.borderNeutralLowInverse"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8778ed1346a740dc649dd4393c6e7193384e298f/-1:-1",
-            "targetVariableName": "neutral/alpha/100",
+            "targetVariableId": "VariableID:bc64f1f865464816de5b8699a41fba84687708ab/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/100",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -2245,12 +2245,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.5589999556541443,
-            0.5263333916664124,
-            0.4610000252723694
+            0.5490196347236633,
+            0.5490196347236633,
+            0.45098039507865906
           ],
           "alpha": 0.20000000298023224,
-          "hex": "#8F8676"
+          "hex": "#8C8C73"
         },
         "$description": "Use for standard borders on dark or inverted backgrounds.",
         "$extensions": {
@@ -2265,8 +2265,8 @@
             "iOS": "LemonadeTheme.colors.border.borderNeutralMediumInverse"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:e0d828d4abf5d7d786c60caeb9e8f18a877010b2/-1:-1",
-            "targetVariableName": "neutral/alpha/200",
+            "targetVariableId": "VariableID:717c790f7b1ecba99d0e2c7343f314e3235ffb9b/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/200",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -2277,12 +2277,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.46619999408721924,
-            0.4354000389575958,
-            0.37380000948905945
+            0.4901960790157318,
+            0.4901960790157318,
+            0.38562092185020447
           ],
           "alpha": 0.30000001192092896,
-          "hex": "#776F5F"
+          "hex": "#7D7D62"
         },
         "$description": "Use for standard borders on dark or inverted backgrounds.",
         "$extensions": {
@@ -2297,8 +2297,8 @@
             "iOS": "LemonadeTheme.colors.border.borderNeutralHighInverse"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:65164018bea4572f5e2ba0fbf17dbd8d7595bf15/-1:-1",
-            "targetVariableName": "neutral/alpha/300",
+            "targetVariableId": "VariableID:907900a6f69b9be78a7c14e15e4f488a0f8aaf11/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/300",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -2502,12 +2502,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.03295786678791046,
+            0.03295786678791046,
+            0.009595319628715515
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 0.9399999976158142,
+          "hex": "#080802"
         },
         "$description": "Use for borders that must always appear dark, regardless of theme or mode.",
         "$extensions": {
@@ -2522,8 +2522,8 @@
             "iOS": "LemonadeTheme.colors.border.borderAlwaysDark"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:9a770f5f5acc633b67967b17fb29b9ebf4c90302/-1:-1",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:dad42ae87ea68319ac503abca8fecf3ffa72ccb0/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/900",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -2534,12 +2534,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.46000000834465027,
-            0.4200000762939453,
-            0.3400000035762787
+            0.5686274766921997,
+            0.5686274766921997,
+            0.4117647111415863
           ],
           "alpha": 0.10000000149011612,
-          "hex": "#756B57"
+          "hex": "#919169"
         },
         "$description": "Use for subtle dark borders that require minimal emphasis, regardless of theme or mode.",
         "$extensions": {
@@ -2554,8 +2554,8 @@
             "iOS": "LemonadeTheme.colors.border.borderAlwaysDark"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8778ed1346a740dc649dd4393c6e7193384e298f/-1:-1",
-            "targetVariableName": "neutral/alpha/100",
+            "targetVariableId": "VariableID:bc64f1f865464816de5b8699a41fba84687708ab/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/100",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -2566,12 +2566,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.5589999556541443,
-            0.5263333916664124,
-            0.4610000252723694
+            0.5490196347236633,
+            0.5490196347236633,
+            0.45098039507865906
           ],
           "alpha": 0.20000000298023224,
-          "hex": "#8F8676"
+          "hex": "#8C8C73"
         },
         "$description": "Use for standard dark borders that need clear visibility in any theme or mode.",
         "$extensions": {
@@ -2586,8 +2586,8 @@
             "iOS": "LemonadeTheme.colors.border.borderAlwaysDark"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:e0d828d4abf5d7d786c60caeb9e8f18a877010b2/-1:-1",
-            "targetVariableName": "neutral/alpha/200",
+            "targetVariableId": "VariableID:717c790f7b1ecba99d0e2c7343f314e3235ffb9b/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/200",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -2598,12 +2598,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.46619999408721924,
-            0.4354000389575958,
-            0.37380000948905945
+            0.4901960790157318,
+            0.4901960790157318,
+            0.38562092185020447
           ],
           "alpha": 0.30000001192092896,
-          "hex": "#776F5F"
+          "hex": "#7D7D62"
         },
         "$description": "Use for strong dark borders that require high contrast or clear separation, independent of theme or mode.",
         "$extensions": {
@@ -2618,8 +2618,8 @@
             "iOS": "LemonadeTheme.colors.border.borderAlwaysDark"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:65164018bea4572f5e2ba0fbf17dbd8d7595bf15/-1:-1",
-            "targetVariableName": "neutral/alpha/300",
+            "targetVariableId": "VariableID:907900a6f69b9be78a7c14e15e4f488a0f8aaf11/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/300",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -2635,12 +2635,12 @@
           "$value": {
             "colorSpace": "srgb",
             "components": [
-              0.9656000137329102,
-              0.9611200094223022,
-              0.9544000029563904
+              0.9843137264251709,
+              0.9843137264251709,
+              0.9764705896377563
             ],
             "alpha": 1,
-            "hex": "#F6F5F3"
+            "hex": "#FBFBF9"
           },
           "$description": "Use for interactive states on the default background.",
           "$extensions": {
@@ -2655,8 +2655,8 @@
               "iOS": "LemonadeTheme.colors.interaction.bgDefaultInteractive"
             },
             "com.figma.aliasData": {
-              "targetVariableId": "VariableID:82eac05479e537ad88095687f36e5162a3681648/-1:-1",
-              "targetVariableName": "neutral/50",
+              "targetVariableId": "VariableID:3b8f77f82b314f8f915eedeac1d3387dd3b19571/-1:-1",
+              "targetVariableName": "olive-neutral/50",
               "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
               "targetVariableSetName": "Primitive Colors"
             }
@@ -2667,12 +2667,12 @@
           "$value": {
             "colorSpace": "srgb",
             "components": [
-              0.5589999556541443,
-              0.5263333916664124,
-              0.4610000252723694
+              0.5490196347236633,
+              0.5490196347236633,
+              0.45098039507865906
             ],
             "alpha": 0.20000000298023224,
-            "hex": "#8F8676"
+            "hex": "#8C8C73"
           },
           "$description": "Use for interactive states on subtle neutral backgrounds.",
           "$extensions": {
@@ -2687,8 +2687,8 @@
               "iOS": "LemonadeTheme.colors.interaction.bgSubtleInteractive"
             },
             "com.figma.aliasData": {
-              "targetVariableId": "VariableID:e0d828d4abf5d7d786c60caeb9e8f18a877010b2/-1:-1",
-              "targetVariableName": "neutral/alpha/200",
+              "targetVariableId": "VariableID:717c790f7b1ecba99d0e2c7343f314e3235ffb9b/-1:-1",
+              "targetVariableName": "olive-neutral/alpha/200",
               "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
               "targetVariableSetName": "Primitive Colors"
             }
@@ -2699,12 +2699,12 @@
           "$value": {
             "colorSpace": "srgb",
             "components": [
-              0.46619999408721924,
-              0.4354000389575958,
-              0.37380000948905945
+              0.4901960790157318,
+              0.4901960790157318,
+              0.38562092185020447
             ],
             "alpha": 0.30000001192092896,
-            "hex": "#776F5F"
+            "hex": "#7D7D62"
           },
           "$description": "Use for interactive states on elevated backgrounds.",
           "$extensions": {
@@ -2719,8 +2719,8 @@
               "iOS": "LemonadeTheme.colors.interaction.bgElevatedInteractive"
             },
             "com.figma.aliasData": {
-              "targetVariableId": "VariableID:65164018bea4572f5e2ba0fbf17dbd8d7595bf15/-1:-1",
-              "targetVariableName": "neutral/alpha/300",
+              "targetVariableId": "VariableID:907900a6f69b9be78a7c14e15e4f488a0f8aaf11/-1:-1",
+              "targetVariableName": "olive-neutral/alpha/300",
               "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
               "targetVariableSetName": "Primitive Colors"
             }
@@ -2731,12 +2731,12 @@
           "$value": {
             "colorSpace": "srgb",
             "components": [
-              0.46619999408721924,
-              0.4354000389575958,
-              0.37380000948905945
+              0.4901960790157318,
+              0.4901960790157318,
+              0.38562092185020447
             ],
             "alpha": 0.30000001192092896,
-            "hex": "#776F5F"
+            "hex": "#7D7D62"
           },
           "$description": "Use for interactive states on high-emphasis elevated backgrounds.",
           "$extensions": {
@@ -2751,8 +2751,8 @@
               "iOS": "LemonadeTheme.colors.interaction.bgElevatedHighInteractive"
             },
             "com.figma.aliasData": {
-              "targetVariableId": "VariableID:65164018bea4572f5e2ba0fbf17dbd8d7595bf15/-1:-1",
-              "targetVariableName": "neutral/alpha/300",
+              "targetVariableId": "VariableID:907900a6f69b9be78a7c14e15e4f488a0f8aaf11/-1:-1",
+              "targetVariableName": "olive-neutral/alpha/300",
               "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
               "targetVariableSetName": "Primitive Colors"
             }
@@ -3019,12 +3019,12 @@
           "$value": {
             "colorSpace": "srgb",
             "components": [
-              0.25882354378700256,
-              0.2549019753932953,
-              0.24313725531101227
+              0.27843138575553894,
+              0.27843138575553894,
+              0.2235294133424759
             ],
             "alpha": 1,
-            "hex": "#42413E"
+            "hex": "#474739"
           },
           "$description": "Use for interactive states in neutral scenarios.",
           "$extensions": {
@@ -3039,8 +3039,8 @@
               "iOS": "LemonadeTheme.colors.interaction.bgNeutralInteractive"
             },
             "com.figma.aliasData": {
-              "targetVariableId": "VariableID:4fdd64ad7edc09b0669703eeadf1866a72ee88e0/-1:-1",
-              "targetVariableName": "neutral/700",
+              "targetVariableId": "VariableID:757b10316d3c120ee8488618b3a0aec416979b80/-1:-1",
+              "targetVariableName": "olive-neutral/700",
               "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
               "targetVariableSetName": "Primitive Colors"
             }
@@ -3243,12 +3243,12 @@
           "$value": {
             "colorSpace": "srgb",
             "components": [
-              0.12999999523162842,
-              0.10999999940395355,
-              0.07000000029802322
+              0.1764705926179886,
+              0.1764705926179886,
+              0.029411764815449715
             ],
             "alpha": 0.4000000059604645,
-            "hex": "#211C12"
+            "hex": "#2D2D08"
           },
           "$description": "Use for interactive states on high-emphasis surfaces that must always appear dark, regardless of theme or mode.",
           "$extensions": {
@@ -3263,8 +3263,8 @@
               "iOS": "LemonadeTheme.colors.interaction.bgAlwaysDarkHighInteractive"
             },
             "com.figma.aliasData": {
-              "targetVariableId": "VariableID:a9f2a0fbffe24b5d81b24c00d5fd6d0eb4f7642a/-1:-1",
-              "targetVariableName": "neutral/alpha/400",
+              "targetVariableId": "VariableID:b03335675e7376122b24b0046f9d08f997cf4f0b/-1:-1",
+              "targetVariableName": "olive-neutral/alpha/400",
               "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
               "targetVariableSetName": "Primitive Colors"
             }
@@ -3275,12 +3275,12 @@
           "$value": {
             "colorSpace": "srgb",
             "components": [
-              0.46619999408721924,
-              0.4354000389575958,
-              0.37380000948905945
+              0.4901960790157318,
+              0.4901960790157318,
+              0.38562092185020447
             ],
             "alpha": 0.30000001192092896,
-            "hex": "#776F5F"
+            "hex": "#7D7D62"
           },
           "$description": "Use for interactive states on medium-emphasis surfaces that must always appear dark, regardless of theme or mode.",
           "$extensions": {
@@ -3295,8 +3295,8 @@
               "iOS": "LemonadeTheme.colors.interaction.bgAlwaysDarkMediumInteractive"
             },
             "com.figma.aliasData": {
-              "targetVariableId": "VariableID:65164018bea4572f5e2ba0fbf17dbd8d7595bf15/-1:-1",
-              "targetVariableName": "neutral/alpha/300",
+              "targetVariableId": "VariableID:907900a6f69b9be78a7c14e15e4f488a0f8aaf11/-1:-1",
+              "targetVariableName": "olive-neutral/alpha/300",
               "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
               "targetVariableSetName": "Primitive Colors"
             }
@@ -3307,12 +3307,12 @@
           "$value": {
             "colorSpace": "srgb",
             "components": [
-              0.46000000834465027,
-              0.4200000762939453,
-              0.3400000035762787
+              0.5686274766921997,
+              0.5686274766921997,
+              0.4117647111415863
             ],
             "alpha": 0.10000000149011612,
-            "hex": "#756B57"
+            "hex": "#919169"
           },
           "$description": "Use for interactive states on low-emphasis surfaces that must always appear dark, regardless of theme or mode.",
           "$extensions": {
@@ -3327,8 +3327,8 @@
               "iOS": "LemonadeTheme.colors.interaction.bgAlwaysDarkLowInteractive"
             },
             "com.figma.aliasData": {
-              "targetVariableId": "VariableID:8778ed1346a740dc649dd4393c6e7193384e298f/-1:-1",
-              "targetVariableName": "neutral/alpha/100",
+              "targetVariableId": "VariableID:bc64f1f865464816de5b8699a41fba84687708ab/-1:-1",
+              "targetVariableName": "olive-neutral/alpha/100",
               "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
               "targetVariableSetName": "Primitive Colors"
             }
@@ -3439,12 +3439,12 @@
           "$value": {
             "colorSpace": "srgb",
             "components": [
-              0.46000000834465027,
-              0.4200000762939453,
-              0.3400000035762787
+              0.5686274766921997,
+              0.5686274766921997,
+              0.4117647111415863
             ],
             "alpha": 0.10000000149011612,
-            "hex": "#756B57"
+            "hex": "#919169"
           },
           "$description": "Use for pressed/tap feedback on elements over bg-default",
           "$extensions": {
@@ -3459,8 +3459,8 @@
               "iOS": "LemonadeTheme.colors.interaction.bgDefaultPressed"
             },
             "com.figma.aliasData": {
-              "targetVariableId": "VariableID:8778ed1346a740dc649dd4393c6e7193384e298f/-1:-1",
-              "targetVariableName": "neutral/alpha/100",
+              "targetVariableId": "VariableID:bc64f1f865464816de5b8699a41fba84687708ab/-1:-1",
+              "targetVariableName": "olive-neutral/alpha/100",
               "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
               "targetVariableSetName": "Primitive Colors"
             }
@@ -3471,12 +3471,12 @@
           "$value": {
             "colorSpace": "srgb",
             "components": [
-              0.5589999556541443,
-              0.5263333916664124,
-              0.4610000252723694
+              0.5490196347236633,
+              0.5490196347236633,
+              0.45098039507865906
             ],
             "alpha": 0.20000000298023224,
-            "hex": "#8F8676"
+            "hex": "#8C8C73"
           },
           "$description": "Use for pressed/tap feedback on elements over bg-subtle",
           "$extensions": {
@@ -3491,8 +3491,8 @@
               "iOS": "LemonadeTheme.colors.interaction.bgSubtlePressed"
             },
             "com.figma.aliasData": {
-              "targetVariableId": "VariableID:e0d828d4abf5d7d786c60caeb9e8f18a877010b2/-1:-1",
-              "targetVariableName": "neutral/alpha/200",
+              "targetVariableId": "VariableID:717c790f7b1ecba99d0e2c7343f314e3235ffb9b/-1:-1",
+              "targetVariableName": "olive-neutral/alpha/200",
               "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
               "targetVariableSetName": "Primitive Colors"
             }
@@ -3503,12 +3503,12 @@
           "$value": {
             "colorSpace": "srgb",
             "components": [
-              0.46619999408721924,
-              0.4354000389575958,
-              0.37380000948905945
+              0.4901960790157318,
+              0.4901960790157318,
+              0.38562092185020447
             ],
             "alpha": 0.30000001192092896,
-            "hex": "#776F5F"
+            "hex": "#7D7D62"
           },
           "$description": "Use for pressed/tap feedback on elements over bg-elevated",
           "$extensions": {
@@ -3523,8 +3523,8 @@
               "iOS": "LemonadeTheme.colors.interaction.bgElevatedPressed"
             },
             "com.figma.aliasData": {
-              "targetVariableId": "VariableID:65164018bea4572f5e2ba0fbf17dbd8d7595bf15/-1:-1",
-              "targetVariableName": "neutral/alpha/300",
+              "targetVariableId": "VariableID:907900a6f69b9be78a7c14e15e4f488a0f8aaf11/-1:-1",
+              "targetVariableName": "olive-neutral/alpha/300",
               "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
               "targetVariableSetName": "Primitive Colors"
             }
@@ -3791,12 +3791,12 @@
           "$value": {
             "colorSpace": "srgb",
             "components": [
-              0.145454540848732,
-              0.14181818068027496,
-              0.1345454603433609
+              0.12407843768596649,
+              0.12407843768596649,
+              0.09552942216396332
             ],
             "alpha": 1,
-            "hex": "#252422"
+            "hex": "#202018"
           },
           "$description": "Use for pressed/tap feedback in neutral contexts",
           "$extensions": {
@@ -3811,8 +3811,8 @@
               "iOS": "LemonadeTheme.colors.interaction.bgNeutralPressed"
             },
             "com.figma.aliasData": {
-              "targetVariableId": "VariableID:2628c44dea5046ca3b758e322f75b449f85c0a07/-1:-1",
-              "targetVariableName": "neutral/800",
+              "targetVariableId": "VariableID:401216f3ed23e896b63545cd48df3f27b8985413/-1:-1",
+              "targetVariableName": "olive-neutral/800",
               "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
               "targetVariableSetName": "Primitive Colors"
             }
@@ -4047,9 +4047,9 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.8820960521697998,
-            0.8995633125305176,
-            0.10043667256832123
+            0.8823529481887817,
+            0.8980392217636108,
+            0.10196078568696976
           ],
           "alpha": 1,
           "hex": "#E1E51A"
@@ -9245,9 +9245,9 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.8820960521697998,
-            0.8995633125305176,
-            0.10043667256832123
+            0.8823529481887817,
+            0.8980392217636108,
+            0.10196078568696976
           ],
           "alpha": 1,
           "hex": "#E1E51A"
@@ -9407,12 +9407,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.6500392556190491,
-            0.6419216394424438,
-            0.6283921599388123
+            0.6705882549285889,
+            0.6705882549285889,
+            0.6117647290229797
           ],
           "alpha": 1,
-          "hex": "#A6A4A0"
+          "hex": "#ABAB9C"
         },
         "$description": "Generic neutral surface. Use for application-defined meaning — charts, categories, states with no semantic token. Pair with on-background for the label.",
         "$extensions": {
@@ -9427,8 +9427,8 @@
             "iOS": "LemonadeTheme.themed.neutral.background"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:d4844d59d1ea197872fad7fd49926a9cd777f30a/-1:-1",
-            "targetVariableName": "neutral/400",
+            "targetVariableId": "VariableID:ee1681b933ac594924bf0e27bdd0829405cca2e2/-1:-1",
+            "targetVariableName": "olive-neutral/400",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -9439,12 +9439,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.6500392556190491,
-            0.6419216394424438,
-            0.6283921599388123
+            0.6705882549285889,
+            0.6705882549285889,
+            0.6117647290229797
           ],
           "alpha": 1,
-          "hex": "#A6A4A0"
+          "hex": "#ABAB9C"
         },
         "$description": "Generic neutral border. Use for application-defined meaning where no semantic token applies.",
         "$extensions": {
@@ -9459,8 +9459,8 @@
             "iOS": "LemonadeTheme.themed.neutral.border"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:d4844d59d1ea197872fad7fd49926a9cd777f30a/-1:-1",
-            "targetVariableName": "neutral/400",
+            "targetVariableId": "VariableID:ee1681b933ac594924bf0e27bdd0829405cca2e2/-1:-1",
+            "targetVariableName": "olive-neutral/400",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -9502,12 +9502,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.03529411926865578,
-            0.0313725508749485,
-            0.0235294122248888
+            0.03295786678791046,
+            0.03295786678791046,
+            0.009595319628715515
           ],
-          "alpha": 0.925000011920929,
-          "hex": "#090806"
+          "alpha": 0.9399999976158142,
+          "hex": "#080802"
         },
         "$description": "Generic neutral text and icons for a surface whose brightness is inverted relative to the theme — a dark surface in light mode, a light one in dark. The mode-swapped counterpart of content, which is tuned for the default surface and drops below AA on an inverted one.",
         "$extensions": {
@@ -9521,8 +9521,8 @@
             "iOS": "LemonadeTheme.themed.neutral.contentInverse"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:9a770f5f5acc633b67967b17fb29b9ebf4c90302/-1:-1",
-            "targetVariableName": "neutral/alpha/900",
+            "targetVariableId": "VariableID:dad42ae87ea68319ac503abca8fecf3ffa72ccb0/-1:-1",
+            "targetVariableName": "olive-neutral/alpha/900",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -9533,12 +9533,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.08235294371843338,
-            0.08235294371843338,
-            0.07450980693101883
+            0.0470588244497776,
+            0.0470588244497776,
+            0.03529411926865578
           ],
           "alpha": 1,
-          "hex": "#151513"
+          "hex": "#0C0C09"
         },
         "$description": "Text and icons drawn on top of background. Uses the hue’s own lightest or darkest step where that meets contrast, otherwise white or ink — chosen per hue, do not substitute a fixed neutral.",
         "$extensions": {
@@ -9552,8 +9552,8 @@
             "iOS": "LemonadeTheme.themed.neutral.onBackground"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:98ef50ba4a90038da43fe1e452aea3fb35ea1e8e/-1:-1",
-            "targetVariableName": "neutral/950",
+            "targetVariableId": "VariableID:367bb99da26da8fe26d8c804b729d1aa71b05140/-1:-1",
+            "targetVariableName": "olive-neutral/950",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -9564,12 +9564,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.9137254953384399,
-            0.9058823585510254,
+            0.9098039269447327,
+            0.9098039269447327,
             0.8901960849761963
           ],
           "alpha": 1,
-          "hex": "#E9E7E3"
+          "hex": "#E8E8E3"
         },
         "$description": "High-emphasis generic neutral surface, carrying more weight than background. Light goes deeper, dark goes lighter, so it stands out from the page in either theme. Pair with on-background-high.",
         "$extensions": {
@@ -9584,8 +9584,8 @@
             "iOS": "LemonadeTheme.themed.neutral.backgroundHigh"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:6c3c8dfc7ea34cfd2665a17cb48c859928a3656b/-1:-1",
-            "targetVariableName": "neutral/200",
+            "targetVariableId": "VariableID:1619cf0b367303915d144c71a679595ae5251833/-1:-1",
+            "targetVariableName": "olive-neutral/200",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
@@ -9596,12 +9596,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.12156862765550613,
-            0.11372549086809158
+            0.09019608050584793,
+            0.09019608050584793,
+            0.05882352963089943
           ],
           "alpha": 1,
-          "hex": "#201F1D"
+          "hex": "#17170F"
         },
         "$description": "Text and icons drawn on top of background-high. The hue's own far end from that fill — on-background is tuned for background and does not carry here.",
         "$extensions": {
@@ -9615,8 +9615,8 @@
             "iOS": "LemonadeTheme.themed.neutral.onBackgroundHigh"
           },
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:1cc0c0ef3677a6bd1c255523330a7bb99c44810b/-1:-1",
-            "targetVariableName": "neutral/900",
+            "targetVariableId": "VariableID:9bca10de1f541686c8b6f72fef1d3d450c6e0f0c/-1:-1",
+            "targetVariableName": "olive-neutral/900",
             "targetVariableSetId": "VariableCollectionId:49973bcf71adb6e0bdccc65ed79e4d6bcb278403/-1:-1",
             "targetVariableSetName": "Primitive Colors"
           }
