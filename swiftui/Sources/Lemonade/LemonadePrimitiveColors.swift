@@ -648,9 +648,9 @@ public enum LemonadePrimitiveColors {
                 opacity: 1.0000000
             )
             public static let oliveNeutral200: Color = Color(
-                red: 0.9098039,
-                green: 0.9098039,
-                blue: 0.8901961,
+                red: 0.9098040,
+                green: 0.9098040,
+                blue: 0.8901960,
                 opacity: 1.0000000
             )
             public static let oliveNeutral300: Color = Color(
@@ -680,25 +680,25 @@ public enum LemonadePrimitiveColors {
             public static let oliveNeutral700: Color = Color(
                 red: 0.2784314,
                 green: 0.2784314,
-                blue: 0.2235294,
+                blue: 0.2352941,
                 opacity: 1.0000000
             )
             public static let oliveNeutral800: Color = Color(
-                red: 0.1240784,
-                green: 0.1240784,
-                blue: 0.0955294,
+                red: 0.1411765,
+                green: 0.1411765,
+                blue: 0.1176471,
                 opacity: 1.0000000
             )
             public static let oliveNeutral900: Color = Color(
-                red: 0.0901961,
-                green: 0.0901961,
-                blue: 0.0588235,
+                red: 0.0980392,
+                green: 0.0980392,
+                blue: 0.0823529,
                 opacity: 1.0000000
             )
             public static let oliveNeutral950: Color = Color(
-                red: 0.0470588,
-                green: 0.0470588,
-                blue: 0.0352941,
+                red: 0.0627451,
+                green: 0.0627451,
+                blue: 0.0549020,
                 opacity: 1.0000000
             )
         }
@@ -1933,67 +1933,67 @@ public enum LemonadePrimitiveColors {
             public static let alpha50: Color = Color(
                 red: 0.6862745,
                 green: 0.6862745,
-                blue: 0.5294118,
+                blue: 0.6078432,
                 opacity: 0.0500000
             )
             public static let alpha100: Color = Color(
                 red: 0.5686275,
                 green: 0.5686275,
-                blue: 0.4117647,
-                opacity: 0.1000000
+                blue: 0.4509804,
+                opacity: 0.0800000
             )
             public static let alpha200: Color = Color(
                 red: 0.5490196,
                 green: 0.5490196,
-                blue: 0.4509804,
-                opacity: 0.2000000
+                blue: 0.4705882,
+                opacity: 0.1600000
             )
             public static let alpha300: Color = Color(
                 red: 0.4901961,
                 green: 0.4901961,
-                blue: 0.3856209,
-                opacity: 0.3000000
+                blue: 0.4117647,
+                opacity: 0.2800000
             )
             public static let alpha400: Color = Color(
                 red: 0.1764706,
                 green: 0.1764706,
-                blue: 0.0294118,
+                blue: 0.0705882,
                 opacity: 0.4000000
             )
             public static let alpha500: Color = Color(
-                red: 0.1437909,
-                green: 0.1437909,
-                blue: 0.0065359,
+                red: 0.1450980,
+                green: 0.1450980,
+                blue: 0.0078431,
                 opacity: 0.6000000
             )
             public static let alpha600: Color = Color(
-                red: 0.0941729,
-                green: 0.0941729,
-                blue: 0.0057995,
+                red: 0.0941176,
+                green: 0.0941176,
+                blue: 0.0039216,
                 opacity: 0.7100000
             )
             public static let alpha700: Color = Color(
-                red: 0.0749120,
-                green: 0.0749120,
-                blue: 0.0045249,
+                red: 0.0745098,
+                green: 0.0745098,
+                blue: 0.0196078,
                 opacity: 0.7800000
             )
             public static let alpha800: Color = Color(
-                red: 0.0580791,
-                green: 0.0616949,
-                blue: 0.0400000,
+                red: 0.0313726,
+                green: 0.0313726,
+                blue: 0.0039216,
                 opacity: 0.8850000
             )
             public static let alpha900: Color = Color(
-                red: 0.0329579,
-                green: 0.0329579,
-                blue: 0.0095953,
+                red: 0.0392157,
+                green: 0.0392157,
+                blue: 0.0235294,
                 opacity: 0.9400000
             )
             public static let alpha950: Color = Color(
-                red: 0.0175864,
-                green: 0.0175864,
-                blue: 0.0054579,
+                red: 0.0352941,
+                green: 0.0352941,
+                blue: 0.0274510,
                 opacity: 0.9700000
             )
         }

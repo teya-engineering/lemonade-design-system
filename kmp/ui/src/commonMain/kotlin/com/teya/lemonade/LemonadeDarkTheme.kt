@@ -37,7 +37,7 @@ public object LemonadeDarkTheme : LemonadeSemanticColors {
             override val bgAlwaysLightHigh = LemonadePrimitiveColors.Solid.White.white200
             override val bgAlwaysLightLow = LemonadePrimitiveColors.Solid.White.white50
             override val bgAlwaysLightMedium = LemonadePrimitiveColors.Solid.White.white100
-            override val bgDefaultInverse = LemonadePrimitiveColors.Solid.White.white950
+            override val bgDefaultInverse = LemonadePrimitiveColors.Solid.OliveNeutral.oliveNeutral50
             override val bgElevatedInverse = LemonadePrimitiveColors.Alpha.OliveNeutral.alpha100
             override val bgSubtleInverse = LemonadePrimitiveColors.Solid.OliveNeutral.oliveNeutral200
             override val bgCaution = LemonadeDarkThemedColors.amber.background
@@ -49,12 +49,12 @@ public object LemonadeDarkTheme : LemonadeSemanticColors {
             override val bgInfo = LemonadeDarkThemedColors.blue.background
             override val bgInfoSubtle = LemonadeDarkThemedColors.blue.subtle.background
             override val bgNeutral = LemonadeDarkThemedColors.neutral.background
-            override val bgNeutralSubtle = LemonadeDarkThemedColors.neutral.subtle.background
+            override val bgNeutralSubtle = LemonadePrimitiveColors.Alpha.OliveNeutral.alpha200
             override val bgPositive = LemonadeDarkThemedColors.greenLime.background
             override val bgPositiveSubtle = LemonadeDarkThemedColors.greenLime.subtle.background
             override val bgDefault = LemonadePrimitiveColors.Solid.OliveNeutral.oliveNeutral800
-            override val bgElevated = LemonadePrimitiveColors.Solid.White.white100
-            override val bgElevatedHigh = LemonadePrimitiveColors.Solid.White.white200
+            override val bgElevated = LemonadePrimitiveColors.Alpha.OliveNeutral.alpha200
+            override val bgElevatedHigh = LemonadePrimitiveColors.Alpha.OliveNeutral.alpha300
             override val bgSubtle = LemonadePrimitiveColors.Solid.OliveNeutral.oliveNeutral900
         }
     override val border: LemonadeSemanticColors.BorderColors =
@@ -97,8 +97,8 @@ public object LemonadeDarkTheme : LemonadeSemanticColors {
             override val contentBrandHigh = LemonadePrimitiveColors.Solid.YellowLime.yellowLime500
             override val contentOnBrandHigh = LemonadePrimitiveColors.Solid.YellowLime.yellowLime900
             override val contentOnBrandLow = LemonadePrimitiveColors.Solid.YellowLime.yellowLime700
-            override val contentAlwaysDark = LemonadePrimitiveColors.Alpha.OliveNeutral.alpha950
-            override val contentAlwaysLight = LemonadePrimitiveColors.Solid.White.white950
+            override val contentAlwaysDark = LemonadePrimitiveColors.Alpha.OliveNeutral.alpha900
+            override val contentAlwaysLight = LemonadePrimitiveColors.Solid.OliveNeutral.oliveNeutral50
             override val contentCautionAlwaysOnColor = LemonadePrimitiveColors.Solid.Amber.amber400
             override val contentCriticalAlwaysOnColor = LemonadePrimitiveColors.Solid.Red.red400
             override val contentInfoAlwaysOnColor = LemonadePrimitiveColors.Solid.Blue.blue400
