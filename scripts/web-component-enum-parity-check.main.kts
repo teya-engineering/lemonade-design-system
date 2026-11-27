@@ -20,9 +20,13 @@ fun readSource(path: String): String {
     return file.readText()
 }
 
-/** Entries of a Kotlin `public enum class <name> { … }`, ignoring KDoc and comments. */
+/**
+ * Entries of a Kotlin `public enum class <name> { … }`, ignoring KDoc and comments. An enum
+ * may implement an interface — `ThemedHue : ThemedStyle` — so a supertype list is skipped
+ * rather than leaving the enum unfound.
+ */
 fun kotlinEnum(source: String, name: String): List<String> {
-    val body = Regex("""public enum class $name\s*\{(.*?)\n\}""", RegexOption.DOT_MATCHES_ALL)
+    val body = Regex("""public enum class $name\s*(?::[^{]*)?\{(.*?)\n\}""", RegexOption.DOT_MATCHES_ALL)
         .find(source)?.groupValues?.get(1)
         ?: error("enum class $name not found")
     return Regex("""^\s{4}([A-Z]\w*)\s*,""", RegexOption.MULTILINE).findAll(body).map { it.groupValues[1] }.toList()
@@ -31,10 +35,11 @@ fun kotlinEnum(source: String, name: String): List<String> {
 /**
  * Entries of a Swift `public enum <name> { … }`. A case whose name is a Swift keyword is
  * written in backticks — `case \`default\`` — so they are stripped rather than letting the
- * entry go unread.
+ * entry go unread. A conformance list, as on `ThemedHue: CaseIterable`, is skipped the way
+ * [kotlinEnum] skips a supertype.
  */
 fun swiftEnum(source: String, name: String): List<String> {
-    val body = Regex("""public enum $name\s*\{(.*?)\n\}""", RegexOption.DOT_MATCHES_ALL)
+    val body = Regex("""public enum $name\s*(?::[^{]*)?\{(.*?)\n\}""", RegexOption.DOT_MATCHES_ALL)
         .find(source)?.groupValues?.get(1)
         ?: error("enum $name not found")
     return Regex("""^\s*case `?(\w+)`?""", RegexOption.MULTILINE).findAll(body).map { it.groupValues[1] }.toList()
@@ -148,6 +153,53 @@ fun main() {
             swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeCard.swift",
             webName = "LemonadeCardHeadingStyle",
             webPath = "web/src/components/card/card.types.ts",
+        ),
+        Vocabulary(
+            name = "TagVoice",
+            kotlinName = "TagVoice",
+            kotlinPath = "kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/Tag.kt",
+            swiftName = "TagVoice",
+            swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeTag.swift",
+            webName = "TagVoice",
+            webPath = "web/src/components/tag/tag.types.ts",
+        ),
+        Vocabulary(
+            name = "SymbolContainerVoice",
+            kotlinName = "SymbolContainerVoice",
+            kotlinPath = "kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/SymbolContainer.kt",
+            swiftName = "SymbolContainerVoice",
+            swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeSymbolContainer.swift",
+            webName = "SymbolContainerVoice",
+            webPath = "web/src/components/symbol-container/symbol-container.types.ts",
+        ),
+        Vocabulary(
+            name = "SymbolContainerSize",
+            kotlinName = "SymbolContainerSize",
+            kotlinPath = "kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/SymbolContainer.kt",
+            swiftName = "SymbolContainerSize",
+            swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeSymbolContainer.swift",
+            webName = "SymbolContainerSize",
+            webPath = "web/src/components/symbol-container/symbol-container.types.ts",
+        ),
+        Vocabulary(
+            name = "SymbolContainerShape",
+            kotlinName = "SymbolContainerShape",
+            kotlinPath = "kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/SymbolContainer.kt",
+            swiftName = "SymbolContainerShape",
+            swiftPath = "swiftui/Sources/Lemonade/Components/LemonadeSymbolContainer.swift",
+            webName = "SymbolContainerShape",
+            webPath = "web/src/components/symbol-container/symbol-container.types.ts",
+        ),
+        // A token vocabulary rather than a component's: the themed palettes live in
+        // kmp/tokens, and SymbolContainer is the first web component to read one.
+        Vocabulary(
+            name = "ThemedHue",
+            kotlinName = "ThemedHue",
+            kotlinPath = "kmp/tokens/src/commonMain/kotlin/com/teya/lemonade/LemonadeThemedColors.kt",
+            swiftName = "ThemedHue",
+            swiftPath = "swiftui/Sources/Lemonade/LemonadeThemedColors.swift",
+            webName = "ThemedHue",
+            webPath = "web/src/themed-hue.ts",
         ),
         // Spinner takes the same eight sizes. SwiftUI declares its own copy, so it can
         // drift from the icon's on that platform alone, which this catches.
