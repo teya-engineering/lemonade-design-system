@@ -1,0 +1,141 @@
+/* A fixed square, as the platforms draw it: there is no label to wrap, so nothing has to
+   grow — and nothing may shrink either, or a toolbar too narrow for its buttons squeezes
+   them into ovals with a smaller hit area. The --lmnd-button-* properties come from
+   button-palette.css, shared with Button.
+
+   The base is medium, so `--medium` only writes that out. Rounded is not a modifier at all:
+   each size carries its own rounded radius, and `--circular` is the one shape class. */
+.lmnd-icon-button {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--lmnd-size-1200);
+  height: var(--lmnd-size-1200);
+  padding: 0;
+  border: none;
+  border-radius: var(--lmnd-radius-350);
+  cursor: pointer;
+  color: var(--lmnd-button-content);
+  background-color: var(--lmnd-button-bg);
+}
+
+/* Any author `display` beats the browser's own `[hidden]` rule, whatever the specificity,
+   so a component that sets one has to put `hidden` back. `until-found` is left alone: it is
+   hidden but still reachable by find-in-page, and the browser hides it a different way. */
+.lmnd-icon-button[hidden]:not([hidden='until-found']) {
+  display: none;
+}
+
+/* A tap leaves :hover stuck on until something else is tapped, and this package is for
+   mobile web prototypes, so that is the common case rather than the edge one. */
+@media (hover: hover) {
+  .lmnd-icon-button:hover:not(:disabled) {
+    background-color: var(--lmnd-button-bg-hover);
+  }
+}
+
+.lmnd-icon-button:active:not(:disabled) {
+  background-color: var(--lmnd-button-bg-active);
+}
+
+.lmnd-icon-button:focus-visible {
+  outline: var(--lmnd-border-width-focus-ring) solid var(--lmnd-color-border-selected);
+  outline-offset: var(--lmnd-spacing-50);
+}
+
+.lmnd-icon-button:disabled {
+  cursor: not-allowed;
+  opacity: var(--lmnd-opacity-disabled);
+}
+
+.lmnd-icon-button--loading:disabled {
+  cursor: wait;
+}
+
+/* Each size carries its own rounded radius, because rounded is the shape unless something
+   says otherwise — keeping the radius on a `--rounded` class instead would leave a small
+   button written without one at medium's radius. */
+.lmnd-icon-button--x-small {
+  width: var(--lmnd-size-800);
+  height: var(--lmnd-size-800);
+  border-radius: var(--lmnd-radius-250);
+}
+
+.lmnd-icon-button--small {
+  width: var(--lmnd-size-1000);
+  height: var(--lmnd-size-1000);
+  border-radius: var(--lmnd-radius-300);
+}
+
+.lmnd-icon-button--medium {
+  width: var(--lmnd-size-1200);
+  height: var(--lmnd-size-1200);
+  border-radius: var(--lmnd-radius-350);
+}
+
+.lmnd-icon-button--large {
+  width: var(--lmnd-size-1400);
+  height: var(--lmnd-size-1400);
+  border-radius: var(--lmnd-radius-400);
+}
+
+/* One value at every size, and two classes so it outranks them on specificity rather than
+   on being written below. There is no `--rounded` class: it would carry nothing. */
+.lmnd-icon-button.lmnd-icon-button--circular {
+  border-radius: var(--lmnd-radius-full);
+}
+
+/* The base button is medium, so its glyph and its ring are medium's too. Without these,
+   markup that leaves the size modifier off falls back to whatever Icon and Spinner default
+   to on their own — and the ring would come out a size larger than the same button written
+   with `--medium`. */
+.lmnd-icon-button .lmnd-icon {
+  width: var(--lmnd-size-500);
+  height: var(--lmnd-size-500);
+}
+
+.lmnd-icon-button .lmnd-spinner {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+/* The button owns the glyph's size, as it does on the platforms, so markup written by hand
+   gets the right one without repeating the table. These beat .lmnd-icon--<size> on
+   specificity, which is what makes a stray size modifier inside harmless. */
+.lmnd-icon-button--x-small .lmnd-icon {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+.lmnd-icon-button--small .lmnd-icon,
+.lmnd-icon-button--medium .lmnd-icon {
+  width: var(--lmnd-size-500);
+  height: var(--lmnd-size-500);
+}
+
+.lmnd-icon-button--large .lmnd-icon {
+  width: var(--lmnd-size-600);
+  height: var(--lmnd-size-600);
+}
+
+/* The loading ring is a size down from the glyph, as it is on the platforms. */
+.lmnd-icon-button--x-small .lmnd-spinner,
+.lmnd-icon-button--small .lmnd-spinner {
+  width: var(--lmnd-size-300);
+  height: var(--lmnd-size-300);
+}
+
+.lmnd-icon-button--medium .lmnd-spinner,
+.lmnd-icon-button--large .lmnd-spinner {
+  width: var(--lmnd-size-400);
+  height: var(--lmnd-size-400);
+}
+
+/* The platforms tint the ring with the button's content colour. The spinner defaults to
+   content-secondary, so a rule rather than a prop keeps that true for hand-written markup
+   as well. */
+.lmnd-icon-button .lmnd-spinner {
+  color: inherit;
+}

@@ -49,10 +49,14 @@ fun componentDocs(): String {
     }
 
     val components = allComponents.filterNot { it.lowercase() in noMarkup }
-    val undocumented = components.filter { name ->
-        !Regex("""^### ${Regex.escape(name)}\b""", setOf(RegexOption.IGNORE_CASE, RegexOption.MULTILINE))
-            .containsMatchIn(text)
-    }
+    // A heading names the component the way a consumer writes it — `IconButton` — while the
+    // directory is kebab. Comparing them with the dashes dropped lets the two spellings
+    // agree without the heading having to read as a path.
+    val headings = Regex("""^### (.+)$""", RegexOption.MULTILINE)
+        .findAll(text)
+        .map { it.groupValues[1].trim().lowercase().replace("-", "") }
+        .toSet()
+    val undocumented = components.filterNot { it.lowercase().replace("-", "") in headings }
     require(undocumented.isEmpty()) {
         "${source.path} has no '### ' section for: ${undocumented.joinToString(", ")}"
     }
