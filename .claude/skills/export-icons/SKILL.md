@@ -27,12 +27,14 @@ to its enum entry. This skill covers all of it.
 ```
 
 Then give each new icon its alias description in Figma (below), review the diff
-and commit. A typical single-icon change touches thirteen files: the SVG,
+and commit. A typical single-icon change touches seventeen files: the SVG,
 `gen_<name>.xml`, the imageset (`Contents.json` + `.pdf`), both icon enums, the
 KMP drawable extension, the three `core` API baselines, the
-`figma/icons.manifest.json` entry, and the two `<Name>.figma.ts` templates under
-`figma/connect/icons/` and `figma/connect-swiftui/icons/`. Once the PR merges,
-publish Code Connect.
+`figma/icons.manifest.json` entry, the two `<Name>.figma.ts` templates under
+`figma/connect/icons/` and `figma/connect-swiftui/icons/`, the web package's
+`web/assets/icons/<name>.svg`, `web/src/icons.generated.ts` and `web/llms.txt`,
+and the icon count in `web/tests/exports.test.ts`. Once the PR merges, publish
+Code Connect.
 
 ## Getting the icons out of Figma
 
@@ -144,12 +146,18 @@ which lists every icon name for AI tools, and the icon Code Connect templates wi
 `npm run check` in `figma/`. The generator fails if an enum entry has no node in
 `figma/icons.manifest.json`, the same check the **Templates compile and assets
 match** CI job runs, so an icon exported without `figma-icons.py export` stops
-here rather than in CI.
+here rather than in CI. That check compiles the React snippets with `web/`'s
+TypeScript, so the script runs `npm ci` in `web/` first if it has no
+`node_modules`.
+
+Then it runs the web package's tests. `web/tests/exports.test.ts` asserts the
+exact number of icons, so it fails on every added or removed icon until you
+update the count by hand; the **Build, test and pack** CI job runs the same test.
 
 It finishes with `apiDump` and the ABI classifier. Adding an icon appends enum
 entries to `LemonadeIcons`, so the three `kmp/core/api/` baselines move; that is
 additive, and the expected verdict is `ADDITIONS_ONLY`. Pass `--skip-api` to
-stop after the templates.
+stop after the web tests.
 
 `ANDROID_HOME` is not set in these worktrees and there is no
 `kmp/local.properties`, so the script defaults it to `~/Library/Android/sdk`.
