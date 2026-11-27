@@ -97,6 +97,7 @@ public enum LemonadeIcon: String, CaseIterable {
     case card = "card"
     case cardCog = "card-cog"
     case cardMachine = "card-machine"
+    case cardMachinePlus = "card-machine-plus"
     case cardPlus = "card-plus"
     case cardRemove = "card-remove"
     case cardRestricted = "card-restricted"
