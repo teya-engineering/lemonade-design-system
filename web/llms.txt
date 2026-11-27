@@ -555,6 +555,7 @@ Monochrome, for the Icon component below: `--lmnd-icon: url('/assets/icons/<name
 - `car-front-view`
 - `car`
 - `card-cog`
+- `card-machine-plus`
 - `card-machine`
 - `card-plus`
 - `card-remove`

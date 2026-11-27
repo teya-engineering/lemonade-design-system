@@ -90,6 +90,7 @@ export const iconNames = [
   "car-front-view",
   "car",
   "card-cog",
+  "card-machine-plus",
   "card-machine",
   "card-plus",
   "card-remove",
